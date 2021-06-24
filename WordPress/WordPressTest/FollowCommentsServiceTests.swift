@@ -27,38 +27,20 @@ class FollowCommentsServiceTests: XCTestCase {
 
     // MARK: - Tests
 
-    func testCanFollowConversationIfJetpack() {
+    func testCanFollowConversation() {
         // Arrange
         let remoteMock = ReaderPostServiceRemoteMock()
         seedBlog(isWPForTeams: false)
         let testTopic = seedReaderTeamTopic()
         let testPost = seedReaderPostForTopic(testTopic)
-        testPost.isWPCom = false
-        testPost.isJetpack = true
+        testPost.canSubscribeComments = true
         let followCommentsService = FollowCommentsService(post: testPost, remote: remoteMock)!
 
         // Act
         let canFollowConversation = followCommentsService.canFollowConversation
 
         // Assert
-        XCTAssertTrue(canFollowConversation, "Can follow comments on post if the site is DotCom or Jetpack")
-    }
-
-    func testCanFollowConversationIfDotCom() {
-        // Arrange
-        let remoteMock = ReaderPostServiceRemoteMock()
-        seedBlog(isWPForTeams: false)
-        let testTopic = seedReaderTeamTopic()
-        let testPost = seedReaderPostForTopic(testTopic)
-        testPost.isJetpack = false
-        testPost.isWPCom = true
-        let followCommentsService = FollowCommentsService(post: testPost, remote: remoteMock)!
-
-        // Act
-        let canFollowConversation = followCommentsService.canFollowConversation
-
-        // Assert
-        XCTAssertTrue(canFollowConversation, "Can follow comments on post if the site is DotCom or Jetpack")
+        XCTAssertTrue(canFollowConversation, "Can follow comments on post if canSubscribeComments is true")
     }
 
     func testCannotFollowConversation() {
@@ -67,6 +49,7 @@ class FollowCommentsServiceTests: XCTestCase {
         seedBlog(isWPForTeams: false)
         let testTopic = seedReaderListTopic()
         let testPost = seedReaderPostForTopic(testTopic)
+        testPost.canSubscribeComments = false
         let followCommentsService = FollowCommentsService(post: testPost, remote: remoteMock)!
 
         // Act

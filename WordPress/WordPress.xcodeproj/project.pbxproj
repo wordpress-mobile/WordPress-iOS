@@ -2359,6 +2359,8 @@
 		E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */; };
 		E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */; };
 		E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */; };
+		E6D6A1302683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6A12F2683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift */; };
+		E6D6A1312683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6A12F2683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift */; };
 		E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */; };
 		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
 		E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E27D611C6144DB0063F821 /* SharingButton.swift */; };
@@ -7166,6 +7168,7 @@
 		E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesViewController.swift; sourceTree = "<group>"; };
 		E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCrossPostCell.swift; sourceTree = "<group>"; };
 		E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderCrossPostCell.xib; sourceTree = "<group>"; };
+		E6D6A12F2683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscribeCommentsAction.swift; sourceTree = "<group>"; };
 		E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSearchSuggestionsViewController.swift; sourceTree = "<group>"; };
 		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
 		E6E27D611C6144DB0063F821 /* SharingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButton.swift; sourceTree = "<group>"; };
@@ -13126,6 +13129,7 @@
 				D8212CB620AA7703008E8AE8 /* ReaderShareAction.swift */,
 				D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */,
 				D8212CC020AA7C58008E8AE8 /* ReaderShowMenuAction.swift */,
+				E6D6A12F2683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift */,
 				D8212CB420AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift */,
 				D8212CBC20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift */,
 			);
@@ -17725,6 +17729,7 @@
 				7435CE7320A4B9170075A1B9 /* AnimatedImageCache.swift in Sources */,
 				43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */,
 				CE46018B21139E8300F242B6 /* FooterTextContent.swift in Sources */,
+				E6D6A1302683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				982DDF96263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
@@ -19239,6 +19244,7 @@
 				FABB22DB2602FC2C00C8785C /* AboutViewController.swift in Sources */,
 				FABB22DC2602FC2C00C8785C /* MenuLocation.m in Sources */,
 				FABB22DD2602FC2C00C8785C /* RevisionsTableViewCell.swift in Sources */,
+				E6D6A1312683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
 				FABB22DE2602FC2C00C8785C /* KeyboardInfo.swift in Sources */,
 				FABB22DF2602FC2C00C8785C /* PlanDetailViewModel.swift in Sources */,
 				FABB22E02602FC2C00C8785C /* DebugMenuViewController.swift in Sources */,
