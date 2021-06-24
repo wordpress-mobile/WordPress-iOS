@@ -37,7 +37,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
-        label.numberOfLines = 4
+        label.numberOfLines = 6
         label.textAlignment = .center
         label.textColor = .text
         return label
