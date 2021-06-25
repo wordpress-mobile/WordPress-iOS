@@ -2,12 +2,13 @@ import Foundation
 
 class BloggingRemindersFlow {
     static let weeklyRemindersKeyPrefix = "blogging-reminder-weekly-"
+
     static func present(from viewController: UIViewController,
                         for blog: Blog,
                         source: BloggingRemindersTracker.FlowStartSource,
                         alwaysShow: Bool = true) {
 
-        guard alwaysShow || !UserDefaults.standard.bool(forKey: Self.weeklyRemindersKeyPrefix + blog.objectID.uriRepresentation().absoluteString) else {
+        guard alwaysShow || !hasShownWeeklyRemindersFlow(for: blog) else {
             return
         }
 
@@ -25,7 +26,17 @@ class BloggingRemindersFlow {
 
         NoticesDispatch.lock()
         bottomSheet.show(from: viewController)
-        UserDefaults.standard.setValue(true, forKey: Self.weeklyRemindersKeyPrefix + blog.objectID.uriRepresentation().absoluteString)
+        setHasShownWeeklyRemindersFlow(for: blog)
+    }
+
+    private static func hasShownWeeklyRemindersFlow(for blog: Blog) -> Bool {
+        let key = Self.weeklyRemindersKeyPrefix + blog.objectID.uriRepresentation().absoluteString
+        return UserDefaults.standard.bool(forKey: key)
+    }
+
+    private static func setHasShownWeeklyRemindersFlow(for blog: Blog) {
+        let key = Self.weeklyRemindersKeyPrefix + blog.objectID.uriRepresentation().absoluteString
+        UserDefaults.standard.setValue(true, forKey: key)
     }
 
     /// By making this private we ensure this can't be instantiated.
