@@ -1,0 +1,15 @@
+17.6'da, Ücretsiz Paket de dahil olmak üzere hangi paketi kullanıyor olursanız olun, Ses Bloku'nu herhangi bir WordPress.com sitesine ekleyebilirsiniz. Ses Bloku, gönderilerinize ve sayfalarınıza podcast'ler, müzik ve ses dosyaları eklemenizi kolaylaştırır.
+
+UX iyileştirmeleri için de çok çalıştık:
+
+Başlığı olmayan bir sayfaya bir üst sayfa atadığınızda, artık boş bir satır yerine "(başlık yok)" yer tutucusunu göreceksiniz, bu da size sayfayı adlandırmanız gerektiğini hatırlatacaktır.
+
+Otomatik olarak oluşturuldukları için Yazı Arşivi sayfalarını hiçbir zaman düzenleyememişsinizdir. 17.6'da, bunları düzenleyicide de açamayacaksınız, bu da sizi boşa giden bir eylemden kurtarıyor.
+
+Ayrıca bazı şeyleri düzeltmek için çalışmalarımız devam ediyor:
+
+Biri Site Simgesi denetimlerini, diğeri Hızlı Başlangıç Kaldırma'yı, üçüncüsü de düzenleyicide Diğer Eylemleri görüntüleyen bildirim dahil olmak üzere, Eylem Sayfası ile örtüşen bazı bildirimleri düzelttik.
+
+Son olarak, yorum yönetimi sırasında bazen uygulamanın kilitlenmesine neden olan bir hatayı ve WordPress.org sitelerinin satır içi gösterilmesiyle ilgili bir giriş hatasını düzelttik.
+
+17.6 için hepsi bu kadar. 17.7'de görüşmek üzere.
