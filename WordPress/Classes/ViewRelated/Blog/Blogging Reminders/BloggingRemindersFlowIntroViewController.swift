@@ -69,7 +69,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     private var introDescription: String {
         switch source {
         case .publishFlow:
-            return TextContent.PostPublishingintroDescription
+            return TextContent.postPublishingintroDescription
         case .blogSettings:
             return TextContent.siteSettingsIntroDescription
 
@@ -209,7 +209,7 @@ private enum TextContent {
     static let introTitle = NSLocalizedString("Set your blogging reminders",
                                               comment: "Title of the Blogging Reminders Settings screen.")
 
-    static let PostPublishingintroDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.",
+    static let postPublishingintroDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.",
                                                     comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
 
     static let siteSettingsIntroDescription = NSLocalizedString("Set up your blogging reminders on days you want to post.",
