@@ -16,7 +16,7 @@ class BloggingRemindersFlow {
         let tracker = BloggingRemindersTracker(blogType: blogType)
         tracker.flowStarted(source: source)
 
-        let flowIntroViewController = BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker)
+        let flowIntroViewController = BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker, source: source)
         let navigationController = BloggingRemindersNavigationController(rootViewController: flowIntroViewController)
 
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
@@ -42,7 +42,7 @@ class BloggingRemindersFlow {
     private static func weeklyRemindersKey(for blog: Blog) -> String {
         // weekly reminders key prefix
         let prefix = "blogging-reminder-weekly-"
-         return prefix + blog.objectID.uriRepresentation().absoluteString
+        return prefix + blog.objectID.uriRepresentation().absoluteString
     }
 
     /// By making this private we ensure this can't be instantiated.
