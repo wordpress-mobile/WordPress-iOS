@@ -229,7 +229,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             let formattedDays = formatter.string(from: markedUpDays) ?? ""
             text = String(format: TextContent.completionPromptPlural, "<strong>\(selectedDays.count)</strong>", formattedDays)
         }
-        
+
         let htmlData = NSString(string: text).data(using: String.Encoding.unicode.rawValue) ?? Data()
         let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
 

@@ -108,11 +108,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         innerStack.addArrangedSubviews([trophy, rightStack])
 
         let tipLabel = UILabel()
+        tipLabel.adjustsFontForContentSizeCategory = true
         tipLabel.textColor = .secondaryLabel
         tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
         tipLabel.text = TextContent.tipPanelTitle
 
         let tipDescriptionLabel = UILabel()
+        tipDescriptionLabel.adjustsFontForContentSizeCategory = true
         tipDescriptionLabel.textColor = .secondaryLabel
         tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         tipDescriptionLabel.text = TextContent.tipPanelDescription
@@ -219,11 +221,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-            bottomTipPanel.isHidden = true
-        } else {
-            bottomTipPanel.isHidden = false
-        }
+        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     private func calculatePreferredContentSize() {
@@ -266,6 +265,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
+
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
             button.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
@@ -311,6 +312,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             }
         }
 
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.adjustsFontSizeToFitWidth = true
 
         return button
