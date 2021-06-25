@@ -1,7 +1,6 @@
 import Foundation
 
 class BloggingRemindersFlow {
-    static let weeklyRemindersKeyPrefix = "blogging-reminder-weekly-"
 
     static func present(from viewController: UIViewController,
                         for blog: Blog,
@@ -17,7 +16,6 @@ class BloggingRemindersFlow {
         let tracker = BloggingRemindersTracker(blogType: blogType)
         tracker.flowStarted(source: source)
 
-        // TODO: Check whether we've already presented this flow to the user. @frosty
         let flowIntroViewController = BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker)
         let navigationController = BloggingRemindersNavigationController(rootViewController: flowIntroViewController)
 
@@ -29,14 +27,22 @@ class BloggingRemindersFlow {
         setHasShownWeeklyRemindersFlow(for: blog)
     }
 
+    // MARK: - Weekly reminders flow presentation status
+    //
+    // stores a key for each blog in UserDefaults to determine if
+    // the flow was presented for the given blog.
     private static func hasShownWeeklyRemindersFlow(for blog: Blog) -> Bool {
-        let key = Self.weeklyRemindersKeyPrefix + blog.objectID.uriRepresentation().absoluteString
-        return UserDefaults.standard.bool(forKey: key)
+        UserDefaults.standard.bool(forKey: weeklyRemindersKey(for: blog))
     }
 
     private static func setHasShownWeeklyRemindersFlow(for blog: Blog) {
-        let key = Self.weeklyRemindersKeyPrefix + blog.objectID.uriRepresentation().absoluteString
-        UserDefaults.standard.setValue(true, forKey: key)
+        UserDefaults.standard.setValue(true, forKey: weeklyRemindersKey(for: blog))
+    }
+
+    private static func weeklyRemindersKey(for blog: Blog) -> String {
+        // weekly reminders key prefix
+        let prefix = "blogging-reminder-weekly-"
+         return prefix + blog.objectID.uriRepresentation().absoluteString
     }
 
     /// By making this private we ensure this can't be instantiated.
