@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-04 18:18:27+0000 */
+/* Translation-Revision-Date: 2021-06-16 14:14:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -9,16 +9,13 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nOm te bevestigen, vul je site-adres opnieuw in alvorens te verwijderen.\n";
 
-/* No comment provided by engineer. */
-" audio file" = " audiobestand";
-
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Lazy-load\" afbeeldingen";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "\"Meer\" knop";
 
-/* Description for the restore action. $1$@ is a placeholder for the selected date. */
+/* No comment provided by engineer. */
 "%1$@ is the selected point for your restore." = "%1$@ is het geselecteerde punt voor het terugzetten.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -35,6 +32,12 @@
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ om bedreigingen op te lossen.";
+
+/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+"%1$d Like" = "%1$d like";
+
+/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+"%1$d Likes" = "%1$d likes";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d blogger vindt dit leuk.";
@@ -489,16 +492,10 @@
 "Add button text" = "Voeg knoptekst toe";
 
 /* No comment provided by engineer. */
-"Add caption" = "Bijschrift toevoegen";
-
-/* No comment provided by engineer. */
 "Add image or video" = "Afbeelding of video toevoegen";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Voeg een afbeelding of avatar toe, die bij dit nieuwe account hoort.";
-
-/* No comment provided by engineer. */
-"Add label…" = "Label toevoegen...";
 
 /* No comment provided by engineer. */
 "Add link text" = "Linktekst toevoegen";
@@ -539,9 +536,6 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Voeg tags toe";
-
-/* No comment provided by engineer. */
-"Add text…" = "Tekst toevoegen...";
 
 /* No comment provided by engineer. */
 "Add this email link" = "Voeg deze e-mail link toe";
@@ -754,9 +748,6 @@
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Weet je zeker dat je het menu wilt verwijderen?";
 
-/* Message asking for confirmation on comment deletion */
-"Are you sure you want to delete this comment?" = "Weet je zeker dat je deze reactie wilt verwijderen?";
-
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Weet je zeker dat je deze tag wilt verwijderen?";
 
@@ -766,8 +757,14 @@
 /* Message asking for confirmation before marking a comment as spam */
 "Are you sure you want to mark this comment as Spam?" = "Weet je zeker dat je deze reactie wilt markeren als spam?";
 
+/* Message asking for confirmation before marking a comment as trash */
+"Are you sure you want to mark this comment as Trash?" = "Weet je zeker dat je deze reactie wilt verplaatsen naar de prullenbak?";
+
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Weet je zeker dat je deze items definitief wilt verwijderen?";
+
+/* Message asking for confirmation on comment deletion */
+"Are you sure you want to permanently delete this comment?" = "Weet je zeker dat je deze reactie permanent wilt verwijderen?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Weet je zeker dat je dit item permanent wilt verwijderen?";
@@ -825,9 +822,6 @@
 "Attach File as Link" = "Bestand als link bijvoegen";
 
 /* No comment provided by engineer. */
-"Attachment page" = "Bijlagepagina";
-
-/* No comment provided by engineer. */
 "Audio Player" = "Audiospeler";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -835,9 +829,6 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "Audio bijschrift. Leeg";
-
-/* No comment provided by engineer. */
-"Audio settings" = "Audio-instellingen";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "Audio, %@";
@@ -864,9 +855,6 @@
    Period Stats 'Authors' header */
 "Authors" = "Auteurs";
 
-/* No comment provided by engineer. */
-"Auto" = "Automatisch";
-
 /* Describes a status of a plugin */
 "Auto-managed" = "Automatisch beheerd";
 
@@ -892,9 +880,6 @@
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Deel nieuwe berichten automatisch op je socialmedia-accounts.";
 
-/* No comment provided by engineer. */
-"Autoplay" = "Automatisch afspelen";
-
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische updates";
 
@@ -919,6 +904,9 @@
    Previous web page
    Spoken accessibility label */
 "Back" = "Terug";
+
+/* No comment provided by engineer. */
+"Background Color" = "Achtergrondkleur";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Er wordt een back-up gemaakt van de site";
@@ -975,9 +963,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citaat";
 
-/* No comment provided by engineer. */
-"Block cannot be rendered inside itself." = "Blok kan niet binnen zichzelf getoond worden.";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "Blok gekopieerd";
 
@@ -989,9 +974,6 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "Blok-editor ingeschakeld";
-
-/* No comment provided by engineer. */
-"Block has been deleted or is unavailable." = "Blok is verwijderd of is niet beschikbaar.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Blokkeer verdachte inlogpogingen";
@@ -1053,9 +1035,6 @@
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Blader door al onze thema's om het thema te vinden dat perfect bij je past.";
 
-/* No comment provided by engineer. */
-"Browser default" = "Browser standaard";
-
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Brute Force Attack bescherming";
 
@@ -1079,9 +1058,6 @@
 
 /* No comment provided by engineer. */
 "Button position" = "Knop positie";
-
-/* No comment provided by engineer. */
-"Button width" = "Knop breedte";
 
 /* Label for the post author in the post detail. */
 "By " = "Door";
@@ -1250,9 +1226,6 @@
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Wijzigen mislukt";
 
-/* No comment provided by engineer. */
-"Change heading level" = "Wijzig heading niveau";
-
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Wijzig het te gebruiken type apparaat voor voorbeeld";
 
@@ -1314,6 +1287,9 @@
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Kies homepage";
+
+/* Button allowing the user to choose an image from their device to use as their site icon */
+"Choose Image From My Device" = "Kies afbeelding van mijn apparaat";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Kies pagina's";
@@ -1400,9 +1376,6 @@
 "Clear Device Media Cache" = "Wis media cache apparaat";
 
 /* No comment provided by engineer. */
-"Clear Media" = "Media wissen";
-
-/* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Wis oude activiteiten logs";
 
 /* Title of an alert prompt. */
@@ -1467,9 +1440,6 @@
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Kleurrijke achtergronden";
-
-/* No comment provided by engineer. */
-"Column settings" = "Kolominstellingen";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Kolommen instellingen";
@@ -1702,9 +1672,6 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Ga verder met Apple";
 
-/* No comment provided by engineer. */
-"Convert to regular blocks" = "Converteren naar normale blokken";
-
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Koken";
 
@@ -1814,9 +1781,6 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Landcode";
 
-/* No comment provided by engineer. */
-"Cover" = "Bedekken";
-
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "Crash logging";
 
@@ -1854,6 +1818,9 @@
 /* Stories intro continue button title */
 "Create Story Post" = "Verhaal maken";
 
+/* Button allowing the user to create a site icon by choosing an emoji character */
+"Create With Emoji" = "Maak met emoji";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com site maken";
 
@@ -1874,6 +1841,9 @@
 
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Een bericht, pagina of verhaal maken";
+
+/* No comment provided by engineer. */
+"Create a site icon" = "Maak een site pictogram ";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Maak downloadbare back-up";
@@ -1901,9 +1871,6 @@
 
 /* Description of the cell displaying status of a backup in progress */
 "Creating downloadable backup" = "Er wordt een downloadbare back-up gemaakt";
-
-/* No comment provided by engineer. */
-"Crop image to fill entire column" = "Afbeelding bijsnijden om de hele kolom te vullen";
 
 /* No comment provided by engineer. */
 "Crosspost" = "Kruisbericht";
@@ -2036,6 +2003,7 @@
 "Defaults for New Posts" = "Standaardinstellingen voor nieuwe berichten";
 
 /* Delete
+   Delete button title
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
@@ -2406,9 +2374,6 @@
 "Edit focal point" = "Focuspunt bewerken";
 
 /* No comment provided by engineer. */
-"Edit image" = "Bewerk afbeelding";
-
-/* No comment provided by engineer. */
 "Edit media" = "Bewerk media";
 
 /* Explanation for the option to enable the block editor */
@@ -2475,6 +2440,9 @@
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail verzonden!";
+
+/* No comment provided by engineer. */
+"Emoji" = "Emoji";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2569,12 +2537,18 @@
 /* There was an error activating a plugin, placeholder is the plugin name */
 "Error activating %@." = "Fout tijdens activeren %@.";
 
+/* Message shown when approving a Comment fails. */
+"Error approving comment" = "Fout bij het goedkeuren van reactie";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Fout tijdens communiceren met de server, probeer opnieuw";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
 "Error deactivating %@." = "Fout tijdens deactiveren %@.";
+
+/* Message shown when deleting a Comment fails. */
+"Error deleting comment" = "Fout bij het verwijderen van reactie";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Fout tijdens uitschakelen autoupdates voor %@.";
@@ -2596,6 +2570,9 @@
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Fout bij laden plugins";
+
+/* Message shown when marking a Comment as spam fails. */
+"Error marking comment as spam" = "Fout bij het markeren van reactie als span";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Fout kwam voor\ntijdens laden";
@@ -2629,6 +2606,9 @@
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "Fout bij versturen verificatie-mail. Controleer je verbinding en probeer opnieuw.";
+
+/* Message shown when unapproving a Comment fails. */
+"Error unapproving comment" = "Fout bij herstel reactie goedkeuring";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Fout bij updaten %@.";
@@ -2848,9 +2828,6 @@
 /* Displays the fixed threats */
 "Fixed" = "Opgelost";
 
-/* No comment provided by engineer. */
-"Fixed background" = "Vaste achtergrond";
-
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Bezig met bedreigingen oplossen";
 
@@ -2979,8 +2956,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Voorbeeld genereren";
 
-/* Title of the Get Started button in the Blogging Reminders Settings flow.
-   Title of the Get Started button of the Blogging Reminders card in My Site.
+/* Title of the Get Started button of the Blogging Reminders card in My Site.
    View title for initial auth views. */
 "Get Started" = "Hoe te starten";
 
@@ -3109,9 +3085,6 @@
 
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Koptekst 6";
-
-/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
-"Heading %d" = "Heading %d";
 
 /* H1 Aztec Style */
 "Heading 1" = "Heading 1";
@@ -3491,6 +3464,9 @@
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kan momenteel niet geïnstalleerd worden.";
 
+/* Subject of new Zendesk ticket. */
+"Jetpack for iOS Support" = "Jetpack for iOS Support";
+
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack geïnstalleerd";
 
@@ -3638,13 +3614,7 @@
 "Link inserted" = "Link ingevoegd";
 
 /* No comment provided by engineer. */
-"Link label" = "Link label";
-
-/* No comment provided by engineer. */
 "Link text" = "Linktekst";
-
-/* No comment provided by engineer. */
-"Link to" = "Link naar";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link naar bestaande inhoud";
@@ -3800,9 +3770,6 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Het lijkt er op dat Jetpack is geïnstalleerd op je site. Gefeliciteerd!\nLogin met je WordPress.com inloggegevens om statistieken en meldingen in te schakelen.";
 
-/* No comment provided by engineer. */
-"Loop" = "Herhalen";
-
 /* Title of a button. */
 "Lost your password?" = "Wachtwoord vergeten?";
 
@@ -3892,9 +3859,6 @@
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
-/* No comment provided by engineer. */
-"Media & Text settings" = "Media & tekstinstellingen";
-
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "Media cache grootte";
 
@@ -3918,14 +3882,8 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media uploads";
 
-/* No comment provided by engineer. */
-"Media area" = "Mediagebied";
-
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "Media heeft geen geassocieerd bestand om te uploaden.";
-
-/* No comment provided by engineer. */
-"Media file" = "Mediabestand";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Formaat van mediabestand (%1$@) is te groot om te uploaden. Maximaal toegestane bestandsgrootte is %2$@";
@@ -4559,9 +4517,6 @@
 "Oops!" = "Oeps!";
 
 /* No comment provided by engineer. */
-"Opacity" = "Ondoorzichtigheid";
-
-/* No comment provided by engineer. */
 "Open Block Actions Menu" = "Open menu met blokacties";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -4613,9 +4568,6 @@
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "Optioneel bericht van maximaal %1$d karakters die ingevoegd wordt bij je uitnodiging.";
 
-/* No comment provided by engineer. */
-"Optional placeholder…" = "Optionele tijdelijke aanduiding...";
-
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Optioneel: vul een aangepast bericht in van maximaal %1$d karakters wat met je uitnodiging verstuurd wordt.";
 
@@ -4662,9 +4614,6 @@
 /* No comment provided by engineer. */
 "Outside" = "Buiten";
 
-/* No comment provided by engineer. */
-"Overlay" = "Overlay";
-
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Overschreven";
 
@@ -4687,9 +4636,6 @@
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "Pagina-instellingen";
-
-/* No comment provided by engineer. */
-"Page break" = "Paginascheiding";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok Pagina-einde. %s";
@@ -4782,6 +4728,9 @@
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature. */
 "People" = "Mensen";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"People who post at least twice weekly get 87% more views on their site." = "Personen die minimaal twee keer per week berichten, krijgen 87% meer weergaven op hun site.";
 
 /* Label for date periods. */
 "Period" = "Periode";
@@ -5086,9 +5035,6 @@
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "Mogelijk gemaakt door Tenor";
 
-/* No comment provided by engineer. */
-"Preload" = "Vooraf laden";
-
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -5271,9 +5217,6 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Beoordeel ons in de App Store";
 
-/* No comment provided by engineer. */
-"Read more" = "Lees meer";
-
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Lees op";
 
@@ -5407,6 +5350,9 @@
 /* Remove site icon button */
 "Remove Site Icon" = "Favicon verwijderen";
 
+/* No comment provided by engineer. */
+"Remove as Featured Image " = "Verwijder als uitgelichte afbeelding";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
 
@@ -5442,9 +5388,6 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "Vervang bestand";
-
-/* No comment provided by engineer. */
-"Replace image" = "Vervang afbeelding";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "Afbeelding of video vervangen";
@@ -5951,11 +5894,17 @@
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Instellen als bovenliggend item";
 
+/* No comment provided by engineer. */
+"Set as Featured Image " = "Instellen als uitgelichte afbeelding";
+
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Instellen als homepage";
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Instellen als berichten pagina";
+
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"Set goals" = "Stel doelen";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Instellen";
@@ -6031,9 +5980,6 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Fout tijdens delen";
 
-/* No comment provided by engineer. */
-"Shortcode" = "Shortcode";
-
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Koptekst weergeven";
 
@@ -6051,15 +5997,6 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Toon gerelateerde berichten";
-
-/* No comment provided by engineer. */
-"Show download button" = "Toon downloadknop";
-
-/* No comment provided by engineer. */
-"Show media on left" = "Media aan de linkerkant weergeven";
-
-/* No comment provided by engineer. */
-"Show media on right" = "Media rechts tonen";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6692,6 +6629,9 @@
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Het certificaat voor deze server is ongeldig. Je maakt mogelijk verbinding met een server die zich voordoet als “%@”, wat je vertrouwelijke informatie in gevaar kan brengen.\n\nWil je het certificaat toch vertrouwen?";
 
+/* Message informing the user that posts page cannot be edited */
+"The content of your latest posts page is automatically generated and cannot be edited." = "De inhoud van je laatste berichten pagina is automatisch gegenereerd en kan niet bewerkt worden.";
+
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Het bestand %1$@ bevat een kwaadaardig codepatroon";
 
@@ -7006,6 +6946,9 @@
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Tijd om je site af te ronden! Onze checklist leidt je door de volgende stappen.";
 
+/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
+"Tip" = "Tip";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips om WordPress.com optimaal te benutten.";
 
@@ -7127,6 +7070,7 @@
 "Transform block…" = "Transformeer blok...";
 
 /* Accessibility label for trash buttons in nav bars
+   Trash button title
    Trashes a comment
    Trashes the comment */
 "Trash" = "Prullenmand";
@@ -7476,6 +7420,9 @@
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Werk profielfoto bij";
 
+/* Title for sheet displayed allowing user to update their site icon */
+"Update Site Icon" = "Update site pictogram";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Staafgrafiek wordt bijgewerkt om reacties te tonen.";
 
@@ -7639,9 +7586,6 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export video geannuleerd.";
-
-/* No comment provided by engineer. */
-"Video settings" = "Video-instellingen";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -8024,9 +7968,6 @@
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Welkom bij de meest populaire sitebouwer van de wereld.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "Goed gedaan op je eerste bericht! Ga zo door. Je kunt nu je blogdoelen instellen, herinneringen ontvangen en je voortgang bijhouden.";
-
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "West";
 
@@ -8224,12 +8165,6 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Schrijf een reactie...";
 
-/* No comment provided by engineer. */
-"Write code…" = "Schrijf code…";
-
-/* No comment provided by engineer. */
-"Write title…" = "Schrijf titel...";
-
 /* Title for the writing section in site settings screen */
 "Writing" = "Schrijven";
 
@@ -8297,7 +8232,7 @@
 "You can update this any time via My Site > Site Settings" = "Je kunt dit op elk gewenst moment updaten via Mijn site > site-instellingen";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time." = "Je kunt dit op elk gewenst moment updaten.";
+"You can update this anytime" = "Je kunt dit op elk moment updaten";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Je kan dat e-mailadres niet gebruiken om je aan te melden. We hebben problemen met het blokkeren van sommige e-mailadressen. Probeer een andere e-mail provider.";
@@ -8388,6 +8323,9 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Je kunt je gebruikersnaam niet meer terug veranderen.";
 
+/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
+"You'll get reminders to blog X times a week on DAY and DAY." = "Je krijgt herinneringen om X keer per week te bloggen op DAG en DAG.";
+
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Je bent helemaal bij!";
 
@@ -8439,6 +8377,9 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Je bericht wordt momenteel geüpload. Wacht tot dit is voltooid.";
 
+/* Description on the first screen of the Blogging Reminders Settings flow. */
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Je bericht wordt gepubliceerd... intussen, stel je blogdoelen in om herinneringen te krijgen, en je voortgang te volgen.";
+
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Je berichten, pagina's en instellingen worden naar je gemaild via %@.";
 
@@ -8456,6 +8397,9 @@
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Je site is succesvol teruggezet";
+
+/* No comment provided by engineer. */
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Je site pictogram wordt gebruikt overal op het web: in browser tabs, site voorbeelden op social media, en de WordPress.com reader.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Je site wordt teruggezet";
@@ -8545,9 +8489,6 @@
 
 /* Label displayed on image media items. */
 "image" = "afbeelding";
-
-/* translators: 1: the order number of the image. 2: the total number of images. */
-"image %1$d of %2$d in gallery" = "afbeelding %1$d van %2$d in galerij";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "in \"Apps\"";

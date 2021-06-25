@@ -1741,7 +1741,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
     }
 
     private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
-        InteractiveNotificationsManager.shared.requestAuthorization {
+        InteractiveNotificationsManager.shared.requestAuthorization { _ in
             DispatchQueue.main.async {
                 controller.dismiss(animated: true)
             }

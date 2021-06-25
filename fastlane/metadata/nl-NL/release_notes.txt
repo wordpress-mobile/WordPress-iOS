@@ -1,17 +1,17 @@
-Wat is er nieuw in WordPress release 17.5?
+Met 17.6 kun je het audioblok toevoegen aan elke WordPress.com site, ongeacht het abonnement dat je hebt - inclusief het gratis abonnement. Het audioblok maakt het gemakkelijk om podcasts, muziek en geluidsbestanden toe te voegen aan je berichten en pagina's.
 
-Herbruikbare blokken zijn er! Maak eenmaal inhoud, sla je blok op en hergebruik het keer op keer in berichten of pagina's. In 17.5 vind je herbruikbare blokken klaar om te gaan in het menu blok inserter.
+In de Reader zie je nu een telling en samenvatting van Vind-ik-leuks toegevoegd aan elk bericht. Als dat niet genoeg Likes in je leven is, tik je op de samenvatting en kun je de volledige lijst zien.
 
-Als tikken om nieuwe blokken toe te voegen een menu tik te ver is, 17.5 laat je ze toevoegen met een slash rechtstreeks vanuit de editor. Voeg een voorwaartse schuine streep toe terwijl je je bericht of pagina maakt, begin op de naam van het blok te tikken en je bent helemaal klaar. Geen menu's nodig.
+We hebben ook hard gewerkt aan het maken van UX verbeteringen:
 
-Audio krijgt ook wat liefde. Heb je een link voor dat audiobestand? In 17.5 plak je gewoon je URL in het audioblok en WordPress trekt het in je bericht.
+Wanneer je een hoofdpagina toewijst aan een pagina zonder titel, zie je nu een plaatshouder ‘(geen titel)’ in plaats van een lege regel, waardoor je een zacht duwtje krijgt om de pagina een naam te geven.
 
-Like kennisgevingen kregen ook wat extra schittering in 17.5. Je kunt nu precies zien wie elk bericht leuk vond en reageren op je site zodra ze binnenkomen.
+Je hebt nooit bericht archiefpagina's kunnen bewerken omdat ze automatisch worden gegenereerd. In 17.6, zal je ook niet in staat zijn om ze te openen in de editor, het red je van een verspilde reis.
 
-We zijn ook hard aan het werk geweest om met bugs te stoeien. Dit is wat we hebben opgelost:
+We hebben ook gewerkt aan het oplossen van dingen:
 
-Scherm readers kunnen nu de stepper cel in de blok-editor selecteren.
+We hebben gezorgd voor enkele berichten die het Actieblad overlappen, waaronder een met besturingselementen voor site pictogrammen, een andere waarin de QuickStart verwijdering wordt weergegeven, en een derde die Meer acties in de editor weergeeft.
 
-We hebben ervoor gezorgd dat grote tekst geen ENORME tekst wordt, welk lettertype je ook gebruikt. De ondersteuning voor grote tekst in de header met blogdetails van het scherm Mijn sites is ook verbeterd.
+Ten slotte hebben we een bug geplet, die er soms voor zorgde dat de app crashte tijdens het modereren van reacties, en een andere om een login fout op te lossen voor WordPress.org sites om inline te tonen.
 
-Ten slotte gedragen item selectie en gefixeerd scrollen in de Plugins directory zich nu, en zal het noticons-lettertype de app niet langer laten crashen in uitgebreide kennisgevingen.
+Dat is alles voor 17,6. Zie je in 17.7!

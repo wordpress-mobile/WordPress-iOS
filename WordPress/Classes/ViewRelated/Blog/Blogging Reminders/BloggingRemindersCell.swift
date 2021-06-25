@@ -14,7 +14,8 @@ import UIKit
             guard let blog = blogService.lastUsedOrFirstBlog(), let controller = self.window?.rootViewController else {
                 return
             }
-            BlogDetailsViewController.presentBloggingRemindersSettingsFlow(from: controller, for: blog, source: .blogSettings)
+
+            BloggingRemindersFlow.present(from: controller, for: blog, source: .blogSettings)
         }, ellipsisButtonAction: {}))
         bloggingRemindersCardView.translatesAutoresizingMaskIntoConstraints = false
 

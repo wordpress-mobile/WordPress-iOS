@@ -61,14 +61,14 @@ PODS:
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Core (1.6.1)
   - Gutenberg (1.55.1):
     - React (= 0.64.0)
     - React-CoreModules (= 0.64.0)
     - React-RCTImage (= 0.64.0)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.2.7)
+  - Kanvas (1.2.8)
   - lottie-ios (3.1.9)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
@@ -440,7 +440,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.4)
   - WordPress-Editor-iOS (1.19.4):
     - WordPress-Aztec-iOS (= 1.19.4)
-  - WordPressAuthenticator (1.38.0):
+  - WordPressAuthenticator (1.39.0-beta.1):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -452,7 +452,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.35.0):
+  - WordPressKit (4.36.0-beta.2):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -460,26 +460,26 @@ PODS:
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.13)
-  - WordPressShared (1.16.0):
+  - WordPressShared (1.16.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.1-beta.3)
   - WPMediaPicker (1.7.2)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
-  - ZendeskCommonUISDK (6.1.0)
-  - ZendeskCoreSDK (2.5.0)
-  - ZendeskMessagingAPISDK (3.8.1):
-    - ZendeskSDKConfigurationsSDK (~> 1.1.7)
-  - ZendeskMessagingSDK (3.8.1):
-    - ZendeskCommonUISDK (~> 6.1.0)
-    - ZendeskMessagingAPISDK (~> 3.8.1)
-  - ZendeskSDKConfigurationsSDK (1.1.7)
-  - ZendeskSupportProvidersSDK (5.2.0):
-    - ZendeskCoreSDK (~> 2.5.0)
-  - ZendeskSupportSDK (5.2.0):
-    - ZendeskMessagingSDK (~> 3.8.1)
-    - ZendeskSupportProvidersSDK (~> 5.2.0)
+  - ZendeskCommonUISDK (6.1.1)
+  - ZendeskCoreSDK (2.5.1)
+  - ZendeskMessagingAPISDK (3.8.2):
+    - ZendeskSDKConfigurationsSDK (~> 1.1.8)
+  - ZendeskMessagingSDK (3.8.2):
+    - ZendeskCommonUISDK (~> 6.1.1)
+    - ZendeskMessagingAPISDK (~> 3.8.2)
+  - ZendeskSDKConfigurationsSDK (1.1.8)
+  - ZendeskSupportProvidersSDK (5.3.0):
+    - ZendeskCoreSDK (~> 2.5.1)
+  - ZendeskSupportSDK (5.3.0):
+    - ZendeskMessagingSDK (~> 3.8.2)
+    - ZendeskSupportProvidersSDK (~> 5.3.0)
   - ZIPFoundation (0.9.12)
 
 DEPENDENCIES:
@@ -552,14 +552,14 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (~> 1.38.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `gutenberg/issue/3163-gss`)
+  - WordPressAuthenticator (~> 1.39.0-beta.1)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `5358dfa69e44e72ebd91072ab520f069221276d7`)
   - WordPressMocks (~> 0.0.13)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.1-beta)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7e3d7e5662b2a4447f36774ee7c4e170907671f4/third-party-podspecs/Yoga.podspec.json`)
-  - ZendeskSupportSDK (= 5.2.0)
+  - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -711,7 +711,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
   WordPressKit:
-    :branch: gutenberg/issue/3163-gss
+    :commit: 5358dfa69e44e72ebd91072ab520f069221276d7
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7e3d7e5662b2a4447f36774ee7c4e170907671f4/third-party-podspecs/Yoga.podspec.json
@@ -724,15 +724,12 @@ CHECKOUT OPTIONS:
     :commit: 7e3d7e5662b2a4447f36774ee7c4e170907671f4
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
-  react-native-blur:
-    :commit: 9d2d744a5171f3a77564a43f87c2cfb3fbcf597e
-    :git: https://github.com/react-native-community/react-native-blur.git
   RNTAztecView:
     :commit: 7e3d7e5662b2a4447f36774ee7c4e170907671f4
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
   WordPressKit:
-    :commit: cb854d7db08840b7bfeeb81d424926ddd23a6842
+    :commit: 5358dfa69e44e72ebd91072ab520f069221276d7
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -760,10 +757,10 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   Gutenberg: 2da0fb42dfa71912970033694c7527df39113b79
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 7ef6614513c4f44ffc248225cefda0de1d4cf571
+  Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -817,23 +814,23 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 4ccd7f41bae37247883922ad92a14f18cc759bf3
-  WordPressKit: 95b870401414cfc7facbad08f3d83b507f7169cc
+  WordPressAuthenticator: ba4038742d62a70482bfbad71dafe367b1a6f8d6
+  WordPressKit: f9ce5b4aa9854facc409dfd2bcca62e2733f6323
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
-  WordPressShared: 0f7f10e96f8354d64f951c223ae61e8de7495a46
+  WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
   WordPressUI: cf3b3ef744663811a8d8a9844f42386e1826f512
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 982b1e7bf7c0873643955853293b269e4487890e
-  ZendeskCommonUISDK: 92ca6b16956430a2cb61c89aeaa6ca123d1f81fd
-  ZendeskCoreSDK: f3d5dcd6a18186dcecbecd56f66296c40fb2fcb4
-  ZendeskMessagingAPISDK: 986919a8f6f11a7019660d1ff798f1efb42fa572
-  ZendeskMessagingSDK: bf9a06f0cbb219617d9cf60a46aba1b68c8f3b30
-  ZendeskSDKConfigurationsSDK: 45fa87ec8418697f7fce5e56bec472052f0aedb5
-  ZendeskSupportProvidersSDK: 5221df6ca45e0b6f12470a5e8e65ccf3ccca17fa
-  ZendeskSupportSDK: e100a7a0a1bb5d7d43abbde3338727d985a4986d
+  ZendeskCommonUISDK: 5808802951ad2bb424f0bed4259dc3c0ce9b52ec
+  ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
+  ZendeskMessagingAPISDK: 144e0fb0e633a3c4e73149b781ab65338938d5a8
+  ZendeskMessagingSDK: 500e83d9413481e95180c37ddca0d4ef9d515600
+  ZendeskSDKConfigurationsSDK: 8371b468db0d09e9198f6c5a97818826943ee1ee
+  ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
+  ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: c73d3a1da512d0a42ef01ede5d6794241569be93
+PODFILE CHECKSUM: 034c77a567f0237886c6070e15f59d5c7b6a93a3
 
 COCOAPODS: 1.10.1

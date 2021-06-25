@@ -389,7 +389,7 @@ extension SiteSettingsViewController {
     }
 
     private func presentBloggingRemindersFlow(indexPath: IndexPath) {
-        BlogDetailsViewController.presentBloggingRemindersSettingsFlow(from: self, for: blog, source: .blogSettings)
+        BloggingRemindersFlow.present(from: self, for: blog, source: .blogSettings)
 
         tableView.deselectRow(at: indexPath, animated: true)
     }
