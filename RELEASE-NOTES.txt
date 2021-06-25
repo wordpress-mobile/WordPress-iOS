@@ -17,6 +17,7 @@
 * [*] The quick action buttons will be hidden when iOS is using a accessibility font sizes. [#16701]
 * [*] Block Editor: Improve unsupported block message for reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3621]
 * [**] Block Editor: Fix incorrect block insertion point after blurring the post title field. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3640]
+* [*] Fixed a crash when sharing photos to WordPress [#16737]
 
 17.5
 -----
