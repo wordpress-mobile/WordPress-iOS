@@ -183,8 +183,8 @@ extension PublishingEditor where Self: UIViewController {
         }
 
         if action.isAsync,
-            let postStatus = self.post.original?.status ?? self.post.status,
-            ![.publish, .publishPrivate].contains(postStatus) {
+           let postStatus = self.post.original?.status ?? self.post.status,
+           ![.publish, .publishPrivate].contains(postStatus) {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
@@ -543,15 +543,13 @@ extension PublishingEditor where Self: UIViewController {
             // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
             // needs to happen in the closure.
             onClose(didSave, false)
-        } else if isModal() {
-            if let controller = presentingViewController {
-                controller.dismiss(animated: true) {
-                    if presentBloggingReminders {
-                        BloggingRemindersFlow.present(from: controller,
-                                                      for: self.post.blog,
-                                                      source: .publishFlow,
-                                                      alwaysShow: false)
-                    }
+        } else if isModal(), let controller = presentingViewController {
+            controller.dismiss(animated: true) {
+                if presentBloggingReminders {
+                    BloggingRemindersFlow.present(from: controller,
+                                                  for: self.post.blog,
+                                                  source: .publishFlow,
+                                                  alwaysShow: false)
                 }
             }
         } else {
