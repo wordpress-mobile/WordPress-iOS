@@ -5,11 +5,11 @@ extension UIColor {
 
     /// Muriel/iOS navigation color
     static var appBarBackground: UIColor {
-        return UIColor(light: .white, dark: .gray(.shade100))
+        UIColor(light: .white, dark: .gray(.shade100))
     }
 
     static var appBarTint: UIColor {
-        return .primary
+        .primary
     }
 
     static var lightAppBarTint: UIColor {
@@ -17,7 +17,7 @@ extension UIColor {
     }
 
     static var appBarText: UIColor {
-        return .text
+        .text
     }
 
     static var filterBarBackground: UIColor {
