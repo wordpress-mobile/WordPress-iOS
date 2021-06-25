@@ -910,9 +910,8 @@ class AbstractPostListViewController: UIViewController,
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
-            PostCoordinator.shared.publish(apost) {
-                completion?()
-            }
+            PostCoordinator.shared.publish(apost)
+            completion?()
         }
 
         present(alertController, animated: true)
