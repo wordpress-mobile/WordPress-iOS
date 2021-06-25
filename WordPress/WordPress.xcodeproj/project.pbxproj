@@ -519,6 +519,8 @@
 		3F8D988A26153484003619E5 /* UnifiedPrologueBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D988826153484003619E5 /* UnifiedPrologueBackgroundView.swift */; };
 		3F8EEC4E25B4817000EC9DAE /* StatsWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EEC4D25B4817000EC9DAE /* StatsWidgets.swift */; };
 		3F8EEC7025B4849A00EC9DAE /* SiteListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EEC6F25B4849A00EC9DAE /* SiteListProvider.swift */; };
+		3F946C592684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */; };
+		3F946C5A2684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */; };
 		3F9E724125A8E69900AAAB1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F9E724325A8E69900AAAB1A /* Localizable.strings */; };
 		3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
 		3FA53E9D256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
@@ -5052,6 +5054,7 @@
 		3F8D988826153484003619E5 /* UnifiedPrologueBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueBackgroundView.swift; sourceTree = "<group>"; };
 		3F8EEC4D25B4817000EC9DAE /* StatsWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgets.swift; sourceTree = "<group>"; };
 		3F8EEC6F25B4849A00EC9DAE /* SiteListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteListProvider.swift; sourceTree = "<group>"; };
+		3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersActions.swift; sourceTree = "<group>"; };
 		3F9E725425A8E6FF00AAAB1A /* it */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F9E726525A8E8E000AAAB1A /* es */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F9E726625A8E9E800AAAB1A /* sq */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -8774,6 +8777,7 @@
 		3F170D2A2654615900F6F670 /* Blogging Reminders */ = {
 			isa = PBXGroup;
 			children = (
+				3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */,
 				3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */,
 				17171373265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift */,
 				F1A38F202678C4DA00849843 /* BloggingRemindersFlow.swift */,
@@ -17860,6 +17864,7 @@
 				24351254264DCA08009BB2B6 /* Secrets.swift in Sources */,
 				7E4123C420F4097B00DF8486 /* FormattableContentActionCommand.swift in Sources */,
 				17A28DCB2052FB5D00EA6D9E /* AuthorFilterViewController.swift in Sources */,
+				3F946C592684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */,
 				08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */,
 				C81CCD6F243AF7D700A83E27 /* TenorReponseParser.swift in Sources */,
 				4020B2BD2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */,
@@ -19010,6 +19015,7 @@
 				FABB22022602FC2C00C8785C /* MediaThumbnailCoordinator.swift in Sources */,
 				FABB22032602FC2C00C8785C /* RevisionDiffsPageManager.swift in Sources */,
 				FABB22042602FC2C00C8785C /* CalendarCollectionView.swift in Sources */,
+				3F946C5A2684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */,
 				C387B7A22638D66F00BDEF86 /* PostAuthorSelectorViewController.swift in Sources */,
 				FABB22052602FC2C00C8785C /* SubjectContentGroup.swift in Sources */,
 				FABB22062602FC2C00C8785C /* PluginListRow.swift in Sources */,

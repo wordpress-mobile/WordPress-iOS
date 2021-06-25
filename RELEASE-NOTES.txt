@@ -1,9 +1,12 @@
 17.7
 -----
 * [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
-
 * [*] Upgraded the Zendesk SDK to version 5.3.0
 * [*] You can now subscribe to conversations by email from Reader lists and articles. [#16599]
+* [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
+* [**] Block editor: Fixed an issue where pressing enter inside a text-based block was not creating a new block when using Gboard [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3590]
+* [*] Block editor: Tweaks to the badge component's styling, including change of background color and reduced padding. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3642]
+* [***] Block editor: New block Layout grid. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3513]
 
 17.6
 -----

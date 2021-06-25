@@ -62,8 +62,9 @@ class CalendarDayToggleButton: UIButton {
 
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: Metrics.toggleSize),
-            heightAnchor.constraint(equalToConstant: Metrics.toggleSize),
+            widthAnchor.constraint(greaterThanOrEqualToConstant: Metrics.toggleSize),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.toggleSize),
+            widthAnchor.constraint(equalTo: heightAnchor),
         ])
     }
 
