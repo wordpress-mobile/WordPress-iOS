@@ -88,16 +88,12 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var widthConstraint: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
-    private var useLightStyle: Bool {
-        navigationController is LightNavigationController
-    }
-
     private var barButtonTintColor: UIColor {
-        useLightStyle ? .listIcon : UIColor(light: .white, dark: .neutral(.shade70))
+        .listIcon
     }
 
     private var navBarTitleColor: UIColor {
-        useLightStyle ? .text : UIColor(light: .white, dark: .neutral(.shade70))
+        .text
     }
 
 
