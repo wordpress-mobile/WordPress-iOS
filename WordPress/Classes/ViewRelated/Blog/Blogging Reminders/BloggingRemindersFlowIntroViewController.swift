@@ -24,8 +24,10 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.text = TextContent.introTitle
         return label
@@ -33,9 +35,11 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.text = TextContent.introDescription
-        label.numberOfLines = 0
+        label.numberOfLines = 5
         label.textAlignment = .center
         return label
     }()
@@ -116,6 +120,12 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        view.setNeedsLayout()
+    }
+
     // MARK: - View Configuration
 
     private func configureStackView() {
@@ -136,7 +146,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            getStartedButton.heightAnchor.constraint(equalToConstant: Metrics.getStartedButtonHeight),
+            getStartedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
             getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),

@@ -24,8 +24,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         label.text = TextContent.settingsPrompt
         return label
@@ -33,9 +36,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
         label.font = .preferredFont(forTextStyle: .body)
         label.text = TextContent.settingsUpdatePrompt
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         label.setContentHuggingPriority(.defaultLow, for: .vertical)
@@ -54,6 +60,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         daysOuterStack.axis = .vertical
         daysOuterStack.alignment = .center
         daysOuterStack.spacing = Metrics.innerStackSpacing
+        daysOuterStack.distribution = .fillEqually
         return daysOuterStack
     }()
 
@@ -101,11 +108,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         innerStack.addArrangedSubviews([trophy, rightStack])
 
         let tipLabel = UILabel()
+        tipLabel.adjustsFontForContentSizeCategory = true
         tipLabel.textColor = .secondaryLabel
         tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
         tipLabel.text = TextContent.tipPanelTitle
 
         let tipDescriptionLabel = UILabel()
+        tipDescriptionLabel.adjustsFontForContentSizeCategory = true
         tipDescriptionLabel.textColor = .secondaryLabel
         tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         tipDescriptionLabel.text = TextContent.tipPanelDescription
@@ -209,6 +218,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         calculatePreferredContentSize()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
     private func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(size)
@@ -250,7 +266,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
@@ -276,8 +294,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
 
         let isSelected = weekdays.contains(weekday)
-
-        return CalendarDayToggleButton(
+        let button = CalendarDayToggleButton(
             weekday: weekday,
             dayName: calendar.shortWeekdaySymbols[weekdayIndex].uppercased(),
             isSelected: isSelected) { [weak self] button in
@@ -294,6 +311,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 }
             }
         }
+
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+
+        return button
     }
 
     private func populateCalendarDays() {

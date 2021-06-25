@@ -24,8 +24,10 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.text = TextContent.title
         return label
@@ -33,9 +35,11 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
     private let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.text = TextContent.prompt
-        label.numberOfLines = 0
+        label.numberOfLines = 4
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         return label
@@ -43,9 +47,11 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
     private let hintLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.text = TextContent.hint
-        label.numberOfLines = 0
+        label.numberOfLines = 4
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         return label
@@ -57,6 +63,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         button.isPrimary = true
         button.setTitle(TextContent.turnOnButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(turnOnButtonTapped), for: .touchUpInside)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         return button
     }()
 
@@ -143,6 +150,12 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         calculatePreferredContentSize()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
     private func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(size)
@@ -173,7 +186,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: turnOnNotificationsButton.topAnchor, constant: Metrics.edgeMargins.bottom),
 
-            turnOnNotificationsButton.heightAnchor.constraint(equalToConstant: Metrics.turnOnButtonHeight),
+            turnOnNotificationsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.turnOnButtonHeight),
             turnOnNotificationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             turnOnNotificationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             turnOnNotificationsButton.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
