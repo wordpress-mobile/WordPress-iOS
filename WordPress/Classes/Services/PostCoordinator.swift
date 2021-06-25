@@ -90,7 +90,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    func publish(_ post: AbstractPost, completion: (() -> Void)? = nil) {
+    func publish(_ post: AbstractPost) {
         if post.status == .draft {
             post.status = .publish
             post.isFirstTimePublish = true
@@ -102,9 +102,7 @@ class PostCoordinator: NSObject {
 
         post.shouldAttemptAutoUpload = true
 
-        save(post) {_ in
-            completion?()
-        }
+        save(post)
     }
 
     func moveToDraft(_ post: AbstractPost) {
