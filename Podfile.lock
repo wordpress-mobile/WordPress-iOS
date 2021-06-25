@@ -61,7 +61,7 @@ PODS:
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Core (1.6.1)
   - Gutenberg (1.55.1):
     - React (= 0.64.0)
     - React-CoreModules (= 0.64.0)
@@ -440,7 +440,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.4)
   - WordPress-Editor-iOS (1.19.4):
     - WordPress-Aztec-iOS (= 1.19.4)
-  - WordPressAuthenticator (1.38.0):
+  - WordPressAuthenticator (1.39.0-beta.1):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -552,7 +552,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (~> 1.38.0)
+  - WordPressAuthenticator (~> 1.39.0-beta.1)
   - WordPressKit (~> 4.36.0-beta)
   - WordPressMocks (~> 0.0.13)
   - WordPressShared (~> 1.16.0)
@@ -752,7 +752,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   Gutenberg: 2da0fb42dfa71912970033694c7527df39113b79
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
@@ -809,7 +809,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 4ccd7f41bae37247883922ad92a14f18cc759bf3
+  WordPressAuthenticator: ba4038742d62a70482bfbad71dafe367b1a6f8d6
   WordPressKit: f9ce5b4aa9854facc409dfd2bcca62e2733f6323
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
   WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
@@ -826,6 +826,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: e0cfecab673883ec998ca68ef10c4192c3152aea
+PODFILE CHECKSUM: e66add821130b609329137ba88226a981836d209
 
 COCOAPODS: 1.10.1
