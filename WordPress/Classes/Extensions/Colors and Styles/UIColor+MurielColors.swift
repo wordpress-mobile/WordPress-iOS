@@ -275,7 +275,7 @@ extension UIColor {
     }
 
     static var quickActionSelectedBackground: UIColor {
-        .UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
+        UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others
