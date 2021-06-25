@@ -173,20 +173,14 @@ class GutenbergSettings {
     }
 
     func canViewEditorOnboarding() -> Bool {
-        guard
-            ReachabilityUtils.isInternetReachable()
-        else {
-            return false
-        }
-
-        let userId = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.userID.intValue ?? getAnonymousUserId()
+        let uniqueRolloutId = getUniqueRolloutId()
         let rollout = GutenbergOnboardingRollout()
-        return rollout.isUserIdInPhaseRolloutPercentage(userId)
+        return rollout.isRolloutIdInPhaseRolloutPercentage(uniqueRolloutId)
     }
 
-    /// Temporary for the staged Editor Onboarding tooltip project. This anonymous ID is only used for non-WPcom
-    /// logins.
-    func getAnonymousUserId() -> Int {
+    /// Temporary for the staged Editor Onboarding tooltip project. Generates a unique rollout ID for use in
+    /// determining if the user is in the percentage group that should see the Editor Onboarding Tooltip.
+    func getUniqueRolloutId() -> Int {
         let anonId = database.object(forKey: Key.editorOnboardingAnonID) as? Int ?? UUID().hashValue
         database.set(anonId, forKey: Key.editorOnboardingAnonID)
         return anonId

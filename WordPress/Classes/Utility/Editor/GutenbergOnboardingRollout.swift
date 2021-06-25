@@ -3,12 +3,12 @@
 struct GutenbergOnboardingRollout {
     private let phasePercentage = 50
 
-    func isUserIdInPhaseRolloutPercentage(_ userId: Int) -> Bool {
-        return convertUserIdToRank(userId: String(userId)) >= (100 - phasePercentage) || BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+    func isRolloutIdInPhaseRolloutPercentage(_ uniqueRolloutId: Int) -> Bool {
+        return convertRolloutIdToRank(uniqueRolloutId: String(uniqueRolloutId)) >= (100 - phasePercentage) || BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
     }
 
-    func convertUserIdToRank(userId: String) -> Int {
-        let key = userId + "can_view_editor_onboarding"
+    func convertRolloutIdToRank(uniqueRolloutId: String) -> Int {
+        let key = uniqueRolloutId + "can_view_editor_onboarding"
         let inputString = key.replacingOccurrences(of: "-", with: "")
         return abs(inputString.djb2hash) % 100
     }
