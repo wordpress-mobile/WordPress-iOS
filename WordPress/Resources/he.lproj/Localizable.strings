@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-23 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-06-24 19:48:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -1442,7 +1442,7 @@
 "Colorful backgrounds" = "רקעים צבעוניים";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "הגדרות טורים";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "אפשר לשלב תמונות, סרטוני וידאו וטקסטים כדי ליצור פוסטים מעניינים של סטורי שיוצגו בהקשה ולהרשים את הקוראים שלך.";
@@ -1652,7 +1652,7 @@
 "Continue" = "המשך";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
-"Continue With WordPress.com" = "Continue With WordPress.com";
+"Continue With WordPress.com" = "להמשיך עם WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "המשך עבודה";
@@ -3614,7 +3614,7 @@
 "Link inserted" = "הקישור הוכנס";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "טקסט לקישור";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "קישור לתוכן קיים";
@@ -5713,7 +5713,7 @@
 "Search posts" = "חיפוש פוסטים";
 
 /* No comment provided by engineer. */
-"Search settings" = "Search settings";
+"Search settings" = "הגדרות חיפוש";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "חיפוש קובצי GIF שניתן להוסיף לספריית מדיה שלך!";
