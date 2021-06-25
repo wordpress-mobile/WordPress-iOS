@@ -13,29 +13,33 @@ struct BloggingRemindersScheduleFormatter {
         }()
     }
 
-    /// Description string of the current schedule for the specified blog.
+    /// Attributed description string of the current schedule for the specified blog.
     ///
-    var shortIntervalDescription: String {
+    var shortIntervalDescription: NSAttributedString {
         switch schedule {
         case .none:
-            return TextContent.shortNoRemindersDescription
+            return Self.stringToAttributedString(TextContent.shortNoRemindersDescription)
         case .weekdays(let days):
             return Self.shortIntervalDescription(for: days.count)
         }
     }
 
-    static func shortIntervalDescription(for days: Int) -> String {
-        switch days {
-        case 1:
-            return NSLocalizedString("Once a week", comment: "Short title telling the user they will receive a blogging reminder once per week.")
-        case 2:
-            return NSLocalizedString("Twice a week", comment: "Short title telling the user they will receive a blogging reminder two times a week.")
-        case 7:
-            return NSLocalizedString("Every day", comment: "Short title telling the user they will receive a blogging reminder every day of the week.")
-        default:
-            return String(format: NSLocalizedString("%d times a week",
-                                                    comment: "A short description of how many times a week the user will receive a blogging reminder. The placeholder will be populated with a count of the number of times a week they'll be reminded."), days)
-        }
+    static func shortIntervalDescription(for days: Int) -> NSAttributedString {
+        let text: String = {
+            switch days {
+            case 1:
+                return NSLocalizedString("<strong>Once</strong> a week", comment: "Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags.")
+            case 2:
+                return NSLocalizedString("<strong>Twice</strong> a week", comment: "Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags.")
+            case 7:
+                return "<strong>" + NSLocalizedString("Every day", comment: "Short title telling the user they will receive a blogging reminder every day of the week.") + "</strong>"
+            default:
+                return String(format: NSLocalizedString("<strong>%d</strong> times a week",
+                                                        comment: "A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags."), days)
+            }
+        }()
+
+        return Self.stringToAttributedString(text)
     }
 
     var longScheduleDescription: NSAttributedString {
@@ -66,31 +70,35 @@ struct BloggingRemindersScheduleFormatter {
                 text = String(format: TextContent.longNoRemindersDescriptionPlural, "<strong>\(days.count)</strong>", formattedDays)
             }
 
-            let htmlData = NSString(string: text).data(using: String.Encoding.unicode.rawValue) ?? Data()
-            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
+            return Self.stringToAttributedString(text)
+        }
+    }
 
-            let attributedString = (try? NSMutableAttributedString(data: htmlData,
-                                                                   options: options,
-                                                                   documentAttributes: nil)) ?? NSMutableAttributedString()
+    private static func stringToAttributedString(_ string: String) -> NSAttributedString {
+        let htmlData = NSString(string: string).data(using: String.Encoding.unicode.rawValue) ?? Data()
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
 
-            // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
-            // have had (such as bold style).
-            attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, stop) in
+        let attributedString = (try? NSMutableAttributedString(data: htmlData,
+                                                               options: options,
+                                                               documentAttributes: nil)) ?? NSMutableAttributedString()
 
-                guard let oldFont = value as? UIFont,
-                      let newDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-                        .withSymbolicTraits(oldFont.fontDescriptor.symbolicTraits) else {
+        // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
+        // have had (such as bold style).
+        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, stop) in
 
-                    return
-                }
+            guard let oldFont = value as? UIFont,
+                  let newDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+                    .withSymbolicTraits(oldFont.fontDescriptor.symbolicTraits) else {
 
-                let newFont = UIFont(descriptor: newDescriptor, size: 0)
-
-                attributedString.addAttributes([.font: newFont], range: range)
+                return
             }
 
-            return attributedString
+            let newFont = UIFont(descriptor: newDescriptor, size: 0)
+
+            attributedString.addAttributes([.font: newFont], range: range)
         }
+
+        return attributedString
     }
 
     private enum TextContent {

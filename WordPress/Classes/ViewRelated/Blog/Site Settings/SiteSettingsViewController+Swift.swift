@@ -327,7 +327,7 @@ extension SiteSettingsViewController {
 
         if let scheduler = try? BloggingRemindersScheduler() {
             let formatter = BloggingRemindersScheduleFormatter(schedule: scheduler.schedule(for: blog))
-            cell.textValue = formatter.shortIntervalDescription
+            cell.textValue = formatter.shortIntervalDescription.string
         }
     }
 
