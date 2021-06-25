@@ -108,6 +108,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         configureStackView()
         configureConstraints()
         configurePromptLabel()
+        configureTitleLabel()
 
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -206,8 +207,21 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             promptLabel.attributedText = promptText
         }
     }
+
+    private func configureTitleLabel() {
+        guard let scheduler = try? BloggingRemindersScheduler() else {
+            return
+        }
+
+        if scheduler.schedule(for: blog) == .none {
+            titleLabel.text = TextContent.remindersRemovedTitle
+        } else {
+            titleLabel.text = TextContent.completionTitle
+        }
+    }
 }
 
+    // MARK: - Actions
 extension BloggingRemindersFlowCompletionViewController: BloggingRemindersActions {
 
     // MARK: - BloggingRemindersActions
@@ -239,6 +253,8 @@ extension BloggingRemindersFlowCompletionViewController: ChildDrawerPositionable
 
 private enum TextContent {
     static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
+
+    static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
 
     static let completionUpdateHint = NSLocalizedString("You can update this any time via My Site > Site Settings",
                                                         comment: "Prompt shown on the completion screen of the Blogging Reminders Settings screen.")
