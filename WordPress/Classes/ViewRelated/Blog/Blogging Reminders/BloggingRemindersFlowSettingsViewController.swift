@@ -396,11 +396,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    @objc private func dismissTapped() {
-        tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
 
-        dismiss(animated: true, completion: nil)
-    }
 
     // MARK: - Completion Paths
 
@@ -414,6 +410,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             self?.scheduleReminders(showPushPrompt: false)
         }
         navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - BloggingRemindersActions
+extension BloggingRemindersFlowSettingsViewController: BloggingRemindersActions {
+
+    @objc private func dismissTapped() {
+        dismiss(from: .dismiss, screen: .dayPicker, tracker: tracker)
     }
 }
 

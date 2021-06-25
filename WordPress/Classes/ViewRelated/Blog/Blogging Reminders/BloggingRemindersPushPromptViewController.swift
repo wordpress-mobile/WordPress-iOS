@@ -208,12 +208,6 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         }
     }
 
-    @objc private func dismissTapped() {
-        tracker.buttonPressed(button: .dismiss, screen: .enableNotifications)
-
-        dismiss(animated: true, completion: nil)
-    }
-
     private func refreshPushAuthorizationStatus() {
         PushNotificationsManager.shared.loadAuthorizationStatus { status in
             self.pushNotificationsAuthorized = status
@@ -225,6 +219,14 @@ class BloggingRemindersPushPromptViewController: UIViewController {
         if pushNotificationsAuthorized == .authorized {
             onAuthorized()
         }
+    }
+}
+
+// MARK: - BloggingRemindersActions
+extension BloggingRemindersPushPromptViewController: BloggingRemindersActions {
+
+    @objc private func dismissTapped() {
+        dismiss(from: .dismiss, screen: .enableNotifications, tracker: tracker)
     }
 }
 

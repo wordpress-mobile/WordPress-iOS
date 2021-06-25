@@ -166,11 +166,12 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             dismiss(animated: true, completion: nil)
         }
     }
+}
+
+extension BloggingRemindersFlowIntroViewController: BloggingRemindersActions {
 
     @objc private func dismissTapped() {
-        tracker.buttonPressed(button: .dismiss, screen: .main)
-
-        dismiss(animated: true, completion: nil)
+        dismiss(from: .dismiss, screen: .main, tracker: tracker)
     }
 }
 
