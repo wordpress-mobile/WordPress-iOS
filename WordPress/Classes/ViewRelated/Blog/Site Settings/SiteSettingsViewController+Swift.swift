@@ -323,7 +323,8 @@ extension SiteSettingsViewController {
 
     private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
-        cell.textLabel?.text = NSLocalizedString("Blogging Goals", comment: "Label for the blogging goals setting")
+        cell.accessoryType = .none
+        cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
         cell.textValue = "Undefined"
     }
 
