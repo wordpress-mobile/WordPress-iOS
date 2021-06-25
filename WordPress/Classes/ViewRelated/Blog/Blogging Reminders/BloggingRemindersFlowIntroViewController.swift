@@ -38,7 +38,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
-        label.text = TextContent.introDescription
         label.numberOfLines = 5
         label.textAlignment = .center
         return label
@@ -65,10 +64,22 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
+    private let source: BloggingRemindersTracker.FlowStartSource
 
-    init(for blog: Blog, tracker: BloggingRemindersTracker) {
+    private var introDescription: String {
+        switch source {
+        case .publishFlow:
+            return TextContent.postPublishingintroDescription
+        case .blogSettings:
+            return TextContent.siteSettingsIntroDescription
+
+        }
+    }
+
+    init(for blog: Blog, tracker: BloggingRemindersTracker, source: BloggingRemindersTracker.FlowStartSource) {
         self.blog = blog
         self.tracker = tracker
+        self.source = source
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -90,6 +101,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
         configureStackView()
         configureConstraints()
+        promptLabel.text = introDescription
 
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -194,13 +206,16 @@ extension BloggingRemindersFlowIntroViewController: ChildDrawerPositionable {
 // MARK: - Constants
 
 private enum TextContent {
-    static let introTitle = NSLocalizedString("Set your blogging goals",
+    static let introTitle = NSLocalizedString("Set your blogging reminders",
                                               comment: "Title of the Blogging Reminders Settings screen.")
 
-    static let introDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.",
-                                                    comment: "Description on the first screen of the Blogging Reminders Settings flow.")
+    static let postPublishingintroDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.",
+                                                    comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
 
-    static let introButtonTitle = NSLocalizedString("Set goals",
+    static let siteSettingsIntroDescription = NSLocalizedString("Set up your blogging reminders on days you want to post.",
+                                                            comment: "Description on the first screen of the Blogging Reminders Settings flow called from site settings.")
+
+    static let introButtonTitle = NSLocalizedString("Set reminders",
                                                     comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
 }
 
