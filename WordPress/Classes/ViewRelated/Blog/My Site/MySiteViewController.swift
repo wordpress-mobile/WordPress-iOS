@@ -359,6 +359,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         return blogDetailsViewController
     }
 
+    func presentCreateSheet() {
+        blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
+    }
+
     // MARK: - Model Changes
 
     private func subscribeToModelChanges() {
