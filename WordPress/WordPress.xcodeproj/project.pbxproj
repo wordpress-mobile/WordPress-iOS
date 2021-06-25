@@ -325,6 +325,8 @@
 		17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */; };
 		17EFD3742578201100AB753C /* ValueTransformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EFD3732578201100AB753C /* ValueTransformers.swift */; };
 		17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */; };
+		17F11EDB268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F11EDA268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift */; };
+		17F11EDC268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F11EDA268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift */; };
 		17F52DB72315233300164966 /* WPStyleGuide+FilterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F52DB62315233300164966 /* WPStyleGuide+FilterTabBar.swift */; };
 		17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F67C55203D81430072001E /* PostCardStatusViewModel.swift */; };
 		17F7C24922770B68002E5C2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F7C24822770B68002E5C2E /* main.swift */; };
@@ -4805,6 +4807,7 @@
 		17EFD2D82577B61900AB753C /* WordPress 104.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 104.xcdatamodel"; sourceTree = "<group>"; };
 		17EFD3732578201100AB753C /* ValueTransformers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueTransformers.swift; sourceTree = "<group>"; };
 		17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Me.swift"; sourceTree = "<group>"; };
+		17F11EDA268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersScheduleFormatter.swift; sourceTree = "<group>"; };
 		17F2A5D020ACC70D00F0BE10 /* WordPress 76.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 76.xcdatamodel"; sourceTree = "<group>"; };
 		17F52DB62315233300164966 /* WPStyleGuide+FilterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+FilterTabBar.swift"; sourceTree = "<group>"; };
 		17F67C55203D81430072001E /* PostCardStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardStatusViewModel.swift; sourceTree = "<group>"; };
@@ -13797,6 +13800,7 @@
 			children = (
 				F117B11F265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift */,
 				F111B87726580FCE00057942 /* BloggingRemindersStore.swift */,
+				17F11EDA268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift */,
 			);
 			path = "Blogging Reminders";
 			sourceTree = "<group>";
@@ -17596,6 +17600,7 @@
 				4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
 				D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */,
+				17F11EDB268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
 				F1112AA3255C2D4100F1F746 /* BlogDetailHeader.swift in Sources */,
 				176E194725C465F70058F1C5 /* UnifiedPrologueViewController.swift in Sources */,
 				E60C2ED71DE5075100488630 /* ReaderCommentCell.swift in Sources */,
@@ -19696,6 +19701,7 @@
 				FABB24922602FC2C00C8785C /* PingHubManager.swift in Sources */,
 				FABB24932602FC2C00C8785C /* MediaVideoExporter.swift in Sources */,
 				FABB24942602FC2C00C8785C /* PluginViewController.swift in Sources */,
+				17F11EDC268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
 				FABB24952602FC2C00C8785C /* ReaderSiteTopic.swift in Sources */,
 				FABB24962602FC2C00C8785C /* JetpackBackupCompleteViewController.swift in Sources */,
 				FABB24972602FC2C00C8785C /* JetpackLoginViewController.swift in Sources */,

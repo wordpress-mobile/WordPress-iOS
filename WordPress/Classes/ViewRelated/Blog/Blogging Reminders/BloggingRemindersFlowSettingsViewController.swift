@@ -401,7 +401,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     // MARK: - Completion Paths
 
     private func presentCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(selectedDays: weekdays, tracker: tracker, calendar: calendar)
+        let viewController = BloggingRemindersFlowCompletionViewController(blog: blog, tracker: tracker, calendar: calendar)
         navigationController?.pushViewController(viewController, animated: true)
     }
 

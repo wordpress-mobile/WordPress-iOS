@@ -74,12 +74,12 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     // MARK: - Initializers
 
+    let blog: Blog
     let calendar: Calendar
-    let selectedDays: [BloggingRemindersScheduler.Weekday]
     let tracker: BloggingRemindersTracker
 
-    init(selectedDays: [BloggingRemindersScheduler.Weekday], tracker: BloggingRemindersTracker, calendar: Calendar? = nil) {
-        self.selectedDays = selectedDays
+    init(blog: Blog, tracker: BloggingRemindersTracker, calendar: Calendar? = nil) {
+        self.blog = blog
         self.tracker = tracker
 
         self.calendar = calendar ?? {
@@ -179,27 +179,12 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     // Populates the prompt label with formatted text detailing the reminders set by the user.
     //
     private func configurePromptLabel() {
-        guard selectedDays.isEmpty == false else {
-            promptLabel.text = TextContent.noRemindersPrompt
+        guard let scheduler = try? BloggingRemindersScheduler() else {
             return
         }
 
-        // We want the days sorted by their localized index because under some locale configurations
-        // Sunday is the first day of the week, whereas in some other localizations Monday comes first.
-        let sortedDays = selectedDays.sorted { (first, second) -> Bool in
-            let firstIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: first.rawValue)
-            let secondIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: second.rawValue)
-
-            return firstIndex < secondIndex
-        }
-
-        let markedUpDays: [String] = sortedDays.compactMap({ [weak self] day in
-            guard let self = self else {
-                return nil
-            }
-
-            return "<strong>\(self.calendar.weekdaySymbols[day.rawValue])</strong>"
-        })
+        let schedule = scheduler.schedule(for: blog)
+        let formatter = BloggingRemindersScheduleFormatter(schedule: schedule)
 
         let style = NSMutableParagraphStyle()
         style.lineSpacing = Metrics.promptTextLineSpacing
@@ -217,46 +202,18 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             .foregroundColor: UIColor.text,
         ]
 
-        let text: String
-
-        if selectedDays.count == 1 {
-            text = String(format: TextContent.completionPromptSingular, markedUpDays.first ?? "")
-        } else {
-            let formatter = ListFormatter()
-            let formattedDays = formatter.string(from: markedUpDays) ?? ""
-            text = String(format: TextContent.completionPromptPlural, "<strong>\(selectedDays.count)</strong>", formattedDays)
+        if let promptText = formatter.longScheduleDescription.mutableCopy() as? NSMutableAttributedString {
+            promptText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: promptText.length))
+            promptLabel.attributedText = promptText
         }
-
-        let htmlData = NSString(string: text).data(using: String.Encoding.unicode.rawValue) ?? Data()
-        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
-
-        let attributedString = (try? NSMutableAttributedString(data: htmlData,
-                                                           options: options,
-                                                           documentAttributes: nil)) ?? NSMutableAttributedString()
-
-        attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
-
-        // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
-        // have had (such as bold style).
-        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, stop) in
-
-            guard let oldFont = value as? UIFont,
-                  let newDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-                    .withSymbolicTraits(oldFont.fontDescriptor.symbolicTraits) else {
-
-                return
-            }
-
-            let newFont = UIFont(descriptor: newDescriptor, size: 0)
-
-            attributedString.addAttributes([.font: newFont], range: range)
-        }
-
-        promptLabel.attributedText = attributedString
     }
 
     private func configureTitleLabel() {
-        if selectedDays.isEmpty {
+        guard let scheduler = try? BloggingRemindersScheduler() else {
+            return
+        }
+
+        if scheduler.schedule(for: blog) == .none {
             titleLabel.text = TextContent.remindersRemovedTitle
         } else {
             titleLabel.text = TextContent.completionTitle
@@ -298,15 +255,6 @@ private enum TextContent {
     static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
 
     static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
-
-    // Ideally we should use stringsdict to translate plurals, but GlotPress currently doesn't support this.
-    static let completionPromptSingular = NSLocalizedString("You'll get a reminder to blog <strong>once</strong> a week on %@.",
-                                                          comment: "Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'.")
-
-    static let completionPromptPlural = NSLocalizedString("You'll get reminders to blog %@ times a week on %@.",
-                                                          comment: "Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday.")
-
-    static let noRemindersPrompt = NSLocalizedString("You have no reminders set.", comment: "Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders.")
 
     static let completionUpdateHint = NSLocalizedString("You can update this any time via My Site > Site Settings",
                                                         comment: "Prompt shown on the completion screen of the Blogging Reminders Settings screen.")
