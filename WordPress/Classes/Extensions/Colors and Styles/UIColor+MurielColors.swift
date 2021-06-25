@@ -267,15 +267,15 @@ extension UIColor {
     // MARK: - Quick Action Buttons
 
     static var quickActionButtonBackground: UIColor {
-        .secondaryButtonBackground
+        .clear
     }
 
     static var quickActionButtonBorder: UIColor {
-        .secondaryButtonBorder
+        .systemGray3
     }
 
     static var quickActionSelectedBackground: UIColor {
-        .secondaryButtonDownBackground
+        .UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others
