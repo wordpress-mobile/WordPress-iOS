@@ -19,8 +19,6 @@ extension InteractiveNotificationsManager: PushNotificationAuthorizer {
 ///
 class BloggingRemindersScheduler {
 
-    static let notificationCategoryIdentifier = "blogging-reminder-weekly"
-
     // MARK: - Convenience Typealiases
 
     typealias BlogIdentifier = BloggingRemindersStore.BlogIdentifier
@@ -243,7 +241,7 @@ class BloggingRemindersScheduler {
             content.title = TextContent.noTitleNotificationTitle
         }
         content.body = TextContent.notificationBody
-        content.categoryIdentifier = BloggingRemindersScheduler.notificationCategoryIdentifier
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingReminderWeekly.rawValue
         if let blogID = blog.dotComID?.stringValue {
             content.threadIdentifier = blogID
         }

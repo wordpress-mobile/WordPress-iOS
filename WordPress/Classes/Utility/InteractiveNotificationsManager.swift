@@ -195,7 +195,7 @@ final class InteractiveNotificationsManager: NSObject {
             case .bloggingReminderWeekly:
                 if identifier == UNNotificationDefaultActionIdentifier {
                     let targetBlog: Blog? = blog(from: threadId)
-                    
+
                     WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
                 }
             default: break
@@ -302,7 +302,7 @@ private extension InteractiveNotificationsManager {
 
 // MARK: - Nested Types
 //
-private extension InteractiveNotificationsManager {
+extension InteractiveNotificationsManager {
 
     /// Describes information about Custom Actions that WPiOS can perform, as a response to
     /// a Push Notification event.
