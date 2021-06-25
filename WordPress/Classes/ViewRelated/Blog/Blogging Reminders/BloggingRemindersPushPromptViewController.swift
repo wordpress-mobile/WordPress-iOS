@@ -153,11 +153,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-            hintLabel.isHidden = true
-        } else {
-            hintLabel.isHidden = false
-        }
+        hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     private func calculatePreferredContentSize() {
