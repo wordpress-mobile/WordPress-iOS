@@ -138,12 +138,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private let scheduler: BloggingRemindersScheduler
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
-            // If this is a new configuration, only enable the button once days have been selected
-            if button.title(for: .normal) == TextContent.nextButtonTitle {
-                button.isEnabled = !weekdays.isEmpty
-            }
+            refreshNextButton()
         }
     }
+
+    /// The weekdays that have been saved / scheduled in a previous blogging reminders configuration.
+    ///
+    private let previousWeekdays: [BloggingRemindersScheduler.Weekday]
 
     // MARK: - Initializers
 
@@ -168,10 +169,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            weekdays = []
+            previousWeekdays = []
         case .weekdays(let scheduledWeekdays):
-            weekdays = scheduledWeekdays
+            previousWeekdays = scheduledWeekdays
         }
+
+        weekdays = previousWeekdays
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -194,7 +197,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureStackView()
         configureConstraints()
         populateCalendarDays()
-        configureNextButton()
+        refreshNextButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -328,12 +331,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
     }
 
-    private func configureNextButton() {
-        if weekdays.isEmpty {
+    private func refreshNextButton() {
+        if previousWeekdays.isEmpty {
             button.setTitle(TextContent.nextButtonTitle, for: .normal)
-            button.isEnabled = false
+            button.isEnabled = !weekdays.isEmpty
+        } else if weekdays == previousWeekdays {
+            button.setTitle(TextContent.nextButtonTitle, for: .normal)
+            button.isEnabled = true
         } else {
             button.setTitle(TextContent.updateButtonTitle, for: .normal)
+            button.isEnabled = true
         }
     }
 
@@ -430,6 +437,7 @@ private enum TextContent {
                                                         comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
+
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
 
     static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")

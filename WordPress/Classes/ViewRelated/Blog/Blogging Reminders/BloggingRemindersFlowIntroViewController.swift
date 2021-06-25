@@ -193,13 +193,13 @@ extension BloggingRemindersFlowIntroViewController: ChildDrawerPositionable {
 // MARK: - Constants
 
 private enum TextContent {
-    static let introTitle = NSLocalizedString("Set your blogging goals",
+    static let introTitle = NSLocalizedString("Set your blogging reminders",
                                               comment: "Title of the Blogging Reminders Settings screen.")
 
-    static let introDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.",
+    static let introDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.",
                                                     comment: "Description on the first screen of the Blogging Reminders Settings flow.")
 
-    static let introButtonTitle = NSLocalizedString("Set goals",
+    static let introButtonTitle = NSLocalizedString("Set reminders",
                                                     comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
 }
 

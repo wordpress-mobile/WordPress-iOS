@@ -108,6 +108,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         configureStackView()
         configureConstraints()
         configurePromptLabel()
+        configureTitleLabel()
 
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -254,6 +255,14 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         promptLabel.attributedText = attributedString
     }
 
+    private func configureTitleLabel() {
+        if selectedDays.isEmpty {
+            titleLabel.text = TextContent.remindersRemovedTitle
+        } else {
+            titleLabel.text = TextContent.completionTitle
+        }
+    }
+
     // MARK: - Actions
 
     @objc func doneButtonTapped() {
@@ -287,6 +296,8 @@ extension BloggingRemindersFlowCompletionViewController: ChildDrawerPositionable
 
 private enum TextContent {
     static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
+
+    static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
 
     // Ideally we should use stringsdict to translate plurals, but GlotPress currently doesn't support this.
     static let completionPromptSingular = NSLocalizedString("You'll get a reminder to blog <strong>once</strong> a week on %@.",
