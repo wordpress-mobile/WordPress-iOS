@@ -1,17 +1,17 @@
-Quali sono le novità nel rilascio 17.5 di WordPress?
+Con la versione 17.6, puoi aggiungere il blocco Audio a qualsiasi sito WordPress.com, qualunque sia il tuo piano, incluso il piano gratuito. Il blocco Audio rende semplice aggiungere podcast, musica e file audio ad articoli e pagine.
 
-I blocchi Riutilizzabili sono presenti. Crea il contenuto una volta, salva il tuo blocco e riutilizzalo più e più volte in qualsiasi articolo o pagina. Nella versione 17.5, troverai i blocchi Riutilizzabili pronti per essere usati nel menu per l'inserimento dei blocchi.
+Nel Reader, ora vedrai un conteggio e un riepilogo dei Mi piace aggiunti a ogni articolo. Se non hai ancora abbastanza Mi piace, tocca il riepilogo e sarai in grado di visualizzare l'elenco completo.
 
-Se per aggiungere nuovi blocchi tramite touch devi effettuare troppe selezioni, la versione 17.5 ti permette di aggiungerli con un comando slash direttamente dall'editor. Aggiungi una barra durante la creazione del tuo articolo o della tua pagina, inizia toccando il nome del blocco e sei pronto. Non è necessario alcun menu.
+Abbiamo lavorato sodo anche per migliorare la UX:
 
-Inoltre, ci si è focalizzati sull'audio. Hai un link per quel file audio? Nella versione 17.5 basta incollare il tuo URL nel blocco Audio e WordPress lo inserirà nel tuo articolo.
+Quando assegni una pagina principale a una pagina senza titolo, ora vedrai un segnaposto "(nessun titolo)" invece di una riga vuota, in modo da stimolarti leggermente a nominare la pagina.
 
-Anche alle notifiche dei Mi piace è stato apportato qualche miglioramento in più nella versione 17.5. Ora sei in grado di vedere esattamente chi ha messo Mi piace a ogni articolo e ogni commento sul tuo sito non appena accade.
+Non sei mai stato in grado di modificare le pagine di archivio degli articoli perché vengono generate automaticamente. Nella versione 17.6, non potrai aprirle nell'editor, risparmiandoti un viaggio inutile.
 
-Abbiamo anche lavorato sodo per risolvere i bug. Ecco cosa abbiamo corretto:
+Abbiamo lavorato sodo per risolvere alcuni problemi:
 
-I lettori di schermo possono ora selezionare la casella passo passo nell'editor a blocchi.
+Ci siamo occupati di alcuni avvisi che si erano sovrapposti ad ActionSheet, incluso uno che mostra i controlli dell'icona del sito, un altro che ti fa visualizzare la rimozione della guida rapida e un terzo che mostra Altre azioni nell'editor.
 
-Ci siamo assicurati che il testo di grandi dimensioni non diventi ENORME, qualunque sia il carattere che stai utilizzando. È stato anche migliorato il supporto del testo di grandi dimensioni nell'intestazione dei dettagli del blog della schermata I miei siti.
+Infine, abbiamo eliminato un bug che a volte causava l'arresto anomalo dell'app durante la moderazione dei commenti e un altro per correggere un errore di accesso per siti WordPress.org da mostrare in linea.
 
-Infine, la selezione degli elementi e lo scorrimento fisso nella directory Plugin ora funzionano bene e il carattere Noticons non arresterà più l'app in modo anomalo nelle notifiche avanzate.
+Questo è tutto quello che riguarda la versione 17.6. Appuntamento alla versione 17.7!

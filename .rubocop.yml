@@ -1,0 +1,15 @@
+Metrics/BlockLength:
+  Exclude:
+    - fastlane/Fastfile
+
+Style/AsciiComments:
+  Exclude:
+    - fastlane/Fastfile
+
+Layout/LineLength:
+  Exclude:
+    - fastlane/Fastfile
+
+Naming/FileName:
+  Exclude:
+    - fastlane/Matchfile

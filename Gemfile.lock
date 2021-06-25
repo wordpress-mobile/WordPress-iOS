@@ -157,7 +157,7 @@ GEM
       trainer
       xcodeproj
       xctest_list (>= 1.2.1)
-    fastlane-plugin-wpmreleasetoolkit (1.1.0)
+    fastlane-plugin-wpmreleasetoolkit (1.2.0)
       activesupport (~> 5)
       bigdecimal (~> 1.4)
       chroma (= 0.2.0)

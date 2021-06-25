@@ -3,7 +3,9 @@ class UserProfileSheetViewController: UITableViewController {
     // MARK: - Properties
 
     private let user: LikeUser
-    private let statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
+
+    // Used for the `source` property in Stats when a Blog is previewed by URL (that is, in a WebView).
+    var blogUrlPreviewedSource: String?
 
     private lazy var mainContext = {
         return ContextManager.sharedInstance().mainContext
@@ -39,7 +41,8 @@ class UserProfileSheetViewController: UITableViewController {
 
         // Apply a slight padding to the bottom of the view to give it some space to breathe
         // when being presented in a popover or bottom sheet
-        size.height += Constants.tableBottomPadding
+        let bottomPadding = WPDeviceIdentification.isiPad() ? Constants.iPadBottomPadding : Constants.iPhoneBottomPadding
+        size.height += bottomPadding
 
         preferredContentSize = size
         presentedVC?.presentedView?.layoutIfNeeded()
@@ -148,7 +151,7 @@ private extension UserProfileSheetViewController {
 
     func showSiteTopicWithID(_ siteID: NSNumber) {
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        controller.statSource = statSource
+        controller.statSource = ReaderStreamViewController.StatSource.notif_like_list_user_profile
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
     }
@@ -161,7 +164,7 @@ private extension UserProfileSheetViewController {
             return
         }
 
-        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": statSource.rawValue])
+        WPAnalytics.track(.blogUrlPreviewed, properties: ["source": blogUrlPreviewedSource as Any])
         contentCoordinator.displayWebViewWithURL(siteURL)
     }
 
@@ -203,7 +206,8 @@ private extension UserProfileSheetViewController {
     enum Constants {
         static let userInfoSection = 0
         static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
-        static let tableBottomPadding: CGFloat = 10
+        static let iPadBottomPadding: CGFloat = 10
+        static let iPhoneBottomPadding: CGFloat = 40
     }
 
 }

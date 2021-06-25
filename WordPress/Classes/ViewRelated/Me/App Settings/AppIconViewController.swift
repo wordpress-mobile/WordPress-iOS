@@ -207,8 +207,7 @@ struct AppIcon {
         }
 
         let customIcons = iconDict.compactMap { (key, value) -> AppIcon? in
-            guard let value = value as? [String: Any],
-                  key != AppIcon.defaultIconName else {
+            guard let value = value as? [String: Any] else {
                 return nil
             }
 
@@ -228,6 +227,6 @@ struct AppIcon {
         static let imageBaseName = "icon-app-60x60"
     }
 
-    static let defaultIconName = "Spectrum"
+    static let defaultIconName = "Blue"
     static let defaultLegacyIconName = "WordPress"
 }
