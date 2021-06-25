@@ -13,10 +13,8 @@
 
     button.titleLabel.textColor = [UIColor murielAppBarText];
 
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        button.tintColor = [UIColor murielAppBarText];
-        button.titleLabel.font = [WPStyleGuide navigationBarStandardFont];
-    }
+    button.tintColor = [UIColor murielAppBarText];
+    button.titleLabel.font = [WPStyleGuide navigationBarStandardFont];
 
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
     [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];

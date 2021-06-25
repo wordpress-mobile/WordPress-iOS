@@ -89,7 +89,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var onClose: (() -> Void)?
 
     private var useLightStyle: Bool {
-        navigationController is LightNavigationController || FeatureFlag.newNavBarAppearance.enabled
+        navigationController is LightNavigationController
     }
 
     private var barButtonTintColor: UIColor {

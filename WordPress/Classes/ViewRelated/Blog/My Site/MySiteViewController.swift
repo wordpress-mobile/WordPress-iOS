@@ -68,10 +68,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         workaroundLargeTitleCollapseBug()
 
-        guard FeatureFlag.newNavBarAppearance.enabled else {
-            return
-        }
-
         if AppConfiguration.showsWhatIsNew {
             WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
         }

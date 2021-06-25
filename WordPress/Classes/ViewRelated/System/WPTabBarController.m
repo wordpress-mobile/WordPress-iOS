@@ -449,10 +449,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (selectedIndex != tabBarController.selectedIndex) {
         switch (selectedIndex) {
             case WPTabMySites: {
-                if (![Feature enabled:FeatureFlagNewNavBarAppearance]) {
-                    // We only need to bypass the blog list if we're using the old presentation style
-                    [self bypassBlogListViewControllerIfNecessary];
-                }
                 break;
             }
             case WPTabReader: {
@@ -476,21 +472,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return YES;
-}
-
-- (void)bypassBlogListViewControllerIfNecessary
-{
-    // If the user has one blog then we don't want to present them with the main "My Sites"
-    // screen where they can see all their blogs. In the case of only one blog just show
-    // the main blog details screen
-    UINavigationController *navController = (UINavigationController *)[self.mySitesCoordinator.splitViewController.viewControllers firstObject];
-    BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
-
-    if ([blogListViewController isKindOfClass:[BlogListViewController class]] && [blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-        if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
-            [blogListViewController bypassBlogListViewController];
-        }
-    }
 }
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID

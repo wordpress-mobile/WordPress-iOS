@@ -15,6 +15,5 @@
 
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
 - (void)bypassBlogListViewController;
-- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
 
 @end

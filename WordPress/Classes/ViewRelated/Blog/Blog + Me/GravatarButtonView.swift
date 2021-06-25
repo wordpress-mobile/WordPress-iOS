@@ -67,10 +67,6 @@ extension GravatarButtonView {
 
     private struct StandardBorder {
         static var color: UIColor {
-            guard FeatureFlag.newNavBarAppearance.enabled else {
-                return .white
-            }
-
             if #available(iOS 13, *) {
                 return .separator
             }
@@ -79,10 +75,6 @@ extension GravatarButtonView {
         }
 
         static var width: CGFloat {
-            guard FeatureFlag.newNavBarAppearance.enabled else {
-                return 2.0
-            }
-
             return 0.5
         }
     }
