@@ -220,26 +220,24 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             .foregroundColor: UIColor.text,
         ]
 
-        let attributedString: NSMutableAttributedString
+        let text: String
 
         if selectedDays.count == 1 {
-            let text = String(format: TextContent.completionPromptSingular, markedUpDays.first ?? "")
-
-            attributedString = NSMutableAttributedString(string: text, attributes: defaultAttributes)
+            text = String(format: TextContent.completionPromptSingular, markedUpDays.first ?? "")
         } else {
             let formatter = ListFormatter()
             let formattedDays = formatter.string(from: markedUpDays) ?? ""
-            let text = String(format: TextContent.completionPromptPlural, "<strong>\(selectedDays.count)</strong>", formattedDays)
-
-            let htmlData = NSString(string: text).data(using: String.Encoding.unicode.rawValue) ?? Data()
-            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
-
-            attributedString = (try? NSMutableAttributedString(data: htmlData,
-                                                               options: options,
-                                                               documentAttributes: nil)) ?? NSMutableAttributedString()
-
-            attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
+            text = String(format: TextContent.completionPromptPlural, "<strong>\(selectedDays.count)</strong>", formattedDays)
         }
+        
+        let htmlData = NSString(string: text).data(using: String.Encoding.unicode.rawValue) ?? Data()
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
+
+        let attributedString = (try? NSMutableAttributedString(data: htmlData,
+                                                           options: options,
+                                                           documentAttributes: nil)) ?? NSMutableAttributedString()
+
+        attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
 
         // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
         // have had (such as bold style).
