@@ -144,6 +144,28 @@ lane :update_jetpack_appstore_strings do |options|
   )
 end
 
+#####################################################################################
+# download_jetpack_localized_metadata
+# -----------------------------------------------------------------------------------
+# Downloads localized metadata for App Store Connect from GlotPress.
+# -----------------------------------------------------------------------------------
+# Usage:
+# bundle exec fastlane download_localized_metadata
+#####################################################################################
+desc 'Downloads localized metadata for App Store Connect from GlotPress'
+lane :download_jetpack_localized_app_store_metadata do
+  # No need to `cd` into `fastlane` because of how Fastlane manages its paths
+  # internally.
+  sh './download_metadata.swift jetpack'
+
+  jetpack_metadata_glob = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata/**/*.txt')
+  sh "git add #{jetpack_metadata_glob}"
+  git_commit(
+    path: jetpack_metadata_glob,
+    message: 'Update Jetpack metadata translations'
+  )
+end
+
 ########################################################################
 # Jetpack Fastlane match code signing
 ########################################################################
