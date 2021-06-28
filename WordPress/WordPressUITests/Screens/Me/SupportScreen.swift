@@ -29,4 +29,7 @@ class SupportScreen: BaseScreen {
 
         super.init(element: activityLogs)
     }
+    static func isLoaded() -> Bool {
+        return XCUIApplication().buttons[ElementStringIDs.activityLogs].exists
+    }
 }
