@@ -40,6 +40,7 @@ let languages = [
     "es-ES": "es",
     "es-MX": "es-mx",
     "fr-FR": "fr",
+    "he": "he",
     "id": "id",
     "it": "it",
     "ja": "ja",
