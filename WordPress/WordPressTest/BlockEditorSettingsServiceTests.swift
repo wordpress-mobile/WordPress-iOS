@@ -23,6 +23,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         blog = ModelTestHelper.insertDotComBlog(context: context)
         blog.dotComID = NSNumber(value: 1)
         blog.account?.authToken = "auth"
+        blog.setValue("5.8", forOption: "software_version")
 
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
 
@@ -200,7 +201,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             XCTAssertNotNil(self.blog.blockEditorSettings?.rawFeatures)
         } else {
             XCTAssertNil(self.blog.blockEditorSettings?.rawStyles)
-            XCTAssertNil(self.blog.blockEditorSettings?.rawFeatures)
         }
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)

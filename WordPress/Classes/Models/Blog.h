@@ -281,6 +281,10 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  */
 - (BOOL)isBasicAuthCredentialStored;
 
+/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
+/// @param requiredVersion The minimum version to check for
+- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion;
+
 @end
 
 NS_ASSUME_NONNULL_END

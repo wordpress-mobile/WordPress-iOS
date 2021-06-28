@@ -11,8 +11,6 @@ extension Blog {
     @objc
     func supportsBlockEditorSettings() -> Bool {
         guard FeatureFlag.globalStyleSettings.enabled else { return false }
-
-        guard let version = version else { return false }
-        return [.orderedSame, .orderedDescending].contains(version.compare("5.8", options: .numeric))
+        return hasRequiredWordPressVersion("5.8")
     }
 }
