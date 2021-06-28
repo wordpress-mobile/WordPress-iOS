@@ -19,7 +19,7 @@ class GetStartedScreen: BaseScreen {
         navBar = app.navigationBars[ElementStringIDs.navBar]
         emailTextField = app.textFields[ElementStringIDs.emailTextField]
         continueButton = app.buttons[ElementStringIDs.continueButton]
-        helpButton = app.staticTexts[ElementStringIDs.helpButton]
+        helpButton = app.buttons[ElementStringIDs.helpButton]
 
         super.init(element: emailTextField)
     }
