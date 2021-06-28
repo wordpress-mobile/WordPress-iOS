@@ -1,0 +1,9 @@
+Consigue potentes herramientas de seguridad y rendimiento con Jetpack para iOS.
+
+Restaura tu sitio desde cualquier lugar si se produce algún error. Identifica amenazas y resuélvelas con un toque. Haz un seguimiento de la actividad del sitio para comprobar quién cambio qué y cuándo lo hizo. Consulta las estadísticas para ver de qué nuevos países provienen los visitantes de hoy.
+
+La aplicación también es compatible con las funciones de WordPress que esperas. Escribe un haiku espontáneo desde el sofá. Haz una foto durante la hora del almuerzo y publícala. Responde a los últimos comentarios.
+
+Jetpack para iOS es compatible con los sitios de WordPress que tengan Jetpack activado y una cuenta conectada a WordPress.com.
+
+Puedes consultar el aviso de privacidad para usuarios de California en https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-18 11:06:06+0000 */
+/* Translation-Revision-Date: 2021-06-24 06:21:35+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -2046,7 +2046,7 @@
 "Deleting site…" = "Usuwanie witryny";
 
 /* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Usuwanie...";
+"Deleting..." = "Usuwanie…";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Deny";
@@ -2698,7 +2698,7 @@
 
 /* Status for Media object that is failed upload or export.
    The action failed */
-"Failed" = "Nie powiodło się";
+"Failed" = "Niepowodzenie";
 
 /* Error title when picked media cannot be imported into stories. */
 "Failed Media Export" = "Failed Media Export";
