@@ -5,7 +5,7 @@
 17.7
 -----
 * [***] Added blogging reminders. Choose which days you'd like to be reminded, and we'll send you a notification prompting you to post on your site
-* [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
+* [** Does not apply to Jetpack app]: Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
 * [*] Upgraded the Zendesk SDK to version 5.3.0
 * [*] You can now subscribe to conversations by email from Reader lists and articles. [#16599]
 * [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
