@@ -6,7 +6,26 @@ let glotPressSubtitleKey = "app_store_subtitle"
 let glotPressWhatsNewKey = "v17.7-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
-let baseFolder = "./metadata"
+
+struct Config {
+    let baseFolder: String
+    let baseURLString: String
+
+    static let wordPress = Config(
+        baseFolder: "./metadata",
+        baseURLString: "https://translate.wordpress.org/projects/apps/ios/release-notes/"
+    )
+
+    static let jetpack = Config(
+        baseFolder: "./jetpack_metadata",
+        baseURLString: "https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/"
+    )
+
+    static func config(for argument: String?) -> Config {
+        guard let argument = argument else { return .wordPress }
+        return argument == "jetpack" ?  .jetpack : .wordPress
+    }
+}
 
 // iTunes Connect language code: GlotPress code
 let languages = [
@@ -37,9 +56,13 @@ let languages = [
     "zh-Hant": "zh-tw",
 ]
 
-func downloadTranslation(languageCode: String, folderName: String) {
+func downloadTranslation(
+    config: Config = .config(for: CommandLine.arguments.second),
+    languageCode: String,
+    folderName: String
+) {
     let languageCodeOverride = languageCode == "en-us" ? "en-gb" : languageCode
-    let glotPressURL = "https://translate.wordpress.org/projects/apps/ios/release-notes/\(languageCodeOverride)/default/export-translations?format=json"
+    let glotPressURL = "\(config.baseURLString)\(languageCodeOverride)/default/export-translations?format=json"
     let requestURL: URL = URL(string: glotPressURL)!
     let urlRequest: URLRequest = URLRequest(url: requestURL)
     let session = URLSession.shared
@@ -73,7 +96,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
 
         jsonDict.forEach({ (key: String, value: Any) in
 
-            guard let index = key.index(of: Character(UnicodeScalar(0004))) else {
+            guard let index = key.firstIndex(of: Character(UnicodeScalar(0004))) else {
             	return
             }
 
@@ -103,7 +126,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
             }
         })
 
-        let languageFolder = "\(baseFolder)/\(folderName)"
+        let languageFolder = "\(config.baseFolder)/\(folderName)"
 
         let fileManager = FileManager.default
         try? fileManager.createDirectory(atPath: languageFolder, withIntermediateDirectories: true, attributes: nil)
@@ -132,4 +155,12 @@ func downloadTranslation(languageCode: String, folderName: String) {
 
 languages.forEach { (key: String, value: String) in
     downloadTranslation(languageCode: value, folderName: key)
+}
+
+extension Array where Element == String {
+
+    var second: String? {
+        guard count >= 2 else { return .none }
+        return self[1]
+    }
 }
