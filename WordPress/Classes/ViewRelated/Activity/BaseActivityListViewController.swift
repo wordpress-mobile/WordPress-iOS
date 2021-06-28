@@ -371,18 +371,22 @@ extension BaseActivityListViewController: ActivityPresenter {
     }
 
     func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
+        let rewindStatus = store.state.rewindStatus[site]
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+        if rewindStatus?.state == .active {
+            let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
 
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
-                                                                   activity: activity,
-                                                                   isAwaitingCredentials: store.isAwaitingCredentials(site: site))
-        restoreOptionsVC.restoreStatusDelegate = self
-        restoreOptionsVC.presentedFrom = configuration.identifier
-        alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
-        })
+            let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
+                                                                       activity: activity,
+                                                                       isAwaitingCredentials: store.isAwaitingCredentials(site: site))
+            restoreOptionsVC.restoreStatusDelegate = self
+            restoreOptionsVC.presentedFrom = configuration.identifier
+            alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
+                self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
+            })
+        }
 
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
