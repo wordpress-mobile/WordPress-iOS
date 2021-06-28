@@ -22,7 +22,7 @@ class SupportScreen: BaseScreen {
         contact = app.buttons[ElementStringIDs.contact]
         myTickets = app.buttons[ElementStringIDs.myTickets]
         contactEmail = app.buttons[ElementStringIDs.contactEmail]
-        activityLogs = app.buttons[ElementStringIDs.activityLogs]
+        activityLogs = app.staticTexts[ElementStringIDs.activityLogs]
 
         super.init(element: activityLogs)
     }
