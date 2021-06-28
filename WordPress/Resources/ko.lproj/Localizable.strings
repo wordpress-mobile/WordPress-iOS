@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-11 14:14:21+0000 */
+/* Translation-Revision-Date: 2021-06-24 15:58:55+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "위협을 해결할 %1$@입니다.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "좋아요 %1$d개";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "좋아요 %1$d개 ";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d명의 블로거가 좋아합니다.";
@@ -758,13 +758,13 @@
 "Are you sure you want to mark this comment as Spam?" = "이 댓글을 스팸으로 표시하시겠어요?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "이 댓글을 휴지통으로 표시하시겠어요?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "선택한 항목을 영구 삭제하시겠습니까?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "이 댓글을 영구적으로 삭제하시겠어요?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "이 항목을 영구적으로 삭제하시겠습니까?";
@@ -906,7 +906,7 @@
 "Back" = "뒤로";
 
 /* No comment provided by engineer. */
-"Background Color" = "Background Color";
+"Background Color" = "배경 색상";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "사이트 백업 중";
@@ -1289,7 +1289,7 @@
 "Choose Homepage" = "홈페이지 선택";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "내 기기에서 이미지 선택";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "페이지 선택";
@@ -1819,7 +1819,7 @@
 "Create Story Post" = "이야기 글 만들기";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "이모티콘과 함께 생성";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "워드프레스닷컴 사이트 생성";
@@ -1843,7 +1843,7 @@
 "Create a post, page, or story" = "글, 페이지, 또는 이야기 만들기";
 
 /* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "사이트 아이콘 생성";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "다운로드할 수 있는 백업 만들기";
@@ -2442,7 +2442,7 @@
 "Email sent!" = "이메일이 전송되었습니다.";
 
 /* No comment provided by engineer. */
-"Emoji" = "Emoji";
+"Emoji" = "이모티콘";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2538,7 +2538,7 @@
 "Error activating %@." = "%@을(를) 활성화하는 중 오류가 발생했습니다.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "댓글 증인 중 오류 발생";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2548,7 @@
 "Error deactivating %@." = "%@을(를) 비활성화하는 중 오류가 발생했습니다.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "댓글 삭제 중 오류 발생";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "%@의 자동 업데이트를 사용 중지하는 중 오류가 발생했습니다.";
@@ -2572,7 +2572,7 @@
 "Error loading plugins" = "플러그인 로드 중 오류가 발생했습니다.";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "댓글을 스팸으로 표시 중 오류 발생";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "로딩 중\n오류 발생";
@@ -2608,7 +2608,7 @@
 "Error sending verification email. Check your connection and try again." = "확인 이메일을 보내는 중 오류가 발생했습니다. 연결을 확인하고 다시 시도하세요.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "댓글 승인 취소 중 오류 발생";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "%@ 업데이트 중 오류가 발생했습니다.";
@@ -3465,7 +3465,7 @@
 "Jetpack could not be installed at this time." = "지금은 젯팩을 설치할 수 없습니다";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "iOS용 젯팩 지원";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "젯팩이 설치됨";
@@ -4730,7 +4730,7 @@
 "People" = "사람";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
+"People who post at least twice weekly get 87% more views on their site." = "주 2회 이상 글을 작성하는 사람은 사이트의 조회수가 87% 많습니다.";
 
 /* Label for date periods. */
 "Period" = "기간";
@@ -5351,7 +5351,7 @@
 "Remove Site Icon" = "사이트 아이콘 제거";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "특성 이미지 제거 ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
@@ -5895,7 +5895,7 @@
 "Set Parent" = "상위 항목 설정";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "특성 이미지로 설정 ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "홈페이지로 설정";
@@ -5904,7 +5904,7 @@
 "Set as Posts Page" = "글 페이지로 설정";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set goals" = "목표 설정";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "설정";
@@ -6630,7 +6630,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "이 서버의 인증서가 올바르지 않습니다. “%@”(으)로 사칭한 서버에 연결 중일 수 있습니다. 기밀 정보가 노출될 수 있습니다.\n\n그래도 인증서를 신뢰하시겠어요?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "최신 글 페이지의 콘텐츠는 자동으로 생성되며 편집할 수 없습니다.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "%1$@ 파일에 악성 코드 패턴이 있음";
@@ -6947,7 +6947,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "사이트 설정을 완료할 시간입니다! 체크리스트가 다음 단계를 안내합니다.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "팁";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "워드프레스닷컴을 최대한 활용하기 위한 팁.";
@@ -7421,7 +7421,7 @@
 "Update Profile Photo" = "프로필 사진 업데이트";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "사이트 아이콘 업데이트";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "댓글을 표시하도록 막대 차트를 업데이트합니다.";
@@ -8324,7 +8324,7 @@
 "You will not be able to change your username back." = "사용자명은 다시 바꿀 수 없게 됩니다.";
 
 /* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+"You'll get reminders to blog X times a week on DAY and DAY." = "블로그에 대한 알림을 일주일에 X번 DAY와 DAY에 받게 됩니다.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "항상 최신 상태를 유지하세요!";
@@ -8378,7 +8378,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "글이 지금 업로드 중에 있습니다. 완료되기까지 기다려 주시기 바랍니다.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "글을 발행하는 중입니다. 그동안 알림을 받을 블로깅 목표를 설정하고 진행률을 추적하세요.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "글, 페이지 및 설정이 %@(으)로 메일로 전송됩니다.";
@@ -8399,7 +8399,7 @@
 "Your site has been succesfully restored" = "사이트가 복원됨";
 
 /* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "사이트 아이콘은 웹 전체의 브라우저 탭, 소셜 미디어의 사이트 미리보기 및 워드프레스닷컴 리더에서 사용됩니다.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "사이트 복원 중";

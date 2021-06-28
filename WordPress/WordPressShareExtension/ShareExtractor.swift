@@ -276,7 +276,7 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func saveToSharedContainer(image: UIImage) -> URL? {
-        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
+        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize)?.JPEGEncoded(),
             let fullPath = tempPath(for: "jpg") else {
                 return nil
         }
