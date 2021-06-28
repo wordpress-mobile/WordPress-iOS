@@ -373,7 +373,9 @@ extension BaseActivityListViewController: ActivityPresenter {
     func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
         let rewindStatus = store.state.rewindStatus[site]
 
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let title = rewindStatus?.reason == "multisite_not_supported" ? NSLocalizedString("Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores.", comment: "Message for Jetpack users that have multisite WP installation, thus Restore is not available.") : nil
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
         if rewindStatus?.state == .active {
             let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
