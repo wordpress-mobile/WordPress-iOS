@@ -2,10 +2,10 @@ import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let helpCenter = "WordPres Help Center"
+    static let helpCenter = "WordPress Help Center"
     static let contact = "Contact Support"
     static let myTickets = "My Tickets"
-    static let contactEmail = "Contact email"
+    static let contactEmail = "Contact Email"
     static let activityLogs = "Activity Logs"
 }
 
