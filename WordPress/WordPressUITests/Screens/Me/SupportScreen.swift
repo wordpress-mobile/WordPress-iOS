@@ -2,6 +2,7 @@ import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
+    static let closeButton = "Close"
     static let helpCenter = "WordPress Help Center"
     static let contact = "Contact Support"
     static let myTickets = "My Tickets"
@@ -10,6 +11,7 @@ private struct ElementStringIDs {
 }
 
 class SupportScreen: BaseScreen {
+    let closeButton: XCUIElement
     let helpCenter: XCUIElement
     let contact: XCUIElement
     let myTickets: XCUIElement
@@ -18,6 +20,7 @@ class SupportScreen: BaseScreen {
 
     init() {
         let app = XCUIApplication()
+        closeButton = app.buttons[ElementStringIDs.closeButton]
         helpCenter = app.buttons[ElementStringIDs.helpCenter]
         contact = app.buttons[ElementStringIDs.contact]
         myTickets = app.buttons[ElementStringIDs.myTickets]

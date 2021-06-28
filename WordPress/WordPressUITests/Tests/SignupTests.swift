@@ -33,5 +33,6 @@ class SignupTests: XCTestCase {
         let supportScreen = PrologueScreen().selectContinue().selectHelp()
 
         XCTAssert(supportScreen.isLoaded())
+        SupportScreen().closeButton.tap()
     }
 }
