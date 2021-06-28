@@ -1,3 +1,7 @@
+17.8
+-----
+
+
 17.7
 -----
 * [***] Added blogging reminders. Choose which days you'd like to be reminded, and we'll send you a notification prompting you to post on your site
