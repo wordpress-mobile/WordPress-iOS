@@ -157,10 +157,6 @@ languages.forEach { (key: String, value: String) in
     downloadTranslation(languageCode: value, folderName: key)
 }
 
-extension Array where Element == String {
-
-    var second: String? {
-        guard count >= 2 else { return .none }
-        return self[1]
-    }
+extension Array {
+    var second: Element? { dropFirst().first }
 }
