@@ -9,7 +9,7 @@ private struct ElementStringIDs {
     static let activityLogs = "Activity Logs"
 }
 
-class HelpScreen: BaseScreen {
+class SupportScreen: BaseScreen {
     let helpCenter: XCUIElement
     let contact: XCUIElement
     let myTickets: XCUIElement
