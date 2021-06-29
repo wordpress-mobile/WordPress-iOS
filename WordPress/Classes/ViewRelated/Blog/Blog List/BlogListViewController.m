@@ -266,7 +266,6 @@ static NSInteger HideSearchMinSites = 3;
     // added a new site so we should auto-select it
     if (self.noResultsViewController.beingPresented && siteCount == 1) {
         [self.noResultsViewController removeFromView];
-        [self bypassBlogListViewController];
     }
 
     [self instantiateNoResultsViewControllerIfNeeded];
