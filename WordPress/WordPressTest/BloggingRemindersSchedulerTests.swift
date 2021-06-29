@@ -50,10 +50,12 @@ class BloggingRemindersSchedulerTests: XCTestCase {
     }
 
     func testSchedulerSavesSchedule() {
-        let blogIdentifier = URL(fileURLWithPath: "some_blog")
         let days = [BloggingRemindersScheduler.Weekday]([.monday, .tuesday, .saturday])
         let schedule = BloggingRemindersScheduler.Schedule.weekdays(days)
         let store: BloggingRemindersStore
+
+        let context = TestContextManager().mainContext
+        let blog = BlogBuilder(context).build()
 
         do {
             store = try BloggingRemindersStore(dataFileURL: dataFileURL())
@@ -68,23 +70,20 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         }
 
         let scheduler = BloggingRemindersScheduler(
-            blogIdentifier: blogIdentifier,
             store: store,
             notificationCenter: notificationCenter,
             pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
-        scheduler.schedule(schedule) { _ in
+        scheduler.schedule(schedule, for: blog) { _ in
         }
 
-        XCTAssertEqual(scheduler.schedule(), schedule)
+        XCTAssertEqual(scheduler.schedule(for: blog), schedule)
     }
 
     /// Tests that the scheduler does schedule and cancel local notifications.
     ///
     func testLocalNotificationsSchedulingAndCancelling() {
-        let blogIdentifier = URL(fileURLWithPath: "some_blog")
         let store: BloggingRemindersStore
-
         let days = [BloggingRemindersScheduler.Weekday]([.monday, .tuesday, .saturday])
 
         let scheduleExpectation = expectation(description: "The notification is scheduled")
@@ -92,6 +91,9 @@ class BloggingRemindersSchedulerTests: XCTestCase {
 
         let cancelExpectation = expectation(description: "The notification is cancelled")
         cancelExpectation.expectedFulfillmentCount = days.count
+
+        let context = TestContextManager().mainContext
+        let blog = BlogBuilder(context).build()
 
         do {
             store = try BloggingRemindersStore(dataFileURL: dataFileURL())
@@ -108,15 +110,23 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         }
 
         let scheduler = BloggingRemindersScheduler(
-            blogIdentifier: blogIdentifier,
             store: store,
             notificationCenter: notificationCenter,
             pushNotificationAuthorizer: PushNotificationsAuthorizerMock())
 
-        scheduler.schedule(.weekdays(days)) { _ in
+        let storeHasRemindersExpectation = expectation(description: "The notifications are in the store")
+        let storeIsEmptyExpectation = expectation(description: "The notifications have been cleared from the store")
+
+        scheduler.schedule(.weekdays(days), for: blog) { _ in
+            if store.scheduledReminders(for: blog.objectID.uriRepresentation()) != .none {
+                storeHasRemindersExpectation.fulfill()
+            }
         }
 
-        scheduler.schedule(.none) { _ in
+        scheduler.schedule(.none, for: blog) { _ in
+            if store.scheduledReminders(for: blog.objectID.uriRepresentation()) == .none {
+                storeIsEmptyExpectation.fulfill()
+            }
         }
 
         waitForExpectations(timeout: 0.1) { error in

@@ -6,10 +6,6 @@ extension BlogDetailsViewController {
 
         let actionItems = createActionItems()
 
-        guard Feature.enabled(.newNavBarAppearance) else {
-            return BlogDetailHeaderView(items: actionItems)
-        }
-
         return NewBlogDetailHeaderView(items: actionItems)
     }
 

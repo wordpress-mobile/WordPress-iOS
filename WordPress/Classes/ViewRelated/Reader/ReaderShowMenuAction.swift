@@ -132,6 +132,18 @@ final class ReaderShowMenuAction {
                                             ReaderShareAction().execute(with: post, context: context, anchor: anchor, vc: vc)
         })
 
+        // Comment Subscription (Follow Comments by Email)
+        if post.canSubscribeComments {
+            let buttonTitle = post.isSubscribedComments ? ReaderPostMenuButtonTitles.unFollowConversation : ReaderPostMenuButtonTitles.followConversation
+            alertController.addActionWithTitle(buttonTitle,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                    ReaderSubscribeCommentsAction().execute(with: post, context: context)
+                                                }
+            })
+        }
+
         if WPDeviceIdentification.isiPad() {
             alertController.modalPresentationStyle = .popover
             vc.present(alertController, animated: true)

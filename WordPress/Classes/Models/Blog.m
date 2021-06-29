@@ -567,6 +567,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
+        case BlogFeatureLayoutGrid:
+            return [self supportsLayoutGrid];
     }
 }
 
@@ -655,6 +657,14 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsContactInfo
 {
     return [self hasRequiredJetpackVersion:@"8.5"] || self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsLayoutGrid
+{
+    if (![Feature enabled:FeatureFlagLayoutGrid]) {
+        return false;
+    }
+    return self.isHostedAtWPcom || self.isAtomic;
 }
 
 - (BOOL)accountIsDefaultAccount

@@ -8,10 +8,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
     case contactInfo
+    case layoutGrid
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
@@ -39,13 +39,13 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .gutenbergXposts:
             return true
-        case .newNavBarAppearance:
-            return true
         case .unifiedPrologueCarousel:
             return true
         case .stories:
             return true
         case .contactInfo:
+            return true
+        case .layoutGrid:
             return true
         case .siteCreationHomePagePicker:
             return true
@@ -56,7 +56,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newLikeNotifications:
             return true
         case .bloggingReminders:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .readerPostLikes:
             return true
         case .siteIconCreator:
@@ -99,14 +99,14 @@ extension FeatureFlag {
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .newNavBarAppearance:
-            return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
         case .stories:
             return "Stories"
         case .contactInfo:
             return "Contact Info"
+        case .layoutGrid:
+            return "Layout Grid"
         case .siteCreationHomePagePicker:
             return "Site Creation: Home Page Picker"
         case .todayWidget:
@@ -127,8 +127,6 @@ extension FeatureFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .newNavBarAppearance:
             return false
         case .todayWidget:
             return false

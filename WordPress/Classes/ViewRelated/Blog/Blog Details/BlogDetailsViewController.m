@@ -347,7 +347,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
-    [self.tableView registerClass:[BloggingRemindersCell class] forCellReuseIdentifier:[BloggingRemindersCell reuseIdentifier]];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -429,10 +428,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.shouldScrollToViewSite == YES) {
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
-    }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
-        [AppConfiguration showsWhatIsNew]) {
-        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }
 
@@ -664,27 +659,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-
-    BlogDetailsSection *currentSection = self.tableSections[section];
-
-    if (self.shouldShowBloggingRemindersCard && currentSection.category == BlogDetailsSectionCategoryReminders) {
-        return BlogDetailReminderSectionFooterHeight;
-    }
     return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
 
-    if (self.shouldShowBloggingRemindersCard && section.category == BlogDetailsSectionCategoryReminders && section.showQuickStartMenu == false) {
-        return BlogDetailReminderSectionHeaderHeight;
-    }
-
-    if (self.shouldShowBloggingRemindersCard && sectionNum == 1 && section.showQuickStartMenu == false) {
-        return BlogDetailReminderSectionHeaderHeight - BlogDetailReminderSectionFooterHeight;
-    }
-
-    if (section.showQuickStartMenu == true || (sectionNum == 0 && [Feature enabled:FeatureFlagNewNavBarAppearance])) {
+    if (section.showQuickStartMenu == true || sectionNum == 0) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
         // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
@@ -762,9 +743,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagBloggingReminders]) {
-        [marr addObject:[self bloggingRemindersSectionViewModel]];
-    }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1404,10 +1382,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;

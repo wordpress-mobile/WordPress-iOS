@@ -6,7 +6,7 @@ protocol ReaderContentViewController: UIViewController {
 // MARK: - DefinesVariableStatusBarStyle Support
 extension WPTabBarController {
     override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return FeatureFlag.newNavBarAppearance.enabled ? .default : .lightContent
+        .default
     }
 
     override open var childForStatusBarStyle: UIViewController? {
