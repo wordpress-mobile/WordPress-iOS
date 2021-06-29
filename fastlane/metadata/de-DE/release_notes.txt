@@ -1,17 +1,17 @@
-Was ist neu in WordPress 17.5?
+In Version 17.6 kannst du mit jedem Tarif den Audioblock auf allen WordPress.com-Websites hinzufügen – auch mit dem Kostenlos-Tarif. Mit dem Audioblock lassen sich Podcasts, Musik und Audiodateien deinen Beiträgen und Seiten ganz einfach hinzufügen.
 
-Es gibt jetzt wiederverwendbare Blöcke! Damit musst du Inhalte nur noch einmal erstellen. Speichere deinen Block und schon kannst du ihn in Beiträgen und auf Seiten immer wieder verwenden. In 17.5 findest du wiederverwendbare Blöcke im Menü „Block-Inserter“ und kannst sie sofort nutzen.
+Im Reader wird dir nun die Anzahl und Zusammenfassung der einem Beitrag hinzugefügten Likes angezeigt. Wenn du noch mehr zu deinen Likes wissen möchtest, tippe auf die Zusammenfassung, um die vollständige Liste anzuzeigen.
 
-Wenn du den Menü-Tab zum Hinzufügen neuer Blöcke antippen willst und er zu weit weg ist, kannst du in 17.5. neue Blöcke direkt im Editor mit einem Schrägstrichbefehl hinzufügen. Füge einen Schrägstrich ein, wenn du einen Beitrag oder eine Seite entwirfst, und gib dann den Namen des Blocks ein. Das war’s! So kommst du ganz ohne Menüs aus.
+Wir haben auch intensiv an Verbesserungen für die Benutzeroberfläche gearbeitet:
 
-Auch den Audiodateien haben wir uns gewidmet. Du hast einen Link zu einer Audiodatei? In 17.5 kannst du deine URL einfach in den Audioblock eingeben. WordPress bettet die Datei dann in deinen Beitrag ein.
+Wenn du einer Seite eine übergeordnete Seite ohne Titel zuweist, wird nun als Platzhalter „Kein Titel“ statt einer leeren Zeile angezeigt, um dich sanft darauf hinzuweisen, dass du die Seite benennen solltest.
 
-„Gefällt mir“-Benachrichtigungen sind jetzt noch detaillierter. Nun kannst du ohne Verzögerung und genau sehen, wem einzelne Beiträge gefallen und wer deine Website kommentiert hat.
+Du konntest die Beitragsarchivseiten noch nie bearbeiten, da sie automatisch generiert sind. In Version 17.6 kannst du sie auch nicht mehr im Editor öffnen, um dir den Versuch gleich zu ersparen.
 
-Außerdem sind wir einigen Fehlern an den Kragen gegangen. Diese Probleme haben wir beseitigt:
+Außerdem haben wir folgende Fehler behoben:
 
-Screenreader können nun im Block-Editor die Stepper-Zelle auswählen.
+Wir haben uns um einige Hinweise gekümmert, die sich auf dem ActionSheet überlagert haben, darunter die Anzeige von Steuerelementen für Website-Icons, die Anzeige zum Entfernen des Schnellstarts und die Anzeige für weitere Aktionen im Editor.
 
-Großer Text wird nicht mehr zu RIESIGEM Text – egal, welche Schriftart du nutzt. Wir haben die Unterstützung von großem Text im Header mit den Bloginformationen auf der Seite „Meine Websites“ verbessert.
+Darüber hinaus haben wir einen Fehler behoben, durch den die App während der Freischaltung von Kommentaren abstürzte, sowie einen Anmeldefehler bei der Inline-Anzeige von WordPress.org-Websites.
 
-Und schließlich funktionieren auch das Auswählen von Elementen und das fixierte Scrollen im Plugin-Verzeichnis wieder richtig. Und die Schriftart Noticons bringt die App bei ausführlichen Benachrichtigungen nicht mehr zum Absturz.
+Das war alles für Version 17.6. Bis zum nächsten Mal mit Version 17.7!

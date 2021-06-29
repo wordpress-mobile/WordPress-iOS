@@ -155,5 +155,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)refreshSiteIcon;
 - (void)toggleSpotlightForSiteTitle;
 - (void)toggleSpotlightOnHeaderView;
+- (void)uploadDroppedSiteIcon:(UIImage *)image onCompletion:(void(^)(void))completion;
 
 @end

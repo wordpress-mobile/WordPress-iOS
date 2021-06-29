@@ -1,17 +1,17 @@
-Apa yang baru dari rilis WordPress 17.5?
+Dengan versi 17.6, Anda dapat menambahkan Blok Audio ke semua situs WordPress.com, apa pun paket yang Anda gunakan – termasuk Paket Gratis. Blok Audio memudahkan Anda untuk menambahkan podcast, musik, dan file suara ke pos dan halaman Anda.
 
-Telah hadir blok pakai ulang! Buat konten sekali, simpan blok Anda, dan gunakan blok kembali untuk semua pos dan halaman. Pada versi 17.5 Anda dapat menemukan blok pakai ulang di menu penyisip blok. 
+Di bagian Pembaca, Anda sekarang akan melihat jumlah dan ringkasan Suka yang ditambahkan ke setiap pos. Jika merasa belum puas dengan jumlah Suka, ketuk ringkasan dan Anda akan melihat daftar lengkapnya.
 
-Jika mengetuk tambah blok baru terlalu merepotkan, di versi 17.5 Anda dapat menambahkan blok baru dengan perintah garis miring langsung dari editor. Tambahkan garis miring saat menyusun pos atau halaman, lalu ikuti dengan nama blok. Blok ditambahkan dengan mudah. Tidak perlu utak-atik menu.
+Kami juga telah bekerja keras untuk peningkatan UX:
 
-Audio adalah konten yang juga memikat. Punya tautan file audio yang Anda mau? Di versi 17.5, cukup tempelkan URL audio  ke Blok Audio, lalu WordPress akan menampilkannya di pos Anda.
+Saat menugaskan halaman induk ke sebuah halaman tanpa judul, Anda sekarang akan melihat placeholder '(tanpa judul)', alih-alih baris kosong, yang mendorong Anda secara halus untuk menamai halaman tersebut.
 
-Pemberitahuan suka juga diperbarui di versi 17.5 ini. Anda akan bisa melihat siapa saja yang menyukai dan berkomentar di situs Anda segera setelah interaksi dilakukan.
+Anda tidak bisa menyunting halaman Arsip Pos karena dibuat secara otomatis. Di versi 17.6, Anda juga tidak akan bisa membukanya di editor supaya tidak membuang-buang waktu.
 
-Kami juga telah bekerja keras untuk mengatasi bug. Berikut sejumlah bug yang kami perbaiki:
+Kami juga telah berupaya memperbaiki beberapa hal:
 
-Sekarang pembaca layar dapat memilih sel yang lebih rumit di editor blok.
+Kami telah mengatasi sejumlah pemberitahuan yang selama ini tumpang tindih di LembarTindakan, termasuk salah satunya yang menampilkan kontrol Favicon, yang menampilkan Penghapusan MulaiCepat, serta yang menampilkan Tindakan Lain pada editor.
 
-Kami menjamin teks yang berukuran besar tidak akan menjadi lebih besar, apa pun jenis fon yang digunakan. Teks berukuran besar di header detail blog pada layar Situs Saya juga telah ditingkatkan.
+Terakhir, kami telah mengatasi bug yang terkadang menyebabkan aplikasi macet saat moderasi komentar serta bug lain guna memperbaiki error saat login untuk situs WordPress.org yang ditampilkan sebaris.
 
-Terakhir, pemilihan item dan pengguliran macet pada direktori Plugin telah berfungsi normal. Selain itu, fon Noticons tidak lagi menghentikan aplikasi saat banyak notifikasi masuk.
+Itulah semua fitur untuk pembaruan 17.6. Sampai bertemu lagi di pembaruan 17.7!
