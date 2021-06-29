@@ -12,6 +12,8 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 
     // MARK: - Properties
 
+    static let estimatedHeight: CGFloat = 60
+
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var backArrow: UIImageView!
@@ -53,12 +55,6 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     private var expectedPeriodCount = SiteStatsTableHeaderView.defaultPeriodCount
     private var backLimit: Int {
         return -(expectedPeriodCount - 1)
-    }
-
-    // MARK: - Class Methods
-
-    class func headerHeight() -> CGFloat {
-        return SiteStatsInformation.sharedInstance.timeZoneMatchesDevice() ? Heights.default : Heights.withTimezone
     }
 
     // MARK: - View
@@ -286,12 +282,6 @@ private extension SiteStatsTableHeaderView {
         }
     }
 
-    // MARK: - Header Heights
-
-    private struct Heights {
-        static let `default`: CGFloat = 44
-        static let withTimezone: CGFloat = 60
-    }
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {

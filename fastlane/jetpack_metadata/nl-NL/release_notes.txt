@@ -1,0 +1,15 @@
+Met 17.6 kan je het Audioblok aan iedere WordPress.com-site toevoegen, ongeacht welk abonnement je hebt, en zelfs bij het gratis abonnement. Met het Audioblok kan je eenvoudig podcasts, muziek en geluidsbestanden toevoegen aan je berichten en pagina’s.
+
+We hebben ook hard gewerkt om UX-verbeteringen aan te pakken:
+
+Als je een bovenliggende pagina toewijst aan een pagina zonder naam, krijg je nu een ‘(no title)’-placeholder te zien in plaats van een lege regel, waardoor je liefdevol herinnert wordt om je pagina een naam te geven.
+
+Je hebt nog nooit Berichtarchiefpagina’s kunnen bewerken omdat deze automatisch gegenereerd worden. In 17.6 kan je ze ook niet meer openen in de editor, waardoor je ze niet meer voor niets opent.
+
+We hebben deze dingen ook opgelost:
+
+We hebben wat meldingen aangepakt die overlapten met het actieblad, waaronder een die faviconinstellingen weergeeft, een andere die verwijderen van snelstart weergeeft en een derde die Meer acties weergeeft in de editor.
+
+Als laatste hebben we bug verwijderd waardoor de app soms crashte tijdens het aanpassen van reacties en een andere om een inlogfout te verhelpen bij WordPress.org waarbij ze naast elkaar werden weergegeven.
+
+Dat was het voor 17.6. We zien je in 17.7!
