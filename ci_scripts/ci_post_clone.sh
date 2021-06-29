@@ -1,19 +1,7 @@
 #!/bin/sh
 
-echo "~~~~ Ruby:"
-ruby -v
+# The docs recommend using Homebrew for CocoaPods.
+# https://developer.apple.com/documentation/xcode/making-dependencies-available-to-xcode-cloud#Make-CocoaPods-Dependencies-Available-to-Xcode-Cloud
 
-echo "~~~~ RVM?"
-which rvm
-
-echo "~~~~ rbenv?"
-which rbenv
-
-# Can't sudo
-# sudo gem install bundler:2.2.19
-
-# Running this just for fun, it won't get us to use Bundler 2.x
-bundle update --bundler
-
-bundle install
-bundle exec pod install
+brew install cocoapods
+pod install
