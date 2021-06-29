@@ -1,0 +1,9 @@
+通过 iOS 版 Jetpack，随身携带强大的安全和性能工具。
+
+如果出现错误，可以从任意位置恢复您的站点。 扫描威胁，轻触一下即可解决问题。 密切关注站点活动，查看谁更改了什么内容以及更改时间。 查看统计数据，看看今天的访客来自哪些新国家/地区。
+
+该应用程序还支持您所需的 WordPress 功能。 在沙发上草拟自发性俳句。 在午休时间拍照并发表。 回复最新评论。
+
+iOS 版 Jetpack 支持已启用 Jetpack 的 WordPress 站点以及连接到 WordPress.com 的帐户。
+
+要查看面向加州用户的隐私声明，请访问 https://automattic.com/privacy/#california-consumer-privacy-act-ccpa。

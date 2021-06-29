@@ -116,7 +116,7 @@ import WordPressFlux
 
     private var currentTourElement: QuickStartTourElement?
 
-    @objc private func showCreateSheet() {
+    @objc func showCreateSheet() {
         didDismissTooltip = true
         hideNotice()
 

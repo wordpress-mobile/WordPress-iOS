@@ -1,4 +1,4 @@
-import Foundation
+import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
@@ -29,7 +29,20 @@ class PasswordScreen: BaseScreen {
     }
 
     func tryProceed(password: String) -> PasswordScreen {
-        passwordTextField.tap()
+        // A hack to make tests pass for RtL languages.
+        //
+        // An unintended side effect of calling passwordTextField.tap() while testing a RtL language is that the
+        // text field's secureTextEntry property gets set to 'false'. I suspect this happens because for RtL lanugagues,
+        // the secure text entry toggle button is displayed in the tap area of the passwordTextField.
+        //
+        // As a result, tests fail with the following error:
+        //
+        // "No matches found for Descendants matching type SecureTextField from input"
+        //
+        // Calling passwordTextField.doubleTap() prevents tests from failing by ensuring that the text field's
+        // secureTextEntry property remains 'true'.
+        passwordTextField.doubleTap()
+
         passwordTextField.typeText(password)
         continueButton.tap()
         if continueButton.exists && !continueButton.isHittable {

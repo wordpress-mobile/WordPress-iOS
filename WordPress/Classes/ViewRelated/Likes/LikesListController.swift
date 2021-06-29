@@ -82,6 +82,10 @@ class LikesListController: NSObject {
         return showingNotificationLikes ? 2 : 1
     }
 
+    private var analyticsProperties: [String: Any] {
+        return showingNotificationLikes ? ["source": "notifications"] : ["source": "reader"]
+    }
+
     // MARK: Init
 
     /// Init with Notification
@@ -170,17 +174,25 @@ class LikesListController: NSObject {
         }
 
         fetchLikes(success: { [weak self] users, totalLikes in
-            if self?.isFirstLoad == true {
-                self?.delegate?.updatedTotalLikes?(totalLikes)
+            guard let self = self else {
+                return
             }
 
-            self?.likingUsers = users
-            self?.totalLikes = totalLikes
-            self?.totalLikesFetched = users.count
-            self?.lastFetchedDate = users.last?.dateLikedString
-            self?.isFirstLoad = false
-            self?.isLoadingContent = false
-            self?.trackUsersToExclude()
+            if self.isFirstLoad {
+                self.delegate?.updatedTotalLikes?(totalLikes)
+            }
+
+            if !self.isFirstLoad && !users.isEmpty {
+                WPAnalytics.track(.likeListFetchedMore, properties: self.analyticsProperties)
+            }
+
+            self.likingUsers = users
+            self.totalLikes = totalLikes
+            self.totalLikesFetched = users.count
+            self.lastFetchedDate = users.last?.dateLikedString
+            self.isFirstLoad = false
+            self.isLoadingContent = false
+            self.trackUsersToExclude()
         }, failure: { [weak self] _ in
             self?.isLoadingContent = false
             self?.delegate?.showErrorView()

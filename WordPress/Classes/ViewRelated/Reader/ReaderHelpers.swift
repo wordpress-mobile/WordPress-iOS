@@ -49,6 +49,8 @@ struct ReaderPostMenuButtonTitles {
     static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
     static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
     static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
+    static let followConversation = NSLocalizedString("Follow conversation by email", comment: "Verb. Button title. Follow the comments on a post.")
+    static let unFollowConversation = NSLocalizedString("Unfollow conversation by email", comment: "Verb. Button title. The user is following the comments on a post.")
 }
 
 /// A collection of helper methods used by the Reader.
@@ -345,6 +347,21 @@ struct ReaderPostMenuButtonTitles {
         dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: topic.following, success: success)
     }
 
+    class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool) {
+        let title: String
+        if success {
+            title = subscribing ? NoticeMessages.commentFollowSuccess : NoticeMessages.commentUnfollowSuccess
+        } else {
+            title = subscribing ? NoticeMessages.commentFollowFail : NoticeMessages.commentUnfollowFail
+        }
+        dispatchNotice(Notice(title: title))
+    }
+
+    class func dispatchToggleSubscribeCommentErrorMessage(subscribing: Bool) {
+        let title = subscribing ? NoticeMessages.commentFollowError : NoticeMessages.commentUnfollowError
+        dispatchNotice(Notice(title: title))
+    }
+
     private class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
         var notice: Notice
 
@@ -415,6 +432,12 @@ struct ReaderPostMenuButtonTitles {
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
         static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
         static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
+        static let commentFollowSuccess = NSLocalizedString("Successfully followed conversation", comment: "The app successfully subscribed to the comments for the post")
+        static let commentUnfollowSuccess = NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
+        static let commentFollowFail = NSLocalizedString("Unable to follow conversation", comment: "The app failed to subscribe to the comments for the post")
+        static let commentUnfollowFail = NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
+        static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
+        static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
     }
 }
 

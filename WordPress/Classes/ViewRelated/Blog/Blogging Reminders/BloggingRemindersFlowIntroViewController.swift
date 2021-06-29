@@ -24,8 +24,10 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.text = TextContent.introTitle
         return label
@@ -33,9 +35,10 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
-        label.text = TextContent.introDescription
-        label.numberOfLines = 0
+        label.numberOfLines = 5
         label.textAlignment = .center
         return label
     }()
@@ -57,6 +60,37 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Initializers
+
+    private let blog: Blog
+    private let tracker: BloggingRemindersTracker
+    private let source: BloggingRemindersTracker.FlowStartSource
+
+    private var introDescription: String {
+        switch source {
+        case .publishFlow:
+            return TextContent.postPublishingintroDescription
+        case .blogSettings:
+            return TextContent.siteSettingsIntroDescription
+
+        }
+    }
+
+    init(for blog: Blog, tracker: BloggingRemindersTracker, source: BloggingRemindersTracker.FlowStartSource) {
+        self.blog = blog
+        self.tracker = tracker
+        self.source = source
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // from a coder, we can implement support for it - but I don't think it's necessary right now.
+        // - diegoreymendez
+        fatalError("Use init(tracker:) instead")
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -67,8 +101,25 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
         configureStackView()
         configureConstraints()
+        promptLabel.text = introDescription
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        tracker.screenShown(.main)
+
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
+        // the flow was interrupted.
+        if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
+            tracker.flowDismissed(source: .main)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -79,6 +130,12 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     private func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(size)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        view.setNeedsLayout()
     }
 
     // MARK: - View Configuration
@@ -101,7 +158,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            getStartedButton.heightAnchor.constraint(equalToConstant: Metrics.getStartedButtonHeight),
+            getStartedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
             getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
@@ -110,11 +167,23 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     }
 
     @objc private func getStartedTapped() {
-        navigationController?.pushViewController(BloggingRemindersFlowSettingsViewController(), animated: true)
+        tracker.buttonPressed(button: .continue, screen: .main)
+
+        do {
+            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker)
+
+            navigationController?.pushViewController(flowSettingsViewController, animated: true)
+        } catch {
+            DDLogError("Could not instantiate the blogging reminders settings VC: \(error.localizedDescription)")
+            dismiss(animated: true, completion: nil)
+        }
     }
+}
+
+extension BloggingRemindersFlowIntroViewController: BloggingRemindersActions {
 
     @objc private func dismissTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(from: .dismiss, screen: .main, tracker: tracker)
     }
 }
 
@@ -137,13 +206,16 @@ extension BloggingRemindersFlowIntroViewController: ChildDrawerPositionable {
 // MARK: - Constants
 
 private enum TextContent {
-    static let introTitle = NSLocalizedString("Set your blogging goals",
+    static let introTitle = NSLocalizedString("Set your blogging reminders",
                                               comment: "Title of the Blogging Reminders Settings screen.")
 
-    static let introDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.",
-                                                    comment: "Description on the first screen of the Blogging Reminders Settings flow.")
+    static let postPublishingintroDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.",
+                                                    comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
 
-    static let introButtonTitle = NSLocalizedString("Set goals",
+    static let siteSettingsIntroDescription = NSLocalizedString("Set up your blogging reminders on days you want to post.",
+                                                            comment: "Description on the first screen of the Blogging Reminders Settings flow called from site settings.")
+
+    static let introButtonTitle = NSLocalizedString("Set reminders",
                                                     comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
 }
 

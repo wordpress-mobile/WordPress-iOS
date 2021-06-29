@@ -15,6 +15,9 @@ class GutenbergSettings {
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
 
+        // Only generated and saved for non-WPcom logins
+        static let editorOnboardingAnonID = "kEditorOnboardingAnonID"
+
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
             // New sites will add a slash at the end of URL.
@@ -170,20 +173,27 @@ class GutenbergSettings {
     }
 
     func canViewEditorOnboarding() -> Bool {
-        guard
-            ReachabilityUtils.isInternetReachable(),
-            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
-        else {
-            return false
-        }
-
+        let uniqueRolloutId = getUniqueRolloutId()
         let rollout = GutenbergOnboardingRollout()
-        let hasLaunchedGutenbergEditor = database.bool(forKey: Key.hasLaunchedGutenbergEditor)
-        return rollout.isUserIdInPhaseRolloutPercentage(account.userID.intValue) && !hasLaunchedGutenbergEditor
+        return rollout.isRolloutIdInPhaseRolloutPercentage(uniqueRolloutId)
     }
 
-    func setHasLaunchedGutenbergEditor(_ hasLaunched: Bool) {
-        database.set(hasLaunched, forKey: Key.hasLaunchedGutenbergEditor)
+    /// Temporary for the staged Editor Onboarding tooltip project. Generates a unique rollout ID for use in
+    /// determining if the user is in the percentage group that should see the Editor Onboarding Tooltip.
+    func getUniqueRolloutId() -> Int {
+        let anonId = database.object(forKey: Key.editorOnboardingAnonID) as? Int ?? UUID().hashValue
+        database.set(anonId, forKey: Key.editorOnboardingAnonID)
+        return anonId
+    }
+
+    /// True if the Gutenberg editor has previously launched from this app installation
+    var hasLaunchedGutenbergEditor: Bool {
+        get {
+            database.bool(forKey: Key.hasLaunchedGutenbergEditor)
+        }
+        set {
+            database.set(newValue, forKey: Key.hasLaunchedGutenbergEditor)
+        }
     }
 
     // MARK: - Gutenberg Choice Logic

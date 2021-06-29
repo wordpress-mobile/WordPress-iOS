@@ -1,0 +1,9 @@
+Få kraftfulla säkerhets- och prestandaverktyg i fickan med Jetpack för iOS.
+
+Återställ din webbplats var du än är om något går fel. Skanna efter hot och åtgärda dem med ett tryck. Håll koll på webbplatsaktiviteten för att se vem som har ändrat vad och när. Kolla din statistik för att vilka nya länder dagens besökare kommer från.
+
+Appen har även stöd för förväntade WordPress-funktioner. Skapa en spontan haiku i soffan. Ta och publicera ett foto på din lunchrast. Svara på dina senaste kommentarer.
+
+Jetpack för iOS har stöd för WordPress-webbplatser med Jetpack aktiverat och ett konto anslutet till WordPress.com.
+
+Visa sekretessmeddelandet för användare i Kalifornien på https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

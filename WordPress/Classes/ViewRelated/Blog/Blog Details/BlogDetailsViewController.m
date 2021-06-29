@@ -347,7 +347,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
-    [self.tableView registerClass:[BloggingRemindersCell class] forCellReuseIdentifier:[BloggingRemindersCell reuseIdentifier]];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -429,10 +428,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.shouldScrollToViewSite == YES) {
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
-    }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
-        [AppConfiguration showsWhatIsNew]) {
-        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }
 
@@ -664,27 +659,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-
-    BlogDetailsSection *currentSection = self.tableSections[section];
-
-    if (self.shouldShowBloggingRemindersCard && currentSection.category == BlogDetailsSectionCategoryReminders) {
-        return BlogDetailReminderSectionFooterHeight;
-    }
     return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
 
-    if (self.shouldShowBloggingRemindersCard && section.category == BlogDetailsSectionCategoryReminders && section.showQuickStartMenu == false) {
-        return BlogDetailReminderSectionHeaderHeight;
-    }
-
-    if (self.shouldShowBloggingRemindersCard && sectionNum == 1 && section.showQuickStartMenu == false) {
-        return BlogDetailReminderSectionHeaderHeight - BlogDetailReminderSectionFooterHeight;
-    }
-
-    if (section.showQuickStartMenu == true || (sectionNum == 0 && [Feature enabled:FeatureFlagNewNavBarAppearance])) {
+    if (section.showQuickStartMenu == true || sectionNum == 0) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
         // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
@@ -762,9 +743,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagBloggingReminders]) {
-        [marr addObject:[self bloggingRemindersSectionViewModel]];
-    }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1113,8 +1091,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     
     [NoticesDispatch lock];
+
+    if (![Feature enabled:FeatureFlagSiteIconCreator]) {
+        [self showUpdateSiteIconAlert];
+    }
     
-    [self showUpdateSiteIconAlert];
+    if (@available(iOS 14.0, *)) {
+        [self showSiteIconSelectionAlert];
+    } else {
+        [self showUpdateSiteIconAlert];
+    }
 }
 
 - (void)siteIconReceivedDroppedImage:(UIImage *)image
@@ -1213,6 +1199,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                 }];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)showSiteIconSelectionAlert
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:nil
+                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+
+    alertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
+    alertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
+    alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+
+    [alertController setTitle:NSLocalizedString(@"Update Site Icon", @"Title for sheet displayed allowing user to update their site icon")];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Choose Image From My Device", @"Button allowing the user to choose an image from their device to use as their site icon")
+                                       handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self updateSiteIcon];
+    }];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Create With Emoji", @"Button allowing the user to create a site icon by choosing an emoji character")
+                                       handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self showEmojiPicker];
+    }];
+
+    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
+                                           handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self removeSiteIcon];
+    }];
+
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                      handler:^(UIAlertAction *action) {
+        [NoticesDispatch unlock];
+        [self startAlertTimer];
+    }];
+
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)presentCropViewControllerForDroppedSiteIcon:(UIImage *)image
@@ -1357,10 +1382,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;
@@ -1457,6 +1478,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [view setTitle:title];
     view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
+        [NoticesDispatch lock];
         [weakSelf removeQuickStartSection:header];
     };
     return view;
@@ -1472,11 +1494,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
+        [NoticesDispatch unlock];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-        
         [[QuickStartTourGuide shared] removeFrom:self.blog];
+        [NoticesDispatch unlock];
     }];
     
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1485,7 +1508,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
-    [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeSheet addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
+        [NoticesDispatch unlock];
+    }];
     
     [self presentViewController:removeSheet animated:YES completion:nil];
 }
@@ -1744,7 +1769,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source
-{
+{    
     [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;

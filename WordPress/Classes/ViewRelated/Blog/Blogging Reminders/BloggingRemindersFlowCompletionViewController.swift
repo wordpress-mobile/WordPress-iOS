@@ -1,6 +1,5 @@
 import UIKit
 
-
 class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     // MARK: - Subviews
@@ -24,8 +23,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.text = TextContent.completionTitle
         return label
@@ -33,18 +34,22 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     private let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
-        label.text = TextContent.completionPrompt
-        label.numberOfLines = 0
+        label.numberOfLines = 6
         label.textAlignment = .center
+        label.textColor = .text
         return label
     }()
 
     private let hintLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .footnote)
         label.text = TextContent.completionUpdateHint
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         return label
@@ -67,6 +72,32 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Initializers
+
+    let blog: Blog
+    let calendar: Calendar
+    let tracker: BloggingRemindersTracker
+
+    init(blog: Blog, tracker: BloggingRemindersTracker, calendar: Calendar? = nil) {
+        self.blog = blog
+        self.tracker = tracker
+
+        self.calendar = calendar ?? {
+            var calendar = Calendar.current
+            calendar.locale = Locale.autoupdatingCurrent
+            return calendar
+        }()
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // from a coder, we can implement support for it - but I don't think it's necessary right now.
+        // - diegoreymendez
+        fatalError("Use init(tracker:) instead")
+    }
+
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -76,13 +107,38 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
         configureStackView()
         configureConstraints()
+        configurePromptLabel()
+        configureTitleLabel()
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        tracker.screenShown(.allSet)
+
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
+        // the flow was completed.
+        if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
+            tracker.flowCompleted()
+        }
+
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredContentSize()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     func calculatePreferredContentSize() {
@@ -112,7 +168,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            doneButton.heightAnchor.constraint(equalToConstant: Metrics.doneButtonHeight),
+            doneButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.doneButtonHeight),
             doneButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
@@ -120,14 +176,62 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         ])
     }
 
+    // Populates the prompt label with formatted text detailing the reminders set by the user.
+    //
+    private func configurePromptLabel() {
+        guard let scheduler = try? BloggingRemindersScheduler() else {
+            return
+        }
+
+        let schedule = scheduler.schedule(for: blog)
+        let formatter = BloggingRemindersScheduleFormatter(schedule: schedule)
+
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = Metrics.promptTextLineSpacing
+        style.alignment = .center
+
+        // The line break mode seems to be necessary to make it possible for the label to adjust it's
+        // size to stay under the allowed number of lines.
+        // To understand why this is necessary: turn on the largest available font size under iOS
+        // accessibility settings, and see that the label adjusts the font size to stay within the
+        // available space and allowed max number of lines.
+        style.lineBreakMode = .byTruncatingTail
+
+        let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
+            .paragraphStyle: style,
+            .foregroundColor: UIColor.text,
+        ]
+
+        if let promptText = formatter.longScheduleDescription.mutableCopy() as? NSMutableAttributedString {
+            promptText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: promptText.length))
+            promptLabel.attributedText = promptText
+        }
+    }
+
+    private func configureTitleLabel() {
+        guard let scheduler = try? BloggingRemindersScheduler() else {
+            return
+        }
+
+        if scheduler.schedule(for: blog) == .none {
+            titleLabel.text = TextContent.remindersRemovedTitle
+        } else {
+            titleLabel.text = TextContent.completionTitle
+        }
+    }
+}
+
     // MARK: - Actions
+extension BloggingRemindersFlowCompletionViewController: BloggingRemindersActions {
+
+    // MARK: - BloggingRemindersActions
 
     @objc func doneButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(from: .continue, screen: .allSet, tracker: tracker)
     }
 
     @objc private func dismissTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(from: .dismiss, screen: .allSet, tracker: tracker)
     }
 }
 
@@ -150,8 +254,7 @@ extension BloggingRemindersFlowCompletionViewController: ChildDrawerPositionable
 private enum TextContent {
     static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
 
-    static let completionPrompt = NSLocalizedString("You'll get reminders to blog X times a week on DAY and DAY.",
-                                                    comment: "Description shown on the completion screen of the Blogging Reminders Settings screen.")
+    static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
 
     static let completionUpdateHint = NSLocalizedString("You can update this any time via My Site > Site Settings",
                                                         comment: "Prompt shown on the completion screen of the Blogging Reminders Settings screen.")
@@ -168,4 +271,5 @@ private enum Metrics {
     static let stackSpacing: CGFloat = 20.0
     static let doneButtonHeight: CGFloat = 44.0
     static let afterHintSpacing: CGFloat = 24.0
+    static let promptTextLineSpacing: CGFloat = 1.5
 }

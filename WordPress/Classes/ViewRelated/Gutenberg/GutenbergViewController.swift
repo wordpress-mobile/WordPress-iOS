@@ -361,6 +361,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         editorContentWasUpdated()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        gutenbergSettings.hasLaunchedGutenbergEditor = true
+    }
+
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
         ghostView.frame = view.frame
@@ -827,10 +832,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding())
         }
-
-        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -1045,6 +1048,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
+            .layoutGridBlock: post.blog.supports(.layoutGrid),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
@@ -1052,8 +1056,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
+            .editorOnboarding: canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
         ]
+    }
+
+    func canViewEditorOnboarding() -> Bool {
+        gutenbergSettings.canViewEditorOnboarding()
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
@@ -1063,7 +1071,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let blog = post.blog
         let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
 
-        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
+        return blog.isHostedAtWPcom || isJetpackSSOEnabled
     }
 }
 

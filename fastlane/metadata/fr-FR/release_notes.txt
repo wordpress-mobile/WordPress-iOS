@@ -1,9 +1,0 @@
-Quelles sont les nouveautés de cette mise à jour ?
-
-Restez à jour sur tous les sites auxquels vous avez récemment été ajouté en faisant glisser vers le bas pour actualiser sur l’écran Nouveaux sites.
-
-Sur les sites avec plusieurs auteurs, vous pouvez désormais modifier l’auteur attribué à un article ou une page.
-
-Vous pouvez désormais authentifier les demandes de connexion pendant que vous utilisez l’application.
-
-Enfin, nous avons corrigé un bogue avec les étapes du démarrage rapide. Lorsque vous suivez un site depuis le lecteur, la liste de contrôle de démarrage rapide met désormais à jour votre progression (au lieu de rester décochée.)
