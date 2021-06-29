@@ -74,9 +74,7 @@ extension GravatarButtonView {
             return .gray(.shade20)
         }
 
-        static var width: CGFloat {
-            return 0.5
-        }
+        static let width = CGFloat(0.5)
     }
     /// sets border color and width to the circular image view. Defaults to StandardBorder values
     func setBorder(color: UIColor = StandardBorder.color, width: CGFloat = StandardBorder.width) {
