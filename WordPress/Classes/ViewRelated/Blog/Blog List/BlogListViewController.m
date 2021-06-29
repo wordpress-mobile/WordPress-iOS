@@ -161,13 +161,12 @@ static NSInteger HideSearchMinSites = 3;
 
     self.visible = YES;
     [self.tableView reloadData];
-    [self updateEditButton];
+    [self updateBarButtons];
     [self updateSearchVisibility];
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
     [self syncBlogs];
-    [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
 }
 
@@ -200,12 +199,6 @@ static NSInteger HideSearchMinSites = 3;
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         [self updateCurrentBlogSelection];
     }];
-}
-
-
-- (void)updateEditButton
-{
-    [self updateBarButtons];
 }
 
 - (void)updateSearchVisibility
@@ -899,11 +892,6 @@ static NSInteger HideSearchMinSites = 3;
     self.addSiteButton.enabled = enabled;
 }
 
-- (void)setAddSiteBarButtonItem
-{
-    [self updateBarButtons];
-}
-
 - (void)addSite
 {
     [self showAddSiteAlertFrom:self.addSiteButton];
@@ -968,7 +956,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)dataChanged
 {
     [self.tableView reloadData];
-    [self updateEditButton];
+    [self updateBarButtons];
     [[WordPressAppDelegate shared] trackLogoutIfNeeded];
     [self maybeShowNUX];
     [self updateSearchVisibility];
