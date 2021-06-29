@@ -422,13 +422,17 @@ end
 post_install do |installer|
     project_root = File.dirname(__FILE__)
 
-    ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
-    require 'commonmarker'
+    # Skip this in CI (Xcode Cloud) because I haven't set it up to run Bundler
+    # yet to install commonmarker, and we can't `gem install` because it's the
+    # Xcode Cloud environment uses System Ruby
+    unless ENV.fetch('CI', false)
+      ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+      require 'commonmarker'
 
-    acknowledgements = 'Acknowledgments'
-    markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-    rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
-    styled_html = "<head>
+      acknowledgements = 'Acknowledgments'
+      markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
+      rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+      styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
                      <style>
                        body {
@@ -463,7 +467,8 @@ post_install do |installer|
       ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
       styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
-    File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
+      File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
+    end
 
     # Let Pods targets inherit deployment target from the app
     # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
