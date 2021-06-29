@@ -5,7 +5,8 @@ source 'https://github.com/wordpress-mobile/cocoapods-specs.git'
 source 'https://cdn.cocoapods.org/'
 
 unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
-  raise 'Please run CocoaPods via `bundle exec`'
+  # TODO: write this better and only for Xcode Cloud
+  raise 'Please run CocoaPods via `bundle exec`' unless ENV.fetch('CI', false)
 end
 
 inhibit_all_warnings!
