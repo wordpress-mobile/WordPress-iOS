@@ -4,11 +4,7 @@ import WordPressShared
 extension WPStyleGuide {
     @objc
     public class var preferredStatusBarStyle: UIStatusBarStyle {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .default
-        }
-
-        return .lightContent
+        .default
     }
 
     @objc
@@ -35,9 +31,7 @@ extension WPStyleGuide {
         var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
         let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
 
-        if FeatureFlag.newNavBarAppearance.enabled {
-            textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
-        }
+        textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
 
         navigationAppearance.titleTextAttributes = textAttributes
         navigationAppearance.largeTitleTextAttributes = largeTitleTextAttributes
@@ -48,41 +42,17 @@ extension WPStyleGuide {
         appearance.backgroundColor = .appBarBackground
         appearance.titleTextAttributes = textAttributes
         appearance.largeTitleTextAttributes = largeTitleTextAttributes
+        appearance.shadowColor = .separator
 
-        if FeatureFlag.newNavBarAppearance.enabled {
-            appearance.shadowColor = .separator
-
-            let scrollEdgeAppearance = appearance.copy()
-            scrollEdgeAppearance.shadowColor = .clear
-            navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
-        } else {
-            navigationAppearance.scrollEdgeAppearance = appearance
-        }
+        let scrollEdgeAppearance = appearance.copy()
+        scrollEdgeAppearance.shadowColor = .clear
+        navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
 
         navigationAppearance.standardAppearance = appearance
         navigationAppearance.compactAppearance = appearance
 
-        // Makes bar buttons visible in "Other Apps" media source picker.
-        // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
-        if FeatureFlag.newNavBarAppearance.enabled {
-            let buttonBarAppearance = UIBarButtonItem.appearance()
-            buttonBarAppearance.tintColor = .appBarTint
-        } else {
-            navigationAppearance.barStyle = .black
-
-            let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
-            barButtonItemAppearance.tintColor = .barButtonItemTitle
-            barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
-
-            let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
-            buttonBarAppearance.tintColor = .white
-            buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                        NSAttributedString.Key.foregroundColor: UIColor.white],
-                                                       for: .normal)
-            buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                        NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.25)],
-                                                       for: .disabled)
-        }
+        let buttonBarAppearance = UIBarButtonItem.appearance()
+        buttonBarAppearance.tintColor = .appBarTint
     }
 
     /// Style the tab bar using Muriel colors

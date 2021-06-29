@@ -267,27 +267,15 @@ extension UIColor {
     // MARK: - Quick Action Buttons
 
     static var quickActionButtonBackground: UIColor {
-        guard Feature.enabled(.newNavBarAppearance) else {
-            return .secondaryButtonBackground
-        }
-
-        return .clear
+        .clear
     }
 
     static var quickActionButtonBorder: UIColor {
-        guard Feature.enabled(.newNavBarAppearance) else {
-            return .secondaryButtonBorder
-        }
-
-        return .systemGray3
+        .systemGray3
     }
 
     static var quickActionSelectedBackground: UIColor {
-        guard Feature.enabled(.newNavBarAppearance) else {
-            return .secondaryButtonDownBackground
-        }
-
-        return UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
+        UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others
