@@ -49,7 +49,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .contactInfo:
             return true
         case .layoutGrid:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
