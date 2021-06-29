@@ -5,19 +5,11 @@ extension UIColor {
 
     /// Muriel/iOS navigation color
     static var appBarBackground: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .secondarySystemGroupedBackground
-        }
-
-        return UIColor(light: .brand, dark: .gray(.shade100))
+        .secondarySystemGroupedBackground
     }
 
     static var appBarTint: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .text
-        }
-
-        return .white
+        .text
     }
 
     static var lightAppBarTint: UIColor {
@@ -25,11 +17,7 @@ extension UIColor {
     }
 
     static var appBarText: UIColor {
-        if FeatureFlag.newNavBarAppearance.enabled {
-            return .text
-        }
-
-        return .white
+        .text
     }
 
     static var filterBarBackground: UIColor {
