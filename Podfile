@@ -425,7 +425,9 @@ post_install do |installer|
     # Skip this in CI (Xcode Cloud) because I haven't set it up to run Bundler
     # yet to install commonmarker, and we can't `gem install` because it's the
     # Xcode Cloud environment uses System Ruby
-    unless ENV.fetch('CI', false)
+    if ENV.fetch('CI', false)
+      File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", '')
+    else
       ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
       require 'commonmarker'
 
