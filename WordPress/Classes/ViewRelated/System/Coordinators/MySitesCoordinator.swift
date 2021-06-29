@@ -11,15 +11,7 @@ class MySitesCoordinator: NSObject {
 
     @objc
     var currentBlog: Blog? {
-        if Feature.enabled(.newNavBarAppearance) {
-            return mySiteViewController.blog
-        } else {
-            if let blogDetailsVC = navigationController.viewControllers.first(where: { $0 is BlogDetailsViewController }) as? BlogDetailsViewController {
-                return blogDetailsVC.blog
-            }
-        }
-
-        return nil
+        mySiteViewController.blog
     }
 
     @objc
