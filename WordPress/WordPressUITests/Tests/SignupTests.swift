@@ -33,6 +33,8 @@ class SignupTests: XCTestCase {
         let supportScreen = PrologueScreen().selectContinue().selectHelp()
 
         XCTAssert(supportScreen.isLoaded())
+
+        //close SupportScreen modal before teartown
         SupportScreen().closeButton.tap()
     }
 }
