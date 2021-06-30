@@ -210,7 +210,15 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 {
     NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
-    return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
+    
+    NSString *xmlrpcURL = self.xmlrpc;
+    
+    // Quick fix for a crash that was being caused by self.xmlrpc being nil.
+    if (xmlrpcURL == nil) {
+        return nil;
+    }
+    
+    return [xmlrpc stringByReplacingMatchesInString:xmlrpcURL options:0 range:NSMakeRange(0, [xmlrpcURL length]) withTemplate:path];
 }
 
 - (NSString *)adminUrlWithPath:(NSString *)path
