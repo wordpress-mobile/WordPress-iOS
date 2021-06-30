@@ -8,7 +8,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
     case contactInfo
@@ -40,8 +39,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .gutenbergXposts:
             return true
-        case .newNavBarAppearance:
-            return true
         case .unifiedPrologueCarousel:
             return true
         case .stories:
@@ -49,7 +46,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .contactInfo:
             return true
         case .layoutGrid:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
@@ -102,8 +99,6 @@ extension FeatureFlag {
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .newNavBarAppearance:
-            return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
         case .stories:
@@ -132,8 +127,6 @@ extension FeatureFlag {
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .newNavBarAppearance:
             return false
         case .todayWidget:
             return false
