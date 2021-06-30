@@ -44,6 +44,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 @property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 
+@property (nonatomic) BOOL userCanLikeAndReply;
 @end
 
 @implementation CommentViewController
@@ -85,6 +86,15 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
     }
 
+    // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
+    if (self.comment.blog.isHostedAtWPcom &&
+        !self.comment.canModerate &&
+        ![self.comment.status isEqualToString:CommentStatusApproved]) {
+        self.userCanLikeAndReply = NO;
+    } else {
+        self.userCanLikeAndReply = YES;
+    }
+    
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyView];
     [self setupAutolayoutConstraints];
@@ -354,11 +364,22 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell
 {
     // Setup the Cell
-    cell.isReplyEnabled = [UIDevice isPad];
-    cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
-    cell.isApproveEnabled = YES;
-    cell.isTrashEnabled = YES;
-    cell.isSpamEnabled = YES;
+    if (self.comment.blog.isHostedAtWPcom) {
+        cell.isReplyEnabled = [UIDevice isPad] && self.userCanLikeAndReply;
+        cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes] && self.userCanLikeAndReply;
+        cell.isApproveEnabled = self.comment.canModerate;
+        cell.isTrashEnabled = self.comment.canModerate;
+        cell.isSpamEnabled = self.comment.canModerate;
+        cell.isEditEnabled = self.comment.canModerate;
+    } else {
+        cell.isReplyEnabled = [UIDevice isPad];
+        cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
+        cell.isApproveEnabled = YES;
+        cell.isTrashEnabled = YES;
+        cell.isSpamEnabled = YES;
+        cell.isEditEnabled = YES;
+    }
+
 
     cell.isApproveOn = [self.comment.status isEqualToString:CommentStatusApproved];
     cell.isLikeOn = self.comment.isLiked;
