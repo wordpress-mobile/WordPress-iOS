@@ -198,6 +198,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureConstraints()
         populateCalendarDays()
         refreshNextButton()
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
