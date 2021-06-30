@@ -137,4 +137,26 @@ class LoginTests: XCTestCase {
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()
     }
+
+    //Self-Hosted after WordPress.com login
+    //Login to a WordPress.com account, then add a self-hosted site.
+    func testAddSelfHostedSiteAfterWPcomLogin() {
+        _ = PrologueScreen().selectContinue()
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .continueWithSelectedSite() //returns MySite screen
+            .showSiteSwitcher()
+            // .addSiteButton (however we name this function)
+            // .selectSelf-Hosted
+            // and then we'll direct to the self-hosted login flow:
+            //.selectSiteAddress()
+            //    .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            //    .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+              //  .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+              //  .continueWithSelectedSite()
+              //  .removeSelfHostedSite()
+
+            //not sure if we need an XTCAssert() here, given we have verifyEpilogueDisplays()? And if we used one, when does it check that, for instance, PrologueScreen().isLoaded() ?
+    }
 }

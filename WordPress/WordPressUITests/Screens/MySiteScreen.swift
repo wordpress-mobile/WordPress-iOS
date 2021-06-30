@@ -15,7 +15,7 @@ private struct ElementStringIDs {
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
-    static let addNewSiteButton = "Add new site Button"
+    static let addNewSiteButton = "Add new site Button" // doesn't exist, not sure why this is here. It actually appears on the Switch Site modal.
 }
 
 class MySiteScreen: BaseScreen {

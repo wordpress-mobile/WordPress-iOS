@@ -4,6 +4,9 @@ import XCTest
 class MySitesScreen: BaseScreen {
     init() {
         let blogsTable = XCUIApplication().tables["Blogs"]
+        // need to add "+" button here for Add Site options. Something like:
+        // let plusButton = XCUIApplication().buttons["+"]
+        // And then the bottom-sheet "add Self-hosted site" option.
 
         super.init(element: blogsTable)
     }
