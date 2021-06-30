@@ -6,13 +6,28 @@ protocol ChildDrawerPositionable {
 
 class BloggingRemindersNavigationController: LightNavigationController {
 
-    override init(rootViewController: UIViewController) {
+    typealias DismissClosure = () -> ()
+
+    private let onDismiss: DismissClosure?
+
+    required init(rootViewController: UIViewController, onDismiss: DismissClosure? = nil) {
+        self.onDismiss = onDismiss
+
         super.init(rootViewController: rootViewController)
+
         delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if isBeingDismissedDirectlyOrByAncestor() {
+            onDismiss?()
+        }
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
