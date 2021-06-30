@@ -32,7 +32,7 @@ class GetStartedScreen: BaseScreen {
         return PasswordScreen()
     }
 
-    // added for support test
+    // Taps "Help" to enter the Support modal
     func selectHelp() -> SupportScreen {
         helpButton.tap()
 

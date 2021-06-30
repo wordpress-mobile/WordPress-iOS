@@ -27,7 +27,7 @@ class SignupTests: XCTestCase {
         XCTAssert(mySiteScreen.isLoaded())
     }
 
-
+    // Test Support Section Loads
     // From Prologue > continue, tap "help" and make sure Support Screen loads
     func testSupportScreenLoads() {
         let supportScreen = PrologueScreen().selectContinue().selectHelp()

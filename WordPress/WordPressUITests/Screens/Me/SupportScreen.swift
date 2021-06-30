@@ -1,6 +1,8 @@
 import UITestsFoundation
 import XCTest
 
+// This screen object is for the Support section. In the app, it's a modal we can get to from Me > Help & Support, or, when logged out, from Prologue > tap either continue button > Help.
+
 private struct ElementStringIDs {
     static let closeButton = "Close"
     static let helpCenter = "WordPress Help Center"
@@ -29,6 +31,7 @@ class SupportScreen: BaseScreen {
 
         super.init(element: activityLogs)
     }
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.activityLogs].exists
     }
