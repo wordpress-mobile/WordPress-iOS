@@ -102,8 +102,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         configureStackView()
         configureConstraints()
         promptLabel.text = introDescription
-
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
