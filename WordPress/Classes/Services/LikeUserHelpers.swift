@@ -32,7 +32,7 @@ import Foundation
 
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
         request.predicate = NSPredicate(format: "userID = %@ AND likedSiteID = %@ AND likedPostID = %@ AND likedCommentID = %@",
-                                        argumentArray: [userID, siteID, postID, commentID])
+                                        userID, siteID, postID, commentID)
         return try? context.fetch(request).first
     }
 
