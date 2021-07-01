@@ -112,11 +112,11 @@ class BloggingRemindersScheduler {
     private static var defaultDataFileName = "BloggingReminders.plist"
 
     private static func defaultDataFileURL() throws -> URL {
-        guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
-            throw Error.cantRetrieveContainerForAppGroup(appGroupName: WPAppGroupName)
-        }
-
-        return url.appendingPathComponent(defaultDataFileName)
+        try FileManager.default.url(for: .documentDirectory,
+                                    in: .userDomainMask,
+                                    appropriateFor: nil,
+                                    create: true)
+            .appendingPathComponent(defaultDataFileName)
     }
 
     // MARK: - Initializers
