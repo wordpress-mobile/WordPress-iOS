@@ -713,8 +713,11 @@ platform :ios do
       project_slug: 'wordpress-ios',
       version: build_version,
       dist: build_version,
+      # When the React native bundle is generated, the source map file references
+      # include the local machine path, with the `rewrite` and `strip_common_prefix` 
+      # options Sentry automatically strips this part.
       rewrite: true,
-      strip_common_prefix: true,
+      strip_common_prefix: true,      
       sourcemap: sourcemaps_folder
     )
 
