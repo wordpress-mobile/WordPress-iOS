@@ -704,7 +704,7 @@ protocol PrefersFullscreenDisplay: AnyObject {}
 
 /// Used to indicate whether a view controller varies its preferred status bar style.
 ///
-protocol DefinesVariableStatusBarStyle: class {}
+protocol DefinesVariableStatusBarStyle: AnyObject {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 
