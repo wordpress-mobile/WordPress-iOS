@@ -8,7 +8,7 @@ import Starscream
 /// The delegate of a PinghubClient must adopt the PinghubClientDelegate
 /// protocol. The client will inform the delegate of any relevant events.
 ///
-public protocol PinghubClientDelegate: class {
+public protocol PinghubClientDelegate: AnyObject {
     /// The client connected successfully.
     ///
     func pingubDidConnect(_ client: PinghubClient)
@@ -222,7 +222,7 @@ extension PinghubClient {
 // MARK: - Socket
 
 
-internal protocol Socket: class {
+internal protocol Socket: AnyObject {
     func connect()
     func disconnect()
     var onConnect: (() -> Void)? { get set }

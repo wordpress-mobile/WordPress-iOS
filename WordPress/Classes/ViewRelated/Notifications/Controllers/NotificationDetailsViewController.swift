@@ -7,7 +7,7 @@ import WordPressShared
 
 ///
 ///
-protocol NotificationsNavigationDataSource: class {
+protocol NotificationsNavigationDataSource: AnyObject {
     func notification(succeeding note: Notification) -> Notification?
     func notification(preceding note: Notification) -> Notification?
 }
