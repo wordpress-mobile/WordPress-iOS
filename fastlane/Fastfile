@@ -418,7 +418,6 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    # Upload Gutenberg source maps
     upload_gutenberg_sourcemaps(internal: true)
 
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
