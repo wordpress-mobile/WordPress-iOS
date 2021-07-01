@@ -55,5 +55,6 @@ extern NSString * const CommentStatusDraft;
 - (BOOL)hasAuthorUrl;
 - (BOOL)isApproved;
 - (NSString *)sectionIdentifier;
+- (BOOL)isReadOnly;
 
 @end
