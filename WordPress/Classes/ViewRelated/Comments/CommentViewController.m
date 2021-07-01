@@ -88,15 +88,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
     }
 
-    // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
-    if (self.comment.blog.isHostedAtWPcom &&
-        !self.comment.canModerate &&
-        ![self.comment.status isEqualToString:CommentStatusApproved]) {
-        self.userCanLikeAndReply = NO;
-    } else {
-        self.userCanLikeAndReply = YES;
-    }
-    
+    self.userCanLikeAndReply = !self.comment.isReadOnly;
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyView];
     [self setupAutolayoutConstraints];
