@@ -5,11 +5,8 @@ import Foundation
 ///
 @objc class LikeUserHelper: NSObject {
 
-    @objc class func createUserFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) {
-
-        guard let likeUser = NSEntityDescription.insertNewObject(forEntityName: "LikeUser", into: context) as? LikeUser else {
-            return
-        }
+    @objc class func createOrUpdateFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser {
+        let likeUser = likeUser(for: remoteUser, context: context) ?? LikeUser(context: context)
 
         likeUser.userID = remoteUser.userID.int64Value
         likeUser.username = remoteUser.username
@@ -24,6 +21,19 @@ import Foundation
         likeUser.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
         likeUser.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: likeUser, context: context)
         likeUser.dateFetched = Date()
+        return likeUser
+    }
+
+    class func likeUser(for remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser? {
+        let userID = remoteUser.userID ?? 0
+        let siteID = remoteUser.likedSiteID ?? 0
+        let postID = remoteUser.likedPostID ?? 0
+        let commentID = remoteUser.likedCommentID ?? 0
+
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        request.predicate = NSPredicate(format: "userID = %@ AND likedSiteID = %@ AND likedPostID = %@ AND likedCommentID = %@",
+                                        argumentArray: [userID, siteID, postID, commentID])
+        return try? context.fetch(request).first
     }
 
     private class func createPreferredBlogFrom(remotePreferredBlog: RemoteLikeUserPreferredBlog?,
@@ -31,7 +41,7 @@ import Foundation
                                  context: NSManagedObjectContext) -> LikeUserPreferredBlog? {
 
         guard let remotePreferredBlog = remotePreferredBlog,
-              let preferredBlog = NSEntityDescription.insertNewObject(forEntityName: "LikeUserPreferredBlog", into: context) as? LikeUserPreferredBlog else {
+              let preferredBlog = user.preferredBlog ?? NSEntityDescription.insertNewObject(forEntityName: "LikeUserPreferredBlog", into: context) as? LikeUserPreferredBlog else {
             return nil
         }
 
