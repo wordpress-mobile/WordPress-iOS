@@ -523,7 +523,6 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
-    # Upload Gutenberg source maps
     upload_gutenberg_sourcemaps(internal: false)
 
     if options[:create_release]
