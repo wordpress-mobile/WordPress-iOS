@@ -1,6 +1,6 @@
 import UIKit
 
-protocol DomainCreditRedemptionSuccessViewControllerDelegate: class {
+protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
     func continueButtonPressed()
 }
 
