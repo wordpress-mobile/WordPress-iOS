@@ -45,7 +45,7 @@ extension NetworkAwareUI where Self: UIViewController {
 }
 
 /// Implementations of this protocol will be notified when the network connection status changes. Implementations of this protocol must call the observeNetworkStatus method.
-protocol NetworkStatusDelegate: class {
+protocol NetworkStatusDelegate: AnyObject {
     func observeNetworkStatus()
 
     /// This method will be called, on the main thread, when the network connection changes status.
