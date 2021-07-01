@@ -1,7 +1,7 @@
 import Foundation
 
 
-protocol RevisionDiffsPageManagerDelegate: class {
+protocol RevisionDiffsPageManagerDelegate: AnyObject {
     func currentIndex() -> Int
     func pageWillScroll(to direction: UIPageViewController.NavigationDirection)
     func pageDidFinishAnimating(completed: Bool)

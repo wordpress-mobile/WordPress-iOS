@@ -9,6 +9,7 @@ class BloggingRemindersNavigationController: LightNavigationController {
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         delegate = self
+        setNavigationBarHidden(true, animated: false)
     }
 
     required init?(coder aDecoder: NSCoder) {
