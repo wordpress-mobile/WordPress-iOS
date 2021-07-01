@@ -1,7 +1,7 @@
 import UIKit
 import WordPressFlux
 
-protocol JetpackScanThreatDetailsViewControllerDelegate: class {
+protocol JetpackScanThreatDetailsViewControllerDelegate: AnyObject {
     func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)
     func willIgnoreThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)
 }

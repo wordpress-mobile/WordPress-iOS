@@ -1,4 +1,4 @@
-protocol NoResultsViewHost: class { }
+protocol NoResultsViewHost: AnyObject { }
 
 extension NoResultsViewHost where Self: UIViewController {
     typealias NoResultsCustomizationBlock = (NoResultsViewController) -> Void

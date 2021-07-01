@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-protocol PrepublishingHeaderViewDelegate: class {
+protocol PrepublishingHeaderViewDelegate: AnyObject {
     func closeButtonTapped()
 }
 
