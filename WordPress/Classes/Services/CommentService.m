@@ -1148,6 +1148,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.type = remoteComment.type;
     comment.isLiked = remoteComment.isLiked;
     comment.likeCount = remoteComment.likeCount;
+    comment.canModerate = remoteComment.canModerate;
 
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
@@ -1174,6 +1175,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     remoteComment.type = comment.type;
     remoteComment.isLiked = comment.isLiked;
     remoteComment.likeCount = comment.likeCount;
+    remoteComment.canModerate = comment.canModerate;
     return remoteComment;
 }
 

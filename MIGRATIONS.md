@@ -3,9 +3,9 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 126
+## WordPress 127
 
-@chipsnyder 2021-06-146
+@chipsnyder 2021-07-1
 
 - `BlockEditorSettings`: added the attribute
     - `rawStyles` (optional, no default, `String`)
@@ -13,6 +13,12 @@ data model as well as any custom migrations.
     
 - `BlockEditorSettingElement`: added the attribute
     - `order` (required, 0, `Int`)
+
+## WordPress 126
+
+@scoutharris 2021-06-28
+
+- `Comment`: added  `canModerate` attribute. (required, default `false`, `Boolean`)
 
 ## WordPress 125
 

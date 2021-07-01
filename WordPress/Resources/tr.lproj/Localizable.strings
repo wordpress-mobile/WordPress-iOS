@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-24 15:58:15+0000 */
+/* Translation-Revision-Date: 2021-06-27 13:08:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -3614,7 +3614,7 @@
 "Link inserted" = "Bağlantı eklendi";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "Bağlantı metni";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Mevcut içeriğe bağla";

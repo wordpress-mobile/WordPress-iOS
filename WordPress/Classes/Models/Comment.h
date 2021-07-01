@@ -46,6 +46,7 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) NSAttributedString *attributedContent;
 @property (nonatomic) BOOL isLiked;
 @property (nonatomic, assign) BOOL isNew;
+@property (nonatomic) BOOL canModerate;
 
 /// Helper methods
 ///

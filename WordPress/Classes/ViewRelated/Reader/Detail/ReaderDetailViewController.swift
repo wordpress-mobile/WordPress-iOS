@@ -2,7 +2,7 @@ import UIKit
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
-protocol ReaderDetailView: class {
+protocol ReaderDetailView: AnyObject {
     func render(_ post: ReaderPost)
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
