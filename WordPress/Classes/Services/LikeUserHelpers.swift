@@ -6,22 +6,22 @@ import Foundation
 @objc class LikeUserHelper: NSObject {
 
     @objc class func createOrUpdateFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser {
-        let likeUser = likeUser(for: remoteUser, context: context) ?? LikeUser(context: context)
+        let liker = likeUser(for: remoteUser, context: context) ?? LikeUser(context: context)
 
-        likeUser.userID = remoteUser.userID.int64Value
-        likeUser.username = remoteUser.username
-        likeUser.displayName = remoteUser.displayName
-        likeUser.primaryBlogID = remoteUser.primaryBlogID?.int64Value ?? 0
-        likeUser.avatarUrl = remoteUser.avatarURL
-        likeUser.bio = remoteUser.bio ?? ""
-        likeUser.dateLikedString = remoteUser.dateLiked ?? ""
-        likeUser.dateLiked = DateUtils.date(fromISOString: likeUser.dateLikedString)
-        likeUser.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
-        likeUser.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
-        likeUser.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
-        likeUser.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: likeUser, context: context)
-        likeUser.dateFetched = Date()
-        return likeUser
+        liker.userID = remoteUser.userID.int64Value
+        liker.username = remoteUser.username
+        liker.displayName = remoteUser.displayName
+        liker.primaryBlogID = remoteUser.primaryBlogID?.int64Value ?? 0
+        liker.avatarUrl = remoteUser.avatarURL
+        liker.bio = remoteUser.bio ?? ""
+        liker.dateLikedString = remoteUser.dateLiked ?? ""
+        liker.dateLiked = DateUtils.date(fromISOString: liker.dateLikedString)
+        liker.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
+        liker.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
+        liker.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
+        liker.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: liker, context: context)
+        liker.dateFetched = Date()
+        return liker
     }
 
     class func likeUser(for remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser? {
