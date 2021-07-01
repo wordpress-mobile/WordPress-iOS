@@ -202,7 +202,7 @@ private extension OverviewCell {
             labelsStackView.distribution = .fill
         } else {
             labelsStackView.axis = .horizontal
-            labelsStackView.alignment = .fill
+            labelsStackView.alignment = .firstBaseline
             labelsStackView.distribution = .equalSpacing
         }
     }

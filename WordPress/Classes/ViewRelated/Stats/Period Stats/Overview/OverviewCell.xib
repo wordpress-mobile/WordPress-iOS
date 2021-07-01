@@ -24,10 +24,10 @@
                             <constraint firstAttribute="height" constant="0.5" id="Pdm-u4-3uG"/>
                         </constraints>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dS7-nd-qwQ" userLabel="Labels Stack View">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="firstBaseline" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dS7-nd-qwQ" userLabel="Labels Stack View">
                         <rect key="frame" x="16" y="24.5" width="422" height="33.5"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="L0M-TW-gHu" userLabel="Selected Data Stack View">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="L0M-TW-gHu" userLabel="Selected Data Stack View">
                                 <rect key="frame" x="0.0" y="0.0" width="146.5" height="33.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40,000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKw-lF-4O8" userLabel="Selected Data">
@@ -37,7 +37,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZK-cD-I2s" userLabel="Selected Label">
-                                        <rect key="frame" x="101" y="0.0" width="45.5" height="33.5"/>
+                                        <rect key="frame" x="101" y="10.5" width="45.5" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -45,7 +45,7 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2,500 (5%)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mh8-GY-DEC" userLabel="Difference Label">
-                                <rect key="frame" x="325.5" y="0.0" width="96.5" height="33.5"/>
+                                <rect key="frame" x="325.5" y="10.5" width="96.5" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
