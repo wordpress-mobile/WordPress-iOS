@@ -18,6 +18,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
     var site: JetpackSiteRef?
 
+    var rewindStatus: RewindStatus?
+
     weak var presenter: ActivityPresenter?
 
     @IBOutlet private var imageView: CircularImageView!
@@ -44,6 +46,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     @IBOutlet private var contentStackView: UIStackView!
     @IBOutlet private var containerView: UIView!
 
+    @IBOutlet weak var warningButton: MultilineButton!
+
     @IBOutlet private var bottomConstaint: NSLayoutConstraint!
 
     @IBOutlet private var rewindButton: UIButton!
@@ -58,6 +62,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         setupViews()
         setupText()
         setupAccesibility()
+        hideRestoreIfNeeded()
+        showWarningIfNeeded()
         WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
     }
 
@@ -73,6 +79,16 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return
         }
         presenter?.presentBackupFor(activity: activity, from: "\(presentedFrom())/detail")
+    }
+
+    @IBAction func warningTapped(_ sender: Any) {
+        guard let url = URL(string: Constants.supportUrl) else {
+            return
+        }
+
+        let navController = UINavigationController(rootViewController: WebViewControllerFactory.controller(url: url))
+
+        present(navController, animated: true)
     }
 
     private func setupLabelStyles() {
@@ -127,6 +143,16 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
 
         backupButton.naturalContentHorizontalAlignment = .leading
         backupButton.setImage(.gridicon(.cloudDownload, size: Constants.gridiconSize), for: .normal)
+
+        let attributedTitle = WPStyleGuide.Jetpack.highlightString(RewindStatus.Strings.multisiteNotAvailableHighlight,
+                                                                   inString: RewindStatus.Strings.multisiteNotAvailable)
+
+        warningButton.setAttributedTitle(attributedTitle, for: .normal)
+        warningButton.setTitleColor(.systemGray, for: .normal)
+        warningButton.titleLabel?.numberOfLines = 0
+        warningButton.titleLabel?.lineBreakMode = .byWordWrapping
+        warningButton.naturalContentHorizontalAlignment = .leading
+        warningButton.backgroundColor = view.backgroundColor
     }
 
     private func setupText() {
@@ -190,6 +216,22 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         }
     }
 
+    private func hideRestoreIfNeeded() {
+        guard let isRestoreActive = rewindStatus?.isActive() else {
+            return
+        }
+
+        rewindStackView.isHidden = !isRestoreActive
+    }
+
+    private func showWarningIfNeeded() {
+        guard let isMultiSite = rewindStatus?.isMultiSite() else {
+            return
+        }
+
+        warningButton.isHidden = !isMultiSite
+    }
+
     func setupRouter() {
         guard let activity = formattableActivity else {
             router = nil
@@ -225,6 +267,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
 
     private enum Constants {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
+        static let supportUrl = "https://jetpack.com/support/backup/"
     }
 }
 

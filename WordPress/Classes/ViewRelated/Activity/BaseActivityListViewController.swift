@@ -364,6 +364,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let detailVC = ActivityDetailViewController.loadFromStoryboard()
 
         detailVC.site = site
+        detailVC.rewindStatus = store.state.rewindStatus[site]
         detailVC.formattableActivity = activity
         detailVC.presenter = self
 
@@ -373,7 +374,7 @@ extension BaseActivityListViewController: ActivityPresenter {
     func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
         let rewindStatus = store.state.rewindStatus[site]
 
-        let title = rewindStatus?.reason == "multisite_not_supported" ? NSLocalizedString("Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores.", comment: "Message for Jetpack users that have multisite WP installation, thus Restore is not available.") : nil
+        let title = rewindStatus?.isMultiSite() == true ? RewindStatus.Strings.multisiteNotAvailable : nil
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
@@ -576,5 +577,20 @@ extension BaseActivityListViewController: ActivityTypeSelectorDelegate {
             selectTypeProperties["num_total_activities_selected"] = totalActivitiesSelected
             WPAnalytics.track(.activitylogFilterbarSelectType, properties: selectTypeProperties)
         }
+    }
+}
+
+extension RewindStatus {
+    func isMultiSite() -> Bool {
+        reason == "multisite_not_supported"
+    }
+
+    func isActive() -> Bool {
+        state == .active
+    }
+
+    enum Strings {
+        static let multisiteNotAvailable = NSLocalizedString("Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information visit our documentation page.", comment: "Message for Jetpack users that have multisite WP installation, thus Restore is not available.")
+        static let multisiteNotAvailableHighlight = NSLocalizedString("visit our documentation page", comment: "Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color.")
     }
 }
