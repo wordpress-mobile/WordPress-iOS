@@ -65,4 +65,31 @@ class BlogBugFix16782: XCTestCase {
         XCTExpectFailure()
         expect(URL(string: loginURL)?.absoluteString).to(beginWith("http"))
     }
+
+    func testOrgRESTAPIDefaultBehavior() {
+        let blog = BlogBuilder(contextManager.mainContext)
+            .with(username: "testusers")
+            .with(password: "testpassword")
+            .with(wordPressVersion: "1")
+            .build()
+
+        let api = WordPressOrgRestApi(blog: blog)
+
+        XCTAssertNotNil(api)
+    }
+
+    func testOrgRESTAPIWithNullXMLRPC() {
+        let blog = BlogBuilder(contextManager.mainContext)
+            .with(username: "testusers")
+            .with(password: "testpassword")
+            .with(wordPressVersion: "1")
+            .build()
+
+        blog.xmlrpc = .none
+
+        let api = WordPressOrgRestApi(blog: blog)
+
+        XCTExpectFailure()
+        XCTAssertNotNil(api)
+    }
 }
