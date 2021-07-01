@@ -350,7 +350,7 @@ class ReaderSiteSearchHeaderView: UIView {
 /// The delegate can then use this to re-set and resize the associated
 /// tableview's footer view property.
 ///
-protocol ReaderSiteSearchFooterViewDelegate: class {
+protocol ReaderSiteSearchFooterViewDelegate: AnyObject {
     func readerSiteSearchFooterViewDidChangeFrame(_ footerView: ReaderSiteSearchFooterView)
 }
 

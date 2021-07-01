@@ -1,6 +1,6 @@
 import UIKit
 
-protocol CalendarViewControllerDelegate: class {
+protocol CalendarViewControllerDelegate: AnyObject {
     func didCancel(calendar: CalendarViewController)
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?)
 }

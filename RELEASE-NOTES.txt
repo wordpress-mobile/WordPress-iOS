@@ -1,6 +1,6 @@
 17.8
 -----
-
+* [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
 
 17.7
 -----

@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ReaderDetailFeaturedImageViewDelegate: class {
+protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 

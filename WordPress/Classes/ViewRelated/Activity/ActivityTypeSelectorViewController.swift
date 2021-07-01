@@ -1,7 +1,7 @@
 import Foundation
 import WordPressFlux
 
-protocol ActivityTypeSelectorDelegate: class {
+protocol ActivityTypeSelectorDelegate: AnyObject {
     func didCancel(selectorViewController: ActivityTypeSelectorViewController)
     func didSelect(selectorViewController: ActivityTypeSelectorViewController, groups: [ActivityGroup])
 }
