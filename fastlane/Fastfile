@@ -700,7 +700,10 @@ platform :ios do
     gutenberg_bundle = File.join(PROJECT_ROOT_FOLDER, "Pods/Gutenberg/bundle/ios")
     sourcemaps_folder = File.join(gutenberg_bundle, "sourcemaps")
     FileUtils.mkdir_p(sourcemaps_folder)
-    # Name of bundle file must be set to main.jsbundle
+    # Name of bundle file must be set to main.jsbundle.
+    #
+    # It's important that the source map files have specific names, otherwise, Sentry 
+    # won't un-minify the stack traces.
     FileUtils.cp(File.join(gutenberg_bundle, 'App.js'), File.join(sourcemaps_folder, 'main.jsbundle'))
     FileUtils.cp(File.join(gutenberg_bundle, 'App.js.map'), File.join(sourcemaps_folder, 'main.jsbundle.map'))
 
