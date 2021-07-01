@@ -1,7 +1,7 @@
 /// An Unsubscribable class can take a receipt and remove an associated
 /// subscription.
 ///
-public protocol Unsubscribable: class {
+public protocol Unsubscribable: AnyObject {
     /// Unregisters the subscription associated with the given Receipt.
     func unsubscribe(receipt: Receipt)
 }
