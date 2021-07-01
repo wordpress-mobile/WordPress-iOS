@@ -222,7 +222,7 @@ extension PinghubClient {
 // MARK: - Socket
 
 
-internal protocol Socket: class {
+internal protocol Socket: AnyObject {
     func connect()
     func disconnect()
     var onConnect: (() -> Void)? { get set }
