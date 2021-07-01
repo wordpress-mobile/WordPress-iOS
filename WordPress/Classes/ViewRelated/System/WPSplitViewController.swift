@@ -700,7 +700,7 @@ extension UIViewController {
 /// in fullscreen until the `navigationController(_:willShowViewController:animated:)`
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
-protocol PrefersFullscreenDisplay: class {}
+protocol PrefersFullscreenDisplay: AnyObject {}
 
 /// Used to indicate whether a view controller varies its preferred status bar style.
 ///
