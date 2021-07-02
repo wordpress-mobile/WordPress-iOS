@@ -6,7 +6,7 @@ protocol ChildDrawerPositionable {
 
 class BloggingRemindersNavigationController: LightNavigationController {
 
-    typealias DismissClosure = () -> ()
+    typealias DismissClosure = () -> Void
 
     private let onDismiss: DismissClosure?
 
