@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingReminders
     case readerPostLikes
     case siteIconCreator
+    case globalStyleSettings
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -61,6 +62,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
+        case .globalStyleSettings:
+            return false
         }
     }
 
@@ -121,6 +124,8 @@ extension FeatureFlag {
             return "Reader Post Likes"
         case .siteIconCreator:
             return "Site Icon Creator"
+        case .globalStyleSettings:
+            return "Global Style Settings"
         }
     }
 
