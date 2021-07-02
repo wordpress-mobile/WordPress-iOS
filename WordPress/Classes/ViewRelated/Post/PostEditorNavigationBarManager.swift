@@ -1,6 +1,6 @@
 import Gridicons
 
-protocol PostEditorNavigationBarManagerDelegate: class {
+protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
