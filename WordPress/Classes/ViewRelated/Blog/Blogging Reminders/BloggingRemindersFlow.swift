@@ -2,11 +2,13 @@ import Foundation
 
 class BloggingRemindersFlow {
 
+    typealias DismissClosure = () -> Void
+
     static func present(from viewController: UIViewController,
                         for blog: Blog,
                         source: BloggingRemindersTracker.FlowStartSource,
                         alwaysShow: Bool = true,
-                        onDismiss: BloggingRemindersNavigationController.DismissClosure? = nil) {
+                        onDismiss: DismissClosure? = nil) {
 
         guard alwaysShow || !hasShownWeeklyRemindersFlow(for: blog) else {
             return
