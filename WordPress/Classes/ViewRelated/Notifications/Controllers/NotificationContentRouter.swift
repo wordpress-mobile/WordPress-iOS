@@ -54,7 +54,10 @@ struct NotificationContentRouter {
         case .comment:
             fallthrough
         case .commentLike:
-            try coordinator.displayCommentsWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
+            let commentID = notification.metaCommentID ?? notification.metaReplyID
+            try coordinator.displayCommentsWithPostId(notification.metaPostID,
+                                                      siteID: notification.metaSiteID,
+                                                      commentID: commentID)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }
