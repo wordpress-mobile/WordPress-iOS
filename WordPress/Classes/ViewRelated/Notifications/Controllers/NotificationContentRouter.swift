@@ -54,6 +54,7 @@ struct NotificationContentRouter {
         case .comment:
             fallthrough
         case .commentLike:
+            // Focus on the primary comment, and default to the reply ID if its set
             let commentID = notification.metaCommentID ?? notification.metaReplyID
             try coordinator.displayCommentsWithPostId(notification.metaPostID,
                                                       siteID: notification.metaSiteID,
