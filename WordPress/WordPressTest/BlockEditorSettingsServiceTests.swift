@@ -20,10 +20,10 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         contextManager = TestContextManager()
         context = contextManager.mainContext
         mockRemoteApi = MockWordPressComRestApi()
-        blog = ModelTestHelper.insertDotComBlog(context: context)
-        blog.dotComID = NSNumber(value: 1)
-        blog.account?.authToken = "auth"
-        blog.setValue("5.8", forOption: "software_version")
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.9")
+            .with(isHostedAtWPCom: true)
+            .build()
 
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
 
@@ -86,7 +86,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     private func validateThemeResponse() {
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
-        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp/v2/sites/1/themes")
+        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp/v2/sites/\(blog.dotComID!.intValue)/themes")
         XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["status"], "active")
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
@@ -191,9 +191,92 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         XCTAssertEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
+    func testFetchBlockEditorSettings_Org5_8Site() {
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.8")
+            .with(isHostedAtWPCom: false)
+            .build()
+
+        try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
+        let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        let mockOrgRemoteApi = MockWordPressOrgRestApi()
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
+
+        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        service.fetchSettings { (hasChanges, result) in
+            waitExpectation.fulfill()
+        }
+        mockOrgRemoteApi.completionPassedIn!(.success(mockedResponse), HTTPURLResponse())
+        waitForExpectations(timeout: expectationTimeout)
+
+        XCTAssertTrue(mockOrgRemoteApi.getMethodCalled)
+        XCTAssertEqual(mockOrgRemoteApi.URLStringPassedIn!, "/__experimental/wp-block-editor/v1/settings")
+        XCTAssertEqual((mockOrgRemoteApi.parametersPassedIn as! [String: String])["context"], "mobile")
+    }
+
+    func testFetchBlockEditorSettings_Org5_9Site() {
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.9")
+            .with(isHostedAtWPCom: false)
+            .build()
+
+        try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
+        let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        let mockOrgRemoteApi = MockWordPressOrgRestApi()
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
+
+        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        service.fetchSettings { (hasChanges, result) in
+            waitExpectation.fulfill()
+        }
+        mockOrgRemoteApi.completionPassedIn!(.success(mockedResponse), HTTPURLResponse())
+        waitForExpectations(timeout: expectationTimeout)
+
+        XCTAssertTrue(mockOrgRemoteApi.getMethodCalled)
+        XCTAssertEqual(mockOrgRemoteApi.URLStringPassedIn!, "/wp-block-editor/v1/settings")
+        XCTAssertEqual((mockOrgRemoteApi.parametersPassedIn as! [String: String])["context"], "mobile")
+    }
+
+    func testFetchBlockEditorSettings_Com5_8Site() {
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.8")
+            .with(isHostedAtWPCom: true)
+            .build()
+
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+
+        try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
+        let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        service.fetchSettings { (hasChanges, result) in
+            waitExpectation.fulfill()
+        }
+        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
+        waitForExpectations(timeout: expectationTimeout)
+
+        XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
+        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp-block-editor/v1/sites/\(blog.dotComID!.intValue)/settings")
+        XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["context"], "mobile")
+    }
+
+    func testFetchBlockEditorSettings_Com5_9Site() {
+        try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
+        let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        service.fetchSettings { (hasChanges, result) in
+            waitExpectation.fulfill()
+        }
+        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
+        waitForExpectations(timeout: expectationTimeout)
+
+        XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
+        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp-block-editor/v1/sites/\(blog.dotComID!.intValue)/settings")
+        XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["context"], "mobile")
+    }
+
     private func validateBlockEditorSettingsResponse(isGlobalStyles: Bool = true) {
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
-        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/__experimental/wp-block-editor/v1/settings")
+        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp-block-editor/v1/sites/\(blog.dotComID!.intValue)/settings")
         XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["context"], "mobile")
 
         if isGlobalStyles {

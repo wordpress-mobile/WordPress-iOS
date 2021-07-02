@@ -14,7 +14,7 @@ class BlockEditorSettingsService {
 
     convenience init?(blog: Blog, context: NSManagedObjectContext) {
         let remoteAPI: WordPressRestApi
-        if blog.isAccessibleThroughWPCom(),
+        if blog.isHostedAtWPcom,
            blog.dotComID?.intValue != nil,
            let restAPI = blog.wordPressComRestApi() {
             remoteAPI = restAPI
@@ -115,7 +115,14 @@ private extension BlockEditorSettingsService {
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
     func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        remote.fetchBlockEditorSettings { [weak self] (response) in
+        /*
+         * This endpoint was released as part of WP 5.8 with the __experimental flag.
+         * Starting with Gutenberg 11.1 the endpoint will be available without the __experimental flag.
+         * Gutenberg 11.1 will be included in WP 5.9.
+         * These tests just ensure we are using the appropriate endpoints for each scenario based on when this was released.
+        */
+        let requiresExperimental = !(blog.isHostedAtWPcom || blog.hasRequiredWordPressVersion("5.9"))
+        remote.fetchBlockEditorSettings(forSiteID: blog.dotComID?.intValue, requiresExperimental: requiresExperimental) { [weak self] (response) in
             guard let `self` = self else { return }
             switch response {
             case .success(let remoteSettings):
