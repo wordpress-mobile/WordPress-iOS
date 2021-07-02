@@ -476,9 +476,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func showEditorHelp() {
-        // TODO AMANDA
-        print("AMANDA-TEST > addDefaultActionWithTitle called!")
-//        gutenberg.showEditorHelp()
+        gutenberg.showEditorHelp()
     }
 
     private func presentNewPageNoticeIfNeeded() {
