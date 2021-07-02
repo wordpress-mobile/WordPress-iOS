@@ -112,7 +112,7 @@ class BloggingRemindersScheduler {
     private static var defaultDataFileName = "BloggingReminders.plist"
 
     private static func defaultDataFileURL() throws -> URL {
-        try FileManager.default.url(for: .documentDirectory,
+        try FileManager.default.url(for: .applicationSupportDirectory,
                                     in: .userDomainMask,
                                     appropriateFor: nil,
                                     create: true)
