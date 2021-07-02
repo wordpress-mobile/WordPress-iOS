@@ -474,7 +474,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
         gutenberg.setFocusOnTitle()
     }
-    
+
     func showEditorHelp() {
         // TODO AMANDA
         print("AMANDA-TEST > addDefaultActionWithTitle called!")
