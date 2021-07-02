@@ -474,6 +474,12 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
         gutenberg.setFocusOnTitle()
     }
+    
+    func showEditorHelp() {
+        // TODO AMANDA
+        print("AMANDA-TEST > addDefaultActionWithTitle called!")
+//        gutenberg.showEditorHelp()
+    }
 
     private func presentNewPageNoticeIfNeeded() {
         // Validate if the post is a newly created page or not.
