@@ -75,7 +75,9 @@ struct NotificationContentRouter {
         case .post:
             try coordinator.displayReaderWithPostId(range.postID, siteID: range.siteID)
         case .comment:
-            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
+            // Focus on the comment reply if it's set over the primary comment ID
+            let commentID = notification.metaReplyID ?? notification.metaCommentID
+            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID, commentID: commentID)
         case .stats:
             /// Backup notifications are configured as "stat" notifications
             /// For now this is just a workaround to fix the routing
