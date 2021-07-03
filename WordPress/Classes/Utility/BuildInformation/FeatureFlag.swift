@@ -66,7 +66,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .globalStyleSettings:
             return false
         case .editorOnboardingHelpMenu:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
