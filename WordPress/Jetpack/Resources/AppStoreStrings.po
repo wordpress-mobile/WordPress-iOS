@@ -15,8 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer.
-"
+msgid "Make your WordPress site faster and safer."
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -39,23 +38,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v17.6-whats-new"
+msgctxt "v17.7-whats-new"
 msgid ""
-"With 17.6, you can add the Audio Block to any WordPress.com site, whatever plan you’re on – including the Free Plan. The Audio Block makes it easy to add podcasts, music, and sound files to your posts and pages.\n"
-"\n"
-"We’ve been hard at work wrangling UX improvements, too:\n"
-"\n"
-"When you assign a parent page to a page without a title, you’ll now see a ‘(no title)’ placeholder instead of a blank line, giving you a gentle nudge to name the page.\n"
-"\n"
-"You’ve never been able to edit Post Archive pages because they’re automatically generated. In 17.6, you won’t be able to open them in the editor, either, saving you a wasted trip.\n"
-"\n"
-"We’ve also been working on fixing things:\n"
-"\n"
-"We took care of some notices that had been overlapping the ActionSheet, including one that displays Site Icon controls, another displaying the QuickStart Removal, and a third that displays More Actions in the editor.\n"
-"\n"
-"Last up, we squashed a bug that sometimes caused the app to crash during comment moderation and another to fix a login error for WordPress.org sites to show inline.\n"
-"\n"
-"That’s all for 17.6. See you in 17.7!\n"
+"The Block editor has a shiny new block Layout grid, and while we were digging around in the editor code, we also tweaked the code for our tablet-using friends. The pesky inserter button tablet view issue in the Block editor has now been fixed.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
@@ -95,7 +80,7 @@ msgstr ""
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-5"
 msgid ""
-"Back Up your site\n"
+"Back up your site\n"
 "at any moment.\n"
 msgstr ""
 
