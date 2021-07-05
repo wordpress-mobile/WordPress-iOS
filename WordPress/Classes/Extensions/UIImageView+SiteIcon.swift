@@ -8,6 +8,10 @@ import Gridicons
 ///
 extension UIImageView {
 
+    enum SiteIconDownloadError: Error {
+        case unacceptableStatusCode400(url: URL?, error: Error)
+    }
+
     /// Default Settings
     ///
     struct SiteIconDefaults {
@@ -96,8 +100,15 @@ extension UIImageView {
                           case let Alamofire.AFError.ResponseValidationFailureReason.unacceptableStatusCode(code) = reason,
                           code == 404 {
                     // Do not log 404 errors since they are expected for site icons
-                }
-                else {
+                } else if case let Alamofire.AFError.responseValidationFailed(reason) = error,
+                          case let Alamofire.AFError.ResponseValidationFailureReason.unacceptableStatusCode(code) = reason,
+                          code == 400 {
+                    // Adding some extra information for errors with code 400 we're seeing (malformed URL).
+                    // It seems like we're misformatting some of our URLs - probably photon URLs when they're "optimized".
+                    // By recording an error that logs the URL that was used, we may be able to narrow down why the URLs
+                    // are becoming malformed.
+                    WordPressAppDelegate.crashLogging?.logError(SiteIconDownloadError.unacceptableStatusCode400(url: request.url, error: error))
+                } else {
                     WordPressAppDelegate.crashLogging?.logError(error)
                 }
             }
