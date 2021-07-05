@@ -265,8 +265,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergImageLoader(post: post)
     }()
 
-    private lazy var gutenbergSentry: RNSentry = {
-        return RNSentry()
+    private lazy var gutenbergSentry: GutenbergSentry = {
+        return GutenbergSentry()
     }()
     
     private lazy var gutenberg: Gutenberg = {
@@ -1045,7 +1045,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ].compactMap { $0 }
     }
 
-    func getSentryOptions() -> [String: Any]? {
+    func gutenbergSentryOptions() -> [String: Any]? {
         return WordPressAppDelegate.crashLogging?.getOptionsDict()
     }
 

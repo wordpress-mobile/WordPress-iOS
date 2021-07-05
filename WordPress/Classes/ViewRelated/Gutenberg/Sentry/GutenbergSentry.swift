@@ -1,5 +1,5 @@
 @objc (RNSentry)
-public class RNSentry: NSObject, RCTBridgeModule {
+public class GutenbergSentry: NSObject, RCTBridgeModule {
     public static func moduleName() -> String! {
         return "RNSentry"
     }
@@ -55,7 +55,7 @@ public class RNSentry: NSObject, RCTBridgeModule {
 
 // MARK: - Disabled original methods
 
-extension RNSentry {
+extension GutenbergSentry {
     // Disabled because the Sentry SDK is initialized in the main apps.
     @objc
     func startWithOptions(_ options: [String:Any], resolve: @escaping RCTPromiseResolveBlock, rejecter:@escaping RCTPromiseRejectBlock) {

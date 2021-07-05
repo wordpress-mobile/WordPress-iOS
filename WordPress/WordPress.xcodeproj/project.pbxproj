@@ -330,10 +330,10 @@
 		17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FCA6801FD84B4600DBA9C8 /* NoticeStore.swift */; };
 		1A433B1D2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A433B1C2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift */; };
 		1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA150722AE5F870039311A /* WordPressUIBundleTests.swift */; };
-		1D031A47268F772A0071372F /* RNSentry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A45268F772A0071372F /* RNSentry.swift */; };
-		1D031A48268F772A0071372F /* RNSentry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A45268F772A0071372F /* RNSentry.swift */; };
-		1D031A49268F772A0071372F /* RNSentry.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A46268F772A0071372F /* RNSentry.m */; };
-		1D031A4A268F772A0071372F /* RNSentry.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A46268F772A0071372F /* RNSentry.m */; };
+		1D031A47268F772A0071372F /* GutenbergSentry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A45268F772A0071372F /* GutenbergSentry.swift */; };
+		1D031A48268F772A0071372F /* GutenbergSentry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A45268F772A0071372F /* GutenbergSentry.swift */; };
+		1D031A49268F772A0071372F /* GutenbergSentry.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A46268F772A0071372F /* GutenbergSentry.m */; };
+		1D031A4A268F772A0071372F /* GutenbergSentry.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D031A46268F772A0071372F /* GutenbergSentry.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1E0462162566938300EB98EF /* GutenbergFileUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0462152566938300EB98EF /* GutenbergFileUploadProcessor.swift */; };
 		1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */; };
@@ -4815,8 +4815,8 @@
 		1A433B1C2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordPressComRestApi+Defaults.swift"; sourceTree = "<group>"; };
 		1ABA150722AE5F870039311A /* WordPressUIBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressUIBundleTests.swift; sourceTree = "<group>"; };
 		1B77149F6C65D343E7E3AD09 /* Pods-WordPressUITests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.release-alpha.xcconfig"; sourceTree = "<group>"; };
-		1D031A45268F772A0071372F /* RNSentry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNSentry.swift; sourceTree = "<group>"; };
-		1D031A46268F772A0071372F /* RNSentry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSentry.m; sourceTree = "<group>"; };
+		1D031A45268F772A0071372F /* GutenbergSentry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergSentry.swift; sourceTree = "<group>"; };
+		1D031A46268F772A0071372F /* GutenbergSentry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GutenbergSentry.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E0462152566938300EB98EF /* GutenbergFileUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFileUploadProcessor.swift; sourceTree = "<group>"; };
@@ -8307,8 +8307,8 @@
 		1D031A44268F772A0071372F /* Sentry */ = {
 			isa = PBXGroup;
 			children = (
-				1D031A45268F772A0071372F /* RNSentry.swift */,
-				1D031A46268F772A0071372F /* RNSentry.m */,
+				1D031A45268F772A0071372F /* GutenbergSentry.swift */,
+				1D031A46268F772A0071372F /* GutenbergSentry.m */,
 			);
 			path = Sentry;
 			sourceTree = "<group>";
@@ -17260,7 +17260,7 @@
 				2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */,
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
 				982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
-				1D031A49268F772A0071372F /* RNSentry.m in Sources */,
+				1D031A49268F772A0071372F /* GutenbergSentry.m in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
 				321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */,
 				FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */,
@@ -17580,7 +17580,7 @@
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
-				1D031A47268F772A0071372F /* RNSentry.swift in Sources */,
+				1D031A47268F772A0071372F /* GutenbergSentry.swift in Sources */,
 				436110E022C4241A000773AD /* UIColor+MurielColorsObjC.swift in Sources */,
 				B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsManager.swift in Sources */,
 				46183CF5251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift in Sources */,
@@ -19065,7 +19065,7 @@
 				FABB222A2602FC2C00C8785C /* JetpackScanThreatSectionGrouping.swift in Sources */,
 				FABB222B2602FC2C00C8785C /* MediaService+Swift.swift in Sources */,
 				FABB222C2602FC2C00C8785C /* ReaderActionHelpers.swift in Sources */,
-				1D031A48268F772A0071372F /* RNSentry.swift in Sources */,
+				1D031A48268F772A0071372F /* GutenbergSentry.swift in Sources */,
 				FABB222D2602FC2C00C8785C /* NoteBlockUserTableViewCell.swift in Sources */,
 				FABB222E2602FC2C00C8785C /* WPStyleGuide+Sharing.swift in Sources */,
 				FABB222F2602FC2C00C8785C /* StoryPoster.swift in Sources */,
@@ -19481,7 +19481,7 @@
 				FABB23B72602FC2C00C8785C /* Notifiable.swift in Sources */,
 				FABB23B82602FC2C00C8785C /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				FABB23B92602FC2C00C8785C /* BlogListViewController+SiteCreation.swift in Sources */,
-				1D031A4A268F772A0071372F /* RNSentry.m in Sources */,
+				1D031A4A268F772A0071372F /* GutenbergSentry.m in Sources */,
 				FABB23BA2602FC2C00C8785C /* CommentAnalytics.swift in Sources */,
 				FABB23BB2602FC2C00C8785C /* TableViewHeaderDetailView.swift in Sources */,
 				FABB23BC2602FC2C00C8785C /* MenuItemAbstractView.m in Sources */,
