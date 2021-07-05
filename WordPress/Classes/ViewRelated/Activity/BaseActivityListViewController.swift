@@ -374,7 +374,7 @@ extension BaseActivityListViewController: ActivityPresenter {
     func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
         let rewindStatus = store.state.rewindStatus[site]
 
-        let title = rewindStatus?.isMultiSite() == true ? RewindStatus.Strings.multisiteNotAvailable : nil
+        let title = rewindStatus?.isMultisite() == true ? RewindStatus.Strings.multisiteNotAvailable : nil
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 

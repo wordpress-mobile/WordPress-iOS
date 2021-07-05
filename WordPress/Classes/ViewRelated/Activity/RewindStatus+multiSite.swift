@@ -1,7 +1,7 @@
 import WordPressKit
 
 extension RewindStatus {
-    func isMultiSite() -> Bool {
+    func isMultisite() -> Bool {
         reason == "multisite_not_supported"
     }
 

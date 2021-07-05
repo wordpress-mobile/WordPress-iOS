@@ -225,7 +225,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func showWarningIfNeeded() {
-        guard let isMultiSite = rewindStatus?.isMultiSite() else {
+        guard let isMultiSite = rewindStatus?.isMultisite() else {
             return
         }
 
