@@ -52,6 +52,19 @@ if [ -f "$LOCAL_SECRETS_FILE" ]; then
     exit 0
 fi
 
-# Use the example secrets file as a last resort
-echo "Applying Example Secrets"
-cp -v $EXAMPLE_SECRETS_FILE $SECRETS_DESTINATION_FILE
+# None of the above secrets was found. Use the example secrets file as a last
+# resort, unless building for Release.
+case $CONFIGURATION in
+  # There are three release configurations: Release, Release-Alpha, and
+  # Release-Internal. Since they all start with "Release" we can use a pattern
+  # to check for them.
+  Release*)
+    echo "error: Could not find secrets at $SECRETS_ROOT. Cannot continue release build."
+    exit 1
+    ;;
+  *)
+    echo "Applying Example Secrets"
+    echo "warning: Could not find secrets at $SECRETS_ROOT, falling back to $EXAMPLE_SECRETS_FILE. In a release build, this would be an error."
+    cp -v $EXAMPLE_SECRETS_FILE $SECRETS_DESTINATION_FILE
+    ;;
+esac
