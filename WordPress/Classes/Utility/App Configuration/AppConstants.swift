@@ -24,8 +24,8 @@ import WordPressAuthenticator
 // MARK: - Tab bar order
 @objc enum WPTab: Int {
     case mySites
-    case notifications
     case reader
+    case notifications
 }
 
 // MARK: - Localized Strings
