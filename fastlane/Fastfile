@@ -25,17 +25,19 @@ REPOSITORY_NAME = 'WordPress-iOS'
 
 import 'Jetpack-Fastfile'
 
+APP_STORE_VERSION_BUNDLE_IDENTIFIER = 'org.wordpress'
+
 ALL_BUNDLE_IDENTIFIERS = [
-  'org.wordpress',
-  'org.wordpress.WordPressShare',
-  'org.wordpress.WordPressDraftAction',
-  'org.wordpress.WordPressTodayWidget',
-  'org.wordpress.WordPressStatsWidgets',
-  'org.wordpress.WordPressNotificationServiceExtension',
-  'org.wordpress.WordPressNotificationContentExtension',
-  'org.wordpress.WordPressAllTimeWidget',
-  'org.wordpress.WordPressThisWeekWidget',
-  'org.wordpress.WordPressIntents'
+  APP_STORE_VERSION_BUNDLE_IDENTIFIER,
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressShare",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressDraftAction",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressTodayWidget",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressStatsWidgets",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressNotificationServiceExtension",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressNotificationContentExtension",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressAllTimeWidget",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressThisWeekWidget",
+  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressIntents"
 ]
 
 # Use this instead of getting values from ENV directly
@@ -749,7 +751,7 @@ platform :ios do
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.alpha') }
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
     )
   end
 
@@ -758,7 +760,7 @@ platform :ios do
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.internal') }
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
     )
   end
 
