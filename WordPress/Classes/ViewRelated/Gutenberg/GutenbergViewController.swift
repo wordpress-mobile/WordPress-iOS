@@ -475,6 +475,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.setFocusOnTitle()
     }
 
+    func showEditorHelp() {
+        gutenberg.showEditorHelp()
+    }
+
     private func presentNewPageNoticeIfNeeded() {
         // Validate if the post is a newly created page or not.
         guard post is Page,

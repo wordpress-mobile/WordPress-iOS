@@ -2,10 +2,13 @@ import Foundation
 
 class BloggingRemindersFlow {
 
+    typealias DismissClosure = () -> Void
+
     static func present(from viewController: UIViewController,
                         for blog: Blog,
                         source: BloggingRemindersTracker.FlowStartSource,
-                        alwaysShow: Bool = true) {
+                        alwaysShow: Bool = true,
+                        onDismiss: DismissClosure? = nil) {
 
         guard alwaysShow || !hasShownWeeklyRemindersFlow(for: blog) else {
             return
@@ -17,7 +20,9 @@ class BloggingRemindersFlow {
         tracker.flowStarted(source: source)
 
         let flowStartViewController = makeStartViewController(for: blog, tracker: tracker, source: source)
-        let navigationController = BloggingRemindersNavigationController(rootViewController: flowStartViewController)
+        let navigationController = BloggingRemindersNavigationController(
+            rootViewController: flowStartViewController,
+            onDismiss: onDismiss)
 
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
                                                     customHeaderSpacing: 0)
