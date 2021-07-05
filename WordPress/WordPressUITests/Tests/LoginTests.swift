@@ -147,15 +147,15 @@ class LoginTests: XCTestCase {
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite() //returns MySite screen
             .showSiteSwitcher()
-            // .addSiteButton (however we name this function)
-            // .selectSelf-Hosted
+            // .tapPlusButton() this seems unnecessary for some reason? nope, just not done correctly. This runs if you tap the + button yourself during the test.
+            .addSelfHostedSite()
             // and then we'll direct to the self-hosted login flow:
-            //.selectSiteAddress()
-            //    .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            //    .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
-              //  .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-              //  .continueWithSelectedSite()
-              //  .removeSelfHostedSite()
+            //.selectSiteAddress() this is reduntant with .addSelfHostedSite which returns the same screen
+            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .continueWithSelectedSite()
+            .removeSelfHostedSite() // this doesn't exist in this view; continueWithSelectedSite() returns us to MySites (site switcher) and the test doesn't know how to get out. Possibly returning MySitesScreen instead of MySiteScreen because MySitesScreen is really a modal?
 
             //not sure if we need an XTCAssert() here, given we have verifyEpilogueDisplays()? And if we used one, when does it check that, for instance, PrologueScreen().isLoaded() ?
     }
