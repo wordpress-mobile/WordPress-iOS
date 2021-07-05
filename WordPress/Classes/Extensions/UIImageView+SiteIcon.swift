@@ -8,10 +8,6 @@ import Gridicons
 ///
 extension UIImageView {
 
-    enum SiteIconDownloadError: Error {
-        case unacceptableStatusCode400(url: URL?, error: Error)
-    }
-
     /// Default Settings
     ///
     struct SiteIconDefaults {
@@ -54,6 +50,8 @@ extension UIImageView {
             image = placeholderImage
             return
         }
+
+        trackURLOptimization(from: path, to: siteIconURL)
 
         let request = URLRequest(url: siteIconURL)
         downloadSiteIcon(with: request, placeholderImage: placeholderImage)
@@ -100,14 +98,6 @@ extension UIImageView {
                           case let Alamofire.AFError.ResponseValidationFailureReason.unacceptableStatusCode(code) = reason,
                           code == 404 {
                     // Do not log 404 errors since they are expected for site icons
-                } else if case let Alamofire.AFError.responseValidationFailed(reason) = error,
-                          case let Alamofire.AFError.ResponseValidationFailureReason.unacceptableStatusCode(code) = reason,
-                          code == 400 {
-                    // Adding some extra information for errors with code 400 we're seeing (malformed URL).
-                    // It seems like we're misformatting some of our URLs - probably photon URLs when they're "optimized".
-                    // By recording an error that logs the URL that was used, we may be able to narrow down why the URLs
-                    // are becoming malformed.
-                    WordPressAppDelegate.crashLogging?.logError(SiteIconDownloadError.unacceptableStatusCode400(url: request.url, error: error))
                 } else {
                     WordPressAppDelegate.crashLogging?.logError(error)
                 }
@@ -137,6 +127,8 @@ extension UIImageView {
             return
         }
 
+        trackURLOptimization(from: siteIconPath, to: siteIconURL)
+
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
             WordPressAppDelegate.crashLogging?.logError(error)
@@ -158,7 +150,6 @@ extension UIImageView {
 // MARK: - Private Methods
 //
 private extension UIImageView {
-
     /// Returns the Size Optimized URL for a given Path.
     ///
     func optimizedURL(for path: String) -> URL? {
@@ -256,5 +247,20 @@ extension UIImageView {
 
     func removePlaceholderBorder() {
         layer.borderColor = UIColor.clear.cgColor
+    }
+}
+
+// MARK: - Tracking Support
+
+extension UIImageView {
+
+    /// This is just a temporary method to try and narrow down the caused behind this issue: https://sentry.io/share/issue/3da4662c65224346bb3a731c131df13d/
+    ///
+    private func trackURLOptimization(from original: String, to optimized: URL) {
+        let crumb = Breadcrumb()
+        crumb.level = .info
+        crumb.category = "UIImageView+SiteIcon"
+        crumb.message = "URL optimized from \(original) to \(optimized.absoluteString)"
+        SentrySDK.addBreadcrumb(crumb: crumb)
     }
 }
