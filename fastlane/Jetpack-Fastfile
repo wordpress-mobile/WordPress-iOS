@@ -166,6 +166,41 @@ lane :download_jetpack_localized_app_store_metadata do
   )
 end
 
+#####################################################################################
+# update_jetpack_metadata_on_app_store_connect
+# -----------------------------------------------------------------------------------
+# This lane reads the information from `fastlane/jetpack_metadata/` and uploads it to
+# App Store Connect for the version specified in the version xcconfig file.
+#
+# Optionally, it can also upload new screenshots, overriding the existing ones.
+# -----------------------------------------------------------------------------------
+# Usage:
+# bundle exec fastlane update_jetpack_metadata_on_app_store_connect
+#
+# Example:
+# bundle exec fastlane update_jetpack_metadata_on_app_store_connect
+# bundle exec fastlane update_jetpack_metadata_on_app_store_connect with_screenshots:true
+#####################################################################################
+desc 'Uploads the Jetpack metadata to App Store Connect, localized, and optionally including screenshots.'
+lane :update_jetpack_metadata_on_app_store_connect do |options|
+  # Skip screenshots by default. The naming is "with" to make it clear that
+  # callers need to opt-in to adding screenshots. The naming of the deliver
+  # parameter, on the other hand, uses the skip verb.
+  with_screenshots = options.fetch(:with_screenshots, false)
+  skip_screenshots = with_screenshots == false
+
+  upload_to_app_store(
+    # The reason we have these constant settings is to be able to able to
+    # share them with the Jetpack implementation (see below).
+    UPLOAD_TO_APP_STORE_SETTINGS.merge(
+      app_identifier: APP_IDENTIFIER,
+      metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
+      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
+      skip_screenshots: skip_screenshots
+    )
+  )
+end
+
 ########################################################################
 # Jetpack Fastlane match code signing
 ########################################################################

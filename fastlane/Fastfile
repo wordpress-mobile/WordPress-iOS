@@ -287,6 +287,42 @@ platform :ios do
   end
 
   #####################################################################################
+  # update_metadata_on_app_store_connect
+  # -----------------------------------------------------------------------------------
+  # Uploads the localized metadata tracked in the project repository to App Store
+  # Connect, optionally updating screenshots, too.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_metadata_on_app_store_connect [with_screenshots:<with screenshots>]
+  #
+  # Example:
+  # bundle exec fastlane update_metadata_on_app_store_connect
+  # bundle exec fastlane update_metadata_on_app_store_connect with_screenshots:true
+  #####################################################################################
+  desc 'Updates the App Store Connect localized metadata'
+  lane :update_metadata_on_app_store_connect do |options|
+    # Skip screenshots by default. The naming is "with" to make it clear that
+    # callers need to opt-in to adding screenshots. The naming of the deliver
+    # parameter, on the other hand, uses the skip verb.
+    with_screenshots = options.fetch(:with_screenshots, false)
+    skip_screenshots = with_screenshots == false
+
+    # WordPress
+    upload_to_app_store(
+      # The reason we have these constant settings is to be able to able to
+      # share them with the Jetpack implementation (see below).
+      UPLOAD_TO_APP_STORE_SETTINGS.merge(
+        app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
+        screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
+        skip_screenshots: skip_screenshots
+      )
+    )
+
+    # Jetpack: Delegate to dedicated lane from Jetpack-Fastfile
+    update_jetpack_metadata_on_app_store_connect(options)
+  end
+
+  #####################################################################################
   # finalize_hotfix_release
   # -----------------------------------------------------------------------------------
   # This lane finalizes the hotfix branch.
@@ -854,6 +890,8 @@ def read_version_from_config
   end
 end
 
+# Application-agnostic settings for the `upload_to_app_store` (also known as
+# `deliver`) action.
 UPLOAD_TO_APP_STORE_SETTINGS = {
   app_version: read_version_from_config,
   skip_binary_upload: true,
