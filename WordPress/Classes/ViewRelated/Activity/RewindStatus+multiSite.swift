@@ -10,7 +10,9 @@ extension RewindStatus {
     }
 
     enum Strings {
-        static let multisiteNotAvailable = NSLocalizedString("Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information visit our documentation page.", comment: "Message for Jetpack users that have multisite WP installation, thus Restore is not available.")
-        static let multisiteNotAvailableHighlight = NSLocalizedString("visit our documentation page", comment: "Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color.")
+        static let multisiteNotAvailable = String(format: Self.multisiteNotAvailableFormat,
+                                                  Self.multisiteNotAvailableSubstring)
+        static let multisiteNotAvailableFormat = NSLocalizedString("Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.", comment: "Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'.")
+        static let multisiteNotAvailableSubstring = NSLocalizedString("visit our documentation page", comment: "Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color.")
     }
 }

@@ -144,7 +144,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         backupButton.naturalContentHorizontalAlignment = .leading
         backupButton.setImage(.gridicon(.cloudDownload, size: Constants.gridiconSize), for: .normal)
 
-        let attributedTitle = WPStyleGuide.Jetpack.highlightString(RewindStatus.Strings.multisiteNotAvailableHighlight,
+        let attributedTitle = WPStyleGuide.Jetpack.highlightString(RewindStatus.Strings.multisiteNotAvailableSubstring,
                                                                    inString: RewindStatus.Strings.multisiteNotAvailable)
 
         warningButton.setAttributedTitle(attributedTitle, for: .normal)
