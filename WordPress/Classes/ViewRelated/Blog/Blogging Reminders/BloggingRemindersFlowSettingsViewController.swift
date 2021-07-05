@@ -78,6 +78,17 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var frequencyLabel: UILabel = {
+        let label = UILabel()
+
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 2
+        label.textAlignment = .center
+
+        return label
+    }()
+
     lazy var bottomTipPanel: UIView = {
         let view = UIView()
         view.backgroundColor = .quaternaryBackground
@@ -136,6 +147,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let calendar: Calendar
     private let scheduler: BloggingRemindersScheduler
+    private let scheduleFormatter = BloggingRemindersScheduleFormatter()
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
             refreshNextButton()
@@ -198,6 +210,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureConstraints()
         populateCalendarDays()
         refreshNextButton()
+        refreshFrequencyLabel()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -251,6 +264,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             titleLabel,
             promptLabel,
             daysOuterStackView,
+            frequencyLabel,
             fillerView,
             bottomTipPanel,
             bottomPadding,
@@ -313,6 +327,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                     weekday == button.weekday
                 }
             }
+
+            self.refreshFrequencyLabel()
         }
 
         button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -342,6 +358,26 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             button.setTitle(TextContent.updateButtonTitle, for: .normal)
             button.isEnabled = true
         }
+    }
+
+    private func refreshFrequencyLabel() {
+        guard weekdays.count > 0 else {
+            frequencyLabel.isHidden = true
+            return
+        }
+
+        frequencyLabel.isHidden = false
+
+        let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
+            .foregroundColor: UIColor.text,
+        ]
+
+        let frequencyDescription = scheduleFormatter.shortIntervalDescription(for: .weekdays(weekdays))
+        let attributedText = NSMutableAttributedString(attributedString: frequencyDescription)
+        attributedText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedText.length))
+
+        frequencyLabel.attributedText = attributedText
+        frequencyLabel.sizeToFit()
     }
 
     // MARK: - Actions

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-16 14:14:32+0000 */
+/* Translation-Revision-Date: 2021-07-01 13:32:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -296,6 +296,15 @@
 
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 uur";
+
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> keer per week";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>Een keer<\/strong> per week";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>Twee keer<\/strong> per week";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -639,6 +648,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-tekst";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Als alternatief, kun je deze blokken ook losmaken en afzonderlijk bewerken door op \"Converteren naar normale blokken\" te tikken.";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Anders:";
 
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "Terug";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "Achtergrondkleur";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's bezoeker";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Blogging herinneringen";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Een bericht, pagina of verhaal maken";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "Maak een site pictogram ";
 
 /* Label that describes the download backup action */
@@ -2394,6 +2409,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Bewerk je homepage";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door WordPress voor Android";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Bewerken van herbruikbare blokken wordt momenteel niet ondersteund door WordPress voor iOS";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Deze GIF bewerken zal de animatie verwijderen.";
 
@@ -2441,7 +2462,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail verzonden!";
 
-/* No comment provided by engineer. */
+/* Title for the Emoji section */
 "Emoji" = "Emoji";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2624,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Evenement";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Elke dag";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Iedereen";
@@ -2956,8 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Voorbeeld genereren";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Hoe te starten";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Ga naar Reader";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Ga naar Instellingen → Kennisgevingen → WordPress en toggle kennisgevingen toestaan.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3406,6 +3432,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "Het is %1$@ sinds %2$@ is gepubliceerd.";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "Het is tijd om te bloggen op %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "Het is tijd om te bloggen!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "De tijd is aangebroken! Stel je allereerste bericht op en publiceer het.";
 
@@ -3684,6 +3716,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Bezig met laden stream...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "De blok-editor aan het laden.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Gebruikersnamen laden";
 
@@ -3778,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hoofdnavigatie";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Haal het meeste uit je site door doelen te stellen en je voortgang bij te houden.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "Volgende";
 
 /* Table view title for the quick start section. */
@@ -4362,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Geen";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "Geen ingesteld";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Noord";
 
@@ -4425,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Ongelezen meldingen";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Breng me op de hoogte";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Nu zijn verhalen voor iedereen";
@@ -4729,9 +4766,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "Mensen";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "Personen die minimaal twee keer per week berichten, krijgen 87% meer weergaven op hun site.";
-
 /* Label for date periods. */
 "Period" = "Periode";
 
@@ -4783,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Neem contact op met ondersteuning voor assistentie.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Zorg ervoor dat de blok-editor is ingeschakeld op je site en probeer opnieuw.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Zorg ervoor dat de blok-editor ingeschakeld is op je site. Indien niet ingeschakeld, zal het niet laden.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Vul een compleet website-adres in, zoals voorbeeld.nl.";
@@ -5002,6 +5042,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Berichtactiviteiten";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Regelmatig publiceren kan je lezers betrokken houden en nieuwe bezoekers naar je site aantrekken.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Gerelateerde berichten geven relevante content van je site weer onder je berichten";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Herinneringen verwijderd";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Terug naar bericht";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Herbruikbare blokken zijn niet bewerkbaar in WordPress voor Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Herbruikbare blokken zijn niet bewerkbaar in WordPress voor iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Wijziging in behandeling terugzetten";
 
@@ -5573,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "Opslaan";
 
@@ -5904,7 +5945,7 @@
 "Set as Posts Page" = "Instellen als berichten pagina";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Stel doelen";
+"Set reminders" = "Herinneringen instellen";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Instellen";
@@ -5912,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack instellen";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Stel je blogdoelen in";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Stel blog herinneringen in op dagen waarop je wil publiceren.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Stel je blogging herinneringen in";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Stel je site titel in";
@@ -6879,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Dit is waar mensen je kunnen vinden op het internet.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "Dit is je herinnering om vandaag te bloggen ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dit media-item is verwijderd.";
 
@@ -6997,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "Als je blog herinneringen wilt gebruiken, moet je push kennisgevingen inschakelen.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Installeer de Jetpack-plugin om statistieken voor je site te gebruiken.";
@@ -7131,6 +7180,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Zet site meldingen uit";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Zet kennisgevingen aan";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Zet kennisgevingen uit";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Zet site meldingen aan";
 
@@ -7214,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Niet mogelijk om berichten te laden op dit moment.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Kan de blok-editor momenteel niet laden.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Kan de afbeelding niet laden. Kies een andere of probeer het later opnieuw.";
@@ -7313,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Niet beschikbaar";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Ongedefinieerd";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Onderstreept";
@@ -7330,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Ontvolg %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Ontvolgen gesprek per e-mail";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Ontvolg site";
@@ -7400,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Logs worden zeven dagen lang opgeslagen.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Bijwerken";
@@ -8276,6 +8341,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Je hebt wijzigingen voor %d berichten die nog niet zijn geüpload naar je site. Door uit te loggen worden deze wijzigingen verwijderd. Toch uitloggen?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "Je hebt geen herinneringen ingesteld.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Je hebt de wijzigingen niet opgeslagen.";
@@ -8323,8 +8391,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Je kunt je gebruikersnaam niet meer terug veranderen.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "Je krijgt herinneringen om X keer per week te bloggen op DAG en DAG.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Je krijgt een herinnering om <strong>één keer <\/strong> per week te bloggen op %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "Je krijgt herinneringen om %1$@ keer per week te bloggen op %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Je bent helemaal bij!";
@@ -8377,8 +8448,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Je bericht wordt momenteel geüpload. Wacht tot dit is voltooid.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Je bericht wordt gepubliceerd... intussen, stel je blogdoelen in om herinneringen te krijgen, en je voortgang te volgen.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Je bericht wordt gepubliceerd... in de tussentijd kun je blog herinneringen instellen op dagen waarop je wil publiceren.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Je berichten, pagina's en instellingen worden naar je gemaild via %@.";
@@ -8398,7 +8469,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Je site is succesvol teruggezet";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Je site pictogram wordt gebruikt overal op het web: in browser tabs, site voorbeelden op social media, en de WordPress.com reader.";
 
 /* Title of a message displayed when user starts a restore operation */
