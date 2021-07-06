@@ -309,11 +309,10 @@ platform :ios do
 
     # WordPress
     upload_to_app_store(
-      COMMON_UPLOAD_TO_APPSTORE_PARAMS.merge(
-        app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
-        screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
-        skip_screenshots: skip_screenshots
-      )
+      **COMMON_UPLOAD_TO_APPSTORE_PARAMS,
+      app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
+      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
+      skip_screenshots: skip_screenshots
     )
 
     # Jetpack: Delegate to dedicated lane from Jetpack-Fastfile
