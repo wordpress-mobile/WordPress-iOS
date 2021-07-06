@@ -52,6 +52,18 @@ struct GutenbergNetworkRequest {
                     case .success(let response):
                         completion(.success(response))
                     case .failure(let error):
+                        if path.starts(with: "/oembed/1.0/") {
+                            if let error = error as? AFError {
+                                if case .responseValidationFailed(let reason) = error {
+                                    if case .unacceptableStatusCode(let code) = reason {
+                                        if code == 404 {
+                                            let errorCode = URLError.Code(rawValue: code)
+                                            completion(.failure(URLError(errorCode) as NSError))
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         completion(.failure(error as NSError))
                 }
             }
