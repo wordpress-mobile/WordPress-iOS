@@ -95,7 +95,6 @@ extension UIImageView {
                 if case .requestCancelled = (error as? AFIError) {
                     // Do not log intentionally cancelled requests as errors.
                 } else {
-                    WordPressAppDelegate.crashLogging?.logError(error)
                     DDLogError(error.localizedDescription)
                 }
             }
@@ -259,7 +258,7 @@ private extension UIImageView {
 
     private func logURLOptimization(from original: String, to optimized: URL, for blog: Blog) {
         let blogInfo: String
-        if blog.isAccessibleThroughWPCom() 
+        if blog.isAccessibleThroughWPCom()
             blogInfo = "dot-com-accessible: \(blog.url ?? "unknown"), id: \(blog.dotComID ?? 0)"
         } else {
             blogInfo = "self-hosted with url: \(blog.url ?? "unknown")"
