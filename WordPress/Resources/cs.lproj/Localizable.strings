@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-17 13:10:07+0000 */
+/* Translation-Revision-Date: 2021-06-30 18:27:22+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "%1$@ k opravě hrozeb.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d to se mi líbí";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d to se mi líbí";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d blogerovi se to líbí.";
@@ -296,6 +296,15 @@
 
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 hodina";
+
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -639,6 +648,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternativní text";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternativní způsoby přihlášení:";
 
@@ -905,8 +917,8 @@
    Spoken accessibility label */
 "Back" = "Zpět";
 
-/* No comment provided by engineer. */
-"Background Color" = "Background Color";
+/* Title for the Background Color section */
+"Background Color" = "Barva pozadí";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Zálohování webu";
@@ -1016,6 +1028,9 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Prohlížeč blogu";
 
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Blogging Reminders";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Zvýraznit";
@@ -1024,7 +1039,7 @@
 "Border Radius" = "Zaoblení okrajů";
 
 /* No comment provided by engineer. */
-"Border Settings" = "Border Settings";
+"Border Settings" = "Nastavení okrajů";
 
 /* Text snippet summarizing what comment paging does. */
 "Break comment threads into multiple pages." = "Rozdělit vlákna komentářů do více stránek.";
@@ -1045,7 +1060,7 @@
 "Busy" = "Zaneprázdněný ";
 
 /* No comment provided by engineer. */
-"Button Link URL" = "Button Link URL";
+"Button Link URL" = "URL odkaz tlačítka";
 
 /* Title for a list of different button styles. */
 "Button Style" = "Styl tlačítek";
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Vytvořte příspěvek, stránku nebo příběh";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "Create a site icon";
 
 /* Label that describes the download backup action */
@@ -1891,10 +1906,10 @@
 "Current period: %@ to %@" = "Současná doba: %1$@ to %2$@";
 
 /* No comment provided by engineer. */
-"Current placeholder text is" = "Current placeholder text is";
+"Current placeholder text is" = "Aktuální zástupný text je";
 
 /* translators: accessibility text. Inform about current unit value. %s: Current unit value. */
-"Current unit is %s" = "Current unit is %s";
+"Current unit is %s" = "Aktuální jednotka je %s";
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "Aktuální hodnota je %s";
@@ -2207,7 +2222,7 @@
 "Don’t worry about a thing" = "O nic se nestarejte";
 
 /* No comment provided by engineer. */
-"Double tap and hold to edit" = "Double tap and hold to edit";
+"Double tap and hold to edit" = "Upravte dvojitým klepnutím a podržením";
 
 /* Screen reader hint for button that will move the menu item */
 "Double tap and hold to move this menu item up or down" = "Dvojitým klepnutím a podržením přesunete tuto položku nabídky nahoru nebo dolů";
@@ -2222,13 +2237,13 @@
 "Double tap to dismiss" = "Dvojitým klepnutím zavřete";
 
 /* No comment provided by engineer. */
-"Double tap to edit button text" = "Double tap to edit button text";
+"Double tap to edit button text" = "Dvojitým klepnutím upravíte text tlačítka";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Double tap to edit label text";
+"Double tap to edit label text" = "Dvojitým klepnutím upravíte text štítku";
 
 /* No comment provided by engineer. */
-"Double tap to edit placeholder text" = "Double tap to edit placeholder text";
+"Double tap to edit placeholder text" = "Dvojitým klepnutím upravíte zástupný text";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "Tuto hodnotu upravíte dvojitým klepnutím";
@@ -2252,7 +2267,7 @@
 "Double tap to move the block up" = "Dvojitým klepnutím posunete blok nahoru";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Double tap to open Action Sheet to add image or video";
+"Double tap to open Action Sheet to add image or video" = "Dvojitým klepnutím otevřete akční list pro přidání obrázku nebo videa";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet to edit, replace, or clear the image" = "Dvojitým klepnutím otevřete akční list, kde můžete obrázek upravit, nahradit nebo vymazat";
@@ -2261,7 +2276,7 @@
 "Double tap to open Action Sheet with available options" = "Dvojitým klepnutím otevřete akční list s dostupnými možnostmi";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Double tap to open Bottom Sheet to add image or video";
+"Double tap to open Bottom Sheet to add image or video" = "Dvojitým klepnutím otevřete spodní list pro přidání obrázku nebo videa";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dvojitým klepnutím otevřete spodní list, kde můžete obrázek upravit, nahradit nebo vymazat";
@@ -2365,7 +2380,7 @@
 "Edit Post" = "Upravit příspěvek";
 
 /* No comment provided by engineer. */
-"Edit cover media" = "Edit cover media";
+"Edit cover media" = "Upravit náhled médií";
 
 /* No comment provided by engineer. */
 "Edit file" = "Upravit soubor";
@@ -2393,6 +2408,12 @@
 
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Upravte svou domovskou stránku";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Úpravou tohoto GIF odstraníte jeho animaci.";
@@ -2441,7 +2462,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail poslán!";
 
-/* No comment provided by engineer. */
+/* Title for the Emoji section */
 "Emoji" = "Emoji";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2624,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Událost";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Every day";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Všichni";
@@ -2956,8 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generování náhledu";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Začínáme";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Zobrazit čtečku";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3138,7 +3164,7 @@
 "Hide keyboard" = "Skrýt klávesnici";
 
 /* No comment provided by engineer. */
-"Hide search heading" = "Hide search heading";
+"Hide search heading" = "Skrýt nadpis vyhledávání";
 
 /* Displays the History screen from the editor's alert sheet
    Title of a navigation button that opens the scan history view
@@ -3314,7 +3340,7 @@
 "Insert Media" = "Vložte média";
 
 /* No comment provided by engineer. */
-"Insert crosspost" = "Insert crosspost";
+"Insert crosspost" = "Vložit crosspost";
 
 /* Accessibility label for insert media button on formatting toolbar. */
 "Insert media" = "Vložte média";
@@ -3326,7 +3352,7 @@
 "Insert selected" = "Vložit vybrané";
 
 /* No comment provided by engineer. */
-"Inside" = "Inside";
+"Inside" = "Uvnitř";
 
 /* Title of Insights stats filter. */
 "Insights" = "Přehledy";
@@ -3377,7 +3403,7 @@
 "Invalid URL, please check if you wrote a valid site address." = "Neplatná URL adresa, zkontrolujte, zda jste napsal platnou adresu webu.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+"Invalid URL. Audio file not found." = "Neplatná URL. Audio soubor se nepodařilo nalézt.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Neplatný koncový bod";
@@ -3405,6 +3431,12 @@
 
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "Od zveřejnění %1$@ je to %2$@";
+
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "It's time to blog on %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "It's time to blog!";
 
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "Je čas! Vytvořte a zveřejněte svůj první příspěvek.";
@@ -3684,6 +3716,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Načítám stream...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Loading the block editor.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Načítání uživatelských jmen";
 
@@ -3778,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hlavní navigace";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3889,7 +3921,7 @@
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "Velikost mediálního souboru (%1$@) je příliš velká na nahrání. Maximální povolená hodnota je %2$@";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
-"Media options" = "Media options";
+"Media options" = "Nastavení médií";
 
 /* Alert title when there is issues loading an asset to preview. */
 "Media preview failed." = "Náhled médií selhal.";
@@ -3904,7 +3936,7 @@
 "Medium" = "Průměrné";
 
 /* No comment provided by engineer. */
-"Mention" = "Mention";
+"Mention" = "Zmínit";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "Menu";
@@ -3936,7 +3968,7 @@
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* No comment provided by engineer. */
-"Minimum height" = "Minimum height";
+"Minimum height" = "Minimální výška";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Různé zranitelnosti";
@@ -4137,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "Další";
 
 /* Table view title for the quick start section. */
@@ -4212,7 +4243,7 @@
 "No available sites" = "Žádné dostupné stránky";
 
 /* No comment provided by engineer. */
-"No button" = "No button";
+"No button" = "Žádné tlačítko";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Žádný komentář";
@@ -4230,7 +4261,7 @@
 "No connections found for %@" = "Nebyla nalezena žádná spojení pro %@";
 
 /* No comment provided by engineer. */
-"No custom placeholder set" = "No custom placeholder set";
+"No custom placeholder set" = "Není nastaven žádný vlastní zástupný symbol";
 
 /* Text displayed when Period stat section has no data. */
 "No data for this period" = "Pro toto období nejsou k dispozici žádné údaje";
@@ -4362,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Žádný";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "Žádná sada";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Sever";
 
@@ -4425,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Nepřečtená oznámení";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Informujte mě";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Nyní jsou příběhy pro každého";
@@ -4612,7 +4649,7 @@
 "Other Sites" = "Ostatní weby";
 
 /* No comment provided by engineer. */
-"Outside" = "Outside";
+"Outside" = "Vně";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Přepsáno";
@@ -4729,9 +4766,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "Lidé";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
-
 /* Label for date periods. */
 "Period" = "Období";
 
@@ -4783,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Požádejte o pomoc podporu.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Zadejte úplnou adresu webu, například example.com.";
@@ -5002,6 +5042,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivita publikování";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Podobné příspěvky zobrazí relevantní obsah vašeho webu, přímo pod příspěvky.";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Reminders removed";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Vrátit se k příspěvku";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Opakovaně použitelné bloky nelze upravovat na WordPress pro Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Opakovaně použitelné bloky nelze upravovat na WordPress pro iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Vrátit čekající změnu";
 
@@ -5573,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "Uložit";
 
@@ -5692,7 +5733,7 @@
 "Search block" = "Hledat blok";
 
 /* No comment provided by engineer. */
-"Search block label. Current text is" = "Search block label. Current text is";
+"Search block label. Current text is" = "Vyhledat štítek bloku. Aktuální text je";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Hledat bloky";
@@ -5895,7 +5936,7 @@
 "Set Parent" = "Nastavit nadřazené";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Použít jako náhledový obrázek";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Nastavit jako hlavní stránku";
@@ -5904,7 +5945,7 @@
 "Set as Posts Page" = "Nastavit jako stránku příspěvků";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set reminders" = "Set reminders";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Instalace";
@@ -5912,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Nastavte Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Set your blogging reminders";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Zadejte název svého webu";
@@ -6169,7 +6212,7 @@
 "Skip Quick Start" = "Přeskočit rychlý start";
 
 /* translators: Slash inserter autocomplete results */
-"Slash inserter results" = "Slash inserter results";
+"Slash inserter results" = "Výsledky lomítka";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
@@ -6497,7 +6540,7 @@
 "Tap here to show help" = "Klepnutím sem zobrazíte nápovědu";
 
 /* No comment provided by engineer. */
-"Tap to add content" = "Tap to add content";
+"Tap to add content" = "Přidejte obsah kliknutím";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Klepněte zde pro zrušení nahrávání.";
@@ -6879,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Toto je místo, kde vás lidé najdou na internetu";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Tato mediální položka byla smazána.";
 
@@ -6997,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Pořizovat fotky a videa a umožnit použití ve vašich příspěvcích. ";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Chcete-li na svém webu používat statistiky, musíte si nainstalovat plugin Jetpack.";
@@ -7131,6 +7180,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Vypnout notifikace";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Turn on notifications";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Turn on push notifications";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Zapnout notifikace";
 
@@ -7147,7 +7202,7 @@
 "Twitter Username" = "Twitter uživatelské jméno";
 
 /* No comment provided by engineer. */
-"Type a URL" = "Type a URL";
+"Type a URL" = "Typ URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Chcete-li získat více nápadů, zadejte klíčové slovo";
@@ -7214,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Momentálně nelze načíst příspěvky.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Unable to load the block editor right now.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Obrázek nelze načíst. Prosím zvolte jiný, nebo to zkuste později.";
@@ -7313,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Nedostupné";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Undefined";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Zdůraznit";
@@ -7330,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Zrušit sledování %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Unfollow conversation by email";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Zrušení sledování tohoto webu";
@@ -7400,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Až sedm dní jsou uloženy přihlašovací údaje.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Aktualizovat";
@@ -7514,7 +7579,7 @@
 "Use block editor" = "Použijte editor bloků";
 
 /* No comment provided by engineer. */
-"Use icon button" = "Use icon button";
+"Use icon button" = "Použijte ikonu tlačítka";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
@@ -8055,7 +8120,7 @@
 "Widgets" = "Widgety";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "Nastavení šířky";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Nebude veřejně zobrazeno.";
@@ -8169,10 +8234,10 @@
 "Writing" = "Psaní";
 
 /* No comment provided by engineer. */
-"X-Axis Position" = "X-Axis Position";
+"X-Axis Position" = "Pozice na ose X";
 
 /* No comment provided by engineer. */
-"Y-Axis Position" = "Y-Axis Position";
+"Y-Axis Position" = "Pozice na ose Y";
 
 /* Option to select the Yahoo Mail app when logging in with magic links */
 "Yahoo Mail" = "Yahoo Mail";
@@ -8276,6 +8341,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Máte změny u %d příspěvků, které se ještě nenahrály na web. Odhlášením tyto změny odstraníte. Chcete se přesto odhlásit?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "You have no reminders set.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Máte neuložené změny.";
@@ -8323,8 +8391,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Nebudete moci změnit své uživatelské jméno zpět.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Všechny jsou přečtené!";
@@ -8377,8 +8448,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Váš příspěvek se aktuálně nahrává. Počkejte, dokud se to nedokončí.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vaše příspěvky, stránky a nastavení budou zaslány na %@.";
@@ -8398,7 +8469,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Vaše stránka byla úspěšně obnovena";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
 
 /* Title of a message displayed when user starts a restore operation */

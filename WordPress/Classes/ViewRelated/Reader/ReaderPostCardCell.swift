@@ -3,7 +3,7 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-protocol ReaderTopicsChipsDelegate: class {
+protocol ReaderTopicsChipsDelegate: AnyObject {
     func didSelect(topic: String)
     func heightDidChange()
 }

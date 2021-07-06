@@ -1,5 +1,5 @@
 /// Implementations of this protocol will be notified when data is loaded from the TenorService
-protocol TenorDataLoaderDelegate: class {
+protocol TenorDataLoaderDelegate: AnyObject {
     func didLoad(media: [TenorMedia], reset: Bool)
 }
 

@@ -3,7 +3,7 @@ import WordPressShared
 
 typealias ImmuTableRowControllerGenerator = (ImmuTableRow) -> UIViewController
 
-protocol ImmuTablePresenter: class {
+protocol ImmuTablePresenter: AnyObject {
     func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
     func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
 }

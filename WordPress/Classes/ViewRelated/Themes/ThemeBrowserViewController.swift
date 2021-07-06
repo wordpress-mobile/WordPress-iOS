@@ -43,7 +43,7 @@ public enum ThemeType {
  *  @brief      Publicly exposed theme interaction support
  *  @details    Held as weak reference by owned subviews
  */
-public protocol ThemePresenter: class {
+public protocol ThemePresenter: AnyObject {
     var filterType: ThemeType { get set }
 
     var screenshotWidth: Int { get }

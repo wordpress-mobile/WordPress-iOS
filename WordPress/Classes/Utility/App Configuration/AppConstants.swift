@@ -21,6 +21,13 @@ import WordPressAuthenticator
     #endif
 }
 
+// MARK: - Tab bar order
+@objc enum WPTab: Int {
+    case mySites
+    case reader
+    case notifications
+}
+
 // MARK: - Localized Strings
 extension AppConstants {
 

@@ -1,6 +1,6 @@
 import UIKit
 
-protocol SiteStatsTableHeaderDelegate: class {
+protocol SiteStatsTableHeaderDelegate: AnyObject {
     func dateChangedTo(_ newDate: Date?)
 }
 
