@@ -176,7 +176,9 @@ extension NSNotification.Name {
         }, failure: { error in })
     }
 
-    func createRequest(planService: PlanService? = nil, completion: @escaping (RequestUiConfiguration) -> Void) {
+    func createRequest(planServiceRemote: PlanServiceRemote? = nil,
+                       siteID: Int? = nil,
+                       completion: @escaping (RequestUiConfiguration) -> Void) {
 
         let requestConfig = RequestUiConfiguration()
 
@@ -194,7 +196,7 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
 
-        ZendeskUtils.getZendeskMetadata() { result in
+        ZendeskUtils.getZendeskMetadata(planServiceRemote: planServiceRemote, siteID: siteID) { result in
             var tags = ZendeskUtils.getTags()
             switch result {
             case .success(let metadata):
@@ -987,19 +989,41 @@ private extension ZendeskUtils {
         .sorted { $0.priority > $1.priority }
     }
 
-    static func getZendeskMetadata(completion: @escaping (Result<ZendeskMetadata, Error>) -> Void) {
-        let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        let blogService = BlogService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount(),
-              let api = account.wordPressComRestApi,
-              let siteID = blogService.lastUsedOrFirstBlog()?.dotComID else {
+    /// Retrieves up to date Zendesk metadata from the backend
+    /// - Parameters:
+    ///   - planServiceRemote: optional plan service remote. The default is used if none is passed
+    ///   - siteID: optional site id. The current is used if none is passed
+    ///   - completion: completion closure executed at the completion of the remote call
+    static func getZendeskMetadata(planServiceRemote: PlanServiceRemote? = nil,
+                                   siteID: Int? = nil,
+                                   completion: @escaping (Result<ZendeskMetadata, Error>) -> Void) {
+
+        guard let service = planServiceRemote ?? defaultPlanServiceRemote,
+              let validSiteID = siteID ?? currentSiteID else {
             return
         }
 
-        let service = PlanServiceRemote(wordPressComRestApi: api)
+        service.getZendeskMetadata(siteID: validSiteID, completion: completion)
+    }
 
-        service.getZendeskMetadata(siteID: Int(truncating: siteID), completion: completion)
+    /// Provides the default PlanServiceRemote to `getZendeskMetadata`
+    private static var defaultPlanServiceRemote: PlanServiceRemote? {
+        guard let api = AccountService(managedObjectContext: ContextManager.shared.mainContext)
+                .defaultWordPressComAccount()?
+                .wordPressComRestApi else {
+            return nil
+        }
+        return PlanServiceRemote(wordPressComRestApi: api)
+    }
+
+    /// Provides the current site id to `getZendeskMetadata`, if it exists
+    private static var currentSiteID: Int? {
+        guard let siteID = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+                .lastUsedOrFirstBlog()?
+                .dotComID else {
+            return nil
+        }
+        return Int(truncating: siteID)
     }
 
     struct SupportPlan {
