@@ -258,13 +258,12 @@ private extension UIImageView {
     }
 
     private func logURLOptimization(from original: String, to optimized: URL, for blog: Blog) {
-        let blogInfo: String = {
-            guard blog.isAccessibleThroughWPCom() else {
-                return "self-hosted with url: \(blog.url ?? "unknown")"
-            }
-
-            return "dot-com-accessible: \(blog.url ?? "unknown"), id: \(blog.dotComID ?? 0)"
-        }()
+        let blogInfo: String
+        if blog.isAccessibleThroughWPCom() 
+            blogInfo = "dot-com-accessible: \(blog.url ?? "unknown"), id: \(blog.dotComID ?? 0)"
+        } else {
+            blogInfo = "self-hosted with url: \(blog.url ?? "unknown")"
+        }
 
         DDLogInfo("URL optimized from \(original) to \(optimized.absoluteString) for blog \(blogInfo)")
     }
