@@ -26,19 +26,19 @@ REPOSITORY_NAME = 'WordPress-iOS'
 import 'Jetpack-Fastfile'
 
 APP_STORE_VERSION_BUNDLE_IDENTIFIER = 'org.wordpress'
+EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
+  WordPressShare
+  WordPressDraftAction
+  WordPressTodayWidget
+  WordPressStatsWidgets
+  WordPressNotificationServiceExtension
+  WordPressNotificationContentExtension
+  WordPressAllTimeWidget
+  WordPressThisWeekWidget
+  WordPressIntents
+].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
 
-ALL_BUNDLE_IDENTIFIERS = [
-  APP_STORE_VERSION_BUNDLE_IDENTIFIER,
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressShare",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressDraftAction",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressTodayWidget",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressStatsWidgets",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressNotificationServiceExtension",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressNotificationContentExtension",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressAllTimeWidget",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressThisWeekWidget",
-  "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.WordPressIntents"
-]
+ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER] + EXTENSIONS_BUNDLE_IDENTIFIERS
 
 # Use this instead of getting values from ENV directly
 # It will throw an error if the requested value is missing
