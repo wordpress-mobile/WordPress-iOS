@@ -309,9 +309,7 @@ platform :ios do
 
     # WordPress
     upload_to_app_store(
-      # The reason we have these constant settings is to be able to able to
-      # share them with the Jetpack implementation (see below).
-      UPLOAD_TO_APP_STORE_SETTINGS.merge(
+      COMMON_UPLOAD_TO_APPSTORE_PARAMS.merge(
         app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
         screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
         skip_screenshots: skip_screenshots
@@ -892,7 +890,7 @@ end
 
 # Application-agnostic settings for the `upload_to_app_store` (also known as
 # `deliver`) action.
-UPLOAD_TO_APP_STORE_SETTINGS = {
+COMMON_UPLOAD_TO_APPSTORE_PARAMS = {
   app_version: read_version_from_config,
   skip_binary_upload: true,
   overwrite_screenshots: true,

@@ -190,9 +190,7 @@ lane :update_jetpack_metadata_on_app_store_connect do |options|
   skip_screenshots = with_screenshots == false
 
   upload_to_app_store(
-    # The reason we have these constant settings is to be able to able to
-    # share them with the Jetpack implementation (see below).
-    UPLOAD_TO_APP_STORE_SETTINGS.merge(
+    COMMON_UPLOAD_TO_APPSTORE_PARAMS.merge(
       app_identifier: APP_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
