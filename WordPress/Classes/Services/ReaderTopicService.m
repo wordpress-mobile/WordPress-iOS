@@ -515,7 +515,17 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Revert changes on failure
+        BOOL alreadyFollowing = newFollowValue && error.domain == ReaderSiteServiceErrorDomain && error.code == ReaderSiteServiceErrorAlreadyFollowingSite;
+        BOOL alreadyUnsubscribed = !newFollowValue && [error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] isEqual:@"are_not_subscribed"];
+        BOOL successWithoutChanges = alreadyFollowing || alreadyUnsubscribed;
+            
+        if (successWithoutChanges) {
+            successBlock();
+            return;
+        }
+     
+        // Revert changes on failure, unless the error is that we're already following
+        // a site.
         topic.following = oldFollowValue;
         [postService setFollowing:oldFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

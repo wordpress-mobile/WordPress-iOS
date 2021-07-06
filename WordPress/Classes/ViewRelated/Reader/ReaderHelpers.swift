@@ -343,10 +343,6 @@ struct ReaderPostMenuButtonTitles {
         dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, following: post.isFollowing, success: success)
     }
 
-    class func dispatchToggleFollowSiteMessage(topic: ReaderSiteTopic, success: Bool) {
-        dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: topic.following, success: success)
-    }
-
     class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool) {
         let title: String
         if success {
@@ -362,7 +358,7 @@ struct ReaderPostMenuButtonTitles {
         dispatchNotice(Notice(title: title))
     }
 
-    private class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
+    class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
         var notice: Notice
 
         if success {
