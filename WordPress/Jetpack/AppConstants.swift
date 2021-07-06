@@ -1,6 +1,7 @@
 import Foundation
 
 @objc class AppConstants: NSObject {
+    static let itunesAppID = "1565481562"
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
