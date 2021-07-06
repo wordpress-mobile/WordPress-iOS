@@ -301,22 +301,39 @@ platform :ios do
   #####################################################################################
   desc 'Updates the App Store Connect localized metadata'
   lane :update_metadata_on_app_store_connect do |options|
+    update_wordpress_metadata_on_app_store_connect(options)
+    update_jetpack_metadata_on_app_store_connect(options)
+  end
+
+  #####################################################################################
+  # update_wordpress_metadata_on_app_store_connect
+  # -----------------------------------------------------------------------------------
+  # This lane reads the information from `fastlane/metadata/` and uploads it to
+  # App Store Connect for the version specified in the version xcconfig file.
+  #
+  # Optionally, it can also upload new screenshots, overriding the existing ones.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect
+  #
+  # Example:
+  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect
+  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect with_screenshots:true
+  #####################################################################################
+  desc 'Uploads the WordPress metadata to App Store Connect, localized, and optionally including screenshots.'
+  lane :update_wordpress_metadata_on_app_store_connect do |options|
     # Skip screenshots by default. The naming is "with" to make it clear that
     # callers need to opt-in to adding screenshots. The naming of the deliver
     # parameter, on the other hand, uses the skip verb.
     with_screenshots = options.fetch(:with_screenshots, false)
     skip_screenshots = with_screenshots == false
 
-    # WordPress
     upload_to_app_store(
       **COMMON_UPLOAD_TO_APPSTORE_PARAMS,
       app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
-
-    # Jetpack: Delegate to dedicated lane from Jetpack-Fastfile
-    update_jetpack_metadata_on_app_store_connect(options)
   end
 
   #####################################################################################
