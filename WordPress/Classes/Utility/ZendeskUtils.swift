@@ -691,6 +691,10 @@ private extension ZendeskUtils {
             }
         }
 
+        if let currentSite = blogService.lastUsedOrFirstBlog(), !currentSite.isHostedAtWPcom {
+            tags.append(Constants.mobileSelfHosted)
+        }
+
         return tags
     }
 
@@ -1042,6 +1046,7 @@ private extension ZendeskUtils {
         static let nameFieldCharacterLimit = 50
         static let sourcePlatform = AppConstants.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
+        static let mobileSelfHosted = "mobile_self_hosted"
     }
 
     enum TicketFieldIDs {
