@@ -95,6 +95,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
+    if (![self.blog supportsStats]) {
+        [self showStatsModuleDisabled];
+        return;
+    }
+    
     SiteStatsInformation.sharedInstance.siteTimeZone = [self.blog timeZone];
 
     // WordPress.com + Jetpack REST
@@ -186,13 +191,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 }
 
 
-- (void)showNoResults
+- (void)showStatsModuleDisabled
 {
     [self.noResultsViewController removeFromView];
 
-    NSString *title = NSLocalizedString(@"No Connection", @"Title for the error view when there's no connection");
-    NSString *subtitle = NSLocalizedString(@"An active internet connection is required to view stats",
-                                           @"Error message shown when trying to view Stats and there is no internet connection.");
+    NSString *title = NSLocalizedString(@"Looking for stats?", @"Title for the error view when the stats module is disabled.");
+    NSString *subtitle = NSLocalizedString(@"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.",
+                                           @"Error message shown when trying to view Stats and the stats module is disabled.");
+    NSString *image = @"wp-illustration-stats";
 
     self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
                                                                 attributedTitle:nil
@@ -200,7 +206,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                                        subtitle:subtitle
                                                              attributedSubtitle:nil
                                                 attributedSubtitleConfiguration:nil
-                                                                          image:nil
+                                                                          image:image
                                                                   subtitleImage:nil
                                                                   accessoryView:nil];
 
