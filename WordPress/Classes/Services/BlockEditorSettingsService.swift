@@ -14,7 +14,7 @@ class BlockEditorSettingsService {
 
     convenience init?(blog: Blog, context: NSManagedObjectContext) {
         let remoteAPI: WordPressRestApi
-        if blog.isHostedAtWPcom,
+        if blog.isAccessibleThroughWPCom(),
            blog.dotComID?.intValue != nil,
            let restAPI = blog.wordPressComRestApi() {
             remoteAPI = restAPI
@@ -114,14 +114,19 @@ private extension BlockEditorSettingsService {
 
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
-    func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
+    func fetchBlockEditorSettings(tryExperimental: Bool = false, _ completion: @escaping BlockEditorSettingsServiceCompletion) {
         /*
          * This endpoint was released as part of WP 5.8 with the __experimental flag.
          * Starting with Gutenberg 11.1 the endpoint will be available without the __experimental flag.
          * Gutenberg 11.1 will be included in WP 5.9.
          * These tests just ensure we are using the appropriate endpoints for each scenario based on when this was released.
-        */
-        let requiresExperimental = !(blog.isHostedAtWPcom || blog.hasRequiredWordPressVersion("5.9"))
+         *
+         * We'll try the non-experimental path first but then if that fails (which should only be for base WP 5.8 installs)
+         * then we'll fall back and try the experimental endpoint.
+         */
+        let hasExperimentalEndpoint = blog.hasRequiredWordPressVersion("5.8") && !blog.hasRequiredWordPressVersion("5.9")
+        let requiresExperimental = hasExperimentalEndpoint ? tryExperimental : false
+
         remote.fetchBlockEditorSettings(forSiteID: blog.dotComID?.intValue, requiresExperimental: requiresExperimental) { [weak self] (response) in
             guard let `self` = self else { return }
             switch response {
@@ -131,7 +136,12 @@ private extension BlockEditorSettingsService {
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
                 }
             case .failure(let error):
-                DDLogError("Error loading Block Editor Settings: \(error)")
+                if !tryExperimental && hasExperimentalEndpoint {
+                    self.fetchBlockEditorSettings(tryExperimental: true, completion)
+                } else {
+                    DDLogError("Error loading Block Editor Settings: \(error)")
+                    completion(false, nil)
+                }
             }
         }
     }

@@ -194,7 +194,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testFetchBlockEditorSettings_Org5_8Site() {
         blog = BlogBuilder(context)
             .with(wordPressVersion: "5.8")
-            .with(isHostedAtWPCom: false)
+            .withAnAccount()
             .build()
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
@@ -206,6 +206,10 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service.fetchSettings { (hasChanges, result) in
             waitExpectation.fulfill()
         }
+
+        // The app will call the none-experimental path first but fail because of compatibility reasons
+        mockOrgRemoteApi.completionPassedIn!(.failure(NSError(domain: "test", code: 404, userInfo: nil)), HTTPURLResponse())
+        // The app will then retry the experimental path.
         mockOrgRemoteApi.completionPassedIn!(.success(mockedResponse), HTTPURLResponse())
         waitForExpectations(timeout: expectationTimeout)
 
