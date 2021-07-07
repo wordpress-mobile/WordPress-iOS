@@ -68,10 +68,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         workaroundLargeTitleCollapseBug()
 
-        guard FeatureFlag.newNavBarAppearance.enabled else {
-            return
-        }
-
         if AppConfiguration.showsWhatIsNew {
             WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
         }
@@ -357,6 +353,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         blogDetailsViewController.blog = blog
 
         return blogDetailsViewController
+    }
+
+    func presentCreateSheet() {
+        blogDetailsViewController?.createButtonCoordinator?.showCreateSheet()
     }
 
     // MARK: - Model Changes

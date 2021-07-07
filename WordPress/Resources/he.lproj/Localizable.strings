@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-11 08:54:47+0000 */
+/* Translation-Revision-Date: 2021-06-24 19:48:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -9,16 +9,13 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nלאישור, עליך להזין את כתובת האתר שלך לפני המחיקה.\n\n";
 
-/* No comment provided by engineer. */
-" audio file" = "קובץ אודיו";
-
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "'טעינה עצלה' של תמונות";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "כפתור 'עוד'";
 
-/* Description for the restore action. $1$@ is a placeholder for the selected date. */
+/* No comment provided by engineer. */
 "%1$@ is the selected point for your restore." = "%1$@ הוא המועד שנבחר לשחזור.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -35,6 +32,12 @@
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ כדי לתקן את האיומים.";
+
+/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+"%1$d Like" = "לייק ⁦%1$d⁩";
+
+/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+"%1$d Likes" = "⁦%1$d⁩ לייקים";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "בלוגר ⁦%1$d⁩ סימן לייק על זה.";
@@ -294,6 +297,15 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< שעה אחת";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
@@ -489,16 +501,10 @@
 "Add button text" = "להוסיף טקסט לכפתור";
 
 /* No comment provided by engineer. */
-"Add caption" = "להוסיף כיתוב";
-
-/* No comment provided by engineer. */
 "Add image or video" = "להוסיף תמונה או וידאו";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "להוסיף תמונה או תמונת פרופיל שתייצג את החשבון חדש.";
-
-/* No comment provided by engineer. */
-"Add label…" = "להוסיף תווית...";
 
 /* No comment provided by engineer. */
 "Add link text" = "להוסיף טקסט לקישור";
@@ -539,9 +545,6 @@
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "הוספת תגיות";
-
-/* No comment provided by engineer. */
-"Add text…" = "להוסיף טקסט…";
 
 /* No comment provided by engineer. */
 "Add this email link" = "להוסיף את הקישור לאימייל";
@@ -644,6 +647,9 @@
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "טקסט חלופי";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "לחלופין:";
@@ -754,9 +760,6 @@
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "ביקשת למחוק את התפריט - האם ההחלטה סופית?";
 
-/* Message asking for confirmation on comment deletion */
-"Are you sure you want to delete this comment?" = "האם אתה בטוח שברצונך למחוק את התגובה?";
-
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "אתה בטוח שאתה רוצה למחוק את הדף הזה?";
 
@@ -766,8 +769,14 @@
 /* Message asking for confirmation before marking a comment as spam */
 "Are you sure you want to mark this comment as Spam?" = "האם אכן ברצונך לסמן תגובה זו כתגובת זבל?";
 
+/* Message asking for confirmation before marking a comment as trash */
+"Are you sure you want to mark this comment as Trash?" = "האם ברצונך לסמן את התגובה הזאת כ'זבל'?";
+
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "האם אתה בטוח שברצונך למחוק לצמיתות את הפריטים שנבחרו?";
+
+/* Message asking for confirmation on comment deletion */
+"Are you sure you want to permanently delete this comment?" = "האם ברצונך למחוק לצמיתות את התגובה הזאת?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "האם אכן ברצונך למחוק פריט זה לצמיתות?";
@@ -825,9 +834,6 @@
 "Attach File as Link" = "צירוף קובץ כקישור";
 
 /* No comment provided by engineer. */
-"Attachment page" = "עמוד עם קובץ מצורף";
-
-/* No comment provided by engineer. */
 "Audio Player" = "לנגן אודיו";
 
 /* translators: accessibility text. %s: Audio caption. */
@@ -835,9 +841,6 @@
 
 /* translators: accessibility text. Empty Audio caption. */
 "Audio caption. Empty" = "תיאור אודיו. ריק";
-
-/* No comment provided by engineer. */
-"Audio settings" = "הגדרות אודיו";
 
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "Audio, %@" = "אודיו, %@";
@@ -864,9 +867,6 @@
    Period Stats 'Authors' header */
 "Authors" = "מחברים";
 
-/* No comment provided by engineer. */
-"Auto" = "אוטומטי";
-
 /* Describes a status of a plugin */
 "Auto-managed" = "ניהול אוטומטי";
 
@@ -892,9 +892,6 @@
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "שיתוף אוטומטי של פוסטים חדשים בחשבונות שלך ברשתות החברתיות.";
 
-/* No comment provided by engineer. */
-"Autoplay" = "ניגון אוטומטי";
-
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "עדכונים אוטומטיים";
 
@@ -919,6 +916,9 @@
    Previous web page
    Spoken accessibility label */
 "Back" = "חזרה";
+
+/* Title for the Background Color section */
+"Background Color" = "צבע הרקע";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "מגבה את האתר";
@@ -975,9 +975,6 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "ציטוט";
 
-/* No comment provided by engineer. */
-"Block cannot be rendered inside itself." = "לא ניתן לעבד את הבלוק הזה בתוך עצמו.";
-
 /* translators: displayed right after the block is copied. */
 "Block copied" = "הבלוק הועתק";
 
@@ -989,9 +986,6 @@
 
 /* Popup title about why this post is being opened in block editor */
 "Block editor enabled" = "עורך הבלוקים הופעל";
-
-/* No comment provided by engineer. */
-"Block has been deleted or is unavailable." = "הבלוק נמחק או לא זמין.";
 
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "חסימת ניסיונות התחברות זדוניים";
@@ -1034,6 +1028,9 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "הצופה של הבלוג";
 
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Blogging Reminders";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "מודגש";
@@ -1052,9 +1049,6 @@
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "עיון בכל ערכות העיצוב שלנו כדי למצוא את ההתאמה המושלמת.";
-
-/* No comment provided by engineer. */
-"Browser default" = "ברירת מחדל לדפדפן";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "הגנה מפני התקפות של ניחוש סיסמה";
@@ -1079,9 +1073,6 @@
 
 /* No comment provided by engineer. */
 "Button position" = "מיקום הכפתור";
-
-/* No comment provided by engineer. */
-"Button width" = "הרוחב של הכפתור";
 
 /* Label for the post author in the post detail. */
 "By " = "לפי";
@@ -1250,9 +1241,6 @@
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "שינוי נכשל";
 
-/* No comment provided by engineer. */
-"Change heading level" = "לשנות את הרמה של הכותרת";
-
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "יש לשנות את סוג המכשיר המשמש לתצוגה מקדימה";
 
@@ -1314,6 +1302,9 @@
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "לבחור עמוד בית";
+
+/* Button allowing the user to choose an image from their device to use as their site icon */
+"Choose Image From My Device" = "לבחור תמונות מהמכשיר שלי";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "לבחור עמודים";
@@ -1400,9 +1391,6 @@
 "Clear Device Media Cache" = "מחיקה של מטמון המדיה במכשיר";
 
 /* No comment provided by engineer. */
-"Clear Media" = "למחוק את המדיה";
-
-/* No comment provided by engineer. */
 "Clear Old Activity Logs" = "נקה פעילויות ישנות";
 
 /* Title of an alert prompt. */
@@ -1469,10 +1457,7 @@
 "Colorful backgrounds" = "רקעים צבעוניים";
 
 /* No comment provided by engineer. */
-"Column settings" = "הגדרות טור";
-
-/* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "הגדרות טורים";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "אפשר לשלב תמונות, סרטוני וידאו וטקסטים כדי ליצור פוסטים מעניינים של סטורי שיוצגו בהקשה ולהרשים את הקוראים שלך.";
@@ -1682,7 +1667,7 @@
 "Continue" = "המשך";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
-"Continue With WordPress.com" = "Continue With WordPress.com";
+"Continue With WordPress.com" = "להמשיך עם WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "המשך עבודה";
@@ -1701,9 +1686,6 @@
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "להמשיך עם Apple";
-
-/* No comment provided by engineer. */
-"Convert to regular blocks" = "להמיר לבלוקים רגילים";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "בישול";
@@ -1814,9 +1796,6 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "קידומת טלפון בינלאומית";
 
-/* No comment provided by engineer. */
-"Cover" = "כיסוי";
-
 /* Title of a section on the debug screen that shows a list of actions related to crash logging */
 "Crash Logging" = "ליצור דוח קריסה";
 
@@ -1854,6 +1833,9 @@
 /* Stories intro continue button title */
 "Create Story Post" = "ליצור פוסט של סטורי";
 
+/* Button allowing the user to create a site icon by choosing an emoji character */
+"Create With Emoji" = "ליצור עם אמוג'י";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "יצירת אתר בוורדפרס.קום";
 
@@ -1874,6 +1856,9 @@
 
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "ליצור פוסט, עמוד או סטורי חדש";
+
+/* Title for the Site Icon Picker */
+"Create a site icon" = "ליצור את סמל האתר";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "ליצור גיבוי להורדה";
@@ -1901,9 +1886,6 @@
 
 /* Description of the cell displaying status of a backup in progress */
 "Creating downloadable backup" = "יוצר גיבוי להורדה";
-
-/* No comment provided by engineer. */
-"Crop image to fill entire column" = "לחתוך את התמונה כדי למלא את הטור";
 
 /* No comment provided by engineer. */
 "Crosspost" = "במספר פוסטים";
@@ -2036,6 +2018,7 @@
 "Defaults for New Posts" = "ברירות מחדל עבור פוסטים חדשים";
 
 /* Delete
+   Delete button title
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title for button that permanently deletes one or more media items (photos / videos)
@@ -2406,9 +2389,6 @@
 "Edit focal point" = "לערוך נקודת מוקד";
 
 /* No comment provided by engineer. */
-"Edit image" = "לערוך תמונה";
-
-/* No comment provided by engineer. */
 "Edit media" = "לערוך מדיה";
 
 /* Explanation for the option to enable the block editor */
@@ -2428,6 +2408,12 @@
 
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "לערוך את עמוד הבית";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "עריכה קובץ ה-GIF תסיר את ההנפשה שלו.";
@@ -2475,6 +2461,9 @@
 
 /* Overlay message displayed when export content started */
 "Email sent!" = "האימייל נשלח!";
+
+/* Title for the Emoji section */
+"Emoji" = "אמוג'י";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2569,12 +2558,18 @@
 /* There was an error activating a plugin, placeholder is the plugin name */
 "Error activating %@." = "שגיאה בהפעלה של %@.";
 
+/* Message shown when approving a Comment fails. */
+"Error approving comment" = "שגיאה באישור התגובה";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "שגיאה בתקשורת עם השרת, יש לנסות שוב";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
 "Error deactivating %@." = "שגיאה בהשבתה של %@.";
+
+/* Message shown when deleting a Comment fails. */
+"Error deleting comment" = "שגיאה במחיקת התגובה";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "שגיאה בעת השבתת העדכונים האוטומטיים של %@.";
@@ -2596,6 +2591,9 @@
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "שגיאה בטעינת התוספים";
+
+/* Message shown when marking a Comment as spam fails. */
+"Error marking comment as spam" = "שגיאה בסימון התגובה כתגובת זבל";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
@@ -2630,6 +2628,9 @@
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "שגיאה בשליחה האימייל לאימות. יש לבדוק את החיבור ולנסות שוב.";
 
+/* Message shown when unapproving a Comment fails. */
+"Error unapproving comment" = "שגיאה בביטול האישור של התגובה";
+
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "שגיאה בעדכון ב %@.";
 
@@ -2644,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "אירוע";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Every day";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "כולם";
@@ -2848,9 +2852,6 @@
 /* Displays the fixed threats */
 "Fixed" = "תוקן";
 
-/* No comment provided by engineer. */
-"Fixed background" = "רקע קבוע";
-
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "מתקן את האיומים";
 
@@ -2979,9 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "יוצר תצוגה מקדימה";
 
-/* Title of the Get Started button in the Blogging Reminders Settings flow.
-   Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "מתחילים כאן";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3028,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "מעבר אל Reader";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3109,9 +3111,6 @@
 
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "כותרת עליונה מס' 6";
-
-/* translators: %s: heading level e.g: \"1\", \"2\", \"3\" */
-"Heading %d" = "כותרת %d";
 
 /* H1 Aztec Style */
 "Heading 1" = "כותרת ברמה 1";
@@ -3433,6 +3432,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "%2$@ פורסם לפני %1$@. ";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "It's time to blog on %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "It's time to blog!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "הגיע הזמן! אפשר לכתוב טיוטה ולפרסם את הפוסט הראשון שלך.";
 
@@ -3490,6 +3495,9 @@
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "אין אפשרות להתקין את Jetpack כעת.";
+
+/* Subject of new Zendesk ticket. */
+"Jetpack for iOS Support" = "תמיכה ב-Jetpack ל-iOS";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack מותקן";
@@ -3638,13 +3646,7 @@
 "Link inserted" = "הקישור הוכנס";
 
 /* No comment provided by engineer. */
-"Link label" = "תווית הקישור";
-
-/* No comment provided by engineer. */
-"Link text" = "Link text";
-
-/* No comment provided by engineer. */
-"Link to" = "קישור אל";
+"Link text" = "טקסט לקישור";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "קישור לתוכן קיים";
@@ -3713,6 +3715,9 @@
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "טוען זרם...";
+
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Loading the block editor.";
 
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "טעינת שמות המשתמשים";
@@ -3800,9 +3805,6 @@
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "נראה כי באתר שלך מוגדר Jetpack. ברכותינו! יש להיכנס עם פרטי הכניסה של WordPress.com כדי לאפשר סטטיסטיקות והתראות.";
 
-/* No comment provided by engineer. */
-"Loop" = "ניגון ברצף";
-
 /* Title of a button. */
 "Lost your password?" = "שחזור סיסמה";
 
@@ -3811,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "ניווט ראשי";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "קביעת המטרות ומעקב אחר ההתקדמות יכולים לעזור לך להפיק את המרב מהאתר שלך.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3892,9 +3891,6 @@
    Title label for the media settings section in the app settings */
 "Media" = "מדיה";
 
-/* No comment provided by engineer. */
-"Media & Text settings" = "הגדרות מדיה וטקסט";
-
 /* Label for size of media cache in the app. */
 "Media Cache Size" = "גודל מטמון של פריט מדיה";
 
@@ -3918,14 +3914,8 @@
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "העלאות מדיה";
 
-/* No comment provided by engineer. */
-"Media area" = "אזור מדיה";
-
 /* Error message to show to users when trying to upload a media object with no local file associated */
 "Media doesn't have an associated file to upload." = "לפריט המדיה חסר קובץ מקושר להעלאה.";
-
-/* No comment provided by engineer. */
-"Media file" = "קובץ מדיה";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site */
 "Media filesize (%@) is too large to upload. Maximum allowed is %@" = "גודל הקובץ (%1$@) חורג מהגודל האפשרי להעלאה. גודל ההעלאה המקסימלי הוא %2$@";
@@ -4179,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "הבא";
 
 /* Table view title for the quick start section. */
@@ -4404,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "ללא";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "None set";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "צפון";
 
@@ -4467,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "התראות שלא נקראו";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Notify me";
 
 /* First story intro item title */
 "Now stories are for everyone" = "הסטוריז החדשים מיועדים לכולם";
@@ -4559,9 +4554,6 @@
 "Oops!" = "אופפפס!";
 
 /* No comment provided by engineer. */
-"Opacity" = "שקיפות";
-
-/* No comment provided by engineer. */
 "Open Block Actions Menu" = "לפתוח את התפריט של פעולות הבלוק";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -4613,9 +4605,6 @@
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "הודעה אופציונלית של עד ⁦%1$d⁩ תווים שתישלח עם ההזמנה.";
 
-/* No comment provided by engineer. */
-"Optional placeholder…" = "מציין מיקום אופציונלי...";
-
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "אופציונלי: ניתן להזין הודעה מותאמת אישית של עד ⁦%1$d⁩ תווים שתישלח עם ההזמנה.";
 
@@ -4662,9 +4651,6 @@
 /* No comment provided by engineer. */
 "Outside" = "חיצוני";
 
-/* No comment provided by engineer. */
-"Overlay" = "שכבת רקע";
-
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "נדרס";
 
@@ -4687,9 +4673,6 @@
 /* Name of the button to open the page settings
    The title of the Page Settings screen. */
 "Page Settings" = "הגדרות עמוד";
-
-/* No comment provided by engineer. */
-"Page break" = "מעבר עמוד";
 
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "בלוק של מעבר דף. %s";
@@ -4834,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "כדאי לפנות לתמיכה לעזרה.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "יש להזין את כתובת האתר המלאה, לדוגמה example.com.";
@@ -5054,6 +5043,9 @@
    Title for stats Posting Activity view. */
 "Posting Activity" = "פעילות פרסום";
 
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
+
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -5085,9 +5077,6 @@
 
 /* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
 "Powered by Tenor" = "מופעל על ידי Tenor";
-
-/* No comment provided by engineer. */
-"Preload" = "טעינה מראש";
 
 /* Browse premium themes selection title */
 "Premium" = "Premium";
@@ -5271,9 +5260,6 @@
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "נשמח לקבל ממך דירוג בחנות האפליקציות";
 
-/* No comment provided by engineer. */
-"Read more" = "לקרוא עוד";
-
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "ניתן לקרוא באתר";
 
@@ -5366,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "פוסטים קשורים מציגים תוכן רלוונטי מהאתר שלך, מתחת לפוסטים שלך";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Reminders removed";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5407,6 +5396,9 @@
 /* Remove site icon button */
 "Remove Site Icon" = "הסרת סמל האתר";
 
+/* No comment provided by engineer. */
+"Remove as Featured Image " = "להסיר מהתמונה המרכזית ";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
 
@@ -5442,9 +5434,6 @@
 
 /* No comment provided by engineer. */
 "Replace file" = "להחליף את הקובץ";
-
-/* No comment provided by engineer. */
-"Replace image" = "להחליף תמונה";
 
 /* No comment provided by engineer. */
 "Replace image or video" = "להחליף תמונה או וידאו";
@@ -5589,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "חזרה לפוסט";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "לא ניתן לערוך בלוקים לשימוש חוזר ב-WordPress ל-Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "לא ניתן לערוך בלוקים לשימוש חוזר ב-WordPress ל-iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "החזר שינוי בהמתנה למצב קודם";
 
@@ -5630,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "שמור";
 
@@ -5770,7 +5754,7 @@
 "Search posts" = "חיפוש פוסטים";
 
 /* No comment provided by engineer. */
-"Search settings" = "Search settings";
+"Search settings" = "הגדרות חיפוש";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "חיפוש קובצי GIF שניתן להוסיף לספריית מדיה שלך!";
@@ -5951,11 +5935,17 @@
    Navigation title displayed on the navigation bar */
 "Set Parent" = "הגדרת הורה";
 
+/* No comment provided by engineer. */
+"Set as Featured Image " = "להגדיר כתמונה מרכזית ";
+
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "להגדיר כעמוד הבית";
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "להגדיר כעמוד פוסטים";
+
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"Set reminders" = "Set reminders";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "הגדרה";
@@ -5963,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "הגדרת Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "להגדיר את המטרות שלך לבלוג";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Set your blogging reminders";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "להגדיר את שם האתר שלך";
@@ -6031,9 +6023,6 @@
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "שגיאה בשיתוף";
 
-/* No comment provided by engineer. */
-"Shortcode" = "שורטקוד";
-
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "הצגת כותרת";
 
@@ -6051,15 +6040,6 @@
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "הצג תכנים באותו נושא";
-
-/* No comment provided by engineer. */
-"Show download button" = "להציג את כפתור ההורדה";
-
-/* No comment provided by engineer. */
-"Show media on left" = "להציג את המדיה משמאל";
-
-/* No comment provided by engineer. */
-"Show media on right" = "להציג את המדיה מימין";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6692,6 +6672,9 @@
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "האישור עבור שרת זה אינו חוקי. ייתכן שאתה מתחבר לשרת שמתחזה ל-&quot;%@&quot;, מה שעלול לסכן את המידע הסודי שלך.\n\nלבטוח באישור בכל מקרה?";
 
+/* Message informing the user that posts page cannot be edited */
+"The content of your latest posts page is automatically generated and cannot be edited." = "התוכן בעמוד 'הפוסטים האחרונים' מיוצר באופן אוטומטי ולא ניתן לערוך אותו.";
+
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "הקובץ %1$@ מכיל תבנית של קוד זדוני";
 
@@ -6939,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "כאן הגולשים ימצאו אותך באינטרנט.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "פריט המדיה נמחק.";
 
@@ -7006,6 +6992,9 @@
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "הגיע הזמן לסיים את הגדרת האתר שלך! רשימת המשימות שלנו תדריך אותך בשלבים הבאים.";
 
+/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
+"Tip" = "עצה";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "טיפים כדי להפיק את המיטב מ-WordPress.com.";
 
@@ -7054,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "כדי להשתמש בנתונים סטטיסטיים באתר שלך, עליך להתקין את התוסף של Jetpack.";
@@ -7127,6 +7119,7 @@
 "Transform block…" = "לשנות בלוק...";
 
 /* Accessibility label for trash buttons in nav bars
+   Trash button title
    Trashes a comment
    Trashes the comment */
 "Trash" = "לאשפה";
@@ -7186,6 +7179,12 @@
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "השבתת הודעות אתר";
+
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Turn on notifications";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Turn on push notifications";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "הפעלת הודעות אתר";
@@ -7270,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "אין אפשרות לטעון פוסטים כרגע.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Unable to load the block editor right now.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "לא ניתן לטעון את התמונה. יש לספק תמונה אחרת או לנסות שוב מאוחר יותר.";
@@ -7369,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "לא זמין";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Undefined";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "קו תחתון";
@@ -7386,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "להפסיק את המעקב אחר %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Unfollow conversation by email";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "לבטל את המעקב אחר האתר";
@@ -7456,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "אנחנו שומרים קובצי יומן עד שבעה ימים אחורה.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "עדכון";
@@ -7475,6 +7484,9 @@
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "עדכון תמונת פרופיל";
+
+/* Title for sheet displayed allowing user to update their site icon */
+"Update Site Icon" = "לעדכן את סמל האתר";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "הפעולה מעדכנת את תרשים העמודות לתצוגה של תגובות.";
@@ -7639,9 +7651,6 @@
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "יצוא הווידאו בוטל.";
-
-/* No comment provided by engineer. */
-"Video settings" = "הגדרות וידאו";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "וידאו, %@";
@@ -8024,9 +8033,6 @@
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "ברוך בואך לכלי הפופולרי ביותר בעולם לבניית אתרי אינטרנט.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Well done on your first post! Keep it going. You can now set your blogging goals, get reminders, and track your progress." = "פרסמת את הפוסט הראשון שלך, כל הכבוד! ההתמדה משתלמת. כעת אפשר להגדיר את המטרות שלך לבלוג, לקבל תזכורות ולעקוב אחר ההתקדמות שלך.";
-
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "West" = "מערב";
 
@@ -8224,12 +8230,6 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "כתוב תגובה...";
 
-/* No comment provided by engineer. */
-"Write code…" = "לכתוב קוד...";
-
-/* No comment provided by engineer. */
-"Write title…" = "לכתוב כותרת…";
-
 /* Title for the writing section in site settings screen */
 "Writing" = "כתיבה";
 
@@ -8297,7 +8297,7 @@
 "You can update this any time via My Site > Site Settings" = "אפשר לעדכן את ההגדרה הזאת בכל עת דרך 'האתר שלי' > 'הגדרות אתר'";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this any time." = "אפשר לעדכן את ההגדרה הזאת בכל עת.";
+"You can update this anytime" = "אפשר לעדכן את ההגדרה הזאת בכל עת";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "לא ניתן להשתמש בכתובת אימייל זו להרשמה. ספק זה חוסם חלק מהאימיילים שלנו. יש להשתמש בספק אימייל אחר.";
@@ -8340,6 +8340,9 @@
 
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "ביצעת שינויים ב-%d פוסטים שטרם הועלו לאתר שלך. בהתנתקות מהמערכת כעת, השינויים האלו יימחקו. האם ברצונך להתנתק?";
+
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "You have no reminders set.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -8387,6 +8390,12 @@
 
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "לא תהיה לך אפשרות לשנות את שם המשתמש בחזרה.";
+
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "הכול מעודכן!";
@@ -8439,6 +8448,9 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "הפוסט שלך מועלה כעת. יש להמתין להשלמת הפעולה.";
 
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
+
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "הפוסטים, העמודים וההגדרות שלך יישלחו באימייל לכתובת %@.";
 
@@ -8456,6 +8468,9 @@
 
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "האתר שלך שוחזר בהצלחה";
+
+/* Subtitle for the Site Icon Picker */
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "הסמל של האתר מופיע במקומות שונים באינטרנט, בלשוניות של הדפדפן, בתצוגות מקדימות של האתר ברשתות החברתיות וב-Reader של WordPress.com.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "אנחנו משחזרים את האתר שלך כעת";
@@ -8545,9 +8560,6 @@
 
 /* Label displayed on image media items. */
 "image" = "תמונה";
-
-/* translators: 1: the order number of the image. 2: the total number of images. */
-"image %1$d of %2$d in gallery" = "תמונה ⁦%1$d⁩ מתוך ⁦%2$d⁩ בגלריה";
 
 /* Text for related post cell preview */
 "in \"Apps\"" = "תחת 'אפליקציות'";

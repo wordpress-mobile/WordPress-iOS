@@ -33,6 +33,10 @@ extension BlockEditorSettingElement {
     ///
     @NSManaged public var name: String
 
+    /// Stores maintains the order as passed from the API
+    ///
+    @NSManaged public var order: Int
+
     /// Stores a reference back to the parent `BlockEditorSettings`.
     ///
     @NSManaged public var settings: BlockEditorSettings
@@ -48,12 +52,13 @@ extension BlockEditorSettingElement: Identifiable {
         ]
     }
 
-    convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, context: NSManagedObjectContext) {
+    convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
         self.init(context: context)
 
         self.type = type.rawValue
         self.value = rawObject[type.valueKey] ?? ""
         self.slug = rawObject[#keyPath(BlockEditorSettingElement.slug)] ?? ""
         self.name = rawObject[ #keyPath(BlockEditorSettingElement.name)] ?? ""
+        self.order = order
     }
 }

@@ -1,7 +1,7 @@
 import Foundation
 import Gridicons
 
-protocol DateCoordinatorHandler: class {
+protocol DateCoordinatorHandler: AnyObject {
     var coordinator: DateCoordinator? { get set }
 }
 

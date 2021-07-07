@@ -125,6 +125,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.sortDate = remotePost.sortDate;
     post.isSeen = remotePost.isSeen;
     post.isSeenSupported = remotePost.isSeenSupported;
+    post.isSubscribedComments = remotePost.isSubscribedComments;
+    post.canSubscribeComments = remotePost.canSubscribeComments;
 
     if (existing && [topic isKindOfClass:[ReaderSearchTopic class]]) {
         // Failsafe.  The `read/search` endpoint might return the same post on

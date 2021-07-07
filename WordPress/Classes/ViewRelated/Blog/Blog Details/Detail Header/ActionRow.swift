@@ -92,7 +92,7 @@ class ActionRow: UIStackView {
         distribution = .equalCentering
         spacing = Constants.minimumSpacing
         translatesAutoresizingMaskIntoConstraints = false
-        refreshStackViewAxis()
+        refreshStackViewVisibility()
     }
 
     // MARK: - Accessibility
@@ -100,14 +100,16 @@ class ActionRow: UIStackView {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        refreshStackViewAxis()
+        refreshStackViewVisibility()
     }
 
-    private func refreshStackViewAxis() {
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-            axis = .vertical
-        } else {
-            axis = .horizontal
+    private func refreshStackViewVisibility() {
+        for view in arrangedSubviews {
+            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+                view.isHidden = true
+            } else {
+                view.isHidden = false
+            }
         }
     }
 }

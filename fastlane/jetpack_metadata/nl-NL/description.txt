@@ -1,0 +1,9 @@
+Krachtige beveiligings- en prestatietools binnen handbereik met Jetpack voor iOS.
+
+Herstel je site overal ter wereld mocht er iets misgaan. Controleer op dreigingen en elimineer deze in een handomdraai. Houd de activiteit op je site in de gaten om te zien welke wijzigingen zijn doorgevoerd door wie en wanneer. Bekijk je statistieken om te zien uit welke landen de bezoekers van vandaag komen.
+
+De app ondersteunt ook de WordPress-functies die je mag verwachten. Schrijf een spontane haiku vanaf je bank. Maak een foto tijdens je lunchpauze en upload deze. Reageer op de nieuwste opmerkingen.
+
+Jetpack voor iOS ondersteunt WordPress-sites waarop Jetpack is ingeschakeld en met een account dat is gekoppeld aan WordPress.com.
+
+Bekijk de privacyverklaring voor gebruikers in Californië op https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

@@ -17,11 +17,11 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
     func getDomainContactInformation(success: @escaping (DomainContactInformation) -> Void,
                                      failure: @escaping (Error) -> Void)
 
-    func getSupportedCountries(success: @escaping ([Country]) -> Void,
+    func getSupportedCountries(success: @escaping ([WPCountry]) -> Void,
                                failure: @escaping (Error) -> Void)
 
     func getStates(for countryCode: String,
-                   success: @escaping ([State]) -> Void,
+                   success: @escaping ([WPState]) -> Void,
                    failure: @escaping (Error) -> Void)
 
     func createShoppingCart(siteID: Int,
@@ -76,14 +76,14 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                          failure: failure)
     }
 
-    func getSupportedCountries(success: @escaping ([Country]) -> Void,
+    func getSupportedCountries(success: @escaping ([WPCountry]) -> Void,
                                failure: @escaping (Error) -> Void) {
         transactionsServiceRemote.getSupportedCountries(success: success,
                                                         failure: failure)
     }
 
     func getStates(for countryCode: String,
-                   success: @escaping ([State]) -> Void,
+                   success: @escaping ([WPState]) -> Void,
                    failure: @escaping (Error) -> Void) {
         domainsServiceRemote.getStates(for: countryCode,
                                        success: success,

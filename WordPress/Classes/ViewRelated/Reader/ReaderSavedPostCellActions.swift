@@ -1,4 +1,4 @@
-protocol ReaderSavedPostCellActionsDelegate: class {
+protocol ReaderSavedPostCellActionsDelegate: AnyObject {
     func willRemove(_ cell: ReaderPostCardCell)
 }
 

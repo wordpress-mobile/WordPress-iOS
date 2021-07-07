@@ -1,6 +1,6 @@
 import Gridicons
 
-protocol PostEditorNavigationBarManagerDelegate: class {
+protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
@@ -188,11 +188,7 @@ extension PostEditorNavigationBarManager {
     private enum Fonts {
         static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static var blogTitle: UIFont {
-            if FeatureFlag.newNavBarAppearance.enabled {
-                return WPStyleGuide.navigationBarStandardFont
-            } else {
-                return semiBold
-            }
+            WPStyleGuide.navigationBarStandardFont
         }
     }
 

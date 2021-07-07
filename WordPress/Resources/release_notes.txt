@@ -1,11 +1,7 @@
-* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
-* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
-* [*] Fix login error for WordPress.org sites to show inline. [#16614]
-* [*] Disables the ability to open the editor for Post Pages [#16369]
-* [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
-* [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
-* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
-* [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
-* [**] You can now create a Site Icon for your site using an emoji. [#16670] 
-* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
+If you’ve been wishing someone would send you reminders on the days you want to publish blog posts, your wish has just come true. We’ve added the ability to request blogging reminders. Just choose your preferred blogging days, and we’ll send you a notification, prompting you to post on that day.
 
+Those of you with self-hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins.
+
+The Block editor has a shiny new block Layout grid, and while we were digging around in the editor code, we also tweaked the code for our tablet-using friends. The pesky inserter button tablet view issue in the Block editor has now been fixed.
+
+Want to subscribe to conversations by email from Reader lists and articles? Good because we just added that ability too!

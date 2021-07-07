@@ -3,7 +3,7 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-protocol ReaderTopicsChipsDelegate: class {
+protocol ReaderTopicsChipsDelegate: AnyObject {
     func didSelect(topic: String)
     func heightDidChange()
 }
@@ -926,7 +926,7 @@ private extension ReaderPostCardCell {
     }
 
     func datePublished() -> String {
-        return contentProvider?.dateForDisplay()?.mediumString() ?? ""
+        return contentProvider?.dateForDisplay()?.toMediumString() ?? ""
     }
 }
 

@@ -65,9 +65,8 @@ class LoginTests: XCTestCase {
 
     // Unified WordPress.com login/out
     // Replaces testWpcomUsernamePasswordLogin
-    func testWpcomLogin() {
-        _ = PrologueScreen().selectSiteAddress()
-            .proceedWithWP(siteUrl: "https://wordpress.com")
+    func testWPcomLogin() {
+        _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
@@ -95,7 +94,7 @@ class LoginTests: XCTestCase {
     // Unified self hosted login/out
     // Replaces testSelfHostedUsernamePasswordLoginLogout
     func testSelfHostedLoginLogout() {
-        _ = PrologueScreen().selectSiteAddress()
+        PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
@@ -108,7 +107,7 @@ class LoginTests: XCTestCase {
     // Old self hosted login/out
     // TODO: remove when unifiedAuth is permanent.
     func testSelfHostedUsernamePasswordLoginLogout() {
-        _ = WelcomeScreen().selectLogin()
+        WelcomeScreen().selectLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
@@ -119,9 +118,9 @@ class LoginTests: XCTestCase {
         XCTAssert(WelcomeScreen().isLoaded())
     }
 
-    // Unified email login fail
+    // Unified WordPress.com email login failure due to incorrect password
     // Replaces testUnsuccessfulLogin
-    func testWordPressUnsuccessfulLogin() {
+    func testWPcomInvalidPassword() {
         _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .tryProceed(password: "invalidPswd")

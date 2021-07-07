@@ -95,12 +95,12 @@ private extension PostService {
 
         derivedContext.perform {
 
-            if purgeExisting {
-                self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext)
+            let likers = remoteLikeUsers.map { remoteUser in
+                LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
             }
 
-            remoteLikeUsers.forEach {
-                LikeUserHelper.createUserFrom(remoteUser: $0, context: derivedContext)
+            if purgeExisting {
+                self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext, likesToKeep: likers)
             }
 
             ContextManager.shared.save(derivedContext) {
@@ -111,9 +111,9 @@ private extension PostService {
         }
     }
 
-    func deleteExistingUsersFor(postID: NSNumber, siteID: NSNumber, from context: NSManagedObjectContext) {
+    func deleteExistingUsersFor(postID: NSNumber, siteID: NSNumber, from context: NSManagedObjectContext, likesToKeep: [LikeUser]) {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@", siteID, postID)
+        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND NOT (self IN %@)", siteID, postID, likesToKeep)
 
         do {
             let users = try context.fetch(request)

@@ -37,11 +37,8 @@ extension BlogDetailsViewController {
                     self.dismiss(animated: true) {
                         self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                         self.shouldScrollToViewSite = true
-                        if FeatureFlag.newNavBarAppearance.enabled {
-                            navigationController.popToRootViewController(animated: true)
-                        } else {
-                            navigationController.popToViewController(self, animated: true)
-                        }
+
+                        navigationController.popToRootViewController(animated: true)
                     }
                 default:
                     break

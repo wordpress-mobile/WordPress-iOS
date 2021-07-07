@@ -170,7 +170,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     private func configureDateLabel() {
-        dateLabel.text = post?.dateForDisplay()?.mediumString()
+        dateLabel.text = post?.dateForDisplay()?.toMediumString()
     }
 
     private func configureFollowButton() {
@@ -240,7 +240,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
                 return nil
         }
 
-        guard let postedOn = post.dateCreated?.mediumString() else {
+        guard let postedOn = post.dateCreated?.toMediumString() else {
             let format = NSLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
             return String(format: format, postedIn, postedAtURL, postedBy)
         }

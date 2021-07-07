@@ -323,8 +323,20 @@ extension SiteSettingsViewController {
 
     private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
-        cell.textLabel?.text = NSLocalizedString("Blogging Goals", comment: "Label for the blogging goals setting")
-        cell.textValue = "Undefined"
+        cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
+        cell.accessoryType = .none
+        cell.textValue = schedule(for: blog)
+    }
+
+    // MARK: - Schedule Description
+
+    private func schedule(for blog: Blog) -> String {
+        guard let scheduler = try? BloggingRemindersScheduler() else {
+            return ""
+        }
+
+        let formatter = BloggingRemindersScheduleFormatter()
+        return formatter.shortIntervalDescription(for: scheduler.schedule(for: blog)).string
     }
 
     // MARK: - Handling General Setting Cell Taps
@@ -389,7 +401,14 @@ extension SiteSettingsViewController {
     }
 
     private func presentBloggingRemindersFlow(indexPath: IndexPath) {
-        BlogDetailsViewController.presentBloggingRemindersSettingsFlow(from: self, for: blog, source: .blogSettings)
+        BloggingRemindersFlow.present(from: self, for: blog, source: .blogSettings) { [weak self] in
+            guard let self = self,
+                  let cell = self.tableView.cellForRow(at: indexPath) as? SettingTableViewCell else {
+                return
+            }
+
+            cell.textValue = self.schedule(for: self.blog)
+        }
 
         tableView.deselectRow(at: indexPath, animated: true)
     }

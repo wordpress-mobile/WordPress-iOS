@@ -152,6 +152,25 @@ platform :ios do
   #####################################################################################
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
+    update_wordpress_appstore_strings(options)
+    update_jetpack_appstore_strings(options)
+  end
+
+  #####################################################################################
+  # update_wordpress_appstore_strings
+  # -----------------------------------------------------------------------------------
+  # This lane updates the AppStoreStrings.po files for the WordPress app with
+  # the latest content from the release_notes.txt file and the other text
+  # sources
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_wordpress_appstore_strings version:<release note version>
+  #
+  # Example:
+  # bundle exec fastlane update_wordpress_appstore_strings version:10.7
+  #####################################################################################
+  desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
+  lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
 
     files = {
@@ -198,7 +217,7 @@ platform :ios do
   desc 'Updates a release branch for a new beta release'
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
-    ios_update_metadata(options)
+    download_localized_strings_and_metadata(options)
     # This is disabled due to GlotPress outputting an invalid `.strings` file for some locales
     # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
@@ -245,7 +264,7 @@ platform :ios do
         glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
         abort_on_violations: false
       )
-      ios_update_metadata(options)
+      download_localized_strings_and_metadata(options)
       # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta
     end
@@ -277,6 +296,25 @@ platform :ios do
     ios_finalize_prechecks(options)
     version = ios_get_app_version
     trigger_release_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # download_localized_strings_and_metadata
+  # -----------------------------------------------------------------------------------
+  # Downloads localized app strings and App Store Connect metadata from GlotPress.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane download_localized_strings_and_metadata
+  #####################################################################################
+  desc 'Downloads localized metadata for App Store Connect from GlotPress'
+  lane :download_localized_strings_and_metadata do |options|
+    # WordPress: leverage the default release toolkit setup.
+    # It's not clear in the action name, but this downloads both `.strings`
+    # translations for the app and App Store Connect metadata.
+    ios_update_metadata(options)
+    # Jetpack: use the custom setup. Notice that we don't need extra steps to
+    # download `.strings` because Jetpack uses the same codebase as WordPress.
+    download_jetpack_localized_app_store_metadata
   end
 
   #####################################################################################

@@ -47,11 +47,17 @@ protocol PublishingEditor where Self: UIViewController {
     var debouncer: Debouncer { get }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
+
+    func canViewEditorOnboarding() -> Bool
 }
 
 var postPublishedReceipt: Receipt?
 
 extension PublishingEditor where Self: UIViewController {
+
+    func canViewEditorOnboarding() -> Bool {
+        return false
+    }
 
     func publishingDismissed() {
 
@@ -164,7 +170,7 @@ extension PublishingEditor where Self: UIViewController {
             }
 
             if dismissWhenDone {
-                self.editorSession.end(outcome: action.analyticsEndOutcome)
+                self.editorSession.end(outcome: action.analyticsEndOutcome, canViewEditorOnboarding: self.canViewEditorOnboarding())
             } else {
                 self.editorSession.forceOutcome(action.analyticsEndOutcome)
             }
@@ -177,8 +183,8 @@ extension PublishingEditor where Self: UIViewController {
         }
 
         if action.isAsync,
-            let postStatus = self.post.original?.status ?? self.post.status,
-            ![.publish, .publishPrivate].contains(postStatus) {
+           let postStatus = self.post.original?.status ?? self.post.status,
+           ![.publish, .publishPrivate].contains(postStatus) {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
@@ -310,7 +316,7 @@ extension PublishingEditor where Self: UIViewController {
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
         if post.shouldAttemptAutoUpload && post.canSave() {
-            editorSession.end(outcome: .cancel)
+            editorSession.end(outcome: .cancel, canViewEditorOnboarding: canViewEditorOnboarding())
             /// If there are ongoing media uploads, save with completion processing
             if MediaCoordinator.shared.isUploadingMedia(for: post) {
                 resumeSaving()
@@ -320,7 +326,7 @@ extension PublishingEditor where Self: UIViewController {
         } else if post.canSave() {
             showPostHasChangesAlert()
         } else {
-            editorSession.end(outcome: .cancel)
+            editorSession.end(outcome: .cancel, canViewEditorOnboarding: canViewEditorOnboarding())
             discardUnsavedChangesAndUpdateGUI()
         }
     }
@@ -425,7 +431,7 @@ extension PublishingEditor where Self: UIViewController {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
-            self.editorSession.end(outcome: .discard)
+            self.editorSession.end(outcome: .discard, canViewEditorOnboarding: self.canViewEditorOnboarding())
             self.discardUnsavedChangesAndUpdateGUI()
         }
 
@@ -511,7 +517,7 @@ extension PublishingEditor where Self: UIViewController {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView()
+        dismissOrPopView(presentBloggingReminders: true)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
@@ -528,17 +534,36 @@ extension PublishingEditor where Self: UIViewController {
         post = originalPost
     }
 
-    func dismissOrPopView(didSave: Bool = true) {
+    func dismissOrPopView(didSave: Bool = true, presentBloggingReminders: Bool = false) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
+            // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
+            // needs to happen in the closure.
             onClose(didSave, false)
-        } else if isModal() {
-            presentingViewController?.dismiss(animated: true, completion: nil)
+        } else if isModal(), let controller = presentingViewController {
+            controller.dismiss(animated: true) {
+                if presentBloggingReminders {
+                    BloggingRemindersFlow.present(from: controller,
+                                                  for: self.post.blog,
+                                                  source: .publishFlow,
+                                                  alwaysShow: false)
+                }
+            }
         } else {
-            _ = navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
+            guard let controller = navigationController?.topViewController else {
+                return
+            }
+
+            if presentBloggingReminders {
+                BloggingRemindersFlow.present(from: controller,
+                                              for: self.post.blog,
+                                              source: .publishFlow,
+                                              alwaysShow: false)
+            }
         }
     }
 
