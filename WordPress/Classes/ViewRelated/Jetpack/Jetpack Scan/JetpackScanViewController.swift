@@ -68,6 +68,10 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         tableView.reloadData()
     }
 
+    func toggleHistoryButton(_ isEnabled: Bool) {
+        navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+    }
+
     func showLoading() {
         let model = NoResultsViewController.Model(title: NoResultsText.loading.title,
                                                   accessoryView: NoResultsViewController.loadingAccessoryView())
