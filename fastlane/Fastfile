@@ -893,6 +893,11 @@ platform :ios do
   end
 end
 
+# FIXME: This ought to be extracted into the release toolkit, ideally in an
+# configurable way but with smart defaults.
+#
+# See discussion here
+# https://github.com/wordpress-mobile/WordPress-iOS/pull/16805/files/5f3009c5e0d01448cf0369656dddc1fe3757e45f#r664069046
 def read_version_from_config
   fastlane_require 'Xcodeproj'
 
