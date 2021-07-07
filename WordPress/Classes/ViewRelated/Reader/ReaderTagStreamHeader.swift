@@ -53,6 +53,10 @@ import WordPressShared
     // MARK: - Actions
 
     @IBAction func didTapFollowButton(_ sender: UIButton) {
-        delegate?.handleFollowActionForHeader(self)
+        followButton.isUserInteractionEnabled = false
+
+        delegate?.handleFollowActionForHeader(self, completion: { [weak self] in
+            self?.followButton.isUserInteractionEnabled = true
+        })
     }
 }
