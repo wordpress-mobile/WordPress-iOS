@@ -4,12 +4,12 @@ import XCTest
 // This screen object is for the Support section. In the app, it's a modal we can get to from Me > Help & Support, or, when logged out, from Prologue > tap either continue button > Help.
 
 private struct ElementStringIDs {
-    static let closeButton = "Close"
-    static let helpCenter = "WordPress Help Center"
-    static let contact = "Contact Support"
-    static let myTickets = "My Tickets"
-    static let contactEmail = "Contact Email"
-    static let activityLogs = "Activity Logs"
+    static let closeButton = "close-button"
+    static let helpCenter = "help-center-link-button"
+    static let contact = "contact-support-button"
+    static let myTickets = "my-tickets-button"
+    static let contactEmail = "set-contact-email-button"
+    static let activityLogs = "activity-logs-button"
 }
 
 class SupportScreen: BaseScreen {
@@ -23,11 +23,11 @@ class SupportScreen: BaseScreen {
     init() {
         let app = XCUIApplication()
         closeButton = app.buttons[ElementStringIDs.closeButton]
-        helpCenter = app.buttons[ElementStringIDs.helpCenter]
-        contact = app.buttons[ElementStringIDs.contact]
-        myTickets = app.buttons[ElementStringIDs.myTickets]
-        contactEmail = app.buttons[ElementStringIDs.contactEmail]
-        activityLogs = app.staticTexts[ElementStringIDs.activityLogs]
+        helpCenter = app.cells[ElementStringIDs.helpCenter]
+        contact = app.cells[ElementStringIDs.contact]
+        myTickets = app.cells[ElementStringIDs.myTickets]
+        contactEmail = app.cells[ElementStringIDs.contactEmail]
+        activityLogs = app.cells[ElementStringIDs.activityLogs]
 
         super.init(element: activityLogs)
     }
