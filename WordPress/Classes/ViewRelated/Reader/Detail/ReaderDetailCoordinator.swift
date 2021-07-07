@@ -458,13 +458,13 @@ class ReaderDetailCoordinator {
 
         ReaderFollowAction().execute(with: post,
                                      context: coreDataStack.mainContext,
-                                     completion: { [weak self] in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
-                                         self?.view?.updateHeader()
+                                     completion: { [weak self] follow in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
+                                        self?.view?.updateHeader()
                                      },
-                                     failure: { [weak self] _ in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
-                                         self?.view?.updateHeader()
+                                     failure: { [weak self] follow, _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
+                                        self?.view?.updateHeader()
                                      })
     }
 

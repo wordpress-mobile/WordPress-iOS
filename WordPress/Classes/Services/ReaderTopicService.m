@@ -473,14 +473,16 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic
+                       success:(void (^)(BOOL follow))success
+                       failure:(void (^)(BOOL follow, NSError *error))failure
 {
     NSError *error;
     ReaderSiteTopic *topic = (ReaderSiteTopic *)[self.managedObjectContext existingObjectWithID:siteTopic.objectID error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         if (failure) {
-            failure(error);
+            failure(true, error);
         }
         return;
     }
@@ -509,7 +511,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [self refreshPostsForFollowedTopic];
         
         if (success) {
-            success();
+            success(newFollowValue);
         }
     };
 
@@ -531,7 +533,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
         if (failure) {
-            failure(error);
+            failure(newFollowValue, error);
         }
     };
 

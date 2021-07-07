@@ -1283,12 +1283,15 @@ import WordPressFlux
         let originalFollowValue = topic.following
         let newFollowValue = !topic.following
 
+        DDLogDebug("😂 Old: \(originalFollowValue)")
+        DDLogDebug("😂 New: \(originalFollowValue)")
+
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forSite: topic, success: {
-            ReaderHelpers.dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: newFollowValue, success: true)
+        service.toggleFollowing(forSite: topic, success: { follow in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: newFollowValue, success: true)
             completion?(true)
-        }, failure: { (error) in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: originalFollowValue, success: false)
+        }, failure: { (follow, error) in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: newFollowValue, success: false)
             completion?(false)
         })
     }
