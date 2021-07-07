@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-01 13:32:21+0000 */
+/* Translation-Revision-Date: 2021-07-06 05:51:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -3029,7 +3029,7 @@
 "Go to Reader" = "Ga naar Reader";
 
 /* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
-"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Ga naar Instellingen → Kennisgevingen → WordPress en toggle kennisgevingen toestaan.";
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Ga naar Instellingen → Berichtgeving → WordPress en zet 'Sta berichtgeving toe' aan.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -7045,7 +7045,7 @@
 "To take photos or videos to use in your posts." = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
-"To use blogging reminders, you'll need to turn on push notifications." = "Als je blog herinneringen wilt gebruiken, moet je push kennisgevingen inschakelen.";
+"To use blogging reminders, you'll need to turn on push notifications." = "Als je blog herinneringen wilt gebruiken, moet je berichtgeving inschakelen.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Installeer de Jetpack-plugin om statistieken voor je site te gebruiken.";
@@ -7181,10 +7181,10 @@
 "Turn off site notifications" = "Zet site meldingen uit";
 
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
-"Turn on notifications" = "Zet kennisgevingen aan";
+"Turn on notifications" = "Zet meldingen aan";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
-"Turn on push notifications" = "Zet kennisgevingen uit";
+"Turn on push notifications" = "Zet berichtgeving aan";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Zet site meldingen aan";
@@ -8392,7 +8392,7 @@
 "You will not be able to change your username back." = "Je kunt je gebruikersnaam niet meer terug veranderen.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Je krijgt een herinnering om <strong>één keer <\/strong> per week te bloggen op %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Je krijgt een herinnering om <strong>één keer<\/strong> per week te bloggen op %@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Je krijgt herinneringen om %1$@ keer per week te bloggen op %2$@.";
