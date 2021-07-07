@@ -38,7 +38,7 @@ EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressIntents
 ].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
 
-ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER] + EXTENSIONS_BUNDLE_IDENTIFIERS
+ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS]
 
 # Use this instead of getting values from ENV directly
 # It will throw an error if the requested value is missing
