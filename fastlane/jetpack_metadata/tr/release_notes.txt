@@ -1,0 +1,1 @@
+Blok düzenleyicide parlak yeni bir blok Düzen ızgarası var ve biz düzenleyici kodunu araştırırken, tablet kullanan arkadaşlarımız için kodu da değiştirdik. Blok düzenleyicideki sinir bozucu yerleştirici düğmesi tablet görünümü sorunu artık düzeltildi.
