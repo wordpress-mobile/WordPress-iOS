@@ -59,6 +59,7 @@ struct GutenbergNetworkRequest {
                                         if code == 404 {
                                             let errorCode = URLError.Code(rawValue: code)
                                             completion(.failure(URLError(errorCode) as NSError))
+                                            return
                                         }
                                     }
                                 }
