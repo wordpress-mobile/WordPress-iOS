@@ -329,7 +329,7 @@ platform :ios do
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
-      **COMMON_UPLOAD_TO_APPSTORE_PARAMS,
+      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
@@ -904,9 +904,9 @@ def read_version_from_config
   end
 end
 
-# Application-agnostic settings for the `upload_to_app_store` (also known as
-# `deliver`) action.
-COMMON_UPLOAD_TO_APPSTORE_PARAMS = {
+# Application-agnostic settings for the `upload_to_app_store` action, also
+# known as `deliver`.
+UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   app_version: read_version_from_config,
   skip_binary_upload: true,
   overwrite_screenshots: true,
