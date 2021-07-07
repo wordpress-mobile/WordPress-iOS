@@ -1,0 +1,7 @@
+Blog gönderileri yayınlamak istediğiniz günlerde birisinin size hatırlatma göndermesini dilediyseniz, dileğiniz gerçek oldu. Blog hatırlatıcıları isteme özelliğini ekledik. Sadece tercih ettiğiniz blog günlerini seçin, size o gün paylaşım yapmanızı isteyen bir bildirim gönderelim.
+
+Jetpack kullanmayan kendi kendine barındırılan sitelere sahip olanlarınız artık eklentilerini yönetebilir (yükleyebilir, kaldırabilir, etkinleştirebilir ve devre dışı bırakabilir).
+
+Blok düzenleyicide parlak yeni bir blok Düzen ızgarası var ve biz düzenleyici kodunu araştırırken, tablet kullanan arkadaşlarımız için kodu da değiştirdik. Blok düzenleyicideki sinir bozucu yerleştirici düğmesi tablet görünümü sorunu artık düzeltildi.
+
+Okuyucu listelerinden ve makalelerden konuşmalara e-posta ile abone olmak ister misiniz? Güzel çünkü bu özelliği de ekledik!
