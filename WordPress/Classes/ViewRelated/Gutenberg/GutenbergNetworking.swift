@@ -59,7 +59,7 @@ struct GutenbergNetworkRequest {
                 }
             }
     }
-    
+
     private func handleEmbedError(path: String, error: Error, completion: @escaping CompletionHandler) -> Bool {
         if path.starts(with: "/oembed/1.0/") {
             if let error = error as? AFError, error.responseCode == 404 {
