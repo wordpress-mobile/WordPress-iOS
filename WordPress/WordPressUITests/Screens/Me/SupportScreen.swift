@@ -30,6 +30,13 @@ class SupportScreen: BaseScreen {
         activityLogs = app.cells[ElementStringIDs.activityLogs]
 
         super.init(element: activityLogs)
+
+        //Check that each item is loaded:
+        XCTAssert(helpCenter.exists)
+        XCTAssert(contact.exists)
+        XCTAssert(myTickets.exists)
+        XCTAssert(contactEmail.exists)
+        XCTAssert(activityLogs.exists)
     }
 
     static func isLoaded() -> Bool {
