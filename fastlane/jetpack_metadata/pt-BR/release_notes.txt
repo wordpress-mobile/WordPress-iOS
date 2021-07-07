@@ -1,0 +1,1 @@
+O editor de blocos agora tem uma nova grade de layout de bloco. Enquanto vasculhávamos o código do editor, também o ajustamos para ser compatível com tablets. Além disso, corrigimos o problema que ocorria em tablets na visualização do botão de inserção no editor de blocos.
