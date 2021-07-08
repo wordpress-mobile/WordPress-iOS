@@ -618,7 +618,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 }
 
-- (BOOL)supportsStats
+- (BOOL)isStatsActive
 {
     return [self jetpackStatsModuleEnabled];
 }

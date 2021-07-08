@@ -95,7 +95,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
-    if (![self.blog supportsStats]) {
+    if (![self.blog isStatsActive]) {
         [self showStatsModuleDisabled];
         return;
     }
