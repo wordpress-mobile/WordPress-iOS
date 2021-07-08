@@ -30,13 +30,18 @@ class SnippetTableHeaderView: UITableViewHeaderFooterView, NibReusable {
         // NSFetchedResultsController. By default, the results controller assigns the
         // value of sectionNameKeyPath to UITableHeaderFooterView's textLabel.
         textLabel?.isHidden = true
+        contentView.backgroundColor = Style.sectionHeaderBackgroundColor
 
         // configure title label
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
-        titleLabel.textColor = .textSubtle
+        titleLabel.font = Style.sectionHeaderFont
+        titleLabel.textColor = Style.sectionHeaderTitleColor
 
-        // configure separators view
-        separatorsView.backgroundColor = .systemBackground
+        // configure separators/ view
+        separatorsView.bottomColor = Style.separatorColor
         separatorsView.bottomVisible = true
     }
+
+    // MARK: Convenience
+
+    private typealias Style = WPStyleGuide.Snippet
 }

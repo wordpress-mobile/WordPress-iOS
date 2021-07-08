@@ -4296,6 +4296,7 @@
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FEA088012696E7F600193358 /* SnippetTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088002696E7F600193358 /* SnippetTableHeaderView.swift */; };
 		FEA088032696E81F00193358 /* SnippetTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEA088022696E81F00193358 /* SnippetTableHeaderView.xib */; };
+		FEA088052696F7AA00193358 /* WPStyleGuide+Snippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088042696F7AA00193358 /* WPStyleGuide+Snippet.swift */; };
 		FF00889B204DF3ED007CCE66 /* Blog+Quota.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889A204DF3ED007CCE66 /* Blog+Quota.swift */; };
 		FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */; };
 		FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889E204E01AE007CCE66 /* MediaQuotaCell.swift */; };
@@ -7426,6 +7427,7 @@
 		FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 10.xcdatamodel"; sourceTree = "<group>"; };
 		FEA088002696E7F600193358 /* SnippetTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetTableHeaderView.swift; sourceTree = "<group>"; };
 		FEA088022696E81F00193358 /* SnippetTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SnippetTableHeaderView.xib; sourceTree = "<group>"; };
+		FEA088042696F7AA00193358 /* WPStyleGuide+Snippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Snippet.swift"; sourceTree = "<group>"; };
 		FEF93A01F06919BDB9486A8E /* Pods-WordPressHomeWidgetToday.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressHomeWidgetToday.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressHomeWidgetToday/Pods-WordPressHomeWidgetToday.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		FF00889A204DF3ED007CCE66 /* Blog+Quota.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Quota.swift"; sourceTree = "<group>"; };
 		FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaQuotaCell.xib; sourceTree = "<group>"; };
@@ -14272,6 +14274,7 @@
 			children = (
 				FEA088002696E7F600193358 /* SnippetTableHeaderView.swift */,
 				FEA088022696E81F00193358 /* SnippetTableHeaderView.xib */,
+				FEA088042696F7AA00193358 /* WPStyleGuide+Snippet.swift */,
 			);
 			path = "Snippet List";
 			sourceTree = "<group>";
@@ -16972,6 +16975,7 @@
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
 				1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */,
+				FEA088052696F7AA00193358 /* WPStyleGuide+Snippet.swift in Sources */,
 				17C2FF0925D4852400CDB712 /* UnifiedProloguePages.swift in Sources */,
 				400A2C882217A985000A8A59 /* CountryStatsRecordValue+CoreDataClass.swift in Sources */,
 				08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */,
