@@ -13,9 +13,10 @@
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController () <UIViewControllerRestoration>
+@interface StatsViewController () <UIViewControllerRestoration, NoResultsViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
+@property (nonatomic, assign) BOOL isActivatingStatsModule;
 @property (nonatomic, strong) SiteStatsDashboardViewController *siteStatsDashboardVC;
 @property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
@@ -43,6 +44,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
     self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;
+    
+    self.noResultsViewController = [NoResultsViewController controller];
+    self.noResultsViewController.delegate = self;
 
     self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
@@ -95,7 +99,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
-    if (![self.blog isStatsActive]) {
+    if (!self.isActivatingStatsModule && ![self.blog isStatsActive]) {
         [self showStatsModuleDisabled];
         return;
     }
@@ -190,26 +194,24 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
-
 - (void)showStatsModuleDisabled
 {
     [self.noResultsViewController removeFromView];
 
-    NSString *title = NSLocalizedString(@"Looking for stats?", @"Title for the error view when the stats module is disabled.");
-    NSString *subtitle = NSLocalizedString(@"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.",
-                                           @"Error message shown when trying to view Stats and the stats module is disabled.");
-    NSString *image = @"wp-illustration-stats";
+    [self.noResultsViewController configureForStatsModuleDisabled];
+    [self displayNoResults];
+}
 
-    self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
-                                                                attributedTitle:nil
-                                                                    buttonTitle:nil
-                                                                       subtitle:subtitle
-                                                             attributedSubtitle:nil
-                                                attributedSubtitleConfiguration:nil
-                                                                          image:image
-                                                                  subtitleImage:nil
-                                                                  accessoryView:nil];
+- (void)showEnablingSiteStats
+{
+    [self.noResultsViewController removeFromView];
 
+    [self.noResultsViewController configureForActivatingStatsModule];
+    [self displayNoResults];
+}
+
+- (void)displayNoResults
+{
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
     [self.noResultsViewController didMoveToParentViewController:self];
@@ -221,6 +223,27 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (reachability.isReachable) {
         [self initStats];
     }
+}
+
+#pragma mark - NoResultsViewControllerDelegate
+
+-(void)actionButtonPressed
+{
+    [self showEnablingSiteStats];
+        
+    self.isActivatingStatsModule = YES;
+    
+    __weak __typeof(self) weakSelf = self;
+
+    [self activateStatsModuleWithSuccess:^{
+        [weakSelf.noResultsViewController removeFromView];
+        [weakSelf initStats];
+        weakSelf.isActivatingStatsModule = NO;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error activating stats module: %@", error);
+        [weakSelf showStatsModuleDisabled];
+        weakSelf.isActivatingStatsModule = NO;
+    }];
 }
 
 #pragma mark - Restoration
