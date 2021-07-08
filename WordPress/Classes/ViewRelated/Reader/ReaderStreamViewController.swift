@@ -1296,7 +1296,7 @@ import WordPressFlux
 
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
-    func handleFollowActionForHeader(_ header: ReaderStreamHeader, completion: @escaping () -> ()) {
+    func handleFollowActionForHeader(_ header: ReaderStreamHeader, completion: @escaping () -> Void) {
         toggleFollowingForTopic(readerTopic) { [weak self] success in
             if success {
                 self?.syncHelper?.syncContent()
