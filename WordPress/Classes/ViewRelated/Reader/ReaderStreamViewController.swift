@@ -1281,11 +1281,11 @@ import WordPressFlux
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forSite: topic, success: {
-            ReaderHelpers.dispatchToggleFollowSiteMessage(topic: topic, success: true)
+        service.toggleFollowing(forSite: topic, success: { follow in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
             completion?(true)
-        }, failure: { (error: Error?) in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(topic: topic, success: false)
+        }, failure: { (follow, error) in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
             completion?(false)
         })
     }
@@ -1296,13 +1296,14 @@ import WordPressFlux
 
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
-    func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
+    func handleFollowActionForHeader(_ header: ReaderStreamHeader, completion: @escaping () -> Void) {
         toggleFollowingForTopic(readerTopic) { [weak self] success in
             if success {
                 self?.syncHelper?.syncContent()
             }
 
             self?.updateStreamHeaderIfNeeded()
+            completion()
         }
 
         updateStreamHeaderIfNeeded()
