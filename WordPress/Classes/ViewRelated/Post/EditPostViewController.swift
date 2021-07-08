@@ -249,7 +249,7 @@ class EditPostViewController: UIViewController {
         postPost.present(navWrapper, animated: true) {}
     }
 
-    @objc func closePostPost(animated: Bool, afterSavingChangesInTheEditor: Bool) {
+    @objc func closePostPost(animated: Bool, afterSavingChangesInTheEditor: Bool = false) {
         // this reference is needed in the completion
         let presentingController = self.presentingViewController
         // will dismiss self
