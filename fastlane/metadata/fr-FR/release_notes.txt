@@ -1,0 +1,7 @@
+Vous rêviez qu'on vous envoie des rappels les jours où vous voulez publier des pots sur votre blog ? Ce rêve est désormais réalité ! Nous avons ajouté une fonction permettant de demander des rappels pour bloguer. Choisissez vos jours préférés pour bloguer et nous vous enverrons une notification vous invitant à publier des posts.
+
+Les utilisateurs qui possèdent des sites auto-hébergés, n'utilisant pas Jetpack, peuvent maintenant gérer leurs extensions (installation, désinstallation, activation et désactivation).
+
+L'éditeur de blocs possède désormais une nouvelle grille de mise en page. Pendant que nous étions en train d'étudier l'éditeur de code, nous en avons profité pour modifier le code pour nos chers utilisateurs dotés d'une tablette. Le problème d'affichage du bouton d'insertion sur les tablettes est maintenant réparé.
+
+Vous voulez vous inscrire aux discussions par e-mail depuis les listes de lecteurs et d'articles ? C'est parfait ! Nous venons justement d'ajouter cette fonction également !

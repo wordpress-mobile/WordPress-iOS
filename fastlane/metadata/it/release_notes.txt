@@ -1,0 +1,7 @@
+Il tuo desiderio che qualcuno ti invii promemoria nei giorni in cui vuoi pubblicare articoli del blog si è appena avverato. Infatti, abbiamo aggiunto la possibilità di richiedere promemoria relativi al blog. Scegli i giorni in cui preferisci pubblicare gli articoli del tuo blog e riceverai una notifica che ti invita a procedere proprio in quei giorni.
+
+Gli utenti con siti ospitati personalmente che non utilizzano Jetpack possono ora gestire (installare, disinstallare, attivare e disattivare) i propri plugin.
+
+L'editor a blocchi è ora dotato di un blocco Griglia di layout nuovo di zecca e, mentre lavoravamo all'editor del codice, abbiamo anche modificato il codice per gli utenti che utilizzano un tablet. Il fastidioso problema relativo alla visualizzazione su tablet del pulsante di inserimento è ora risolto.
+
+Vuoi seguire le conversazioni via e-mail dagli elenchi e dagli articoli del Lettore? Ottimo, perché abbiamo appena aggiunto anche questa possibilità!
