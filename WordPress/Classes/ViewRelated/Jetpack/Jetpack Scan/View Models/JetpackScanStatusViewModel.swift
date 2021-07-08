@@ -102,6 +102,11 @@ struct JetpackScanStatusViewModel {
             description = Strings.scanningDescription
             progress = Float(scan.current?.progress ?? 0) / 100.0
 
+        case .multisiteNotSupported:
+            imageName = "jetpack-scan-state-error"
+            title = Strings.multisiteNotSupportedTitle
+            description = Strings.multisiteNotSupportedDescription
+
         case .error:
             imageName = "jetpack-scan-state-error"
             title = Strings.errorTitle
@@ -175,6 +180,7 @@ struct JetpackScanStatusViewModel {
         case preparingToScan
         case scanning
         case fixingThreats
+        case multisiteNotSupported
         case error
     }
 
@@ -202,11 +208,24 @@ struct JetpackScanStatusViewModel {
             let isPreparing = (scan.current?.progress ?? 0) == 0
 
             viewState = isPreparing ? .preparingToScan : .scanning
+
+        case .unavailable:
+            viewState = Self.viewState(for: scan.reason)
+
         default:
             viewState = .noThreats
         }
 
         return viewState
+    }
+
+    private static func viewState(for reason: String?) -> StatusViewState {
+        switch reason {
+        case "multisite_not_supported":
+            return .multisiteNotSupported
+        default:
+            return .error
+        }
     }
 
     /// Converts a date into a relative time (X seconds ago, X hours ago, etc)
@@ -238,6 +257,9 @@ struct JetpackScanStatusViewModel {
         static let preparingTitle = NSLocalizedString("Preparing to scan", comment: "Title for label when the preparing to scan the users site")
         static let scanningTitle = NSLocalizedString("Scanning files", comment: "Title for label when the actively scanning the users site")
         static let scanningDescription = NSLocalizedString("We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Description for label when the actively scanning the users site")
+
+        static let multisiteNotSupportedTitle = NSLocalizedString("WordPress multisites are not supported", comment: "Title for label when the user's site is a multisite.")
+        static let multisiteNotSupportedDescription = NSLocalizedString("We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.", comment: "Description for label when the user's site is a multisite.")
 
         static let errorTitle = NSLocalizedString("Something went wrong", comment: "Title for a label that appears when the scan failed")
         static let errorDescription = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Description for a label when the scan has failed")
