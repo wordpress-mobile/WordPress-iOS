@@ -188,7 +188,7 @@ class EditPostViewController: UIViewController {
 
         var dismissPostPostImmediately = true
         if showPostEpilogue && shouldShowPostPost(hasChanges: changesSaved) {
-            showPostPost()
+            showPostPost(afterSavingChangesInTheEditor: true)
             dismissPostPostImmediately = false
         }
 
@@ -199,14 +199,14 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    private func showPostPost() {
+    private func showPostPost(afterSavingChangesInTheEditor: Bool = false) {
         guard let post = post else {
             return
         }
 
         postPost.setup(post: post)
         postPost.onClose = {
-            self.closePostPost(animated: true)
+            self.closePostPost(animated: true, afterSavingChangesInTheEditor: afterSavingChangesInTheEditor)
         }
         postPost.reshowEditor = {
             self.showEditor()
@@ -249,7 +249,7 @@ class EditPostViewController: UIViewController {
         postPost.present(navWrapper, animated: true) {}
     }
 
-    @objc func closePostPost(animated: Bool) {
+    @objc func closePostPost(animated: Bool, afterSavingChangesInTheEditor: Bool) {
         // this reference is needed in the completion
         let presentingController = self.presentingViewController
         // will dismiss self
@@ -258,7 +258,8 @@ class EditPostViewController: UIViewController {
                 return
             }
             self.afterDismiss?()
-            guard !self.editingExistingPost,
+            guard afterSavingChangesInTheEditor,
+                  !self.editingExistingPost,
                   let controller = presentingController else {
                 return
             }
