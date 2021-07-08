@@ -188,13 +188,13 @@ class EditPostViewController: UIViewController {
 
         var dismissPostPostImmediately = true
         if showPostEpilogue && shouldShowPostPost(hasChanges: changesSaved) {
-            showPostPost(afterSavingChangesInTheEditor: true)
+            showPostPost(afterSavingChangesInTheEditor: changesSaved)
             dismissPostPostImmediately = false
         }
 
         dismiss(animated: true) {
             if dismissPostPostImmediately {
-                self.closePostPost(animated: false)
+                self.closePostPost(animated: false, afterSavingChangesInTheEditor: changesSaved)
             }
         }
     }
