@@ -2328,21 +2328,6 @@ extension AztecPostViewController {
     private func stopEditing() {
         view.endEditing(true)
     }
-
-    func contentByStrippingMediaAttachments() -> String {
-        if editorView.editingMode == .html {
-            setHTML(htmlTextView.text)
-        }
-
-        richTextView.removeMediaAttachments()
-        let strippedHTML = getHTML()
-
-        if editorView.editingMode == .html {
-            setHTML(strippedHTML)
-        }
-
-        return strippedHTML
-    }
 }
 
 // MARK: - Computed Properties
@@ -3401,8 +3386,6 @@ extension AztecPostViewController {
 
     struct Constants {
         static let defaultMargin            = CGFloat(20)
-        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
-        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
         static let savingDraftButtonSize    = CGSize(width: 130, height: 30)
         static let uploadingButtonSize      = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
@@ -3530,10 +3513,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
         moreWasPressed()
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        blogPickerWasPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
