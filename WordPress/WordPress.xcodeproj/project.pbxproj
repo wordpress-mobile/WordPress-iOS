@@ -2627,6 +2627,8 @@
 		FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */; };
 		FAB9826E2697038700B172A3 /* StatsViewController+JetpackSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB9826D2697038700B172A3 /* StatsViewController+JetpackSettings.swift */; };
 		FAB9826F2697038700B172A3 /* StatsViewController+JetpackSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB9826D2697038700B172A3 /* StatsViewController+JetpackSettings.swift */; };
+		FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */; };
+		FAB985C22697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */; };
 		FABB1FAB2602FC2C00C8785C /* ReaderCardDiscoverAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA77BCA2482C52A00E1EBBF /* ReaderCardDiscoverAttributionView.xib */; };
 		FABB1FAC2602FC2C00C8785C /* PostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */; };
 		FABB1FAE2602FC2C00C8785C /* QuickStartCongratulationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DDFE8F21785EAC008BE72F /* QuickStartCongratulationsCell.xib */; };
@@ -7393,6 +7395,7 @@
 		FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupStatusCoordinator.swift; sourceTree = "<group>"; };
 		FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupService.swift; sourceTree = "<group>"; };
 		FAB9826D2697038700B172A3 /* StatsViewController+JetpackSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsViewController+JetpackSettings.swift"; sourceTree = "<group>"; };
+		FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+StatsModule.swift"; sourceTree = "<group>"; };
 		FABB26522602FC2C00C8785C /* Jetpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jetpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABB26872602FCCA00C8785C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FABB28462603067C00C8785C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -11442,6 +11445,7 @@
 				986DD19B218D002500D28061 /* WPStyleGuide+Stats.swift */,
 				98487E3921EE8FB500352B4E /* UITableViewCell+Stats.swift */,
 				FAB9826D2697038700B172A3 /* StatsViewController+JetpackSettings.swift */,
+				FAB985C02697550C00B172A3 /* NoResultsViewController+StatsModule.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -17582,6 +17586,7 @@
 				FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
 				46F583AB2624CE790010A723 /* BlockEditorSettings+CoreDataProperties.swift in Sources */,
+				FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
@@ -19202,6 +19207,7 @@
 				FABB22A42602FC2C00C8785C /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB22A52602FC2C00C8785C /* SignupEpilogueViewController.swift in Sources */,
 				FABB22A62602FC2C00C8785C /* TenorPicker.swift in Sources */,
+				FAB985C22697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
 				FABB22A72602FC2C00C8785C /* BlogListViewController+Activity.swift in Sources */,
 				3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				FABB22A82602FC2C00C8785C /* TableDataCoordinator.swift in Sources */,
