@@ -1070,7 +1070,7 @@ private extension ZendeskUtils {
         static let nameFieldCharacterLimit = 50
         static let sourcePlatform = AppConstants.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
-        static let mobileSelfHosted = "mobile_self_hosted"
+        static let mobileSelfHosted = "selected_site_self_hosted"
     }
 
     enum TicketFieldIDs {
