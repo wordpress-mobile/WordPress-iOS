@@ -937,7 +937,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
-    
+
     func gutenbergDidRequestPreview() {
         displayPreview()
     }
