@@ -1,0 +1,7 @@
+Si has estado deseando que alguien te envíe recordatorios los días que quieres publicar entradas en el blog, tu deseo se acaba de hacer realidad. Hemos añadido la posibilidad de solicitar recordatorios de blogueo. Simplemente elige tus días preferidos para bloguear y te enviaremos un aviso para que publiques ese día.
+
+Aquellos con sitios autoalojados que no usan Jetpack, ahora pueden gestionar (instalar, desinstalar, activar y desactivar) sus plugins.
+
+El editor de bloques tiene un nuevo y brillante bloque de diseño de cuadrícula y, mientras estábamos dando vueltas en el código del editor, también retocamos el código para nuestros amigos que usan tabletas. Ahora está corregido el molesto problema de la vista en la tableta del botón de inserción en el editor de bloques.
+
+¿Quieres suscribirte a las conversaciones por correo electrónico desde las listas y artículos del lector? ¡Bien, porque acabamos de añadir también esa posibilidad!

@@ -297,6 +297,15 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 hour";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
@@ -639,6 +648,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt Text";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternatively:";
 
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "กลับไป";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "Background Color";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's Viewer";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Blogging Reminders";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Create a post, page, or story";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "Create a site icon";
 
 /* Label that describes the download backup action */
@@ -2394,6 +2409,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Edit your homepage";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
 
@@ -2441,7 +2462,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email sent!";
 
-/* No comment provided by engineer. */
+/* Title for the Emoji section */
 "Emoji" = "Emoji";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2624,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Event";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Every day";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "ทุกคน";
@@ -2956,8 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generating Preview";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Get Started";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Go to Reader";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3406,6 +3432,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "It's been %@ since %@ was published. ";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "It's time to blog on %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "It's time to blog!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "It's time! Draft and publish your very first post.";
 
@@ -3684,6 +3716,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "กำลังโหลดสตรีม...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Loading the block editor.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Loading usernames";
 
@@ -3778,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "เมนูนำทางหลัก";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Make the most of your site by setting goals and tracking your progress.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "ต่อไป";
 
 /* Table view title for the quick start section. */
@@ -4362,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "ไม่มี";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "None set";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "ทิศเหนือ";
 
@@ -4425,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "คำเตือนที่ยังไม่ได้อ่าน";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Notify me";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Now stories are for everyone";
@@ -4729,9 +4766,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "ผู้คน";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
-
 /* Label for date periods. */
 "Period" = "ช่วงเวลา";
 
@@ -4783,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Please contact support for assistance.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Please enter a complete website address, like example.com.";
@@ -5002,6 +5042,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Posting Activity";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "เรื่องที่เกี่ยวข้องแสดงบทความที่คล้ายกันจากเว็บของคุณด้านล่างเรื่องของคุณ";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Reminders removed";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Return to post";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Reusable blocks aren't editable on WordPress for Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Reusable blocks aren't editable on WordPress for iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Revert Pending Change";
 
@@ -5573,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "บันทึก";
 
@@ -5904,7 +5945,7 @@
 "Set as Posts Page" = "Set as Posts Page";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set reminders" = "Set reminders";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Set up";
@@ -5912,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Set up Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Set your blogging goals";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Set your blogging reminders";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Set your site title";
@@ -6879,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "This is where people will find you on the internet.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "This media item has been deleted.";
 
@@ -6997,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "เพื่อถ่ายรูปหรือวีดีโอไว้ใช้ในเรื่องของคุณ";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "To use stats on your site, you'll need to install the Jetpack plugin.";
@@ -7131,6 +7180,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Turn off site notifications";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Turn on notifications";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Turn on push notifications";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Turn on site notifications";
 
@@ -7214,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Unable to load posts right now.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Unable to load the block editor right now.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Unable to load the image. Please choose a different one or try again later.";
@@ -7313,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Unavailable";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Undefined";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "ขีดเส้นใต้";
@@ -7330,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Unfollow %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Unfollow conversation by email";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Unfollow site";
@@ -7400,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Up to seven days worth of logs are saved.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "อัปเดต";
@@ -8276,6 +8341,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "You have no reminders set.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก";
@@ -8323,8 +8391,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "You will not be able to change your username back.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "You're all up to date!";
@@ -8377,8 +8448,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Your post is currently being uploaded. Please wait until this completes.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Your posts, pages, and settings will be mailed to you at %@.";
@@ -8398,7 +8469,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Your site has been succesfully restored";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
 
 /* Title of a message displayed when user starts a restore operation */
