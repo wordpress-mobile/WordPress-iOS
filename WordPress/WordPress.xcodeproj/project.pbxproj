@@ -1308,6 +1308,8 @@
 		8B6EA62323FDE50B004BA312 /* PostServiceUploadingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6EA62223FDE50B004BA312 /* PostServiceUploadingList.swift */; };
 		8B749E7225AF522900023F03 /* JetpackCapabilitiesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B749E7125AF522900023F03 /* JetpackCapabilitiesService.swift */; };
 		8B749E9025AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B749E8F25AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift */; };
+		8B74A9A8268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */; };
+		8B74A9A9268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */; };
 		8B7623382384373E00AB3EE7 /* PageListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7623372384373E00AB3EE7 /* PageListViewControllerTests.swift */; };
 		8B7C97E325A8BFA2004A3373 /* JetpackActivityLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C97E225A8BFA2004A3373 /* JetpackActivityLogViewController.swift */; };
 		8B7F25A724E6EDB4007D82CC /* TopicsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F25A624E6EDB4007D82CC /* TopicsCollectionView.swift */; };
@@ -1726,6 +1728,7 @@
 		AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB758D9D25EFDF9C00961C0B /* LikesListController.swift */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
+		AEE0828A2681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */; };
 		B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9233250BC593000A40AF /* SuggestionService.swift */; };
 		B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9235250BC5FD000A40AF /* Suggestion.swift */; };
 		B0637527253E7CEC00FD45D2 /* SuggestionsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0637526253E7CEB00FD45D2 /* SuggestionsTableView.swift */; };
@@ -5913,6 +5916,7 @@
 		8B6EA62223FDE50B004BA312 /* PostServiceUploadingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostServiceUploadingList.swift; sourceTree = "<group>"; };
 		8B749E7125AF522900023F03 /* JetpackCapabilitiesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackCapabilitiesService.swift; sourceTree = "<group>"; };
 		8B749E8F25AF8D2E00023F03 /* JetpackCapabilitiesServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackCapabilitiesServiceTests.swift; sourceTree = "<group>"; };
+		8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RewindStatus+multiSite.swift"; sourceTree = "<group>"; };
 		8B7623372384373E00AB3EE7 /* PageListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListViewControllerTests.swift; sourceTree = "<group>"; };
 		8B7C97E225A8BFA2004A3373 /* JetpackActivityLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackActivityLogViewController.swift; sourceTree = "<group>"; };
 		8B7F25A624E6EDB4007D82CC /* TopicsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicsCollectionView.swift; sourceTree = "<group>"; };
@@ -6342,6 +6346,7 @@
 		ADE06D6829F9044164BBA5AB /* Pods-WordPressIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressIntents.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressIntents/Pods-WordPressIntents.release.xcconfig"; sourceTree = "<group>"; };
 		ADF544C0195A0F620092213D /* CustomHighlightButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomHighlightButton.h; sourceTree = "<group>"; };
 		ADF544C1195A0F620092213D /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
+		AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRefactoredGalleryUploadProcessorTests.swift; sourceTree = "<group>"; };
 		B03B9233250BC593000A40AF /* SuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionService.swift; sourceTree = "<group>"; };
 		B03B9235250BC5FD000A40AF /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		B0637526253E7CEB00FD45D2 /* SuggestionsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestionsTableView.swift; path = Suggestions/SuggestionsTableView.swift; sourceTree = "<group>"; };
@@ -10675,6 +10680,7 @@
 				4019B27020885AB900A0C7EB /* ActivityDetailViewController.storyboard */,
 				4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */,
 				8B7C97E225A8BFA2004A3373 /* JetpackActivityLogViewController.swift */,
+				8B74A9A7268E3C68003511CE /* RewindStatus+multiSite.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -14324,6 +14330,7 @@
 				9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */,
 				FF0B2566237A023C004E255F /* GutenbergVideoUploadProcessorTests.swift */,
 				4629E4222440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift */,
+				AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */,
 			);
 			name = Gutenberg;
 			sourceTree = "<group>";
@@ -17442,6 +17449,7 @@
 				7ECD5B8120C4D823001AEBC5 /* MediaPreviewHelper.swift in Sources */,
 				F5A738BD244DF75400EDE065 /* OffsetTableViewHandler.swift in Sources */,
 				177E7DAD1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift in Sources */,
+				8B74A9A8268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */,
 				3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */,
 				7E3E7A6220E44E6A0075D159 /* BodyContentGroup.swift in Sources */,
 				17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */,
@@ -18405,6 +18413,7 @@
 				3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */,
 				08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */,
 				D81C2F6220F89632002AE1F1 /* EditCommentActionTests.swift in Sources */,
+				AEE0828A2681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift in Sources */,
 				E66969CD1B9E2EBF00EC9C00 /* SafeReaderTopicToReaderTopic.m in Sources */,
 				E6A215901D1065F200DE5270 /* AbstractPostTest.swift in Sources */,
 				D8BA274D20FDEA2E007A5C77 /* NotificationTextContentTests.swift in Sources */,
@@ -19091,6 +19100,7 @@
 				FABB22492602FC2C00C8785C /* FullScreenCommentReplyViewController.swift in Sources */,
 				FABB224A2602FC2C00C8785C /* ReaderFollowedSitesViewController.swift in Sources */,
 				FABB224B2602FC2C00C8785C /* AnnouncementsCache.swift in Sources */,
+				8B74A9A9268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */,
 				FABB224C2602FC2C00C8785C /* GravatarUploader.swift in Sources */,
 				FABB224D2602FC2C00C8785C /* NotificationSettingDetailsViewController.swift in Sources */,
 				FABB224E2602FC2C00C8785C /* AztecMediaPickingCoordinator.swift in Sources */,
