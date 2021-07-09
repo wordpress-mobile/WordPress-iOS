@@ -108,12 +108,10 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private func toggleFollowingForPost(_ post: ReaderPost) {
         ReaderFollowAction().execute(with: post,
                                      context: context,
-                                     completion: {
-                                        if post.isFollowing {
-                                            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
-                                        }
-                                     }, failure: { _ in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                     completion: { follow in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
+                                     }, failure: { follow, _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
                                      })
     }
 

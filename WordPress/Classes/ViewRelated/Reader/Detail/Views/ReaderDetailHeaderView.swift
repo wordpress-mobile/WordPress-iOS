@@ -5,7 +5,7 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
-    func didTapFollowButton()
+    func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
 }
 
@@ -78,8 +78,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBAction func didTapFollowButton(_ sender: Any) {
         followButton.isSelected = !followButton.isSelected
         iPadFollowButton.isSelected = !followButton.isSelected
+        followButton.isUserInteractionEnabled = false
 
-        delegate?.didTapFollowButton()
+        delegate?.didTapFollowButton() { [weak self] in
+            self?.followButton.isUserInteractionEnabled = true
+        }
     }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
