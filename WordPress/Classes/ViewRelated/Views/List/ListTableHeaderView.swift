@@ -1,10 +1,10 @@
 /// Renders a table header view with bottom separator, and meant to be used
-/// alongside `SnippetTableViewCell`.
+/// alongside `ListTableViewCell`.
 ///
 /// This is used in Comments and Notifications as part of the Comments
 /// Unification project.
 ///
-class SnippetTableHeaderView: UITableViewHeaderFooterView, NibReusable {
+class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
     // MARK: IBOutlets
 
     @IBOutlet private weak var separatorsView: SeparatorsView!
@@ -43,5 +43,5 @@ class SnippetTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: Convenience
 
-    private typealias Style = WPStyleGuide.Snippet
+    private typealias Style = WPStyleGuide.List
 }
