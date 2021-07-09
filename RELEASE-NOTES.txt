@@ -2,6 +2,7 @@
 -----
 * [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
 * [*] [Jetpack-only] Fix bugs when tapping to notifications
+* [*] Fixed some refresh issues with the site follow buttons in the reader. [#16819]
 
 17.7
 -----

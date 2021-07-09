@@ -1,0 +1,1 @@
+L'editor a blocchi è ora dotato di un blocco Griglia di layout nuovo di zecca e, mentre lavoravamo all'editor del codice, abbiamo anche modificato il codice per gli utenti che utilizzano un tablet. Il fastidioso problema relativo alla visualizzazione su tablet del pulsante di inserimento è ora risolto.

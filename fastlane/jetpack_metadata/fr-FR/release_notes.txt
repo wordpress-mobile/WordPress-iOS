@@ -1,0 +1,1 @@
+L'éditeur de blocs possède désormais une nouvelle grille de mise en page. Pendant que nous étions en train de travailler sur l'éditeur de code, nous en avons profité pour faire une modification pour nos chers utilisateurs dotés d'une tablette. Le problème d'affichage du bouton d'insertion sur les tablettes est maintenant réparé.

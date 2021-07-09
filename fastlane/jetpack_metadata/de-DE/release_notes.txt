@@ -1,0 +1,1 @@
+Der Layoutraster-Block im Block-Editor hat einen frischen neuen Look bekommen und wo wir gerade schon im Editor-Code waren, haben wir auch gleich noch den Code für Tablet-Benutzer verbessert. Der ärgerliche Fehler am Inserter-Button in der Tablet-Ansicht im Block-Editor ist jetzt auch behoben.
