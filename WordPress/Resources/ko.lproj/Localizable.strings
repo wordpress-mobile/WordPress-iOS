@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-24 15:58:55+0000 */
+/* Translation-Revision-Date: 2021-07-07 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -298,13 +298,13 @@
 "< 1 hour" = "< 1시간";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+"<strong>%d<\/strong> times a week" = "일주일에 <strong>%d<\/strong>번";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+"<strong>Once<\/strong> a week" = "일주일에 <strong>한 번<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+"<strong>Twice<\/strong> a week" = "일주일에 <strong>두 번<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -649,7 +649,7 @@
 "Alt Text" = "대체 텍스트";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "대신에 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "또는:";
@@ -1029,7 +1029,7 @@
 "Blog's Viewer" = "블로그 방문자";
 
 /* Label for the blogging reminders setting */
-"Blogging Reminders" = "Blogging Reminders";
+"Blogging Reminders" = "블로깅 알림";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -2410,10 +2410,10 @@
 "Edit your homepage" = "홈페이지 편집";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+"Editing reusable blocks is not yet supported on WordPress for Android" = "재활용 가능한 블록 편집은 아직 Android용 WordPress에서 지원되지 않습니다.";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "재활용 가능한 블록 편집은 아직 iOS용 WordPress에서 지원되지 않습니다.";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
@@ -2647,7 +2647,7 @@
 "Event" = "이벤트";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day" = "Every day";
+"Every day" = "매일";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "모두 볼 수 있음";
@@ -3029,7 +3029,7 @@
 "Go to Reader" = "리더로 이동";
 
 /* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
-"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "설정 &rarr; 알림 &rarr; WordPress로 이동하여 알림 허용을 전환하세요.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3433,10 +3433,10 @@
 "It's been %@ since %@ was published. " = "%2$@이(가) 게시된 후 %1$@이(가) 지났습니다. ";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
-"It's time to blog on %@!" = "It's time to blog on %@!";
+"It's time to blog on %@!" = "%@의 블로깅 시간입니다!";
 
 /* Title of a notification displayed prompting the user to create a new blog post */
-"It's time to blog!" = "It's time to blog!";
+"It's time to blog!" = "블로깅 시간입니다.";
 
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "이제 시간이 되었습니다! 임시글을 작성하여 첫 번째 글을 게시하세요.";
@@ -3717,7 +3717,7 @@
 "Loading stream..." = "스트림 로드 중...";
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
-"Loading the block editor." = "Loading the block editor.";
+"Loading the block editor." = "블록 편집기를 로드하는 중입니다.";
 
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "사용자명 로드 중";
@@ -4394,7 +4394,7 @@
 "None" = "없음";
 
 /* Title shown on table row where no blogging reminders have been set up yet */
-"None set" = "None set";
+"None set" = "설정 없음";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "북쪽";
@@ -4461,7 +4461,7 @@
 "Notifications Unread" = "알림 읽지 않음";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
-"Notify me" = "Notify me";
+"Notify me" = "알림 받기";
 
 /* First story intro item title */
 "Now stories are for everyone" = "이제 이야기가 모두를 위합니다";
@@ -4819,10 +4819,10 @@
 "Please contact support for assistance." = "도움이 필요한 경우 지원팀에 문의하세요.";
 
 /* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
-"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+"Please ensure the block editor is enabled on your site and try again." = "사이트에서 블록 편집기가 활성화되었는지 확인하세요.";
 
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
-"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "사이트에서 블록 편집기가 활성화되었는지 확인하세요. 활성화하지 않으면 로드되지 않습니다.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "example.com과 같은 완전한 웹사이트 주소를 입력하세요.";
@@ -5044,7 +5044,7 @@
 "Posting Activity" = "게시 활동";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "정기적으로 게시하면 독자의 참여도를 높이고 새 방문자를 사이트로 유도하는 데 도움이 됩니다.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5353,7 +5353,7 @@
 "Related Posts displays relevant content from your site below your posts" = "관련 글에는 글 아래에 있는 사이트의 관련 콘텐츠가 표시됩니다.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
-"Reminders removed" = "Reminders removed";
+"Reminders removed" = "알림 제거됨";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5945,7 +5945,7 @@
 "Set as Posts Page" = "글 페이지로 설정";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Set reminders";
+"Set reminders" = "알림 설정";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "설정";
@@ -5954,10 +5954,10 @@
 "Set up Jetpack" = "젯팩 설정";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+"Set up your blogging reminders on days you want to post." = "게시하려는 일자의 블로깅 알림을 설정하세요.";
 
 /* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Set your blogging reminders";
+"Set your blogging reminders" = "블로깅 알림 설정";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "사이트 제목 정하기";
@@ -6923,7 +6923,7 @@
 "This is where people will find you on the internet." = "사람들이 인터넷에서 회원님을 찾을 수 있는 곳입니다.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
-"This is your reminder to blog today ✍️" = "";
+"This is your reminder to blog today ✍️" = "오늘의 블로깅에 대한 알림입니다. ✍️";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "이 미디어 항목은 삭제되었습니다.";
@@ -7045,7 +7045,7 @@
 "To take photos or videos to use in your posts." = "글에 사용할 사진이나 비디오를 촬영";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
-"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
+"To use blogging reminders, you'll need to turn on push notifications." = "블로깅 알림을 사용하려면 푸시 알림을 켜야 합니다.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "사이트에서 통계를 사용하려면 젯팩 플러그인을 설치해야 합니다.";
@@ -7181,10 +7181,10 @@
 "Turn off site notifications" = "사이트 알림 끄기";
 
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
-"Turn on notifications" = "Turn on notifications";
+"Turn on notifications" = "알림 켜기";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
-"Turn on push notifications" = "Turn on push notifications";
+"Turn on push notifications" = "푸시 알림 켜기";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "사이트 알림 켜기";
@@ -7271,7 +7271,7 @@
 "Unable to load posts right now." = "Unable to load posts right now.";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
-"Unable to load the block editor right now." = "Unable to load the block editor right now.";
+"Unable to load the block editor right now." = "지금은 블록 편집기를 로드할 수 없습니다.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "이미지를 로드할 수 없습니다. 다른 이미지를 선택하거나 나중에 다시 시도하세요.";
@@ -7372,7 +7372,7 @@
 "Unavailable" = "사용 불가능";
 
 /* When the App can't figure out what language a blog is configured to use. */
-"Undefined" = "Undefined";
+"Undefined" = "정의되지 않음";
 
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
@@ -7393,7 +7393,7 @@
 "Unfollow %@" = "%@(을)를 팔로우 취소하기";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation by email" = "이메일로 대화 팔로우 취소";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "사이트 팔로우 취소";
@@ -8342,7 +8342,7 @@
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "글 %d개에 대한 변경 사항이 아직 사이트에 업로드되지 않았습니다. 지금 로그아웃하면 변경 사항이 삭제됩니다. 그래도 로그아웃하시겠습니까?";
 
 /* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
-"You have no reminders set." = "You have no reminders set.";
+"You have no reminders set." = "설정된 알림이 없습니다.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -8392,10 +8392,10 @@
 "You will not be able to change your username back." = "사용자명은 다시 바꿀 수 없게 됩니다.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "블로깅에 대한 알림을 일주일에 <strong>한 번<\/strong> %@에 받게 됩니다.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
-"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
+"You'll get reminders to blog %@ times a week on %@." = "블로깅에 대한 알림을 일주일에 %1$@번 %2$@에 받게 됩니다.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "항상 최신 상태를 유지하세요!";
@@ -8449,7 +8449,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "글이 지금 업로드 중에 있습니다. 완료되기까지 기다려 주시기 바랍니다.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "글을 발행하는 중입니다… 그동안에 게시하려는 일자의 블로깅 알림을 설정하세요.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "글, 페이지 및 설정이 %@(으)로 메일로 전송됩니다.";
