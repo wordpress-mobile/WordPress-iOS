@@ -339,12 +339,12 @@ struct ReaderPostMenuButtonTitles {
         dispatchNotice(notice)
     }
 
-    class func dispatchToggleFollowSiteMessage(post: ReaderPost, success: Bool) {
-        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, following: post.isFollowing, success: success)
+    class func dispatchToggleFollowSiteMessage(post: ReaderPost, follow: Bool, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, follow: follow, success: success)
     }
 
-    class func dispatchToggleFollowSiteMessage(topic: ReaderSiteTopic, success: Bool) {
-        dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: topic.following, success: success)
+    class func dispatchToggleFollowSiteMessage(site: ReaderSiteTopic, follow: Bool, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: site.title, siteID: site.siteID, follow: follow, success: success)
     }
 
     class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool) {
@@ -362,15 +362,15 @@ struct ReaderPostMenuButtonTitles {
         dispatchNotice(Notice(title: title))
     }
 
-    private class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
+    class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, follow: Bool, success: Bool) {
         var notice: Notice
 
         if success {
-            notice = following ?
-                followedSiteNotice(siteTitle: siteTitle, siteID: siteID) :
-                Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle)
+            notice = follow
+                ? followedSiteNotice(siteTitle: siteTitle, siteID: siteID)
+                : Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle)
         } else {
-            notice = Notice(title: following ? NoticeMessages.unfollowFail : NoticeMessages.followFail)
+            notice = Notice(title: follow ? NoticeMessages.followFail : NoticeMessages.unfollowFail)
         }
 
         dispatchNotice(notice)
