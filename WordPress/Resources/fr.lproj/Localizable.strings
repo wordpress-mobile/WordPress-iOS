@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-23 13:54:07+0000 */
+/* Translation-Revision-Date: 2021-07-07 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -298,13 +298,13 @@
 "< 1 hour" = "<1 heure";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> fois par semaine";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+"<strong>Once<\/strong> a week" = "<strong>Une fois<\/strong> par semaine";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+"<strong>Twice<\/strong> a week" = "<strong>Deux fois<\/strong> par semaine";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -649,7 +649,7 @@
 "Alt Text" = "Texte alternatif";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Vous pouvez également détacher et modifier ces blocs séparément en appuyant sur « Convertir en blocs normaux ».";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Ou :";
@@ -1029,7 +1029,7 @@
 "Blog's Viewer" = "Visiteur du site";
 
 /* Label for the blogging reminders setting */
-"Blogging Reminders" = "Blogging Reminders";
+"Blogging Reminders" = "Rappels de blog";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -2410,10 +2410,10 @@
 "Edit your homepage" = "Modifier la page d’accueil";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+"Editing reusable blocks is not yet supported on WordPress for Android" = "La modification des blocs réutilisables n’est pas encore prise en charge sur WordPress pour Android";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "La modification des blocs réutilisables n’est pas encore prise en charge sur WordPress pour iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "La modification de ce GIF supprimera son animation.";
@@ -2647,7 +2647,7 @@
 "Event" = "Évènement";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day" = "Every day";
+"Every day" = "Tous les jours";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Tout le monde";
@@ -3029,7 +3029,7 @@
 "Go to Reader" = "Allez au lecteur";
 
 /* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
-"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Accédez à Réglages &rarr; Notifications &rarr; WordPress et activez Autoriser les notifications.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3433,10 +3433,10 @@
 "It's been %@ since %@ was published. " = "%2$@ est publié depuis %1$@. ";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
-"It's time to blog on %@!" = "It's time to blog on %@!";
+"It's time to blog on %@!" = "C’est l’heure de bloguer sur %@ !";
 
 /* Title of a notification displayed prompting the user to create a new blog post */
-"It's time to blog!" = "It's time to blog!";
+"It's time to blog!" = "C’est l’heure de bloguer !";
 
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "C'est le moment ! Créez votre premier brouillon et publiez votre tout premier article.";
@@ -3717,7 +3717,7 @@
 "Loading stream..." = "Chargement du flux...";
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
-"Loading the block editor." = "Loading the block editor.";
+"Loading the block editor." = "Chargement de l’éditeur de blocs.";
 
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Chargement des identifiants";
@@ -4394,7 +4394,7 @@
 "None" = "Aucun";
 
 /* Title shown on table row where no blogging reminders have been set up yet */
-"None set" = "None set";
+"None set" = "Aucun défini";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Nord";
@@ -4461,7 +4461,7 @@
 "Notifications Unread" = "Notifications Non Lues";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
-"Notify me" = "Notify me";
+"Notify me" = "M’avertir";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Maintenant, les stories sont pour tout le monde";
@@ -4819,10 +4819,10 @@
 "Please contact support for assistance." = "Veuillez contacter le support pour de l’aide.";
 
 /* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
-"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+"Please ensure the block editor is enabled on your site and try again." = "Vérifiez que l’éditeur de blocs est activé sur votre site et réessayez.";
 
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
-"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Vérifiez que l’éditeur de blocs est activé sur votre site. S’il n’est pas activé, il ne se chargera pas.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Veuillez saisir une adresse complète de site web comme exemple.fr.";
@@ -5044,7 +5044,7 @@
 "Posting Activity" = "Calendrier des publications";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Publier régulièrement peut aider à fidéliser vos lecteurs et attirer de nouveaux visiteurs sur votre site.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5353,7 +5353,7 @@
 "Related Posts displays relevant content from your site below your posts" = "Les articles similaires affichent du contenu pertinent de votre site après chaque article.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
-"Reminders removed" = "Reminders removed";
+"Reminders removed" = "Rappels supprimés";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5945,7 +5945,7 @@
 "Set as Posts Page" = "Définir comme page des articles";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Set reminders";
+"Set reminders" = "Définir des rappels";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Configurer";
@@ -5954,10 +5954,10 @@
 "Set up Jetpack" = "Réglage de Jetpack";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+"Set up your blogging reminders on days you want to post." = "Définissez vos rappels de blog les jours où vous souhaitez publier.";
 
 /* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Set your blogging reminders";
+"Set your blogging reminders" = "Définir vos rappels de blog";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Définir le titre de votre site";
@@ -6923,7 +6923,7 @@
 "This is where people will find you on the internet." = "C'est ici que les internautes vous trouveront sur Internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
-"This is your reminder to blog today ✍️" = "";
+"This is your reminder to blog today ✍️" = "Ceci est votre rappel pour bloguer aujourd’hui ✍️";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Ce média a été supprimé.";
@@ -7045,7 +7045,7 @@
 "To take photos or videos to use in your posts." = "Pour prendre des photos ou réaliser des vidéos à utiliser dans vos articles.";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
-"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
+"To use blogging reminders, you'll need to turn on push notifications." = "Pour utiliser les rappels de blog, vous devez activer les notifications push.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Pour utiliser les statistiques sur votre site, vous devez installer l'extension Jetpack.";
@@ -7181,10 +7181,10 @@
 "Turn off site notifications" = "Désactivez les notifications";
 
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
-"Turn on notifications" = "Turn on notifications";
+"Turn on notifications" = "Activer les notifications";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
-"Turn on push notifications" = "Turn on push notifications";
+"Turn on push notifications" = "Activer les notifications push";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Activer les notifications";
@@ -7271,7 +7271,7 @@
 "Unable to load posts right now." = "Impossible de charger la publication pour le moment.";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
-"Unable to load the block editor right now." = "Unable to load the block editor right now.";
+"Unable to load the block editor right now." = "Impossible de charger l’éditeur de blocs pour le moment.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Impossible de charger l’image. Veuillez en choisir une autre ou réessayer plus tard.";
@@ -7372,7 +7372,7 @@
 "Unavailable" = "Indisponible";
 
 /* When the App can't figure out what language a blog is configured to use. */
-"Undefined" = "Undefined";
+"Undefined" = "Indéfini";
 
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
@@ -7393,7 +7393,7 @@
 "Unfollow %@" = "Ne plus suivre %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation by email" = "Se désabonner de la discussion par e-mail";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Unfollow site";
@@ -8342,7 +8342,7 @@
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Vous avez modifié %d articles qui n'ont pas été chargés sur votre site. Si vous vous déconnectez maintenant, vous perdrez ces modifications. Voulez-vous vous déconnecter malgré tout ?";
 
 /* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
-"You have no reminders set." = "You have no reminders set.";
+"You have no reminders set." = "Vous n’avez aucun rappel défini.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -8392,10 +8392,10 @@
 "You will not be able to change your username back." = "Vous ne pourrez pas revenir à ce nom d’utilisateur.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Vous recevrez un rappel pour bloguer <strong>une fois<\/strong> par semaine le %@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
-"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
+"You'll get reminders to blog %@ times a week on %@." = "Vous recevrez des rappels pour bloguer %1$@ fois par semaine le %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Vous êtes à jour !";
@@ -8449,7 +8449,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "Vous êtes actuellement en train de téléverser une publication. Veuillez patienter jusqu’à ce que soit terminé.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Votre article est en cours de publication… En attendant, définissez vos rappels de blog les jours où vous souhaitez publier.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vos articles, pages et réglages vous seront envoyés par e-mail à %@.";

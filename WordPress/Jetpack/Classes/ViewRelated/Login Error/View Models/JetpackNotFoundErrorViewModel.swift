@@ -1,6 +1,7 @@
 import UIKit
 
 struct JetpackNotFoundErrorViewModel: JetpackErrorViewModel {
+    let title: String? = nil
     let image: UIImage? = UIImage(named: "jetpack-empty-state-illustration")
     var description: FormattedStringProvider {
         let siteName = siteURL

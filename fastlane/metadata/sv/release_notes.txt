@@ -1,0 +1,7 @@
+Om du har gått och önskat att någon skulle skicka dig en påminnelse de dagar du vill publicera blogginlägg, så har den drömmen just gått i uppfyllelse. Vi har lagt till en möjlighet att begära påminnelser om att blogga. Du behöver bara välja vilja veckodagar du vill blogga, så skickar vi påminnelser om att blogga den dagen.
+
+De av er som har WordPress hos eget webbhotell och inte använder Jetpack kan nu hantera (installera, avinstallera, aktivera och inaktivera) era tillägg.
+
+Blockredigeraren har ett sprillans nytt layoutnät för block, och när vi ändå rotade i redigerarens programkod passade vi på att fixa till den för våra kompisar på surfplattor. Det där irriterande felet med visning av infogningsknappen i blockredigeraren är nu löst.
+
+Vill du kunna prenumerera på konversationer via e-post från listor och artiklar i läsaren? Då är det väl bra att vi just lagt till den möjligheten!
