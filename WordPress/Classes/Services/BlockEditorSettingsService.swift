@@ -2,7 +2,16 @@ import Foundation
 import WordPressKit
 
 class BlockEditorSettingsService {
-    typealias BlockEditorSettingsServiceCompletion = (_ hasChanges: Bool, _ blockEditorSettings: BlockEditorSettings?) -> Void
+    struct SettingsServiceResult {
+        let hasChanges: Bool
+        let blockEditorSettings: BlockEditorSettings?
+    }
+
+    enum BlockEditorSettingsServiceError: Int, Error {
+        case blogNotFound
+    }
+
+    typealias BlockEditorSettingsServiceCompletion = (Swift.Result<SettingsServiceResult, Error>) -> Void
 
     let blog: Blog
     let remote: BlockEditorSettingsServiceRemote
@@ -54,8 +63,9 @@ private extension BlockEditorSettingsService {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
                     self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
                 }
-            case .failure(let error):
-                DDLogError("Error loading active theme: \(error)")
+            case .failure(let err):
+                DDLogError("Error loading active theme: \(err)")
+                completion(.failure(err))
             }
         }
     }
@@ -64,7 +74,8 @@ private extension BlockEditorSettingsService {
         let newChecksum = editorTheme?.checksum ?? ""
         guard originalChecksum != newChecksum else {
             /// The fetched Editor Theme is the same as the cached one so respond with no new changes.
-            completion(false, self.blog.blockEditorSettings)
+            let result = SettingsServiceResult(hasChanges: false, blockEditorSettings: self.blog.blockEditorSettings)
+            completion(.success(result))
             return
         }
 
@@ -76,27 +87,29 @@ private extension BlockEditorSettingsService {
 
         /// The fetched Editor Theme is different than the cached one so persist the new one and delete the old one.
         context.perform {
-            self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { success in
-                guard success else {
-                    completion(false, nil)
-                    return
-                }
-
-                self.context.perform {
-                    completion(true, self.blog.blockEditorSettings)
+            self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { callback in
+                switch callback {
+                case .success:
+                    self.context.perform {
+                        let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
+                        completion(.success(result))
+                    }
+                case .failure(let err):
+                    completion(.failure(err))
                 }
             }
         }
     }
 
-    func persistEditorThemeToCoreData(blogID: NSManagedObjectID, editorTheme: RemoteEditorTheme, completion: @escaping (_ success: Bool) -> Void) {
+    func persistEditorThemeToCoreData(blogID: NSManagedObjectID, editorTheme: RemoteEditorTheme, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         parsingContext.parent = context
         parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
 
         parsingContext.perform {
             guard let blog = parsingContext.object(with: blogID) as? Blog else {
-                completion(false)
+                let err = BlockEditorSettingsServiceError.blogNotFound
+                completion(.failure(err))
                 return
             }
 
@@ -106,28 +119,21 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(editorTheme: editorTheme, context: parsingContext)
-            try? parsingContext.save()
-            completion(true)
+            do {
+                try parsingContext.save()
+            } catch let err {
+                completion(.failure(err))
+            }
+
+            completion(.success(()))
         }
     }
 }
 
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
-    func fetchBlockEditorSettings(tryExperimental: Bool = false, _ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        /*
-         * This endpoint was released as part of WP 5.8 with the __experimental flag.
-         * Starting with Gutenberg 11.1 the endpoint will be available without the __experimental flag.
-         * Gutenberg 11.1 will be included in WP 5.9.
-         * These tests just ensure we are using the appropriate endpoints for each scenario based on when this was released.
-         *
-         * We'll try the non-experimental path first but then if that fails (which should only be for base WP 5.8 installs)
-         * then we'll fall back and try the experimental endpoint.
-         */
-        let hasExperimentalEndpoint = blog.hasRequiredWordPressVersion("5.8") && !blog.hasRequiredWordPressVersion("5.9")
-        let requiresExperimental = hasExperimentalEndpoint ? tryExperimental : false
-
-        remote.fetchBlockEditorSettings(forSiteID: blog.dotComID?.intValue, requiresExperimental: requiresExperimental) { [weak self] (response) in
+    func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
+        remote.fetchBlockEditorSettings(forSiteID: blog.dotComID?.intValue) { [weak self] (response) in
             guard let `self` = self else { return }
             switch response {
             case .success(let remoteSettings):
@@ -135,13 +141,11 @@ private extension BlockEditorSettingsService {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
                 }
-            case .failure(let error):
-                if !tryExperimental && hasExperimentalEndpoint {
-                    self.fetchBlockEditorSettings(tryExperimental: true, completion)
-                } else {
-                    DDLogError("Error loading Block Editor Settings: \(error)")
-                    completion(false, nil)
-                }
+            case .failure(let err):
+                DDLogError("Error fetching editor settings: \(err)")
+                // The user may not have the gutenberg plugin installed so try /wp/v2/themes to maintain feature support.
+                // In WP 5.9 we may be able to skip this attempt.
+                self.fetchTheme(completion)
             }
         }
     }
@@ -150,7 +154,8 @@ private extension BlockEditorSettingsService {
         let newChecksum = remoteSettings?.checksum ?? ""
         guard originalChecksum != newChecksum else {
             /// The fetched Block Editor Settings is the same as the cached one so respond with no new changes.
-            completion(false, self.blog.blockEditorSettings)
+            let result = SettingsServiceResult(hasChanges: false, blockEditorSettings: self.blog.blockEditorSettings)
+            completion(.success(result))
             return
         }
 
@@ -162,27 +167,29 @@ private extension BlockEditorSettingsService {
 
         /// The fetched Block Editor Settings is different than the cached one so persist the new one and delete the old one.
         context.perform {
-            self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { success in
-                guard success else {
-                    completion(false, nil)
-                    return
-                }
-
-                self.context.perform {
-                    completion(true, self.blog.blockEditorSettings)
+            self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { callback in
+                switch callback {
+                case .success:
+                    self.context.perform {
+                        let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
+                        completion(.success(result))
+                    }
+                case .failure(let err):
+                    completion(.failure(err))
                 }
             }
         }
     }
 
-    func persistBlockEditorSettingsToCoreData(blogID: NSManagedObjectID, remoteSettings: RemoteBlockEditorSettings, completion: @escaping (_ success: Bool) -> Void) {
+    func persistBlockEditorSettingsToCoreData(blogID: NSManagedObjectID, remoteSettings: RemoteBlockEditorSettings, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         parsingContext.parent = context
         parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
 
         parsingContext.perform {
             guard let blog = parsingContext.object(with: blogID) as? Blog else {
-                completion(false)
+                let err = BlockEditorSettingsServiceError.blogNotFound
+                completion(.failure(err))
                 return
             }
 
@@ -192,8 +199,13 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: parsingContext)
-            try? parsingContext.save()
-            completion(true)
+            do {
+                try parsingContext.save()
+            } catch let err {
+                completion(.failure(err))
+            }
+
+            completion(.success(()))
         }
     }
 }
@@ -206,7 +218,8 @@ private extension BlockEditorSettingsService {
                 // Block Editor Settings nullify on delete
                 self.context.delete(blockEditorSettings)
             }
-            completion(true, nil)
+            let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: nil)
+            completion(.success(result))
         }
     }
 }

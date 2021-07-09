@@ -21,7 +21,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         context = contextManager.mainContext
         mockRemoteApi = MockWordPressComRestApi()
         blog = BlogBuilder(context)
-            .with(wordPressVersion: "5.9")
             .with(isHostedAtWPCom: true)
             .build()
 
@@ -34,9 +33,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testThemeSupportsNewTheme() {
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertTrue(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertTrue(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
 
@@ -53,9 +57,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertTrue(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertTrue(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
 
@@ -72,9 +81,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertFalse(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertFalse(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
@@ -97,11 +111,17 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertTrue(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertTrue(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
+
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
@@ -113,9 +133,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertTrue(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertTrue(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
 
@@ -133,9 +158,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertTrue(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertTrue(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
 
@@ -155,9 +185,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertTrue(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertTrue(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
 
@@ -177,9 +212,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
-            XCTAssertFalse(hasChanges)
-            XCTAssertNotNil(result)
+        service.fetchSettings { result in
+            switch result {
+            case .success(let settings):
+                XCTAssertFalse(settings.hasChanges)
+                XCTAssertNotNil(settings.blockEditorSettings)
+            case .failure:
+                XCTFail()
+            }
             waitExpectation.fulfill()
         }
 
@@ -191,11 +231,8 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         XCTAssertEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
-    func testFetchBlockEditorSettings_Org5_8Site() {
-        blog = BlogBuilder(context)
-            .with(wordPressVersion: "5.8")
-            .withAnAccount()
-            .build()
+    func testFetchBlockEditorSettings_OrgSite_NoPlugin() {
+        blog = BlogBuilder(context).build()
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
@@ -203,7 +240,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
+        service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
 
@@ -214,15 +251,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         waitForExpectations(timeout: expectationTimeout)
 
         XCTAssertTrue(mockOrgRemoteApi.getMethodCalled)
-        XCTAssertEqual(mockOrgRemoteApi.URLStringPassedIn!, "/__experimental/wp-block-editor/v1/settings")
-        XCTAssertEqual((mockOrgRemoteApi.parametersPassedIn as! [String: String])["context"], "mobile")
+        XCTAssertEqual(mockOrgRemoteApi.URLStringPassedIn!, "/wp/v2/themes")
+        XCTAssertEqual((mockOrgRemoteApi.parametersPassedIn as! [String: String])["status"], "active")
     }
 
-    func testFetchBlockEditorSettings_Org5_9Site() {
-        blog = BlogBuilder(context)
-            .with(wordPressVersion: "5.9")
-            .with(isHostedAtWPCom: false)
-            .build()
+    func testFetchBlockEditorSettings_OrgSite() {
+        blog = BlogBuilder(context).build()
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
@@ -230,7 +264,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
+        service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
         mockOrgRemoteApi.completionPassedIn!(.success(mockedResponse), HTTPURLResponse())
@@ -243,8 +277,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     func testFetchBlockEditorSettings_Com5_8Site() {
         blog = BlogBuilder(context)
-            .with(wordPressVersion: "5.8")
-            .with(isHostedAtWPCom: true)
+            .withAnAccount()
             .build()
 
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
@@ -252,7 +285,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
+        service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
@@ -267,7 +300,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
-        service.fetchSettings { (hasChanges, result) in
+        service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
@@ -305,7 +338,7 @@ extension BlockEditorSettingsServiceTests {
     func setData(withFilename filename: String) {
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         let mockedResponse = mockedData(withFilename: filename)
-        service.fetchSettings { (hasChanges, result) in
+        service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
         mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())

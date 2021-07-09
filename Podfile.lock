@@ -452,7 +452,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.37.0-beta.4):
+  - WordPressKit (4.37.0-beta.6):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -553,7 +553,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.39.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `d87ce5fc419fe9e3ede31d5c5d8c32bfa3b67ab6`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `cc6836fc78cadae5f825e674292fe8b87998a850`)
   - WordPressMocks (~> 0.0.13)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.1)
@@ -711,7 +711,7 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.57.0-alpha1
   WordPressKit:
-    :commit: d87ce5fc419fe9e3ede31d5c5d8c32bfa3b67ab6
+    :commit: cc6836fc78cadae5f825e674292fe8b87998a850
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.57.0-alpha1/third-party-podspecs/Yoga.podspec.json
@@ -729,7 +729,7 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.57.0-alpha1
   WordPressKit:
-    :commit: d87ce5fc419fe9e3ede31d5c5d8c32bfa3b67ab6
+    :commit: cc6836fc78cadae5f825e674292fe8b87998a850
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -815,7 +815,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: c50b9737d6f459b1010bd07daa9885d19505c504
-  WordPressKit: 3bfdfb739d6f5354144ee35f9fa7f27b266be9c8
+  WordPressKit: b91ed01a13f63e9ec824a93290fadf2f0d86bc28
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
   WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
   WordPressUI: 7cd64cfaf76ce0cfd78d6a544702c4c774a29919
@@ -831,6 +831,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 41f7635982069dbf10971ee47c048b9c28e48109
+PODFILE CHECKSUM: 94622776e32c0cb8ec2ec0a81ee078bed4f76bc0
 
 COCOAPODS: 1.10.1
