@@ -18,6 +18,7 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
         }
         set {
             titleLabel.text = newValue?.localizedUppercase ?? String()
+            accessibilityLabel = newValue
         }
     }
 
@@ -26,7 +27,7 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        // Hide text label to prevent values being overwritten due to interaction with
+        // Hide text label to prevent values being shown due to interaction with
         // NSFetchedResultsController. By default, the results controller assigns the
         // value of sectionNameKeyPath to UITableHeaderFooterView's textLabel.
         textLabel?.isHidden = true
