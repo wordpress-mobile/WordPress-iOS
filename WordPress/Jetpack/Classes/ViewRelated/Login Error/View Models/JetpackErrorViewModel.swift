@@ -5,6 +5,10 @@ protocol JetpackErrorViewModel {
     /// If this is nil the image will be hidden
     var image: UIImage? { get }
 
+    /// The title for the error description
+    /// If nil, title will be hidden
+    var title: String? { get }
+
     /// The error description text
     var description: FormattedStringProvider { get }
 
