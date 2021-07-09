@@ -1045,7 +1045,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ].compactMap { $0 }
     }
 
-    func gutenbergSentryOptions() -> [String: Any]? {
+    func gutenbergCrashLoggingOptions() -> [String: Any]? {
         return WordPressAppDelegate.crashLogging?.getOptionsDict()
     }
 
