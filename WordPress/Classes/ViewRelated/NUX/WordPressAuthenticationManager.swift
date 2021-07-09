@@ -350,11 +350,18 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
         epilogueViewController.onContinue = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if PostSignUpInterstitialViewController.shouldDisplay() {
-                self?.presentPostSignUpInterstitial(in: navigationController)
+                self.presentPostSignUpInterstitial(in: navigationController)
             } else {
-                // Signup is only ever shown in fullscreen
-                self?.windowManager.dismissFullscreenSignIn()
+                if self.windowManager.isShowingFullscreenSignIn {
+                    self.windowManager.dismissFullscreenSignIn()
+                } else {
+                    navigationController.dismiss(animated: true)
+                }
             }
 
             UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
