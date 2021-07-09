@@ -5,7 +5,7 @@ private struct ElementStringIDs {
     static let navBar = "WordPress.GetStartedView"
     static let emailTextField = "Email address"
     static let continueButton = "Get Started Email Continue Button"
-    static let helpButton = "Help" //added for support test
+    static let helpButton = "help-button" //added for support test
 }
 
 class GetStartedScreen: BaseScreen {
