@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-06 05:22:04+0000 */
+/* Translation-Revision-Date: 2021-07-08 08:08:57+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -2216,7 +2216,7 @@
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
-"Done" = "Zakończono";
+"Done" = "Gotowe";
 
 /* Title for label when there are no threats on the users site */
 "Don’t worry about a thing" = "Don’t worry about a thing";

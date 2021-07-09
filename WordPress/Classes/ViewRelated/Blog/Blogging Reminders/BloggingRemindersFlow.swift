@@ -22,7 +22,10 @@ class BloggingRemindersFlow {
         let flowStartViewController = makeStartViewController(for: blog, tracker: tracker, source: source)
         let navigationController = BloggingRemindersNavigationController(
             rootViewController: flowStartViewController,
-            onDismiss: onDismiss)
+            onDismiss: {
+                NoticesDispatch.unlock()
+                onDismiss?()
+            })
 
         let bottomSheet = BottomSheetViewController(childViewController: navigationController,
                                                     customHeaderSpacing: 0)

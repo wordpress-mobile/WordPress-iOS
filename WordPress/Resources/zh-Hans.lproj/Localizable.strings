@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-18 16:01:00+0000 */
+/* Translation-Revision-Date: 2021-07-07 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -298,13 +298,13 @@
 "< 1 hour" = "不到 1 小时";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+"<strong>%d<\/strong> times a week" = "每周 <strong>%d<\/strong> 次";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+"<strong>Once<\/strong> a week" = "每周<strong>一次<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+"<strong>Twice<\/strong> a week" = "每周<strong>两次<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -649,7 +649,7 @@
 "Alt Text" = "替代文本";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "您也可以通过点击“转换为常规区块”来单独分离和编辑这些区块。";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "其他方式：";
@@ -1029,7 +1029,7 @@
 "Blog's Viewer" = "博客查看者";
 
 /* Label for the blogging reminders setting */
-"Blogging Reminders" = "Blogging Reminders";
+"Blogging Reminders" = "博客发布提醒";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -2410,10 +2410,10 @@
 "Edit your homepage" = "编辑您的主页";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Android 版 WordPress 尚不支持编辑可重用区块";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "iOS 版 WordPress 尚不支持编辑可重用区块";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "编辑此 GIF 将删除其动画。";
@@ -2647,7 +2647,7 @@
 "Event" = "活动";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day" = "Every day";
+"Every day" = "每天";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "所有人";
@@ -3029,7 +3029,7 @@
 "Go to Reader" = "转到“阅读器”";
 
 /* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
-"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "进入“设置 &rarr; 通知 &rarr; WordPress”，然后切换到“允许通知”。";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3433,10 +3433,10 @@
 "It's been %@ since %@ was published. " = "“%2$@”已发布 %1$@。";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
-"It's time to blog on %@!" = "It's time to blog on %@!";
+"It's time to blog on %@!" = "在 %@ 上发布博客的时间到了！";
 
 /* Title of a notification displayed prompting the user to create a new blog post */
-"It's time to blog!" = "It's time to blog!";
+"It's time to blog!" = "发布博客的时间到了！";
 
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "是时候了！起草并发布您的第一篇文章。";
@@ -3717,7 +3717,7 @@
 "Loading stream..." = "正在加载数据流...";
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
-"Loading the block editor." = "Loading the block editor.";
+"Loading the block editor." = "正在加载区块编辑器。";
 
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "正在加载用户名";
@@ -4394,7 +4394,7 @@
 "None" = "无";
 
 /* Title shown on table row where no blogging reminders have been set up yet */
-"None set" = "None set";
+"None set" = "无设置";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "北";
@@ -4461,7 +4461,7 @@
 "Notifications Unread" = "未读通知";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
-"Notify me" = "Notify me";
+"Notify me" = "通知我";
 
 /* First story intro item title */
 "Now stories are for everyone" = "现在，每个人都可以创作自己的故事";
@@ -4819,10 +4819,10 @@
 "Please contact support for assistance." = "请联系支持人员以获取帮助。";
 
 /* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
-"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+"Please ensure the block editor is enabled on your site and try again." = "请确保您的站点已开启区块编辑器并重试。";
 
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
-"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "请确保您的站点已开启区块编辑器。 如果没有开启，将不会加载。";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "请输入完整网址（如 example.com）。";
@@ -5044,7 +5044,7 @@
 "Posting Activity" = "博文发布情况";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5353,7 +5353,7 @@
 "Related Posts displays relevant content from your site below your posts" = "“相关文章”在您的文章下方显示您站点中的相关内容";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
-"Reminders removed" = "Reminders removed";
+"Reminders removed" = "删除提醒";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5945,7 +5945,7 @@
 "Set as Posts Page" = "设为文章页面";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Set reminders";
+"Set reminders" = "设置提醒";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "设置";
@@ -5954,10 +5954,10 @@
 "Set up Jetpack" = "设置 Jetpack";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+"Set up your blogging reminders on days you want to post." = "在希望发布文章的日期设置博客发布提醒。";
 
 /* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Set your blogging reminders";
+"Set your blogging reminders" = "设置您的博客发布提醒";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "设置您的站点标题";
@@ -6923,7 +6923,7 @@
 "This is where people will find you on the internet." = "人们可以通过此域名在互联网上找到您。";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
-"This is your reminder to blog today ✍️" = "";
+"This is your reminder to blog today ✍️" = "这是您今天的博客发布提醒 ✍️";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "此媒体项目已被删除。";
@@ -7045,7 +7045,7 @@
 "To take photos or videos to use in your posts." = "拍摄要在文章内使用的照片或视频。";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
-"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
+"To use blogging reminders, you'll need to turn on push notifications." = "要使用博客发布提醒，您需要开启推送通知。";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "要在您的网站上使用“统计”功能，您需要安装Jetpack插件。";
@@ -7181,10 +7181,10 @@
 "Turn off site notifications" = "关闭站点通知";
 
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
-"Turn on notifications" = "Turn on notifications";
+"Turn on notifications" = "开启通知";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
-"Turn on push notifications" = "Turn on push notifications";
+"Turn on push notifications" = "开启推送通知";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "打开站点通知";
@@ -7271,7 +7271,7 @@
 "Unable to load posts right now." = "目前无法加载文章。";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
-"Unable to load the block editor right now." = "Unable to load the block editor right now.";
+"Unable to load the block editor right now." = "现在无法加载区块编辑器。";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "无法加载图片。请选择其他图片或稍后重试。";
@@ -7372,7 +7372,7 @@
 "Unavailable" = "不可用";
 
 /* When the App can't figure out what language a blog is configured to use. */
-"Undefined" = "Undefined";
+"Undefined" = "未定义";
 
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
@@ -7393,7 +7393,7 @@
 "Unfollow %@" = "取消关注 %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation by email" = "通过电子邮件取消关注对话";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "取消关注站点";
@@ -8342,7 +8342,7 @@
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "您对 %d 篇文章的更改尚未上传到站点。现在注销将删除这些更改。仍然注销？";
 
 /* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
-"You have no reminders set." = "You have no reminders set.";
+"You have no reminders set." = "您没有设置提醒。";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -8392,10 +8392,10 @@
 "You will not be able to change your username back." = "您将无法撤消对用户名所做的更改。";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "您会收到每周在 %@ 上发布<strong>一次<\/strong>博客的提醒。";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
-"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
+"You'll get reminders to blog %@ times a week on %@." = "您会收到每周在 %2$@ 上发布 %1$@ 次博客的提醒。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "您已看完所有内容！";
@@ -8449,7 +8449,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "您的文章当前正在上传。 请等待，直到此任务完成。";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "您的文章正在发布...同时，在您希望发布文章的日期设置博客发布提醒。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "文章、页面和设置将通过邮件发送给您（地址为：%@）。";

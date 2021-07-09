@@ -1,0 +1,7 @@
+Jika Anda berharap seseorang akan mengirimkan pengingat pada hari Anda ingin menerbitkan pos di blog, harapan Anda kini terkabul. Kami telah menambahkan kemampuan untuk meminta pengingat blogging. Tinggal pilih hari untuk blogging, lalu kami akan mengirimkan pemberitahuan sebagai pengingat untuk menerbitkan pos pada hari itu.
+
+Bagi Anda yang memiliki situs hosting sendiri dan tidak menggunakan Jetpack, kini Anda bisa mengelola (memasang, mencopot, mengaktifkan, dan menonaktifkan) plugin situs tersebut.
+
+Editor Blok kini dilengkapi dengan Petak tata letak blok yang baru, dan setelah kami mengotak-atik kode editor, kami juga mengubah kode untuk para pengguna tablet. Masalah tampilan tablet tombol penyisip yang menyebalkan di editor Blok kini sudah diperbaiki.
+
+Ingin berlangganan ke percakapan melalui email dari daftar dan artikel Pembaca? Kebetulan sekali, karena kami juga telah menambahkan kemampuan tersebut!
