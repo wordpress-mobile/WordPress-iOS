@@ -1,4 +1,4 @@
-/// Convenience constants catalog related for styling in snippet list.
+/// Convenience constants catalog related for styling List components.
 ///
 extension WPStyleGuide {
     public enum List {
