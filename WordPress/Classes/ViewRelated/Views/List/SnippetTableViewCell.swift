@@ -23,6 +23,9 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
 
     @objc var imageURL: URL? {
         didSet {
+            guard imageURL != oldValue else {
+                return
+            }
             downloadImage(with: imageURL)
         }
     }
@@ -41,7 +44,7 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
             snippetLabel.text
         }
         set {
-            snippetLabel.text = newValue ?? String()
+            snippetLabel.text = newValue?.trimmingCharacters(in: .whitespacesAndNewlines) ?? String()
         }
     }
 
@@ -50,6 +53,7 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        configureViews()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -65,6 +69,7 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
         // TODO: temporary styling
         titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         titleLabel.textColor = UIColor.text
+        titleLabel.numberOfLines = Constants.titleNumberOfLinesWithSnippet
 
         // snippet label
         snippetLabel.font = Style.snippetFont
@@ -79,12 +84,12 @@ private extension SnippetTableViewCell {
 
     /// Downloads the image to display in avatarView.
     func downloadImage(with url: URL?) {
-        guard url != imageURL else {
-            return
-        }
-
         if let someURL = url, let gravatar = Gravatar(someURL) {
-            avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+            avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true) { error in
+                if let error = error {
+                    print(error)
+                }
+            }
             return
         }
 

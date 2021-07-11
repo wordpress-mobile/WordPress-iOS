@@ -12,7 +12,7 @@ extension WPStyleGuide {
 
         // MARK: Cells
         public static let placeholderImage = UIImage.gravatarPlaceholderImage
-        public static let snippetFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        public static let snippetFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         public static let snippetTextColor = UIColor.textSubtle
     }
 }
