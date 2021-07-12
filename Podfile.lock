@@ -11,15 +11,15 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - AppCenter (4.1.1):
-    - AppCenter/Analytics (= 4.1.1)
-    - AppCenter/Crashes (= 4.1.1)
-  - AppCenter/Analytics (4.1.1):
+  - AppCenter (4.2.0):
+    - AppCenter/Analytics (= 4.2.0)
+    - AppCenter/Crashes (= 4.2.0)
+  - AppCenter/Analytics (4.2.0):
     - AppCenter/Core
-  - AppCenter/Core (4.1.1)
-  - AppCenter/Crashes (4.1.1):
+  - AppCenter/Core (4.2.0)
+  - AppCenter/Crashes (4.2.0):
     - AppCenter/Core
-  - AppCenter/Distribute (4.1.1):
+  - AppCenter/Distribute (4.2.0):
     - AppCenter/Core
   - Automattic-Tracks-iOS (0.9.1):
     - CocoaLumberjack (~> 3)
@@ -487,8 +487,8 @@ DEPENDENCIES:
   - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AMScrollingNavbar (= 5.6.0)
-  - AppCenter (= 4.1.1)
-  - AppCenter/Distribute (= 4.1.1)
+  - AppCenter (~> 4.1)
+  - AppCenter/Distribute (~> 4.1)
   - Automattic-Tracks-iOS (~> 0.9.1)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.58.0-alpha1-2/third-party-podspecs/BVLinearGradient.podspec.json`)
   - Charts (~> 3.2.2)
@@ -734,7 +734,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  AppCenter: cd53e3ed3563cc720bcb806c9731a12389b40d44
+  AppCenter: 87ef6eefd8ade4df59e88951288587429f3dd2a5
   Automattic-Tracks-iOS: f5a6188ad8d00680748111466beabb0aea11f856
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: eee4f8a06f66d85cc3f3288760ac28407ac7f46b
@@ -826,6 +826,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d36a54a47e0fff21ed32862b4b4f6694e8348f55
+PODFILE CHECKSUM: 52c2af0a42adb83ba873ef477a56852a521f74d9
 
 COCOAPODS: 1.10.1
