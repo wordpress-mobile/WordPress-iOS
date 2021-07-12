@@ -1,5 +1,8 @@
-import UIKit
-
+/// Table view cell for the List component.
+///
+/// This is used in Comments and Notifications as part of the Comments
+/// Unification project.
+///
 class ListTableViewCell: UITableViewCell, NibReusable {
     // MARK: IBOutlets
 
@@ -72,7 +75,7 @@ private extension ListTableViewCell {
         // indicator view
         indicatorView.layer.cornerRadius = indicatorWidthConstraint.constant / 2
 
-        // TODO: temporary styling
+        // TODO: temporary styling. will update this in later PRs.
         titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         titleLabel.textColor = UIColor.text
         titleLabel.numberOfLines = Constants.titleNumberOfLinesWithSnippet
