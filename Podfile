@@ -50,7 +50,7 @@ def wordpress_kit
     # pod 'WordPressKit', '~> 4.37.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '1f1b500f554fbe7ced728b55f49e4f26de27a3c2'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'bd0da2a4d94528193fad152717d908b85efa2db7'
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -166,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '27b315d5e14754b645f9cbc2ad4430c8307ee396'
+    gutenberg :commit => '6bf4531d056ea279962ffa0d79d499229467f10a'
 
     ## Third party libraries
     ## =====================
@@ -195,7 +195,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.9.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.9.0'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
