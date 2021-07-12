@@ -1,11 +1,22 @@
 import UITestsFoundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let blogsTable = "Blogs"
+    static let plusButton = "Add"
+    static let addSelfHostedSiteButton = "Add self-hosted site"
+}
+
 class MySitesScreen: BaseScreen {
+    let blogsTable: XCUIElement
+    let plusButton: XCUIElement
+    let addSelfHostedSiteButton: XCUIElement
+
     init() {
-        let blogsTable = XCUIApplication().tables["Blogs"]
-        let plusButton = XCUIApplication().buttons["Add"]
-        let addSelfHostedSiteButton = XCUIApplication().buttons["Add self-hosted site"]
+        let app = XCUIApplication()
+        blogsTable = app.staticTexts[ElementStringIDs.blogsTable]
+        plusButton = app.staticTexts[ElementStringIDs.plusButton]
+        addSelfHostedSiteButton = app.staticTexts[ElementStringIDs.addSelfHostedSiteButton]
         // need to add "+" button here for Add Site options. Something like:
         // let plusButton = XCUIApplication().buttons["+"] accessibility inspector says it has the Label: "Add", but no accessibilityIdentifier
         // And then the action sheet "add Self-hosted site" option.
