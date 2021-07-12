@@ -1,6 +1,6 @@
 import UIKit
 
-class SnippetTableViewCell: UITableViewCell, NibReusable {
+class ListTableViewCell: UITableViewCell, NibReusable {
     // MARK: IBOutlets
 
     @IBOutlet private weak var indicatorView: UIView!
@@ -11,16 +11,20 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Properties
 
+    /// The color of the indicator circle.
     @objc var indicatorColor: UIColor = .clear
 
+    /// Toggle variable to determine whether the indicator circle should be shown.
     @objc var showsIndicator: Bool = false {
         didSet {
             indicatorView.backgroundColor = showsIndicator ? indicatorColor : .clear
         }
     }
 
+    /// The default placeholder image.
     @objc var placeholderImage: UIImage = Style.placeholderImage
 
+    /// The image URL to be downloaded and displayed on avatarView.
     @objc var imageURL: URL? {
         didSet {
             guard imageURL != oldValue else {
@@ -30,6 +34,8 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// The attributed string to be displayed in titleLabel.
+    /// To keep the styles uniform between List components, refer to regular and bold styles in `WPStyleGuide+List`.
     @objc var attributedTitleText: NSAttributedString? {
         get {
             titleLabel.attributedText
@@ -39,6 +45,8 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// The snippet text, displayed in snippetLabel.
+    /// Note that new values are trimmed of whitespaces and newlines.
     @objc var snippetText: String? {
         get {
             snippetLabel.text
@@ -52,17 +60,15 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        configureViews()
+        configureSubviews()
     }
+}
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+// MARK: Private Helpers
 
-        // Configure the view for the selected state
-    }
+private extension ListTableViewCell {
 
-    private func configureViews() {
+    func configureSubviews() {
         // indicator view
         indicatorView.layer.cornerRadius = indicatorWidthConstraint.constant / 2
 
@@ -76,11 +82,6 @@ class SnippetTableViewCell: UITableViewCell, NibReusable {
         snippetLabel.textColor = Style.snippetTextColor
         snippetLabel.numberOfLines = Constants.snippetNumberOfLines
     }
-}
-
-// MARK: Private Helpers
-
-private extension SnippetTableViewCell {
 
     /// Downloads the image to display in avatarView.
     func downloadImage(with url: URL?) {
@@ -96,13 +97,12 @@ private extension SnippetTableViewCell {
         // handle non-gravatar images
         avatarView.downloadImage(from: url, placeholderImage: placeholderImage)
     }
-
 }
 
 // MARK: Constants
 
-extension SnippetTableViewCell {
-    typealias Style = WPStyleGuide.Snippet
+extension ListTableViewCell {
+    typealias Style = WPStyleGuide.List
 
     private struct Constants {
         static let titleNumberOfLinesWithoutSnippet = 3
