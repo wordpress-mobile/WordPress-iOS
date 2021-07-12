@@ -1,0 +1,1 @@
+Editor blok kini dilengkapi Petak tata letak blok yang baru dan karena kami juga mengutak-atik baris kode editor, kami menyunting baris kode sehingga lebih ramah untuk digunakan para sobat pengguna tablet. Masalah tombol penyisip tampilan tablet di Editor blok yang menyebalkan kini teratasi.

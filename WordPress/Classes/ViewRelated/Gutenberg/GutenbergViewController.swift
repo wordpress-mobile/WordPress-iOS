@@ -979,7 +979,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success = result {
+            if case let .success(text) = result, !text.isEmpty {
                 didSelectSuggestion = true
             }
 

@@ -1,0 +1,1 @@
+Blockredigeraren har ett helt nytt Layoutrutnät-block och medan vi grävde runt i koden för redigeraren passade vi även på att justera koden för surfplatteanvändning. Det irriterande problemet med infogarknappen i blockredigeraren i surfplattevy har nu åtgärdats.
