@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oMd-3W-Kni" userLabel="Indicator View">
-                        <rect key="frame" x="6" y="25" width="8" height="8"/>
+                        <rect key="frame" x="6" y="27" width="8" height="8"/>
                         <color key="backgroundColor" systemColor="systemYellowColor"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="8" id="aYX-vx-L8K"/>
@@ -26,7 +26,7 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="xzK-0R-8Uu" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="20" y="10" width="38" height="38"/>
+                        <rect key="frame" x="20" y="12" width="38" height="38"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="xzK-0R-8Uu" secondAttribute="height" multiplier="1:1" id="Ado-n8-iYw"/>
                             <constraint firstAttribute="width" constant="38" id="pDd-vr-vBl"/>
@@ -55,9 +55,9 @@
                     <constraint firstAttribute="trailing" secondItem="lXc-gN-Ufo" secondAttribute="trailing" constant="20" id="BFj-Ur-toO"/>
                     <constraint firstItem="xzK-0R-8Uu" firstAttribute="leading" secondItem="oMd-3W-Kni" secondAttribute="trailing" constant="6" id="NYM-He-pS8"/>
                     <constraint firstItem="lXc-gN-Ufo" firstAttribute="leading" secondItem="xzK-0R-8Uu" secondAttribute="trailing" constant="10" id="SRW-jO-i3w"/>
-                    <constraint firstItem="xzK-0R-8Uu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="eNp-7q-Ne0"/>
+                    <constraint firstItem="xzK-0R-8Uu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="eNp-7q-Ne0"/>
                     <constraint firstItem="oMd-3W-Kni" firstAttribute="centerY" secondItem="xzK-0R-8Uu" secondAttribute="centerY" id="i4v-J7-Vvs"/>
-                    <constraint firstItem="lXc-gN-Ufo" firstAttribute="top" secondItem="xzK-0R-8Uu" secondAttribute="top" id="udT-s4-eh8"/>
+                    <constraint firstItem="lXc-gN-Ufo" firstAttribute="top" secondItem="xzK-0R-8Uu" secondAttribute="top" constant="-2" id="udT-s4-eh8"/>
                     <constraint firstItem="oMd-3W-Kni" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="xjI-GL-V0e"/>
                 </constraints>
             </tableViewCellContentView>
