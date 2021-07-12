@@ -11,6 +11,10 @@ extension BlockEditorSettings: GutenbergEditorSettings {
         elementsByType(.gradient)
     }
 
+    public var galleryRefactor: Bool {
+        return experimentalFeature(.galleryRefactor)
+    }
+
     private func elementsByType(_ type: BlockEditorSettingElementTypes) -> [[String: String]]? {
         return elements?.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.order >= rhs.order
@@ -18,6 +22,15 @@ extension BlockEditorSettings: GutenbergEditorSettings {
             guard element.type == type.rawValue else { return nil }
             return element.rawRepresentation
         })
+    }
+
+    private func experimentalFeature(_ feature: BlockEditorExperimentalFeatureKeys) -> Bool {
+        guard let experimentalFeature = elements?.first(where: { (element) -> Bool in
+            guard element.type == BlockEditorSettingElementTypes.experimentalFeatures.rawValue else { return false }
+            return element.slug == feature.rawValue
+        }) else { return false }
+
+        return Bool(experimentalFeature.value) ?? false
     }
 }
 
@@ -59,6 +72,16 @@ extension BlockEditorSettings {
         remoteSettings.gradients?.enumerated().forEach({ (index, gradient) in
             parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, order: index, context: context))
         })
+
+        // Experimental Features
+        let galleryKey = BlockEditorExperimentalFeatureKeys.galleryRefactor.rawValue
+        let galleryRefactor = BlockEditorSettingElement(name: galleryKey,
+                                                         value: "\(remoteSettings.galleryRefactor)",
+                                                         slug: galleryKey,
+                                                         type: .experimentalFeatures,
+                                                         order: 0,
+                                                         context: context)
+        parsedElements.insert(galleryRefactor)
 
         self.elements = parsedElements
     }

@@ -4,10 +4,15 @@ import CoreData
 enum BlockEditorSettingElementTypes: String {
     case color
     case gradient
+    case experimentalFeatures
 
     var valueKey: String {
         self.rawValue
     }
+}
+
+enum BlockEditorExperimentalFeatureKeys: String {
+    case galleryRefactor
 }
 
 extension BlockEditorSettingElement {
@@ -53,12 +58,21 @@ extension BlockEditorSettingElement: Identifiable {
     }
 
     convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
+        self.init(name: rawObject[ #keyPath(BlockEditorSettingElement.name)],
+                  value: rawObject[type.valueKey],
+                  slug: rawObject[#keyPath(BlockEditorSettingElement.slug)],
+                  type: type,
+                  order: order,
+                  context: context)
+    }
+
+    convenience init(name: String?, value: String?, slug: String?, type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
         self.init(context: context)
 
         self.type = type.rawValue
-        self.value = rawObject[type.valueKey] ?? ""
-        self.slug = rawObject[#keyPath(BlockEditorSettingElement.slug)] ?? ""
-        self.name = rawObject[ #keyPath(BlockEditorSettingElement.name)] ?? ""
+        self.value = value ?? ""
+        self.slug = slug ?? ""
+        self.name = name ?? ""
         self.order = order
     }
 }
