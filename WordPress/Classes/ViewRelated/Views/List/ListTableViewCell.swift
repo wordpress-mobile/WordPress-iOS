@@ -56,6 +56,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
         }
         set {
             snippetLabel.text = newValue?.trimmingCharacters(in: .whitespacesAndNewlines) ?? String()
+            updateTitleTextLines()
         }
     }
 
@@ -84,6 +85,12 @@ private extension ListTableViewCell {
         snippetLabel.font = Style.snippetFont
         snippetLabel.textColor = Style.snippetTextColor
         snippetLabel.numberOfLines = Constants.snippetNumberOfLines
+    }
+
+    /// Show more lines in titleLabel when there's no snippet.
+    func updateTitleTextLines() {
+        let hasSnippet = !(snippetText ?? "").isEmpty
+        titleLabel.numberOfLines = hasSnippet ? Constants.titleNumberOfLinesWithSnippet : Constants.titleNumberOfLinesWithoutSnippet
     }
 
     /// Downloads the image to display in avatarView.
