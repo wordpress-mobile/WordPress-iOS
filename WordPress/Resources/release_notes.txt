@@ -1,7 +1,7 @@
-If you’ve been wishing someone would send you reminders on the days you want to publish blog posts, your wish has just come true. We’ve added the ability to request blogging reminders. Just choose your preferred blogging days, and we’ll send you a notification, prompting you to post on that day.
+* [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
+* [*] [Jetpack-only] Fix bugs when tapping to notifications
+* [*] Fixed some refresh issues with the site follow buttons in the reader. [#16819]
+* [*] Block editor: Update loading and failed screens for web version of the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3573]
+* [*] Block editor: Handle floating keyboard case - Fix issue with the block selector on iPad. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3687]
+* [**] Block editor: Added color/background customization for text blocks. [https://github.com/WordPress/gutenberg/pull/33250]
 
-Those of you with self-hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins.
-
-The Block editor has a shiny new block Layout grid, and while we were digging around in the editor code, we also tweaked the code for our tablet-using friends. The pesky inserter button tablet view issue in the Block editor has now been fixed.
-
-Want to subscribe to conversations by email from Reader lists and articles? Good because we just added that ability too!
