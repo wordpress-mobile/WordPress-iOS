@@ -127,7 +127,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         ReaderInterestsStyleGuide.applyCompactCellLabelStyle(label: cell.label)
 
         cell.layer.cornerRadius = Constants.cellCornerRadius
-        cell.label.text = title
+        cell.label.text = NSAttributedString.attributedStringWithHTML(title, attributes: nil).string
         cell.label.accessibilityHint = Strings.accessbilityHint
         cell.label.accessibilityTraits = .button
     }
