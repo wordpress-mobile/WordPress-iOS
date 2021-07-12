@@ -61,6 +61,7 @@ private extension BlockEditorSettingsService {
             case .success(let editorTheme):
                 self.context.perform {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
+                    self.track(isBlockEditorSettings: false, isFSE: false)
                     self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
                 }
             case .failure(let err):
@@ -139,6 +140,7 @@ private extension BlockEditorSettingsService {
             case .success(let remoteSettings):
                 self.context.perform {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
+                    self.track(isBlockEditorSettings: true, isFSE: remoteSettings?.isFSETheme ?? false)
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
                 }
             case .failure(let err):
@@ -210,7 +212,7 @@ private extension BlockEditorSettingsService {
     }
 }
 
-// MARK: Shared Core Data Support
+// MARK: Shared Events
 private extension BlockEditorSettingsService {
     func clearCoreData(completion: @escaping BlockEditorSettingsServiceCompletion) {
         self.context.perform {
@@ -221,5 +223,12 @@ private extension BlockEditorSettingsService {
             let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: nil)
             completion(.success(result))
         }
+    }
+
+    func track(isBlockEditorSettings: Bool, isFSE: Bool) {
+        let endpoint = isBlockEditorSettings ? "wp-block-editor" : "theme_supports"
+        let properties: [AnyHashable: Any] = ["endpoint": endpoint,
+                                              "full_site_editing": "\(isFSE)"]
+        WPAnalytics.track(.gutenbergEditorSettingsFetched, properties: properties)
     }
 }
