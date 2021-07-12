@@ -18,17 +18,17 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = [], canViewEditorOnboarding: Bool = false) {
+    mutating func start(unsupportedBlocks: [String] = [], canViewEditorOnboarding: Bool = false, galleryRefactor: Bool? = nil) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding)
+        let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding, galleryRefactor: galleryRefactor)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String], canViewEditorOnboarding: Bool) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String], canViewEditorOnboarding: Bool, galleryRefactor: Bool?) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -42,6 +42,12 @@ struct PostEditorAnalyticsSession {
         }
 
         properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
+
+        if let galleryRefactor = galleryRefactor {
+            properties[Property.experimentalGalleryRefactor] = "\(galleryRefactor)"
+        } else {
+            properties[Property.experimentalGalleryRefactor] = "unknown"
+        }
 
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
     }
@@ -87,6 +93,7 @@ private extension PostEditorAnalyticsSession {
         static let template = "template"
         static let startupTime = "startup_time_ms"
         static let canViewEditorOnboarding = "can_view_editor_onboarding"
+        static let experimentalGalleryRefactor = "experimentalGalleryRefactor"
     }
 
     var commonProperties: [String: String] {
