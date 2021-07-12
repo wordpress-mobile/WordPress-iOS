@@ -71,7 +71,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 // MARK: Private Helpers
 
 private extension ListTableViewCell {
-
+    /// Apply styles for the subviews.
     func configureSubviews() {
         // indicator view
         indicatorView.layer.cornerRadius = indicatorWidthConstraint.constant / 2
@@ -109,12 +109,12 @@ private extension ListTableViewCell {
     }
 }
 
-// MARK: Constants
+// MARK: Private Constants
 
-extension ListTableViewCell {
+private extension ListTableViewCell {
     typealias Style = WPStyleGuide.List
 
-    private struct Constants {
+    struct Constants {
         static let titleNumberOfLinesWithoutSnippet = 3
         static let titleNumberOfLinesWithSnippet = 2
         static let snippetNumberOfLines = 2
