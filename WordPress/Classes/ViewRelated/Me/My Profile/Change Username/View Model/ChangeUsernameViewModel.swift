@@ -10,15 +10,15 @@ class ChangeUsernameViewModel {
     var username: String {
         return settings?.username ?? ""
     }
+
     var displayName: String {
         return settings?.displayName ?? ""
     }
-    var formattedCreatedDate: String? {
-        return accountService.defaultWordPressComAccount()?.dateCreated.mediumString()
-    }
+
     var isReachable: Bool {
         return reachability?.isReachable() ?? false
     }
+
     var usernameIsValidToBeChanged: Bool {
         return selectedUsername != username && !selectedUsername.isEmpty
     }

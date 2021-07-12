@@ -41,7 +41,7 @@ extension NotificationsViewController {
             defer {
                 WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
-            InteractiveNotificationsManager.shared.requestAuthorization {
+            InteractiveNotificationsManager.shared.requestAuthorization { _ in
                 DispatchQueue.main.async {
                     self?.hideInlinePrompt(delay: 0.0)
                     UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true

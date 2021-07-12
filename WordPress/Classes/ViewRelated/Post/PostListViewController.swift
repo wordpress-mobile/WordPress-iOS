@@ -665,7 +665,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        publishPost(post)
+        publishPost(post) {
+
+            BloggingRemindersFlow.present(from: self,
+                                          for: post.blog,
+                                          source: .publishFlow,
+                                          alwaysShow: false)
+        }
     }
 
     func trash(_ post: AbstractPost) {

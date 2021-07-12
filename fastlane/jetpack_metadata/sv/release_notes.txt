@@ -1,15 +1,1 @@
-Med 17.6 kan du lägga till ljudblocket på valfri WordPress.com-webbplats, oavsett vilket paket du har – inklusive gratispaketet. Ljudblocket gör det enkelt att lägga till podcasts, musik och ljudfiler i dina inlägg och på dina sidor.
-
-Vi har även jobbat hårt med att implementera UX-förbättringar:
-
-När du tilldelar en överordnad sida till en sida utan en titel ser du nu platshållaren "(ingen titel)" istället för en tom rad, vilket påminner dig om att namnge sidan.
-
-Det har aldrig gått att redigera inläggsarkivsidor, eftersom de genereras automatiskt. I 17.6 kommer du inte heller att kunna öppna dem i redigeraren, vilket gör att du inte behöver tänka på det alls.
-
-Vi har också arbetat med att korrigera vissa saker:
-
-Vi har tagit hand om vissa meddelanden som har överlappat ActionSheet, inklusive ett som visar Webbplatsikon-kontroller, ett annat som visar Snabbstartsborttagning och ett tredje som visar Fler åtgärder i redigeraren.
-
-Slutligen har vi även åtgärdat ett fel som då och då gjorde att appen kraschade vid moderering av kommentarer och ett inloggningsfel för WordPress.org-webbplatser för att visa infogad information.
-
-Det var allt för 17.6. Vi ses i 17.7!
+Blockredigeraren har ett helt nytt Layoutrutnät-block och medan vi grävde runt i koden för redigeraren passade vi även på att justera koden för surfplatteanvändning. Det irriterande problemet med infogarknappen i blockredigeraren i surfplattevy har nu åtgärdats.

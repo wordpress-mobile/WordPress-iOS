@@ -5,25 +5,35 @@ import Foundation
 ///
 @objc class LikeUserHelper: NSObject {
 
-    @objc class func createUserFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) {
+    @objc class func createOrUpdateFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser {
+        let liker = likeUser(for: remoteUser, context: context) ?? LikeUser(context: context)
 
-        guard let likeUser = NSEntityDescription.insertNewObject(forEntityName: "LikeUser", into: context) as? LikeUser else {
-            return
-        }
+        liker.userID = remoteUser.userID.int64Value
+        liker.username = remoteUser.username
+        liker.displayName = remoteUser.displayName
+        liker.primaryBlogID = remoteUser.primaryBlogID?.int64Value ?? 0
+        liker.avatarUrl = remoteUser.avatarURL
+        liker.bio = remoteUser.bio ?? ""
+        liker.dateLikedString = remoteUser.dateLiked ?? ""
+        liker.dateLiked = DateUtils.date(fromISOString: liker.dateLikedString)
+        liker.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
+        liker.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
+        liker.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
+        liker.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: liker, context: context)
+        liker.dateFetched = Date()
+        return liker
+    }
 
-        likeUser.userID = remoteUser.userID.int64Value
-        likeUser.username = remoteUser.username
-        likeUser.displayName = remoteUser.displayName
-        likeUser.primaryBlogID = remoteUser.primaryBlogID?.int64Value ?? 0
-        likeUser.avatarUrl = remoteUser.avatarURL
-        likeUser.bio = remoteUser.bio ?? ""
-        likeUser.dateLikedString = remoteUser.dateLiked ?? ""
-        likeUser.dateLiked = DateUtils.date(fromISOString: likeUser.dateLikedString)
-        likeUser.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
-        likeUser.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
-        likeUser.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
-        likeUser.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: likeUser, context: context)
-        likeUser.dateFetched = Date()
+    class func likeUser(for remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser? {
+        let userID = remoteUser.userID ?? 0
+        let siteID = remoteUser.likedSiteID ?? 0
+        let postID = remoteUser.likedPostID ?? 0
+        let commentID = remoteUser.likedCommentID ?? 0
+
+        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        request.predicate = NSPredicate(format: "userID = %@ AND likedSiteID = %@ AND likedPostID = %@ AND likedCommentID = %@",
+                                        userID, siteID, postID, commentID)
+        return try? context.fetch(request).first
     }
 
     private class func createPreferredBlogFrom(remotePreferredBlog: RemoteLikeUserPreferredBlog?,
@@ -31,7 +41,7 @@ import Foundation
                                  context: NSManagedObjectContext) -> LikeUserPreferredBlog? {
 
         guard let remotePreferredBlog = remotePreferredBlog,
-              let preferredBlog = NSEntityDescription.insertNewObject(forEntityName: "LikeUserPreferredBlog", into: context) as? LikeUserPreferredBlog else {
+              let preferredBlog = user.preferredBlog ?? NSEntityDescription.insertNewObject(forEntityName: "LikeUserPreferredBlog", into: context) as? LikeUserPreferredBlog else {
             return nil
         }
 
