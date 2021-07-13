@@ -15,12 +15,16 @@ class ListTableViewCell: UITableViewCell, NibReusable {
     // MARK: Properties
 
     /// The color of the indicator circle.
-    @objc var indicatorColor: UIColor = .clear
+    @objc var indicatorColor: UIColor = .clear {
+        didSet {
+            updateIndicatorColor()
+        }
+    }
 
     /// Toggle variable to determine whether the indicator circle should be shown.
     @objc var showsIndicator: Bool = false {
         didSet {
-            indicatorView.backgroundColor = showsIndicator ? indicatorColor : .clear
+            updateIndicatorColor()
         }
     }
 
@@ -60,6 +64,11 @@ class ListTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// Convenience computed property to check whether the cell has a snippet text or not.
+    private var hasSnippet: Bool {
+        !(snippetText ?? "").isEmpty
+    }
+
     // MARK: Initialization
 
     override func awakeFromNib() {
@@ -89,18 +98,17 @@ private extension ListTableViewCell {
 
     /// Show more lines in titleLabel when there's no snippet.
     func updateTitleTextLines() {
-        let hasSnippet = !(snippetText ?? "").isEmpty
         titleLabel.numberOfLines = hasSnippet ? Constants.titleNumberOfLinesWithSnippet : Constants.titleNumberOfLinesWithoutSnippet
+    }
+
+    func updateIndicatorColor() {
+        indicatorView.backgroundColor = showsIndicator ? indicatorColor : .clear
     }
 
     /// Downloads the image to display in avatarView.
     func downloadImage(with url: URL?) {
         if let someURL = url, let gravatar = Gravatar(someURL) {
-            avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true) { error in
-                if let error = error {
-                    print(error)
-                }
-            }
+            avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
             return
         }
 
