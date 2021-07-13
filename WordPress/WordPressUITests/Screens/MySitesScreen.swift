@@ -2,7 +2,7 @@ import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let blogsTable = "Blogs"
+    static let blogsTable = "Blogs" // there's not actually static text here. we'll need an accessibilityID
     static let plusButton = "add-site-button"
     static let addSelfHostedSiteButton = "Add self-hosted site"
 }
@@ -22,15 +22,16 @@ class MySitesScreen: BaseScreen {
         // And then the action sheet "add Self-hosted site" option.
         // then we'll need a function to tap + and "add self-hosted site", which should return the self-hosted login flow - LoginSiteAddressScreen
 
-        super.init(element: blogsTable)
+        super.init(element: plusButton) // using plusButton for the super.init since blogsTable isn't identified
     }
 
-    func tapPlusButton() {
-        XCUIApplication().buttons["Add"].tap()
-        // seems like this needs to somehow return the action sheet so that the "Add self-hosted site" button is available for addSelfHostedSite().
-    }
+   // func tapPlusButton() {
+     //   plusButton.tap()
+        // seems like this needs to somehow return the action sheet so that the "Add self-hosted site" button is available for addSelfHostedSite(). ActionSheetComponent exists, but presents options for adding a blog post or page. Maybe I can copy ActionSheetComponent and make BlogListActionSheetComponent? Of course I need to be able to access the "add" button before any of that matters.
+ //   }
 
     func addSelfHostedSite() -> LoginSiteAddressScreen {
+        plusButton.tap()
         XCUIApplication().buttons["Add self-hosted site"].tap()
         return LoginSiteAddressScreen()
     }
