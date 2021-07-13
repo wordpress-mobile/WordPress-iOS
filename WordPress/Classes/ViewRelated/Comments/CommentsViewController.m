@@ -148,7 +148,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)configureTableViewFooter
 {
     // Hide the cellSeparators when the table is empty
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1)];
 }
 
 - (void)configureTableViewHandler
