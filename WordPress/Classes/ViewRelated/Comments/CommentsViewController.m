@@ -178,10 +178,16 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         return nil;
     }
 
+    // fetch the section information
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
+    if (!sectionInfo) {
+        return nil;
+    }
+
     ListTableHeaderView *headerView = (ListTableHeaderView *)[self.tableView dequeueReusableHeaderFooterViewWithIdentifier:ListTableHeaderView.reuseIdentifier];
+
     if (headerView) {
-        // TODO: Enable relative date section identifier for Comment objects.
-        headerView.title = @"Section Header";
+        headerView.title = [Comment descriptionForSectionIdentifier:sectionInfo.name];
     }
 
     return headerView;
@@ -397,7 +403,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (NSString *)sectionNameKeyPath
 {
-    return @"sectionIdentifier";
+    return [self usesUnifiedList] ? @"relativeDateSectionIdentifier" : @"sectionIdentifier";
 }
 
 #pragma mark - Predicate Wrangling
