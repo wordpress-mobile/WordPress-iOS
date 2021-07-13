@@ -165,7 +165,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return [self.tableViewHandler tableView:tableView numberOfRowsInSection:section];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     // if the unified list feature is enabled, return the estimated height of the new table header view.
     // otherwise, returning -1 will revert to the default estimated height value.
     return [self usesUnifiedList] ? ListTableHeaderView.estimatedRowHeight : -1;
