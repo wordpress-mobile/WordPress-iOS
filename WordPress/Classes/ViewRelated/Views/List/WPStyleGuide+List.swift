@@ -12,7 +12,23 @@ extension WPStyleGuide {
 
         // MARK: Cells
         public static let placeholderImage = UIImage.gravatarPlaceholderImage
-        public static let snippetFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        public static let snippetFont = regularTextFont
         public static let snippetTextColor = UIColor.textSubtle
+        public static let plainTitleFont = regularTextFont
+        public static let titleTextColor = UIColor.text
+
+        public static let titleRegularAttributes: [NSAttributedString.Key: Any] = [
+            .font: regularTextFont,
+            .foregroundColor: titleTextColor
+        ]
+
+        public static let titleBoldAttributes: [NSAttributedString.Key: Any] = [
+            .font: boldTextFont,
+            .foregroundColor: titleTextColor
+        ]
+
+        // MARK: Private Styles
+        private static let regularTextFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        private static let boldTextFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 }

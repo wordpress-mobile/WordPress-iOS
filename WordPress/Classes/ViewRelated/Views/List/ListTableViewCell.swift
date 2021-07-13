@@ -85,9 +85,9 @@ private extension ListTableViewCell {
         // indicator view
         indicatorView.layer.cornerRadius = indicatorWidthConstraint.constant / 2
 
-        // TODO: temporary styling. will update this in later PRs.
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        titleLabel.textColor = UIColor.text
+        // title label
+        titleLabel.font = Style.plainTitleFont
+        titleLabel.textColor = Style.titleTextColor
         titleLabel.numberOfLines = Constants.titleNumberOfLinesWithSnippet
 
         // snippet label
