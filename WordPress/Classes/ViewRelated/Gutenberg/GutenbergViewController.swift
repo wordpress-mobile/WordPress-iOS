@@ -941,6 +941,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestPreview() {
         displayPreview()
     }
+
+    func gutenbergDidRequestBlockTypeImpressions(_ newBlockTypes: [String]) -> [String: Int] {
+        let newImpressions = newBlockTypes.reduce(into: [:], { $0[$1] = 3 })
+        // Merge current and new impressions favoring the current
+        gutenbergSettings.blockTypeImpressions.merge(newImpressions) { (current, _) in current }
+        return gutenbergSettings.blockTypeImpressions
+    }
+
+    func gutenbergDidRequestSetBlockTypeImpressionCount(_ name: String, count: Int) -> Void {
+        let newImpressions = [name: count]
+        // Merge current and new impressions favoring the new
+        gutenbergSettings.blockTypeImpressions.merge(newImpressions) { (_, new) in new }
+    }
 }
 
 // MARK: - Suggestions implementation
