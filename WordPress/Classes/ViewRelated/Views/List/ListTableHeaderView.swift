@@ -12,6 +12,9 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: Properties
 
+    @objc static let reuseIdentifier = defaultReuseID
+    @objc static let estimatedRowHeight = 26
+
     @objc var title: String? {
         get {
             titleLabel.text

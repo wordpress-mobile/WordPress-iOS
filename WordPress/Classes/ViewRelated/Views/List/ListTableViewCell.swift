@@ -14,6 +14,9 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Properties
 
+    @objc static let reuseIdentifier = defaultReuseID
+    @objc static let estimatedRowHeight = 68
+
     /// The color of the indicator circle.
     @objc var indicatorColor: UIColor = .clear {
         didSet {
