@@ -8,9 +8,12 @@ extension ListTableViewCell {
         showsIndicator = (comment.status == CommentStatusPending)
 
         // avatar image
-        // TODO: Circle back to download avatar from Gravatar email.
         placeholderImage = Style.gravatarPlaceholderImage
-        imageURL = comment.avatarURLForDisplay()
+        if let avatarURL = comment.avatarURLForDisplay() {
+            configureImage(with: avatarURL)
+        } else {
+            configureImageWithGravatarEmail(comment.gravatarEmailForDisplay())
+        }
 
         // title text
         let authorString = comment.authorForDisplay() ?? String()
