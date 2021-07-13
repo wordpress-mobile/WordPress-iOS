@@ -3,7 +3,7 @@ import XCTest
 
 private struct ElementStringIDs {
     static let blogsTable = "Blogs"
-    static let plusButton = "Add"
+    static let plusButton = "add-site-button"
     static let addSelfHostedSiteButton = "Add self-hosted site"
 }
 
@@ -15,7 +15,7 @@ class MySitesScreen: BaseScreen {
     init() {
         let app = XCUIApplication()
         blogsTable = app.staticTexts[ElementStringIDs.blogsTable]
-        plusButton = app.staticTexts[ElementStringIDs.plusButton]
+        plusButton = app.buttons[ElementStringIDs.plusButton]
         addSelfHostedSiteButton = app.staticTexts[ElementStringIDs.addSelfHostedSiteButton]
         // need to add "+" button here for Add Site options. Something like:
         // let plusButton = XCUIApplication().buttons["+"] accessibility inspector says it has the Label: "Add", but no accessibilityIdentifier

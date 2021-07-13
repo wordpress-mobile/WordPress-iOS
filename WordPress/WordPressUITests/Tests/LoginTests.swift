@@ -147,7 +147,7 @@ class LoginTests: XCTestCase {
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite() //returns MySite screen
             .showSiteSwitcher()
-            // .tapPlusButton() this seems unnecessary for some reason? nope, just not done correctly. This runs if you tap the + button yourself during the test.
+            .tapPlusButton()
             .addSelfHostedSite()
             // and then we'll direct to the self-hosted login flow:
             //.selectSiteAddress() this is reduntant with .addSelfHostedSite which returns the same screen
