@@ -620,7 +620,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)isStatsActive
 {
-    return [self jetpackStatsModuleEnabled];
+    return [self jetpackStatsModuleEnabled] || [self isHostedAtWPcom];
 }
 
 - (BOOL)supportsPushNotifications
