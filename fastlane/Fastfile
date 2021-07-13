@@ -16,25 +16,29 @@ BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
 USER_ENV_FILE_PATH = File.join(Dir.home, ENV_FILE_NAME)
-PROJECT_ENV_FILE_PATH = File.join(PROJECT_ROOT_FOLDER, '.configure-files', 'project.env')
+SECRETS_DIR = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
+PROJECT_ENV_FILE_PATH = File.join(SECRETS_DIR, 'project.env')
+APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_api_key.json')
 
 # Other defines used across multiple lanes
 REPOSITORY_NAME = 'WordPress-iOS'
 
 import 'Jetpack-Fastfile'
 
-ALL_BUNDLE_IDENTIFIERS = [
-  'org.wordpress',
-  'org.wordpress.WordPressShare',
-  'org.wordpress.WordPressDraftAction',
-  'org.wordpress.WordPressTodayWidget',
-  'org.wordpress.WordPressStatsWidgets',
-  'org.wordpress.WordPressNotificationServiceExtension',
-  'org.wordpress.WordPressNotificationContentExtension',
-  'org.wordpress.WordPressAllTimeWidget',
-  'org.wordpress.WordPressThisWeekWidget',
-  'org.wordpress.WordPressIntents'
-]
+APP_STORE_VERSION_BUNDLE_IDENTIFIER = 'org.wordpress'
+EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
+  WordPressShare
+  WordPressDraftAction
+  WordPressTodayWidget
+  WordPressStatsWidgets
+  WordPressNotificationServiceExtension
+  WordPressNotificationContentExtension
+  WordPressAllTimeWidget
+  WordPressThisWeekWidget
+  WordPressIntents
+].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
+
+ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS]
 
 # Use this instead of getting values from ENV directly
 # It will throw an error if the requested value is missing
@@ -54,10 +58,11 @@ before_all do |lane|
 
   # Check that the env files exist
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
-    UI.user_error!("~/.wpios-env.default not found: Please copy fastlane/env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+    example_path = 'fastlane/env/user.env-example '
+    UI.user_error! "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values."
   end
   unless File.file?(PROJECT_ENV_FILE_PATH)
-    UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+    UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
 
   # This allows code signing to work on CircleCI
@@ -105,7 +110,7 @@ platform :ios do
     gutenberg_dep_check
     old_version = ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release
+    ios_bump_version_release(skip_deliver: true)
     new_version = ios_get_app_version
     extract_release_notes_for_version(version: new_version,
       release_notes_file_path: File.join(ENV["PROJECT_ROOT_FOLDER"], 'RELEASE-NOTES.txt'),
@@ -217,7 +222,7 @@ platform :ios do
   desc 'Updates a release branch for a new beta release'
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
-    ios_update_metadata(options)
+    download_localized_strings_and_metadata(options)
     # This is disabled due to GlotPress outputting an invalid `.strings` file for some locales
     # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
@@ -264,7 +269,7 @@ platform :ios do
         glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
         abort_on_violations: false
       )
-      ios_update_metadata(options)
+      download_localized_strings_and_metadata(options)
       # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
       ios_bump_version_beta
     end
@@ -278,6 +283,56 @@ platform :ios do
 
     # Start the build
     trigger_release_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # update_metadata_on_app_store_connect
+  # -----------------------------------------------------------------------------------
+  # Uploads the localized metadata tracked in the project repository to App Store
+  # Connect, optionally updating screenshots, too.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_metadata_on_app_store_connect [with_screenshots:<with screenshots>]
+  #
+  # Example:
+  # bundle exec fastlane update_metadata_on_app_store_connect
+  # bundle exec fastlane update_metadata_on_app_store_connect with_screenshots:true
+  #####################################################################################
+  desc 'Updates the App Store Connect localized metadata'
+  lane :update_metadata_on_app_store_connect do |options|
+    update_wordpress_metadata_on_app_store_connect(options)
+    update_jetpack_metadata_on_app_store_connect(options)
+  end
+
+  #####################################################################################
+  # update_wordpress_metadata_on_app_store_connect
+  # -----------------------------------------------------------------------------------
+  # This lane reads the information from `fastlane/metadata/` and uploads it to
+  # App Store Connect for the version specified in the version xcconfig file.
+  #
+  # Optionally, it can also upload new screenshots, overriding the existing ones.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect
+  #
+  # Example:
+  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect
+  # bundle exec fastlane update_wordpress_metadata_on_app_store_connect with_screenshots:true
+  #####################################################################################
+  desc 'Uploads the WordPress metadata to App Store Connect, localized, and optionally including screenshots.'
+  lane :update_wordpress_metadata_on_app_store_connect do |options|
+    # Skip screenshots by default. The naming is "with" to make it clear that
+    # callers need to opt-in to adding screenshots. The naming of the deliver
+    # parameter, on the other hand, uses the skip verb.
+    with_screenshots = options.fetch(:with_screenshots, false)
+    skip_screenshots = with_screenshots == false
+
+    upload_to_app_store(
+      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
+      app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
+      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
+      skip_screenshots: skip_screenshots
+    )
   end
 
   #####################################################################################
@@ -296,6 +351,25 @@ platform :ios do
     ios_finalize_prechecks(options)
     version = ios_get_app_version
     trigger_release_build(branch_to_build: "release/#{version}")
+  end
+
+  #####################################################################################
+  # download_localized_strings_and_metadata
+  # -----------------------------------------------------------------------------------
+  # Downloads localized app strings and App Store Connect metadata from GlotPress.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane download_localized_strings_and_metadata
+  #####################################################################################
+  desc 'Downloads localized metadata for App Store Connect from GlotPress'
+  lane :download_localized_strings_and_metadata do |options|
+    # WordPress: leverage the default release toolkit setup.
+    # It's not clear in the action name, but this downloads both `.strings`
+    # translations for the app and App Store Connect metadata.
+    ios_update_metadata(options)
+    # Jetpack: use the custom setup. Notice that we don't need extra steps to
+    # download `.strings` because Jetpack uses the same codebase as WordPress.
+    download_jetpack_localized_app_store_metadata
   end
 
   #####################################################################################
@@ -528,7 +602,8 @@ platform :ios do
 
     testflight(
       skip_waiting_for_build_processing: true,
-      team_id: '299112'
+      team_id: '299112',
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
     sentry_upload_dsym(
@@ -725,7 +800,7 @@ platform :ios do
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.alpha') }
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
     )
   end
 
@@ -734,7 +809,7 @@ platform :ios do
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub('org.wordpress', 'org.wordpress.internal') }
+      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
     )
   end
 
@@ -816,3 +891,31 @@ platform :ios do
     UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
   end
 end
+
+# FIXME: This ought to be extracted into the release toolkit, ideally in an
+# configurable way but with smart defaults.
+#
+# See discussion here
+# https://github.com/wordpress-mobile/WordPress-iOS/pull/16805/files/5f3009c5e0d01448cf0369656dddc1fe3757e45f#r664069046
+def read_version_from_config
+  fastlane_require 'Xcodeproj'
+
+  # If the file is not available, the method will raise so we should be fine
+  # not handling that case. We'll never return an empty string.
+  File.open(File.join(PROJECT_ROOT_FOLDER, 'Config', 'Version.public.xcconfig')) do |config|
+    configuration = Xcodeproj::Config.new(config)
+    configuration.attributes['VERSION_SHORT']
+  end
+end
+
+# Application-agnostic settings for the `upload_to_app_store` action, also
+# known as `deliver`.
+UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
+  app_version: read_version_from_config,
+  skip_binary_upload: true,
+  overwrite_screenshots: true,
+  phased_release: true,
+  precheck_include_in_app_purchases: false,
+  api_key_path: APP_STORE_CONNECT_KEY_PATH,
+  app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
+}

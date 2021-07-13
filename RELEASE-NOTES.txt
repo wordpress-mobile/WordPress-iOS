@@ -1,8 +1,26 @@
+17.9
+-----
+
+
+17.8
+-----
+* [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
+* [*] [Jetpack-only] Fix bugs when tapping to notifications
+* [*] Fixed some refresh issues with the site follow buttons in the reader. [#16819]
+* [*] Block editor: Update loading and failed screens for web version of the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3573]
+* [*] Block editor: Handle floating keyboard case - Fix issue with the block selector on iPad. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3687]
+* [**] Block editor: Added color/background customization for text blocks. [https://github.com/WordPress/gutenberg/pull/33250]
+
 17.7
 -----
-* [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
-
+* [***] Added blogging reminders. Choose which days you'd like to be reminded, and we'll send you a notification prompting you to post on your site
+* [** Does not apply to Jetpack app] Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
 * [*] Upgraded the Zendesk SDK to version 5.3.0
+* [*] You can now subscribe to conversations by email from Reader lists and articles. [#16599]
+* [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
+* [*] Block editor: Tweaks to the badge component's styling, including change of background color and reduced padding. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3642]
+* [***] Block editor: New block Layout grid. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3513]
+* [*] Fixed an issue where the SignUp flow could not be dismissed sometimes. [#16824]
 
 17.6
 -----
@@ -19,6 +37,7 @@
 * [*] The quick action buttons will be hidden when iOS is using a accessibility font sizes. [#16701]
 * [*] Block Editor: Improve unsupported block message for reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3621]
 * [**] Block Editor: Fix incorrect block insertion point after blurring the post title field. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3640]
+* [*] Fixed a crash when sharing photos to WordPress [#16737]
 
 17.5
 -----

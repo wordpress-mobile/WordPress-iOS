@@ -20,6 +20,14 @@ extension BlockEditorSettings {
     ///
     @NSManaged public var lastUpdated: Date
 
+    /// Stores the raw JSON string that comes from the Global Styles Setting Request. 
+    ///
+    @NSManaged public var rawStyles: String?
+
+    /// Stores the raw JSON string that comes from the Global Styles Setting Request.
+    ///
+    @NSManaged public var rawFeatures: String?
+
     /// Stores a set of attributes describing values that are represented with arrays in the API request.
     /// Available types are defined in `BlockEditorSettingElementTypes`
     ///

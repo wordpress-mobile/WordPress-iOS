@@ -21,6 +21,7 @@ static NSInteger const JetpackProfessionalMonthlyPlanId = 2001;
 
 NSString * const BlogEntityName = @"Blog";
 NSString * const PostFormatStandard = @"standard";
+NSString * const ActiveModulesKeyStats = @"stats";
 NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
@@ -567,6 +568,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
+        case BlogFeatureBlockEditorSettings:
+            return [self supportsBlockEditorSettings];
         case BlogFeatureLayoutGrid:
             return [self supportsLayoutGrid];
     }
@@ -613,6 +616,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         // For Jetpack, check if the module is enabled
         return [self jetpackSharingButtonsModuleEnabled];
     }
+}
+
+- (BOOL)isStatsActive
+{
+    return [self jetpackStatsModuleEnabled];
 }
 
 - (BOOL)supportsPushNotifications
@@ -840,6 +848,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 {
     NSArray *activeModules = (NSArray *)[self getOptionValue:OptionsKeyActiveModules];
     return [activeModules containsObject:moduleName] ?: NO;
+}
+
+- (BOOL)jetpackStatsModuleEnabled
+{
+    return [self jetpackActiveModule:ActiveModulesKeyStats];
 }
 
 - (BOOL)jetpackPublicizeModuleEnabled

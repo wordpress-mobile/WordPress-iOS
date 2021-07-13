@@ -1,17 +1,7 @@
-Dengan versi 17.6, Anda dapat menambahkan Blok Audio ke semua situs WordPress.com, apa pun paket yang Anda gunakan – termasuk Paket Gratis. Blok Audio memudahkan Anda untuk menambahkan podcast, musik, dan file suara ke pos dan halaman Anda.
+Jika Anda berharap seseorang akan mengirimkan pengingat pada hari Anda ingin menerbitkan pos di blog, harapan Anda kini terkabul. Kami telah menambahkan kemampuan untuk meminta pengingat blogging. Tinggal pilih hari untuk blogging, lalu kami akan mengirimkan pemberitahuan sebagai pengingat untuk menerbitkan pos pada hari itu.
 
-Di bagian Pembaca, Anda sekarang akan melihat jumlah dan ringkasan Suka yang ditambahkan ke setiap pos. Jika merasa belum puas dengan jumlah Suka, ketuk ringkasan dan Anda akan melihat daftar lengkapnya.
+Bagi Anda yang memiliki situs hosting sendiri dan tidak menggunakan Jetpack, kini Anda bisa mengelola (memasang, mencopot, mengaktifkan, dan menonaktifkan) plugin situs tersebut.
 
-Kami juga telah bekerja keras untuk peningkatan UX:
+Editor Blok kini dilengkapi dengan Petak tata letak blok yang baru, dan setelah kami mengotak-atik kode editor, kami juga mengubah kode untuk para pengguna tablet. Masalah tampilan tablet tombol penyisip yang menyebalkan di editor Blok kini sudah diperbaiki.
 
-Saat menugaskan halaman induk ke sebuah halaman tanpa judul, Anda sekarang akan melihat placeholder '(tanpa judul)', alih-alih baris kosong, yang mendorong Anda secara halus untuk menamai halaman tersebut.
-
-Anda tidak bisa menyunting halaman Arsip Pos karena dibuat secara otomatis. Di versi 17.6, Anda juga tidak akan bisa membukanya di editor supaya tidak membuang-buang waktu.
-
-Kami juga telah berupaya memperbaiki beberapa hal:
-
-Kami telah mengatasi sejumlah pemberitahuan yang selama ini tumpang tindih di LembarTindakan, termasuk salah satunya yang menampilkan kontrol Favicon, yang menampilkan Penghapusan MulaiCepat, serta yang menampilkan Tindakan Lain pada editor.
-
-Terakhir, kami telah mengatasi bug yang terkadang menyebabkan aplikasi macet saat moderasi komentar serta bug lain guna memperbaiki error saat login untuk situs WordPress.org yang ditampilkan sebaris.
-
-Itulah semua fitur untuk pembaruan 17.6. Sampai bertemu lagi di pembaruan 17.7!
+Ingin berlangganan ke percakapan melalui email dari daftar dan artikel Pembaca? Kebetulan sekali, karena kami juga telah menambahkan kemampuan tersebut!

@@ -7,7 +7,7 @@ import WordPressKit
 /// This is intended to be used as replacement for table view delegate and data source.
 
 
-@objc protocol LikesListControllerDelegate: class {
+@objc protocol LikesListControllerDelegate: AnyObject {
     /// Reports to the delegate that the header cell has been tapped.
     @objc optional func didSelectHeader()
 

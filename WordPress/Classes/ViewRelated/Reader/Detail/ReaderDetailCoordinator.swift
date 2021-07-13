@@ -451,20 +451,22 @@ class ReaderDetailCoordinator {
         viewController?.present(controller, animated: true)
     }
 
-    private func followSite() {
+    private func followSite(completion: @escaping () -> Void) {
         guard let post = post else {
             return
         }
 
         ReaderFollowAction().execute(with: post,
                                      context: coreDataStack.mainContext,
-                                     completion: { [weak self] in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
-                                         self?.view?.updateHeader()
+                                     completion: { [weak self] follow in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
+                                        self?.view?.updateHeader()
+                                        completion()
                                      },
-                                     failure: { [weak self] _ in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
-                                         self?.view?.updateHeader()
+                                     failure: { [weak self] follow, _ in
+                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
+                                        self?.view?.updateHeader()
+                                        completion()
                                      })
     }
 
@@ -604,8 +606,8 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
         previewSite()
     }
 
-    func didTapFollowButton() {
-        followSite()
+    func didTapFollowButton(completion: @escaping () -> Void) {
+        followSite(completion: completion)
     }
 
     func didSelectTopic(_ topic: String) {

@@ -112,11 +112,11 @@ class BloggingRemindersScheduler {
     private static var defaultDataFileName = "BloggingReminders.plist"
 
     private static func defaultDataFileURL() throws -> URL {
-        guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
-            throw Error.cantRetrieveContainerForAppGroup(appGroupName: WPAppGroupName)
-        }
-
-        return url.appendingPathComponent(defaultDataFileName)
+        try FileManager.default.url(for: .applicationSupportDirectory,
+                                    in: .userDomainMask,
+                                    appropriateFor: nil,
+                                    create: true)
+            .appendingPathComponent(defaultDataFileName)
     }
 
     // MARK: - Initializers
@@ -194,7 +194,7 @@ class BloggingRemindersScheduler {
         case .none:
             scheduledReminders = .none
         case .weekdays(let days):
-            scheduledReminders = .weekdays(scheduled(days))
+            scheduledReminders = .weekdays(scheduled(days, for: blog))
         }
 
         do {
@@ -215,8 +215,8 @@ class BloggingRemindersScheduler {
     ///
     /// - Returns: the weekdays with the associated notification IDs.
     ///
-    private func scheduled(_ weekdays: [Weekday]) -> [ScheduledWeekday] {
-        weekdays.map { scheduled($0) }
+    private func scheduled(_ weekdays: [Weekday], for blog: Blog) -> [ScheduledWeekday] {
+        weekdays.map { scheduled($0, for: blog) }
     }
 
     /// Schedules a notification for the passed day, and returns the day with the associated notification ID.
@@ -226,17 +226,25 @@ class BloggingRemindersScheduler {
     ///
     /// - Returns: the weekday with the associated notification ID.
     ///
-    private func scheduled(_ weekday: Weekday) -> ScheduledWeekday {
-        let notificationID = scheduleNotification(for: weekday)
+    private func scheduled(_ weekday: Weekday, for blog: Blog) -> ScheduledWeekday {
+        let notificationID = scheduleNotification(for: weekday, blog: blog)
         return ScheduledWeekday(weekday: weekday, notificationID: notificationID)
     }
 
     /// Schedules a notification for the specified weekday.
     ///
-    private func scheduleNotification(for weekday: Weekday) -> String {
+    private func scheduleNotification(for weekday: Weekday, blog: Blog) -> String {
         let content = UNMutableNotificationContent()
-        content.title = "Blogging Reminder"
-        content.body = "It's time to post!"
+        if let title = blog.title {
+            content.title = String(format: TextContent.notificationTitle, title)
+        } else {
+            content.title = TextContent.noTitleNotificationTitle
+        }
+        content.body = TextContent.notificationBody
+        content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.bloggingReminderWeekly.rawValue
+        if let blogID = blog.dotComID?.stringValue {
+            content.threadIdentifier = blogID
+        }
 
         var dateComponents = DateComponents()
         let calendar = Calendar.current
@@ -294,5 +302,12 @@ class BloggingRemindersScheduler {
 
     private func scheduledReminders(for blog: Blog) -> ScheduledReminders {
         store.scheduledReminders(for: blog.objectID.uriRepresentation())
+    }
+
+    private enum TextContent {
+        static let noTitleNotificationTitle = NSLocalizedString("It's time to blog!", comment: "Title of a notification displayed prompting the user to create a new blog post")
+        static let notificationTitle = NSLocalizedString("It's time to blog on %@!",
+                                                         comment: "Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title.")
+        static let notificationBody = NSLocalizedString("This is your reminder to blog today ✍️", comment: "The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text.")
     }
 }

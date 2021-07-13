@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-10 19:40:35+0000 */
+/* Translation-Revision-Date: 2021-07-08 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -34,10 +34,10 @@
 "%1$@ to fix threats." = "Tehditleri düzeltmek için %1$@.";
 
 /* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d Beğen";
 
 /* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d Beğenilenler";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
 "%1$d blogger likes this." = "%1$d blog yazarı bunu beğendi.";
@@ -296,6 +296,15 @@
 
 /* Age between dates less than one hour. */
 "< 1 hour" = "1 saatten az";
+
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "Haftada <strong>%d<\/strong> kez";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "Haftada <strong>bir kez<\/strong>";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "Haftada <strong>iki kez<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -639,6 +648,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternatif metin";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatif olarak, \"Normal bloklara dönüştür\" seçeneğine dokunarak bu blokları ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternatif olarak:";
 
@@ -758,13 +770,13 @@
 "Are you sure you want to mark this comment as Spam?" = "Bu yorumu istenmeyen olarak işaretlemek istediğinden emin misiniz?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "Bu yorumu Çöp Kutusu olarak işaretlemek istediğinizden emin misiniz?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Seçili öğeleri kalıcı olarak silmek istediğinizden emin misiniz?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "Bu yorumu kalıcı olarak silmek istediğinizden emin misiniz?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Bu ögeyi kalıcı olarak silmek istediğinizden emin misiniz?";
@@ -905,8 +917,8 @@
    Spoken accessibility label */
 "Back" = "Geri";
 
-/* No comment provided by engineer. */
-"Background Color" = "Background Color";
+/* Title for the Background Color section */
+"Background Color" = "Arka Plan Rengi";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Site yedekleniyor";
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blogun izleyicisi";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Blog Hatırlatıcıları";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1289,7 +1304,7 @@
 "Choose Homepage" = "Ana sayfa seçin";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "Cihazımdan Görsel seç";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Sayfa Seç";
@@ -1819,7 +1834,7 @@
 "Create Story Post" = "Öykü Yayını Oluştur";
 
 /* Button allowing the user to create a site icon by choosing an emoji character */
-"Create With Emoji" = "Create With Emoji";
+"Create With Emoji" = "Emoji ile oluştur";
 
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "WordPress.com sitesi oluştur";
@@ -1842,8 +1857,8 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Bir yazı, sayfa veya öykü oluştur";
 
-/* No comment provided by engineer. */
-"Create a site icon" = "Create a site icon";
+/* Title for the Site Icon Picker */
+"Create a site icon" = "Bir site simgesi oluştur";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "İndirilebilir yedekleme oluştur";
@@ -2394,6 +2409,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Ana sayfanızı düzenleyin";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Yeniden kullanılabilir blokların düzenlenmesi Android için WordPress'te henüz desteklenmemektedir";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Yeniden kullanılabilir blokların düzenlenmesi iOS için WordPress'te henüz desteklenmemektedir";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Bu GIF'i düzenlemek animasyonunu kaldıracaktır.";
 
@@ -2441,7 +2462,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-posta gönderildi!";
 
-/* No comment provided by engineer. */
+/* Title for the Emoji section */
 "Emoji" = "Emoji";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2538,7 +2559,7 @@
 "Error activating %@." = "%@ etkinleştirilirken hata oluştu.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "Yorum onaylanırken hata oluştu";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2569,7 @@
 "Error deactivating %@." = "%@ devre dışı bırakılırken hata oluştu.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "Yorum silinirken hata oluştu";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "%@ için otomatik güncellemeler devre dışı bırakılırken hata oluştu.";
@@ -2572,7 +2593,7 @@
 "Error loading plugins" = "Eklentiler yüklenirken hata oluştu";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Error marking comment as spam";
+"Error marking comment as spam" = "Yorum spam olarak işaretlenirken hata oluştu";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Yükleme sırasında\nhata oluştu";
@@ -2608,7 +2629,7 @@
 "Error sending verification email. Check your connection and try again." = "Doğrulama e-postası gönderilirken hata oluştu. Bağlantınızı kontrol edin ve tekrar deneyin.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Error unapproving comment";
+"Error unapproving comment" = "Yorumun onayı kaldırılırken hata oluştu ";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "%@ güncelleme hatası.";
@@ -2624,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Etkinlik";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Her gün";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Herkes";
@@ -2956,8 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Önizleme oluşturuluyor";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Haydi başlayalım";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Okuyucuya git";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Ayarlar &rarr; Bildirimler &rarr; WordPress'e gidin ve Bildirimlere İzin Ver'i açın.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3406,6 +3432,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "%2$@ yayımlandığından beri %1$@ geçti. ";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "%@ için blog yazma zamanı!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "Blog zamanı!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "Şimdi zamanı! İlk yazınızı kaydedin ve yayınlayın.";
 
@@ -3465,7 +3497,7 @@
 "Jetpack could not be installed at this time." = "Jetpack şu anda yüklenemiyor.";
 
 /* Subject of new Zendesk ticket. */
-"Jetpack for iOS Support" = "Jetpack for iOS Support";
+"Jetpack for iOS Support" = "iOS için Jetpack Desteği";
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack yüklendi";
@@ -3614,7 +3646,7 @@
 "Link inserted" = "Bağlantı eklendi";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "Bağlantı metni";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Mevcut içeriğe bağla";
@@ -3683,6 +3715,9 @@
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Akış yükleniyor...";
+
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Blok düzenleyici yükleniyor.";
 
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Kullanıcı adları yükleniyor";
@@ -3778,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Ana gezinti";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Hedefler belirleyerek ve ilerleme durumunuzu izleyerek sitenizden en iyi şekilde yararlanın.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "Sonraki";
 
 /* Table view title for the quick start section. */
@@ -4362,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Hiçbiri";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "Hiçbir şey ayarlanmadı";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Kuzey";
 
@@ -4425,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Okunmamış bildirimler";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Bana bildir";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Artık herkes öykülere erişebilir";
@@ -4729,9 +4766,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "İnsanlar";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "People who post at least twice weekly get 87% more views on their site.";
-
 /* Label for date periods. */
 "Period" = "Dönem";
 
@@ -4783,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Yardım için lütfen destek birimine başvurun.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Lütfen sitenizde blok düzenleyicinin etkinleştirildiğinden emin olun ve tekrar deneyin.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Lütfen sitenizde blok düzenleyicinin etkinleştirildiğinden emin olun. Etkinleştirilmemişse yüklenmez.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Lütfen example.com gibi eksiksiz bir web sitesi adresi girin.";
@@ -5002,6 +5042,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Yazım etkinliği";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Düzenli olarak paylaşım yapmak, okuyucularınızın ilgisini ve sitenize de yeni ziyaretçileri çekmenize yardımcı olabilir.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "İlişkili yazılar, yazılarınızın altında sitenizin içeriği ile alakalı içerik gösterir";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Hatırlatıcılar kaldırıldı";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5351,7 +5397,7 @@
 "Remove Site Icon" = "Site simgesini kaldır";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Remove as Featured Image ";
+"Remove as Featured Image " = "Öne Çıkan Görsel kategorisinden kaldır ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Yönelimlerden çıkar";
@@ -5532,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Yazıya geri dön";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Yeniden kullanılabilir bloklar Android için WordPress'te düzenlenemez";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Yeniden kullanılabilir bloklar iOS için WordPress'te düzenlenemez";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Bekleyen değişiklikleri geri al";
 
@@ -5573,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "Kaydet";
 
@@ -5895,7 +5936,7 @@
 "Set Parent" = "Ana sayfayı belirleyin";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Öne Çıkarılan Görsel olarak ayarla ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Ana sayfa olarak ayarla";
@@ -5904,7 +5945,7 @@
 "Set as Posts Page" = "Yazılar sayfası olarak belirle";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Set goals";
+"Set reminders" = "Hatırlatıcı ayarla";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Devam et";
@@ -5912,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack'i yapılandır";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Blog hedeflerinizi belirleyin";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Gönderi paylaşmak istediğiniz günler için blog hatırlatıcılarınızı ayarlayın.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Blog hatırlatıcılarınızı ayarlayın";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Site başlığınızı ayarlayın";
@@ -6630,7 +6673,7 @@
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Bu sunucunun sertifikası geçersiz. “%@” taklidi yapan bir siteye bağlanıyor olabilirsiniz ki bu kişisel bilgilerinizin ele geçirilebilmesi açısından büyük bir risktir.\n\nSertifikaya güvenip devam etmek istiyor musunuz?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "Güncel paylaşımlar sayfanızın içeriği, otomatik olarak oluşturulur ve düzenlenemez.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "%1$@ dosyasında kötü amaçlı bir kod modeli var.";
@@ -6879,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Bu, insanların sizi internette bulacakları yerdir.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "Bu, bugüne ait blog yazma hatırlatıcınızdır ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Bu ortam öğesi silindi.";
 
@@ -6947,7 +6993,7 @@
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Site kurulumunuzu tamamlamanın zamanı geldi! Listemiz bir sonraki adımları size açıklar.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "İpucu";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "WordPress.com#&8217;dan en fazlasını almak için ipuçları.";
@@ -6997,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Yazılarınızda kullanacağınız fotoğraf veya videoları çekmek için.";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "Blog hatırlatıcılarını kullanmak için anlık bildirimleri açmanız gerekir.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Sitenizde istatistikleri kullanmak için Jetpack eklentisini yüklemelisiniz.";
@@ -7131,6 +7180,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Site bildirimlerini kapat";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Bildirimleri aç";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Anlık bildirimleri aç";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Site bildirimlerini aç";
 
@@ -7214,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Yazı şu anda yüklenemiyor.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Blok düzenleyici şu anda yüklenemiyor.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Görüntü yüklenemiyor. Lütfen başka bir tane seçin veya daha sonra tekrar deneyin.";
@@ -7313,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Uygun değil";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Tanımlanmamış";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Altı çizili";
@@ -7330,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "%@ takibini bırak";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "E-posta ile konuşma takip etmeyi devre dışı bırak";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Siteyi takip etmeyi bırak";
@@ -7400,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Yedi güne kadar kayıtlar saklanır.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Güncelle";
@@ -7421,7 +7486,7 @@
 "Update Profile Photo" = "Profil fotoğrafını güncelle";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Site Simgesini Güncelle";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Yorumları göstermek için çubuk grafiği günceller.";
@@ -8232,7 +8297,7 @@
 "You can update this any time via My Site > Site Settings" = "Bunu, Sitem > Site Ayarları'ndan istediğiniz zaman güncelleyebilirsiniz.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "Bunu istediğiniz zaman güncelleyebilirsiniz";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Bu e-posta adresini kayıt olmak için kullanamazsınız. Bazı e-postalarımızın engellenmesiyle ilgili problem yaşıyoruz. Farklı bir e-posta sağlayıcısı kullanın.";
@@ -8275,6 +8340,9 @@
 
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Sitenize yüklenmemiş %d yazıda değişiklik yaptınız. Şimdi çıkış yapmak bu değişiklikleri siler. Yine de çıkış yapalım mı?";
+
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "Ayarlanmış hatırlatıcınız yok.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -8323,8 +8391,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Kullanıcı adınızı geri döndüremezsiniz.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "You'll get reminders to blog X times a week on DAY and DAY.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "%@ için haftada bir blog yazısı <strong>yazmanız<\/strong> gerektiğini hatırlatan bir bildirim alacaksınız.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "%2$@ için haftada %1$@ kez blog yazısı yazmanız gerektiğini hatırlatan bir bildirim alacaksınız.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Tamamen güncelsiniz!";
@@ -8377,8 +8448,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Gönderiniz şu anda yükleniyor. Lütfen bu işlem tamamlanıncaya kadar bekleyin.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Gönderiniz yayınlanıyor... bu arada, yayınlamak istediğiniz günler için blog hatırlatıcılarınızı ayarlayın.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Yazılarınız, sayfalarınız ve ayarlarınız %@ adresine e-posta ile gönderilecek.";
@@ -8398,8 +8469,8 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Siteniz başarıyla geri yüklendi";
 
-/* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+/* Subtitle for the Site Icon Picker */
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Sitenizin simgesi tüm web'de kullanılır: Tarayıcı sekmelerinde, sosyal medyadaki site önizlemelerinde ve WordPress.com Okuyucu'da.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Siteniz geri yüklendi";

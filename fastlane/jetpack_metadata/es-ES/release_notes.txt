@@ -1,0 +1,1 @@
+El Editor de bloques tiene una nueva cuadrícula de diseño de bloques y, además, mientras trabajábamos en el código del editor, también lo ajustamos para los usuarios de tabletas. Ahora se ha solucionado el problema con la vista de tableta para el botón de inserción en el Editor de bloques.

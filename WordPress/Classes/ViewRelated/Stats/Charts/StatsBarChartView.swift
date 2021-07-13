@@ -3,7 +3,7 @@ import Charts
 
 // MARK: - StatsBarChartViewDelegate
 
-protocol StatsBarChartViewDelegate: class {
+protocol StatsBarChartViewDelegate: AnyObject {
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int)
 }
 
