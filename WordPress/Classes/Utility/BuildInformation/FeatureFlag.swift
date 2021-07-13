@@ -21,6 +21,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteIconCreator
     case globalStyleSettings
     case editorOnboardingHelpMenu
+    case unifiedCommentsAndNotificationsList
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -66,6 +67,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .globalStyleSettings:
             return false
         case .editorOnboardingHelpMenu:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .unifiedCommentsAndNotificationsList:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
@@ -131,6 +134,8 @@ extension FeatureFlag {
             return "Global Style Settings"
         case .editorOnboardingHelpMenu:
             return "Editor Onboarding Help Menu"
+        case .unifiedCommentsAndNotificationsList:
+            return "Unified List for Comments and Notifications"
         }
     }
 
