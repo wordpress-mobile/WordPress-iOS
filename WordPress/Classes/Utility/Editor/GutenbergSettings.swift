@@ -14,6 +14,7 @@ class GutenbergSettings {
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
+        static let blockTypeImpressions = "kBlockTypeImpressions"
 
         // Only generated and saved for non-WPcom logins
         static let editorOnboardingAnonID = "kEditorOnboardingAnonID"
@@ -193,6 +194,15 @@ class GutenbergSettings {
         }
         set {
             database.set(newValue, forKey: Key.hasLaunchedGutenbergEditor)
+        }
+    }
+
+    var blockTypeImpressions: [String: Int] {
+        get {
+            database.object(forKey: Key.blockTypeImpressions) as? [String: Int] ?? [:]
+        }
+        set {
+            database.set(newValue, forKey: Key.blockTypeImpressions)
         }
     }
 
