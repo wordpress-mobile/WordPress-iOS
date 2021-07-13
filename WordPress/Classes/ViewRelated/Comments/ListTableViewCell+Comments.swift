@@ -2,7 +2,7 @@
 ///
 extension ListTableViewCell {
     /// Configures the cell based on the provided `Comment` object.
-    @objc func configure(with comment: Comment) {
+    @objc func configureWithComment(_ comment: Comment) {
         // indicator view
         indicatorColor = Style.pendingIndicatorColor
         showsIndicator = (comment.status == CommentStatusPending)

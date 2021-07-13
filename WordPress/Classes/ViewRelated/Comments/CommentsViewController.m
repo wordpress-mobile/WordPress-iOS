@@ -81,6 +81,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 #pragma mark - Configuration
 
+- (BOOL)usesUnifiedList
+{
+    return [Feature enabled:FeatureFlagUnifiedCommentsAndNotificationsList];
+}
+
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
@@ -131,6 +136,13 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
     UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
+
+    // Register unified list components
+    UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
+
+    UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
 }
 
 - (void)configureTableViewFooter
@@ -153,9 +165,31 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return [self.tableViewHandler tableView:tableView numberOfRowsInSection:section];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    // if the unified list feature is enabled, return the estimated height of the new table header view.
+    // otherwise, returning -1 will revert to the default estimated height value.
+    return [self usesUnifiedList] ? ListTableHeaderView.estimatedRowHeight : -1;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (![self usesUnifiedList]) {
+        // returning nil will revert to default table header view.
+        return nil;
+    }
+
+    ListTableHeaderView *headerView = (ListTableHeaderView *)[self.tableView dequeueReusableHeaderFooterViewWithIdentifier:ListTableHeaderView.reuseIdentifier];
+    if (headerView) {
+        // TODO: Enable relative date section identifier for Comment objects.
+        headerView.title = @"Section Header";
+    }
+
+    return headerView;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CommentsTableViewCell.estimatedRowHeight;
+    return [self usesUnifiedList] ? ListTableViewCell.estimatedRowHeight : CommentsTableViewCell.estimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -165,8 +199,15 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self usesUnifiedList]) {
+        ListTableViewCell *listCell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier
+                                                                                           forIndexPath:indexPath];
+        [self configureListCell:listCell atIndexPath:indexPath];
+        return listCell;
+    }
+
     CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsTableViewCell.reuseIdentifier];
-    
+
     if (!cell) {
         cell = [[CommentsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentsTableViewCell.reuseIdentifier];
     }
@@ -327,6 +368,14 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 }
 
 - (void)configureCell:(nonnull CommentsTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath {
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    [cell configureWithComment:comment];
+}
+
+/// Configures a `ListTableViewCell` instance with a `Comment` object.
+/// This should replace the original `configureCell:atIndexPath` once the feature is fully rolled out.
+- (void)configureListCell:(nonnull ListTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath
+{
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [cell configureWithComment:comment];
 }
