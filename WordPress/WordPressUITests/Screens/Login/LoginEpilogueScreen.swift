@@ -29,6 +29,12 @@ class LoginEpilogueScreen: BaseScreen {
         return MySiteScreen()
     }
 
+    //Used by "Self-Hosted after WordPress.com login" test. When a site is added from the Sites List, the Sites List modal remains active after the epilogue "done" button is tapped.
+    func continueWithSelfHostedSiteAddedFromSitesList() -> MySitesScreen {
+        continueButton.tap()
+        return MySitesScreen()
+    }
+
     func connectSite() {
         connectSiteButton.tap()
     }
