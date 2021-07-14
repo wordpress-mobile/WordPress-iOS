@@ -702,7 +702,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
     
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", @"Reply Failure Message");
+        NSString *message = error.localizedDescription ?: NSLocalizedString(@"There has been an unexpected error while sending your reply", @"Reply Failure Message");
         [weakSelf displayNoticeWithTitle:message message:nil];
     };
     
