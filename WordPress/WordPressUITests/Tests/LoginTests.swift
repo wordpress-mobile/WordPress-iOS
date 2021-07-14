@@ -154,9 +154,10 @@ class LoginTests: XCTestCase {
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .continueWithSelectedSite()
-            .removeSelfHostedSite() // this doesn't exist in this view; continueWithSelectedSite() returns us to MySites (site switcher) and the test doesn't know how to get out. Possibly returning MySitesScreen instead of MySiteScreen because MySitesScreen is really a modal?
+            .continueWithSelfHostedSiteAddedFromSitesList()
+            .closeModal()
+            .removeSelfHostedSite()
 
-            //not sure if we need an XTCAssert() here, given we have verifyEpilogueDisplays()? And if we used one, when does it check that, for instance, PrologueScreen().isLoaded() ?
+            //not sure if we need an XTCAssert() here, given we have verifyEpilogueDisplays()? And if we used one, when does it check that, for instance, PrologueScreen().isLoaded() ? Maybe it could verify that the newly added site appears in MySitesScreen? But is that redundance since we just did verifyEpilogueDisplays()? Ok actually on some tests we do verify something like MySiteScreen.isLoaded(), but some we verify that prologue.isLoaded(), aka verify that we successfully signed out.
     }
 }
