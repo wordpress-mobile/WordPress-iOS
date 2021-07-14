@@ -442,7 +442,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         setTitle(post.postTitle ?? "")
         setHTML(content)
 
-        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog) { [weak self] in
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
             self?.gutenberg.updateCapabilities()
         }
     }
