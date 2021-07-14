@@ -131,18 +131,20 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
-    // Register the cells
-    NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
-    UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
 
-    // Register unified list components
-    UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
+    if ([self usesUnifiedList]) {
+        // Register unified list components
+        UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
 
-    UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
+        UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
+    } else {
+        // Register the cells
+        NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
+        UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
+    }
 }
 
 - (void)configureTableViewFooter
