@@ -130,6 +130,7 @@ def gutenberg_dependencies(options)
         'react-native-safe-area',
         'react-native-safe-area-context',
         'react-native-video',
+        'react-native-webview',
         'RNSVG',
         'ReactNativeDarkMode',
         'react-native-slider',
@@ -166,7 +167,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.58.0-alpha1-2'
+    gutenberg :commit => 'e27e5fa99d200e3343b041341f531102d4fe3cd7'
 
     ## Third party libraries
     ## =====================
