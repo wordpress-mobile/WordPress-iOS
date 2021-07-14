@@ -63,7 +63,7 @@ class LoginTests: XCTestCase {
         XCTAssert(welcomeScreen.isLoaded())
     }
 
-    // Unified WordPress.com login/out
+    // Unified WordPress.com login
     // Replaces testWpcomUsernamePasswordLogin
     func testWPcomLogin() {
         _ = PrologueScreen().selectContinue()
