@@ -376,7 +376,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell
 {
     // Setup the Cell
-    if (self.comment.blog.isHostedAtWPcom) {
+    if (self.comment.blog.isHostedAtWPcom || self.comment.blog.isAtomic) {
         cell.isReplyEnabled = [UIDevice isPad] && self.userCanLikeAndReply;
         cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes] && self.userCanLikeAndReply;
         cell.isApproveEnabled = self.comment.canModerate;
