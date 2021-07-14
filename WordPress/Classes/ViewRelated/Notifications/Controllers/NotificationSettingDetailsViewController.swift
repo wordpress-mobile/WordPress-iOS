@@ -277,7 +277,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         defer {
             WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
-        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] in
+        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] _ in
             self?.refreshPushAuthorizationStatus()
         }
     }

@@ -1,17 +1,7 @@
-In Version 17.6 kannst du mit jedem Tarif den Audioblock auf allen WordPress.com-Websites hinzufügen – auch mit dem Kostenlos-Tarif. Mit dem Audioblock lassen sich Podcasts, Musik und Audiodateien deinen Beiträgen und Seiten ganz einfach hinzufügen.
+Hattest du auch schon immer den Wunsch, dass dir jemand eine Erinnerung an dem Tag schicken würde, an dem du einen Blogbeitrag veröffentlichen wolltest? Wir haben diesen Wunsch jetzt erfüllt! Wir haben die Möglichkeit hinzugefügt, Blogging-Erinnerungen einzurichten. Wähle einfach die Tage aus, an denen du neue Beiträge veröffentlichen möchtest, und wir senden dir an diesen Tagen eine Benachrichtigung dazu.
 
-Im Reader wird dir nun die Anzahl und Zusammenfassung der einem Beitrag hinzugefügten Likes angezeigt. Wenn du noch mehr zu deinen Likes wissen möchtest, tippe auf die Zusammenfassung, um die vollständige Liste anzuzeigen.
+Solltest du deine Website selbst hosten und Jetpack nicht verwenden, kannst du deren Plugins jetzt verwalten (installieren, deinstallieren, aktivieren und deaktivieren).
 
-Wir haben auch intensiv an Verbesserungen für die Benutzeroberfläche gearbeitet:
+Der Layoutraster-Block im Block-Editor hat einen frischen neuen Look bekommen und wo wir gerade schon im Editor-Code waren, haben wir auch gleich noch den Code für Tablet-Benutzer verbessert. Der ärgerliche Fehler am Inserter-Button in der Tablet-Ansicht im Block-Editor ist jetzt auch behoben.
 
-Wenn du einer Seite eine übergeordnete Seite ohne Titel zuweist, wird nun als Platzhalter „Kein Titel“ statt einer leeren Zeile angezeigt, um dich sanft darauf hinzuweisen, dass du die Seite benennen solltest.
-
-Du konntest die Beitragsarchivseiten noch nie bearbeiten, da sie automatisch generiert sind. In Version 17.6 kannst du sie auch nicht mehr im Editor öffnen, um dir den Versuch gleich zu ersparen.
-
-Außerdem haben wir folgende Fehler behoben:
-
-Wir haben uns um einige Hinweise gekümmert, die sich auf dem ActionSheet überlagert haben, darunter die Anzeige von Steuerelementen für Website-Icons, die Anzeige zum Entfernen des Schnellstarts und die Anzeige für weitere Aktionen im Editor.
-
-Darüber hinaus haben wir einen Fehler behoben, durch den die App während der Freischaltung von Kommentaren abstürzte, sowie einen Anmeldefehler bei der Inline-Anzeige von WordPress.org-Websites.
-
-Das war alles für Version 17.6. Bis zum nächsten Mal mit Version 17.7!
+Möchtest du dich über Reader-Listen und Artikel für Unterhaltungen per E-Mail anmelden? Sehr gut! Auch diese Möglichkeit haben wir jetzt hinzugefügt.

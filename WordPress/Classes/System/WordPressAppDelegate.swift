@@ -5,7 +5,6 @@ import AutomatticTracks
 import WordPressAuthenticator
 import WordPressShared
 import AlamofireNetworkActivityIndicator
-import AutomatticTracks
 
 #if APPCENTER_ENABLED
 import AppCenter

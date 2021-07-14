@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-21 09:06:23+0000 */
+/* Translation-Revision-Date: 2021-07-08 09:55:00+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -296,6 +296,15 @@
 
 /* Age between dates less than one hour. */
 "< 1 hour" = "1時間以下";
+
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "週に<strong>%d<\/strong>回";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "週に<strong>1回<\/strong>";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "週に<strong>2回<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -639,6 +648,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "代替テキスト";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "「通常のブロックへ変換」をタップして、これらのブロックを個別に切り離して編集できます。";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "もしくは、";
 
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "戻る";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "背景色";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "ブログの読者";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "ブログ投稿のリマインダー";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "投稿、ページ、ストーリーを作成";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "絵文字アイコンを作成";
 
 /* Label that describes the download backup action */
@@ -2394,6 +2409,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "ホームページを編集";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "再利用ブロックの編集は WordPress for Android ではまだサポートされていません";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "再利用ブロックの編集は WordPress for iOS ではまだサポートされていません";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "この GIF を編集するとアニメーションが削除されます。";
 
@@ -2441,7 +2462,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "メールを送信しました。";
 
-/* No comment provided by engineer. */
+/* Title for the Emoji section */
 "Emoji" = "絵文字";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2624,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "イベント";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "毎日";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "誰でも";
@@ -2956,8 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "プレビューを生成中";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "今すぐ始める";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Reader に移動";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "「設定」&rarr;「通知」&rarr;「WordPress」に移動し、「通知を許可する」をオンにします。";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3406,6 +3432,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "「%2$@」が公開されてから%1$@が経過しました。";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "%@ のブログに投稿する日です !";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "ブログに投稿する日です !";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "いよいよスタートです ! 最初の投稿の下書きを作成し、公開しましょう。";
 
@@ -3684,6 +3716,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "ストリームを読み込み中…";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "ブロックエディターを読み込んでいます。";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "ユーザー名を読み込んでいます";
 
@@ -3778,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "メインナビゲーション";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "目標を設定し、進捗を追跡して、サイトを最大限に活用しましょう。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "次へ";
 
 /* Table view title for the quick start section. */
@@ -4362,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "なし";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "設定なし";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "北";
 
@@ -4425,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "未読通知";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "通知する";
 
 /* First story intro item title */
 "Now stories are for everyone" = "いまやストーリーはみなさんのためのものです";
@@ -4729,9 +4766,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "人";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "週に2回以上投稿している人は、閲覧数が87%向上しています。";
-
 /* Label for date periods. */
 "Period" = "期間";
 
@@ -4783,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "ヘルプが必要な場合はサポートにご連絡ください。";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "サイトでブロックエディターが有効になっていることを確認し、再度お試しください。";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "サイトでブロックエディターが有効になっていることを確認してください。 有効になっていない場合、読み込むことができません。";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "サイトの完全なアドレス (例 : example.com) を入力してください。";
@@ -5002,6 +5042,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "投稿アクティビティ";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期的に投稿することで読者の興味を引きつけ、新たなサイト訪問者を獲得できます。";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "「関連記事」は投稿の下にサイト内の関連コンテンツを表示します";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "リマインダーを削除しました";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "投稿へ戻る";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "WordPress for Android では再利用可能ブロックを編集できません";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "WordPress for iOS では再利用可能ブロックを編集できません";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "保留中の変更を元に戻す";
 
@@ -5573,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "保存";
 
@@ -5904,7 +5945,7 @@
 "Set as Posts Page" = "投稿ページとして設定";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "目標を設定";
+"Set reminders" = "リマインダーを設定";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "セットアップ";
@@ -5912,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack のセットアップ";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "ブログの目標を設定";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "投稿する予定の日にブログ投稿のリマインダーを設定します。";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "ブログ投稿のリマインダーを設定";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "サイトのタイトルを設定";
@@ -6879,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "ドメインとは、インターネット上の住所です。";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "本日はブログ投稿日です✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "このメディアファイルは削除されています。";
 
@@ -6997,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "投稿に使用する写真または動画を撮る。";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "ブログ投稿のリマインダーを使用するには、プッシュ通知を有効にする必要があります";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "サイト上で統計情報を使用するには、Jetpack プラグインをインストールする必要があります。";
@@ -7131,6 +7180,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "サイト通知を無効にする";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "通知を有効にする";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "プッシュ通知を有効にする";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "サイト通知を有効にする";
 
@@ -7214,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "今は投稿を読み込めません。";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "現在ブロックエディターを読み込めません。";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "画像を読み込めません。別の画像を選択するか、後でもう一度お試しください。";
@@ -7313,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "利用できません";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "未定義";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "下線";
@@ -7330,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "%@ のフォロー解除";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "メールでの会話のフォローを解除";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "サイトをフォロー解除";
@@ -7400,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "数日間分のログが保存されます。";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "更新";
@@ -8276,6 +8341,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "サイトにまだアップロードされていない%d件の投稿を変更しました。ログアウトすると、変更は削除されます。ログアウトしますか ?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "リマインダーが設定されていません。";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "保存していない変更点があります。";
@@ -8323,8 +8391,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "ユーザー名を元に戻すことはできません。";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "DAYとDAYに週にX回ブログを書くようにリマインダーが表示されます。";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "週に<strong>1回<\/strong>、%@にブログ投稿のリマインダーを受け取ります。";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "週に%1$@回、%2$@にブログ投稿のリマインダーを受け取ります。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "すべて最新版です。";
@@ -8366,7 +8437,7 @@
 "Your first backup will be ready soon" = "初回のバックアップは間もなく完了します";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません. If the problem persists you can contact us via the Me >「ヘルプとサポート」画面。";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "モバイルでも通知を受信し、コメントやいいねをリアルタイムで確認できます。";
@@ -8377,8 +8448,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "現在投稿をアップロードしています。 完了するまで、しばらくお待ちください。";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "投稿を公開中です... その間に、ブログの目標を設定してリマインダーを受け取ったり、進捗を確認したりしましょう。";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "投稿を掲載しています...その間に、投稿する予定の日にブログ投稿のリマインダーを設定しましょう。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "投稿、ページ、および設定は %@ にメールで送信されます。";
@@ -8398,7 +8469,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "サイトが正常に復元されました";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "サイトのアイコンは、ブラウザのタブや SNS でのサイトプレビュー、WordPress.com Reader などのウェブ上で利用されます。";
 
 /* Title of a message displayed when user starts a restore operation */

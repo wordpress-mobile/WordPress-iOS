@@ -1,4 +1,5 @@
 import UIKit
+import UITestsFoundation
 import XCTest
 
 class JetpackScreenshotGeneration: XCTestCase {

@@ -1,17 +1,7 @@
-Met 17.6 kun je het audioblok toevoegen aan elke WordPress.com site, ongeacht het abonnement dat je hebt - inclusief het gratis abonnement. Het audioblok maakt het gemakkelijk om podcasts, muziek en geluidsbestanden toe te voegen aan je berichten en pagina's.
+Wilde je dat iemand je herinneringen zou sturen op de dagen dat je je blogberichten wilt publiceren? Dan is je wens zojuist uitgekomen. We hebben de functie toegevoegd om herinneringen aan publicatie van je blogs aan te vragen. Stel simpelweg je dagen in waarop je je blog wilt publiceren en wij sturen je dan een melding om je eraan te herinneren je bericht te publiceren.
 
-In de Reader zie je nu een telling en samenvatting van Vind-ik-leuks toegevoegd aan elk bericht. Als dat niet genoeg Likes in je leven is, tik je op de samenvatting en kun je de volledige lijst zien.
+Als je een zelfgehoste site hebt, maar geen gebruikmaakt van Jetpack, dan kun je nu de siteplug-ins beheren (installeren, deïnstalleren, activeren en deactiveren).
 
-We hebben ook hard gewerkt aan het maken van UX verbeteringen:
+De Blokeditor heeft een schitterend nieuw Indelingsraster in blokken. En toen we toch bezig waren in de code van de editor, hebben we kleine aanpassingen aan de code aangebracht voor onze fantastische tabletgebruikers. Dat irritante tabletweergaveprobleem met de invoegknop in de Blokeditor is nu verholpen.
 
-Wanneer je een hoofdpagina toewijst aan een pagina zonder titel, zie je nu een plaatshouder ‘(geen titel)’ in plaats van een lege regel, waardoor je een zacht duwtje krijgt om de pagina een naam te geven.
-
-Je hebt nooit bericht archiefpagina's kunnen bewerken omdat ze automatisch worden gegenereerd. In 17.6, zal je ook niet in staat zijn om ze te openen in de editor, het red je van een verspilde reis.
-
-We hebben ook gewerkt aan het oplossen van dingen:
-
-We hebben gezorgd voor enkele berichten die het Actieblad overlappen, waaronder een met besturingselementen voor site pictogrammen, een andere waarin de QuickStart verwijdering wordt weergegeven, en een derde die Meer acties in de editor weergeeft.
-
-Ten slotte hebben we een bug geplet, die er soms voor zorgde dat de app crashte tijdens het modereren van reacties, en een andere om een login fout op te lossen voor WordPress.org sites om inline te tonen.
-
-Dat is alles voor 17,6. Zie je in 17.7!
+Wil je je per e-mail abonneren op gesprekken vanuit lijsten en artikelen op de lezer? Top, want ook dat is nu mogelijk!

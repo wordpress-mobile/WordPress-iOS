@@ -77,17 +77,18 @@ final class ReaderShowMenuAction {
         // Following
         if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
+
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
-                                                                                 completion: {
-                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
+                                                                                 completion: { follow in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
                                                                                     (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
-                                                                                 }, failure: { _ in
-                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                                                                 }, failure: { follow, _ in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
                                                                                  })
                                                 }
                                                })
@@ -131,6 +132,18 @@ final class ReaderShowMenuAction {
                                            handler: { (action: UIAlertAction) in
                                             ReaderShareAction().execute(with: post, context: context, anchor: anchor, vc: vc)
         })
+
+        // Comment Subscription (Follow Comments by Email)
+        if post.canSubscribeComments {
+            let buttonTitle = post.isSubscribedComments ? ReaderPostMenuButtonTitles.unFollowConversation : ReaderPostMenuButtonTitles.followConversation
+            alertController.addActionWithTitle(buttonTitle,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                    ReaderSubscribeCommentsAction().execute(with: post, context: context)
+                                                }
+            })
+        }
 
         if WPDeviceIdentification.isiPad() {
             alertController.modalPresentationStyle = .popover

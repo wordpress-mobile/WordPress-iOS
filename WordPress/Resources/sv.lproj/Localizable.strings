@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-21 14:00:05+0000 */
+/* Translation-Revision-Date: 2021-06-29 18:35:19+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -296,6 +296,15 @@
 
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1 timme";
+
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> gånger i veckan";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>En gång<\/strong> i veckan";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>Två gånger<\/strong> i veckan";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -639,6 +648,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-text";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Som ett alternativ kan du frikoppla dessa block och redigera dem separat genom att trycka på ”konvertera till vanliga block”.";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternativt:";
 
@@ -758,7 +770,7 @@
 "Are you sure you want to mark this comment as Spam?" = "Vill du markera den här kommentaren som skräp?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Vill du markera den här kommentaren som skräp?";
+"Are you sure you want to mark this comment as Trash?" = "Vill du markera denna kommentar som skräppost?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Är du säker på att du vill ta bort dessa objekt permanent?";
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "Tillbaka";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "Bakgrundsfärg";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Bloggens tittare";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Bloggningspåminnelser";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Skapa ett inlägg, en sida eller en berättelse";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "Skapa en ikon för webbplats";
 
 /* Label that describes the download backup action */
@@ -2394,6 +2409,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Redigera din startsida";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Redigering av återanvändbara block stöds ännu inte i WordPress för Android";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Redigering av återanvändbara block stöds ännu inte i WordPress för iOS";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Om du redigerar den här GIF-bilden tas animeringen bort.";
 
@@ -2441,7 +2462,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-postmeddelande skickat!";
 
-/* No comment provided by engineer. */
+/* Title for the Emoji section */
 "Emoji" = "Emoji";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2538,7 +2559,7 @@
 "Error activating %@." = "Ett fel inträffade när %@ skulle aktiveras.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Ett fel inträffade när kommentaren skulle godkännas";
+"Error approving comment" = "Det gick inte att godkänna kommentaren";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2548,7 +2569,7 @@
 "Error deactivating %@." = "Ett fel inträffade när %@ skulle inaktiveras.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Ett fel inträffade när kommentaren skulle tas bort";
+"Error deleting comment" = "Det gick inte att ta bort kommentaren";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Ett fel inträffade när automatiska uppdateringar skulle inaktiveras för %@.";
@@ -2572,7 +2593,7 @@
 "Error loading plugins" = "Fel vid laddning av tilläggen";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "Ett fel inträffade när kommentaren skulle markeras som skräp";
+"Error marking comment as spam" = "Det gick inte att markera kommentaren som skräppost";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Ett fel uppstod\nvid laddning";
@@ -2608,7 +2629,7 @@
 "Error sending verification email. Check your connection and try again." = "Ett fel inträffade när e-postmeddelande för verifiering skulle skickas. Kontrollera anslutningen och försök igen.";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "Ett fel inträffade när kommentaren skulle markeras som ej godkänd";
+"Error unapproving comment" = "Det gick inte att ångra godkännande av kommentaren";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Fel vid uppdatering av %@.";
@@ -2624,6 +2645,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Händelse";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Varje dag";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Alla";
@@ -2956,8 +2980,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Genererar förhandsgranskning";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Kom igång";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3027,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Gå till läsare";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Gå till Inställningar → Meddelanden → WordPress och ändra inställningen för meddelanden.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3406,6 +3432,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "Det är %1$@ sedan %2$@ publicerades.";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "Det är dags att blogga på %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "Det är dags att blogga!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "Det är dags! Skriv och publicera ditt allra första inlägg.";
 
@@ -3684,6 +3716,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Laddar ström...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Blockredigeraren laddas.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Hämtar användarnamn";
 
@@ -3778,9 +3813,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Huvudmeny";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Få ut det mesta av din webbplats genom att sätta upp mål och följa upp dina framsteg.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4169,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "Nästa";
 
 /* Table view title for the quick start section. */
@@ -4362,6 +4393,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Ingen";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "Ingenting är inställt";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Norr";
 
@@ -4425,6 +4459,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Olästa notiser";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Avisera mig";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Nu kan alla använda berättelser";
@@ -4729,9 +4766,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "Människor";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "Personer som publicerar minst två gånger per vacka får 87 % fler visningar på sin webbplats.";
-
 /* Label for date periods. */
 "Period" = "Period";
 
@@ -4783,6 +4817,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Kontakta supporten för hjälp.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Kontrollera att blockredigeraren är aktiverad på webbplatsen och försök igen.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Se till att blockredigeraren är aktiverad på din webbplats. Om den inte är aktiverad kan den inte laddas in.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Ange den fullständiga adressen till en webbplats, t.ex. example.com.";
@@ -5002,6 +5042,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Publiceringsaktivitet";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Genom att publicera regelbundet kan du bidra till att hålla dina läsare engagerade och locka nya besökare till webbplatsen.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5352,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Relaterade inlägg visar relevant innehåll från din webbplats nedanför dina inlägg";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Påminnelserna har tagits bort";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5578,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Återgå till inlägget";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Återanvändbara block kan inte redigeras i WordPress för Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Återanvändbara block kan inte redigeras i WordPress för iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Återställ väntande ändring";
 
@@ -5573,6 +5613,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "Spara";
 
@@ -5904,7 +5945,7 @@
 "Set as Posts Page" = "Ställ in som inläggssida";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Konfigurera mål";
+"Set reminders" = "Ställ in påminnelser";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Konfigurera";
@@ -5912,9 +5953,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Konfigurera Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Sätt mål för din bloggning";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Ställ in bloggpåminnelser de dagar du vill publicera.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Ställ in dina bloggningspåminnelser";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Ange webbplatsens rubrik";
@@ -6879,6 +6922,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Det är här du kommer att hittas på internet.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "Det här är din bloggningspåminnels för i idag ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Detta medieobjekt har raderats.";
 
@@ -6997,6 +7043,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "För att ta bilder eller spela in videoklipp som kan användas i dina inlägg.";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "För att kunna använda bloggningspåminnelser behöver du aktivera push-meddelanden.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Du använder statistik på din webbplats. Du kommer att behöva installera tillägget Jetpack.";
@@ -7131,6 +7180,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Stäng av webbplatsnotiser";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Slå på notiser";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Slå på push-meddelanden";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Slå på webbplatsnotiser";
 
@@ -7214,6 +7269,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Kan inte ladda inlägg just nu.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Det går inte att ladda blockredigeraren just nu.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Bilden kunde inte laddas. Välj en annan bild eller försök senare.";
@@ -7313,6 +7371,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Inte tillgänglig";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Ej definierat";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Understrykning";
@@ -7330,6 +7391,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Sluta att följa %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Sluta följa konversationen via e-post";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Sluta följa webbplats";
@@ -7400,7 +7464,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Upp till sju dagar med loggar sparas.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Uppdatera";
@@ -8276,6 +8341,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Du har ändringar i %d inlägg som inte har laddats upp till din webbplats. Om du loggar ut nu tas dessa ändringar bort. Logga ut ändå?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "Du har inga påminnelser inställda.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Inlägget har osparade ändringar.";
@@ -8323,8 +8391,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Du kommer inte att kunna ändra till ditt tidigare användarnamn.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "Du kommer att få påminnelser om att blogga X gånger per vecka på DAY och DAY.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Du kommer att få en påminnelse om att blogga <strong>en gång<\/strong> i veckan på %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "Du kommer att få bloggningspåminnelser %1$@ gånger per vecka på %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Du har sett allt!";
@@ -8377,8 +8448,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Ditt inlägg laddas upp just nu. Vänta tills uppladdningen är klar.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Ditt inlägg håller på att publiceras … medan du väntar kan du konfigurera dina bloggningsmål för att få påminnelser och följa upp din progress.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Ditt inlägg håller på att publiceras … Medan du väntar kan du konfigurera bloggningspåminnelser för vilka dagar du vill publicera något.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Dina inlägg, sidor och inställningar kommer att skickas till dig på adressen %@.";
@@ -8398,8 +8469,8 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Din webbplats har återställts utan problem";
 
-/* No comment provided by engineer. */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Din webbplatsikon används på olika sätt på webben: i webbläsarflikar, förhandsvisning av webbplats på sociala medier och i WordPress.com-läsaren.";
+/* Subtitle for the Site Icon Picker */
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Din webbplatsikon används överallt på webben: i webbläsarflikar, förhandsvisningar av webbplatsen på sociala medier och i WordPress.com-läsaren.";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Din webbplats återställs";

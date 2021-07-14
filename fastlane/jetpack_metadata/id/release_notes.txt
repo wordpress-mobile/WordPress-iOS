@@ -1,15 +1,1 @@
-Dengan versi 17.6, Anda dapat menambahkan Blok Audio ke semua situs WordPress.com, apa pun paket yang Anda gunakan – termasuk Paket Gratis. Blok Audio memudahkan Anda untuk menambahkan podcast, musik, dan file suara ke pos dan halaman Anda.
-
-Kami juga telah bekerja keras untuk peningkatan UX:
-
-Saat menugaskan halaman induk ke sebuah halaman tanpa judul, Anda sekarang akan melihat placeholder '(tanpa judul)', alih-alih baris kosong, yang mendorong Anda secara halus untuk menamai halaman tersebut. 
-
-Anda tidak bisa menyunting halaman Arsip Pos karena dibuat secara otomatis. Di versi 17.6, Anda juga tidak akan bisa membukanya di editor supaya tidak membuang-buang waktu.
-
-Kami juga telah berupaya memperbaiki beberapa hal:
-
-Kami telah mengatasi sejumlah pemberitahuan yang selama ini tumpang tindih di LembarTindakan, termasuk salah satunya yang menampilkan kontrol Favicon, yang menampilkan Penghapusan MulaiCepat, serta yang menampilkan Tindakan Lain pada editor.
-
-Terakhir, kami telah mengatasi bug yang terkadang menyebabkan aplikasi macet saat moderasi komentar serta bug lain guna memperbaiki error saat login untuk situs WordPress.org yang ditampilkan sebaris. 
-
-Itulah semua fitur untuk pembaruan 17.6. Sampai bertemu lagi di pembaruan 17.7!
+Editor blok kini dilengkapi Petak tata letak blok yang baru dan karena kami juga mengutak-atik baris kode editor, kami menyunting baris kode sehingga lebih ramah untuk digunakan para sobat pengguna tablet. Masalah tombol penyisip tampilan tablet di Editor blok yang menyebalkan kini teratasi.

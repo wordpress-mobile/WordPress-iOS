@@ -5,7 +5,7 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
-    func didTapFollowButton()
+    func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
 }
 
@@ -78,8 +78,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBAction func didTapFollowButton(_ sender: Any) {
         followButton.isSelected = !followButton.isSelected
         iPadFollowButton.isSelected = !followButton.isSelected
+        followButton.isUserInteractionEnabled = false
 
-        delegate?.didTapFollowButton()
+        delegate?.didTapFollowButton() { [weak self] in
+            self?.followButton.isUserInteractionEnabled = true
+        }
     }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
@@ -170,7 +173,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     private func configureDateLabel() {
-        dateLabel.text = post?.dateForDisplay()?.mediumString()
+        dateLabel.text = post?.dateForDisplay()?.toMediumString()
     }
 
     private func configureFollowButton() {
@@ -240,7 +243,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
                 return nil
         }
 
-        guard let postedOn = post.dateCreated?.mediumString() else {
+        guard let postedOn = post.dateCreated?.toMediumString() else {
             let format = NSLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
             return String(format: format, postedIn, postedAtURL, postedBy)
         }

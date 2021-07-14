@@ -2,16 +2,37 @@ import UIKit
 
 
 class CalendarDayToggleButton: UIButton {
-    init(weekday: String) {
+
+    typealias TouchUpInsideAction = (CalendarDayToggleButton) -> ()
+
+    /// The number of the day within the week.
+    ///
+    let weekday: BloggingRemindersScheduler.Weekday
+
+    /// A closure that will be called when the button is tapped.
+    ///
+    let action: TouchUpInsideAction
+
+    // MARK: - Initialization
+
+    init(
+        weekday: BloggingRemindersScheduler.Weekday,
+        dayName: String,
+        isSelected: Bool,
+        action: @escaping TouchUpInsideAction) {
+
+        self.weekday = weekday
+        self.action = action
+
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
 
-        setTitle(weekday.uppercased(), for: .normal)
+        setTitle(dayName, for: .normal)
 
         configureStyle()
         configureConstraints()
 
-        isSelected = false
+        self.isSelected = isSelected
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
@@ -20,11 +41,15 @@ class CalendarDayToggleButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UIView
+
     override func layoutSubviews() {
         super.layoutSubviews()
 
         layer.cornerRadius = bounds.size.width / 2
     }
+
+    // MARK: - Configuration
 
     private func configureStyle() {
         setTitleColor(.secondaryLabel, for: .normal)
@@ -37,10 +62,13 @@ class CalendarDayToggleButton: UIButton {
 
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: Metrics.toggleSize),
-            heightAnchor.constraint(equalToConstant: Metrics.toggleSize),
+            widthAnchor.constraint(greaterThanOrEqualToConstant: Metrics.toggleSize),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.toggleSize),
+            widthAnchor.constraint(equalTo: heightAnchor),
         ])
     }
+
+    // MARK: - UIControl
 
     override var isSelected: Bool {
         didSet {
@@ -55,6 +83,8 @@ class CalendarDayToggleButton: UIButton {
             setNeedsDisplay()
         }
     }
+
+    // MARK: - Misc
 
     private var backgroundColorForCurrentState: UIColor {
         switch (isSelected, isHighlighted) {
@@ -71,6 +101,8 @@ class CalendarDayToggleButton: UIButton {
 
     @objc func tapped() {
         isSelected.toggle()
+
+        action(self)
     }
 }
 

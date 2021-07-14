@@ -420,10 +420,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return nil;
     }
 
-    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.mySitesCoordinator.navigationController.viewControllers wp_filter:^BOOL(id obj) {
-        return [obj isKindOfClass:[BlogDetailsViewController class]];
-    }] firstObject];
-    return blogDetailsController.blog;
+    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
+        return [self.mySitesCoordinator currentBlog];
+    } else {
+        BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.mySitesCoordinator.navigationController.viewControllers wp_filter:^BOOL(id obj) {
+            return [obj isKindOfClass:[BlogDetailsViewController class]];
+        }] firstObject];
+        return blogDetailsController.blog;
+    }
 }
 
 - (Blog *)currentOrLastBlog
