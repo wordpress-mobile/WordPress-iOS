@@ -12,7 +12,10 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: Properties
 
+    /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
+    /// This should be removed when the caller is rewritten in Swift.
     @objc static let reuseIdentifier = defaultReuseID
+
     @objc static let estimatedRowHeight = 26
 
     @objc var title: String? {
