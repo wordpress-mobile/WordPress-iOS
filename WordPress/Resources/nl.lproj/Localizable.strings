@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-06 05:51:04+0000 */
+/* Translation-Revision-Date: 2021-07-13 05:31:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Voeg een afbeelding of avatar toe, die bij dit nieuwe account hoort.";
 
 /* No comment provided by engineer. */
+"Add link" = "Link toevoegen";
+
+/* No comment provided by engineer. */
 "Add link text" = "Linktekst toevoegen";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Om plugins te bekijken heb je een actieve internetverbinding nodig";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Een actieve internetverbinding is vereist om statistieken weer te geven";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Een actieve internetverbinding is vereist om de geschiedenis te bekijken";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Dupliceer blok";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "LINK BEWERKEN";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Oost";
 
@@ -2462,6 +2465,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail verzonden!";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Bijschrift ingesloten inhoud. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Bijschrift ingesloten inhoud. Leeg";
+
+/* No comment provided by engineer. */
+"Embed link" = "Sluit link in";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Ingesloten inhoud van %s kan niet in de mobiele editor getoond worden op dit moment. Bekijk een voorbeeld van de pagina om de ingesloten inhoud te zien.";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
@@ -2478,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Snelstart voor site inschakelen";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Sitestatistieken inschakelen";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Toegang tot microfoon inschakelen om geluid op te nemen in je video's.";
 
@@ -2486,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Site meldingen inschakelen?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Schakel sitestatistieken in om gedetailleerde informatie over je bezoekers, likes, reacties en abonnees te bekijken.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Sitestatistieken inschakelen ...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Versleutelde logs";
@@ -3130,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Heading 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Help";
 
 /* Link to Help section
@@ -3405,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Ongeldige URL. Audiobestand niet gevonden.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Ongeldige URL. Voer een geldige URL in.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Ongeldig eindpunt";
 
@@ -3452,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ of nieuwer is vereist. Wil je Jetpack bijwerken?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup voor multisite installaties heeft downloadbare back-ups, geen één-klik herstel. Voor meer informatie %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Veelgestelde vragen Jetpack";
@@ -3798,6 +3829,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Logs";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Op zoek naar statistieken?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Adres aan het opzoeken...";
@@ -4193,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Geen categorie";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Geen verbinding";
 
 /* List Editor Empty State Message */
 "No Items" = "Geen items";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Geen Jetpack sites gevonden";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Geen menu";
@@ -5730,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "Zoeken op WordPress\nvoor een site of bericht";
 
 /* No comment provided by engineer. */
-"Search block" = "Zoekblok";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Zoekblok label. Huidige tekst is";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Zoek blokken";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Zoekknop. Huidige knoptekst is";
@@ -7994,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "We zetten je site terug naar %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Sorry, Jetpack Scan is op dit moment niet compatibel met WordPress multisite installaties.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "We hebben je ook een link naar je bestand gemaild.";
 
@@ -8173,6 +8206,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS ondersteuning";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "WordPress multisites worden niet ondersteund";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress heeft toestemming nodig om toegang te krijgen tot de huidige locatie van je apparaat om deze toe te kunnen voegen aan je bericht. Update je privacyinstellingen.";
@@ -8602,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "bezoeker";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "bezoek onze documentatie pagina";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "is in de toekomst niet meer beschikbaar.";

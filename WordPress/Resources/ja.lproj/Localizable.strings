@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-08 09:55:00+0000 */
+/* Translation-Revision-Date: 2021-07-13 05:40:58+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "この新規アカウントを表す画像またはアバターを追加します。";
 
 /* No comment provided by engineer. */
+"Add link" = "リンクを追加";
+
+/* No comment provided by engineer. */
 "Add link text" = "リンク文字列を追加";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -673,9 +676,6 @@
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "プラグインを表示するには有効なインターネット接続が必要です";
 
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "統計情報を表示するにはインターネット接続が必要です";
-
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "履歴を表示するには有効なインターネット接続が必要です";
 
@@ -770,13 +770,13 @@
 "Are you sure you want to mark this comment as Spam?" = "このコメントをスパムとしてマークしてもよいですか ?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "このコメントをスパムとしてマークしてもよいですか ?";
+"Are you sure you want to mark this comment as Trash?" = "このコメントにゴミ箱に移動とマークしてもよいですか ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "本当にこれらの項目を永久に削除しますか ?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "このコメントを完全に削除しますか ?";
+"Are you sure you want to permanently delete this comment?" = "このコメントを完全に削除してよいですか ?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "この項目を完全に削除してもよいですか ?";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "ブロックを複製";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "リンクを編集";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "東";
 
@@ -2462,6 +2465,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "メールを送信しました。";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "画像キャプション。%s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "動画キャプション。空";
+
+/* No comment provided by engineer. */
+"Embed link" = "埋め込みリンク";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+
 /* Title for the Emoji section */
 "Emoji" = "絵文字";
 
@@ -2478,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "サイトのクイックスタートを有効にする";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "サイト統計情報を有効化";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "動画の音を録音するためにマイクを有効にしてください。";
 
@@ -2486,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "サイト通知を有効にしますか ?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Enabling Site Stats...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "暗号化されたログ";
@@ -2593,7 +2617,7 @@
 "Error loading plugins" = "プラグイン読み込みエラー";
 
 /* Message shown when marking a Comment as spam fails. */
-"Error marking comment as spam" = "スパムコメントマーキングエラー";
+"Error marking comment as spam" = "コメントにスパムとマークする際のエラー";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "読み込み中にエラーが\n発生しました";
@@ -2629,7 +2653,7 @@
 "Error sending verification email. Check your connection and try again." = "認証メールの送信中にエラーが発生しました。接続を確認して、もう一度お試しください。";
 
 /* Message shown when unapproving a Comment fails. */
-"Error unapproving comment" = "コメント承認エラー";
+"Error unapproving comment" = "コメント承認解除エラー";
 
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "%@ の更新中にエラーが発生しました。";
@@ -3130,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "見出し6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "ヘルプ";
 
 /* Link to Help section
@@ -3405,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "無効な URL。音声ファイルが見つかりません。";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "無効のエンドポイント";
 
@@ -3452,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "統計情報機能には Jetpack %@ またはそれ以降が必須です。Jetpack を更新しますか ?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack よくある質問";
@@ -3798,6 +3829,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "ログ";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "統計情報をお探しですか ?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "アドレスをチェック中…";
@@ -4193,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "カテゴリーなし";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "接続できません";
 
 /* List Editor Empty State Message */
 "No Items" = "項目なし";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Jetpack サイトが見つかりませんでした";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "メニューがありません";
@@ -5730,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "WordPress で\nサイトまたは投稿を検索";
 
 /* No comment provided by engineer. */
-"Search block" = "検索ブロック";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "検索ブロックのラベル。現在のテキストは";
-
-/* No comment provided by engineer. */
-"Search blocks" = "検索ブロック";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "検索ボタンです。現在のボタンテキストは";
@@ -7994,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "サイトを %1$@ に復元しています。";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "ファイルへのリンクはメールでも送信されました。";
 
@@ -8173,6 +8206,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS のサポート";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "WordPress multisites are not supported";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress が端末の現在位置にアクセスして投稿に追加するためには許可が必要です。プライバシー設定を更新してください。";
@@ -8470,7 +8506,7 @@
 "Your site has been succesfully restored" = "サイトが正常に復元されました";
 
 /* Subtitle for the Site Icon Picker */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "サイトのアイコンは、ブラウザのタブや SNS でのサイトプレビュー、WordPress.com Reader などのウェブ上で利用されます。";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "サイトアイコンはブラウザーのタブ、ソーシャルメディアのサイトプレビュー、WordPress.com Reader など、ウェブ全体で使用されます。";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "現在サイトを復元中です";
@@ -8602,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "読者";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "visit our documentation page";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "は、いずれ利用できなくなります。";
