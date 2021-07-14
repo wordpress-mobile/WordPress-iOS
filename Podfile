@@ -173,8 +173,12 @@ abstract_target 'Apps' do
     ##
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
+
+    app_center_version = '~> 4.1'
+    app_center_configurations = %w[Release-Internal Release-Alpha]
+    pod 'AppCenter', app_center_version, configurations: app_center_configurations
+    pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
+
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
