@@ -908,7 +908,15 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
-    remotePost.authorID = post.authorID;
+
+    // If the author ID for the post doesn't differ from this user's
+    // account ID, there's no need to send it to the API. Atomic sites
+    // where users had limited API access (author, contributor) currently
+    // don't allow IDs to be sent.
+    if (post.authorID != post.blog.account.userID) {
+        remotePost.authorID = post.authorID;
+    }
+
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
 
