@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-01 16:42:02+0000 */
+/* Translation-Revision-Date: 2021-07-13 08:47:56+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Adaugă o imagine sau un avatar care să reprezinte acest cont nou.";
 
 /* No comment provided by engineer. */
+"Add link" = "Adaugă o legătură";
+
+/* No comment provided by engineer. */
 "Add link text" = "Adaugă text la legătură";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Pentru a vedea modulele este necesară o conexiune la internet activă";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Pentru a vedea statisticile e nevoie de o conexiune internet activă";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Pentru a vedea istoricul, este necesară o conexiune activă la internet";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Fă un duplicat al blocului";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "EDITEAZĂ LEGĂTURA";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Est";
 
@@ -2465,6 +2468,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email trimis!";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Înglobează subtitrarea. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Înglobează subtitrarea. Nu există";
+
+/* No comment provided by engineer. */
+"Embed link" = "Înglobează legătura";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Conținutul înglobat de la %s nu poate fi vizualizat în acest moment în editorul pentru dispozitive mobile. Te rog previzualizează pagina pentru a vedea conținutul înglobat.";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoticon";
 
@@ -2481,6 +2496,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Activează Inițiere rapidă pentru site";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Activează statistici site";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Activează accesul la microfon pentru a înregistra sunetul în videourile tale.";
 
@@ -2489,6 +2507,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Activezi notificările pe site?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Activează statistici site pentru a vedea informații detaliate despre trafic, aprecieri, comentarii și abonați.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Activez statistici site...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Jurnale criptate";
@@ -3133,7 +3157,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Subtitlu 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Ajutor";
 
 /* Link to Help section
@@ -3408,6 +3433,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL invalid. Nu am găsit fișierul audio.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "URL invalid. Te rog introdu un URL valid.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Punct-final invalid";
 
@@ -3455,6 +3483,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Este necesară versiunea Jetpack %@ sau una mai recentă. Vrei să actualizezi Jetpack?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Copii de siguranță Jetpack pentru instalări multi-site oferă copii de siguranță care pot fi descărcate, fără restaurări cu un singur clic. Pentru mai multe informații, %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Întrebări frecvente Jetpack";
@@ -3801,6 +3832,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Jurnale";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Cauți statisticile?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Caut adresa...";
@@ -4196,12 +4230,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Nicio categorie";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Nicio conexiune";
 
 /* List Editor Empty State Message */
 "No Items" = "Nu sunt elemente";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Nu am găsit niciun site Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Niciun meniu";
@@ -5733,13 +5769,7 @@
 "Search WordPress\nfor a site or post" = "Caută în WordPress\nun site sau un articol";
 
 /* No comment provided by engineer. */
-"Search block" = "Bloc Căutare";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Etichetă buton Căutare. Textul actual este";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Caută blocuri";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Buton Căutare. Textul actual al butonului este";
@@ -7647,10 +7677,10 @@
 "Video Preview Unavailable" = "Previzualizare video indisponibilă";
 
 /* translators: accessibility text. %s: video caption. */
-"Video caption. %s" = "Text asociat video. %s";
+"Video caption. %s" = "Subtitrare video. %s";
 
 /* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Text asociat video. Gol";
+"Video caption. Empty" = "Subtitrare video. Nu există";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Exportul videoului anulat.";
@@ -7694,7 +7724,7 @@
 "View more" = "Vezi mai mult";
 
 /* Title of a Quick Start Tour */
-"View your site" = "Vizualizează-ți site-ul";
+"View your site" = "Vezi site-ul";
 
 /* User role badge */
 "Viewer" = "Vizitator";
@@ -7997,6 +8027,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Îți restaurăm site-ul înapoi la %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Regretăm, Scanarea Jetpack nu este compatibilă cu instalările WordPress multi-site în acest moment.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "De asemenea, ți-am trimis prin email o legătură la fișierul tău.";
 
@@ -8176,6 +8209,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Suport WordPress pentru iOS";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "Instalările WordPress multi-site nu sunt acceptate";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress are nevoie de permisiunea de a accesa locația curentă de pe dispozitivul tău pentru a o adăuga articolului. Te rog actualizează setările tale de confidențialitate.";
@@ -8605,6 +8641,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "vizitator";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "vizitează pagina cu documentație";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "va fi indisponibil în viitor.";
