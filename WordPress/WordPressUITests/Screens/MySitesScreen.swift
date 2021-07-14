@@ -3,18 +3,21 @@ import XCTest
 
 private struct ElementStringIDs {
     static let blogsTable = "Blogs" // there's not actually static text here. we'll need an accessibilityID
+    static let cancelButton = "cancel-button"
     static let plusButton = "add-site-button"
     static let addSelfHostedSiteButton = "Add self-hosted site"
 }
 
 class MySitesScreen: BaseScreen {
     let blogsTable: XCUIElement
+    let cancelButton: XCUIElement
     let plusButton: XCUIElement
     let addSelfHostedSiteButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
         blogsTable = app.staticTexts[ElementStringIDs.blogsTable]
+        cancelButton = app.buttons[ElementStringIDs.cancelButton]
         plusButton = app.buttons[ElementStringIDs.plusButton]
         addSelfHostedSiteButton = app.staticTexts[ElementStringIDs.addSelfHostedSiteButton]
         // need to add "+" button here for Add Site options. Something like:
@@ -34,6 +37,11 @@ class MySitesScreen: BaseScreen {
         plusButton.tap()
         XCUIApplication().buttons["Add self-hosted site"].tap()
         return LoginSiteAddressScreen()
+    }
+
+    func closeModal() -> MySiteScreen {
+        cancelButton.tap()
+        return MySiteScreen()
     }
 
     static func isLoaded() -> Bool {
