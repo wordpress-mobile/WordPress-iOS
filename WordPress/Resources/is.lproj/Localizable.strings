@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
 
 /* No comment provided by engineer. */
+"Add link" = "Add link";
+
+/* No comment provided by engineer. */
 "Add link text" = "Add link text";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "An active internet connection is required to view plugins";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Virk tenging við internetið er nauðsynleg til þess að skoða tölfræði";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "An active internet connection is required to view the history";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicate block";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "EDIT LINK";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Austur";
 
@@ -2462,6 +2465,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Tölvupóstur sendur!";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Embed caption. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Embed caption. Empty";
+
+/* No comment provided by engineer. */
+"Embed link" = "Embed link";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
@@ -2478,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Enable Quick Start for Site";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Enable Site Stats";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Enable microphone access to record sound in your videos.";
 
@@ -2486,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Enable site notifications?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Enabling Site Stats...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Encrypted Logs";
@@ -3130,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Heading 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Hjálp";
 
 /* Link to Help section
@@ -3405,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Invalid endpoint";
 
@@ -3452,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ or later is required. Do you want to update Jetpack?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
@@ -3798,6 +3829,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Annálar";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Looking for stats?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Fletti upp heimilisfangi…";
@@ -4193,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Enginn flokkur";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Engin tenging";
 
 /* List Editor Empty State Message */
 "No Items" = "Engin atriði";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "No Jetpack sites found";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Engin valmynd";
@@ -5730,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
 /* No comment provided by engineer. */
-"Search block" = "Search block";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Search block label. Current text is";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Search button. Current button text is";
@@ -7994,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "We're restoring your site back to %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "We've also emailed you a link to your file.";
 
@@ -8173,6 +8206,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS Support";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "WordPress multisites are not supported";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress þarf leyfi til þess að nálgast núverandi staðsetningu tækisins þíns svo hægt sé að bæta henni við í færsluna þína. Vinsamlegast uppfærðu persónuverndarstillingarnar þínar.";
@@ -8602,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "skoðandi";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "visit our documentation page";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "verður ekki í boði í framtíðinni.";

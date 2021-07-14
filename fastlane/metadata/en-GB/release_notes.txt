@@ -1,7 +1,0 @@
-If you’ve been wishing someone would send you reminders on the days you want to publish blog posts, your wish has just come true. We’ve added the ability to request blogging reminders. Just choose your preferred blogging days, and we’ll send you a notification, prompting you to post on that day.
-
-Those of you with self-hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins.
-
-The Block editor has a shiny new block Layout grid, and while we were digging around in the editor code, we also tweaked the code for our tablet-using friends. The pesky inserter button tablet view issue in the Block editor has now been fixed.
-
-Want to subscribe to conversations by email from Reader lists and articles? Good, because we just added that ability too!
