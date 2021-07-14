@@ -184,7 +184,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         }
 
         let schedule = scheduler.schedule(for: blog)
-        let formatter = BloggingRemindersScheduleFormatter(schedule: schedule)
+        let formatter = BloggingRemindersScheduleFormatter()
 
         let style = NSMutableParagraphStyle()
         style.lineSpacing = Metrics.promptTextLineSpacing
@@ -202,10 +202,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
             .foregroundColor: UIColor.text,
         ]
 
-        if let promptText = formatter.longScheduleDescription.mutableCopy() as? NSMutableAttributedString {
-            promptText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: promptText.length))
-            promptLabel.attributedText = promptText
-        }
+        let promptText = NSMutableAttributedString(attributedString: formatter.longScheduleDescription(for: schedule))
+
+        promptText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: promptText.length))
+        promptLabel.attributedText = promptText
     }
 
     private func configureTitleLabel() {

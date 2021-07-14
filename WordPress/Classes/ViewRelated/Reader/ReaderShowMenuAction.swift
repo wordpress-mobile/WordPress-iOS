@@ -77,17 +77,18 @@ final class ReaderShowMenuAction {
         // Following
         if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
+
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
-                                                                                 completion: {
-                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
+                                                                                 completion: { follow in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
                                                                                     (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
-                                                                                 }, failure: { _ in
-                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                                                                 }, failure: { follow, _ in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
                                                                                  })
                                                 }
                                                })

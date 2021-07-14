@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-28 19:01:14+0000 */
+/* Translation-Revision-Date: 2021-07-13 08:47:56+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -297,6 +297,15 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< o oră";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "De <strong>%d<\/strong> ori pe săptămână";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>O dată<\/strong> pe săptămână";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>De două ori<\/strong> pe săptămână";
+
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
@@ -498,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Adaugă o imagine sau un avatar care să reprezinte acest cont nou.";
 
 /* No comment provided by engineer. */
+"Add link" = "Adaugă o legătură";
+
+/* No comment provided by engineer. */
 "Add link text" = "Adaugă text la legătură";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -639,6 +651,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Text alternativ";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternativ:";
 
@@ -660,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Pentru a vedea modulele este necesară o conexiune la internet activă";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Pentru a vedea statisticile e nevoie de o conexiune internet activă";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Pentru a vedea istoricul, este necesară o conexiune activă la internet";
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "Înapoi";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "Culoare fundal";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Vizitator blog";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Reamintiri publicare";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Creează un articol, o pagină sau o narațiune";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "Creează un icon pentru site";
 
 /* Label that describes the download backup action */
@@ -2326,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Fă un duplicat al blocului";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "EDITEAZĂ LEGĂTURA";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Est";
 
@@ -2397,6 +2415,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Editează prima pagină";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "WordPress pentru Android nu suportă încă editarea blocurilor reutilizabile";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "WordPress pentru iOS nu suportă încă editarea blocurilor reutilizabile";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editarea acestui GIF îi va înlătura animația.";
 
@@ -2444,7 +2468,19 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email trimis!";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Înglobează subtitrarea. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Înglobează subtitrarea. Nu există";
+
 /* No comment provided by engineer. */
+"Embed link" = "Înglobează legătura";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Conținutul înglobat de la %s nu poate fi vizualizat în acest moment în editorul pentru dispozitive mobile. Te rog previzualizează pagina pentru a vedea conținutul înglobat.";
+
+/* Title for the Emoji section */
 "Emoji" = "Emoticon";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2460,6 +2496,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Activează Inițiere rapidă pentru site";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Activează statistici site";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Activează accesul la microfon pentru a înregistra sunetul în videourile tale.";
 
@@ -2468,6 +2507,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Activezi notificările pe site?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Activează statistici site pentru a vedea informații detaliate despre trafic, aprecieri, comentarii și abonați.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Activez statistici site...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Jurnale criptate";
@@ -2627,6 +2672,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Eveniment";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Zilnic";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Oricine";
@@ -2959,8 +3007,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Generez previzualizarea";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Începe";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3007,6 +3054,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Du-te la Cititor";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Mergi la Setări → Notificări → WordPress și comută la Permite notificări.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3107,7 +3157,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Subtitlu 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Ajutor";
 
 /* Link to Help section
@@ -3382,6 +3433,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL invalid. Nu am găsit fișierul audio.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "URL invalid. Te rog introdu un URL valid.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Punct-final invalid";
 
@@ -3409,6 +3463,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "Au trecut %1$@ de când a fost publicat %2$@.";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "Azi trebuie să publici pe %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "Azi trebuie să publici!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "Acum e momentul! Redactează și publică-ți primul articol.";
 
@@ -3423,6 +3483,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Este necesară versiunea Jetpack %@ sau una mai recentă. Vrei să actualizezi Jetpack?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Copii de siguranță Jetpack pentru instalări multi-site oferă copii de siguranță care pot fi descărcate, fără restaurări cu un singur clic. Pentru mai multe informații, %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Întrebări frecvente Jetpack";
@@ -3687,6 +3750,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Flux de încărcare...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Încarc editorul de blocuri.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Încarc nume de utilizatori";
 
@@ -3767,6 +3833,9 @@
 /* No comment provided by engineer. */
 "Logs" = "Jurnale";
 
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Cauți statisticile?";
+
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Caut adresa...";
 
@@ -3781,9 +3850,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Beneficiază la maxim de site-ul tău, îți stabilești obiectivele și urmărești progresul în atingerea lor.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4140,8 +4206,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "Următorul";
 
 /* Table view title for the quick start section. */
@@ -4165,12 +4230,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Nicio categorie";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Nicio conexiune";
 
 /* List Editor Empty State Message */
 "No Items" = "Nu sunt elemente";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Nu am găsit niciun site Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Niciun meniu";
@@ -4365,6 +4432,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Nimic";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "Nimic setat";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Nord";
 
@@ -4428,6 +4498,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Notificări necitite";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Anunță-mă";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Acum narațiunile sunt pentru toată lumea";
@@ -4732,9 +4805,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "Oameni";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "Persoanele care publică cel puțin de două ori pe săptămână au cu 87% mai multe vizualizări pe site-ul lor.";
-
 /* Label for date periods. */
 "Period" = "Perioada";
 
@@ -4786,6 +4856,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Te rog contactează suportul pentru asistență.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Te rog asigură-te că editorul de blocuri este activat pe site-ul tău și încearcă din nou.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Te rog asigură-te că editorul de blocuri este activat pe site-ul tău. Dacă nu este activat, el nu se va încărca.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Te rog introdu adresa completă a site-ului web, adică exemplu.com.";
@@ -5005,6 +5081,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Activitate de publicare";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Dacă publici în mod regulat, cititorii tăi rămân angrenați pe site și atragi vizitatori noi.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5312,6 +5391,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "Articole similare afișează conținut relevant de pe site-ul tău sub articolele tale";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Reamintirile au fost înlăturate";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5535,12 +5617,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Revino la articol";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "Blocurile reutilizabile nu pot fi editate pe WordPress pentru Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "Blocurile reutilizabile nu pot fi editate pe WordPress pentru iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Rrenunță la modificare în așteptare";
 
@@ -5576,6 +5652,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "Salvare";
 
@@ -5692,13 +5769,7 @@
 "Search WordPress\nfor a site or post" = "Caută în WordPress\nun site sau un articol";
 
 /* No comment provided by engineer. */
-"Search block" = "Bloc Căutare";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Etichetă buton Căutare. Textul actual este";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Caută blocuri";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Buton Căutare. Textul actual al butonului este";
@@ -5907,7 +5978,7 @@
 "Set as Posts Page" = "Setează ca pagină articole";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Stabilește obiective";
+"Set reminders" = "Setează reamintiri";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Inițializare";
@@ -5915,9 +5986,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Inițializează Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Stabilește-ți obiectivele de blogging";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Configurează reamintirile pentru publicare, zilele în care vrei să publici.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Setează reamintirile pentru publicare";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Setează titlul site-ului";
@@ -6882,6 +6955,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Aici te va găsi lumea pe internet.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "Este o reamintire pentru a publica ceva azi ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Acest element media a fost șters.";
 
@@ -7000,6 +7076,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Să faci poze sau videouri pe care să le folosești în articolele tale.";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "Ca să folosești reamintirile pentru publicare, trebuie să activezi notificările imediate.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Pentru a folosi statisticile de pe site-ul tău, va trebui să instalezi modulul Jetpack.";
@@ -7134,6 +7213,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Dezactivează notificările pe site";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Activează notificările";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Activează notificările imediate";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Activează notificările pe site";
 
@@ -7217,6 +7302,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Nu pot să încarc articole chiar acum.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Nu pot să încarc editorul de blocuri chiar acum.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Nu pot încărca imaginea. Te rog alege alta sau reîncearcă mai târziu.";
@@ -7316,6 +7404,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Indisponibil";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Nedefinită";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Subliniere";
@@ -7333,6 +7424,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Anulează urmărirea %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Anulează urmărirea conversației prin email";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Anulează urmărirea site-ului";
@@ -7403,7 +7497,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Până la șapte zile de jurnalizare sunt salvate.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Actualizare";
@@ -7582,10 +7677,10 @@
 "Video Preview Unavailable" = "Previzualizare video indisponibilă";
 
 /* translators: accessibility text. %s: video caption. */
-"Video caption. %s" = "Text asociat video. %s";
+"Video caption. %s" = "Subtitrare video. %s";
 
 /* translators: accessibility text. Empty video caption. */
-"Video caption. Empty" = "Text asociat video. Gol";
+"Video caption. Empty" = "Subtitrare video. Nu există";
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Exportul videoului anulat.";
@@ -7629,7 +7724,7 @@
 "View more" = "Vezi mai mult";
 
 /* Title of a Quick Start Tour */
-"View your site" = "Vizualizează-ți site-ul";
+"View your site" = "Vezi site-ul";
 
 /* User role badge */
 "Viewer" = "Vizitator";
@@ -7932,6 +8027,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Îți restaurăm site-ul înapoi la %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Regretăm, Scanarea Jetpack nu este compatibilă cu instalările WordPress multi-site în acest moment.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "De asemenea, ți-am trimis prin email o legătură la fișierul tău.";
 
@@ -8112,6 +8210,9 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Suport WordPress pentru iOS";
 
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "Instalările WordPress multi-site nu sunt acceptate";
+
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress are nevoie de permisiunea de a accesa locația curentă de pe dispozitivul tău pentru a o adăuga articolului. Te rog actualizează setările tale de confidențialitate.";
 
@@ -8279,6 +8380,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Ai modificări la %d articole care nu au fost încărcate pe site-ul tău. Dacă te dezautentifici acum aceste modificări vor fi șterse. Te dezautentifici?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "Nu ai setat nicio reamintire.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Ai modificări nesalvate.";
@@ -8326,8 +8430,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Nu vei putea să-ți schimbi înapoi numele de utilizator.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "Vei primi reamintiri pe blog de X ori pe săptămână, în zilele stabilite.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Vei primi o reamintire pentru publicare <strong>o dată<\/strong> pe săptămână, %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "Vei primi reamintiri pentru publicare %1$@ pe săptămână, %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Ești cu toate la zi!";
@@ -8380,8 +8487,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Articolul tău este încărcat acum. Te rog așteaptă până se finalizează încărcarea.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Articolul este în curs de publicare... Între timp, stabilește-ți obiectivele de blogging, ca să primești reamintiri, și urmărește progresul.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Articolul tău este publicat chiar acum... Între timp, configurează reamintirile pentru publicare în zilele în care vrei să publici.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Articolele, paginile și setările ți se vor trimite prin email la %@.";
@@ -8401,7 +8508,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Site-ul tău a fost restaurat cu succes";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Iconul site-ului este folosit pe web: în filele navigatoarelor, în previzualizările site-ului pe media socială și în Cititorul WordPress.com.";
 
 /* Title of a message displayed when user starts a restore operation */
@@ -8534,6 +8641,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "vizitator";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "vizitează pagina cu documentație";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "va fi indisponibil în viitor.";
