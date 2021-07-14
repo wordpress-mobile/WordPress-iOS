@@ -114,6 +114,24 @@ extension GutenbergSuggestionsViewController: UITextFieldDelegate {
             return true
         }
         let searchWord = nsString.replacingCharacters(in: range, with: string)
+
+        // This feels a bit hacky, so I'll explain what's being done here:
+        //     1. If the user types "@ ", the so-called "dismiss sequence",
+        //        the user probably typed the space in order to dismiss the
+        //        suggestions UI.
+        //     2. So when this happens, we call the success handler and
+        //        pass in an empty string.
+        // We pass in an empty string because on the RN side here, the success
+        // handler inserts the @, followed by the username, followed by a space.
+        // Since we're essentially passing in an empty username, the result is
+        // that a "@ " is inserted into the post, which is the desired result.
+        // The same applies for cross-posts, with "+ " instead of "@ ".
+        let dismissSequence = suggestionType.trigger + " "
+        guard searchWord != dismissSequence else {
+            onCompletion?(.success(""))
+            return true
+        }
+
         if searchWord.hasPrefix(suggestionType.trigger) {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {

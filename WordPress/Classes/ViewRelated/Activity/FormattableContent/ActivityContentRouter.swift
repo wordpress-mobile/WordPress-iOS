@@ -30,7 +30,8 @@ struct ActivityContentRouter: ContentRouter {
             }
             let postID = commentRange.postID as NSNumber
             let siteID = commentRange.siteID as NSNumber
-            try? coordinator.displayCommentsWithPostId(postID, siteID: siteID)
+            let commentID = commentRange.commentID as NSNumber
+            try? coordinator.displayCommentsWithPostId(postID, siteID: siteID, commentID: commentID)
         case .plugin:
             guard let pluginRange = range as? ActivityPluginRange else {
                 fallthrough

@@ -246,7 +246,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         // The app will call the none-experimental path first but fail because of compatibility reasons
         mockOrgRemoteApi.completionPassedIn!(.failure(NSError(domain: "test", code: 404, userInfo: nil)), HTTPURLResponse())
-        // The app will then retry the experimental path.
+        // The app will then retry the wp/v2/themes path.
         mockOrgRemoteApi.completionPassedIn!(.success(mockedResponse), HTTPURLResponse())
         waitForExpectations(timeout: expectationTimeout)
 

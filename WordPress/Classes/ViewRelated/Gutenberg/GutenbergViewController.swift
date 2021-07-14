@@ -475,6 +475,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.setFocusOnTitle()
     }
 
+    func showEditorHelp() {
+        gutenberg.showEditorHelp()
+    }
+
     private func presentNewPageNoticeIfNeeded() {
         // Validate if the post is a newly created page or not.
         guard post is Page,
@@ -933,6 +937,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
+
+    func gutenbergDidRequestPreview() {
+        displayPreview()
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -971,7 +979,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success = result {
+            if case let .success(text) = result, !text.isEmpty {
                 didSelectSuggestion = true
             }
 

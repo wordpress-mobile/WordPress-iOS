@@ -117,8 +117,8 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleFollowingForPost:(ReaderPost *)post
-                       success:(void (^)(void))success
-                       failure:(void (^)(NSError *error))failure;
+                       success:(void (^)(BOOL follow))success
+                       failure:(void (^)(BOOL follow, NSError *error))failure;
 
 /**
  Toggle the saved for later status of the specified post.

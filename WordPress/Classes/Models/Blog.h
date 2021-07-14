@@ -226,6 +226,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
+- (BOOL)isStatsActive;
 - (BOOL)hasMappedDomain;
 
 /**

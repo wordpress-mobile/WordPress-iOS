@@ -577,7 +577,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func publishedDataRows() -> [StatsTotalRowData] {
-        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title,
+        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title.stringByDecodingXMLCharacters(),
                                                                                                data: "",
                                                                                                showDisclosure: true,
                                                                                                disclosureURL: $0.postURL,

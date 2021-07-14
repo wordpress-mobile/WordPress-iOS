@@ -147,8 +147,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        fetchLikes()
-
         configureFeaturedImage()
 
         featuredImage.configure(scrollView: scrollView,
@@ -217,6 +215,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+        fetchLikes()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {

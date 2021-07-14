@@ -11,7 +11,6 @@ extension BloggingRemindersActions {
                  tracker: BloggingRemindersTracker) {
 
         tracker.buttonPressed(button: button, screen: screen)
-        NoticesDispatch.unlock()
         dismiss(animated: true, completion: nil)
     }
 }

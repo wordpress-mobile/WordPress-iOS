@@ -79,6 +79,22 @@ final class BlogBuilder {
         return self
     }
 
+    func isHostedAtWPcom() -> Self {
+        blog.isHostedAtWPcom = true
+
+        return self
+    }
+
+    func isNotHostedAtWPcom() -> Self {
+        blog.isHostedAtWPcom = false
+
+        return self
+    }
+
+    func with(modules: [String]) -> Self {
+        set(blogOption: "active_modules", value: modules)
+    }
+
     func build() -> Blog {
         return blog
     }

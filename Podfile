@@ -47,10 +47,10 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    # pod 'WordPressKit', '~> 4.37.0-beta'
+    pod 'WordPressKit', '~> 4.38.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'cc6836fc78cadae5f825e674292fe8b87998a850'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -166,15 +166,19 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.57.0-alpha1'
+    gutenberg :tag => 'v1.58.0-alpha1-2'
 
     ## Third party libraries
     ## =====================
     ##
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
+
+    app_center_version = '~> 4.1'
+    app_center_configurations = %w[Release-Internal Release-Alpha]
+    pod 'AppCenter', app_center_version, configurations: app_center_configurations
+    pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
+
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
@@ -195,7 +199,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.9.0'
+    pod 'Automattic-Tracks-iOS', '~> 0.9.1'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
