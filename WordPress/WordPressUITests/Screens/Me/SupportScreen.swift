@@ -1,8 +1,6 @@
 import UITestsFoundation
 import XCTest
 
-// This screen object is for the Support section. In the app, it's a modal we can get to from Me > Help & Support, or, when logged out, from Prologue > tap either continue button > Help.
-
 private struct ElementStringIDs {
     static let closeButton = "close-button"
     static let helpCenter = "help-center-link-button"
@@ -11,6 +9,9 @@ private struct ElementStringIDs {
     static let contactEmail = "set-contact-email-button"
     static let activityLogs = "activity-logs-button"
 }
+
+/// This screen object is for the Support section. In the app, it's a modal we can get to from Me 
+/// > Help & Support, or, when logged out, from Prologue > tap either continue button > Help.
 
 class SupportScreen: BaseScreen {
     let closeButton: XCUIElement
