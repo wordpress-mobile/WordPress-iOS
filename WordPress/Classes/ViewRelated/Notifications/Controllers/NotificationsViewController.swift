@@ -97,9 +97,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return button
     }()
 
+    /// Convenience property that stores feature flag value for unified list.
+    /// This should be removed once the feature is fully rolled out.
     private var usesUnifiedList: Bool = FeatureFlag.unifiedCommentsAndNotificationsList.enabled {
         didSet {
-            // reload the table view if the feature flag value is different.
+            // Since this view controller is the root view controller for notifications tab, we need to check whether
+            // the value has changed in `viewWillAppear`. If so, reload the table view to use the correct design.
             if usesUnifiedList != oldValue {
                 reloadTableViewPreservingSelection()
             }
@@ -173,6 +176,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         // Refresh feature flag value for unified list.
+        // This should be removed when the feature is fully rolled out.
         usesUnifiedList = FeatureFlag.unifiedCommentsAndNotificationsList.enabled
 
         showNoResultsViewIfNeeded()
@@ -337,8 +341,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = NoteTableViewCell.reuseIdentifier()
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NoteTableViewCell else {
+        let reuseIdentifier = usesUnifiedList ? ListTableViewCell.defaultReuseID : NoteTableViewCell.reuseIdentifier()
+        let expectedType = usesUnifiedList ? ListTableViewCell.self : NoteTableViewCell.self
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+
+        guard type(of: cell) == expectedType else {
             fatalError()
         }
 
@@ -533,7 +540,7 @@ private extension NotificationsViewController {
 
     func setupTableFooterView() {
         //  Fix: Hide the cellSeparators, when the table is empty
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
     }
 
     func setupTableHandler() {
@@ -1108,6 +1115,16 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // For that reason, we draw our own separators.
         //
         guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+            return
+        }
+
+        // configure unified list cell.
+        if usesUnifiedList, let cell = cell as? ListTableViewCell {
+            cell.configureWithNotification(note)
+
+            // TODO: Handle undo overlays.
+
+            cell.accessibilityHint = Self.accessibilityHint(for: note)
             return
         }
 
