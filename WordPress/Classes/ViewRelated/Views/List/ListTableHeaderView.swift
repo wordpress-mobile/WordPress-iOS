@@ -37,7 +37,14 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
         // NSFetchedResultsController. By default, the results controller assigns the
         // value of sectionNameKeyPath to UITableHeaderFooterView's textLabel.
         textLabel?.isHidden = true
-        contentView.backgroundColor = Style.sectionHeaderBackgroundColor
+
+        // Set background color.
+        // Note that we need to set it through `backgroundView`, or Xcode will lash out a warning.
+        backgroundView = {
+            let view = UIView(frame: self.bounds)
+            view.backgroundColor = Style.sectionHeaderBackgroundColor
+            return view
+        }()
 
         // configure title label
         titleLabel.font = Style.sectionHeaderFont

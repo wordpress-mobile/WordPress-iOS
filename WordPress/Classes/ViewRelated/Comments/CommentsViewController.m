@@ -188,11 +188,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     }
 
     ListTableHeaderView *headerView = (ListTableHeaderView *)[self.tableView dequeueReusableHeaderFooterViewWithIdentifier:ListTableHeaderView.reuseIdentifier];
-
-    if (headerView) {
-        headerView.title = [Comment descriptionForSectionIdentifier:sectionInfo.name];
+    if (!headerView) {
+        headerView = [[ListTableHeaderView alloc] initWithReuseIdentifier:ListTableHeaderView.reuseIdentifier];
     }
 
+    headerView.title = [Comment descriptionForSectionIdentifier:sectionInfo.name];
     return headerView;
 }
 
