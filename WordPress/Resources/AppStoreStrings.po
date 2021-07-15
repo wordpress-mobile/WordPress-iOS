@@ -15,8 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Build a website or blog
-"
+msgid "Build a website or blog"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
