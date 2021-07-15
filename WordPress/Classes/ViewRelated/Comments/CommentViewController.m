@@ -376,7 +376,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell
 {
     // Setup the Cell
-    if (self.comment.blog.isHostedAtWPcom) {
+    if (self.comment.blog.isHostedAtWPcom || self.comment.blog.isAtomic) {
         cell.isReplyEnabled = [UIDevice isPad] && self.userCanLikeAndReply;
         cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes] && self.userCanLikeAndReply;
         cell.isApproveEnabled = self.comment.canModerate;
@@ -702,7 +702,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
     
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", @"Reply Failure Message");
+        NSString *message = error.localizedDescription ?: NSLocalizedString(@"There has been an unexpected error while sending your reply", @"Reply Failure Message");
         [weakSelf displayNoticeWithTitle:message message:nil];
     };
     
