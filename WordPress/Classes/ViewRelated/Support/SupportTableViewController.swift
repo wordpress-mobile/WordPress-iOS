@@ -132,7 +132,8 @@ private extension SupportTableViewController {
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected(), accessibilityIdentifier: "set-contact-email-button"))
+                                                   action: supportEmailSelected(),
+                                                   accessibilityIdentifier: "set-contact-email-button"))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
