@@ -57,6 +57,7 @@
                     <constraint firstItem="lXc-gN-Ufo" firstAttribute="leading" secondItem="xzK-0R-8Uu" secondAttribute="trailing" constant="10" id="SRW-jO-i3w"/>
                     <constraint firstItem="xzK-0R-8Uu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="eNp-7q-Ne0"/>
                     <constraint firstItem="oMd-3W-Kni" firstAttribute="centerY" secondItem="xzK-0R-8Uu" secondAttribute="centerY" id="i4v-J7-Vvs"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="xzK-0R-8Uu" secondAttribute="bottom" constant="10" id="mLE-4b-5S0"/>
                     <constraint firstItem="lXc-gN-Ufo" firstAttribute="top" secondItem="xzK-0R-8Uu" secondAttribute="top" constant="-2" id="udT-s4-eh8"/>
                     <constraint firstItem="oMd-3W-Kni" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="xjI-GL-V0e"/>
                 </constraints>
