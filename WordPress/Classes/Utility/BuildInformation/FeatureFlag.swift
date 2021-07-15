@@ -17,7 +17,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case milestoneNotifications
     case newLikeNotifications
     case bloggingReminders
-    case readerPostLikes
     case siteIconCreator
     case globalStyleSettings
     case editorOnboardingHelpMenu
@@ -59,8 +58,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newLikeNotifications:
             return true
         case .bloggingReminders:
-            return true
-        case .readerPostLikes:
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
@@ -126,8 +123,6 @@ extension FeatureFlag {
             return "New Like Notifications"
         case .bloggingReminders:
             return "Blogging Reminders"
-        case .readerPostLikes:
-            return "Reader Post Likes"
         case .siteIconCreator:
             return "Site Icon Creator"
         case .globalStyleSettings:
