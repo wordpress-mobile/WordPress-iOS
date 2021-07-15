@@ -1,37 +1,30 @@
-
 # This is the default pipeline – it will build and test the app
 steps:
-
   #################
   # Build the app
   #################
   - label: ":pipeline: Build"
     key: "build"
-    command: |
-      echo "--- 🔧 Setting up Gems"
-      gem install bundler
-      bundle install
-      echo "--- 🔨 Setting up Pods"
-      bundle exec pod install --repo-update
-      echo "--- ✍️ Copy Files"
-      cp fastlane/env/project.env-example .configure-files/project.env
-      echo "--- 🛠 Building"
-      bundle exec fastlane build_for_testing
-      echo "--- 🗜 Zip Build Products"
-      tar -cf build-products.tar DerivedData/Build/Products/
-    artifact_paths:
-      - build-products.tar
+    command: ".buildkite/commands/build-for-testing.sh"
+    plugins:
+      - automattic/bash-cache#v1.0.0: ~
+    env:
+      IMAGE_ID: xcode-12.5.1
 
   #################
   # Run Unit Tests
   #################
   - label: "🧪 Unit Tests"
     command: |
+      echo "--- 📦 Downloading Build Artifacts"
       buildkite-agent artifact download build-products.tar .
       tar -xf build-products.tar
+      echo "--- 🧪 Testing"
       bundle install
       bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
     depends_on: "build"
+    env:
+      IMAGE_ID: xcode-12.5.1
 
   #################
   # Lint Translations
@@ -49,24 +42,28 @@ steps:
   #################
   - label: "🧪 UI Tests (iPhone)"
     command: |
+      echo "--- 📦 Downloading Build Artifacts"
       buildkite-agent artifact download build-products.tar .
       tar -xf build-products.tar
       bundle install
       bundle exec pod install
+      echo "--- 🧪 Testing"
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
     depends_on: "build"
-    agents:
-      os: "macOS"
+    env:
+      IMAGE_ID: xcode-12.5.1
 
   - label: "🧪 UI Tests (iPad)"
     command: |
+      echo "--- 📦 Downloading Build Artifacts"
       buildkite-agent artifact download build-products.tar .
       tar -xf build-products.tar
       bundle install
       bundle exec pod install
+      echo "--- 🧪 Testing"
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
     depends_on: "build"
-    agents:
-      os: "macOS"
+    env:
+      IMAGE_ID: xcode-12.5.1
