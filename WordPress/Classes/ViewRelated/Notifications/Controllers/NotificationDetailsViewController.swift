@@ -423,20 +423,15 @@ extension NotificationDetailsViewController {
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        if FeatureFlag.newLikeNotifications.enabled {
-            tableView.register(LikeUserTableViewCell.defaultNib,
-                               forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
-        }
+        tableView.register(LikeUserTableViewCell.defaultNib,
+                           forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
+
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
     /// This method may be called several times, especially upon previous/next button click
     /// since notification kind may change.
     func setupTableDelegates() {
-        guard FeatureFlag.newLikeNotifications.enabled else {
-            return
-        }
-
         if note.kind == .like || note.kind == .commentLike,
            let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
             tableView.delegate = likesListController

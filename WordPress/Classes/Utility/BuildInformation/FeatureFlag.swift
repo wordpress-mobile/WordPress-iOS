@@ -15,7 +15,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
-    case newLikeNotifications
     case bloggingReminders
     case siteIconCreator
     case globalStyleSettings
@@ -54,8 +53,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .todayWidget:
             return true
         case .milestoneNotifications:
-            return true
-        case .newLikeNotifications:
             return true
         case .bloggingReminders:
             return true
@@ -119,8 +116,6 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
-        case .newLikeNotifications:
-            return "New Like Notifications"
         case .bloggingReminders:
             return "Blogging Reminders"
         case .siteIconCreator:
