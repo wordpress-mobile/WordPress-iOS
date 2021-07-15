@@ -97,6 +97,15 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return button
     }()
 
+    private var usesUnifiedList: Bool = FeatureFlag.unifiedCommentsAndNotificationsList.enabled {
+        didSet {
+            // reload the table view if the feature flag value is different.
+            if usesUnifiedList != oldValue {
+                reloadTableViewPreservingSelection()
+            }
+        }
+    }
+
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -162,6 +171,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             jetpackLoginViewController?.view.removeFromSuperview()
             jetpackLoginViewController?.removeFromParent()
         }
+
+        // Refresh feature flag value for unified list.
+        usesUnifiedList = FeatureFlag.unifiedCommentsAndNotificationsList.enabled
 
         showNoResultsViewIfNeeded()
         selectFirstNotificationIfAppropriate()
@@ -299,6 +311,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
             return nil
+        }
+
+        if usesUnifiedList,
+           let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView {
+            headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+            return headerView
         }
 
         let headerView = NoteTableHeaderView.makeFromNib()
@@ -494,6 +512,13 @@ private extension NotificationsViewController {
     }
 
     func setupTableView() {
+        // Since this view controller is a root view controller for the notifications tab, both `NoteTableViewCell` and the new List components
+        // need to be registered to handle feature flag changes. When the feature is fully rolled out, let's remove NoteTableViewCell.
+
+        // Register unified list components.
+        tableView.register(ListTableHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ListTableHeaderView.defaultReuseID)
+        tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
+
         // Register the cells
         let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: Bundle.main)
         tableView.register(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
