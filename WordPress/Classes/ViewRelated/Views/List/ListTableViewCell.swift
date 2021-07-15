@@ -12,6 +12,11 @@ class ListTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var snippetLabel: UILabel!
     @IBOutlet private weak var indicatorWidthConstraint: NSLayoutConstraint!
 
+    // Manually-drawn separator view for Notifications list. This is added as backward-compatibility
+    // with current Notifications implementation,since the table has .none separator style.
+    // This should be removed once the unified list feature is fully rolled out.
+    @IBOutlet private weak var separatorLineView: SeparatorsView!
+
     // MARK: Properties
 
     /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
@@ -19,6 +24,14 @@ class ListTableViewCell: UITableViewCell, NibReusable {
     @objc static let reuseIdentifier = defaultReuseID
 
     @objc static let estimatedRowHeight = 68
+
+    // Convenience setter/getter for the separator line view.
+    // This should be removed once the unified list feature is fully rolled out.
+    @objc var showsBottomSeparator: Bool = false {
+        didSet {
+            separatorLineView.bottomVisible = showsBottomSeparator
+        }
+    }
 
     /// The color of the indicator circle.
     @objc var indicatorColor: UIColor = .clear {
@@ -116,6 +129,10 @@ private extension ListTableViewCell {
         snippetLabel.font = Style.snippetFont
         snippetLabel.textColor = Style.snippetTextColor
         snippetLabel.numberOfLines = Constants.snippetNumberOfLines
+
+        // separator line view
+        separatorLineView.bottomColor = Style.separatorColor
+        separatorLineView.bottomVisible = false // set the default state to hidden.
     }
 
     /// Show more lines in titleLabel when there's no snippet.

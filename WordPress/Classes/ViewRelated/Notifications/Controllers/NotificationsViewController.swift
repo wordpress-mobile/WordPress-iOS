@@ -1118,22 +1118,26 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        // configure unified list cell.
+        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
+        let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+
+        // configure unified list cell if the feature flag is enabled.
         if usesUnifiedList, let cell = cell as? ListTableViewCell {
             cell.configureWithNotification(note)
 
             // TODO: Handle undo overlays.
 
+            // additional configurations
+            cell.showsBottomSeparator = !isLastRow
             cell.accessibilityHint = Self.accessibilityHint(for: note)
+
             return
         }
 
+        // otherwise, configure using the (soon-to-be) legacy NoteTableViewCell.
         guard let cell = cell as? NoteTableViewCell else {
             return
         }
-
-        let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
-        let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
         cell.attributedSubject      = note.renderSubject()
         cell.attributedSnippet      = note.renderSnippet()
@@ -1148,7 +1152,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-
         cell.downloadIconWithURL(note.iconURL)
     }
 
@@ -1181,12 +1184,27 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         //
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            guard let cell = tableView.cellForRow(at: indexPath) as? NoteTableViewCell else {
+            let cell = tableView.cellForRow(at: indexPath)
+
+            // Apply the same handling for ListTableViewCell.
+            // this should be removed when it's confirmed that default table separators no longer trigger issues
+            // resolved in #2845, and the unified list feature is fully rolled out.
+            if usesUnifiedList {
+                guard let listCell = cell as? ListTableViewCell else {
+                    continue
+                }
+
+                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+                listCell.showsBottomSeparator = !isLastRow
+                continue
+            }
+
+            guard let noteCell = cell as? NoteTableViewCell else {
                 continue
             }
 
             let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-            cell.showsBottomSeparator = !isLastRow
+            noteCell.showsBottomSeparator = !isLastRow
         }
 
         refreshUnreadNotifications()
