@@ -50,7 +50,7 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
         titleLabel.font = Style.sectionHeaderFont
         titleLabel.textColor = Style.sectionHeaderTitleColor
 
-        // configure separators/ view
+        // configure separators view
         separatorsView.bottomColor = Style.separatorColor
         separatorsView.bottomVisible = true
     }
