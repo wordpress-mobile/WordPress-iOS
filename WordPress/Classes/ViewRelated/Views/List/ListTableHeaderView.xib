@@ -24,7 +24,6 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailingMargin" secondItem="p0E-c7-EOt" secondAttribute="trailing" id="8Wn-G0-G5I"/>
                         <constraint firstAttribute="bottom" secondItem="p0E-c7-EOt" secondAttribute="bottom" constant="4" id="crp-IW-IaU"/>
@@ -34,7 +33,6 @@
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Yi2-pb-R3P"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="dbR-00-lyK" secondAttribute="trailing" id="Jqb-jy-Hi5"/>
                 <constraint firstItem="dbR-00-lyK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Lmd-8D-GOe"/>

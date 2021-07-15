@@ -14,6 +14,12 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Properties
 
+    /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
+    /// This should be removed when the caller is rewritten in Swift.
+    @objc static let reuseIdentifier = defaultReuseID
+
+    @objc static let estimatedRowHeight = 68
+
     /// The color of the indicator circle.
     @objc var indicatorColor: UIColor = .clear {
         didSet {
@@ -30,16 +36,6 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 
     /// The default placeholder image.
     @objc var placeholderImage: UIImage = Style.placeholderImage
-
-    /// The image URL to be downloaded and displayed on avatarView.
-    @objc var imageURL: URL? {
-        didSet {
-            guard imageURL != oldValue else {
-                return
-            }
-            downloadImage(with: imageURL)
-        }
-    }
 
     /// The attributed string to be displayed in titleLabel.
     /// To keep the styles uniform between List components, refer to regular and bold styles in `WPStyleGuide+List`.
@@ -75,6 +71,32 @@ class ListTableViewCell: UITableViewCell, NibReusable {
         super.awakeFromNib()
         configureSubviews()
     }
+
+    // MARK: Public Methods
+
+    /// Configures the avatar image view with the provided URL.
+    /// If the URL does not contain any image, the default placeholder image will be displayed.
+    /// - Parameter url: The URL containing the image.
+    func configureImage(with url: URL?) {
+        if let someURL = url, let gravatar = Gravatar(someURL) {
+            avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+            return
+        }
+
+        // handle non-gravatar images
+        avatarView.downloadImage(from: url, placeholderImage: placeholderImage)
+    }
+
+    /// Configures the avatar image view from Gravatar based on provided email.
+    /// If the Gravatar image for the provided email doesn't exist, the default placeholder image will be displayed.
+    /// - Parameter gravatarEmail: The email to be used for querying the Gravatar image.
+    func configureImageWithGravatarEmail(_ email: String?) {
+        guard let someEmail = email else {
+            return
+        }
+
+        avatarView.downloadGravatarWithEmail(someEmail, placeholderImage: placeholderImage)
+    }
 }
 
 // MARK: Private Helpers
@@ -85,9 +107,9 @@ private extension ListTableViewCell {
         // indicator view
         indicatorView.layer.cornerRadius = indicatorWidthConstraint.constant / 2
 
-        // TODO: temporary styling. will update this in later PRs.
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        titleLabel.textColor = UIColor.text
+        // title label
+        titleLabel.font = Style.plainTitleFont
+        titleLabel.textColor = Style.titleTextColor
         titleLabel.numberOfLines = Constants.titleNumberOfLinesWithSnippet
 
         // snippet label
@@ -103,17 +125,6 @@ private extension ListTableViewCell {
 
     func updateIndicatorColor() {
         indicatorView.backgroundColor = showsIndicator ? indicatorColor : .clear
-    }
-
-    /// Downloads the image to display in avatarView.
-    func downloadImage(with url: URL?) {
-        if let someURL = url, let gravatar = Gravatar(someURL) {
-            avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
-            return
-        }
-
-        // handle non-gravatar images
-        avatarView.downloadImage(from: url, placeholderImage: placeholderImage)
     }
 }
 
