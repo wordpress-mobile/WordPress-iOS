@@ -79,7 +79,7 @@ if [ -f "$INTERNAL_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "WordPress Internal
 fi
 
 # If the WordPress Alpha Secrets are available, use them
-if [ -f "$INTERNAL_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "WordPress Alpha" ]; then
+if [ -f "$ALPHA_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "WordPress Alpha" ]; then
     echo "Applying Alpha Secrets"
     cp -v $ALPHA_SECRETS_FILE "${SECRETS_DESTINATION_FILE}"
     exit 0
