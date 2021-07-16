@@ -140,20 +140,22 @@ final class BlogTests: XCTestCase {
     }
 
     // MARK: - Blog.version string conversion testing
-    func testTheVersionIsAStringEvenWhenSetAsANumber() {
+    func testTheVersionIsAStringWhenGivenANumber() {
         let blog = BlogBuilder(context)
             .set(blogOption: "software_version", value: 13.37)
             .build()
 
         XCTAssertTrue((blog.version as Any) is String)
+        XCTAssertEqual(blog.version, "13.37")
     }
 
-    func testTheVersionIsAString() {
+    func testTheVersionIsAStringWhenGivenAString() {
         let blog = BlogBuilder(context)
             .set(blogOption: "software_version", value: "5.5")
             .build()
 
         XCTAssertTrue((blog.version as Any) is String)
+        XCTAssertEqual(blog.version, "5.5")
     }
 
     func testTheVersionDefaultsToAnEmptyStringWhenTheValueIsNotConvertible() {
