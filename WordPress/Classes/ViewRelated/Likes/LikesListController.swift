@@ -82,10 +82,6 @@ class LikesListController: NSObject {
         return showingNotificationLikes ? 2 : 1
     }
 
-    private var analyticsProperties: [String: Any] {
-        return showingNotificationLikes ? ["source": "notifications"] : ["source": "reader"]
-    }
-
     // MARK: Init
 
     /// Init with Notification
@@ -182,14 +178,15 @@ class LikesListController: NSObject {
                 self.delegate?.updatedTotalLikes?(totalLikes)
             }
 
-            if !self.isFirstLoad && !users.isEmpty {
-                WPAnalytics.track(.likeListFetchedMore, properties: self.analyticsProperties)
-            }
-
             self.likingUsers = users
             self.totalLikes = totalLikes
             self.totalLikesFetched = users.count
             self.lastFetchedDate = users.last?.dateLikedString
+
+            if !self.isFirstLoad && !users.isEmpty {
+                self.trackFetched(likesPerPage: likesPerPage)
+            }
+
             self.isFirstLoad = false
             self.isLoadingContent = false
             self.trackUsersToExclude()
@@ -197,6 +194,18 @@ class LikesListController: NSObject {
             self?.isLoadingContent = false
             self?.delegate?.showErrorView()
         })
+    }
+
+    private func trackFetched(likesPerPage: Int) {
+        var properties: [String: Any] = [:]
+        properties["source"] = showingNotificationLikes ? "notifications" : "reader"
+        properties["per_page"] = likesPerPage
+
+        if likesPerPage > 0 {
+            properties["page"] = Int(ceil(Double(likingUsers.count) / Double(likesPerPage)))
+        }
+
+        WPAnalytics.track(.likeListFetchedMore, properties: properties)
     }
 
     /// Fetch Likes from Core Data depending on the notification's content type.
