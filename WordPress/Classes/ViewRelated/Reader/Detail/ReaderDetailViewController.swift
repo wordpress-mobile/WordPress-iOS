@@ -419,8 +419,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func fetchLikes() {
-        guard FeatureFlag.readerPostLikes.enabled,
-              let post = post else {
+        guard let post = post else {
             return
         }
 
@@ -428,11 +427,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureLikesSummary() {
-        guard FeatureFlag.readerPostLikes.enabled else {
-            hideLikesView()
-            return
-        }
-
         likesSummary.delegate = coordinator
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
