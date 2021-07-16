@@ -266,32 +266,33 @@ platform :ios do
   #####################################################################################
   desc 'Trigger the final release build on CI'
   lane :finalize_release do |options|
+    UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
+
     ios_finalize_prechecks(options)
-    unless ios_current_branch_is_hotfix
-      UI.message('Checking app strings translation status...')
-      check_translation_progress(
-        glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
-        abort_on_violations: false
-      )
+    
+    UI.message('Checking app strings translation status...')
+    check_translation_progress(
+      glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/dev/',
+      abort_on_violations: false
+    )
 
-      UI.message("Checking WordPress release notes strings translation status...")
-      check_translation_progress(
-        glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/release-notes/',
-        abort_on_violations: false
-      )
+    UI.message("Checking WordPress release notes strings translation status...")
+    check_translation_progress(
+      glotpress_url: 'https://translate.wordpress.org/projects/apps/ios/release-notes/',
+      abort_on_violations: false
+    )
 
-      UI.message("Checking Jetpack release notes strings translation status...")
-      check_translation_progress(
-        glotpress_url: 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/',
-        abort_on_violations: false
-      )
+    UI.message("Checking Jetpack release notes strings translation status...")
+    check_translation_progress(
+      glotpress_url: 'https://translate.wordpress.com/projects/jetpack/apps/ios/release-notes/',
+      abort_on_violations: false
+    )
 
-      download_localized_strings_and_metadata(options)
-      # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-      #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-      # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
-      ios_bump_version_beta
-    end
+    download_localized_strings_and_metadata(options)
+    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
+    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
+    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_bump_version_beta
 
     # Wrap up
     version = ios_get_app_version
