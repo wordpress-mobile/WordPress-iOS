@@ -37,9 +37,9 @@ final class BlogBuilder {
 
     func withJetpack(version: String? = nil, username: String? = nil, email: String? = nil) -> Self {
         set(blogOption: "jetpack_client_id", value: 1)
-        set(blogOption: "jetpack_version", value: version)
-        set(blogOption: "jetpack_user_login", value: username)
-        set(blogOption: "jetpack_user_email", value: email)
+        set(blogOption: "jetpack_version", value: version as Any)
+        set(blogOption: "jetpack_user_login", value: username as Any)
+        set(blogOption: "jetpack_user_email", value: email as Any)
         return set(blogOption: "is_automated_transfer", value: false)
     }
 
