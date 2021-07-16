@@ -84,7 +84,7 @@ final class BlogBuilder {
     }
 
     @discardableResult
-    private func set(blogOption key: String, value: Any) -> Self {
+    func set(blogOption key: String, value: Any) -> Self {
         var options = blog.options ?? [AnyHashable: Any]()
         options[key] = [
             "value": value
