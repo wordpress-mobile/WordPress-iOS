@@ -245,11 +245,7 @@ platform :ios do
   desc 'Creates a new hotfix branch from the given tag'
   lane :new_hotfix_release do |options|
     prev_ver = ios_hotfix_prechecks(options)
-    ios_bump_version_hotfix(
-      previous_version: prev_ver,
-      version: options[:version],
-      skip_deliver: true
-    )
+    ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
   end
 
   #####################################################################################

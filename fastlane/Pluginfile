@@ -6,10 +6,7 @@ group :screenshots, optional: true do
   gem 'rmagick', '~> 3.2.0'
 end
 
-# Temporarily switch to WIP branch to complete the hotfix creation process
-gem 'fastlane-plugin-wpmreleasetoolkit',
-  git: 'https://github.com/wordpress-mobile/release-toolkit',
-  branch: 'add-skip-deliver-in-ios-hotfix-version-bump'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 1.1'
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
