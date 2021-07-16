@@ -62,10 +62,11 @@ extension CommentServiceTests {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
                 // Assert
                 expect(users).toNot(beNil())
                 expect(users.count) == 1
+                expect(likesPerPage) > 0
                 done()
             },
             failure: { _ in
@@ -83,7 +84,7 @@ extension CommentServiceTests {
 
         // Act
         waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
                 fail("this closure should not be called")
             },
             failure: { _ in
