@@ -236,19 +236,36 @@ platform :ios do
   #####################################################################################
   # new_hotfix_release
   # -----------------------------------------------------------------------------------
-  # This lane creates the release branch for a new hotix release.
+  # This lane updates the release branch for a new hotfix release.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<version>]
+  # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<x.y.z>]
   #
   # Example:
   # bundle exec fastlane new_hotfix_release version:10.6.1
-  # bundle exec fastlane new_hotfix_release skip_confirm:true version:10.6.1
   #####################################################################################
-  desc 'Creates a new hotfix branch from the given tag'
+  desc 'Creates a new hotfix branch for the given version:x.y.z. The branch will be cut from the tag x.y of the previous release'
   lane :new_hotfix_release do |options|
     prev_ver = ios_hotfix_prechecks(options)
     ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
+  end
+
+  #####################################################################################
+  # finalize_hotfix_release
+  # -----------------------------------------------------------------------------------
+  # This lane finalizes the hotfix branch.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane finalize_hotfix_release [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane finalize_hotfix_release skip_confirm:true
+  #####################################################################################
+  desc 'Performs the final checks and trigger a release build for the hotfix in the current branch'
+  lane :finalize_hotfix_release do |options|
+    ios_finalize_prechecks(options)
+    version = ios_get_app_version
+    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
@@ -353,24 +370,6 @@ platform :ios do
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
-  end
-
-  #####################################################################################
-  # finalize_hotfix_release
-  # -----------------------------------------------------------------------------------
-  # This lane finalizes the hotfix branch.
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane finalize_hotfix_release [skip_confirm:<skip confirm>]
-  #
-  # Example:
-  # bundle exec fastlane finalize_hotfix_release skip_confirm:true
-  #####################################################################################
-  desc 'Performs the final checks and tags the hotfix in the current branch'
-  lane :finalize_hotfix_release do |options|
-    ios_finalize_prechecks(options)
-    version = ios_get_app_version
-    trigger_release_build(branch_to_build: "release/#{version}")
   end
 
   #####################################################################################
