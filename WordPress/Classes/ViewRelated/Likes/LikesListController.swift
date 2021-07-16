@@ -173,7 +173,7 @@ class LikesListController: NSObject {
             return
         }
 
-        fetchLikes(success: { [weak self] users, totalLikes in
+        fetchLikes(success: { [weak self] users, totalLikes, likesPerPage in
             guard let self = self else {
                 return
             }
@@ -213,7 +213,7 @@ class LikesListController: NSObject {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
-    private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
+    private func fetchLikes(success: @escaping ([LikeUser], Int, Int) -> Void, failure: @escaping (Error?) -> Void) {
 
         var beforeStr = lastFetchedDate
 
