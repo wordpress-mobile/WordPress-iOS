@@ -150,9 +150,18 @@ final class BlogTests: XCTestCase {
 
     func testTheVersionIsAString() {
         let blog = BlogBuilder(context)
-            .with(wordPressVersion: "5.5")
+            .set(blogOption: "software_version", value: "5.5")
             .build()
 
         XCTAssertTrue((blog.version as Any) is String)
+    }
+
+    func testTheVersionDefaultsToAnEmptyStringWhenTheValueIsNotConvertible() {
+        let blog = BlogBuilder(context)
+            .set(blogOption: "software_version", value: NSObject())
+            .build()
+
+        XCTAssertTrue((blog.version as Any) is String)
+        XCTAssertEqual(blog.version, "")
     }
 }
