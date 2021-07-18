@@ -22,7 +22,9 @@ save_cache ~/.cocoapods "$BUILDKITE_PIPELINE_SLUG-specs-repo"
 save_cache ~/Library/Caches/CocoaPods/ "$BUILDKITE_PIPELINE_SLUG-global-pod-cache"
 
 echo "--- :writing_hand: Copy Files"
-cp fastlane/env/project.env-example .configure-files/project.env
+cp -v fastlane/env/project.env-example .configure-files/project.env
+mkdir -pv ~/.configure/wordpress-ios/secrets
+cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/project.env
 
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane build_for_testing
