@@ -1,3 +1,10 @@
+use_plugins: &use_plugins
+    plugins:
+      - automattic/bash-cache#v1.0.0: ~
+      - automattic/git-s3-cache#add/vm-host-support:
+          bucket: "a8c-repo-mirrors"
+          repo: "wordpress-mobile/wordpress-ios/"
+
 # This is the default pipeline – it will build and test the app
 steps:
   #################
@@ -6,10 +13,9 @@ steps:
   - label: ":pipeline: Build"
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
-    plugins:
-      - automattic/bash-cache#v1.0.0: ~
     env:
       IMAGE_ID: xcode-12.5.1
+    <<: *use_plugins
 
   #################
   # Run Unit Tests
@@ -25,6 +31,7 @@ steps:
     depends_on: "build"
     env:
       IMAGE_ID: xcode-12.5.1
+    <<: *use_plugins
 
   #################
   # Lint Translations
@@ -53,6 +60,7 @@ steps:
     depends_on: "build"
     env:
       IMAGE_ID: xcode-12.5.1
+    <<: *use_plugins
 
   - label: "🧪 UI Tests (iPad)"
     command: |
@@ -67,3 +75,4 @@ steps:
     depends_on: "build"
     env:
       IMAGE_ID: xcode-12.5.1
+    <<: *use_plugins
