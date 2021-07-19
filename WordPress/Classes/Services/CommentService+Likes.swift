@@ -10,7 +10,10 @@ extension CommentService {
      @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
      @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
                             new ones are created. Defaults to true.
-     @param success         A success block
+     @param success         A success block returning:
+                            - Array of LikeUser
+                            - Total number of likes for the given comment
+                            - Number of likes per fetch
      @param failure         A failure block
      */
     func getLikesFor(commentID: NSNumber,
@@ -19,7 +22,7 @@ extension CommentService {
                      before: String? = nil,
                      excludingIDs: [NSNumber]? = nil,
                      purgeExisting: Bool = true,
-                     success: @escaping (([LikeUser], Int) -> Void),
+                     success: @escaping (([LikeUser], Int, Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 
         guard let remote = restRemote(forSite: siteID) else {
@@ -38,7 +41,7 @@ extension CommentService {
                                                             siteID: siteID,
                                                             purgeExisting: purgeExisting) {
                                             let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
-                                            success(users, totalLikes.intValue)
+                                            success(users, totalLikes.intValue, count)
                                             LikeUserHelper.purgeStaleLikes()
                                         }
                                     }, failure: { error in
