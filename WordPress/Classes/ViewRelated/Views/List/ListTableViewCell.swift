@@ -120,6 +120,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
     /// Shows an overlay view on top of the cell.
     /// - Parameter view: The view to be shown as an overlay.
     func showOverlay(with view: UIView) {
+        // If an existing overlay is present, let's dismiss it to prevent stacked overlays.
         if let _ = overlayView {
             dismissOverlay()
         }
