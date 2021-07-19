@@ -447,7 +447,21 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)version
 {
-    return [self getOptionValue:@"software_version"];
+    // Ensure the value being returned is a string to prevent a crash when using this value in Swift
+    id value = [self getOptionValue:@"software_version"];
+
+    // If its a string, then return its value 🎉
+    if([value isKindOfClass:NSString.class]) {
+        return value;
+    }
+
+    // If its not a string, but can become a string, then convert it
+    if([value respondsToSelector:@selector(stringValue)]) {
+        return [value stringValue];
+    }
+
+    // If the value is an unknown type, and can not become a string, then default to a blank string.
+    return @"";
 }
 
 - (NSString *)password
