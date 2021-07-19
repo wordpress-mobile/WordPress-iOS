@@ -16,6 +16,8 @@ final class BlogTests: XCTestCase {
         super.tearDown()
     }
 
+
+    // MARK: - Atomic Tests
     func testIsAtomic() {
         let blog = BlogBuilder(context)
             .with(atomic: true)
@@ -32,6 +34,7 @@ final class BlogTests: XCTestCase {
         XCTAssertFalse(blog.isAtomic())
     }
 
+    // MARK: - Blog Lookup
     func testThatLookupByBlogIDWorks() throws {
         let blog = BlogBuilder(context).build()
         XCTAssertNotNil(blog.dotComID)
@@ -134,5 +137,33 @@ final class BlogTests: XCTestCase {
             .build()
 
         XCTAssertFalse(blog.supports(.pluginManagement))
+    }
+
+    // MARK: - Blog.version string conversion testing
+    func testTheVersionIsAStringWhenGivenANumber() {
+        let blog = BlogBuilder(context)
+            .set(blogOption: "software_version", value: 13.37)
+            .build()
+
+        XCTAssertTrue((blog.version as Any) is String)
+        XCTAssertEqual(blog.version, "13.37")
+    }
+
+    func testTheVersionIsAStringWhenGivenAString() {
+        let blog = BlogBuilder(context)
+            .set(blogOption: "software_version", value: "5.5")
+            .build()
+
+        XCTAssertTrue((blog.version as Any) is String)
+        XCTAssertEqual(blog.version, "5.5")
+    }
+
+    func testTheVersionDefaultsToAnEmptyStringWhenTheValueIsNotConvertible() {
+        let blog = BlogBuilder(context)
+            .set(blogOption: "software_version", value: NSObject())
+            .build()
+
+        XCTAssertTrue((blog.version as Any) is String)
+        XCTAssertEqual(blog.version, "")
     }
 }
