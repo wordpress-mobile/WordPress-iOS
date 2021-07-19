@@ -1,5 +1,6 @@
 17.9
 -----
+* [***] Block Editor: Add Inserter Block Seach [https://github.com/WordPress/gutenberg/pull/33237]
 
 
 17.8
