@@ -19,7 +19,7 @@ class MySitesScreen: BaseScreen {
         blogsTable = app.staticTexts[ElementStringIDs.blogsTable]
         cancelButton = app.buttons[ElementStringIDs.cancelButton]
         plusButton = app.buttons[ElementStringIDs.plusButton]
-        addSelfHostedSiteButton = app.staticTexts[ElementStringIDs.addSelfHostedSiteButton]
+        addSelfHostedSiteButton = app.buttons[ElementStringIDs.addSelfHostedSiteButton]
         // need to add "+" button here for Add Site options. Something like:
         // let plusButton = XCUIApplication().buttons["+"] accessibility inspector says it has the Label: "Add", but no accessibilityIdentifier
         // And then the action sheet "add Self-hosted site" option.
@@ -35,7 +35,7 @@ class MySitesScreen: BaseScreen {
 
     func addSelfHostedSite() -> LoginSiteAddressScreen {
         plusButton.tap()
-        XCUIApplication().buttons["Add self-hosted site"].tap()
+        addSelfHostedSiteButton.tap()
         return LoginSiteAddressScreen()
     }
 
