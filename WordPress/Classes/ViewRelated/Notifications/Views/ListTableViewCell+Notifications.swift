@@ -7,13 +7,6 @@ extension ListTableViewCell {
         indicatorColor = Style.unreadIndicatorColor
         showsIndicator = !notification.read
 
-        // handle indicators for unapproved comments, with unread indicators taking priority.
-        // only show unapproved indicators for read notifications.
-        if notification.kind == .comment, notification.read {
-            indicatorColor = WPStyleGuide.Comments.pendingIndicatorColor
-            showsIndicator = notification.isUnapprovedComment
-        }
-
         // avatar image
         configureImage(with: notification.iconURL)
 
