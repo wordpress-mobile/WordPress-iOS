@@ -1125,7 +1125,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if usesUnifiedList, let cell = cell as? ListTableViewCell {
             cell.configureWithNotification(note)
 
-            // TODO: Handle undo overlays.
+            // handle undo overlays
+            cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
+                self?.cancelDeletionRequestForNoteWithID(note.objectID)
+            }
 
             // additional configurations
             cell.showsBottomSeparator = !isLastRow

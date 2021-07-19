@@ -17,6 +17,10 @@ class ListTableViewCell: UITableViewCell, NibReusable {
     // This should be removed once the unified list feature is fully rolled out.
     @IBOutlet private weak var separatorLineView: SeparatorsView!
 
+    /// Convenience property to retain the overlay view when shown on top of the cell.
+    /// The overlay can be shown or dismissed through `showOverlay` and `dismissOverlay` respectively.
+    private var overlayView: UIView?
+
     // MARK: Properties
 
     /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
@@ -109,6 +113,26 @@ class ListTableViewCell: UITableViewCell, NibReusable {
         }
 
         avatarView.downloadGravatarWithEmail(someEmail, placeholderImage: placeholderImage)
+    }
+
+    // MARK: Overlay View Support
+
+    /// Shows an overlay view on top of the cell.
+    /// - Parameter view: The view to be shown as an overlay.
+    func showOverlay(with view: UIView) {
+        if let _ = overlayView {
+            dismissOverlay()
+        }
+
+        contentView.addSubview(view)
+        contentView.pinSubviewToAllEdges(view)
+        overlayView = view
+    }
+
+    /// Removes the overlay that's covering the cell.
+    func dismissOverlay() {
+        overlayView?.removeFromSuperview()
+        overlayView = nil
     }
 }
 
