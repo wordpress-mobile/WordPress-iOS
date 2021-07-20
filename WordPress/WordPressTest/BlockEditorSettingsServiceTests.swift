@@ -215,7 +215,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         XCTAssertGreaterThan(colors.count, 0)
 
         guard let gradients = blockEditorSettings.gradients else {
-            XCTFail("Block editor colors should exist at this point")
+            XCTFail("Block editor gradients should exist at this point")
             return
         }
         XCTAssertGreaterThan(gradients.count, 0)
