@@ -1,1 +1,0 @@
-De Blokeditor heeft een schitterend nieuw Indelingsraster in blokken. En toen we toch bezig waren in de code van de editor, hebben we kleine aanpassingen aan de code aangebracht voor onze fantastische tabletgebruikers. Dat irritante tabletweergaveprobleem met de invoegknop in de Blokeditor is nu verholpen.

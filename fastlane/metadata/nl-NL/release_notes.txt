@@ -1,7 +1,0 @@
-Wilde je dat iemand je herinneringen zou sturen op de dagen dat je je blogberichten wilt publiceren? Dan is je wens zojuist uitgekomen. We hebben de functie toegevoegd om herinneringen aan publicatie van je blogs aan te vragen. Stel simpelweg je dagen in waarop je je blog wilt publiceren en wij sturen je dan een melding om je eraan te herinneren je bericht te publiceren.
-
-Als je een zelfgehoste site hebt, maar geen gebruikmaakt van Jetpack, dan kun je nu de siteplug-ins beheren (installeren, deïnstalleren, activeren en deactiveren).
-
-De Blokeditor heeft een schitterend nieuw Indelingsraster in blokken. En toen we toch bezig waren in de code van de editor, hebben we kleine aanpassingen aan de code aangebracht voor onze fantastische tabletgebruikers. Dat irritante tabletweergaveprobleem met de invoegknop in de Blokeditor is nu verholpen.
-
-Wil je je per e-mail abonneren op gesprekken vanuit lijsten en artikelen op de lezer? Top, want ook dat is nu mogelijk!

@@ -1,7 +1,7 @@
-If you’ve been wishing someone would send you reminders on the days you want to publish blog posts, your wish has just come true. We’ve added the ability to request blogging reminders. Just choose your preferred blogging days, and we’ll send you a notification, prompting you to post on that day.
+Text blocks get some love. Color and background customization is added to the block editor’s text blocks.
 
-Those of you with self-hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins.
+Other block editor updates include fixing an issue with the block selector on iPad and update loading and failed screens for the editor’s web version.
 
-The Block editor has a shiny new block Layout grid, and while we were digging around in the editor code, we also tweaked the code for our tablet-using friends. The pesky inserter button tablet view issue in the Block editor has now been fixed.
+If you’ve experienced some refresh issues with the follow buttons in the Reader, you can rest easy now, as those issues have been solved.
 
-Want to subscribe to conversations by email from Reader lists and articles? Good because we just added that ability too!
+Authors and Contributors are no longer in the dark! They can now view a site’s Comments via My Site > Comments.

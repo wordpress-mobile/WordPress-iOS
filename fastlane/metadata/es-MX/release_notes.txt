@@ -4,4 +4,4 @@ Otras actualizaciones del editor de bloques incluyen la corrección de un proble
 
 Si has experimentado algunos problemas de refresco en el lector con los botones de seguimiento, ahora puedes estar tranquilo, ya que esos problemas han sido solucionados.
 
-¡Los autores y colaboradores ya no están a oscuras! Ahora pueden ver los comentarios de un sitio a través de «Mi sitio > Comentarios».
+¡Los autores y colaboradores ya no están a oscuras! Ahora pueden ver los comentarios de un sitio a través de "Mi sitio > Comentarios".

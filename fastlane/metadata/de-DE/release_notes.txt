@@ -1,7 +1,0 @@
-Hattest du auch schon immer den Wunsch, dass dir jemand eine Erinnerung an dem Tag schicken würde, an dem du einen Blogbeitrag veröffentlichen wolltest? Wir haben diesen Wunsch jetzt erfüllt! Wir haben die Möglichkeit hinzugefügt, Blogging-Erinnerungen einzurichten. Wähle einfach die Tage aus, an denen du neue Beiträge veröffentlichen möchtest, und wir senden dir an diesen Tagen eine Benachrichtigung dazu.
-
-Solltest du deine Website selbst hosten und Jetpack nicht verwenden, kannst du deren Plugins jetzt verwalten (installieren, deinstallieren, aktivieren und deaktivieren).
-
-Der Layoutraster-Block im Block-Editor hat einen frischen neuen Look bekommen und wo wir gerade schon im Editor-Code waren, haben wir auch gleich noch den Code für Tablet-Benutzer verbessert. Der ärgerliche Fehler am Inserter-Button in der Tablet-Ansicht im Block-Editor ist jetzt auch behoben.
-
-Möchtest du dich über Reader-Listen und Artikel für Unterhaltungen per E-Mail anmelden? Sehr gut! Auch diese Möglichkeit haben wir jetzt hinzugefügt.

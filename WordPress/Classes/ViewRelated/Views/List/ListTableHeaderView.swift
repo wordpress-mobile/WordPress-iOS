@@ -12,6 +12,12 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: Properties
 
+    /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
+    /// This should be removed when the caller is rewritten in Swift.
+    @objc static let reuseIdentifier = defaultReuseID
+
+    @objc static let estimatedRowHeight = 26
+
     @objc var title: String? {
         get {
             titleLabel.text
@@ -31,13 +37,20 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
         // NSFetchedResultsController. By default, the results controller assigns the
         // value of sectionNameKeyPath to UITableHeaderFooterView's textLabel.
         textLabel?.isHidden = true
-        contentView.backgroundColor = Style.sectionHeaderBackgroundColor
+
+        // Set background color.
+        // Note that we need to set it through `backgroundView`, or Xcode will lash out a warning.
+        backgroundView = {
+            let view = UIView(frame: self.bounds)
+            view.backgroundColor = Style.sectionHeaderBackgroundColor
+            return view
+        }()
 
         // configure title label
         titleLabel.font = Style.sectionHeaderFont
         titleLabel.textColor = Style.sectionHeaderTitleColor
 
-        // configure separators/ view
+        // configure separators view
         separatorsView.bottomColor = Style.separatorColor
         separatorsView.bottomVisible = true
     }
