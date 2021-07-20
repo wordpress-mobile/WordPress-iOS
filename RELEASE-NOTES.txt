@@ -1,6 +1,6 @@
 17.9
 -----
-
+* [internal] Converted part of Comment model to Swift. Should be no functional changes. [#16898]
 
 17.8
 -----
