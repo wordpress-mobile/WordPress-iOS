@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-14 00:34:15+0000 */
+/* Translation-Revision-Date: 2021-07-18 19:50:14+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -2475,7 +2475,7 @@
 "Embed link" = "嵌入链接";
 
 /* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "来自 %s 的嵌入内容目前无法在手机编辑器中查看。请预览该页面以查看嵌入内容。";
 
 /* Title for the Emoji section */
 "Emoji" = "表情图示";
@@ -3482,7 +3482,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "需要安装 Jetpack %@ 或更高版本。要更新 Jetpack 吗？";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "多站点安装的 Jetpack Backup 只提供可下载的备份，没有一键还原。更多信息 %1$s。";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack 常见问答";
@@ -3831,7 +3831,7 @@
 "Logs" = "日志";
 
 /* Title for the error view when the stats module is disabled. */
-"Looking for stats?" = "Looking for stats?";
+"Looking for stats?" = "想要查看统计？";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "正在查找地址...";
@@ -4234,7 +4234,7 @@
 "No Items" = "没有条目";
 
 /* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "No Jetpack sites found";
+"No Jetpack sites found" = "未找到Jetpack站点";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "无菜单";
@@ -8025,7 +8025,7 @@
 "We're restoring your site back to %1$@." = "我们正在恢复您的网站至 %1$@ 时的样子";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "抱歉，Jetpack Scan 目前与多站点 WordPress 安装不兼容。";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "我们还通过电子邮件向您发送了文件链接。";
@@ -8208,7 +8208,7 @@
 "WordPress for iOS Support" = "WordPress for iOS 支持";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress multisites are not supported";
+"WordPress multisites are not supported" = "不支持WordPress多站点。";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress 必须获得访问设备当前位置的权限才能将其添加到您的文章。请更新您的隐私设置。";
@@ -8640,7 +8640,7 @@
 "viewer" = "查看者";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
+"visit our documentation page" = "访问我们的文档页面";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "今后将无法再访问。";
