@@ -1,6 +1,6 @@
 17.9
 -----
-
+* [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
 
 17.8
 -----
