@@ -16,24 +16,24 @@ extension ListTableViewCell {
         }
 
         // title text
-        let authorString = comment.authorForDisplay() ?? String()
-        let postTitleString = comment.titleForDisplay() ?? Constants.noTitleString
-        attributedTitleText = attributedTitle(for: authorString, postTitle: postTitleString)
+        attributedTitleText = attributedTitle(for: comment.authorForDisplay(), postTitle: comment.titleForDisplay())
 
         // snippet text
-        snippetText = comment.contentPreviewForDisplay() ?? String()
+        snippetText = comment.contentPreviewForDisplay()
     }
 
     // MARK: Private Helpers
 
     private func attributedTitle(for author: String, postTitle: String) -> NSAttributedString {
+        let titleFormat = NSLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
+
         let replacementMap = [
             "%1$@": NSAttributedString(string: author, attributes: ListStyle.titleBoldAttributes),
             "%2$@": NSAttributedString(string: postTitle, attributes: ListStyle.titleBoldAttributes)
         ]
 
         // Replace Author + Title
-        let attributedTitle = NSMutableAttributedString(string: Constants.titleFormatString, attributes: ListStyle.titleRegularAttributes)
+        let attributedTitle = NSMutableAttributedString(string: titleFormat, attributes: ListStyle.titleRegularAttributes)
 
         for (key, attributedString) in replacementMap {
             let range = (attributedTitle.string as NSString).range(of: key)
@@ -51,9 +51,4 @@ extension ListTableViewCell {
 private extension ListTableViewCell {
     typealias Style = WPStyleGuide.Comments
     typealias ListStyle = WPStyleGuide.List
-
-    struct Constants {
-        static let noTitleString = NSLocalizedString("(No Title)", comment: "Empty Post Title")
-        static let titleFormatString = NSLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
-    }
 }
