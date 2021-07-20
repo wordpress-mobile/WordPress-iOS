@@ -20,11 +20,10 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         contextManager = TestContextManager()
         context = contextManager.mainContext
         mockRemoteApi = MockWordPressComRestApi()
-        blog = ModelTestHelper.insertDotComBlog(context: context)
-        blog.dotComID = NSNumber(value: 1)
-        blog.account?.authToken = "auth"
-        blog.setValue("5.8", forOption: "software_version")
-
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.8")
+            .withAnAccount()
+            .build()
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: false)
@@ -85,8 +84,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     private func validateThemeResponse() {
+        let siteID = blog.dotComID ?? 0
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
-        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp/v2/sites/1/themes")
+        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp/v2/sites/\(siteID)/themes")
         XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["status"], "active")
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
@@ -202,8 +202,23 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         } else {
             XCTAssertNil(self.blog.blockEditorSettings?.rawStyles)
         }
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
+
+        guard let blockEditorSettings = blog.blockEditorSettings else {
+            XCTFail("Block editor settings should exist on the blog at this point")
+            return
+        }
+
+        guard let colors = blockEditorSettings.colors else {
+            XCTFail("Block editor colors should exist at this point")
+            return
+        }
+        XCTAssertGreaterThan(colors.count, 0)
+
+        guard let gradients = blockEditorSettings.gradients else {
+            XCTFail("Block editor gradients should exist at this point")
+            return
+        }
+        XCTAssertGreaterThan(gradients.count, 0)
     }
 }
 
