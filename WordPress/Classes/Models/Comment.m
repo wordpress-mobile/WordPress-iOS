@@ -46,9 +46,9 @@ NSString * const CommentStatusDraft = @"draft";
 + (NSString *)titleForStatus:(NSString *)status
 {
     if ([status isEqualToString:CommentStatusPending]) {
-        return NSLocalizedString(@"Pending moderation", @"");
+        return NSLocalizedString(@"Pending moderation", @"Comment status");
     } else if ([status isEqualToString:CommentStatusApproved]) {
-        return NSLocalizedString(@"Comments", @"");
+        return NSLocalizedString(@"Comments", @"Comment status");
     }
 
     return status;

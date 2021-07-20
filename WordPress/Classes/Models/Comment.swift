@@ -34,7 +34,7 @@ extension Comment: PostContentProvider {
 
     public func statusForDisplay() -> String {
         var status = Comment.title(forStatus: status) ?? ""
-        if status.isEqual(to: NSLocalizedString("Comments", comment: "")) {
+        if status.isEqual(to: NSLocalizedString("Comments", comment: "Comment status")) {
             status = ""
         }
 
