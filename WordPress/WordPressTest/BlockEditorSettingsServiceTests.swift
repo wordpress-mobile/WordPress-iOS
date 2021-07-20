@@ -33,7 +33,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     // MARK: Editor `theme_supports` support
     func testThemeSupportsNewTheme() {
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (0)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -57,7 +57,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
 
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (1)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -81,7 +81,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
 
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (2)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -112,7 +112,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testFetchBlockEditorSettingsNotThemeJSON() {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (3)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -134,7 +134,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testFetchBlockEditorSettingsThemeJSON() {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (4)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -159,7 +159,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (5)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -186,7 +186,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (6)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -213,7 +213,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
 
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (7)")
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -241,7 +241,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
 
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (8)")
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
@@ -265,7 +265,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
 
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (9)")
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
@@ -286,7 +286,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (10)")
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
@@ -301,7 +301,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testFetchBlockEditorSettings_Com5_9Site() {
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (11)")
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
@@ -353,7 +353,7 @@ extension BlockEditorSettingsServiceTests {
     }
 
     func setData(withFilename filename: String) {
-        let waitExpectation = expectation(description: "Theme should be successfully fetched")
+        let waitExpectation = expectation(description: "Theme should be successfully fetched (12)")
         let mockedResponse = mockedData(withFilename: filename)
         service.fetchSettings { _ in
             waitExpectation.fulfill()
