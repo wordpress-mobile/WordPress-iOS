@@ -785,6 +785,8 @@
 		469EB16524D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469EB16324D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.swift */; };
 		469EB16624D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469EB16424D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib */; };
 		469EB16824D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469EB16724D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift */; };
+		46B1A16B26A774E500F058AE /* CollapsableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B1A16A26A774E500F058AE /* CollapsableHeaderView.swift */; };
+		46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B1A16A26A774E500F058AE /* CollapsableHeaderView.swift */; };
 		46B30B782582C7DD00A25E66 /* SiteAddressServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B30B772582C7DD00A25E66 /* SiteAddressServiceTests.swift */; };
 		46B30B872582CA2200A25E66 /* domain-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = 46B30B862582CA2200A25E66 /* domain-suggestions.json */; };
 		46C984682527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C984672527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift */; };
@@ -5342,6 +5344,7 @@
 		469EB16324D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabsableHeaderFilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		469EB16424D8B12700C764CB /* CollabsableHeaderFilterCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollabsableHeaderFilterCollectionViewCell.xib; sourceTree = "<group>"; };
 		469EB16724D9AD8B00C764CB /* CollapsableHeaderFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderFilterBar.swift; sourceTree = "<group>"; };
+		46B1A16A26A774E500F058AE /* CollapsableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsableHeaderView.swift; sourceTree = "<group>"; };
 		46B30B772582C7DD00A25E66 /* SiteAddressServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAddressServiceTests.swift; sourceTree = "<group>"; };
 		46B30B862582CA2200A25E66 /* domain-suggestions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "domain-suggestions.json"; sourceTree = "<group>"; };
 		46C984672527863E00988BB9 /* LayoutPickerAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutPickerAnalyticsEvent.swift; sourceTree = "<group>"; };
@@ -9587,9 +9590,10 @@
 		4625B5472537875E00C04AAD /* Collapsable Header */ = {
 			isa = PBXGroup;
 			children = (
-				462422DE2549AD11002B8A12 /* Collapsable Header Collection View Cell */,
 				4625B70A2539F35000C04AAD /* Collabsable Header Filter Bar */,
+				462422DE2549AD11002B8A12 /* Collapsable Header Collection View Cell */,
 				4625B555253789C000C04AAD /* CollapsableHeaderViewController.swift */,
+				46B1A16A26A774E500F058AE /* CollapsableHeaderView.swift */,
 				4625B6332538B53700C04AAD /* CollapsableHeaderViewController.xib */,
 			);
 			path = "Collapsable Header";
@@ -17380,6 +17384,7 @@
 				0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */,
 				5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */,
 				173BCE791CEB780800AE8817 /* Domain.swift in Sources */,
+				46B1A16B26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
 				590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */,
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
 				F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */,
@@ -19176,6 +19181,7 @@
 				FABB22602602FC2C00C8785C /* WordPress.xcdatamodeld in Sources */,
 				FABB22612602FC2C00C8785C /* WPStyleGuide+AlertView.swift in Sources */,
 				FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */,
+				46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
 				FABB22632602FC2C00C8785C /* UIFont+Styles.swift in Sources */,
 				FABB22642602FC2C00C8785C /* PostChart.swift in Sources */,
 				FABB22652602FC2C00C8785C /* PageCoordinator.swift in Sources */,
