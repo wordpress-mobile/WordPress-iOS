@@ -261,7 +261,7 @@ platform :ios do
   # Example:
   # bundle exec fastlane finalize_hotfix_release skip_confirm:true
   #####################################################################################
-  desc 'Performs the final checks and trigger a release build for the hotfix in the current branch'
+  desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
     version = ios_get_app_version
