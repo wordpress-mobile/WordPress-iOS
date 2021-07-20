@@ -8,11 +8,14 @@ class BlockEditorScreen: BaseScreen {
     let editorCloseButton = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
     let publishNowButton = XCUIApplication().buttons["Publish Now"]
+    let scheduleButton = XCUIApplication().buttons["Schedule"]
+    let scheduleNowButton = XCUIApplication().buttons["Schedule Now"]
     let moreButton = XCUIApplication().buttons["more_post_options"]
 
     // Editor area
     // Title
     let titleView = XCUIApplication().otherElements["Post title. Empty"].firstMatch // Uses a localized string
+    let titleViewBlog = XCUIApplication().otherElements["Page title. Blog"].firstMatch
     // Paragraph block
     let paragraphView = XCUIApplication().otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
     // Image block
@@ -20,10 +23,15 @@ class BlockEditorScreen: BaseScreen {
 
     // Toolbar
     let addBlockButton = XCUIApplication().buttons["add-block-button"] // Uses a testID
+    let addImageBlockMenu =  XCUIApplication().buttons["Image block"]
+    let addVideoBlockMenu = XCUIApplication().buttons["Video block"]
+    let editImageButton = XCUIApplication().buttons["Edit image"]
+    let publishDateButton = XCUIApplication().buttons["Publish Date, Immediately"]
 
     // Action sheets
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
     let imageDeviceButton = XCUIApplication().sheets.buttons["Choose from device"] // Uses a localized string
+    let wordPressMediaLibraryButton = XCUIApplication().sheets.buttons["WordPress Media Library"]
     let discardButton = XCUIApplication().buttons["Discard"] // Uses a localized string
     let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"] // Uses a localized string
     let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"] // Uses a localized string
@@ -38,8 +46,12 @@ class BlockEditorScreen: BaseScreen {
      - Parameter text: the test to enter into the title
      */
     func enterTextInTitle(text: String) -> BlockEditorScreen {
+        if titleViewBlog.waitForExistence(timeout: 5) {
+            titleViewBlog.doubleTap()
+            titleViewBlog.typeText(text)
+        } else {
         titleView.tap()
-        titleView.typeText(text)
+            titleView.typeText(text)}
 
         return self
     }
@@ -62,6 +74,13 @@ class BlockEditorScreen: BaseScreen {
         addBlock("Image block")
         addImageByOrder(id: 0)
 
+        return self
+    }
+
+    @discardableResult
+    func addVideo() -> BlockEditorScreen {
+        addVideoBlockMenu.tap()
+        addVideoByOrder(id: 0)
         return self
     }
 
@@ -107,9 +126,23 @@ class BlockEditorScreen: BaseScreen {
 
     func publish() -> EditorNoticeComponent {
         publishButton.tap()
-        confirmPublish()
+        var withNoticeContent = "Post published"
+        if publishNowButton.waitForExistence(timeout: 5) {
+            confirmPublish()
+        } else {
+        withNoticeContent = "Page published"
+        let secondPublishButton = XCUIApplication().descendants(matching: .button).containing(.button, identifier: "Publish").element(boundBy: 1)
+            secondPublishButton.tap()
+        }
+        return EditorNoticeComponent(withNotice: withNoticeContent, andAction: "View")
+    }
 
-        return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+    func schedule() -> EditorNoticeComponent {
+        let withNoticeContent = "Post updated"
+        scheduleButton.tap()
+        scheduleNowButton.waitForExistence(timeout: 3)
+        scheduleNowButton.tap()
+        return EditorNoticeComponent(withNotice: withNoticeContent, andAction: "View")
     }
 
     func openPostSettings() -> EditorPostSettings {
@@ -136,6 +169,12 @@ class BlockEditorScreen: BaseScreen {
         // Inject the first picture
         MediaPickerAlbumListScreen()
             .selectAlbum(atIndex: 0)
+            .selectImage(atIndex: 0)
+    }
+
+    private func addVideoByOrder(id: Int) {
+        wordPressMediaLibraryButton.tap()
+        MediaPickerAlbumScreen()
             .selectImage(atIndex: 0)
     }
 

@@ -44,6 +44,20 @@ class TabNavComponent: BaseScreen {
         return BlockEditorScreen()
     }
 
+    func gotoStoryPostEditorScreen() -> StoryPageScreen {
+        let mySite = gotoMySiteScreen()
+        let actionSheet = mySite.gotoCreateSheet()
+        actionSheet.gotoStoryPost()
+        return StoryPageScreen()
+    }
+
+    func gotoSitePageEditorScreen() -> SitePageScreen {
+        let mySite = gotoMySiteScreen()
+        let actionSheet = mySite.gotoCreateSheet()
+        actionSheet.gotoSitePage()
+        return SitePageScreen()
+    }
+
     func gotoReaderScreen() -> ReaderScreen {
         readerTabButton.tap()
         return ReaderScreen()

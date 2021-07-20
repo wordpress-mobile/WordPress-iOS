@@ -15,7 +15,6 @@ class MediaPickerAlbumListScreen: BaseScreen {
         let selectedAlbum = albumList.cells.element(boundBy: index)
         XCTAssertTrue(selectedAlbum.waitForExistence(timeout: 5), "Selected album did not load")
         selectedAlbum.tap()
-
         return MediaPickerAlbumScreen()
     }
 

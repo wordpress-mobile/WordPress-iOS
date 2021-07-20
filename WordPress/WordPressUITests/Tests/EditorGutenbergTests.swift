@@ -65,6 +65,56 @@ class EditorGutenbergTests: XCTestCase {
             .done()
     }
 
+    func testNewBlogPostWithFeaturedImage() {
+        let title = getRandomPhrase()
+        let content = getRandomContent()
+        editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
+            .enterTextInTitle(text: title)
+            .addParagraphBlock(withText: content)
+            .openPostSettings()
+            .setFeaturedImage()
+            .verifyPostSettings(hasImage: true)
+            .closePostSettings()
+        BlockEditorScreen().publish()
+            .viewPublishedPost(withTitle: title)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .done()
+
+    }
+
+    func testNewBlogPostWithDifferentMediaTypes() {
+        let title = getRandomPhrase()
+        editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
+            .enterTextInTitle(text: title)
+            .openBlockPicker()
+            .addImage()
+            .openBlockPicker()
+            .addVideo()
+            .publish()
+            .viewPublishedPost(withTitle: title)
+//            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .done()
+    }
+
+    func testNewBlogPostSchedulled() {
+        let title = getRandomPhrase()
+        editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
+            .enterTextInTitle(text: title)
+            .openPostSettings()
+            .setSchedulledPost()
+            .closePostSettings()
+        BlockEditorScreen().schedule()
+            .viewPublishedPost(withTitle: title)
+    }
+
+    func testCreateNewPageFromMultiuserAndChangeTheAuthor() {
+        editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
+    }
+
     func skipTillBloggingRemindersAreHandled(file: StaticString = #file, line: UInt = #line) throws {
         try XCTSkipIf(true, "Skipping test because we haven't added support for Blogging Reminders. See https://github.com/wordpress-mobile/WordPress-iOS/issues/16797.", file: file, line: line)
     }
