@@ -15,9 +15,9 @@ private struct ElementStringIDs {
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
-    static let addNewSiteButton = "Add new site Button" // doesn't exist, not sure why this is here. It actually appears on the Switch Site modal. (MySitesScreen)
 }
 
+///This screen object represents the My Site screen. This is the home-base screen for an individual site. It is used in many of our UI tests.
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
     let navBar: XCUIElement
