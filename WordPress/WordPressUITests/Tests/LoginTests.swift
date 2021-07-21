@@ -146,18 +146,24 @@ class LoginTests: XCTestCase {
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite() //returns MySite screen
+
+            //From here, bring up the sites list and choose to add a new self-hosted site.
             .showSiteSwitcher()
-//            .tapPlusButton() // .addSelfHostedSite now includes plusButton.tap, so this should be redundant
             .addSelfHostedSite()
-            // and then we'll direct to the self-hosted login flow:
-            //.selectSiteAddress() this is reduntant with .addSelfHostedSite which returns the same screen
+
+            //Then, go through the self-hosted login flow:
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelfHostedSiteAddedFromSitesList()
+
+            //Login flow returns MySites modal, which needs to be closed.
             .closeModal()
+
+            //TODO: rewrite logoutIfNeeded() to handle logging out of a self-hosted site and then WordPress.com
+            //Currently, logoutIfNeeded() cannot handle logging out of both self-hosted and WordPress.com during tearDown(). So, we remove the self-hosted site before tearDown() starts.
             .removeSelfHostedSite()
 
-            //not sure if we need an XTCAssert() here, given we have verifyEpilogueDisplays()? And if we used one, when does it check that, for instance, PrologueScreen().isLoaded() ? Maybe it could verify that the newly added site appears in MySitesScreen? But is that redundance since we just did verifyEpilogueDisplays()? Ok actually on some tests we do verify something like MySiteScreen.isLoaded(), but some we verify that prologue.isLoaded(), aka verify that we successfully signed out.
+        XCTAssert(MySiteScreen().isLoaded())
     }
 }
