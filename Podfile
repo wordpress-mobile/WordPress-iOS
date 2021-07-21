@@ -132,7 +132,6 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'react-native-webview',
         'RNSVG',
-        'ReactNativeDarkMode',
         'react-native-slider',
         'BVLinearGradient',
         'react-native-get-random-values',
@@ -167,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'e27e5fa99d200e3343b041341f531102d4fe3cd7'
+    gutenberg :commit => '79b9d744840da6e4b83584702ff6573615ee8523'
 
     ## Third party libraries
     ## =====================
