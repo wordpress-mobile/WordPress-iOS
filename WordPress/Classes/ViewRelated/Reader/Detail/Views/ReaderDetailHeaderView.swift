@@ -19,6 +19,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var titleBottomPaddingView: UIView!
     @IBOutlet weak var byLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var authorSeparatorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var iPadFollowButton: UIButton!
@@ -168,8 +169,23 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     private func configureAuthorLabel() {
+        guard
+            let displayName = post?.authorDisplayName,
+            !displayName.isEmpty
+        else {
+            authorLabel.isHidden = true
+            authorSeparatorLabel.isHidden = true
+            byLabel.isHidden = true
+            return
+        }
+
         authorLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
-        authorLabel.text = post?.authorDisplayName
+        authorLabel.text = displayName
+
+        authorLabel.isHidden = false
+        authorSeparatorLabel.isHidden = false
+        byLabel.isHidden = false
+
     }
 
     private func configureDateLabel() {
