@@ -361,6 +361,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         editorContentWasUpdated()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        gutenbergSettings.hasLaunchedGutenbergEditor = true
+    }
+
     override func viewLayoutMarginsDidChange() {
         super.viewLayoutMarginsDidChange()
         ghostView.frame = view.frame
@@ -468,6 +473,10 @@ class GutenbergViewController: UIViewController, PostEditor {
             return
         }
         gutenberg.setFocusOnTitle()
+    }
+
+    func showEditorHelp() {
+        gutenberg.showEditorHelp()
     }
 
     private func presentNewPageNoticeIfNeeded() {
@@ -827,10 +836,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding())
         }
-
-        gutenbergSettings.setHasLaunchedGutenbergEditor(true)
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -930,6 +937,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
+
+    func gutenbergDidRequestPreview() {
+        displayPreview()
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -968,7 +979,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success = result {
+            if case let .success(text) = result, !text.isEmpty {
                 didSelectSuggestion = true
             }
 
@@ -1053,8 +1064,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .canViewEditorOnboarding: gutenbergSettings.canViewEditorOnboarding()
+            .editorOnboarding: canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
         ]
+    }
+
+    func canViewEditorOnboarding() -> Bool {
+        gutenbergSettings.canViewEditorOnboarding()
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
@@ -1064,7 +1079,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let blog = post.blog
         let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
 
-        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
+        return blog.isHostedAtWPcom || isJetpackSSOEnabled
     }
 }
 
@@ -1194,14 +1209,21 @@ private extension GutenbergViewController {
 extension GutenbergViewController {
 
     // GutenbergBridgeDataSource
-    func gutenbergEditorTheme() -> GutenbergEditorTheme? {
+    func gutenbergEditorSettings() -> GutenbergEditorSettings? {
         return editorSettingsService?.cachedSettings
     }
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] (hasChanges, settings) in
-            guard hasChanges, let `self` = self else { return }
-            self.gutenberg.updateTheme(settings)
+        editorSettingsService?.fetchSettings({ [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let response):
+                if response.hasChanges {
+                    self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+                }
+            case .failure(let err):
+                DDLogError("Error fetching settings: \(err)")
+            }
         })
     }
 }

@@ -1,4 +1,4 @@
-protocol StatsForegroundObservable: class {
+protocol StatsForegroundObservable: AnyObject {
     func addWillEnterForegroundObserver()
     func removeWillEnterForegroundObserver()
     func reloadStatsData()

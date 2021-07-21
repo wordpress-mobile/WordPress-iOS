@@ -24,8 +24,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         label.text = TextContent.settingsPrompt
         return label
@@ -33,9 +36,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     let promptLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
         label.font = .preferredFont(forTextStyle: .body)
         label.text = TextContent.settingsUpdatePrompt
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         label.setContentHuggingPriority(.defaultLow, for: .vertical)
@@ -54,6 +60,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         daysOuterStack.axis = .vertical
         daysOuterStack.alignment = .center
         daysOuterStack.spacing = Metrics.innerStackSpacing
+        daysOuterStack.distribution = .fillEqually
         return daysOuterStack
     }()
 
@@ -69,6 +76,17 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.spacing = Metrics.innerStackSpacing
         return stackView
+    }()
+
+    private lazy var frequencyLabel: UILabel = {
+        let label = UILabel()
+
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 2
+        label.textAlignment = .center
+
+        return label
     }()
 
     lazy var bottomTipPanel: UIView = {
@@ -101,11 +119,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         innerStack.addArrangedSubviews([trophy, rightStack])
 
         let tipLabel = UILabel()
+        tipLabel.adjustsFontForContentSizeCategory = true
         tipLabel.textColor = .secondaryLabel
         tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
         tipLabel.text = TextContent.tipPanelTitle
 
         let tipDescriptionLabel = UILabel()
+        tipDescriptionLabel.adjustsFontForContentSizeCategory = true
         tipDescriptionLabel.textColor = .secondaryLabel
         tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         tipDescriptionLabel.text = TextContent.tipPanelDescription
@@ -127,14 +147,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let calendar: Calendar
     private let scheduler: BloggingRemindersScheduler
+    private let scheduleFormatter = BloggingRemindersScheduleFormatter()
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
-            // If this is a new configuration, only enable the button once days have been selected
-            if button.title(for: .normal) == TextContent.nextButtonTitle {
-                button.isEnabled = !weekdays.isEmpty
-            }
+            refreshNextButton()
         }
     }
+
+    /// The weekdays that have been saved / scheduled in a previous blogging reminders configuration.
+    ///
+    private let previousWeekdays: [BloggingRemindersScheduler.Weekday]
 
     // MARK: - Initializers
 
@@ -159,10 +181,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
-            weekdays = []
+            previousWeekdays = []
         case .weekdays(let scheduledWeekdays):
-            weekdays = scheduledWeekdays
+            previousWeekdays = scheduledWeekdays
         }
+
+        weekdays = previousWeekdays
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -185,7 +209,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureStackView()
         configureConstraints()
         populateCalendarDays()
-        configureNextButton()
+        refreshNextButton()
+        refreshFrequencyLabel()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -207,6 +232,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredContentSize()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     private func calculatePreferredContentSize() {
@@ -232,6 +264,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             titleLabel,
             promptLabel,
             daysOuterStackView,
+            frequencyLabel,
             fillerView,
             bottomTipPanel,
             bottomPadding,
@@ -250,7 +283,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
@@ -268,18 +303,17 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///
     /// - Returns: the requested toggle button.
     ///
-    private func createCalendarDayToggleButton(dayIndex: Int) -> CalendarDayToggleButton? {
-        let localizedDayIndex = calendar.localizedDayIndex(dayIndex)
+    private func createCalendarDayToggleButton(localizedWeekdayDayIndex: Int) -> CalendarDayToggleButton? {
+        let weekdayIndex = calendar.unlocalizedWeekdayIndex(localizedWeekdayIndex: localizedWeekdayDayIndex)
 
-        guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: localizedDayIndex) else {
+        guard let weekday = BloggingRemindersScheduler.Weekday(rawValue: weekdayIndex) else {
             return nil
         }
 
         let isSelected = weekdays.contains(weekday)
-
-        return CalendarDayToggleButton(
+        let button = CalendarDayToggleButton(
             weekday: weekday,
-            dayName: self.calendar.shortWeekdaySymbols[localizedDayIndex].uppercased(),
+            dayName: calendar.shortWeekdaySymbols[weekdayIndex].uppercased(),
             isSelected: isSelected) { [weak self] button in
 
             guard let self = self else {
@@ -293,7 +327,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                     weekday == button.weekday
                 }
             }
+
+            self.refreshFrequencyLabel()
         }
+
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+
+        return button
     }
 
     private func populateCalendarDays() {
@@ -302,17 +343,41 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         let topRow = 0 ..< Metrics.topRowDayCount
         let bottomRow = Metrics.topRowDayCount ..< calendar.shortWeekdaySymbols.count
 
-        daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
-        daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(dayIndex: $0) }))
+        daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
+        daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
     }
 
-    private func configureNextButton() {
-        if weekdays.isEmpty {
+    private func refreshNextButton() {
+        if previousWeekdays.isEmpty {
             button.setTitle(TextContent.nextButtonTitle, for: .normal)
-            button.isEnabled = false
+            button.isEnabled = !weekdays.isEmpty
+        } else if weekdays == previousWeekdays {
+            button.setTitle(TextContent.nextButtonTitle, for: .normal)
+            button.isEnabled = true
         } else {
             button.setTitle(TextContent.updateButtonTitle, for: .normal)
+            button.isEnabled = true
         }
+    }
+
+    private func refreshFrequencyLabel() {
+        guard weekdays.count > 0 else {
+            frequencyLabel.isHidden = true
+            return
+        }
+
+        frequencyLabel.isHidden = false
+
+        let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
+            .foregroundColor: UIColor.text,
+        ]
+
+        let frequencyDescription = scheduleFormatter.shortIntervalDescription(for: .weekdays(weekdays))
+        let attributedText = NSMutableAttributedString(attributedString: frequencyDescription)
+        attributedText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedText.length))
+
+        frequencyLabel.attributedText = attributedText
+        frequencyLabel.sizeToFit()
     }
 
     // MARK: - Actions
@@ -331,9 +396,23 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///         can also be called when the refrenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
-        scheduler.schedule(.weekdays(weekdays), for: blog) { [weak self] result in
+        let schedule: BloggingRemindersScheduler.Schedule
+
+        if weekdays.count > 0 {
+            schedule = .weekdays(weekdays)
+        } else {
+            schedule = .none
+        }
+
+        scheduler.schedule(schedule, for: blog) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+
             switch result {
             case .success:
+                self.tracker.scheduled(schedule)
+
                 DispatchQueue.main.async { [weak self] in
                     self?.presentCompletionViewController()
                 }
@@ -353,16 +432,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    @objc private func dismissTapped() {
-        tracker.buttonPressed(button: .dismiss, screen: .dayPicker)
 
-        dismiss(animated: true, completion: nil)
-    }
 
     // MARK: - Completion Paths
 
     private func presentCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(selectedDays: weekdays, tracker: tracker, calendar: calendar)
+        let viewController = BloggingRemindersFlowCompletionViewController(blog: blog, tracker: tracker, calendar: calendar)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -371,6 +446,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             self?.scheduleReminders(showPushPrompt: false)
         }
         navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - BloggingRemindersActions
+extension BloggingRemindersFlowSettingsViewController: BloggingRemindersActions {
+
+    @objc private func dismissTapped() {
+        dismiss(from: .dismiss, screen: .dayPicker, tracker: tracker)
     }
 }
 
@@ -394,6 +477,7 @@ private enum TextContent {
                                                         comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
+
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
 
     static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")

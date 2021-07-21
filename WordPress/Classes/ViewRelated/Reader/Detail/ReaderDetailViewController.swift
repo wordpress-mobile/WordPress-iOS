@@ -2,7 +2,7 @@ import UIKit
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
-protocol ReaderDetailView: class {
+protocol ReaderDetailView: AnyObject {
     func render(_ post: ReaderPost)
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
@@ -147,8 +147,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        fetchLikes()
-
         configureFeaturedImage()
 
         featuredImage.configure(scrollView: scrollView,
@@ -217,6 +215,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+        fetchLikes()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -420,8 +419,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func fetchLikes() {
-        guard FeatureFlag.readerPostLikes.enabled,
-              let post = post else {
+        guard let post = post else {
             return
         }
 
@@ -429,11 +427,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureLikesSummary() {
-        guard FeatureFlag.readerPostLikes.enabled else {
-            hideLikesView()
-            return
-        }
-
         likesSummary.delegate = coordinator
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false

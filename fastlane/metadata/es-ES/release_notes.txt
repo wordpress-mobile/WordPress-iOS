@@ -1,17 +1,7 @@
-Con la versión 17.6 puedes añadir el bloque de audio a cualquier sitio WordPress.com, da igual en qué plan estés – incluido el plan gratuito. El bloque de audio facilita añadir podcast, música y archivos de audio a tus entradas y páginas.
+Los bloques de texto reciben algo de cariño. Se ha añadido la personalización del color y del fondo a los bloques de texto del editor de bloques.
 
-En el lector ahora verás un contador y un resumen de los «Me gusta» añadidos a cada entrada. Si no hay suficientes «Me gusta» en tu vida toca en el resumen y porás ver la lista completa.
+Otras actualizaciones del editor de bloques incluyen la corrección de un problema con el selector de bloques en iPad y la actualización de las pantallas de carga y de fallo para la versión web del editor.
 
-Estos estado también trabajando duro añadiendo mejoras de usabilidad:
+Si has experimentado algunos problemas de refresco en el lector con los botones de seguimiento, ahora puedes estar tranquilo, ya que esos problemas han sido solucionados.
 
-Cuando asignas una página supereior a una página sin título, ahora verás un marcador de '(sin título)' en vez de una linea blanca, dándote un amable consejo para que nombres la página.
-
-Nunca has podido editar las páginas del archivo de entradas porque se generan automáticamente. En 17.6 tampoco podrás abrirlas en el editor, lo que te ahorrará un viaje inútil.
-
-También hemos estado trabajando en arreglar cosas:
-
-Nos ocupamos de algunos avisos que se habían superpuesto a la hoja de acciones, incluyendo uno que muestra los controles de los iconos del sitio, otro que muestra la eliminación del inicio rápido y un tercero que muestra más acciones en el editor.
-
-Por último, hemos resuelto un error que a veces hacía que la aplicación se bloqueara durante la moderación de comentarios y otro para corregir un error de acceso en los sitios de WordPress.org para mostrarlos online.
-
-¡Eso es todo para la 17.6. Nos vemos en la 17.7!
+¡Los autores y colaboradores ya no están a oscuras! Ahora pueden ver los comentarios de un sitio a través de «Mi sitio > Comentarios».

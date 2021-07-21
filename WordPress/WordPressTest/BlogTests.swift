@@ -135,4 +135,31 @@ final class BlogTests: XCTestCase {
 
         XCTAssertFalse(blog.supports(.pluginManagement))
     }
+
+    func testStatsActiveForSitesHostedAtWPCom() {
+        let blog = BlogBuilder(context)
+            .isHostedAtWPcom()
+            .with(modules: [""])
+            .build()
+
+        XCTAssertTrue(blog.isStatsActive())
+    }
+
+    func testStatsActiveForSitesNotHotedAtWPCom() {
+        let blog = BlogBuilder(context)
+            .isNotHostedAtWPcom()
+            .with(modules: ["stats"])
+            .build()
+
+        XCTAssertTrue(blog.isStatsActive())
+    }
+
+    func testStatsNotActiveForSitesNotHotedAtWPCom() {
+        let blog = BlogBuilder(context)
+            .isNotHostedAtWPcom()
+            .with(modules: [""])
+            .build()
+
+        XCTAssertFalse(blog.isStatsActive())
+    }
 }

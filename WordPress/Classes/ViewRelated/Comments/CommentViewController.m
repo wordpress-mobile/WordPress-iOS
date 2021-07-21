@@ -44,6 +44,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 @property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 
+@property (nonatomic) BOOL userCanLikeAndReply;
+@property (nonatomic, strong) NoteBlockTableViewCell *commentCell;
+
 @end
 
 @implementation CommentViewController
@@ -85,6 +88,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
     }
 
+    self.userCanLikeAndReply = !self.comment.isReadOnly;
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyView];
     [self setupAutolayoutConstraints];
@@ -106,6 +110,10 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)attachReplyView
 {
+    if (!self.userCanLikeAndReply) {
+        return;
+    }
+    
     __typeof(self) __weak weakSelf = self;
 
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
@@ -121,22 +129,34 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)setupAutolayoutConstraints
 {
+    BOOL showingReplyView = self.replyTextView != nil;
+    
     NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
-    self.bottomLayoutConstraint.active = YES;
 
-    [NSLayoutConstraint activateConstraints:@[
-                                              [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                                              [self.replyTextView.topAnchor constraintEqualToAnchor:self.tableView.bottomAnchor],
-                                              [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                              [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                              ]];
+    if (showingReplyView) {
+        self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
+        self.bottomLayoutConstraint.active = YES;
+    }
 
-    if ([self shouldAttachSuggestionsTableView]) {
+    if (showingReplyView) {
+        [NSLayoutConstraint activateConstraints:@[
+            [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+            [self.replyTextView.topAnchor constraintEqualToAnchor:self.tableView.bottomAnchor],
+            [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+            [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        ]];
+    } else {
+        [NSLayoutConstraint activateConstraints:@[
+            [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+            [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+        ]];
+    }
+
+    if ([self shouldAttachSuggestionsTableView] && showingReplyView) {
         // Pin the suggestions view left and right edges to the super view edges
         NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
@@ -349,16 +369,36 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             [weakSelf openWebViewWithURL:url];
         }
     };
+    
+    self.commentCell = cell;
 }
 
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell
 {
     // Setup the Cell
-    cell.isReplyEnabled = [UIDevice isPad];
-    cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
-    cell.isApproveEnabled = YES;
-    cell.isTrashEnabled = YES;
-    cell.isSpamEnabled = YES;
+    if (self.comment.blog.isHostedAtWPcom || self.comment.blog.isAtomic) {
+        cell.isReplyEnabled = [UIDevice isPad] && self.userCanLikeAndReply;
+        cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes] && self.userCanLikeAndReply;
+        cell.isApproveEnabled = self.comment.canModerate;
+        cell.isTrashEnabled = self.comment.canModerate;
+        cell.isSpamEnabled = self.comment.canModerate;
+        cell.isEditEnabled = self.comment.canModerate;
+    } else {
+        cell.isReplyEnabled = [UIDevice isPad];
+        cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
+        cell.isApproveEnabled = YES;
+        cell.isTrashEnabled = YES;
+        cell.isSpamEnabled = YES;
+        cell.isEditEnabled = YES;
+    }
+
+    if (cell.allActionsDisabled) {
+        [cell setHidden:YES];
+        if (self.commentCell) {
+            self.commentCell.separatorsView.bottomInsets = UIEdgeInsetsZero;
+        }
+        return;
+    }
 
     cell.isApproveOn = [self.comment.status isEqualToString:CommentStatusApproved];
     cell.isLikeOn = self.comment.isLiked;
@@ -662,7 +702,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
     
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", @"Reply Failure Message");
+        NSString *message = error.localizedDescription ?: NSLocalizedString(@"There has been an unexpected error while sending your reply", @"Reply Failure Message");
         [weakSelf displayNoticeWithTitle:message message:nil];
     };
     

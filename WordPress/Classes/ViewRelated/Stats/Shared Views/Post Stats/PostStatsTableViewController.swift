@@ -35,6 +35,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Post Stats", comment: "Window title for Post Stats view.")
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
+        tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.register(SiteStatsTableHeaderView.defaultNib,
@@ -70,10 +71,6 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         cell.animateGhostLayers(viewModel?.isFetchingPostDetails() == true)
         tableHeaderView = cell
         return cell
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return SiteStatsTableHeaderView.headerHeight()
     }
 
 }

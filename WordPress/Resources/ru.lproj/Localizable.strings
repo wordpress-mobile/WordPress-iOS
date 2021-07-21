@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-16 07:42:25+0000 */
+/* Translation-Revision-Date: 2021-07-13 11:07:43+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -297,6 +297,15 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "менее 1 часа";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> раз в неделю";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "<strong>Однократно<\/strong> в неделю";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "<strong>Дважды<\/strong> в неделю";
+
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
@@ -498,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Добавьте изображение (или аватар) для представления этой новой учетной записи.";
 
 /* No comment provided by engineer. */
+"Add link" = "Добавить ссылку";
+
+/* No comment provided by engineer. */
 "Add link text" = "Добавить текст ссылки";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -639,6 +651,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "Атрибут alt";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Альтернативным вариантом вы можете рассоединить и отредактировать эти блоки по отдельности, нажав на \"преобразовать в обычные блоки\".";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Альтернативно:";
 
@@ -660,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Активное интернет подключение требуется для просмотра плагинов";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Для просмотра статистики требуется действующее подключение к Интернету";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Для просмотра истории требуется работающее подключение к Интернету";
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "Назад";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "Фоновый цвет";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Обозреватель блога";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "Напоминания блоггинга";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Создать запись, страницу или историю";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "Создать значок сайта";
 
 /* Label that describes the download backup action */
@@ -2326,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Дублировать блок";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "ИЗМЕНИТЬ ССЫЛКУ";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "восток";
 
@@ -2394,6 +2412,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "Редактировать главную страницу";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Редактирование \"моих блоков\" пока не доступно в WordPress для Android";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Редактирование \"моих блоков\" пока не доступно в WordPress для iOS";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Редактирование GIF изображения приведёт к потере анимации.";
 
@@ -2441,7 +2465,19 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Письмо отправлено!";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Подпись встроенного объекта. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Подпись встроенного объекта. Пустая";
+
 /* No comment provided by engineer. */
+"Embed link" = "Встроить ссылку";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Встроенное содержимое с %s на настоящий момент не может быть просмотрено в мобильном редакторе. Откройте предварительный просмотр страницы для его просмотра.";
+
+/* Title for the Emoji section */
 "Emoji" = "Эмодзи";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2457,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Включить быстрый старт для сайта";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Включить статистику сайта";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Включите доступ к микрофону для записи звука к вашим видео.";
 
@@ -2465,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Включить уведомления с сайта?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Включите статистику сайта, чтобы посмотреть подробные данные о посещаемости, пользовательских оценках, комментариях и о подписчиках.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Включение статистики сайта...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Зашифрованные журналы";
@@ -2624,6 +2669,9 @@
 
 /* Title for the activity detail view */
 "Event" = "Событие";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "Ежедневно";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Все";
@@ -2956,8 +3004,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "Создание предварительного просмотра...";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "Вперёд!";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3051,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Перейти к Чтиву";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Перейдите в Настройки → Уведомления → WordPress, и разрешите уведомления.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3104,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Заголовок 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Помощь";
 
 /* Link to Help section
@@ -3379,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Неверный URL. Аудиофайл не найден.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Неверный URL, укажите корректный URL.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Неверная оконечная точка";
 
@@ -3406,6 +3460,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "Прошло %1$@ с тех пор как опубликована запись %2$@.";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "Самое время написать в блог на %@!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "Самое время написать в блог!";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "Самое время! Создайте черновик и опубликуйте вашу первую запись.";
 
@@ -3420,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Для отображения статистики требуется Jetpack %@ или более поздней версии. Обновить Jetpack?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Резервные копии Jetpack для мультисайт установок предоставляют скачиваемые резервные копии, но не восстановление в одно нажатие. Для подробностей %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
@@ -3684,6 +3747,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Загрузка потока...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "Загружается редактор блоков.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Загрузка предлагаемых имен пользователя";
 
@@ -3764,6 +3830,9 @@
 /* No comment provided by engineer. */
 "Logs" = "Логи";
 
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Ищете статистику?";
+
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Выполняется поиск адреса...";
 
@@ -3778,9 +3847,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Меню навигации";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "Максимально используйте свой сайт, устанавливая цели и отслеживая прогресс.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4203,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "Далее";
 
 /* Table view title for the quick start section. */
@@ -4162,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Без рубрики";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Нет соединения";
 
 /* List Editor Empty State Message */
 "No Items" = "Нет элементов";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Нет сайтов с Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Меню отсутствует";
@@ -4362,6 +4429,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Нет";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "Не установлены";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "север";
 
@@ -4425,6 +4495,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Непрочитанные уведомления";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Уведомить меня";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Истории теперь доступны всем";
@@ -4729,9 +4802,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "Люди";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "Блоггеры, пищущие хотя бы пару раз в неделю, имеют на 87% больше просмотров сайта.";
-
 /* Label for date periods. */
 "Period" = "Период";
 
@@ -4783,6 +4853,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Обратитесь в службу поддержки.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "Убедитесь что у вас на сайте включен редактор блоков и повторите попытку.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Убедитесь что у вас на сайте включен редактор блоков. Если он не включен, то он и не загрузится.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Введите полный адрес вебсайта, например example.com.";
@@ -5002,6 +5078,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Частота публикаций";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Регулярное наполнение блога займёт ваших подписчиков и привлечет новых посетителей на сайт.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5388,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "В разделе «Связанные записи» под вашими записями отображается соответствующее содержимое с вашего сайта";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Напоминания удалены";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5614,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "Вернуться к записи";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "\"Мои блоки\" нельзя редактировать в приложении WordPress для Android";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "\"Мои блоки\" нельзя редактировать в приложении WordPress для iOS";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Отменить ожидание изменения";
 
@@ -5573,6 +5649,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "Сохранить";
 
@@ -5689,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "Искать в WordPress\nсайт или запись";
 
 /* No comment provided by engineer. */
-"Search block" = "Блок поиска";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Ярлык блока поиска. Сейчас -";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Блоки поиска";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Кнопка поиска. Текущий текст кнопки -";
@@ -5904,7 +5975,7 @@
 "Set as Posts Page" = "Установить как страницу записей";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "Установите цели";
+"Set reminders" = "Установить напоминания";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Настройка";
@@ -5912,9 +5983,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Установить Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "Установите цели вашего блога";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "Установить напоминания о необходимости написать в блог в те дни, в которые вы хотите это делать.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "Установите напоминания о блоггинге";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Задайте название сайта";
@@ -6879,6 +6952,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "Это место, где люди найдут вас в сети.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "Это напоминание о том, что сегодня следует написать в блог ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Этот медиафайл удалён.";
 
@@ -6997,6 +7073,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Для создания фотографий и видео, которые будут размещаться в ваших записях.";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "Для использования напоминаний следует включить push-уведомления.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Для сбора и просмотра статистики на сайте требуется установить плагин Jetpack.";
@@ -7131,6 +7210,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Отключить уведомления сайта";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Включить уведомления";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "Включить push-уведомления";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Включить уведомления сайта";
 
@@ -7214,6 +7299,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Сейчас невозможно загрузить записи.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "Сейчас невозможно загрузить редактор блоков.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Не удалось загрузить изображение. Выберите другое или повторите попытку.";
@@ -7313,6 +7401,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Недоступен";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Не определено";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Подчеркнутый";
@@ -7330,6 +7421,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Отписаться от %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "Отписаться от этой беседы по email";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Отписаться от сайта";
@@ -7400,7 +7494,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "Журналы хранятся в течение 7 дней.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Обновить";
@@ -7929,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Выполняется откат к состоянию сайта на %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "К сожалению, на данный момент система Jetpack Scan несовместима с мультисайтовыми установками WordPress.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Мы также отправили вам ссылку на файл по email.";
 
@@ -8109,6 +8207,9 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Поддержка WordPress для iOS";
 
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "Мультисайтовые системы WordPress не поддерживаются";
+
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "Сайту WordPress требуется доступ к данным о местоположении вашего устройства, чтобы добавить их к записи. Обновите настройки конфиденциальности.";
 
@@ -8276,6 +8377,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Есть изменения для %d записей, которые пока не были загружены на сайт. Выход сейчас отменит эти изменения. Всё равно выйти?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "Напоминания не установлены.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "У вас есть несохранённые изменения.";
@@ -8323,8 +8427,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "Вы не сможете вернуть старое имя пользователя.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "Вы получите напоминание о необходимости написать в блог X дней в неделю в дни DAY и DAY.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Вы получите уведомление о том, что нужно написать в блог <strong>однократно<\/strong> в неделю по %@.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "Вы получите напоминания о необходимости написать в блог %1$@ в неделю, по  %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Вы уже в курсе всего!";
@@ -8377,8 +8484,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "Выполняется загрузка записи. Подождите завершения.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "Ваша запись в процессе публикации, а пока вы можете установить цели блога для получения напоминаний и отслеживания прогресса.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Идет публикация записи.... А пока вы можете установить напоминания о необходимости написать в блог в те дни, в которые вы хотите это делать.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Ваши записи, страницы и настройки будут отправлены вам по электронной почте %@.";
@@ -8398,7 +8505,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "Ваш сайт был успешно восстановлен";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Значок вашего сайта используется в сети: на вкладках браузера, при предварительном просмотре сайта в социальных сетях и в программе чтения WordPress.com.";
 
 /* Title of a message displayed when user starts a restore operation */
@@ -8531,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "обозреватель";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "посетите нашу страницу документации";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "в будущем будет недоступен.";

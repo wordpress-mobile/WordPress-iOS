@@ -7,7 +7,7 @@ import WordPressShared
 
 ///
 ///
-protocol NotificationsNavigationDataSource: class {
+protocol NotificationsNavigationDataSource: AnyObject {
     func notification(succeeding note: Notification) -> Notification?
     func notification(preceding note: Notification) -> Notification?
 }
@@ -423,20 +423,15 @@ extension NotificationDetailsViewController {
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        if FeatureFlag.newLikeNotifications.enabled {
-            tableView.register(LikeUserTableViewCell.defaultNib,
-                               forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
-        }
+        tableView.register(LikeUserTableViewCell.defaultNib,
+                           forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
+
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
     /// This method may be called several times, especially upon previous/next button click
     /// since notification kind may change.
     func setupTableDelegates() {
-        guard FeatureFlag.newLikeNotifications.enabled else {
-            return
-        }
-
         if note.kind == .like || note.kind == .commentLike,
            let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
             tableView.delegate = likesListController
@@ -1349,10 +1344,7 @@ extension NotificationDetailsViewController {
             return
         }
 
-        hideNoResults()
-        onSelectedNoteChange?(previous)
-        note = previous
-        showConfettiIfNeeded()
+        refreshView(with: previous)
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1360,10 +1352,15 @@ extension NotificationDetailsViewController {
             return
         }
 
+        refreshView(with: next)
+    }
+
+    private func refreshView(with note: Notification) {
         hideNoResults()
-        onSelectedNoteChange?(next)
-        note = next
+        onSelectedNoteChange?(note)
+        self.note = note
         showConfettiIfNeeded()
+        trackDetailsOpened(for: note)
     }
 
     var shouldEnablePreviousButton: Bool {
@@ -1439,5 +1436,14 @@ private extension NotificationDetailsViewController {
 
     enum Assets {
         static let confettiBackground       = "notifications-confetti-background"
+    }
+}
+
+// MARK: - Tracks
+extension NotificationDetailsViewController {
+    /// Tracks notification details opened
+    private func trackDetailsOpened(for note: Notification) {
+        let properties = ["notification_type": note.type ?? "unknown"]
+        WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }
 }

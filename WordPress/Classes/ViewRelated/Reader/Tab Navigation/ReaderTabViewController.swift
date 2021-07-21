@@ -88,10 +88,8 @@ class ReaderTabViewController: UIViewController {
     override func loadView() {
         view = readerTabView
 
-        if FeatureFlag.newNavBarAppearance.enabled {
-            navigationItem.largeTitleDisplayMode = .always
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     @objc func willEnterForeground() {
