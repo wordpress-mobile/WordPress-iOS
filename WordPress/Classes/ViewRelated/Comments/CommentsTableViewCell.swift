@@ -21,11 +21,6 @@ open class CommentsTableViewCell: WPTableViewCell {
     private typealias Style = WPStyleGuide.Comments
     private let placeholderImage = Style.gravatarPlaceholderImage
 
-    private enum Labels {
-        static let noTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
-        static let titleFormat = NSLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
-    }
-
     // MARK: - Public Properties
 
     @objc static let reuseIdentifier = "CommentsTableViewCell"
@@ -40,10 +35,10 @@ open class CommentsTableViewCell: WPTableViewCell {
     }
 
     @objc func configureWithComment(_ comment: Comment) {
-        author = comment.authorForDisplay() ?? String()
+        author = comment.authorForDisplay()
         pending = (comment.status == CommentStatusPending)
-        postTitle = comment.titleForDisplay() ?? Labels.noTitle
-        content = comment.contentPreviewForDisplay() ?? String()
+        postTitle = comment.titleForDisplay()
+        content = comment.contentPreviewForDisplay()
 
         if let avatarURLForDisplay = comment.avatarURLForDisplay() {
             downloadGravatarWithURL(avatarURLForDisplay)
@@ -96,13 +91,15 @@ private extension CommentsTableViewCell {
     }
 
     func attributedTitle() -> NSAttributedString {
+        let titleFormat = NSLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
+
         let replacementMap = [
             "%1$@": NSAttributedString(string: author, attributes: Style.titleBoldAttributes),
             "%2$@": NSAttributedString(string: postTitle, attributes: Style.titleBoldAttributes)
         ]
 
         // Replace Author + Title
-        let attributedTitle = NSMutableAttributedString(string: Labels.titleFormat, attributes: Style.titleRegularAttributes)
+        let attributedTitle = NSMutableAttributedString(string: titleFormat, attributes: Style.titleRegularAttributes)
 
         for (key, attributedString) in replacementMap {
             let range = (attributedTitle.string as NSString).range(of: key)

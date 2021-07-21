@@ -225,18 +225,18 @@ class ReaderCommentCell: UITableViewCell {
         actionBar.isHidden = !enableLoggedInFeatures
         replyButton.isHidden = !showReply
 
-        var title = NSLocalizedString("Like", comment: "Verb. Button title. Tap to like a commnet")
-        let count = comment.numberOfLikes().intValue
-        if count == 1 {
-            title = "\(count) \(title)"
-        } else if count > 1 {
-            title = NSLocalizedString("Likes", comment: "Noun. Button title.  Tap to like a comment.")
-            title = "\(count) \(title)"
-        }
-        likeButton.setTitle(title, for: .normal)
+        let likesCount = comment.numberOfLikes().intValue
+        let likesTitleFormat = likesCount == 1 ? LikesTitles.singular : LikesTitles.plural
+        let likesTitle = String(format: likesTitleFormat, likesCount)
+        likeButton.setTitle(likesTitle, for: .normal)
         likeButton.isSelected = comment.isLiked
     }
 
+    private struct LikesTitles {
+        static let plural = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+        static let singular = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+
+    }
 
     @objc func updateLeadingContentConstraint() {
         leadingContentConstraint?.constant = CGFloat(indentationLevel) * indentationWidth
