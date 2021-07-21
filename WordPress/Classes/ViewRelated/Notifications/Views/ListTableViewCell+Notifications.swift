@@ -1,19 +1,11 @@
 /// Encapsulates logic that configures `ListTableViewCell` with `Notification` models.
 ///
 extension ListTableViewCell {
-    /// Configures the cell based on the provided `Notification` object.
     func configureWithNotification(_ notification: Notification) {
-        // indicator view
         indicatorColor = Style.unreadIndicatorColor
         showsIndicator = !notification.read
-
-        // avatar image
         configureImage(with: notification.iconURL)
-
-        // title text
         attributedTitleText = notification.renderSubject()
-
-        // snippet text
         snippetText = notification.renderSnippet()?.string ?? String()
     }
 
@@ -38,12 +30,14 @@ extension ListTableViewCell {
 
         showOverlay(with: undoOverlayView)
     }
+}
 
-    // MARK: Private Helpers
+// MARK: - Constants and Helpers
 
+private extension ListTableViewCell {
     /// Creates a pre-styled overlay view based on `ListSimpleOverlayView`.
     /// This will be used to show options for the user to revert the action performed on the notification.
-    private func makeUndoOverlayView() -> ListSimpleOverlayView {
+    func makeUndoOverlayView() -> ListSimpleOverlayView {
         let overlayView = ListSimpleOverlayView.loadFromNib()
         overlayView.translatesAutoresizingMaskIntoConstraints = false
         overlayView.backgroundColor = Style.noteUndoBackgroundColor
@@ -60,11 +54,7 @@ extension ListTableViewCell {
 
         return overlayView
     }
-}
 
-// MARK: - Constants
-
-private extension ListTableViewCell {
     typealias Style = WPStyleGuide.Notifications
 
     struct Localization {

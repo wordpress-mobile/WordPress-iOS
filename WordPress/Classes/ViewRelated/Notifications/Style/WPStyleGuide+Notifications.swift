@@ -19,7 +19,7 @@ extension WPStyleGuide {
         }
 
         // ListTableViewCell
-        public static let unreadIndicatorColor = UIColor.muriel(color: .init(name: .blue, shade: .shade30))
+        public static let unreadIndicatorColor = UIColor.primaryLight
 
         // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)

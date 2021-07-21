@@ -346,7 +346,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
         guard type(of: cell) == expectedType else {
-            fatalError()
+            DDLogError("Error getting Notification table cell.")
+            return .init()
         }
 
         configureCell(cell, at: indexPath)
@@ -1192,22 +1193,17 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             // Apply the same handling for ListTableViewCell.
             // this should be removed when it's confirmed that default table separators no longer trigger issues
             // resolved in #2845, and the unified list feature is fully rolled out.
-            if usesUnifiedList {
-                guard let listCell = cell as? ListTableViewCell else {
-                    continue
-                }
-
+            if usesUnifiedList,
+               let listCell = cell as? ListTableViewCell {
                 let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
                 listCell.showsBottomSeparator = !isLastRow
                 continue
             }
 
-            guard let noteCell = cell as? NoteTableViewCell else {
-                continue
+            if let noteCell = cell as? NoteTableViewCell {
+                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+                noteCell.showsBottomSeparator = !isLastRow
             }
-
-            let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-            noteCell.showsBottomSeparator = !isLastRow
         }
 
         refreshUnreadNotifications()
