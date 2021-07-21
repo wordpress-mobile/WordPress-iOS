@@ -5,7 +5,6 @@
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
-NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
 
 NSString * const CommentStatusPending = @"hold";
 NSString * const CommentStatusApproved = @"approve";

@@ -4,8 +4,6 @@
 @class Blog;
 @class BasePost;
 
-// This is the notification name used with NSNotificationCenter
-extern NSString * const CommentUploadFailedNotification;
 
 extern NSString * const CommentStatusPending;
 extern NSString * const CommentStatusApproved;
