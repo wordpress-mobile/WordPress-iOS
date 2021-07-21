@@ -99,15 +99,17 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
-    if (!self.isActivatingStatsModule && ![self.blog isStatsActive]) {
-        [self showStatsModuleDisabled];
-        return;
-    }
-    
     SiteStatsInformation.sharedInstance.siteTimeZone = [self.blog timeZone];
 
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
+        
+        // Prompt user to enable site stats if stats module is disabled
+        if (!self.isActivatingStatsModule && ![self.blog isStatsActive]) {
+            [self showStatsModuleDisabled];
+            return;
+        }
+        
         SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
         SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
         
@@ -115,6 +117,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         [self initializeStatsWidgetsIfNeeded];
         return;
     }
+
     [self refreshStatus];
 }
 

@@ -1214,9 +1214,16 @@ extension GutenbergViewController {
     }
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] (hasChanges, settings) in
-            guard hasChanges, let `self` = self else { return }
-            self.gutenberg.updateEditorSettings(settings)
+        editorSettingsService?.fetchSettings({ [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let response):
+                if response.hasChanges {
+                    self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+                }
+            case .failure(let err):
+                DDLogError("Error fetching settings: \(err)")
+            }
         })
     }
 }

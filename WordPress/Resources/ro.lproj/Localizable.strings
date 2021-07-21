@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-13 08:47:56+0000 */
+/* Translation-Revision-Date: 2021-07-15 15:08:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -929,7 +929,7 @@
    Title for Jetpack Backup Update Status Failed screen
    Title for the Jetpack's backup list
    Title of section showing backup status */
-"Backup" = "Copii de siguranță";
+"Backup" = "Copie de siguranță";
 
 /* Title for error displayed when preparing a backup fails. */
 "Backup failed" = "Copia de siguranță a eșuat";
