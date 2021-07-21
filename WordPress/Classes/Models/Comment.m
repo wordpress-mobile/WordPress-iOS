@@ -2,17 +2,8 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
-
-NSString * const CommentStatusPending = @"hold";
-NSString * const CommentStatusApproved = @"approve";
-NSString * const CommentStatusUnapproved = @"trash";
-NSString * const CommentStatusSpam = @"spam";
-
-// draft is used for comments that have been composed but not succesfully uploaded yet
-NSString * const CommentStatusDraft = @"draft";
 
 @implementation Comment
 

@@ -1,5 +1,38 @@
 import Foundation
 
+// When CommentViewController and CommentService are converted to Swift, this can be simplified to a String enum.
+@objc enum CommentStatusType: Int {
+    case pending
+    case approved
+    case unapproved
+    case spam
+    // Draft status is for comments that have not yet been successfully published/uploaded.
+    // We can use this status to restore comment replies that the user has written.
+    case draft
+
+    var description: String {
+        switch self {
+        case .pending:
+            return "hold"
+        case .approved:
+            return "approve"
+        case .unapproved:
+            return "trash"
+        case .spam:
+            return "spam"
+        case .draft:
+            return "draft"
+        }
+    }
+}
+
+extension Comment {
+    @objc static func descriptionFor(_ commentStatus: CommentStatusType) -> String {
+        return commentStatus.description
+    }
+}
+
+
 private extension Comment {
     func decodedContent() -> String {
         return content.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
