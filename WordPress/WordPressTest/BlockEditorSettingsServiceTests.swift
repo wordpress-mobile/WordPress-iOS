@@ -233,8 +233,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_OrgSite_NoPlugin() {
-        blog = BlogBuilder(context).build()
-
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
@@ -257,8 +255,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_OrgSite() {
-        blog = BlogBuilder(context).build()
-
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
@@ -278,6 +274,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     func testFetchBlockEditorSettings_Com5_8Site() {
         blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
 
@@ -298,6 +295,13 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_Com5_9Site() {
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.9")
+            .withAnAccount()
+            .build()
+
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+
         try! FeatureFlagOverrideStore().override(FeatureFlag.globalStyleSettings, withValue: true)
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
