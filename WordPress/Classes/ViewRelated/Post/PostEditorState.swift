@@ -141,7 +141,7 @@ public enum PostEditorAction {
     }
 }
 
-public protocol PostEditorStateContextDelegate: class {
+public protocol PostEditorStateContextDelegate: AnyObject {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction)
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }

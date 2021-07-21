@@ -1,7 +1,7 @@
 import UIKit
 import Gutenberg
 
-protocol CategorySectionTableViewCellDelegate: class {
+protocol CategorySectionTableViewCellDelegate: AnyObject {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)
     func didDeselectItem(forCell cell: CategorySectionTableViewCell)
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)

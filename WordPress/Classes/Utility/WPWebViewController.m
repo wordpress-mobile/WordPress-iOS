@@ -145,13 +145,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         return;
     }
 
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        self.titleView.titleLabel.textColor     = [UIColor murielText];
-        self.titleView.subtitleLabel.textColor  = [UIColor murielNeutral30];
-    } else {
-        self.titleView.titleLabel.textColor     = [UIColor whiteColor];
-        self.titleView.subtitleLabel.textColor  = [UIColor whiteColor];
-    }
+    self.titleView.titleLabel.textColor     = [UIColor murielText];
+    self.titleView.subtitleLabel.textColor  = [UIColor murielNeutral30];
 
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }

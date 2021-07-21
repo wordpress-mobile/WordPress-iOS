@@ -1,0 +1,9 @@
+Text blocks get some love. Color and background customization is added to the block editor’s text blocks.
+
+Other block editor updates include fixing an issue with the block selector on iPad and update loading and failed screens for the editor’s web version.
+
+If you’ve experienced some refresh issues with the follow buttons in the Reader, you can rest easy now, as those issues have been solved.
+
+Authors and Contributors are no longer in the dark! They can now view a site’s Comments via My Site > Comments.
+
+Fixed a bug when tapping notifications.

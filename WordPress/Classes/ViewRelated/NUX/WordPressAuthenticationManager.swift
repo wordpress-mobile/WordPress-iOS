@@ -120,7 +120,7 @@ extension WordPressAuthenticationManager {
                                            buttonViewTopShadowImage: buttonViewTopShadowImage,
                                            navBarImage: .gridicon(.mySites),
                                            navBarBadgeColor: .accent(.shade20),
-                                           navBarBackgroundColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarBackground : UIColor(light: .primary, dark: .gray(.shade100)),
+                                           navBarBackgroundColor: .appBarBackground,
                                            prologueBackgroundColor: .primary,
                                            prologueTitleColor: .textInverted,
                                            prologuePrimaryButtonStyle: prologuePrimaryButtonStyle,
@@ -151,10 +151,9 @@ extension WordPressAuthenticationManager {
                                                   viewControllerBackgroundColor: .basicBackground,
                                                   prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
                                                   prologueViewBackgroundColor: prologueViewBackgroundColor,
-                                                  navBarBackgroundColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarBackground : .basicBackground,
-                                                  navButtonTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarTint : .primary,
-                                                  navTitleTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarText : .text)
-
+                                                  navBarBackgroundColor: .appBarBackground,
+                                                  navButtonTextColor: .appBarTint,
+                                                  navTitleTextColor: .appBarText)
     }
 }
 
@@ -351,11 +350,18 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
         epilogueViewController.onContinue = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if PostSignUpInterstitialViewController.shouldDisplay() {
-                self?.presentPostSignUpInterstitial(in: navigationController)
+                self.presentPostSignUpInterstitial(in: navigationController)
             } else {
-                // Signup is only ever shown in fullscreen
-                self?.windowManager.dismissFullscreenSignIn()
+                if self.windowManager.isShowingFullscreenSignIn {
+                    self.windowManager.dismissFullscreenSignIn()
+                } else {
+                    navigationController.dismiss(animated: true)
+                }
             }
 
             UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)

@@ -1,17 +1,7 @@
-With 17.6, you can add the Audio Block to any WordPress.com site, whatever plan you’re on – including the Free Plan. The Audio Block makes it easy to add podcasts, music, and sound files to your posts and pages.
+Text blocks get some love. Color and background customization is added to the block editor’s text blocks.
 
-In the Reader, you’ll now see a count and summary of Likes added to every post. If that’s not enough Likes in your life, tap the summary and you’ll be able to see the full list.
+Other block editor updates include fixing an issue with the block selector on iPad and update loading and failed screens for the editor’s web version.
 
-We’ve been hard at work wrangling UX improvements, too:
+If you’ve experienced some refresh issues with the follow buttons in the Reader, you can rest easy now, as those issues have been solved.
 
-When you assign a parent page to a page without a title, you’ll now see a ‘(no title)’ placeholder instead of a blank line, giving you a gentle nudge to name the page.
-
-You’ve never been able to edit Post Archive pages because they’re automatically generated. In 17.6, you won’t be able to open them in the editor, either, saving you a wasted trip.
-
-We’ve also been working on fixing things:
-
-We took care of some notices that had been overlapping the ActionSheet, including one that displays Site Icon controls, another displaying the QuickStart Removal, and a third that displays More Actions in the editor.
-
-Last up, we squashed a bug that sometimes caused the app to crash during comment moderation and another to fix a login error for WordPress.org sites to show inline.
-
-That’s all for 17.6. See you in 17.7!
+Authors and Contributors are no longer in the dark! They can now view a site’s Comments via My Site > Comments.

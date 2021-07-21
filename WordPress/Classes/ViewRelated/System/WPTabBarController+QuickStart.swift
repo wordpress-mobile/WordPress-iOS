@@ -16,7 +16,7 @@ extension WPTabBarController {
             let newSpotlight = QuickStartSpotlightView()
             self?.view.addSubview(newSpotlight)
 
-            guard let tabButton = self?.getTabButton(at: Int(WPTabType.reader.rawValue)) else {
+            guard let tabButton = self?.getTabButton(at: Int(WPTab.reader.rawValue)) else {
                 return
             }
 

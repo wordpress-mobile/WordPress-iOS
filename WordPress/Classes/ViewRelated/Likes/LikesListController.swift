@@ -7,7 +7,7 @@ import WordPressKit
 /// This is intended to be used as replacement for table view delegate and data source.
 
 
-@objc protocol LikesListControllerDelegate: class {
+@objc protocol LikesListControllerDelegate: AnyObject {
     /// Reports to the delegate that the header cell has been tapped.
     @objc optional func didSelectHeader()
 
@@ -169,22 +169,43 @@ class LikesListController: NSObject {
             return
         }
 
-        fetchLikes(success: { [weak self] users, totalLikes in
-            if self?.isFirstLoad == true {
-                self?.delegate?.updatedTotalLikes?(totalLikes)
+        fetchLikes(success: { [weak self] users, totalLikes, likesPerPage in
+            guard let self = self else {
+                return
             }
 
-            self?.likingUsers = users
-            self?.totalLikes = totalLikes
-            self?.totalLikesFetched = users.count
-            self?.lastFetchedDate = users.last?.dateLikedString
-            self?.isFirstLoad = false
-            self?.isLoadingContent = false
-            self?.trackUsersToExclude()
+            if self.isFirstLoad {
+                self.delegate?.updatedTotalLikes?(totalLikes)
+            }
+
+            self.likingUsers = users
+            self.totalLikes = totalLikes
+            self.totalLikesFetched = users.count
+            self.lastFetchedDate = users.last?.dateLikedString
+
+            if !self.isFirstLoad && !users.isEmpty {
+                self.trackFetched(likesPerPage: likesPerPage)
+            }
+
+            self.isFirstLoad = false
+            self.isLoadingContent = false
+            self.trackUsersToExclude()
         }, failure: { [weak self] _ in
             self?.isLoadingContent = false
             self?.delegate?.showErrorView()
         })
+    }
+
+    private func trackFetched(likesPerPage: Int) {
+        var properties: [String: Any] = [:]
+        properties["source"] = showingNotificationLikes ? "notifications" : "reader"
+        properties["per_page"] = likesPerPage
+
+        if likesPerPage > 0 {
+            properties["page"] = Int(ceil(Double(likingUsers.count) / Double(likesPerPage)))
+        }
+
+        WPAnalytics.track(.likeListFetchedMore, properties: properties)
     }
 
     /// Fetch Likes from Core Data depending on the notification's content type.
@@ -201,7 +222,7 @@ class LikesListController: NSObject {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
-    private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
+    private func fetchLikes(success: @escaping ([LikeUser], Int, Int) -> Void, failure: @escaping (Error?) -> Void) {
 
         var beforeStr = lastFetchedDate
 

@@ -479,6 +479,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.setFocusOnTitle()
     }
 
+    func showEditorHelp() {
+        gutenberg.showEditorHelp()
+    }
+
     private func presentNewPageNoticeIfNeeded() {
         // Validate if the post is a newly created page or not.
         guard post is Page,
@@ -937,6 +941,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
+
+    func gutenbergDidRequestPreview() {
+        displayPreview()
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -975,7 +983,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success = result {
+            if case let .success(text) = result, !text.isEmpty {
                 didSelectSuggestion = true
             }
 
@@ -1209,14 +1217,21 @@ private extension GutenbergViewController {
 extension GutenbergViewController {
 
     // GutenbergBridgeDataSource
-    func gutenbergEditorTheme() -> GutenbergEditorTheme? {
+    func gutenbergEditorSettings() -> GutenbergEditorSettings? {
         return editorSettingsService?.cachedSettings
     }
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] (hasChanges, settings) in
-            guard hasChanges, let `self` = self else { return }
-            self.gutenberg.updateTheme(settings)
+        editorSettingsService?.fetchSettings({ [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let response):
+                if response.hasChanges {
+                    self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+                }
+            case .failure(let err):
+                DDLogError("Error fetching settings: \(err)")
+            }
         })
     }
 }

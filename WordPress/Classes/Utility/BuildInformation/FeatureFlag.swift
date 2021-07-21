@@ -8,7 +8,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case homepageSettings
     case gutenbergMentions
     case gutenbergXposts
-    case newNavBarAppearance
     case unifiedPrologueCarousel
     case stories
     case contactInfo
@@ -16,10 +15,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
-    case newLikeNotifications
     case bloggingReminders
-    case readerPostLikes
     case siteIconCreator
+    case globalStyleSettings
+    case editorOnboardingHelpMenu
+    case unifiedCommentsAndNotificationsList
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,8 +40,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .gutenbergXposts:
             return true
-        case .newNavBarAppearance:
-            return true
         case .unifiedPrologueCarousel:
             return true
         case .stories:
@@ -49,21 +47,23 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .contactInfo:
             return true
         case .layoutGrid:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
             return true
         case .milestoneNotifications:
             return true
-        case .newLikeNotifications:
-            return true
         case .bloggingReminders:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
-        case .readerPostLikes:
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
+        case .globalStyleSettings:
+            return false
+        case .editorOnboardingHelpMenu:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .unifiedCommentsAndNotificationsList:
+            return false
         }
     }
 
@@ -102,8 +102,6 @@ extension FeatureFlag {
             return "Mentions in Gutenberg"
         case .gutenbergXposts:
             return "Xposts in Gutenberg"
-        case .newNavBarAppearance:
-            return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
         case .stories:
@@ -118,22 +116,22 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
-        case .newLikeNotifications:
-            return "New Like Notifications"
         case .bloggingReminders:
             return "Blogging Reminders"
-        case .readerPostLikes:
-            return "Reader Post Likes"
         case .siteIconCreator:
             return "Site Icon Creator"
+        case .globalStyleSettings:
+            return "Global Style Settings"
+        case .editorOnboardingHelpMenu:
+            return "Editor Onboarding Help Menu"
+        case .unifiedCommentsAndNotificationsList:
+            return "Unified List for Comments and Notifications"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
-            return false
-        case .newNavBarAppearance:
             return false
         case .todayWidget:
             return false
