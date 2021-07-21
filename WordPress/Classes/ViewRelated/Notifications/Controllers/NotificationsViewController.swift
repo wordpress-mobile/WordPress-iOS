@@ -365,7 +365,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+        // skip when the notification is marked for deletion.
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+              deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
 
@@ -387,8 +389,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // skip when the notification is marked for deletion.
         guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
-            let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
+            deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
 
