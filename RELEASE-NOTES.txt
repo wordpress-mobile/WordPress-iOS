@@ -2,7 +2,7 @@
 -----
 * [internal] Converted part of Comment model to Swift. Should be no functional changes. [#16898]
 * [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
-* [***] New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
+* [***] Block editor: New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
 
 17.8
 -----
