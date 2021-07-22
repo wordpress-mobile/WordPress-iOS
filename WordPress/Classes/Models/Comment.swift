@@ -34,25 +34,35 @@ extension Comment {
 
 
 private extension Comment {
+
     func decodedContent() -> String {
         return content.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
+
+    func authorName() -> String {
+        guard let authorName = author,
+              !authorName.isEmpty else {
+            return NSLocalizedString("Anonymous", comment: "the comment has an anonymous author.")
+        }
+
+        return authorName
+    }
+
 }
 
 extension Comment: PostContentProvider {
 
     public func titleForDisplay() -> String {
-        let title = postTitle.stringByDecodingXMLCharacters()
-
-        guard !title.isEmpty else {
+        guard let title = post?.postTitle ?? postTitle,
+              !title.isEmpty else {
             return NSLocalizedString("(No Title)", comment: "Empty Post Title")
         }
 
-        return title
+        return title.stringByDecodingXMLCharacters()
     }
 
     public func authorForDisplay() -> String {
-        var displayAuthor = author.stringByDecodingXMLCharacters().trim()
+        var displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
 
         if displayAuthor.isEmpty {
             displayAuthor = author_email.trim()

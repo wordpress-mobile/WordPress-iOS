@@ -44,64 +44,12 @@
     return status;
 }
 
-- (NSString *)postTitle
-{
-    NSString *title = nil;
-    if (self.post) {
-        title = self.post.postTitle;
-    } else {
-        [self willAccessValueForKey:@"postTitle"];
-        title = [self primitiveValueForKey:@"postTitle"];
-        [self didAccessValueForKey:@"postTitle"];
-    }
-
-    if (title == nil || [@"" isEqualToString:title]) {
-        title = NSLocalizedString(@"(no title)", @"the post has no title.");
-    }
-    return title;
-
-}
-
-- (NSString *)author
-{
-    NSString *authorName = nil;
-
-    [self willAccessValueForKey:@"author"];
-    authorName = [self primitiveValueForKey:@"author"];
-    [self didAccessValueForKey:@"author"];
-
-    if (authorName == nil || [@"" isEqualToString:authorName]) {
-        authorName = NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.");
-    }
-    return authorName;
-
-}
-
-- (NSDate *)dateCreated
-{
-    NSDate *date = nil;
-
-    [self willAccessValueForKey:@"dateCreated"];
-    date = [self primitiveValueForKey:@"dateCreated"];
-    [self didAccessValueForKey:@"dateCreated"];
-
-    return date;
-}
-
 - (NSString *)sectionIdentifier
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateStyle = NSDateFormatterLongStyle;
     formatter.timeStyle = NSDateFormatterNoStyle;
     return [formatter stringFromDate:self.dateCreated];
-}
-
-- (BOOL)isPrivateContent
-{
-    if ([self.post respondsToSelector:@selector(isPrivateAtWPCom)]) {
-        return (BOOL)[self.post performSelector:@selector(isPrivateAtWPCom)];
-    }
-    return NO;
 }
 
 - (NSString *)authorUrlForDisplay
