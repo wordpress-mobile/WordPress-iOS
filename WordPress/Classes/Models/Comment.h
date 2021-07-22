@@ -39,7 +39,6 @@
 
 /// Helper methods
 ///
-+ (NSString *)titleForStatus:(NSString *)status;
 - (NSString *)authorUrlForDisplay;
 - (BOOL)hasAuthorUrl;
 - (BOOL)isApproved;

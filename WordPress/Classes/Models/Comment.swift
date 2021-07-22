@@ -71,19 +71,6 @@ extension Comment: PostContentProvider {
         return displayAuthor.isEmpty ? String() : displayAuthor
     }
 
-    public func blogNameForDisplay() -> String? {
-        return author_url
-    }
-
-    public func statusForDisplay() -> String {
-        var status = Comment.title(forStatus: status) ?? ""
-        if status.isEqual(to: NSLocalizedString("Comments", comment: "Comment status")) {
-            status = ""
-        }
-
-        return status
-    }
-
     public func contentForDisplay() -> String {
         return decodedContent()
     }

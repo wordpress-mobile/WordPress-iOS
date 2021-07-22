@@ -33,16 +33,6 @@
 
 #pragma mark - Helper methods
 
-+ (NSString *)titleForStatus:(NSString *)status
-{
-    if ([status isEqualToString:[Comment descriptionFor:CommentStatusTypePending]]) {
-        return NSLocalizedString(@"Pending moderation", @"Comment status");
-    } else if ([status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]]) {
-        return NSLocalizedString(@"Comments", @"Comment status");
-    }
-
-    return status;
-}
 
 - (NSString *)sectionIdentifier
 {
