@@ -1,7 +1,7 @@
 17.9
 -----
 * [internal] Redirect Terms and service to open the page in an external web view [#16907]
-* [internal] Converted parts of Comment model to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908]
+* [internal] Converted Comment model methods to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908, #16913]
 * [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
 
 17.8
