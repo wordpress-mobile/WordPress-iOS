@@ -2,18 +2,8 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
-NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
-
-NSString * const CommentStatusPending = @"hold";
-NSString * const CommentStatusApproved = @"approve";
-NSString * const CommentStatusUnapproved = @"trash";
-NSString * const CommentStatusSpam = @"spam";
-
-// draft is used for comments that have been composed but not succesfully uploaded yet
-NSString * const CommentStatusDraft = @"draft";
 
 @implementation Comment
 
@@ -45,9 +35,9 @@ NSString * const CommentStatusDraft = @"draft";
 
 + (NSString *)titleForStatus:(NSString *)status
 {
-    if ([status isEqualToString:CommentStatusPending]) {
+    if ([status isEqualToString:[Comment descriptionFor:CommentStatusTypePending]]) {
         return NSLocalizedString(@"Pending moderation", @"Comment status");
-    } else if ([status isEqualToString:CommentStatusApproved]) {
+    } else if ([status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]]) {
         return NSLocalizedString(@"Comments", @"Comment status");
     }
 
@@ -126,7 +116,7 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (BOOL)isApproved
 {
-    return [self.status isEqualToString:CommentStatusApproved];
+    return [self.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
 }
 
 - (BOOL)isReadOnly

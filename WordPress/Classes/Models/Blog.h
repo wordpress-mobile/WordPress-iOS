@@ -220,7 +220,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
-- (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
