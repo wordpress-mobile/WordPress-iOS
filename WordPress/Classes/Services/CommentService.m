@@ -803,7 +803,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
-             withStatus:(int)status
+             withStatus:(CommentStatusType)status
                 success:(void (^)(void))success
                 failure:(void (^)(NSError *error))failure
 {
