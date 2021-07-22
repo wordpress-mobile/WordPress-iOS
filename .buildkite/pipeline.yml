@@ -52,8 +52,13 @@ steps:
       echo "--- 📦 Downloading Build Artifacts"
       buildkite-agent artifact download build-products.tar .
       tar -xf build-products.tar
+
+      echo "--- :rubygems: Setting up Gems"
       bundle install
+
+      echo "--- :cocoapods: Setting up Pods"
       bundle exec pod install
+
       echo "--- 🧪 Testing"
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
@@ -67,8 +72,13 @@ steps:
       echo "--- 📦 Downloading Build Artifacts"
       buildkite-agent artifact download build-products.tar .
       tar -xf build-products.tar
+
+      echo "--- :rubygems: Setting up Gems"
       bundle install
+
+      echo "--- :cocoapods: Setting up Pods"
       bundle exec pod install
+
       echo "--- 🧪 Testing"
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
