@@ -36,7 +36,7 @@ open class CommentsTableViewCell: WPTableViewCell {
 
     @objc func configureWithComment(_ comment: Comment) {
         author = comment.authorForDisplay()
-        pending = (comment.status == CommentStatusPending)
+        pending = (comment.status == CommentStatusType.pending.description)
         postTitle = comment.titleForDisplay()
         content = comment.contentPreviewForDisplay()
 

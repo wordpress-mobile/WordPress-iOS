@@ -2,18 +2,8 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
-NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
-
-NSString * const CommentStatusPending = @"hold";
-NSString * const CommentStatusApproved = @"approve";
-NSString * const CommentStatusUnapproved = @"trash";
-NSString * const CommentStatusSpam = @"spam";
-
-// draft is used for comments that have been composed but not succesfully uploaded yet
-NSString * const CommentStatusDraft = @"draft";
 
 @implementation Comment
 
@@ -45,57 +35,13 @@ NSString * const CommentStatusDraft = @"draft";
 
 + (NSString *)titleForStatus:(NSString *)status
 {
-    if ([status isEqualToString:CommentStatusPending]) {
+    if ([status isEqualToString:[Comment descriptionFor:CommentStatusTypePending]]) {
         return NSLocalizedString(@"Pending moderation", @"Comment status");
-    } else if ([status isEqualToString:CommentStatusApproved]) {
+    } else if ([status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]]) {
         return NSLocalizedString(@"Comments", @"Comment status");
     }
 
     return status;
-}
-
-- (NSString *)postTitle
-{
-    NSString *title = nil;
-    if (self.post) {
-        title = self.post.postTitle;
-    } else {
-        [self willAccessValueForKey:@"postTitle"];
-        title = [self primitiveValueForKey:@"postTitle"];
-        [self didAccessValueForKey:@"postTitle"];
-    }
-
-    if (title == nil || [@"" isEqualToString:title]) {
-        title = NSLocalizedString(@"(no title)", @"the post has no title.");
-    }
-    return title;
-
-}
-
-- (NSString *)author
-{
-    NSString *authorName = nil;
-
-    [self willAccessValueForKey:@"author"];
-    authorName = [self primitiveValueForKey:@"author"];
-    [self didAccessValueForKey:@"author"];
-
-    if (authorName == nil || [@"" isEqualToString:authorName]) {
-        authorName = NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.");
-    }
-    return authorName;
-
-}
-
-- (NSDate *)dateCreated
-{
-    NSDate *date = nil;
-
-    [self willAccessValueForKey:@"dateCreated"];
-    date = [self primitiveValueForKey:@"dateCreated"];
-    [self didAccessValueForKey:@"dateCreated"];
-
-    return date;
 }
 
 - (NSString *)sectionIdentifier
@@ -104,14 +50,6 @@ NSString * const CommentStatusDraft = @"draft";
     formatter.dateStyle = NSDateFormatterLongStyle;
     formatter.timeStyle = NSDateFormatterNoStyle;
     return [formatter stringFromDate:self.dateCreated];
-}
-
-- (BOOL)isPrivateContent
-{
-    if ([self.post respondsToSelector:@selector(isPrivateAtWPCom)]) {
-        return (BOOL)[self.post performSelector:@selector(isPrivateAtWPCom)];
-    }
-    return NO;
 }
 
 - (NSString *)authorUrlForDisplay
@@ -126,7 +64,7 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (BOOL)isApproved
 {
-    return [self.status isEqualToString:CommentStatusApproved];
+    return [self.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
 }
 
 - (BOOL)isReadOnly
