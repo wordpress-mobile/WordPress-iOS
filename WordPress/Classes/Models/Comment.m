@@ -42,13 +42,6 @@
     return [formatter stringFromDate:self.dateCreated];
 }
 
-
-
-- (BOOL)isApproved
-{
-    return [self.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
-}
-
 - (BOOL)isReadOnly
 {
     // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.

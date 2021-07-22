@@ -35,6 +35,10 @@ extension Comment {
         return authorURL()?.host ?? String()
     }
 
+    @objc func isApproved() -> Bool {
+        return status.isEqual(to: CommentStatusType.approved.description)
+    }
+
     func numberOfLikes() -> Int {
         return likeCount.intValue
     }
