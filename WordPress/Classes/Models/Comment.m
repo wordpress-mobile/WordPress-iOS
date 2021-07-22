@@ -31,12 +31,4 @@
 @synthesize isNew;
 @synthesize attributedContent;
 
-#pragma mark - Helper methods
-
-- (BOOL)authorIsPostAuthor
-{
-    return [[self authorURL] isEqual:[self.post authorURL]];
-}
-
-
 @end

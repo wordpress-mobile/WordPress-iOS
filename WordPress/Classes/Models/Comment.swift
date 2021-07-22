@@ -27,10 +27,11 @@ import Foundation
 }
 
 extension Comment {
+
     @objc static func descriptionFor(_ commentStatus: CommentStatusType) -> String {
         return commentStatus.description
     }
-}
+
     @objc func authorUrlForDisplay() -> String {
         return authorURL()?.host ?? String()
     }
@@ -58,6 +59,20 @@ extension Comment {
     func hasAuthorUrl() -> Bool {
         return author_url != nil && !author_url.isEmpty
     }
+
+    func authorIsPostAuthor() -> Bool {
+        guard let commentAuthor = author_url,
+              !commentAuthor.isEmpty,
+            let readerPost = (post as? ReaderPost),
+            let postAuthor = readerPost.authorURL() else {
+            return false
+        }
+
+        return commentAuthor.isEqual(to: postAuthor)
+    }
+
+}
+
 private extension Comment {
 
     func decodedContent() -> String {
