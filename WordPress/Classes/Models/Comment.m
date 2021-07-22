@@ -44,23 +44,6 @@
     return status;
 }
 
-- (NSString *)postTitle
-{
-    NSString *title = nil;
-    if (self.post) {
-        title = self.post.postTitle;
-    } else {
-        [self willAccessValueForKey:@"postTitle"];
-        title = [self primitiveValueForKey:@"postTitle"];
-        [self didAccessValueForKey:@"postTitle"];
-    }
-
-    if (title == nil || [@"" isEqualToString:title]) {
-        title = NSLocalizedString(@"(no title)", @"the post has no title.");
-    }
-    return title;
-
-}
 
 - (NSDate *)dateCreated
 {

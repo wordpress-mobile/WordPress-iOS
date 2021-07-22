@@ -53,13 +53,12 @@ private extension Comment {
 extension Comment: PostContentProvider {
 
     public func titleForDisplay() -> String {
-        let title = postTitle.stringByDecodingXMLCharacters()
-
-        guard !title.isEmpty else {
+        guard let title = post?.postTitle ?? postTitle,
+              !title.isEmpty else {
             return NSLocalizedString("(No Title)", comment: "Empty Post Title")
         }
 
-        return title
+        return title.stringByDecodingXMLCharacters()
     }
 
     public func authorForDisplay() -> String {
