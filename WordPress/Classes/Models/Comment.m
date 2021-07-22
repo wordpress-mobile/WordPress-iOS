@@ -44,32 +44,12 @@
     return status;
 }
 
-
-- (NSDate *)dateCreated
-{
-    NSDate *date = nil;
-
-    [self willAccessValueForKey:@"dateCreated"];
-    date = [self primitiveValueForKey:@"dateCreated"];
-    [self didAccessValueForKey:@"dateCreated"];
-
-    return date;
-}
-
 - (NSString *)sectionIdentifier
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateStyle = NSDateFormatterLongStyle;
     formatter.timeStyle = NSDateFormatterNoStyle;
     return [formatter stringFromDate:self.dateCreated];
-}
-
-- (BOOL)isPrivateContent
-{
-    if ([self.post respondsToSelector:@selector(isPrivateAtWPCom)]) {
-        return (BOOL)[self.post performSelector:@selector(isPrivateAtWPCom)];
-    }
-    return NO;
 }
 
 - (NSString *)authorUrlForDisplay
