@@ -39,7 +39,6 @@
 
 /// Helper methods
 ///
-- (NSString *)authorUrlForDisplay;
 - (BOOL)hasAuthorUrl;
 - (BOOL)isApproved;
 - (NSString *)sectionIdentifier;

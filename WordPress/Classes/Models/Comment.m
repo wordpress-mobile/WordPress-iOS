@@ -42,10 +42,6 @@
     return [formatter stringFromDate:self.dateCreated];
 }
 
-- (NSString *)authorUrlForDisplay
-{
-    return self.author_url.hostname;
-}
 
 - (BOOL)hasAuthorUrl
 {

@@ -31,6 +31,9 @@ extension Comment {
         return commentStatus.description
     }
 }
+    @objc func authorUrlForDisplay() -> String {
+        return authorURL()?.host ?? String()
+    }
 
     func numberOfLikes() -> Int {
         return likeCount.intValue
