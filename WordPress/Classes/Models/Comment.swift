@@ -44,6 +44,13 @@ extension Comment {
         return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
     }
 
+    @objc func sectionIdentifier() -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter.string(from: dateCreated)
+    }
+
     func numberOfLikes() -> Int {
         return likeCount.intValue
     }

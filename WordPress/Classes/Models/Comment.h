@@ -39,7 +39,6 @@
 
 /// Helper methods
 ///
-- (NSString *)sectionIdentifier;
 - (BOOL)authorIsPostAuthor;
 
 @end

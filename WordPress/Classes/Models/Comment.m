@@ -33,15 +33,6 @@
 
 #pragma mark - Helper methods
 
-
-- (NSString *)sectionIdentifier
-{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateStyle = NSDateFormatterLongStyle;
-    formatter.timeStyle = NSDateFormatterNoStyle;
-    return [formatter stringFromDate:self.dateCreated];
-}
-
 - (BOOL)authorIsPostAuthor
 {
     return [[self authorURL] isEqual:[self.post authorURL]];
