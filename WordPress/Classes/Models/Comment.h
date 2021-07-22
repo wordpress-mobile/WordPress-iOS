@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "WPCommentContentViewProvider.h"
 
 @class Blog;
 @class BasePost;
@@ -16,7 +15,7 @@ extern NSString * const CommentStatusSpam;
 // we can use this status to restore comment replies that the user has written
 extern NSString * const CommentStatusDraft;
 
-@interface Comment : NSManagedObject<WPCommentContentViewProvider>
+@interface Comment: NSManagedObject
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) BasePost *post;
@@ -56,5 +55,7 @@ extern NSString * const CommentStatusDraft;
 - (BOOL)isApproved;
 - (NSString *)sectionIdentifier;
 - (BOOL)isReadOnly;
+- (BOOL)authorIsPostAuthor;
+- (NSNumber *)numberOfLikes;
 
 @end

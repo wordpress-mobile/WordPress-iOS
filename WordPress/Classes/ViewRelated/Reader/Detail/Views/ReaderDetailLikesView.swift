@@ -38,13 +38,11 @@ private extension ReaderDetailLikesView {
             subView.layer.borderWidth = 1
             subView.layer.borderColor = UIColor.basicBackground.cgColor
         }
-
-        summaryLabel.textColor = .secondaryLabel
     }
 
     func updateSummaryLabel(totalLikes: Int) {
         let summaryFormat = totalLikes == 1 ? SummaryLabelFormats.singular : SummaryLabelFormats.plural
-        summaryLabel.text = String(format: summaryFormat, totalLikes)
+        summaryLabel.attributedText = highlightedText(String(format: summaryFormat, totalLikes))
     }
 
     func updateAvatars(users: [LikeUser]) {
@@ -87,10 +85,24 @@ private extension ReaderDetailLikesView {
     }
 
     struct SummaryLabelFormats {
-        static let singular = NSLocalizedString("%1$d blogger likes this.",
-                                                comment: "Singular format string for displaying the number of post likes. %1$d is the number of likes.")
-        static let plural = NSLocalizedString("%1$d bloggers like this.",
-                                              comment: "Plural format string for displaying the number of post likes. %1$d is the number of likes.")
+        static let singular = NSLocalizedString("%1$d blogger_ likes this.",
+                                                comment: "Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed.")
+        static let plural = NSLocalizedString("%1$d bloggers_ like this.",
+                                              comment: "Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed.")
+    }
+
+    func highlightedText(_ text: String) -> NSAttributedString {
+        let labelParts = text.components(separatedBy: "_")
+        let countPart = labelParts.first ?? ""
+        let likesPart = labelParts.last ?? ""
+
+        let underlineAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
+                                                                  .underlineStyle: NSUnderlineStyle.single.rawValue]
+
+        let attributedString = NSMutableAttributedString(string: countPart, attributes: underlineAttributes)
+        attributedString.append(NSAttributedString(string: likesPart, attributes: [.foregroundColor: UIColor.secondaryLabel]))
+
+        return attributedString
     }
 
 }

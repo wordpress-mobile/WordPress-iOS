@@ -46,9 +46,9 @@ NSString * const CommentStatusDraft = @"draft";
 + (NSString *)titleForStatus:(NSString *)status
 {
     if ([status isEqualToString:CommentStatusPending]) {
-        return NSLocalizedString(@"Pending moderation", @"");
+        return NSLocalizedString(@"Pending moderation", @"Comment status");
     } else if ([status isEqualToString:CommentStatusApproved]) {
-        return NSLocalizedString(@"Comments", @"");
+        return NSLocalizedString(@"Comments", @"Comment status");
     }
 
     return status;
@@ -106,39 +106,12 @@ NSString * const CommentStatusDraft = @"draft";
     return [formatter stringFromDate:self.dateCreated];
 }
 
-
-#pragma mark - PostContentProvider protocol
-
 - (BOOL)isPrivateContent
 {
     if ([self.post respondsToSelector:@selector(isPrivateAtWPCom)]) {
         return (BOOL)[self.post performSelector:@selector(isPrivateAtWPCom)];
     }
     return NO;
-}
-
-- (NSString *)titleForDisplay
-{
-    return [self.postTitle stringByDecodingXMLCharacters];
-}
-
-- (NSString *)authorForDisplay
-{
-    return [[self.author trim] length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
-}
-
-- (NSString *)blogNameForDisplay
-{
-    return self.author_url;
-}
-
-- (NSString *)statusForDisplay
-{
-    NSString *status = [[self class] titleForStatus:self.status];
-    if ([status isEqualToString:NSLocalizedString(@"Comments", @"")]) {
-        status = nil;
-    }
-    return status;
 }
 
 - (NSString *)authorUrlForDisplay
@@ -165,46 +138,6 @@ NSString * const CommentStatusDraft = @"draft";
     }
 
     return NO;
-}
-
-- (NSString *)contentForDisplay
-{
-    //Strip HTML from the comment content
-    NSString *commentContent = [self.content stringByDecodingXMLCharacters];
-    commentContent = [commentContent trim];
-    commentContent = [commentContent stringByStrippingHTML];
-    commentContent = [commentContent stringByNormalizingWhitespace];    
-
-    return commentContent;
-}
-
-- (NSString *)contentPreviewForDisplay
-{
-    return [[[self.content stringByDecodingXMLCharacters] stringByStrippingHTML] stringByNormalizingWhitespace];
-}
-
-- (NSURL *)avatarURLForDisplay
-{
-    return [NSURL URLWithString:self.authorAvatarURL];
-}
-
-- (NSString *)gravatarEmailForDisplay
-{
-    return [self.author_email trim];
-}
-
-- (NSDate *)dateForDisplay
-{
-    return self.dateCreated;
-}
-
-- (NSURL *)authorURL
-{
-    if (self.author_url) {
-        return [NSURL URLWithString:self.author_url];
-    }
-
-    return nil;
 }
 
 - (BOOL)authorIsPostAuthor
