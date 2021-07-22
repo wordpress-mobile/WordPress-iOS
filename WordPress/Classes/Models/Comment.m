@@ -42,17 +42,6 @@
     return [formatter stringFromDate:self.dateCreated];
 }
 
-- (BOOL)isReadOnly
-{
-    // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
-    if ((self.blog.isHostedAtWPcom || self.blog.isAtomic)
-        && !self.canModerate && !self.isApproved) {
-        return YES;
-    }
-
-    return NO;
-}
-
 - (BOOL)authorIsPostAuthor
 {
     return [[self authorURL] isEqual:[self.post authorURL]];

@@ -40,7 +40,6 @@
 /// Helper methods
 ///
 - (NSString *)sectionIdentifier;
-- (BOOL)isReadOnly;
 - (BOOL)authorIsPostAuthor;
 
 @end

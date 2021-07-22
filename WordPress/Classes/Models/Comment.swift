@@ -39,6 +39,11 @@ extension Comment {
         return status.isEqual(to: CommentStatusType.approved.description)
     }
 
+    @objc func isReadOnly() -> Bool {
+        // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
+        return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
+    }
+
     func numberOfLikes() -> Int {
         return likeCount.intValue
     }
