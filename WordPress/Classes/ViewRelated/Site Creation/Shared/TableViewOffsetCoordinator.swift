@@ -27,7 +27,7 @@ final class TableViewOffsetCoordinator {
 
     /// Tracks the content offset introduced by the keyboard being presented
     private var keyboardContentOffset = CGFloat(0)
-    
+
     /// Track scroll position of tableview for reloads
     private var scrollPosition = CGPoint(x: 0, y: 0)
 
@@ -61,17 +61,17 @@ final class TableViewOffsetCoordinator {
         guard let tableView = tableView, keyboardContentOffset > 0, tableViewHasBeenAdjusted == false else {
             return
         }
-        
+
         // if table is taller than screen, apply an inset to make the search field at the bottom visible
         if UIScreen.main.bounds.height < tableView.bounds.height {
             // no change
         } else {
             tableView.contentInset.bottom = keyboardContentOffset*1.5
         }
-        
+
         tableViewHasBeenAdjusted = true
         scrollPosition = tableView.contentOffset
-        
+
         // removed insets that had been here, as they made content disappear with large text sizes
         // replaced with contentoffset and scroll of tableview
     }
@@ -82,27 +82,27 @@ final class TableViewOffsetCoordinator {
         guard WPDeviceIdentification.isiPhone(), tableViewHasBeenAdjusted == true else {
             return
         }
-        
+
         var offset = false
-    
+
         UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             guard let self = self, let tableView = self.tableView else {
                 return
             }
-            
+
             // if table is taller than screen, an offset has been applied
             if UIScreen.main.bounds.height < tableView.bounds.height {
                 offset = false
             } else {
                 offset = true
             }
-            
+
             if WPDeviceIdentification.isiPhone(), let header = tableView.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 1.0
             }
         }, completion: { [weak self] _ in
             self?.tableViewHasBeenAdjusted = false
-            
+
             // if offset has been applied, set scroll position to previous placement to ensure search field is visible
             if offset {
                 self?.tableView?.layoutIfNeeded()
@@ -116,7 +116,7 @@ final class TableViewOffsetCoordinator {
         guard let payload = KeyboardInfo(notification) else {
             return
         }
-        
+
         let keyboardScreenFrame = payload.frameEnd
         keyboardContentOffset = keyboardScreenFrame.height
 
@@ -140,7 +140,7 @@ final class TableViewOffsetCoordinator {
 
         let bottomInset = footerControlContainer.safeAreaInsets.bottom
         constraintConstant -= bottomInset
-        
+
 
         if let header = tableView?.tableHeaderView as? TitleSubtitleTextfieldHeader {
             let textFieldFrame = header.textField.frame
@@ -149,7 +149,7 @@ final class TableViewOffsetCoordinator {
 
             toolbarBottomConstraint?.constant = constraintConstant
             footerControlContainer.setNeedsUpdateConstraints()
-            
+
             UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 guard let self = self, let tableView = self.tableView else {
                     return
