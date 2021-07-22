@@ -22,9 +22,8 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         mockRemoteApi = MockWordPressComRestApi()
         blog = BlogBuilder(context)
             .with(wordPressVersion: "5.8")
-            .with(isHostedAtWPCom: true)
+            .withAnAccount()
             .build()
-
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
     }
 
@@ -118,8 +117,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     private func validateThemeResponse() {
+        let siteID = blog.dotComID ?? 0
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
-        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp/v2/sites/\(blog.dotComID!.intValue)/themes")
+        XCTAssertEqual(self.mockRemoteApi.URLStringPassedIn!, "/wp/v2/sites/\(siteID)/themes")
         XCTAssertEqual((self.mockRemoteApi.parametersPassedIn as! [String: String])["status"], "active")
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
         XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
@@ -246,8 +246,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_OrgSite_NoPlugin() {
-        blog = BlogBuilder(context).build()
-
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
@@ -269,8 +267,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_OrgSite() {
-        blog = BlogBuilder(context).build()
-
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
@@ -289,6 +285,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     func testFetchBlockEditorSettings_Com5_8Site() {
         blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
 
@@ -308,6 +305,13 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_Com5_9Site() {
+        blog = BlogBuilder(context)
+            .with(wordPressVersion: "5.9")
+            .withAnAccount()
+            .build()
+
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { _ in
@@ -332,8 +336,23 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         } else {
             XCTAssertNil(self.blog.blockEditorSettings?.rawStyles)
         }
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
+
+        guard let blockEditorSettings = blog.blockEditorSettings else {
+            XCTFail("Block editor settings should exist on the blog at this point")
+            return
+        }
+
+        guard let colors = blockEditorSettings.colors else {
+            XCTFail("Block editor colors should exist at this point")
+            return
+        }
+        XCTAssertGreaterThan(colors.count, 0)
+
+        guard let gradients = blockEditorSettings.gradients else {
+            XCTFail("Block editor gradients should exist at this point")
+            return
+        }
+        XCTAssertGreaterThan(gradients.count, 0)
     }
 }
 
