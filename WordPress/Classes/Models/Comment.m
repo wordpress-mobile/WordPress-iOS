@@ -73,9 +73,5 @@
     return [[self authorURL] isEqual:[self.post authorURL]];
 }
 
-- (NSNumber *)numberOfLikes
-{
-    return self.likeCount ?: @(0);
-}
 
 @end

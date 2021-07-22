@@ -45,6 +45,5 @@
 - (NSString *)sectionIdentifier;
 - (BOOL)isReadOnly;
 - (BOOL)authorIsPostAuthor;
-- (NSNumber *)numberOfLikes;
 
 @end

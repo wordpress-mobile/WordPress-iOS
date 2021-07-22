@@ -32,6 +32,9 @@ extension Comment {
     }
 }
 
+    func numberOfLikes() -> Int {
+        return likeCount.intValue
+    }
 
 private extension Comment {
 
