@@ -194,6 +194,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     private func getImageUrlForWidth(imageUrl: String) -> String {
+        // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
         if false == imageUrl.hasPrefix("http") {
             return String(format: "http:%@", imageUrl)
         }
@@ -205,7 +206,6 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
-        // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
         let imageUrlForWidth = self.getImageUrlForWidth( imageUrl: imageUrl )
         let screenshotUrl = URL(string: imageUrlForWidth)
 
