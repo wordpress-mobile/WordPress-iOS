@@ -62,21 +62,6 @@
 
 }
 
-- (NSString *)author
-{
-    NSString *authorName = nil;
-
-    [self willAccessValueForKey:@"author"];
-    authorName = [self primitiveValueForKey:@"author"];
-    [self didAccessValueForKey:@"author"];
-
-    if (authorName == nil || [@"" isEqualToString:authorName]) {
-        authorName = NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.");
-    }
-    return authorName;
-
-}
-
 - (NSDate *)dateCreated
 {
     NSDate *date = nil;
