@@ -5,7 +5,7 @@ extension ListTableViewCell {
     @objc func configureWithComment(_ comment: Comment) {
         // indicator view
         indicatorColor = Style.pendingIndicatorColor
-        showsIndicator = (comment.status == CommentStatusPending)
+        showsIndicator = (comment.status == CommentStatusType.pending.description)
 
         // avatar image
         placeholderImage = Style.gravatarPlaceholderImage

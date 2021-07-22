@@ -4,16 +4,6 @@
 @class Blog;
 @class BasePost;
 
-// This is the notification name used with NSNotificationCenter
-extern NSString * const CommentUploadFailedNotification;
-
-extern NSString * const CommentStatusPending;
-extern NSString * const CommentStatusApproved;
-extern NSString * const CommentStatusUnapproved;
-extern NSString * const CommentStatusSpam;
-// Draft status is for comments that have not yet been successfully published
-// we can use this status to restore comment replies that the user has written
-extern NSString * const CommentStatusDraft;
 
 @interface Comment: NSManagedObject
 
