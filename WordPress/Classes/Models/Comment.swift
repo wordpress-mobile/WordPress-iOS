@@ -39,6 +39,9 @@ extension Comment {
         return likeCount.intValue
     }
 
+    func hasAuthorUrl() -> Bool {
+        return author_url != nil && !author_url.isEmpty
+    }
 private extension Comment {
 
     func decodedContent() -> String {

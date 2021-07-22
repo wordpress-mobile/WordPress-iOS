@@ -39,7 +39,6 @@
 
 /// Helper methods
 ///
-- (BOOL)hasAuthorUrl;
 - (BOOL)isApproved;
 - (NSString *)sectionIdentifier;
 - (BOOL)isReadOnly;

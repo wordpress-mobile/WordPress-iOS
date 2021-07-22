@@ -43,10 +43,6 @@
 }
 
 
-- (BOOL)hasAuthorUrl
-{
-    return self.author_url && ![self.author_url isEqualToString:@""];
-}
 
 - (BOOL)isApproved
 {
