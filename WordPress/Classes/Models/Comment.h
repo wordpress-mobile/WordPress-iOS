@@ -37,15 +37,4 @@
 @property (nonatomic, assign) BOOL isNew;
 @property (nonatomic) BOOL canModerate;
 
-/// Helper methods
-///
-+ (NSString *)titleForStatus:(NSString *)status;
-- (NSString *)authorUrlForDisplay;
-- (BOOL)hasAuthorUrl;
-- (BOOL)isApproved;
-- (NSString *)sectionIdentifier;
-- (BOOL)isReadOnly;
-- (BOOL)authorIsPostAuthor;
-- (NSNumber *)numberOfLikes;
-
 @end

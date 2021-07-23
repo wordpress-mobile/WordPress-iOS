@@ -184,9 +184,7 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.setTitleColor(.primaryLight, for: .highlighted)
         authorButton.setTitleColor(.neutral(.shade60), for: .disabled)
 
-        if comment.authorIsPostAuthor() {
-            authorButton.setTitleColor(.accent, for: .normal)
-        } else if comment.hasAuthorUrl() {
+        if comment.hasAuthorUrl() {
             authorButton.setTitleColor(.primary, for: .normal)
         } else {
             authorButton.isEnabled = false
@@ -225,9 +223,17 @@ class ReaderCommentCell: UITableViewCell {
         actionBar.isHidden = !enableLoggedInFeatures
         replyButton.isHidden = !showReply
 
-        let likesCount = comment.numberOfLikes().intValue
-        let likesTitleFormat = likesCount == 1 ? LikesTitles.singular : LikesTitles.plural
-        let likesTitle = String(format: likesTitleFormat, likesCount)
+        let likesCount = comment.numberOfLikes()
+
+        let likesTitle: String = {
+            if likesCount == 0 {
+                return LikesTitles.none
+            }
+
+            let likesTitleFormat = likesCount == 1 ? LikesTitles.singular : LikesTitles.plural
+            return String(format: likesTitleFormat, likesCount)
+        }()
+
         likeButton.setTitle(likesTitle, for: .normal)
         likeButton.isSelected = comment.isLiked
     }
@@ -235,6 +241,7 @@ class ReaderCommentCell: UITableViewCell {
     private struct LikesTitles {
         static let plural = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
         static let singular = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+        static let none = NSLocalizedString("Like", comment: "Button title to Like a comment.")
 
     }
 
