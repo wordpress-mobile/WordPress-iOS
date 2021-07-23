@@ -17,7 +17,7 @@ public struct DispatchToken: Hashable, Equatable {
 /// A Dispatcher broadcasts a Payload to all registered subscribers.
 ///
 /// You can think of it as a strongly typed NotificationCenter, if it had been
-/// written for Swift instead of Objective-C.
+/// written for Objective-C instead of Swift.
 ///
 /// Dispatcher is not thread safe yet, and it expects its methods to be called
 /// from the main thread only.
