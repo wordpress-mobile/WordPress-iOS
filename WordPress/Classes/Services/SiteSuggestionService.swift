@@ -37,9 +37,14 @@ class SiteSuggestionService {
 
     /**
      If no suggestions already in Core Data, fetch them from the network and store them in Core Data.
+     Aborts and calls callback if the site does not support suggestions.
      @param blog The blog/site to prefetch suggestions for
      */
-    func prefetchSuggestions(for blog: Blog, completion: @escaping () -> Void) {
+    func prefetchSuggestionsIfNeeded(for blog: Blog, completion: @escaping () -> Void) {
+        guard shouldShowSuggestions(for: blog) else {
+            completion()
+            return
+        }
         let persistedSuggestions = retrievePersistedSuggestions(for: blog)
         if persistedSuggestions == nil || persistedSuggestions?.isEmpty == true {
             fetchAndPersistSuggestions(for: blog, completion: { _ in
