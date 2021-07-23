@@ -198,7 +198,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
         // Themes not hosted on WP.com have an incorrect screenshotUrl
         // it uses a // url (this is used on the web) when the scheme is not known.
         if !screenshotUrl.hasPrefix("http") && screenshotUrl.hasPrefix("//") {
-            screenshotUrl = String(format: "https:%@", imageUrl)
+            // Since not all sites support https
+            screenshotUrl = String(format: "http:%@", imageUrl)
         }
 
         guard var components = URLComponents(string: screenshotUrl) else {
@@ -207,6 +208,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         var queryItems: [URLQueryItem] = components.queryItems ??  []
         queryItems.append(URLQueryItem(name: "w", value: "\(presenter!.screenshotWidth)"))
+        queryItems.append(URLQueryItem(name: "zoom", value: "\(UIScreen.main.scale)"))
         components.queryItems = queryItems
 
         guard let urlString = components.url?.absoluteString else {
