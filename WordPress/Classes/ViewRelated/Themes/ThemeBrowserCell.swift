@@ -193,7 +193,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
         activityView.stopAnimating()
     }
 
-    private func getImageUrlForWidth(imageUrl: String) -> String {
+    private func imageUrlForWidth(imageUrl: String) -> String {
         // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
         if false == imageUrl.hasPrefix("http") {
             return String(format: "http:%@", imageUrl)
