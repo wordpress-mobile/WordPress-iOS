@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-15 15:08:08+0000 */
+/* Translation-Revision-Date: 2021-07-23 11:14:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -4471,7 +4471,7 @@
 "Note: Column layout may vary between themes and screen sizes" = "Notă: aranjamentul pe coloane poate varia în funcție de temă și dimensiunile ecranului";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
-"Nothing found." = "N-am găsit nimic.";
+"Nothing found." = "Nu am găsit nimic.";
 
 /* A message title */
 "Nothing liked yet" = "Nu ai apreciat nimic până acum";

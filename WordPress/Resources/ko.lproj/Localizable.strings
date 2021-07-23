@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-07 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-07-23 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -507,7 +507,7 @@
 "Add image, or avatar, to represent this new account." = "새 계정을 나타내는 이미지 또는 아바타를 추가합니다.";
 
 /* No comment provided by engineer. */
-"Add link" = "Add link";
+"Add link" = "링크 추가";
 
 /* No comment provided by engineer. */
 "Add link text" = "링크 텍스트 추가";
@@ -2342,7 +2342,7 @@
 "Duplicate block" = "블록 복제하기";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT LINK";
+"EDIT LINK" = "링크 편집";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "동쪽";
@@ -2466,16 +2466,16 @@
 "Email sent!" = "이메일이 전송되었습니다.";
 
 /* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Embed caption. %s";
+"Embed caption. %s" = "캡션을 임베드합니다. %s";
 
 /* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Embed caption. Empty";
+"Embed caption. Empty" = "캡션을 임베드합니다. 비어 있음";
 
 /* No comment provided by engineer. */
-"Embed link" = "Embed link";
+"Embed link" = "링크 임베드";
 
 /* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "임베드된 %s의 콘텐츠는 지금 모바일 편집기에서 볼 수 없습니다. 임베드된 콘텐츠를 참조하려면 페이지를 미리 보세요.";
 
 /* Title for the Emoji section */
 "Emoji" = "이모티콘";
@@ -2494,7 +2494,7 @@
 "Enable Quick Start for Site" = "사이트에 대한 빠른 시작 사용 설정";
 
 /* Title for the button that will enable the site stats module. */
-"Enable Site Stats" = "Enable Site Stats";
+"Enable Site Stats" = "사이트 통계 활성화";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "비디오에 소리를 녹음하려면 마이크 액세스를 허용하세요.";
@@ -2506,10 +2506,10 @@
 "Enable site notifications?" = "사이트 알림을 활성화하시겠습니까?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
-"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "트래픽, 좋아요, 댓글, 구독자에 대한 자세한 내용을 참조하려면 사이트 통계를 활성화하세요.";
 
 /* Text displayed while activating the site stats module. */
-"Enabling Site Stats..." = "Enabling Site Stats...";
+"Enabling Site Stats..." = "사이트 통계 활성화 중...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "암호화된 기록";
@@ -3431,7 +3431,7 @@
 "Invalid URL. Audio file not found." = "유효하지 않은 URL입니다. 오디오 파일을 찾을 수 없습니다.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+"Invalid URL. Please enter a valid URL." = "유효하지 않은 URL입니다. 유효한 URL을 입력하세요.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "유효하지 않은 엔드포인트입니다";
@@ -3482,7 +3482,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "통계를 보려면 젯팩 %@ 이상이 필요합니다. 젯팩을 업데이트하시겠어요?";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "멀티사이트 설치용 Jetpack Backup에서는 다운로드 가능한 백업이 제공되며, 원클릭 복원은 없습니다. 자세한 내용은 %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "젯팩 자주 찾는 질문";
@@ -3831,7 +3831,7 @@
 "Logs" = "로그";
 
 /* Title for the error view when the stats module is disabled. */
-"Looking for stats?" = "Looking for stats?";
+"Looking for stats?" = "통계를 찾으시나요?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "주소 찾기...";
@@ -4234,7 +4234,7 @@
 "No Items" = "항목 없음";
 
 /* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "No Jetpack sites found";
+"No Jetpack sites found" = "젯팩 사이트를 찾을 수 없음";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "메뉴 없음";
@@ -8025,7 +8025,7 @@
 "We're restoring your site back to %1$@." = "사이트를 %1$@(으)로 다시 복원하는 중입니다.";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "죄송합니다. 지금은 Jetpack Scan이 멀티사이트 WordPress 설치와 호환되지 않습니다.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "파일 링크도 이메일로 보내드렸습니다.";
@@ -8208,7 +8208,7 @@
 "WordPress for iOS Support" = "iOS용 워드프레스 지원";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress multisites are not supported";
+"WordPress multisites are not supported" = "WordPress 멀티사이트는 지원되지 않습니다.";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "워드프레스가 귀하의 글에 현재 위치를 추가하려면 장치의 현재 위치에 액세스할 수 있는 권한이 필요합니다. 프라이버시 설정을 업데이트하세요.";
@@ -8640,7 +8640,7 @@
 "viewer" = "방문자";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
+"visit our documentation page" = "설명서 페이지 방문";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "을(를) 이후에 사용할 수 없게 됩니다.";
