@@ -206,7 +206,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
-        let imageUrlForWidth = self.getImageUrlForWidth( imageUrl: imageUrl )
+        let imageUrlForWidth = imageUrlForWidth( imageUrl: imageUrl )
         let screenshotUrl = URL(string: imageUrlForWidth)
 
         imageView.backgroundColor = Styles.placeholderColor
