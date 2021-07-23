@@ -60,17 +60,6 @@ extension Comment {
         return author_url != nil && !author_url.isEmpty
     }
 
-    func authorIsPostAuthor() -> Bool {
-        guard let commentAuthor = author_url,
-              !commentAuthor.isEmpty,
-            let readerPost = (post as? ReaderPost),
-            let postAuthor = readerPost.authorURL() else {
-            return false
-        }
-
-        return commentAuthor.isEqual(to: postAuthor)
-    }
-
 }
 
 private extension Comment {

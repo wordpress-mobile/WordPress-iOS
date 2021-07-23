@@ -184,9 +184,7 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.setTitleColor(.primaryLight, for: .highlighted)
         authorButton.setTitleColor(.neutral(.shade60), for: .disabled)
 
-        if comment.authorIsPostAuthor() {
-            authorButton.setTitleColor(.accent, for: .normal)
-        } else if comment.hasAuthorUrl() {
+        if comment.hasAuthorUrl() {
             authorButton.setTitleColor(.primary, for: .normal)
         } else {
             authorButton.isEnabled = false
