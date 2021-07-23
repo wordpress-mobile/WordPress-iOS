@@ -545,7 +545,8 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     internal func updateTitleViewVisibility(_ animated: Bool = true) {
-        let shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
+        var shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
+        shouldHide = headerHeightConstraint.isActive ? shouldHide : true
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
 
