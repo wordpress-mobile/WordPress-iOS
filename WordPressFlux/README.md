@@ -191,7 +191,7 @@ These usage examples are meant to showcase the different components from WordPre
 
 Previous to this, the WordPress app handled data through `Service` classes. A `Service` class would provide all the operations relevant to a specific entity, like syncing or modifying objects. Services would be in charge of calling the appropriate `Remote` classes when they needed to talk to the network.
 
-The instances of the Service class were meant to be short-lived, and a View Controller would instantiate one, perform a request and dispose of it. This made usage easy, but it meas there was no shared state, and nothing to prevent duplicate or conflicting requests.
+The instances of the Service class were meant to be short-lived, and a View Controller would instantiate one, perform a request and dispose of it. This made usage easy, but it means there was no shared state, and nothing to prevent duplicate or conflicting requests.
 
 The most common scenario for loading objects from the network would be:
 
