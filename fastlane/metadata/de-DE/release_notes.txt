@@ -5,5 +5,3 @@ Außerdem haben wir einen Fehler bei der Blockauswahl auf iPads behoben und die 
 Wenn du Probleme beim Aktualisieren mit dem Folgen-Button im Reader hattest, kannst du dich jetzt entspannt zurücklehnen. Alle Probleme wurden behoben.
 
 Autoren und Mitarbeiter tappen jetzt nicht mehr im Dunkeln! Kommentare einer Website können ab sofort über Meine Websites > Kommentare angezeigt werden.
-
-Wir haben einen Fehler beim Tippen auf die Benachrichtigungen behoben.
