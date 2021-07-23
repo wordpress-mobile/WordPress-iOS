@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+import OHHTTPStubs
 
 private extension URLRequest {
     var httpBodyString: String? {
