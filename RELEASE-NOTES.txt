@@ -1,3 +1,7 @@
+18.0
+-----
+* [*] Resolved an issue where authentication tokens weren't be regenerated when disabled on the server. [#16920]
+
 17.9
 -----
 * [internal] Redirect Terms and service to open the page in an external web view [#16907]
