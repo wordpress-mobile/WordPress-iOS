@@ -1,6 +1,6 @@
 # WordPressFlux - A Flux-inspired data flow architecture
 
-WordPressFlux provides the tools to build a data flow architecture similar to [Flux][1].
+WordPressFlux provides the tools to build a data flow architecture similar to [Flux](https://github.com/facebook/flux).
 
 The main design goal for this is to decouple how data is acquired, how it’s modified, and who is interested in the data.
 
