@@ -9,29 +9,29 @@ import WordPressFlux
 /// UNNotificationAction instantiation, along with the required handlers.
 ///
 final class InteractiveNotificationsManager: NSObject {
-    
+
     class EventTracker {
         enum Event: String {
             case notificationTapped = "notification_tapped"
         }
-        
+
         enum Properties: String {
             case notificationType = "notification_type"
         }
-        
+
         enum NotificationType: String {
             case bloggingReminders = "blogging_reminders"
         }
-        
+
         private let track: (AnalyticsEvent) -> Void
-        
+
         init(trackMethod track: @escaping (AnalyticsEvent) -> Void = WPAnalytics.track) {
             self.track = track
         }
-        
+
         func notificationTapped(type: NotificationType) {
             let event = AnalyticsEvent(name: Event.notificationTapped.rawValue, properties: [Properties.notificationType.rawValue: type.rawValue])
-                                       
+
             track(event)
         }
     }
@@ -39,7 +39,7 @@ final class InteractiveNotificationsManager: NSObject {
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
     @objc static let shared = InteractiveNotificationsManager()
-    
+
     /// The analytics event tracker.
     ///
     private let eventTracker = EventTracker()
@@ -231,7 +231,7 @@ final class InteractiveNotificationsManager: NSObject {
                 // specific notification type for now in a way that matches Android, but using a mechanism that
                 // is extensible to track other notification types in the future.
                 eventTracker.notificationTapped(type: .bloggingReminders)
-                
+
                 if identifier == UNNotificationDefaultActionIdentifier {
                     let targetBlog: Blog? = blog(from: threadId)
 
