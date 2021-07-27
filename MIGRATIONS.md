@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 128
+
+@scoutharris 2021-07-27
+
+- `Comment`: added `rawContent` attribute. (required, default empty string, `String`)
+
 ## WordPress 127
 
 @chipsnyder 2021-07-1
