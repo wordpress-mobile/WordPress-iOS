@@ -8,6 +8,14 @@ use_plugins: &use_plugins
 xcode_version: &xcode_version
   IMAGE_ID: xcode-12.5.1
 
+env: &env
+  # If you'll need more than one key-value, update to:
+  #
+  # env:
+  #   <<: *xcode_version
+  #   other_key: other_value
+  env: *xcode_version
+
 # This is the default pipeline – it will build and test the app
 steps:
   #################
@@ -16,7 +24,7 @@ steps:
   - label: ":pipeline: Build"
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
-    env: *xcode_version
+    <<: *env
     <<: *use_plugins
 
   #################
@@ -31,7 +39,7 @@ steps:
       bundle install
       bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
     depends_on: "build"
-    env: *xcode_version
+    <<: *env
     <<: *use_plugins
 
   #################
@@ -68,7 +76,7 @@ steps:
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
     depends_on: "build"
-    env: *xcode_version
+    <<: *env
     <<: *use_plugins
 
   - label: "🧪 UI Tests (iPad)"
@@ -91,5 +99,5 @@ steps:
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
     depends_on: "build"
-    env: *xcode_version
+    <<: *env
     <<: *use_plugins
