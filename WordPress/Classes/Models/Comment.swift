@@ -64,10 +64,6 @@ extension Comment {
 
 private extension Comment {
 
-    func decodedContent() -> String {
-        return content.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
-    }
-
     func authorName() -> String {
         guard let authorName = author,
               !authorName.isEmpty else {
@@ -100,12 +96,14 @@ extension Comment: PostContentProvider {
         return displayAuthor.isEmpty ? String() : displayAuthor
     }
 
+    // Used in Comment details (non-threaded)
     public func contentForDisplay() -> String {
-        return decodedContent()
+        return rawContent
     }
 
+    // Used in Comments list
     public func contentPreviewForDisplay() -> String {
-        return decodedContent()
+        return rawContent
     }
 
     public func avatarURLForDisplay() -> URL? {
