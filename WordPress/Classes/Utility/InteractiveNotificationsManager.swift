@@ -9,10 +9,40 @@ import WordPressFlux
 /// UNNotificationAction instantiation, along with the required handlers.
 ///
 final class InteractiveNotificationsManager: NSObject {
+    
+    class EventTracker {
+        enum Event: String {
+            case notificationTapped = "notification_tapped"
+        }
+        
+        enum Properties: String {
+            case notificationType = "notification_type"
+        }
+        
+        enum NotificationType: String {
+            case bloggingReminders = "blogging_reminders"
+        }
+        
+        private let track: (AnalyticsEvent) -> Void
+        
+        init(trackMethod track: @escaping (AnalyticsEvent) -> Void = WPAnalytics.track) {
+            self.track = track
+        }
+        
+        func notificationTapped(type: NotificationType) {
+            let event = AnalyticsEvent(name: Event.notificationTapped.rawValue, properties: [Properties.notificationType.rawValue: type.rawValue])
+                                       
+            track(event)
+        }
+    }
 
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
     @objc static let shared = InteractiveNotificationsManager()
+    
+    /// The analytics event tracker.
+    ///
+    private let eventTracker = EventTracker()
 
     /// Returns the Core Data main context.
     ///
@@ -193,6 +223,15 @@ final class InteractiveNotificationsManager: NSObject {
                     return true
                 }
             case .bloggingReminderWeekly:
+                // This event should actually be tracked for all notification types, but in order to implement
+                // the tracking this correctly we'll have to review the other notification_type values to match Android.
+                // https://github.com/wordpress-mobile/WordPress-Android/blob/e3b65c4b1adc0fbc102e640750990d7655d89185/WordPress/src/main/java/org/wordpress/android/push/NotificationType.kt
+                //
+                // Since this task is non-trivial and beyond the scope of my current work, I'll only track this
+                // specific notification type for now in a way that matches Android, but using a mechanism that
+                // is extensible to track other notification types in the future.
+                eventTracker.notificationTapped(type: .bloggingReminders)
+                
                 if identifier == UNNotificationDefaultActionIdentifier {
                     let targetBlog: Blog? = blog(from: threadId)
 
