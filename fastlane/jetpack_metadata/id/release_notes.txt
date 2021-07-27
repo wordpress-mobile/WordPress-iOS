@@ -1,1 +1,9 @@
-Editor blok kini dilengkapi Petak tata letak blok yang baru dan karena kami juga mengutak-atik baris kode editor, kami menyunting baris kode sehingga lebih ramah untuk digunakan para sobat pengguna tablet. Masalah tombol penyisip tampilan tablet di Editor blok yang menyebalkan kini teratasi.
+Blok teks sudah ditingkatkan. Fungsi penyesuaian warna dan latar belakang ditambahkan ke blok teks editor blok.
+
+Pembaruan untuk editor blok lainnya mencakup teratasinya masalah pemilih blok di iPad dan masalah layar yang memuat pembaruan dan pembaruan gagal di editor versi web.
+
+Pernah mengalami masalah saat menyegarkan tombol ikuti pada Pembaca? Jangan khawatir, masalahnya kini sudah teratasi.
+
+Penulis dan Kontributor kini tidak lagi ketinggalan berita! Mereka kini bisa melihat Komentar situs melalui Situs Saya > Komentar.
+
+Bug yang terjadi saat pemberitahuan diketuk telah teratasi.

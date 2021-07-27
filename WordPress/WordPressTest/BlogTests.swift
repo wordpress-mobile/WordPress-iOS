@@ -16,7 +16,6 @@ final class BlogTests: XCTestCase {
         super.tearDown()
     }
 
-
     // MARK: - Atomic Tests
     func testIsAtomic() {
         let blog = BlogBuilder(context)
@@ -137,6 +136,33 @@ final class BlogTests: XCTestCase {
             .build()
 
         XCTAssertFalse(blog.supports(.pluginManagement))
+    }
+
+    func testStatsActiveForSitesHostedAtWPCom() {
+        let blog = BlogBuilder(context)
+            .isHostedAtWPcom()
+            .with(modules: [""])
+            .build()
+
+        XCTAssertTrue(blog.isStatsActive())
+    }
+
+    func testStatsActiveForSitesNotHotedAtWPCom() {
+        let blog = BlogBuilder(context)
+            .isNotHostedAtWPcom()
+            .with(modules: ["stats"])
+            .build()
+
+        XCTAssertTrue(blog.isStatsActive())
+    }
+
+    func testStatsNotActiveForSitesNotHotedAtWPCom() {
+        let blog = BlogBuilder(context)
+            .isNotHostedAtWPcom()
+            .with(modules: [""])
+            .build()
+
+        XCTAssertFalse(blog.isStatsActive())
     }
 
     // MARK: - Blog.version string conversion testing

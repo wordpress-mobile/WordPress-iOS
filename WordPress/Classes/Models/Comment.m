@@ -37,6 +37,7 @@ NSString * const CommentStatusDraft = @"draft";
 @dynamic type;
 @dynamic isLiked;
 @dynamic likeCount;
+@dynamic canModerate;
 @synthesize isNew;
 @synthesize attributedContent;
 
@@ -153,6 +154,17 @@ NSString * const CommentStatusDraft = @"draft";
 - (BOOL)isApproved
 {
     return [self.status isEqualToString:CommentStatusApproved];
+}
+
+- (BOOL)isReadOnly
+{
+    // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
+    if ((self.blog.isHostedAtWPcom || self.blog.isAtomic)
+        && !self.canModerate && !self.isApproved) {
+        return YES;
+    }
+
+    return NO;
 }
 
 - (NSString *)contentForDisplay

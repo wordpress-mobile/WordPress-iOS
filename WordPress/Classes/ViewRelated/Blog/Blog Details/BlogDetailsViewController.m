@@ -429,10 +429,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
     }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
-        [AppConfiguration showsWhatIsNew]) {
-        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
-    }
 }
 
 - (CreateButtonCoordinator *)createButtonCoordinator
@@ -669,7 +665,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
 
-    if (section.showQuickStartMenu == true || (sectionNum == 0 && [Feature enabled:FeatureFlagNewNavBarAppearance])) {
+    if (section.showQuickStartMenu == true || sectionNum == 0) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
         // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0

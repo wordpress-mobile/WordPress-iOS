@@ -1,1 +1,9 @@
-O editor de blocos agora tem uma nova grade de layout de bloco. Enquanto vasculhávamos o código do editor, também o ajustamos para ser compatível com tablets. Além disso, corrigimos o problema que ocorria em tablets na visualização do botão de inserção no editor de blocos.
+Os blocos de texto ganharam algumas melhorias. A personalização de cor e de plano de fundo foi adicionada aos blocos de texto do editor de blocos.
+
+Outras atualizações no editor de blocos incluem a correção de um problema no seletor de blocos em iPads e atualização das telas de carregamento e falha na versão da Web do editor.
+
+Se você estava com problemas de atualização nos botões Seguir no Leitor, não se preocupe porque eles já foram resolvidos.
+
+Autores e contribuidores não ficam mais no escuro! Agora eles podem visualizar os comentários de um site em Meu site > Comentários.
+
+Correção de um bug que ocorria ao tocar em notificações.

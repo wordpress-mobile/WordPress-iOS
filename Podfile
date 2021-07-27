@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.36.0'
+    pod 'WordPressKit', '~> 4.37.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -166,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.56.0'
+    gutenberg :tag => 'v1.57.1'
 
     ## Third party libraries
     ## =====================
@@ -195,7 +195,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.5'
+    pod 'Automattic-Tracks-iOS', '~> 0.9.1'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -472,6 +472,17 @@ post_install do |installer|
       target.build_configurations.each do |configuration|
         pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
         configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      end
+    end
+
+    # Flag Alpha builds for Tracks
+    # ============================
+    installer.pods_project.targets.each do |target|
+      next unless target.name == "Automattic-Tracks-iOS"
+      target.build_configurations.each do |config|
+        if config.name == "Release-Alpha" or config.name == "Release-Internal"
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1']
+        end
       end
     end
 end

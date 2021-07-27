@@ -7,6 +7,7 @@ protocol JetpackScanView {
     func showNoConnectionError()
     func showGenericError()
     func showScanStartError()
+    func toggleHistoryButton(_ isEnabled: Bool)
 
     func presentAlert(_ alert: UIAlertController)
     func presentNotice(with title: String, message: String?)
@@ -251,7 +252,7 @@ class JetpackScanCoordinator {
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
         view.render()
-
+        view.toggleHistoryButton(scan?.isEnabled ?? false)
 
         togglePolling()
     }

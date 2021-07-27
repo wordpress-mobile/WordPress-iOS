@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ViewMoreRowDelegate: class {
+protocol ViewMoreRowDelegate: AnyObject {
     func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 

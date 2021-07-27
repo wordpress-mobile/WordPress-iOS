@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-07 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-07-18 19:50:14+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "添加图像或头像以表示此新帐户。";
 
 /* No comment provided by engineer. */
+"Add link" = "添加链接";
+
+/* No comment provided by engineer. */
 "Add link text" = "添加链接文字";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "需要有效的互联网连接才能查看插件";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "必须连接互联网才能查看统计数据";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "必须连接互联网才能查看历史记录";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "复制区块";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "编辑链接";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "东";
 
@@ -2462,6 +2465,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "电子邮件已发送！";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "嵌入说明文字。%s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "嵌入说明文字。空";
+
+/* No comment provided by engineer. */
+"Embed link" = "嵌入链接";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "来自 %s 的嵌入内容目前无法在手机编辑器中查看。请预览该页面以查看嵌入内容。";
+
 /* Title for the Emoji section */
 "Emoji" = "表情图示";
 
@@ -2478,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "为站点启用快速入门";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "启用站点统计";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "启用麦克风来记录制视频中的声音。";
 
@@ -2486,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "是否启用站点通知？";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "启用站点统计可查看您的浏览量、点赞、评论和订阅者的详细信息。";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "正在启用站点统计。。。";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "已加密日志";
@@ -3130,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "六级标题";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "帮助";
 
 /* Link to Help section
@@ -3405,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "无效 URL。请输入有效 URL。";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "端点无效";
 
@@ -3452,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "需要安装 Jetpack %@ 或更高版本。要更新 Jetpack 吗？";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "多站点安装的 Jetpack Backup 只提供可下载的备份，没有一键还原。更多信息 %1$s。";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack 常见问答";
@@ -3798,6 +3829,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "日志";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "想要查看统计？";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "正在查找地址...";
@@ -4193,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "无类别";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "无连接";
 
 /* List Editor Empty State Message */
 "No Items" = "没有条目";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "未找到Jetpack站点";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "无菜单";
@@ -5730,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "在WordPress\n查找站点或文章";
 
 /* No comment provided by engineer. */
-"Search block" = "搜索区块";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "搜索区块标签。当前文字为";
-
-/* No comment provided by engineer. */
-"Search blocks" = "搜索区块";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "搜索按钮。当前按钮文字为";
@@ -7994,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "我们正在恢复您的网站至 %1$@ 时的样子";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "抱歉，Jetpack Scan 目前与多站点 WordPress 安装不兼容。";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "我们还通过电子邮件向您发送了文件链接。";
 
@@ -8173,6 +8206,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS 支持";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "不支持WordPress多站点。";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress 必须获得访问设备当前位置的权限才能将其添加到您的文章。请更新您的隐私设置。";
@@ -8602,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "查看者";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "访问我们的文档页面";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "今后将无法再访问。";

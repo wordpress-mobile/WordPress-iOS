@@ -1,1 +1,9 @@
-Blockredigeraren har ett helt nytt Layoutrutnät-block och medan vi grävde runt i koden för redigeraren passade vi även på att justera koden för surfplatteanvändning. Det irriterande problemet med infogarknappen i blockredigeraren i surfplattevy har nu åtgärdats.
+Lite kärlek till textblocken. Färg- och bakgrundsanpassning har lagts till för blockredigerarens textblock.
+
+Andra blockredigeraruppdateringar inkluderar ett åtgärdat problem med blockväljaren på iPad och uppdaterade hämtar- och misslyckades-skärmar för webbversionen av redigeraren.
+
+Om du har stött på problem med att uppdatera Följ-knapparna i läsaren kan du vara lugn nu. Dessa problem har nämligen åtgärdats.
+
+Författare och deltagare kan se mer! De kan nu visa kommentarer på en webbplats via Min webbplats > Kommentarer.
+
+Ett fel som uppstod när man tryckte på aviseringar har åtgärdats.

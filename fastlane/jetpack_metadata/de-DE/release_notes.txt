@@ -1,1 +1,9 @@
-Der Layoutraster-Block im Block-Editor hat einen frischen neuen Look bekommen und wo wir gerade schon im Editor-Code waren, haben wir auch gleich noch den Code für Tablet-Benutzer verbessert. Der ärgerliche Fehler am Inserter-Button in der Tablet-Ansicht im Block-Editor ist jetzt auch behoben.
+Wir haben uns um die Text-Blöcke gekümmert. Die Anpassung von Farbe und Hintergrund wurde den Text-Blöcken im Block-Editor hinzugefügt.
+
+Außerdem haben wir einen Fehler bei der Blockauswahl auf iPads behoben und die Bildschirme für die Anzeige von „wird geladen“ und „fehlgeschlagen“ in der Web-Version des Editors aktualisiert.
+
+Wenn du Probleme beim Aktualisieren mit dem Folgen-Button im Reader hattest, kannst du dich jetzt entspannt zurücklehnen. Alle Probleme wurden behoben.
+
+Autoren und Mitarbeiter tappen jetzt nicht mehr im Dunkeln! Kommentare einer Website können ab sofort über Meine Websites > Kommentare angezeigt werden.
+
+Wir haben einen Fehler beim Tippen auf die Benachrichtigungen behoben.

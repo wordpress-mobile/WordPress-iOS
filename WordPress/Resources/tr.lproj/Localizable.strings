@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-08 12:54:08+0000 */
+/* Translation-Revision-Date: 2021-07-21 17:20:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Bu yeni hesabı temsil edecek görsel veya avatar ekleyin.";
 
 /* No comment provided by engineer. */
+"Add link" = "Bağlantı ekle";
+
+/* No comment provided by engineer. */
 "Add link text" = "Bağlantı metni ekle";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Eklentileri görüntüleyebilmek için etkin bir internet bağlantısı gerekiyor";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "İstatistikleri görmek için etkin bir internet bağlantısı gerekmektedir";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Geçmişi görüntülemek için etkin bir internet bağlantısı gereklidir";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Bloğu çoğalt";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "DÜZENLEME BAĞLANTISI";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Doğu";
 
@@ -2462,6 +2465,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-posta gönderildi!";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Gömme başlığı. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Gömme başlığı. Boş";
+
+/* No comment provided by engineer. */
+"Embed link" = "Gömme bağlantısı";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "%s tarafından sağlanan gömülü içerik mobil düzenleyicide şu an görüntülenemiyor. Lütfen gömülü içeriği görmek için sayfaya ön izleme yapın.";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
@@ -2478,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Site için hızlı başlatmayı etkinleştir";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Site istatistiklerini etkinleştir";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Videolarınızdaki sesleri kaydetmek için mikrofon erişimini etkinleştir.";
 
@@ -2486,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Site bildirimleri etkinleştirilsin mi?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Trafiğiniz, beğenileriniz, yorumlarınız ve aboneleriniz hakkındaki ayrıntılı bilgileri görmek için site istatistiklerini etkinleştirin.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Site istatistikleri etkinleştiriliyor...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Şifreli günlükler";
@@ -3130,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Başlık 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Yardım";
 
 /* Link to Help section
@@ -3405,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Geçersiz URL. Ses dosyası bulunamadı.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "Geçersiz adres. Lütfen geçerli bir adres girin.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Geçersiz uç nokta";
 
@@ -3452,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "İstatistikler için Jetpack %@ veya sonraki sürümü gerekir. Jetpack’in sürümünü güncelleştirmek ister misiniz?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Çoklu siteler için Jetpack yedekleri indirilebilir yedek dosyaları sunar, tek tıkla geri yükleme yoktur. Daha fazla bilgi için %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack SSS";
@@ -3798,6 +3829,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Kütükler";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "İstatistiklere mi ihtiyacınız var?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Adres aranıyor...";
@@ -4193,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Kategori yok";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Bağlantı yok";
 
 /* List Editor Empty State Message */
 "No Items" = "Öge yok";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Hiçbir Jetpack sitesi bulunamadı";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Menü yok";
@@ -5730,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "Yazı veya site için\nWordPressde arayın";
 
 /* No comment provided by engineer. */
-"Search block" = "Arama bloğu";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Arama bloğu etiketi. Mevcut metin";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Arama blokları";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Arama düğmesi. Geçerli düğme metni";
@@ -7994,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Siteniz %1$@ konumuna geri yükleniyor.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Üzgünüz, Jetpack Tarama henüz çoklu site WordPress yüklemelerine uyumlu değil.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Ayrıca dosyanızın bağlantısı da e-postayla adresinize gönderildi.";
 
@@ -8173,6 +8206,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "iOS için WordPress desteği";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "WordPress çoklu siteleri desteklenmiyor";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress mevcut yazıya konum bilgileri ekleyebilmek için cihazınızın şu anki konumuna erişme iznine ihtiyaç duyuyor. Lütfen gizlilik ayarlarınızı güncelleyin.";
@@ -8602,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "izleyici";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "belgeler sayfamızı ziyaret edin";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "gelecekte kullanılamayacak.";

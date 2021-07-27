@@ -1,1 +1,9 @@
-Blok düzenleyicide parlak yeni bir blok Düzen ızgarası var ve biz düzenleyici kodunu araştırırken, tablet kullanan arkadaşlarımız için kodu da değiştirdik. Blok düzenleyicideki sinir bozucu yerleştirici düğmesi tablet görünümü sorunu artık düzeltildi.
+Metin blokları daha da güzelleşiyor. Blok düzenleyicinin metin blokları kısmına renk ve arkaplan özelleştirme seçenekleri eklendi.
+
+Diğer blok düzenleyici geliştirmelerinin arasında iPad üzerinde blok seçici ile ilgili bir sorunun çözülmesi ve düzenleyicinin web sürümünün yüklenme ve hata ekranlarının güncellenmesi yer alıyor.
+
+Daha önce Okuyucu'daki abone olma düğmelerinde bazı yenileme sorunlarıyla karşılaştıysanız, artık rahatlayabilirsiniz çünkü o sorunlar da çözüldü.
+
+Yazarlara ve Katkıda Bulunanlara ulaşmak artık çok daha kolay! Web sitelerinin Yorumlarını, Sitem > Yorumlar üzerinden görüntüleyebilecekler.
+
+Bildirimlere tıklarken gerçekleşen bir hata giderildi.

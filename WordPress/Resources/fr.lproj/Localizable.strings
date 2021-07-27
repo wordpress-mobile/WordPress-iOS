@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-07 14:54:08+0000 */
+/* Translation-Revision-Date: 2021-07-23 11:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -507,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "Ajouter une image ou un avatar pour représenter ce nouveau compte.";
 
 /* No comment provided by engineer. */
+"Add link" = "Ajouter le lien";
+
+/* No comment provided by engineer. */
 "Add link text" = "Ajouter un texte de lien";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Une connexion Internet est obligatoire pour voir les extensions";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Une connexion Internet active est nécessaire pour afficher les stats";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Une connexion Internet active est nécessaire pour afficher l’historique";
@@ -2341,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "Dupliquer le bloc";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "MODIFIER LE LIEN";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Est";
 
@@ -2462,6 +2465,18 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail envoyé !";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Légende intégrée. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Légende intégrée. Vide";
+
+/* No comment provided by engineer. */
+"Embed link" = "Lien intégré";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Le contenu intégré à partir de %s n’est pas visible dans l’éditeur mobile pour le moment. Prévisualisez la page pour afficher le contenu intégré.";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
@@ -2478,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Activer le démarrage rapide pour le site";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Activer les statistiques du site";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Autoriser l’accès au micro pour enregistrer le son dans vos vidéos.";
 
@@ -2486,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Activer les notifications de site ?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Activez les statistiques du site pour afficher des informations détaillées sur votre trafic, vos préférences, vos commentaires et vos abonnés.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Activation des statistiques du site...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Journaux chiffrés";
@@ -3130,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Titre 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Aide";
 
 /* Link to Help section
@@ -3405,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL non valide. Fichier audio non trouvé.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "URL non valide. Veuillez entrer une URL valide.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Point de terminaison non valide";
 
@@ -3452,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ ou version ultérieure est requis pour les statistiques. Voulez-vous mettre à jour Jetpack ?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup pour les installations multisites fournit des sauvegardes téléchargeables, aucune restauration en un clic. Pour plus d’informations, %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "FAQ de Jetpack";
@@ -3798,6 +3829,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Logs";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Vous cherchez les statistiques ?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Recherche de l'adresse...";
@@ -4193,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Pas de catégorie";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Pas de connexion";
 
 /* List Editor Empty State Message */
 "No Items" = "Aucun élément";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "Aucun site Jetpack trouvé";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Aucun menu";
@@ -5730,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "Recherche WordPress\nd’un site ou d’un article";
 
 /* No comment provided by engineer. */
-"Search block" = "Rechercher un bloc";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "Rechercher une étiquette de bloc. Le texte actuel est";
-
-/* No comment provided by engineer. */
-"Search blocks" = "Rechercher des blocs";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Bouton de recherche. Le texte actuel du bouton est";
@@ -7994,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Nous sommes en train de restaurer votre site tel qu’il était le %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Désolé, Jetpack Scan n’est pas compatible avec les installations multisites de WordPress pour le moment.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Nous vous avons également envoyé par e-mail un lien vers votre fichier.";
 
@@ -8173,6 +8206,9 @@
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Support de WordPress pour iOS";
+
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "Les multisites WordPress ne sont pas pris en charge";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress a dans un premier temps besoin de la permission d'accéder au lieu actuel de votre appareil pour l'ajouter à votre article. Veuillez mettre à jour vos réglages de vie privée.";
@@ -8602,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "visiteur";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "visiter notre page de documentation";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "ne sera plus disponible dans le futur.";

@@ -1,7 +1,7 @@
-Hattest du auch schon immer den Wunsch, dass dir jemand eine Erinnerung an dem Tag schicken würde, an dem du einen Blogbeitrag veröffentlichen wolltest? Wir haben diesen Wunsch jetzt erfüllt! Wir haben die Möglichkeit hinzugefügt, Blogging-Erinnerungen einzurichten. Wähle einfach die Tage aus, an denen du neue Beiträge veröffentlichen möchtest, und wir senden dir an diesen Tagen eine Benachrichtigung dazu.
+Wir haben uns um die Text-Blöcke gekümmert. Die Anpassung von Farbe und Hintergrund wurde den Text-Blöcken im Block-Editor hinzugefügt.
 
-Solltest du deine Website selbst hosten und Jetpack nicht verwenden, kannst du deren Plugins jetzt verwalten (installieren, deinstallieren, aktivieren und deaktivieren).
+Außerdem haben wir einen Fehler bei der Blockauswahl auf iPads behoben und die Bildschirme für die Anzeige von „wird geladen“ und „fehlgeschlagen“ in der Web-Version des Editors aktualisiert.
 
-Der Layoutraster-Block im Block-Editor hat einen frischen neuen Look bekommen und wo wir gerade schon im Editor-Code waren, haben wir auch gleich noch den Code für Tablet-Benutzer verbessert. Der ärgerliche Fehler am Inserter-Button in der Tablet-Ansicht im Block-Editor ist jetzt auch behoben.
+Wenn du Probleme beim Aktualisieren mit dem Folgen-Button im Reader hattest, kannst du dich jetzt entspannt zurücklehnen. Alle Probleme wurden behoben.
 
-Möchtest du dich über Reader-Listen und Artikel für Unterhaltungen per E-Mail anmelden? Sehr gut! Auch diese Möglichkeit haben wir jetzt hinzugefügt.
+Autoren und Mitarbeiter tappen jetzt nicht mehr im Dunkeln! Kommentare einer Website können ab sofort über Meine Websites > Kommentare angezeigt werden.

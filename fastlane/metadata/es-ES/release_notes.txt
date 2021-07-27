@@ -1,7 +1,7 @@
-Si has estado deseando que alguien te envíe recordatorios los días que quieres publicar entradas en el blog, tu deseo se acaba de hacer realidad. Hemos añadido la posibilidad de solicitar recordatorios de blogueo. Simplemente elige tus días preferidos para bloguear y te enviaremos un aviso para que publiques ese día.
+Los bloques de texto reciben algo de cariño. Se ha añadido la personalización del color y del fondo a los bloques de texto del editor de bloques.
 
-Aquellos con sitios autoalojados que no usan Jetpack, ahora pueden gestionar (instalar, desinstalar, activar y desactivar) sus plugins.
+Otras actualizaciones del editor de bloques incluyen la corrección de un problema con el selector de bloques en iPad y la actualización de las pantallas de carga y de fallo para la versión web del editor.
 
-El editor de bloques tiene un nuevo y brillante bloque de diseño de cuadrícula y, mientras estábamos dando vueltas en el código del editor, también retocamos el código para nuestros amigos que usan tabletas. Ahora está corregido el molesto problema de la vista en la tableta del botón de inserción en el editor de bloques.
+Si has experimentado algunos problemas de refresco en el lector con los botones de seguimiento, ahora puedes estar tranquilo, ya que esos problemas han sido solucionados.
 
-¿Quieres suscribirte a las conversaciones por correo electrónico desde las listas y artículos del lector? ¡Bien, porque acabamos de añadir también esa posibilidad!
+¡Los autores y colaboradores ya no están a oscuras! Ahora pueden ver los comentarios de un sitio a través de «Mi sitio > Comentarios».
