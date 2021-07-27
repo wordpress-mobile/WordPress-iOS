@@ -40,7 +40,7 @@ class ReaderDetailCoordinator {
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
-        guard let account = AccountService(managedObjectContext: coreDataStack.mainContext).defaultWordPressComAccount() else {
+        guard let account = accountService.defaultWordPressComAccount() else {
             DDLogInfo("Account not available for Reader authentication")
             return nil
         }
@@ -59,6 +59,9 @@ class ReaderDetailCoordinator {
 
     /// Post Service
     private let postService: PostService
+
+    /// Used for `RequestAuthenticator` creation and likes filtering logic.
+    private let accountService: AccountService
 
     /// Post Sharing Controller
     private let sharingController: PostSharingController
@@ -103,6 +106,7 @@ class ReaderDetailCoordinator {
          readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
@@ -110,6 +114,7 @@ class ReaderDetailCoordinator {
         self.readerPostService = readerPostService
         self.topicService = topicService
         self.postService = postService
+        self.accountService = accountService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
         self.view = view
