@@ -166,7 +166,7 @@ class ReaderDetailCoordinator {
                                     let totalLikesExcludingSelf = totalLikes - (post.isLiked ? 1 : 0)
 
                                     // Split off current user's like from the list.
-                                    // Likes from self will always be placed in the sixth position, regardless of the when the post was liked.
+                                    // Likes from self will always be placed in the last position, regardless of the when the post was liked.
                                     if let userID = self?.accountService.defaultWordPressComAccount()?.userID.int64Value,
                                        let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
                                         currentLikeUser = filteredUsers.remove(at: userIndex)
