@@ -1,4 +1,4 @@
-use_plugins: &use_plugins
+x_use_plugins: &use_plugins
     plugins:
       - automattic/bash-cache#v1.0.0: ~
       - automattic/git-s3-cache#add/vm-host-support:
