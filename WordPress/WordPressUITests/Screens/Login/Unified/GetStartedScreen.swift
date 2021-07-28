@@ -5,7 +5,7 @@ private struct ElementStringIDs {
     static let navBar = "WordPress.GetStartedView"
     static let emailTextField = "Email address"
     static let continueButton = "Get Started Email Continue Button"
-    static let helpButton = "help-button" //added for support test
+    static let helpButton = "authenticator-help-button"
 }
 
 class GetStartedScreen: BaseScreen {
@@ -32,7 +32,6 @@ class GetStartedScreen: BaseScreen {
         return PasswordScreen()
     }
 
-    // Taps "Help" to enter the Support modal
     func selectHelp() -> SupportScreen {
         helpButton.tap()
 
