@@ -9,7 +9,7 @@ extension AccountService {
         guard
             let account = service.defaultWordPressComAccount(),
             let auth = RequestAuthenticator(account: account),
-            let url = URL(string:WPComDomain)
+            let url = URL(string: WPComDomain)
         else {
             return
         }
