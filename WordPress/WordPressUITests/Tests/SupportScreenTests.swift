@@ -22,6 +22,6 @@ class SupportScreenTests: XCTestCase {
         XCTAssert(supportScreen.isLoaded())
 
         //close SupportScreen modal before teartown
-        supportScreen.closeButton.tap()
+        supportScreen.dismiss()
     }
 }

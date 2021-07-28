@@ -40,6 +40,10 @@ class SupportScreen: BaseScreen {
         XCTAssert(activityLogs.exists)
     }
 
+    func dismiss() {
+        closeButton.tap()
+    }
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.activityLogs].exists
     }
