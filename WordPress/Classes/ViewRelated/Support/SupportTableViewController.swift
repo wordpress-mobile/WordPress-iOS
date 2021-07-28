@@ -98,6 +98,7 @@ private extension SupportTableViewController {
                                                                style: WPStyleGuide.barButtonStyleForBordered(),
                                                                target: self,
                                                                action: #selector(SupportTableViewController.dismissPressed(_:)))
+            navigationItem.leftBarButtonItem?.accessibilityIdentifier = "close-button"
         }
     }
 
@@ -123,15 +124,16 @@ private extension SupportTableViewController {
 
         // Help Section
         var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
 
         if ZendeskUtils.zendeskEnabled {
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected()))
+                                                   action: supportEmailSelected(),
+                                                   accessibilityIdentifier: "set-contact-email-button"))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
@@ -146,7 +148,7 @@ private extension SupportTableViewController {
         let switchRow = SwitchRow(title: LocalizedText.extraDebug,
                                   value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
                                   onChange: extraDebugToggled())
-        let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected())
+        let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
 
         let informationSection = ImmuTableSection(
             headerText: nil,
@@ -278,11 +280,13 @@ private extension SupportTableViewController {
         let title: String
         let showIndicator: Bool
         let action: ImmuTableAction?
+        let accessibilityIdentifier: String?
 
-        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false) {
+        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
             self.title = title
             self.showIndicator = showIndicator
             self.action = action
+            self.accessibilityIdentifier = accessibilityIdentifier
         }
 
         func configureCell(_ cell: UITableViewCell) {
@@ -292,6 +296,7 @@ private extension SupportTableViewController {
             cell.textLabel?.textColor = .primary
             cell.showIndicator = showIndicator
             cell.accessibilityTraits = .button
+            cell.accessibilityIdentifier = accessibilityIdentifier
         }
     }
 
@@ -302,6 +307,7 @@ private extension SupportTableViewController {
         let value: String
         let accessibilityHint: String
         let action: ImmuTableAction?
+        let accessibilityIdentifier: String?
 
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
@@ -310,6 +316,7 @@ private extension SupportTableViewController {
             cell.textLabel?.textColor = .primary
             cell.accessibilityTraits = .button
             cell.accessibilityHint = accessibilityHint
+            cell.accessibilityIdentifier = accessibilityIdentifier
         }
     }
 
