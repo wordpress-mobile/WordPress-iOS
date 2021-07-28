@@ -10,7 +10,20 @@ protocol ReaderDetailView: AnyObject {
     func showErrorWithWebAction()
     func scroll(to: String)
     func updateHeader()
+
+    /// Shows likes view containing avatars of users that liked the post.
+    /// The number of avatars displayed is limited to `ReaderDetailView.maxAvatarDisplayed` plus the current user's avatar.
+    /// Note that the current user's avatar is displayed through a different method.
+    ///
+    /// - Seealso: `updateSelfLike(with avatarURLString: String?)`
+    /// - Parameters:
+    ///   - avatarURLStrings: A list of URL strings for the liking users' avatars.
+    ///   - totalLikes: The total number of likes for this post.
     func updateLikes(with avatarURLStrings: [String], totalLikes: Int)
+
+    /// Updates the likes view to append an additional avatar for the current user, indicating that the post is liked by current user.
+    /// - Parameter avatarURLString: The URL string for the current user's avatar. Optional.
+    func updateSelfLike(with avatarURLString: String?)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -337,6 +350,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         likesSummary.configure(with: avatarURLStrings, totalLikes: totalLikes)
+    }
+
+    func updateSelfLike(with avatarURLString: String?) {
+        guard let someURLString = avatarURLString else {
+            likesSummary.removeSelfAvatar()
+            return
+        }
+
+        likesSummary.addSelfAvatar(with: someURLString)
     }
 
     deinit {

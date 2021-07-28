@@ -161,9 +161,25 @@ class ReaderDetailCoordinator {
         postService.getLikesFor(postID: postID,
                                 siteID: post.siteID,
                                 success: { [weak self] users, totalLikes, _ in
+                                    var filteredUsers = users
+                                    var currentLikeUser: LikeUser? = nil
+
+                                    // Split off current user's like from the list.
+                                    // Likes from self will always be placed in the sixth position, regardless of the when the post was liked.
+                                    if let userID = self?.accountService.defaultWordPressComAccount()?.userID.int64Value,
+                                       let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }),
+                                       post.isLiked {
+                                        currentLikeUser = filteredUsers.remove(at: userIndex)
+                                    }
+
+                                    let avatarURLStrings = filteredUsers
+                                        .prefix(ReaderDetailLikesView.maxAvatarsDisplayed)
+                                        .map { $0.avatarUrl }
+
                                     self?.totalLikes = totalLikes
-                                    self?.view?.updateLikes(with: users.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
-                                                            totalLikes: totalLikes)
+                                    self?.view?.updateLikes(with: avatarURLStrings, totalLikes: totalLikes)
+                                    self?.view?.updateSelfLike(with: currentLikeUser?.avatarUrl)
+
                                 }, failure: { [weak self] error in
                                     self?.view?.updateLikes(with: [String](), totalLikes: 0)
                                     DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")

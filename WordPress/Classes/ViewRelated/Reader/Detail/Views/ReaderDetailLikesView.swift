@@ -9,8 +9,16 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     @IBOutlet weak var avatarStackView: UIStackView!
     @IBOutlet weak var summaryLabel: UILabel!
 
+    /// The UIImageView used to display the current user's avatar image. This view is hidden by default.
+    @IBOutlet private weak var selfAvatarImageView: CircularImageView!
+
     static let maxAvatarsDisplayed = 5
     var delegate: ReaderDetailLikesViewDelegate?
+
+    /// Convenience property that checks whether or not the self avatar image view is being displayed.
+    private var displaysSelfAvatar: Bool {
+        !selfAvatarImageView.isHidden
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,6 +29,15 @@ class ReaderDetailLikesView: UIView, NibLoadable {
         updateSummaryLabel(totalLikes: totalLikes)
         updateAvatars(with: avatarURLStrings)
         addTapGesture()
+    }
+
+    func addSelfAvatar(with urlString: String) {
+        downloadGravatar(for: selfAvatarImageView, withURL: urlString)
+        selfAvatarImageView.isHidden = false
+    }
+
+    func removeSelfAvatar() {
+        selfAvatarImageView.isHidden = true
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
