@@ -5,16 +5,21 @@ use_plugins: &use_plugins
           bucket: "a8c-repo-mirrors"
           repo: "wordpress-mobile/wordpress-ios/"
 
-xcode_version: &xcode_version
+# Common environment values for the `env` key.
+#
+# To add more, simply add another entry at the same indentation as `IMAGE_ID`.
+#
+# Usage in a step with only these values:
+#
+#   env: *common_env
+#
+# Usage in a step with other values:
+#
+#   env:
+#     <<: *common_env
+#     other_key: "other value"
+x_common_env: &common_env
   IMAGE_ID: xcode-12.5.1
-
-env: &env
-  # If you'll need more than one key-value, update to:
-  #
-  # env:
-  #   <<: *xcode_version
-  #   other_key: other_value
-  env: *xcode_version
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -24,7 +29,7 @@ steps:
   - label: ":pipeline: Build"
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
-    <<: *env
+    env: *common_env
     <<: *use_plugins
 
   #################
@@ -39,7 +44,7 @@ steps:
       bundle install
       bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
     depends_on: "build"
-    <<: *env
+    env: *common_env
     <<: *use_plugins
 
   #################
@@ -76,7 +81,7 @@ steps:
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
     depends_on: "build"
-    <<: *env
+    env: *common_env
     <<: *use_plugins
 
   - label: "🧪 UI Tests (iPad)"
@@ -99,5 +104,5 @@ steps:
       rake mocks &
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
     depends_on: "build"
-    <<: *env
+    env: *common_env
     <<: *use_plugins
