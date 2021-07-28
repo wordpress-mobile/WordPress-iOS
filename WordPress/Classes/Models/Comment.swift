@@ -65,7 +65,8 @@ extension Comment {
 private extension Comment {
 
     func decodedContent() -> String {
-        return content.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
+        // rawContent contains markup for Gutenberg comments. Remove it so it's not displayed.
+        return rawContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
 
     func authorName() -> String {
@@ -100,10 +101,12 @@ extension Comment: PostContentProvider {
         return displayAuthor.isEmpty ? String() : displayAuthor
     }
 
+    // Used in Comment details (non-threaded)
     public func contentForDisplay() -> String {
         return decodedContent()
     }
 
+    // Used in Comments list (non-threaded)
     public func contentPreviewForDisplay() -> String {
         return decodedContent()
     }

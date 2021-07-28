@@ -1,6 +1,6 @@
 18.0
 -----
-
+* [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
 
 17.9
 -----
