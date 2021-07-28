@@ -1,7 +1,5 @@
-Text blocks get some love. Color and background customization is added to the block editor’s text blocks.
+* [internal] Redirect Terms and service to open the page in an external web view [#16907]
+* [internal] Converted Comment model methods to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908, #16913]
+* [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
+* [***] Block editor: New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
 
-Other block editor updates include fixing an issue with the block selector on iPad and update loading and failed screens for the editor’s web version.
-
-If you’ve experienced some refresh issues with the follow buttons in the Reader, you can rest easy now, as those issues have been solved.
-
-Authors and Contributors are no longer in the dark! They can now view a site’s Comments via My Site > Comments.

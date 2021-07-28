@@ -346,7 +346,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.timestamp = [self.comment.dateCreated mediumString];
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
-    cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
+    cell.isApproved = [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
      __typeof(self) __weak weakSelf = self;
     cell.onTimeStampLongPress = ^(void) {
         NSURL *url = [NSURL URLWithString:weakSelf.comment.link];
@@ -400,7 +400,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         return;
     }
 
-    cell.isApproveOn = [self.comment.status isEqualToString:CommentStatusApproved];
+    cell.isApproveOn = [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
     cell.isLikeOn = self.comment.isLiked;
 
     // Setup the Callbacks
@@ -533,8 +533,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     // If the Comment is currently Spam or Trash, the Trash action will permanently delete the Comment.
     // Set the displayed messages accordingly.
-    BOOL willBePermanentlyDeleted = [self.comment.status isEqualToString:CommentStatusSpam] ||
-                                    [self.comment.status isEqualToString:CommentStatusUnapproved];
+    BOOL willBePermanentlyDeleted = [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeSpam]] ||
+                                    [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeUnapproved]];
     
     NSString *trashMessage = NSLocalizedString(@"Are you sure you want to mark this comment as Trash?",
                                                @"Message asking for confirmation before marking a comment as trash");

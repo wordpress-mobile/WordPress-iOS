@@ -277,6 +277,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    
+    // If the current user cannot moderate comments, don't show the actions.
+    if (!comment.canModerate) {
+        return nil;
+    }
+
     __typeof(self) __weak weakSelf = self;
     NSMutableArray *actions = [NSMutableArray array];
     
