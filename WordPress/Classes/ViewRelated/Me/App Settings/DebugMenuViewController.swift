@@ -1,5 +1,6 @@
 import UIKit
 import AutomatticTracks
+import SwiftUI
 
 class DebugMenuViewController: UITableViewController {
     private var blogService: BlogService {
@@ -70,6 +71,9 @@ class DebugMenuViewController: UITableViewController {
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
             }),
+            ButtonRow(title: "Use Store Sandbox", action: { [weak self] _ in
+                self?.displayStoreSandboxSecretInserter()
+            })
         ]
     }
 
@@ -126,6 +130,13 @@ class DebugMenuViewController: UITableViewController {
 
         let navigationController = UINavigationController(rootViewController: selectorViewController)
         present(navigationController, animated: true)
+    }
+
+    private func displayStoreSandboxSecretInserter() {
+        let view = StoreSandboxSecretScreen(cookieJar: HTTPCookieStorage.shared)
+        let viewController = UIHostingController(rootView: view)
+
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func enableQuickStart(for blog: Blog) {
