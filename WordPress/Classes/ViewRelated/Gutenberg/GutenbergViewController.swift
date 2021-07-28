@@ -265,9 +265,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergImageLoader(post: post)
     }()
 
-    private lazy var gutenbergSentry: GutenbergSentry = {
-        return GutenbergSentry()
-    }()
+    private lazy var gutenbergSentry = GutenbergSentry()
 
     private lazy var gutenberg: Gutenberg = {
         return Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader, gutenbergSentry])
