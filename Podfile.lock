@@ -550,7 +550,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.41.0-beta.1)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/domain-registration-cart`)
+  - WordPressKit (~> 4.39.0-beta)
   - WordPressMocks (~> 0.0.13)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.1)
@@ -562,6 +562,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -705,9 +706,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.58.0
-  WordPressKit:
-    :branch: issue/domain-registration-cart
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.58.0/third-party-podspecs/Yoga.podspec.json
 
@@ -723,9 +721,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.58.0
-  WordPressKit:
-    :commit: 248d56edb4327f4983d0b2fe694d4af32080ffac
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -809,7 +804,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 20c02910c3fbde243d2f6bb0b338227ad4468f65
-  WordPressKit: ac1489c2c594fd81d3f1e0457ccf11ab5b37bb28
+  WordPressKit: 1962ac8bd5ec0c137199feb575e526e3f7a3e4e2
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
   WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
   WordPressUI: 414bf3a7d007618f94a1c7969d6e849779877d5d
@@ -825,6 +820,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 2b581827ef35b04f810ac88c0477b52de6242eff
+PODFILE CHECKSUM: 07a304cb8ed001829fc8c0632f10c058329ee844
 
 COCOAPODS: 1.10.1
