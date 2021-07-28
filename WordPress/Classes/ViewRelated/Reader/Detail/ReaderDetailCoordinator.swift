@@ -163,6 +163,7 @@ class ReaderDetailCoordinator {
                                 success: { [weak self] users, totalLikes, _ in
                                     var filteredUsers = users
                                     var currentLikeUser: LikeUser? = nil
+                                    let totalLikesFromOthers = totalLikes - (post.isLiked ? 1 : 0)
 
                                     // Split off current user's like from the list.
                                     // Likes from self will always be placed in the sixth position, regardless of the when the post was liked.
@@ -177,7 +178,7 @@ class ReaderDetailCoordinator {
                                         .map { $0.avatarUrl }
 
                                     self?.totalLikes = totalLikes
-                                    self?.view?.updateLikes(with: avatarURLStrings, totalLikes: totalLikes)
+                                    self?.view?.updateLikes(with: avatarURLStrings, totalLikes: totalLikesFromOthers)
                                     self?.view?.updateSelfLike(with: currentLikeUser?.avatarUrl)
 
                                 }, failure: { [weak self] error in
@@ -648,6 +649,17 @@ extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
 extension ReaderDetailCoordinator: ReaderDetailLikesViewDelegate {
     func didTapLikesView() {
         showLikesList()
+    }
+}
+
+// MARK: - ReaderDetailToolbarDelegate
+extension ReaderDetailCoordinator: ReaderDetailToolbarDelegate {
+    func didTapLikeButton(isLiked: Bool) {
+        guard let userAvatarURL = accountService.defaultWordPressComAccount()?.avatarURL else {
+            return
+        }
+
+        self.view?.updateSelfLike(with: isLiked ? userAvatarURL : nil)
     }
 }
 

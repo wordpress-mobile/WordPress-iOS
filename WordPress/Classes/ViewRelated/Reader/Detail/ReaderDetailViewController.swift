@@ -340,6 +340,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateLikes(with avatarURLStrings: [String], totalLikes: Int) {
+        // always configure likes summary view first regardless of totalLikes, since it can affected by self likes.
+        likesSummary.configure(with: avatarURLStrings, totalLikes: totalLikes)
+
         guard totalLikes > 0 else {
             hideLikesView()
             return
@@ -348,14 +351,19 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if likesSummary.superview == nil {
             configureLikesSummary()
         }
-
-        likesSummary.configure(with: avatarURLStrings, totalLikes: totalLikes)
     }
 
     func updateSelfLike(with avatarURLString: String?) {
         guard let someURLString = avatarURLString else {
             likesSummary.removeSelfAvatar()
+            if likesSummary.totalLikesForDisplay == 0 {
+                hideLikesView()
+            }
             return
+        }
+
+        if likesSummary.superview == nil {
+            configureLikesSummary()
         }
 
         likesSummary.addSelfAvatar(with: someURLString)
@@ -482,6 +490,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
+        toolbar.delegate = coordinator
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
 

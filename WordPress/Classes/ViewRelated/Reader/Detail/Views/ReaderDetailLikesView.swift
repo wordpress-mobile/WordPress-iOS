@@ -15,6 +15,14 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     static let maxAvatarsDisplayed = 5
     var delegate: ReaderDetailLikesViewDelegate?
 
+    /// Stores the number of total likes _without_ adding the like from self.
+    private var totalLikes: Int = 0
+
+    /// Convenience property that adds up the total likes and self like for display purposes.
+    var totalLikesForDisplay: Int {
+        return displaysSelfAvatar ? totalLikes + 1 : totalLikes
+    }
+
     /// Convenience property that checks whether or not the self avatar image view is being displayed.
     private var displaysSelfAvatar: Bool {
         !selfAvatarImageView.isHidden
@@ -26,18 +34,21 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     }
 
     func configure(with avatarURLStrings: [String], totalLikes: Int) {
-        updateSummaryLabel(totalLikes: totalLikes)
+        self.totalLikes = totalLikes
+        updateSummaryLabel()
         updateAvatars(with: avatarURLStrings)
         addTapGesture()
     }
 
     func addSelfAvatar(with urlString: String) {
         downloadGravatar(for: selfAvatarImageView, withURL: urlString)
-        selfAvatarImageView.isHidden = false
+        self.selfAvatarImageView.isHidden = false
+        updateSummaryLabel()
     }
 
     func removeSelfAvatar() {
-        selfAvatarImageView.isHidden = true
+        self.selfAvatarImageView.isHidden = true
+        updateSummaryLabel()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -57,9 +68,9 @@ private extension ReaderDetailLikesView {
         }
     }
 
-    func updateSummaryLabel(totalLikes: Int) {
-        let summaryFormat = totalLikes == 1 ? SummaryLabelFormats.singular : SummaryLabelFormats.plural
-        summaryLabel.attributedText = highlightedText(String(format: summaryFormat, totalLikes))
+    func updateSummaryLabel() {
+        let summaryFormat = totalLikesForDisplay == 1 ? SummaryLabelFormats.singular : SummaryLabelFormats.plural
+        summaryLabel.attributedText = highlightedText(String(format: summaryFormat, totalLikesForDisplay))
     }
 
     func updateAvatars(with urlStrings: [String]) {
