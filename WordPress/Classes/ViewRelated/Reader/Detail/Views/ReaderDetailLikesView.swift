@@ -40,14 +40,40 @@ class ReaderDetailLikesView: UIView, NibLoadable {
         addTapGesture()
     }
 
-    func addSelfAvatar(with urlString: String) {
+    func addSelfAvatar(with urlString: String, animated: Bool = false) {
         downloadGravatar(for: selfAvatarImageView, withURL: urlString)
-        self.selfAvatarImageView.isHidden = false
+
+        // pre-animation state
+        // set initial position from the left in LTR, or from the right in RTL.
+        selfAvatarImageView.alpha = 0
+        let directionalMultiplier: CGFloat = userInterfaceLayoutDirection() == .leftToRight ? -1.0 : 1.0
+        selfAvatarImageView.transform = CGAffineTransform(translationX: Constants.animationDeltaX * directionalMultiplier, y: 0)
+
+        UIView.animate(withDuration: animated ? Constants.animationDuration : 0) {
+            // post-animation state
+            self.selfAvatarImageView.alpha = 1
+            self.selfAvatarImageView.isHidden = false
+            self.selfAvatarImageView.transform = .identity
+        }
+
         updateSummaryLabel()
     }
 
-    func removeSelfAvatar() {
-        self.selfAvatarImageView.isHidden = true
+    func removeSelfAvatar(animated: Bool = false) {
+        // removal animation should transition
+        // pre-animation state
+        selfAvatarImageView.alpha = 1
+        self.selfAvatarImageView.transform = .identity
+
+        UIView.animate(withDuration: animated ? Constants.animationDuration : 0) {
+            // post-animation state
+            // moves to the left in LTR, or to the right in RTL.
+            self.selfAvatarImageView.alpha = 0
+            self.selfAvatarImageView.isHidden = true
+            let directionalMultiplier: CGFloat = self.userInterfaceLayoutDirection() == .leftToRight ? -1.0 : 1.0
+            self.selfAvatarImageView.transform = CGAffineTransform(translationX: Constants.animationDeltaX * directionalMultiplier, y: 0)
+        }
+
         updateSummaryLabel()
     }
 
@@ -77,6 +103,10 @@ private extension ReaderDetailLikesView {
         for (index, subView) in avatarStackView.subviews.enumerated() {
             guard let avatarImageView = subView as? UIImageView else {
                 return
+            }
+
+            if avatarImageView == selfAvatarImageView {
+                continue
             }
 
             if let urlString = urlStrings[safe: index] {
@@ -110,6 +140,11 @@ private extension ReaderDetailLikesView {
         }
 
         delegate?.didTapLikesView()
+    }
+
+    struct Constants {
+        static let animationDuration: TimeInterval = 0.3
+        static let animationDeltaX: CGFloat = 16.0
     }
 
     struct SummaryLabelFormats {

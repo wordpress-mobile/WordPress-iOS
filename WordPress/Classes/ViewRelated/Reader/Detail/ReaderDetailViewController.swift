@@ -354,8 +354,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateSelfLike(with avatarURLString: String?) {
+        // only animate changes when the view is visible.
+        let shouldAnimate = isVisibleInScrollView(likesSummary)
         guard let someURLString = avatarURLString else {
-            likesSummary.removeSelfAvatar()
+            likesSummary.removeSelfAvatar(animated: shouldAnimate)
             if likesSummary.totalLikesForDisplay == 0 {
                 hideLikesView()
             }
@@ -366,7 +368,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             configureLikesSummary()
         }
 
-        likesSummary.addSelfAvatar(with: someURLString)
+        likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
     }
 
     deinit {
@@ -885,6 +887,17 @@ private extension ReaderDetailViewController {
         button.addTarget(self, action: action, for: .touchUpInside)
 
         return UIBarButtonItem(customView: button)
+    }
+
+    /// Checks if the view is visible in the viewport.
+    func isVisibleInScrollView(_ view: UIView) -> Bool {
+        guard view.superview != nil, !view.isHidden else {
+            return false
+        }
+
+        let scrollViewFrame = CGRect(origin: scrollView.contentOffset, size: scrollView.frame.size)
+        let convertedViewFrame = scrollView.convert(view.bounds, from: view)
+        return scrollViewFrame.intersects(convertedViewFrame)
     }
 }
 

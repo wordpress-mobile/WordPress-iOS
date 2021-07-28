@@ -163,24 +163,22 @@ class ReaderDetailCoordinator {
                                 success: { [weak self] users, totalLikes, _ in
                                     var filteredUsers = users
                                     var currentLikeUser: LikeUser? = nil
-                                    let totalLikesFromOthers = totalLikes - (post.isLiked ? 1 : 0)
+                                    let totalLikesExcludingSelf = totalLikes - (post.isLiked ? 1 : 0)
 
                                     // Split off current user's like from the list.
                                     // Likes from self will always be placed in the sixth position, regardless of the when the post was liked.
                                     if let userID = self?.accountService.defaultWordPressComAccount()?.userID.int64Value,
-                                       let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }),
-                                       post.isLiked {
+                                       let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
                                         currentLikeUser = filteredUsers.remove(at: userIndex)
                                     }
 
-                                    let avatarURLStrings = filteredUsers
-                                        .prefix(ReaderDetailLikesView.maxAvatarsDisplayed)
-                                        .map { $0.avatarUrl }
-
                                     self?.totalLikes = totalLikes
-                                    self?.view?.updateLikes(with: avatarURLStrings, totalLikes: totalLikesFromOthers)
-                                    self?.view?.updateSelfLike(with: currentLikeUser?.avatarUrl)
-
+                                    self?.view?.updateLikes(with: filteredUsers.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
+                                                            totalLikes: totalLikesExcludingSelf)
+                                    // Only pass current user's avatar when we know *for sure* that the post is liked.
+                                    // This is to work around a possible race condition that causes an unliked post to have current user's LikeUser, which
+                                    // would cause a display bug in ReaderDetailLikesView. The race condition issue will be investigated separately.
+                                    self?.view?.updateSelfLike(with: post.isLiked ? currentLikeUser?.avatarUrl : nil)
                                 }, failure: { [weak self] error in
                                     self?.view?.updateLikes(with: [String](), totalLikes: 0)
                                     DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
