@@ -60,7 +60,6 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     }
 
     func removeSelfAvatar(animated: Bool = false) {
-        // removal animation should transition
         // pre-animation state
         selfAvatarImageView.alpha = 1
         self.selfAvatarImageView.transform = .identity
