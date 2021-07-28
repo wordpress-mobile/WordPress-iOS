@@ -30,7 +30,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .readerCSS:
             return false
         case .homepageSettings:
