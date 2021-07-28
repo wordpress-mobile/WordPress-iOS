@@ -71,7 +71,7 @@ class DebugMenuViewController: UITableViewController {
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
             }),
-            ButtonRow(title: "Use Store Sandbox", action: { [weak self] _ in
+            ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
             })
         ]
@@ -165,6 +165,7 @@ class DebugMenuViewController: UITableViewController {
         static let overridden = NSLocalizedString("Overridden", comment: "Used to indicate a setting is overridden in debug builds of the app")
         static let featureFlags = NSLocalizedString("Feature flags", comment: "Title of the Feature Flags screen used in debug builds of the app")
         static let tools = NSLocalizedString("Tools", comment: "Title of the Tools section of the debug screen used in debug builds of the app")
+        static let sandboxStoreCookieSecretRow = NSLocalizedString("Use Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
         static let quickStartRow = NSLocalizedString("Enable Quick Start for Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
         static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
         static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")

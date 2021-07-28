@@ -10,7 +10,7 @@ struct StoreSandboxSecretScreen: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
-                Text("Enter the Store Sandbox Secret:")
+                Text("Enter the Store Sandbox Cookie Secret:")
                 TextField("Secret", text: $secret)
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
                     .border(Color.black)
