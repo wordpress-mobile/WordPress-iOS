@@ -21,7 +21,7 @@ class SupportScreenTests: XCTestCase {
 
         XCTAssert(supportScreen.isLoaded())
 
-        //close SupportScreen modal before teartown
+        //Dismiss because tearDown() can't handle modals currently
         supportScreen.dismiss()
     }
 }
