@@ -2444,6 +2444,7 @@
 		F1C197A62670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C197A52670DDB100DE1FF7 /* BloggingRemindersTracker.swift */; };
 		F1C197A72670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C197A52670DDB100DE1FF7 /* BloggingRemindersTracker.swift */; };
 		F1C740BF26B18E42005D0809 /* StoreSandboxSecretScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C740BE26B18E42005D0809 /* StoreSandboxSecretScreen.swift */; };
+		F1C740C026B1D4D2005D0809 /* StoreSandboxSecretScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C740BE26B18E42005D0809 /* StoreSandboxSecretScreen.swift */; };
 		F1CBEB2A256F122A0031EBBC /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
@@ -20199,6 +20200,7 @@
 				FABB25FC2602FC2C00C8785C /* StreakInsightStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB25FD2602FC2C00C8785C /* JetpackRemoteInstallState.swift in Sources */,
 				FABB25FE2602FC2C00C8785C /* Scheduler.swift in Sources */,
+				F1C740C026B1D4D2005D0809 /* StoreSandboxSecretScreen.swift in Sources */,
 				FABB25FF2602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				98E082A02637545C00537BF1 /* PostService+Likes.swift in Sources */,
 				FABB26002602FC2C00C8785C /* GravatarProfile.swift in Sources */,
