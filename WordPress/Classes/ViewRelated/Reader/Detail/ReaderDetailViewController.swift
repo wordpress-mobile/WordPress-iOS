@@ -10,7 +10,7 @@ protocol ReaderDetailView: AnyObject {
     func showErrorWithWebAction()
     func scroll(to: String)
     func updateHeader()
-    func updateLikes(users: [LikeUser], totalLikes: Int)
+    func updateLikes(with avatarURLStrings: [String], totalLikes: Int)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -326,7 +326,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.refreshFollowButton()
     }
 
-    func updateLikes(users: [LikeUser], totalLikes: Int) {
+    func updateLikes(with avatarURLStrings: [String], totalLikes: Int) {
         guard totalLikes > 0 else {
             hideLikesView()
             return
@@ -336,7 +336,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             configureLikesSummary()
         }
 
-        likesSummary.configure(users: users, totalLikes: totalLikes)
+        likesSummary.configure(with: avatarURLStrings, totalLikes: totalLikes)
     }
 
     deinit {

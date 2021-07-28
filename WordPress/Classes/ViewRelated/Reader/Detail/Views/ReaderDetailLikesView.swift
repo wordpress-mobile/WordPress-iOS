@@ -17,9 +17,9 @@ class ReaderDetailLikesView: UIView, NibLoadable {
         applyStyles()
     }
 
-    func configure(users: [LikeUser], totalLikes: Int) {
+    func configure(with avatarURLStrings: [String], totalLikes: Int) {
         updateSummaryLabel(totalLikes: totalLikes)
-        updateAvatars(users: users)
+        updateAvatars(with: avatarURLStrings)
         addTapGesture()
     }
 
@@ -45,14 +45,14 @@ private extension ReaderDetailLikesView {
         summaryLabel.attributedText = highlightedText(String(format: summaryFormat, totalLikes))
     }
 
-    func updateAvatars(users: [LikeUser]) {
+    func updateAvatars(with urlStrings: [String]) {
         for (index, subView) in avatarStackView.subviews.enumerated() {
             guard let avatarImageView = subView as? UIImageView else {
                 return
             }
 
-            if let user = users[safe: index] {
-                downloadGravatar(for: avatarImageView, withURL: user.avatarUrl)
+            if let urlString = urlStrings[safe: index] {
+                downloadGravatar(for: avatarImageView, withURL: urlString)
             } else {
                 avatarImageView.isHidden = true
             }

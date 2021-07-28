@@ -162,9 +162,10 @@ class ReaderDetailCoordinator {
                                 siteID: post.siteID,
                                 success: { [weak self] users, totalLikes, _ in
                                     self?.totalLikes = totalLikes
-                                    self?.view?.updateLikes(users: Array(users.prefix(ReaderDetailLikesView.maxAvatarsDisplayed)), totalLikes: totalLikes)
+                                    self?.view?.updateLikes(with: users.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
+                                                            totalLikes: totalLikes)
                                 }, failure: { [weak self] error in
-                                    self?.view?.updateLikes(users: [LikeUser](), totalLikes: 0)
+                                    self?.view?.updateLikes(with: [String](), totalLikes: 0)
                                     DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
                                 })
     }
