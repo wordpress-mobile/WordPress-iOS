@@ -22,7 +22,7 @@ struct StoreSandboxSecretScreen: View {
             // This seems to be necessary due to an iOS bug where
             // accessing presentationMode.wrappedValue crashes.
             DispatchQueue.main.async {
-                if(self.presentationMode.wrappedValue.isPresented == false),
+                if self.presentationMode.wrappedValue.isPresented == false,
                   let cookie = HTTPCookie(properties: [
                     .name: StoreSandboxSecretScreen.storeSandboxSecretKey,
                     .value: secret,
