@@ -1143,7 +1143,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.author_url = remoteComment.authorUrl;
     comment.authorAvatarURL = remoteComment.authorAvatarURL;
     comment.content = remoteComment.content;
-    comment.rawContent = remoteComment.rawContent;
+    // self-hosted doesn't have rawContent, so default to content.
+    comment.rawContent = remoteComment.rawContent ?: remoteComment.content;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
     comment.parentID = remoteComment.parentID;

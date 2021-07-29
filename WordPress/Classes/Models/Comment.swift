@@ -49,7 +49,7 @@ extension Comment {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
-        return formatter.string(from: dateCreated)
+        return formatter.string(from: dateCreated ?? Date())
     }
 
     func numberOfLikes() -> Int {
@@ -112,11 +112,15 @@ extension Comment: PostContentProvider {
     }
 
     public func avatarURLForDisplay() -> URL? {
-        return URL(string: authorAvatarURL)
+        guard let url = authorAvatarURL,
+              !url.isEmpty else {
+            return nil
+        }
+        return URL(string: url)
     }
 
     public func gravatarEmailForDisplay() -> String {
-        return author_email.trim() ?? String()
+        return author_email?.trim() ?? String()
     }
 
     public func dateForDisplay() -> Date? {
