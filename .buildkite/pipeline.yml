@@ -1,12 +1,11 @@
-x_use_plugins: &use_plugins
-    plugins:
-      - automattic/bash-cache#v1.0.0: ~
-      - automattic/git-s3-cache#add/vm-host-support:
-          bucket: "a8c-repo-mirrors"
-          repo: "wordpress-mobile/wordpress-ios/"
-
 # Nodes with values to reuse in the pipeline.
 common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &common_plugins
+    - automattic/bash-cache#v1.0.0: ~
+    - automattic/git-s3-cache#add/vm-host-support:
+        bucket: "a8c-repo-mirrors"
+        repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
     IMAGE_ID: xcode-12.5.1
@@ -20,7 +19,7 @@ steps:
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
     env: *common_env
-    <<: *use_plugins
+    plugins: *common_plugins
 
   #################
   # Run Unit Tests
@@ -35,7 +34,7 @@ steps:
       bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
     depends_on: "build"
     env: *common_env
-    <<: *use_plugins
+    plugins: *common_plugins
 
   #################
   # Lint Translations
@@ -72,7 +71,7 @@ steps:
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
     depends_on: "build"
     env: *common_env
-    <<: *use_plugins
+    plugins: *common_plugins
 
   - label: "🧪 UI Tests (iPad)"
     command: |
@@ -95,4 +94,4 @@ steps:
       bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
     depends_on: "build"
     env: *common_env
-    <<: *use_plugins
+    plugins: *common_plugins
