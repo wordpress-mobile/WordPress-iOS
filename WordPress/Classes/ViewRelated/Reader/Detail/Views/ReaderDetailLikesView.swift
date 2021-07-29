@@ -96,7 +96,7 @@ private extension ReaderDetailLikesView {
     func updateSummaryLabel() {
         switch (displaysSelfAvatar, totalLikes) {
         case (true, 0):
-            summaryLabel.attributedText = .init(string: SummaryLabelFormats.onlySelf)
+            summaryLabel.text = SummaryLabelFormats.onlySelf
         case (true, 1):
             summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singularWithSelf, totalLikes))
         case (true, _) where totalLikes > 1:
