@@ -1,6 +1,7 @@
 import Foundation
 
 struct JetpackNotWPErrorViewModel: JetpackErrorViewModel {
+    let title: String? = nil
     let image: UIImage? = UIImage(named: "jetpack-empty-state-illustration")
     var description: FormattedStringProvider = FormattedStringProvider(string: Constants.description)
     var primaryButtonTitle: String? = Constants.primaryButtonTitle

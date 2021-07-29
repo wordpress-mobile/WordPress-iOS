@@ -1,15 +1,9 @@
-Avec la version 17.6, vous pouvez ajouter le bloc son à n’importe quel site WordPress.com, quel que soit votre plan, y compris le plan gratuit. Le bloc son permet d’ajouter facilement des podcasts, de la musique et des fichiers audio à vos articles et pages.
+Les blocs paragraphe sont géniaux. Il est désormais possible de personnaliser la couleur et l’arrière-plan des blocs paragraphe dans l’éditeur de blocs.
 
-Nous avons également travaillé dur pour tenter d’améliorer l’expérience utilisateur :
+D’autres mises à jour ont été apportées à l’éditeur de blocs dont la résolution d’un problème avec le sélecteur de bloc sur iPad et la mise à jour des écrans de chargement et d’échec de la version Web de l’éditeur.
 
-Lorsque vous attribuez une page parente à une page sans titre, vous voyez désormais le texte indicatif « (sans titre) » au lieu d’une ligne vide, ce qui vous donne un petit coup de pouce pour nommer la page.
+Les problèmes d’actualisation que vous avez peut-être rencontrés avec les boutons d’abonnement dans le Lecteur sont désormais résolus.
 
-Vous n’avez jamais pu modifier les pages d’archives d’articles car elles sont générées automatiquement. Dans la version 17.6, vous ne pourrez pas non plus les ouvrir dans l’éditeur, ce qui vous évitera un voyage pour rien !
+Les auteurs et les contributeurs ont désormais accès aux avis ! Ils peuvent consulter les commentaires sous Mon site > Commentaires.
 
-Nous avons également corrigé certaines choses :
-
-Nous nous sommes occupés de certaines notifications qui chevauchaient la feuille d’action, dont une qui affiche les contrôles de l’icône de site, une autre qui affiche la suppression QuickStart et une troisième qui affiche Plus d’actions dans l’éditeur.
-
-Enfin, nous avons éliminé un bogue qui entraînait parfois le blocage de l’application lors de la modération des commentaires et un autre pour corriger une erreur de connexion pour que les sites WordPress.org s’affichent en ligne.
-
-C’est tout pour la version 17.6. Rendez-vous pour la version 17.7 !
+Résolution d’un bug lors de la saisie des notifications.

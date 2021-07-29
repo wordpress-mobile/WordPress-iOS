@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ListTableHeaderView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="26"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbR-00-lyK" userLabel="Separator View" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="26"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0E-c7-EOt">
+                            <rect key="frame" x="20" y="8" width="386" height="14"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailingMargin" secondItem="p0E-c7-EOt" secondAttribute="trailing" id="8Wn-G0-G5I"/>
+                        <constraint firstAttribute="bottom" secondItem="p0E-c7-EOt" secondAttribute="bottom" constant="4" id="crp-IW-IaU"/>
+                        <constraint firstItem="p0E-c7-EOt" firstAttribute="leading" secondItem="dbR-00-lyK" secondAttribute="leading" constant="20" id="nkF-So-Ruw"/>
+                        <constraint firstItem="p0E-c7-EOt" firstAttribute="top" secondItem="dbR-00-lyK" secondAttribute="top" constant="8" id="vca-8D-D2Z"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Yi2-pb-R3P"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="dbR-00-lyK" secondAttribute="trailing" id="Jqb-jy-Hi5"/>
+                <constraint firstItem="dbR-00-lyK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Lmd-8D-GOe"/>
+                <constraint firstAttribute="bottom" secondItem="dbR-00-lyK" secondAttribute="bottom" id="Yoc-E4-1je"/>
+                <constraint firstItem="dbR-00-lyK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eQA-mn-Ssk"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="contentView" destination="dbR-00-lyK" id="89l-aj-xtv"/>
+                <outlet property="separatorsView" destination="dbR-00-lyK" id="QLE-w7-Do2"/>
+                <outlet property="titleLabel" destination="p0E-c7-EOt" id="ga5-9v-rMD"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="-153.01339285714286"/>
+        </view>
+    </objects>
+</document>

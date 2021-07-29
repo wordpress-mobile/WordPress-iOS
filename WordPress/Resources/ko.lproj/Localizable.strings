@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-24 15:58:55+0000 */
+/* Translation-Revision-Date: 2021-07-23 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -297,6 +297,15 @@
 /* Age between dates less than one hour. */
 "< 1 hour" = "< 1시간";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "일주일에 <strong>%d<\/strong>번";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "일주일에 <strong>한 번<\/strong>";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "일주일에 <strong>두 번<\/strong>";
+
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
@@ -498,6 +507,9 @@
 "Add image, or avatar, to represent this new account." = "새 계정을 나타내는 이미지 또는 아바타를 추가합니다.";
 
 /* No comment provided by engineer. */
+"Add link" = "링크 추가";
+
+/* No comment provided by engineer. */
 "Add link text" = "링크 텍스트 추가";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -639,6 +651,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "대체 텍스트";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "대신에 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "또는:";
 
@@ -660,9 +675,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "플러그인을 보려면 인터넷에 연결되어야 합니다.";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "통계를 보려면 인터넷 연결이 활성화 돼있어야 합니다";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "기록을 보려면 인터넷에 연결되어야 합니다.";
@@ -905,7 +917,7 @@
    Spoken accessibility label */
 "Back" = "뒤로";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "배경 색상";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1015,6 +1027,9 @@
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "블로그 방문자";
+
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "블로깅 알림";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1842,7 +1857,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "글, 페이지, 또는 이야기 만들기";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "사이트 아이콘 생성";
 
 /* Label that describes the download backup action */
@@ -2326,6 +2341,9 @@
 /* No comment provided by engineer. */
 "Duplicate block" = "블록 복제하기";
 
+/* No comment provided by engineer. */
+"EDIT LINK" = "링크 편집";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "동쪽";
 
@@ -2394,6 +2412,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "홈페이지 편집";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "재활용 가능한 블록 편집은 아직 Android용 WordPress에서 지원되지 않습니다.";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "재활용 가능한 블록 편집은 아직 iOS용 WordPress에서 지원되지 않습니다.";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
 
@@ -2441,7 +2465,19 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "이메일이 전송되었습니다.";
 
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "캡션을 임베드합니다. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "캡션을 임베드합니다. 비어 있음";
+
 /* No comment provided by engineer. */
+"Embed link" = "링크 임베드";
+
+/* translators: %s: host providing embed content e.g: www.youtube.com */
+"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "임베드된 %s의 콘텐츠는 지금 모바일 편집기에서 볼 수 없습니다. 임베드된 콘텐츠를 참조하려면 페이지를 미리 보세요.";
+
+/* Title for the Emoji section */
 "Emoji" = "이모티콘";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2457,6 +2493,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "사이트에 대한 빠른 시작 사용 설정";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "사이트 통계 활성화";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "비디오에 소리를 녹음하려면 마이크 액세스를 허용하세요.";
 
@@ -2465,6 +2504,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "사이트 알림을 활성화하시겠습니까?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "트래픽, 좋아요, 댓글, 구독자에 대한 자세한 내용을 참조하려면 사이트 통계를 활성화하세요.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "사이트 통계 활성화 중...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "암호화된 기록";
@@ -2624,6 +2669,9 @@
 
 /* Title for the activity detail view */
 "Event" = "이벤트";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "매일";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "모두 볼 수 있음";
@@ -2956,8 +3004,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "미리보기 생성 중...";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "시작하세요";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3051,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "리더로 이동";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "설정 &rarr; 알림 &rarr; WordPress로 이동하여 알림 허용을 전환하세요.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3104,7 +3154,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "헤딩 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "도움말";
 
 /* Link to Help section
@@ -3379,6 +3430,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "유효하지 않은 URL입니다. 오디오 파일을 찾을 수 없습니다.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "유효하지 않은 URL입니다. 유효한 URL을 입력하세요.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "유효하지 않은 엔드포인트입니다";
 
@@ -3406,6 +3460,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "%2$@이(가) 게시된 후 %1$@이(가) 지났습니다. ";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "%@의 블로깅 시간입니다!";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "블로깅 시간입니다.";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "이제 시간이 되었습니다! 임시글을 작성하여 첫 번째 글을 게시하세요.";
 
@@ -3420,6 +3480,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "통계를 보려면 젯팩 %@ 이상이 필요합니다. 젯팩을 업데이트하시겠어요?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "멀티사이트 설치용 Jetpack Backup에서는 다운로드 가능한 백업이 제공되며, 원클릭 복원은 없습니다. 자세한 내용은 %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "젯팩 자주 찾는 질문";
@@ -3684,6 +3747,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "스트림 로드 중...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "블록 편집기를 로드하는 중입니다.";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "사용자명 로드 중";
 
@@ -3764,6 +3830,9 @@
 /* No comment provided by engineer. */
 "Logs" = "로그";
 
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "통계를 찾으시나요?";
+
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "주소 찾기...";
 
@@ -3778,9 +3847,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "목표를 설정하고 진행률을 추적하여 사이트를 최대한 활용하세요.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4203,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "다음";
 
 /* Table view title for the quick start section. */
@@ -4162,12 +4227,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "카테고리 없음";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "연결 없음";
 
 /* List Editor Empty State Message */
 "No Items" = "항목 없음";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "젯팩 사이트를 찾을 수 없음";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "메뉴 없음";
@@ -4362,6 +4429,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "없음";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "설정 없음";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "북쪽";
 
@@ -4425,6 +4495,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "알림 읽지 않음";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "알림 받기";
 
 /* First story intro item title */
 "Now stories are for everyone" = "이제 이야기가 모두를 위합니다";
@@ -4729,9 +4802,6 @@
    Noun. Title. Links to the people management feature. */
 "People" = "사람";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "주 2회 이상 글을 작성하는 사람은 사이트의 조회수가 87% 많습니다.";
-
 /* Label for date periods. */
 "Period" = "기간";
 
@@ -4783,6 +4853,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "도움이 필요한 경우 지원팀에 문의하세요.";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "사이트에서 블록 편집기가 활성화되었는지 확인하세요.";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "사이트에서 블록 편집기가 활성화되었는지 확인하세요. 활성화하지 않으면 로드되지 않습니다.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "example.com과 같은 완전한 웹사이트 주소를 입력하세요.";
@@ -5002,6 +5078,9 @@
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "게시 활동";
+
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "정기적으로 게시하면 독자의 참여도를 높이고 새 방문자를 사이트로 유도하는 데 도움이 됩니다.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5309,6 +5388,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "관련 글에는 글 아래에 있는 사이트의 관련 콘텐츠가 표시됩니다.";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "알림 제거됨";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,12 +5614,6 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "글로 돌아가기";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "재활용 가능한 블록은 Android용 WordPress에서 편집할 수 없습니다.";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "재활용 가능한 블록은 iOS용 WordPress에서 편집할 수 없습니다.";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "보류 상태로 되돌림";
 
@@ -5573,6 +5649,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "저장하기";
 
@@ -5689,13 +5766,7 @@
 "Search WordPress\nfor a site or post" = "사이트나 게시물을 위한\n워드프레스 검색";
 
 /* No comment provided by engineer. */
-"Search block" = "블록 검색";
-
-/* No comment provided by engineer. */
 "Search block label. Current text is" = "블록 레이블을 검색합니다. 현재 텍스트는";
-
-/* No comment provided by engineer. */
-"Search blocks" = "블록 검색";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "검색 버튼입니다. 현재 버튼 텍스트는";
@@ -5904,7 +5975,7 @@
 "Set as Posts Page" = "글 페이지로 설정";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "목표 설정";
+"Set reminders" = "알림 설정";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "설정";
@@ -5912,9 +5983,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "젯팩 설정";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "블로깅 목표 설정";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "게시하려는 일자의 블로깅 알림을 설정하세요.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "블로깅 알림 설정";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "사이트 제목 정하기";
@@ -6879,6 +6952,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "사람들이 인터넷에서 회원님을 찾을 수 있는 곳입니다.";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "오늘의 블로깅에 대한 알림입니다. ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "이 미디어 항목은 삭제되었습니다.";
 
@@ -6997,6 +7073,9 @@
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "글에 사용할 사진이나 비디오를 촬영";
+
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "블로깅 알림을 사용하려면 푸시 알림을 켜야 합니다.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "사이트에서 통계를 사용하려면 젯팩 플러그인을 설치해야 합니다.";
@@ -7131,6 +7210,12 @@
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "사이트 알림 끄기";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "알림 켜기";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "푸시 알림 켜기";
+
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "사이트 알림 켜기";
 
@@ -7214,6 +7299,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "Unable to load posts right now.";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "지금은 블록 편집기를 로드할 수 없습니다.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "이미지를 로드할 수 없습니다. 다른 이미지를 선택하거나 나중에 다시 시도하세요.";
@@ -7313,6 +7401,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "사용 불가능";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "정의되지 않음";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "밑줄";
@@ -7330,6 +7421,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "%@(을)를 팔로우 취소하기";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "이메일로 대화 팔로우 취소";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "사이트 팔로우 취소";
@@ -7400,7 +7494,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "최대 7일 상당의 로그가 저장됩니다.";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "업데이트";
@@ -7929,6 +8024,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "사이트를 %1$@(으)로 다시 복원하는 중입니다.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "죄송합니다. 지금은 Jetpack Scan이 멀티사이트 WordPress 설치와 호환되지 않습니다.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "파일 링크도 이메일로 보내드렸습니다.";
 
@@ -8109,6 +8207,9 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "iOS용 워드프레스 지원";
 
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "WordPress 멀티사이트는 지원되지 않습니다.";
+
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "워드프레스가 귀하의 글에 현재 위치를 추가하려면 장치의 현재 위치에 액세스할 수 있는 권한이 필요합니다. 프라이버시 설정을 업데이트하세요.";
 
@@ -8276,6 +8377,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "글 %d개에 대한 변경 사항이 아직 사이트에 업로드되지 않았습니다. 지금 로그아웃하면 변경 사항이 삭제됩니다. 그래도 로그아웃하시겠습니까?";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "설정된 알림이 없습니다.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "저장되지 않은 변경이 있습니다.";
@@ -8323,8 +8427,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "사용자명은 다시 바꿀 수 없게 됩니다.";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "블로그에 대한 알림을 일주일에 X번 DAY와 DAY에 받게 됩니다.";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "블로깅에 대한 알림을 일주일에 <strong>한 번<\/strong> %@에 받게 됩니다.";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "블로깅에 대한 알림을 일주일에 %1$@번 %2$@에 받게 됩니다.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "항상 최신 상태를 유지하세요!";
@@ -8377,8 +8484,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "글이 지금 업로드 중에 있습니다. 완료되기까지 기다려 주시기 바랍니다.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "글을 발행하는 중입니다. 그동안 알림을 받을 블로깅 목표를 설정하고 진행률을 추적하세요.";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "글을 발행하는 중입니다… 그동안에 게시하려는 일자의 블로깅 알림을 설정하세요.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "글, 페이지 및 설정이 %@(으)로 메일로 전송됩니다.";
@@ -8398,7 +8505,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "사이트가 복원됨";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "사이트 아이콘은 웹 전체의 브라우저 탭, 소셜 미디어의 사이트 미리보기 및 워드프레스닷컴 리더에서 사용됩니다.";
 
 /* Title of a message displayed when user starts a restore operation */
@@ -8531,6 +8638,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "방문자";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "설명서 페이지 방문";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "을(를) 이후에 사용할 수 없게 됩니다.";

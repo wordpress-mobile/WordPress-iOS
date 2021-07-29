@@ -10,7 +10,10 @@ extension CommentService {
      @param excludingIDs    An array of user IDs to exclude from the returned results. Optional.
      @param purgeExisting   Indicates if existing Likes for the given post and site should be purged before
                             new ones are created. Defaults to true.
-     @param success         A success block
+     @param success         A success block returning:
+                            - Array of LikeUser
+                            - Total number of likes for the given comment
+                            - Number of likes per fetch
      @param failure         A failure block
      */
     func getLikesFor(commentID: NSNumber,
@@ -19,7 +22,7 @@ extension CommentService {
                      before: String? = nil,
                      excludingIDs: [NSNumber]? = nil,
                      purgeExisting: Bool = true,
-                     success: @escaping (([LikeUser], Int) -> Void),
+                     success: @escaping (([LikeUser], Int, Int) -> Void),
                      failure: @escaping ((Error?) -> Void)) {
 
         guard let remote = restRemote(forSite: siteID) else {
@@ -38,7 +41,7 @@ extension CommentService {
                                                             siteID: siteID,
                                                             purgeExisting: purgeExisting) {
                                             let users = self.likeUsersFor(commentID: commentID, siteID: siteID)
-                                            success(users, totalLikes.intValue)
+                                            success(users, totalLikes.intValue, count)
                                             LikeUserHelper.purgeStaleLikes()
                                         }
                                     }, failure: { error in
@@ -95,12 +98,12 @@ private extension CommentService {
 
         derivedContext.perform {
 
-            if purgeExisting {
-                self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext)
+            let likers = remoteLikeUsers.map { remoteUser in
+                LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
             }
 
-            remoteLikeUsers.forEach {
-                LikeUserHelper.createUserFrom(remoteUser: $0, context: derivedContext)
+            if purgeExisting {
+                self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext, likesToKeep: likers)
             }
 
             ContextManager.shared.save(derivedContext) {
@@ -111,9 +114,9 @@ private extension CommentService {
         }
     }
 
-    func deleteExistingUsersFor(commentID: NSNumber, siteID: NSNumber, from context: NSManagedObjectContext) {
+    func deleteExistingUsersFor(commentID: NSNumber, siteID: NSNumber, from context: NSManagedObjectContext, likesToKeep: [LikeUser]) {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
-        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+        request.predicate = NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND NOT (self IN %@)", siteID, commentID, likesToKeep)
 
         do {
             let users = try context.fetch(request)

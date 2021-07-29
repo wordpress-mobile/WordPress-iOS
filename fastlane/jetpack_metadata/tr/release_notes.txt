@@ -1,15 +1,9 @@
-17.6'da, Ücretsiz Paket de dahil olmak üzere hangi paketi kullanıyor olursanız olun, Ses Bloku'nu herhangi bir WordPress.com sitesine ekleyebilirsiniz. Ses Bloku, gönderilerinize ve sayfalarınıza podcast'ler, müzik ve ses dosyaları eklemenizi kolaylaştırır.
+Metin blokları daha da güzelleşiyor. Blok düzenleyicinin metin blokları kısmına renk ve arkaplan özelleştirme seçenekleri eklendi.
 
-UX iyileştirmeleri için de çok çalıştık:
+Diğer blok düzenleyici geliştirmelerinin arasında iPad üzerinde blok seçici ile ilgili bir sorunun çözülmesi ve düzenleyicinin web sürümünün yüklenme ve hata ekranlarının güncellenmesi yer alıyor.
 
-Başlığı olmayan bir sayfaya bir üst sayfa atadığınızda, artık boş bir satır yerine "(başlık yok)" yer tutucusunu göreceksiniz, bu da size sayfayı adlandırmanız gerektiğini hatırlatacaktır.
+Daha önce Okuyucu'daki abone olma düğmelerinde bazı yenileme sorunlarıyla karşılaştıysanız, artık rahatlayabilirsiniz çünkü o sorunlar da çözüldü.
 
-Otomatik olarak oluşturuldukları için Yazı Arşivi sayfalarını hiçbir zaman düzenleyememişsinizdir. 17.6'da, bunları düzenleyicide de açamayacaksınız, bu da sizi boşa giden bir eylemden kurtarıyor.
+Yazarlara ve Katkıda Bulunanlara ulaşmak artık çok daha kolay! Web sitelerinin Yorumlarını, Sitem > Yorumlar üzerinden görüntüleyebilecekler.
 
-Ayrıca bazı şeyleri düzeltmek için çalışmalarımız devam ediyor:
-
-Biri Site Simgesi denetimlerini, diğeri Hızlı Başlangıç Kaldırma'yı, üçüncüsü de düzenleyicide Diğer Eylemleri görüntüleyen bildirim dahil olmak üzere, Eylem Sayfası ile örtüşen bazı bildirimleri düzelttik.
-
-Son olarak, yorum yönetimi sırasında bazen uygulamanın kilitlenmesine neden olan bir hatayı ve WordPress.org sitelerinin satır içi gösterilmesiyle ilgili bir giriş hatasını düzelttik.
-
-17.6 için hepsi bu kadar. 17.7'de görüşmek üzere.
+Bildirimlere tıklarken gerçekleşen bir hata giderildi.

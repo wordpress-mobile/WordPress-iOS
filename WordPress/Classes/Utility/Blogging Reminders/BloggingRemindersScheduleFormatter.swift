@@ -1,11 +1,9 @@
 import Foundation
 
 struct BloggingRemindersScheduleFormatter {
-    let schedule: BloggingRemindersScheduler.Schedule
     let calendar: Calendar
 
-    init(schedule: BloggingRemindersScheduler.Schedule, calendar: Calendar? = nil) {
-        self.schedule = schedule
+    init(calendar: Calendar? = nil) {
         self.calendar = calendar ?? {
             var calendar = Calendar.current
             calendar.locale = Locale.autoupdatingCurrent
@@ -15,11 +13,15 @@ struct BloggingRemindersScheduleFormatter {
 
     /// Attributed description string of the current schedule for the specified blog.
     ///
-    var shortIntervalDescription: NSAttributedString {
+    func shortIntervalDescription(for schedule: BloggingRemindersScheduler.Schedule) -> NSAttributedString {
         switch schedule {
         case .none:
             return Self.stringToAttributedString(TextContent.shortNoRemindersDescription)
         case .weekdays(let days):
+            guard days.count > 0 else {
+                return shortIntervalDescription(for: .none)
+            }
+
             return Self.shortIntervalDescription(for: days.count)
         }
     }
@@ -42,11 +44,15 @@ struct BloggingRemindersScheduleFormatter {
         return Self.stringToAttributedString(text)
     }
 
-    var longScheduleDescription: NSAttributedString {
+    func longScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule) -> NSAttributedString {
         switch schedule {
         case .none:
             return NSAttributedString(string: TextContent.longNoRemindersDescription)
         case .weekdays(let days):
+            guard days.count > 0 else {
+                return longScheduleDescription(for: .none)
+            }
+
             // We want the days sorted by their localized index because under some locale configurations
             // Sunday is the first day of the week, whereas in some other localizations Monday comes first.
             let sortedDays = days.sorted { (first, second) -> Bool in

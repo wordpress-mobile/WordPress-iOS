@@ -1,6 +1,7 @@
 import Foundation
 
 @objc class AppConstants: NSObject {
+    static let itunesAppID = "1565481562"
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
@@ -18,6 +19,14 @@ import Foundation
     static let pushNotificationAppId = "com.jetpack.appstore"
     #endif
     #endif
+}
+
+// MARK: - Tab bar order
+@objc enum WPTab: Int {
+    case mySites
+    case notifications
+    // Reader on Jetpack is not displayed, but we keep it here to avoid adding conditionals on existing code
+    case reader
 }
 
 // MARK: - Localized Strings

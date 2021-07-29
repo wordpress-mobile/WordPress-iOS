@@ -1,15 +1,9 @@
-Con la versione 17.6, puoi aggiungere il blocco Audio a qualsiasi sito WordPress.com, qualunque sia il tuo piano, incluso il piano gratuito. Il blocco Audio rende semplice aggiungere podcast, musica e file audio ad articoli e pagine.
+I blocchi di testo ottengono un po' di interesse. La personalizzazione di colori e sfondo viene aggiunta ai blocchi di testo dell'editor a blocchi.
 
-Abbiamo lavorato sodo anche per migliorare la UX:
+Altri aggiornamenti dell'editor a blocchi includono la risoluzione di un problema con il selettore di blocchi su iPad e le schermate di caricamento e di errore aggiornate per la versione web dell'editor.
 
-Quando assegni una pagina principale a una pagina senza titolo, ora vedrai un segnaposto "(nessun titolo)" invece di una riga vuota, in modo da stimolarti leggermente a nominare la pagina.
+Se hai riscontrato alcuni problemi di aggiornamento con i pulsanti Segui nel Reader, ora puoi stare tranquillo, perché tali problemi sono stati risolti.
 
-Non sei mai stato in grado di modificare le pagine di archivio degli articoli perché vengono generate automaticamente. Nella versione 17.6, non potrai aprirle nell'editor, risparmiandoti un viaggio inutile.
+Autori e Collaboratori non saranno più all'oscuro. Ora possono visualizzare i Commenti di un sito tramite Il mio sito > Commenti.
 
-Abbiamo lavorato sodo per risolvere alcuni problemi:
-
-Ci siamo occupati di alcuni avvisi che si erano sovrapposti ad ActionSheet, incluso uno che mostra i controlli dell'icona del sito, un altro che ti fa visualizzare la QuickStart Removal e un terzo che mostra Altre azioni nell'editor.
-
-Infine, abbiamo eliminato un bug che a volte causava l'arresto anomalo dell'app durante la moderazione dei commenti e un altro per correggere un errore di accesso per siti WordPress.org da mostrare in linea.
-
-Questo è tutto quello che riguarda la versione 17.6. Appuntamento alla versione 17.7!
+Risolto un bug quando venivano toccate le notifiche.

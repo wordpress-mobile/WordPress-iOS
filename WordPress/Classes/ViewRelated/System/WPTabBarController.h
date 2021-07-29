@@ -6,12 +6,6 @@ extern NSString * const WPTabBarCurrentlySelectedScreenSites;
 extern NSString * const WPTabBarCurrentlySelectedScreenReader;
 extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 
-typedef NS_ENUM(NSUInteger, WPTabType) {
-    WPTabMySites,
-    WPTabReader,
-    WPTabNotifications
-};
-
 @class AbstractPost;
 @class Blog;
 @class BlogListViewController;
