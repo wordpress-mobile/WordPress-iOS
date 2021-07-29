@@ -36,6 +36,10 @@ extension Comment {
         return authorURL()?.host ?? String()
     }
 
+    @objc func contentForEdit() -> String {
+        return rawContent ?? content ?? String()
+    }
+
     @objc func isApproved() -> Bool {
         return status.isEqual(to: CommentStatusType.approved.description)
     }
@@ -65,8 +69,11 @@ extension Comment {
 private extension Comment {
 
     func decodedContent() -> String {
-        // rawContent contains markup for Gutenberg comments. Remove it so it's not displayed.
-        return rawContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
+        guard let displayContent = rawContent ?? content else {
+            return String()
+        }
+        // rawContent/content contains markup for Gutenberg comments. Remove it so it's not displayed.
+        return displayContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
 
     func authorName() -> String {
