@@ -11,7 +11,7 @@ extension Comment {
     ///
     @objc func relativeDateSectionIdentifier() -> String {
         // Normalize Dates: Time must not be considered. Just the raw dates
-        let fromDate = dateCreated.normalizedDate()
+        let fromDate = (dateCreated ?? Date()).normalizedDate()
         let toDate = Date().normalizedDate()
 
         // Analyze the Delta-Components
