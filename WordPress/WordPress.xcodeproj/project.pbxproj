@@ -2311,6 +2311,8 @@
 		E62AFB6C1DC8E593007484FC /* WPRichTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62AFB671DC8E593007484FC /* WPRichTextFormatter.swift */; };
 		E62AFB6D1DC8E593007484FC /* WPTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62AFB681DC8E593007484FC /* WPTextAttachment.swift */; };
 		E62AFB6E1DC8E593007484FC /* WPTextAttachmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62AFB691DC8E593007484FC /* WPTextAttachmentManager.swift */; };
+		E62CE58E26B1D14200C9D147 /* AccountService+Cookies.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62CE58D26B1D14200C9D147 /* AccountService+Cookies.swift */; };
+		E62CE58F26B1D14200C9D147 /* AccountService+Cookies.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62CE58D26B1D14200C9D147 /* AccountService+Cookies.swift */; };
 		E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6311C401EC9FF4A00122529 /* UsersService.swift */; };
 		E6311C431ECA017E00122529 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6311C421ECA017E00122529 /* UserProfile.swift */; };
 		E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DBD1C444D8B00F24720 /* PublicizeConnection.swift */; };
@@ -7132,6 +7134,7 @@
 		E62AFB671DC8E593007484FC /* WPRichTextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPRichTextFormatter.swift; path = WPRichText/WPRichTextFormatter.swift; sourceTree = "<group>"; };
 		E62AFB681DC8E593007484FC /* WPTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPTextAttachment.swift; path = WPRichText/WPTextAttachment.swift; sourceTree = "<group>"; };
 		E62AFB691DC8E593007484FC /* WPTextAttachmentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPTextAttachmentManager.swift; path = WPRichText/WPTextAttachmentManager.swift; sourceTree = "<group>"; };
+		E62CE58D26B1D14200C9D147 /* AccountService+Cookies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountService+Cookies.swift"; sourceTree = "<group>"; };
 		E62D4A2425E7FE6600B99550 /* WordPress 114.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 114.xcdatamodel"; sourceTree = "<group>"; };
 		E6311C401EC9FF4A00122529 /* UsersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersService.swift; sourceTree = "<group>"; };
 		E6311C421ECA017E00122529 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -11253,6 +11256,7 @@
 				F504D2A925D60C5900A2764C /* Stories */,
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
+				E62CE58D26B1D14200C9D147 /* AccountService+Cookies.swift */,
 				E6C0ED3A231DA23400A08B57 /* AccountService+MergeDuplicates.swift */,
 				E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */,
 				F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */,
@@ -17459,6 +17463,7 @@
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
 				17523381246C4F9200870B4A /* HomepageSettingsViewController.swift in Sources */,
+				E62CE58E26B1D14200C9D147 /* AccountService+Cookies.swift in Sources */,
 				C81CCD7F243BF7A600A83E27 /* TenorMediaGroup.swift in Sources */,
 				B0F2EFBF259378E600C7EB6D /* SiteSuggestionService.swift in Sources */,
 				4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */,
@@ -19356,6 +19361,7 @@
 				FABB22DC2602FC2C00C8785C /* MenuLocation.m in Sources */,
 				FABB22DD2602FC2C00C8785C /* RevisionsTableViewCell.swift in Sources */,
 				E6D6A1312683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
+				E62CE58F26B1D14200C9D147 /* AccountService+Cookies.swift in Sources */,
 				FABB22DE2602FC2C00C8785C /* KeyboardInfo.swift in Sources */,
 				FABB22DF2602FC2C00C8785C /* PlanDetailViewModel.swift in Sources */,
 				FABB22E02602FC2C00C8785C /* DebugMenuViewController.swift in Sources */,
