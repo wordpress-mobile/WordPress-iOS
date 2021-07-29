@@ -1146,7 +1146,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // Use raw_content for blog comments so
     // This is a temporary mixmatch of properties for a frozen branch bug fix that we'll sort out properly in develop.
     // - @aerych
-    comment.content = remoteComment.rawContent;
+    // Also, self-hosted doesn't have rawContent, so default to content.
+    comment.content = remoteComment.rawContent ?: remoteComment.content;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
     comment.parentID = remoteComment.parentID;
