@@ -19,18 +19,17 @@ struct StoreSandboxSecretScreen: View {
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
         }
         .onDisappear() {
-            // This seems to be necessary do to an iOS bug where
+            // This seems to be necessary due to an iOS bug where
             // accessing presentationMode.wrappedValue crashes.
             DispatchQueue.main.async {
-                if(self.presentationMode.wrappedValue.isPresented == false) {
-                    if let cookie = HTTPCookie(properties: [
-                        .name: StoreSandboxSecretScreen.storeSandboxSecretKey,
-                        .value: secret,
-                        .domain: ".wordpress.com",
-                        .path: "/"
-                    ]) {
-                        cookieJar.setCookies([cookie]) {}
-                    }
+                if(self.presentationMode.wrappedValue.isPresented == false),
+                  let cookie = HTTPCookie(properties: [
+                    .name: StoreSandboxSecretScreen.storeSandboxSecretKey,
+                    .value: secret,
+                    .domain: ".wordpress.com",
+                    .path: "/"
+                  ]) {
+                    cookieJar.setCookies([cookie]) {}
                 }
             }
         }
