@@ -5,21 +5,11 @@ x_use_plugins: &use_plugins
           bucket: "a8c-repo-mirrors"
           repo: "wordpress-mobile/wordpress-ios/"
 
-# Common environment values for the `env` key.
-#
-# To add more, simply add another entry at the same indentation as `IMAGE_ID`.
-#
-# Usage in a step with only these values:
-#
-#   env: *common_env
-#
-# Usage in a step with other values:
-#
-#   env:
-#     <<: *common_env
-#     other_key: "other value"
-x_common_env: &common_env
-  IMAGE_ID: xcode-12.5.1
+# Nodes with values to reuse in the pipeline.
+common_params:
+  # Common environment values to use with the `env` key.
+  - &common_env
+    IMAGE_ID: xcode-12.5.1
 
 # This is the default pipeline – it will build and test the app
 steps:
