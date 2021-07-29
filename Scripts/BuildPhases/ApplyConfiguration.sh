@@ -99,17 +99,21 @@ fi
 
 # None of the above secrets was found. Use the example secrets file as a last
 # resort, unless building for Release.
+
+COULD_NOT_FIND_SECRET_MSG="Could not find secrets file at ${SECRETS_DESTINATION_FILE}. This is likely due to the source secrets being missing from ${SECRETS_ROOT}"
+INTERNAL_CONTRIBUTOR_MSG="If you are an internal contributor, run \`bundle exec fastlane run configure_apply\` to update your secrets"
+
 case $CONFIGURATION in
-  # There are three release configurations: Release, Release-Alpha, and
-  # Release-Internal. Since they all start with "Release" we can use a pattern
-  # to check for them.
   Release*)
-    echo "error: Could not find secrets at $SECRETS_ROOT. Cannot continue release build."
+    # There are three release configurations: Release, Release-Alpha, and
+    # Release-Internal. Since they all start with "Release" we can use a
+    # pattern to check for them.
+    echo "error: $COULD_NOT_FIND_SECRET_MSG. Cannot continue Release build. $INTERNAL_CONTRIBUTOR_MSG and try again. External contributors should not need to perform a Release build."
     exit 1
     ;;
   *)
+    echo "warning: $COULD_NOT_FIND_SECRET_MSG. Falling back to $EXAMPLE_SECRETS_FILE. In a Release build, this would be an error. $INTERNAL_CONTRIBUTOR_MSG and try again. If you are an external contributor, you can ignore this warning."
     echo "Applying Example Secrets"
-    echo "warning: Could not find secrets at $SECRETS_ROOT, falling back to $EXAMPLE_SECRETS_FILE. In a release build, this would be an error."
     cp -v $EXAMPLE_SECRETS_FILE $SECRETS_DESTINATION_FILE
     ;;
 esac
