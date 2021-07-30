@@ -111,7 +111,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     reply.postID = comment.postID;
     reply.post = comment.post;
     reply.parentID = comment.commentID;
-    reply.status = CommentStatusApproved;
+    reply.status = [Comment descriptionFor:CommentStatusTypeApproved];
     return reply;
 }
 
@@ -119,7 +119,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (Comment *)restoreReplyForComment:(Comment *)comment
 {
     NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Comment class])];
-    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@", CommentStatusDraft, comment.commentID];
+    NSString *draft = [Comment descriptionFor:CommentStatusTypeDraft];
+    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@",
+                               draft,
+                               comment.commentID];
     existingReply.fetchLimit = 1;
 
     NSError *error;
@@ -133,8 +136,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         reply = [self createReplyForComment:comment];
     }
 
-    reply.status = CommentStatusDraft;
-
+    reply.status = draft;
     return reply;
 }
 
@@ -394,7 +396,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
-               withStatus:CommentStatusApproved
+               withStatus:CommentStatusTypeApproved
                   success:success
                   failure:failure];
 }
@@ -405,7 +407,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                  failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
-               withStatus:CommentStatusPending
+               withStatus:CommentStatusTypePending
                   success:success
                   failure:failure];
 }
@@ -417,7 +419,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSManagedObjectID *commentID = comment.objectID;
     [self moderateComment:comment
-               withStatus:CommentStatusSpam
+               withStatus:CommentStatusTypeSpam
                   success:^{
                       Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
                       [self.managedObjectContext deleteObject:commentInContext];
@@ -721,7 +723,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
     [remote moderateCommentWithID:commentID
-                           status:CommentStatusSpam
+                           status:[Comment descriptionFor:CommentStatusTypeSpam]
                           success:success
                           failure:failure];
 }
@@ -801,19 +803,21 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
-             withStatus:(NSString *)status
+             withStatus:(CommentStatusType)status
                 success:(void (^)(void))success
                 failure:(void (^)(NSError *error))failure
 {
+    NSString *currentStatus = [Comment descriptionFor:status];
     NSString *prevStatus = comment.status;
-    if ([prevStatus isEqualToString:status]) {
+
+    if ([prevStatus isEqualToString:currentStatus]) {
         if (success) {
             success();
         }
         return;
     }
 
-    comment.status = status;
+    comment.status = currentStatus;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
@@ -954,7 +958,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.parentID = parentID;
     comment.postID = postID;
     comment.postTitle = post.postTitle;
-    comment.status = CommentStatusDraft;
+    comment.status = [Comment descriptionFor:CommentStatusTypeDraft];
     comment.post = post;
 
     // Increment the post's comment count. 
@@ -1139,6 +1143,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.author_url = remoteComment.authorUrl;
     comment.authorAvatarURL = remoteComment.authorAvatarURL;
     comment.content = remoteComment.content;
+    comment.rawContent = remoteComment.rawContent;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
     comment.parentID = remoteComment.parentID;

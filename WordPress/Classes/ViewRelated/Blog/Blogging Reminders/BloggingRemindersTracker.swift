@@ -54,7 +54,7 @@ class BloggingRemindersTracker {
     enum Property: String {
         case button = "button"
         case daysOfWeek = "days_of_week_count"
-        case flowDismissSource, flowStartSource = "source"
+        case source = "source"
         case screen = "screen"
     }
 
@@ -88,11 +88,11 @@ class BloggingRemindersTracker {
     }
 
     func flowDismissed(source: FlowDismissSource) {
-        track(event(.flowDismissed, properties: [Property.flowDismissSource.rawValue: source.rawValue]))
+        track(event(.flowDismissed, properties: [Property.source.rawValue: source.rawValue]))
     }
 
     func flowStarted(source: FlowStartSource) {
-        track(event(.flowStart, properties: [Property.flowStartSource.rawValue: source.rawValue]))
+        track(event(.flowStart, properties: [Property.source.rawValue: source.rawValue]))
 
     }
 

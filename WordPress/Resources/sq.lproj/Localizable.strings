@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-18 11:23:02+0000 */
+/* Translation-Revision-Date: 2021-07-14 11:56:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "Që të zgjidhen kërcënimet, %1$@.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d Pëlqim";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Pëlqime";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "Këtë e pëlqen %1$d blogues.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d blogger_ likes this.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "Këtë e pëlqejnë %1$d blogues.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d bloggers_ like this.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d nga %2$d të plotësuara";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(I patitull)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(pa titull)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -298,13 +299,13 @@
 "< 1 hour" = "< 1 orë";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> herë në javë";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+"<strong>Once<\/strong> a week" = "<strong>Një herë<\/strong> në javë";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+"<strong>Twice<\/strong> a week" = "<strong>Dy herë<\/strong> në javë";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -507,6 +508,9 @@
 "Add image, or avatar, to represent this new account." = "Shton figurë, ose avatar, që të përfaqësojë këtë llogari të re.";
 
 /* No comment provided by engineer. */
+"Add link" = "Shtoni lidhje";
+
+/* No comment provided by engineer. */
 "Add link text" = "Shtoni tekst lidhjeje";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -649,7 +653,7 @@
 "Alt Text" = "Tekst Alternativ";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shndërroji në blloqe të rregullt”.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Ndryshe:";
@@ -672,9 +676,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Që të shihni shtojcat, lypset një lidhje internet aktive";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Që të shihni statistikat, lypset një lidhje internet aktive";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Që të shihni historikun, lypset një lidhje internet aktive";
@@ -1029,7 +1030,7 @@
 "Blog's Viewer" = "Shikues Blogu";
 
 /* Label for the blogging reminders setting */
-"Blogging Reminders" = "Blogging Reminders";
+"Blogging Reminders" = "Kujtues Blogimi";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Stil Butoni";
-
-/* No comment provided by engineer. */
-"Button inside" = "Buton brenda";
-
-/* No comment provided by engineer. */
-"Button outside" = "Buton jashtë";
 
 /* No comment provided by engineer. */
 "Button position" = "Pozicion butoni";
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "Prekeni dyfish që të hapet Fleta e Poshtme me mundësitë e gatshme";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Double tap to preview page.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Double tap to preview post.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Që të ribëhet ndryshimi i fundit, prekeni dyfish";
 
 /* No comment provided by engineer. */
@@ -2340,6 +2341,9 @@
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Përsëdyte bllokun";
+
+/* No comment provided by engineer. */
+"EDIT LINK" = "PËRPUNONI LIDHJE";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Lindje";
@@ -2410,10 +2414,10 @@
 "Edit your homepage" = "Përpunoni faqen tuaj hyrëse";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në WordPress për Android";
 
 /* No comment provided by engineer. */
-"Editing reusable blocks is not yet supported on WordPress for iOS" = "Editing reusable blocks is not yet supported on WordPress for iOS";
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "Përpunimi i blloqeve të ripërdorshëm nuk mbulohet ende në WordPress për iOS";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Përpunimi i këtij GIF do të heqë animacionin e tij.";
@@ -2462,6 +2466,21 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email-i u dërgua!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Titull trupëzimi. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Titull trupëzimi. I zbrazët";
+
+/* No comment provided by engineer. */
+"Embed link" = "Trupëzoni lidhje";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Embed previews not yet available";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
@@ -2478,6 +2497,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Aktivizo Nisjeje të Shpejtë për Sajtin";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Aktivizoni Statistika Sajti";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Aktivizoni përdorim mikrofoni për të incizuar zë në videot tuaja.";
 
@@ -2486,6 +2508,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Të aktivizohen njoftime sajti?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Që të shihni të dhëna të hollësishme mbi trafikun tuaj, pëlqimet, komentet dhe pajtimtarët, aktivizoni statistika sajti.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Po aktivizohen Statistika Sajti…";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Regjistra të Fshehtëzuar";
@@ -2647,7 +2675,7 @@
 "Event" = "Veprimtari";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day" = "Every day";
+"Every day" = "Çdo ditë";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Kushdo";
@@ -3029,7 +3057,7 @@
 "Go to Reader" = "Kaloni te Lexuesi";
 
 /* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
-"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Go to Settings → Notifications → WordPress, and toggle Allow Notifications.";
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "Kaloni te Rregullime → Njoftime → WordPress, dhe ndërroni gjendjen për Lejo Njoftime.";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3130,7 +3158,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Titull 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Ndihmë";
 
 /* Link to Help section
@@ -3405,6 +3434,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL e pavlefshme. S’u gjet kartelë audio.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "URL e pavlefshme. Ju lutemi, jepni një URL të vlefshme.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Pikëmbarim i pavlefshëm";
 
@@ -3433,10 +3465,10 @@
 "It's been %@ since %@ was published. " = "U bënë %1$@ qëkur qe botuar %2$@. ";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
-"It's time to blog on %@!" = "It's time to blog on %@!";
+"It's time to blog on %@!" = "Është koha të blogoni te %@!";
 
 /* Title of a notification displayed prompting the user to create a new blog post */
-"It's time to blog!" = "It's time to blog!";
+"It's time to blog!" = "Është koha të blogoni!";
 
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "Erdhi dita! Hartoni dhe botoni postimin tuaj të parë fare.";
@@ -3452,6 +3484,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Lypset Jetpack %@ ose më i ri. Doni të përditësohet Jetpack-u?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup për instalime Shumësajtëshe furnizon kopjeruajtje të shkarkueshme, jo rikthime me një klikim. Për më tepër hollësi, %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "FAQ-e mbi Jetpack-un";
@@ -3588,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Sfonde të çelët";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Pëlqejeni";
 
 /* A comment is marked as liked */
@@ -3601,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3717,7 +3751,7 @@
 "Loading stream..." = "Po ngarkohet rrjedhë…";
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
-"Loading the block editor." = "Loading the block editor.";
+"Loading the block editor." = "Po ngarkohet përpunuesi me blloqe.";
 
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "Po ngarkohen emra përdoruesish";
@@ -3798,6 +3832,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Regjistra";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Po shihni për statistika?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Po kërkohet për adresën…";
@@ -4193,12 +4230,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Pa Kategori";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Pa lidhje";
 
 /* List Editor Empty State Message */
 "No Items" = "S’ka Objekte";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "S’u gjetën sajte Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Pa Menu";
@@ -4243,7 +4282,7 @@
 "No available sites" = "S’ka sajte të gatshme";
 
 /* No comment provided by engineer. */
-"No button" = "Pa buton";
+"No blocks found" = "No blocks found";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "S’ka komente";
@@ -4394,7 +4433,7 @@
 "None" = "Asnjë";
 
 /* Title shown on table row where no blogging reminders have been set up yet */
-"None set" = "None set";
+"None set" = "S’ka të caktuar";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "Veri";
@@ -4461,7 +4500,7 @@
 "Notifications Unread" = "Njoftime të Palexuara";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
-"Notify me" = "Notify me";
+"Notify me" = "Njoftomë";
 
 /* First story intro item title */
 "Now stories are for everyone" = "Tanimë shkrimet janë për këdo";
@@ -4513,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "Butona Zyrtarë";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Më të vjetër se 2 ditë";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Më të vjetër se një Muaj";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Më të vjetër se një Javë";
 
 /* Sort Order */
@@ -4754,9 +4796,6 @@
    Title of pending Comments filter. */
 "Pending" = "Pezull";
 
-/* No comment provided by engineer. */
-"Pending moderation" = "Në pritje të moderimit";
-
 /* Name for the status of a post pending review.
    Pending review
    Title of the Pending Review Badge */
@@ -4819,10 +4858,10 @@
 "Please contact support for assistance." = "Ju lutemi, lidhuni me ata të asistencës.";
 
 /* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
-"Please ensure the block editor is enabled on your site and try again." = "Please ensure the block editor is enabled on your site and try again.";
+"Please ensure the block editor is enabled on your site and try again." = "Ju lutemi, garantoni që përpunuesi me blloqe të jetë aktivizuar në sajtin tuaj dhe riprovoni.";
 
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
-"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.";
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Ju lutemi, garantoni që përpunuesi me blloqe të jetë aktivizuar në sajtin tuaj. Nëse s’është aktivizuar, s’do të ngarkohet.";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "Ju lutemi, jepni një adresë të plotë sajti, bie fjala, example.com.";
@@ -5044,7 +5083,7 @@
 "Posting Activity" = "Veprimtari Postimi";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Postimi rregullisht mund të ndihmojë t’i mbani lexuesit tuaj të angazhuar, dhe të tërhiqni vizitorë të rinj te sajti juaj.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
@@ -5106,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "S’bëhet dot Paraparje";
+
+/* No comment provided by engineer. */
+"Preview page" = "Preview page";
+
+/* No comment provided by engineer. */
+"Preview post" = "Preview post";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Bëni një paraparje të sajtit tuaj që të shihni ç’do të shohin vizitorët tuaj.";
@@ -5353,7 +5398,7 @@
 "Related Posts displays relevant content from your site below your posts" = "Postimet e Afërta shfaqin nën postime tuajat lëndë të afërt prej sajtit tuaj";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
-"Reminders removed" = "Reminders removed";
+"Reminders removed" = "Kujtuesit u hoqën";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5581,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Prapëso Ndryshimin Pezull";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Reverts the action performed on this notification.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Shqyrtoni faqe sajti";
 
@@ -5728,9 +5776,6 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "Kërkoni në WordPress\npër një sajt apo postim";
-
-/* No comment provided by engineer. */
-"Search block" = "Bllok kërkimesh";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Etiketë për kërkoni në blloqe. Teksti i tanishëm është";
@@ -5945,7 +5990,7 @@
 "Set as Posts Page" = "Caktojeni Faqe Postimesh";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Set reminders";
+"Set reminders" = "Ujdisni kujtues";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "U ujdis";
@@ -5954,10 +5999,10 @@
 "Set up Jetpack" = "Rregulloni Jetpack-un";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Set up your blogging reminders on days you want to post.";
+"Set up your blogging reminders on days you want to post." = "Ujdisni kujtues blogimi për ditë kur doni të postoni.";
 
 /* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Set your blogging reminders";
+"Set your blogging reminders" = "Ujdisni kujtuesit tuaj për blogimin";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "Caktoni titullin e sajtit tuaj";
@@ -6923,7 +6968,7 @@
 "This is where people will find you on the internet." = "Ky është vendi ku do t’ju gjejnë njerëzit në internet.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
-"This is your reminder to blog today ✍️" = "";
+"This is your reminder to blog today ✍️" = "Ky është kujtuesi juaj për të bloguar sot ✍️";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Ky objekt media është fshirë.";
@@ -7045,7 +7090,7 @@
 "To take photos or videos to use in your posts." = "Që të bëjë foto ose video për t’u përdorur te postimet tuaja.";
 
 /* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
-"To use blogging reminders, you'll need to turn on push notifications." = "To use blogging reminders, you'll need to turn on push notifications.";
+"To use blogging reminders, you'll need to turn on push notifications." = "Që të përdorni kujtues blogimi, do t’ju duhet të aktivizoni njoftime push.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "Që të shihni statistika në sajtin tuaj, do t;ju duhet të instaloni shtojcën Jetpack.";
@@ -7053,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Që të përdorni këtë aplikacion për %@ do t’ju duhet të keni të instaluar dhe të aktivizuar shtojcën Jetpack.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Sot";
@@ -7165,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Riprovoni";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Try another search term";
+
 /* Customize Insights button title */
 "Try it now" = "Provojeni tani";
 
@@ -7181,10 +7230,10 @@
 "Turn off site notifications" = "Çaktivizoni njoftime sajti";
 
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
-"Turn on notifications" = "Turn on notifications";
+"Turn on notifications" = "Aktivizo njoftimet";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
-"Turn on push notifications" = "Turn on push notifications";
+"Turn on push notifications" = "Aktivizo njoftime push";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Aktivizoni njoftime sajti";
@@ -7255,6 +7304,9 @@
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "S’arrihet të shkarkohet kartelë";
 
+/* No comment provided by engineer. */
+"Unable to embed media" = "Unable to embed media";
+
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "S’arrihet të ndiqet biseda";
 
@@ -7271,7 +7323,7 @@
 "Unable to load posts right now." = "S’arrihet të ngarkohen postime tani për tani.";
 
 /* Title message shown when the Unsupported Block Editor fails to load. */
-"Unable to load the block editor right now." = "Unable to load the block editor right now.";
+"Unable to load the block editor right now." = "S’arrihet të ngarkohet përpunuesi i blloqeve këtë çast.";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "S’arrihet të ngarkohet figura. Ju lutemi, zgjidhni një tjetër ose riprovoni më vonë.";
@@ -7372,7 +7424,7 @@
 "Unavailable" = "S’mbulohet";
 
 /* When the App can't figure out what language a blog is configured to use. */
-"Undefined" = "Undefined";
+"Undefined" = "E papërkufizuar";
 
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
@@ -7393,7 +7445,7 @@
 "Unfollow %@" = "Hiqe ndjekjen e %@";
 
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation by email" = "Hiqe ndjekjen me email të bisedës";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Hiqja ndjekjen sajtit";
@@ -7994,6 +8046,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Po e rikthejmë sajtin tuaj te %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Na ndjeni, Jetpack Scan s’është i përputhshëm me instalime shumësajtëshe WordPress hëpërhë.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Ju dërguam gjithashtu me email një lidhje për te kartela juaj.";
 
@@ -8055,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Do t’ju heqim udhën nëpër hapat bazë të ndërtimit dhe fuqizimit të sajtit tuaj";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Kemi shtuar më tepër punë, për t’ju ndihmuar të shtoni publikun tuaj.";
 
@@ -8069,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "What is a block?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Ç’është teksti alternativ?";
@@ -8174,6 +8238,9 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Asistencë për WordPress për iOS";
 
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "Instalimet shumësajtëshe WordPress nuk mbulohen";
+
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress-i lyp leje që të hyjë te vendi i tanishëm i pajisjes tuaj, që të mund t’ia shtojë atë postimit tuaj. Ju lutemi, përditësoni rregullimet tuaja për privatësinë.";
 
@@ -8260,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Po, tregoma";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Dje";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
@@ -8342,7 +8410,7 @@
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Keni te %d postime ndryshime që s’janë ngarkuar te sajti juaj. Dalja nga llogaria do të sjellë humbjen e këtyre ndryshimeve. Të bëhet dalja sido qoftë?";
 
 /* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
-"You have no reminders set." = "You have no reminders set.";
+"You have no reminders set." = "S’keni të ujdisur kujtues.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -8392,10 +8460,10 @@
 "You will not be able to change your username back." = "S'do të jeni në gjendje të ndryshoni prapë emrin tuaj të përdoruesit.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Do të merrni një kujtues për të bloguar <strong>një herë<\/strong> në javë te %@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
-"You'll get reminders to blog %@ times a week on %@." = "You'll get reminders to blog %@ times a week on %@.";
+"You'll get reminders to blog %@ times a week on %@." = "Do të merrni kujtues për të bloguar %1$@ në javë te %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Gjithçka e përditësuar!";
@@ -8449,7 +8517,7 @@
 "Your post is currently being uploaded. Please wait until this completes." = "Postimi juaj po ngarkohet. Ju lutemi, prisni deri sa të plotësohet kjo.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.";
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Postimi juaj po botohet… ndërkohë, mund të ujdisni kujtues blogimi për ditë kur doni të postoni.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";
@@ -8602,6 +8670,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "shikues";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "vizitoni faqen tonë të dokumentimit";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "s’do të jetë më i passhëm në të ardhmen.";

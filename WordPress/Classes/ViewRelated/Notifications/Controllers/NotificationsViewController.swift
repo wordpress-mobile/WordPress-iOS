@@ -97,6 +97,18 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return button
     }()
 
+    /// Convenience property that stores feature flag value for unified list.
+    /// This should be removed once the feature is fully rolled out.
+    private var usesUnifiedList: Bool = FeatureFlag.unifiedCommentsAndNotificationsList.enabled {
+        didSet {
+            // Since this view controller is the root view controller for notifications tab, we need to check whether
+            // the value has changed in `viewWillAppear`. If so, reload the table view to use the correct design.
+            if usesUnifiedList != oldValue {
+                reloadTableViewPreservingSelection()
+            }
+        }
+    }
+
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -162,6 +174,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             jetpackLoginViewController?.view.removeFromSuperview()
             jetpackLoginViewController?.removeFromParent()
         }
+
+        // Refresh feature flag value for unified list.
+        // This should be removed when the feature is fully rolled out.
+        usesUnifiedList = FeatureFlag.unifiedCommentsAndNotificationsList.enabled
 
         showNoResultsViewIfNeeded()
         selectFirstNotificationIfAppropriate()
@@ -301,6 +317,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             return nil
         }
 
+        if usesUnifiedList,
+           let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView {
+            headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+            return headerView
+        }
+
         let headerView = NoteTableHeaderView.makeFromNib()
         headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
         headerView.separatorColor = tableView.separatorColor
@@ -319,9 +341,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = NoteTableViewCell.reuseIdentifier()
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NoteTableViewCell else {
-            fatalError()
+        let reuseIdentifier = usesUnifiedList ? ListTableViewCell.defaultReuseID : NoteTableViewCell.reuseIdentifier()
+        let expectedType = usesUnifiedList ? ListTableViewCell.self : NoteTableViewCell.self
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+
+        guard type(of: cell) == expectedType else {
+            DDLogError("Error getting Notification table cell.")
+            return .init()
         }
 
         configureCell(cell, at: indexPath)
@@ -365,7 +391,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+        // skip when the notification is marked for deletion.
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+              deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
 
@@ -387,8 +415,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // skip when the notification is marked for deletion.
         guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
-            let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
+            deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
 
@@ -494,6 +524,13 @@ private extension NotificationsViewController {
     }
 
     func setupTableView() {
+        // Since this view controller is a root view controller for the notifications tab, both `NoteTableViewCell` and the new List components
+        // need to be registered to handle feature flag changes. When the feature is fully rolled out, let's remove NoteTableViewCell.
+
+        // Register unified list components.
+        tableView.register(ListTableHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ListTableHeaderView.defaultReuseID)
+        tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
+
         // Register the cells
         let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: Bundle.main)
         tableView.register(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
@@ -508,7 +545,7 @@ private extension NotificationsViewController {
 
     func setupTableFooterView() {
         //  Fix: Hide the cellSeparators, when the table is empty
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 1))
     }
 
     func setupTableHandler() {
@@ -1086,12 +1123,29 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        guard let cell = cell as? NoteTableViewCell else {
+        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
+        let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+
+        // configure unified list cell if the feature flag is enabled.
+        if usesUnifiedList, let cell = cell as? ListTableViewCell {
+            cell.configureWithNotification(note)
+
+            // handle undo overlays
+            cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
+                self?.cancelDeletionRequestForNoteWithID(note.objectID)
+            }
+
+            // additional configurations
+            cell.showsBottomSeparator = !isLastRow
+            cell.accessibilityHint = Self.accessibilityHint(for: note)
+
             return
         }
 
-        let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
-        let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+        // otherwise, configure using the (soon-to-be) legacy NoteTableViewCell.
+        guard let cell = cell as? NoteTableViewCell else {
+            return
+        }
 
         cell.attributedSubject      = note.renderSubject()
         cell.attributedSnippet      = note.renderSnippet()
@@ -1106,7 +1160,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-
         cell.downloadIconWithURL(note.iconURL)
     }
 
@@ -1139,12 +1192,22 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         //
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            guard let cell = tableView.cellForRow(at: indexPath) as? NoteTableViewCell else {
+            let cell = tableView.cellForRow(at: indexPath)
+
+            // Apply the same handling for ListTableViewCell.
+            // this should be removed when it's confirmed that default table separators no longer trigger issues
+            // resolved in #2845, and the unified list feature is fully rolled out.
+            if usesUnifiedList,
+               let listCell = cell as? ListTableViewCell {
+                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+                listCell.showsBottomSeparator = !isLastRow
                 continue
             }
 
-            let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-            cell.showsBottomSeparator = !isLastRow
+            if let noteCell = cell as? NoteTableViewCell {
+                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+                noteCell.showsBottomSeparator = !isLastRow
+            }
         }
 
         refreshUnreadNotifications()

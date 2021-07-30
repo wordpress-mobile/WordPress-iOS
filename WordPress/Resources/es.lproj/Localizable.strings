@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-30 15:57:41+0000 */
+/* Translation-Revision-Date: 2021-07-26 07:12:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ para corregir las amenazas.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d me gusta";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d me gusta";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "A %1$d bloguero le gusta esto.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "A %1$d bloguero_ le gusta esto.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "A %1$d blogueros les gusta esto.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "A %1$d blogueros_ les gusta esto.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d de %2$d completos";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(Sin título)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(sin título)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -507,6 +508,9 @@
 "Add image, or avatar, to represent this new account." = "Añade una imagen o avatar para representar a esta nueva cuenta.";
 
 /* No comment provided by engineer. */
+"Add link" = "Añadir enlace";
+
+/* No comment provided by engineer. */
 "Add link text" = "Añadir texto del enlace";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -672,9 +676,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "Se requiere una conexión a internet activa para ver los plugins";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "Se necesita conexión a internet para ver las estadísticas";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Se necesita conexión a internet para ver el historial";
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Estilo del botón";
-
-/* No comment provided by engineer. */
-"Button inside" = "Botón interior";
-
-/* No comment provided by engineer. */
-"Button outside" = "Botón exterior";
 
 /* No comment provided by engineer. */
 "Button position" = "Posición del botón";
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "Toca dos veces para abrir la hoja inferior con las opciones disponibles";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Toca dos veces para previsualizar la página.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Toca dos veces para previsualizar la entrada.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Toca dos veces para rehacer el último cambio";
 
 /* No comment provided by engineer. */
@@ -2340,6 +2341,9 @@
 
 /* No comment provided by engineer. */
 "Duplicate block" = "Duplicar bloque";
+
+/* No comment provided by engineer. */
+"EDIT LINK" = "EDITAR ENLACE";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Este";
@@ -2462,6 +2466,21 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "¡Correo electrónico enviado!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Pronto llegarán las vistas previas de los bloques incrustados";
+
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "Leyenda incrustada. %s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "Leyenda incrustada. Vacía";
+
+/* No comment provided by engineer. */
+"Embed link" = "Enlace incrustado";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Todavía no están disponibles las vistas previas incrustadas";
+
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
@@ -2478,6 +2497,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Activar el inicio rápido para el sitio";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "Activar las estadísticas del sitio";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Habilita el acceso al micrófono para poder grabar sonido en tus vídeos.";
 
@@ -2486,6 +2508,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "¿Activamos los avisos del sitio?";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Activa las estadísticas del sitio para consultar información detallada sobre el tráfico, los «Me gusta», los comentarios y los suscriptores.";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "Activando las estadísticas del sitio…";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Registros cifrados";
@@ -3130,7 +3158,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Cabecera 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Ayuda";
 
 /* Link to Help section
@@ -3405,6 +3434,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL no válida. Archivo de audio no encontrado.";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "URL no válida. Por favor, introduce una URL válida.";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Variable no válida";
 
@@ -3452,6 +3484,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Se necesita Jetpack %@ o posterior. ¿Quieres actualizar Jetpack?";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Las copias de seguridad de Jetpack para instalaciones multisitio proporcionan copias de seguridad descargables, no restauraciones con un solo clic. Para más información, %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "FAQ de Jetpack";
@@ -3588,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Fondos claros";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Me gusta";
 
 /* A comment is marked as liked */
@@ -3601,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3646,7 +3680,7 @@
 "Link inserted" = "Enlace insertado";
 
 /* No comment provided by engineer. */
-"Link text" = "Texto de la lista";
+"Link text" = "Texto del enlace";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Enlaza a contenido existente";
@@ -3798,6 +3832,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Registros";
+
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "¿Buscas las estadísticas?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Buscando dirección...";
@@ -4193,12 +4230,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Sin categoría";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "Sin conexión";
 
 /* List Editor Empty State Message */
 "No Items" = "Sin elementos";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "No se han encontrado sitios de Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Sin menú";
@@ -4243,7 +4282,7 @@
 "No available sites" = "No hay sitios disponibles";
 
 /* No comment provided by engineer. */
-"No button" = "Sin botón";
+"No blocks found" = "No se han encontrado bloques";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Sin comentarios";
@@ -4513,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "Botones oficiales";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Hace más de 2 días";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Hace más de un mes";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Hace más de una semana";
 
 /* Sort Order */
@@ -4753,9 +4795,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Pendiente";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "Pendiente de moderación";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5106,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "Vista previa no disponible";
+
+/* No comment provided by engineer. */
+"Preview page" = "Previsualizar la página";
+
+/* No comment provided by engineer. */
+"Preview post" = "Vista previa de entrada";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Previsualiza tu nuevo sitio para ver lo que verán tus visitantes.";
@@ -5581,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Deshacer el cambio pendiente";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Revierte la acción realizada en este aviso.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Revisar las páginas del sitio";
 
@@ -5728,9 +5776,6 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "Buscar en WordPress\nun sitio o entrada";
-
-/* No comment provided by engineer. */
-"Search block" = "Buscar bloque";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Etiqueta del bloque de búsqueda. El texto actual es";
@@ -7053,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Para usar esta aplicación para %@ deberás tener el plugin de Jetpack instalado y activado.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Hoy";
@@ -7165,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Intentarlo de nuevo";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Prueba otro término de búsqueda";
+
 /* Customize Insights button title */
 "Try it now" = "Probar ahora";
 
@@ -7254,6 +7303,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "No es posible descargar el archivo";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "No se ha podido incrustar el medio";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "No se ha podido seguir la conversación";
@@ -7994,6 +8046,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Estamos restaurando la versión de tu sitio del %1$@.";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Lo sentimos, la exploración de Jetpack no es compatible con las instalaciones multisitio de WordPress en este momento.";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "También hemos enviado un enlace a tu archivo.";
 
@@ -8055,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Te llevaremos a través de los básicos de creación y crecimiento de tu sitio";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Estamos trabajando duro para añadir compatibilidad para vistas previas incrustadas. Mientras tanto, puedes previsualizar el contenido incrustado en la página.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Estamos trabajando duro para añadir compatibilidad para vistas previas incrustadas. Mientras tanto, puedes previsualizar el contenido incrustado en la entrada.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Hemos añadido más tareas para ayudarte a hacer crecer tu audiencia.";
 
@@ -8069,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "¿Qué quieres hacer con este archivo: subirlo y añadir un enlace al archivo en tu entrada, o añadir los contenidos del archivo directamente en la entrada?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "¿Qué es un  bloque?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "¿Qué es el texto alt?";
@@ -8174,6 +8238,9 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Soporte de WordPress para iOS";
 
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "Los multisitios de WordPress no son compatibles";
+
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress necesita permiso para acceder a la localización actual de tu dispositivo para poder añadirla a tu entrada. Por favor, actualiza tus ajustes de privacidad.";
 
@@ -8260,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Sí, muéstrame cómo";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Ayer";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
@@ -8602,6 +8670,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "lector";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "visita nuestra página de documentación";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "no estará disponible en el futuro.";

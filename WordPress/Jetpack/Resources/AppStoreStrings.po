@@ -38,9 +38,13 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v17.7-whats-new"
+msgctxt "v17.9-whats-new"
 msgid ""
-"The Block editor has a shiny new block Layout grid, and while we were digging around in the editor code, we also tweaked the code for our tablet-using friends. The pesky inserter button tablet view issue in the Block editor has now been fixed.\n"
+"There’s a new block in town! With the Embed block, you can embed content from your favorite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.\n"
+"\n"
+"Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).\n"
+"\n"
+"We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and trash comments. We’ve also provided support for Global Styles, enabling settings like color and background customization for Full Site Editing themes.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

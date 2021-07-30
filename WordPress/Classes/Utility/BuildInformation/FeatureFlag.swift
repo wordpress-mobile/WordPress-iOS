@@ -15,12 +15,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
-    case newLikeNotifications
     case bloggingReminders
-    case readerPostLikes
     case siteIconCreator
-    case globalStyleSettings
     case editorOnboardingHelpMenu
+    case unifiedCommentsAndNotificationsList
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -32,7 +30,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .readerCSS:
             return false
         case .homepageSettings:
@@ -55,17 +53,13 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .milestoneNotifications:
             return true
-        case .newLikeNotifications:
-            return true
         case .bloggingReminders:
-            return true
-        case .readerPostLikes:
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .globalStyleSettings:
-            return false
         case .editorOnboardingHelpMenu:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .unifiedCommentsAndNotificationsList:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
@@ -119,18 +113,14 @@ extension FeatureFlag {
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
-        case .newLikeNotifications:
-            return "New Like Notifications"
         case .bloggingReminders:
             return "Blogging Reminders"
-        case .readerPostLikes:
-            return "Reader Post Likes"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .globalStyleSettings:
-            return "Global Style Settings"
         case .editorOnboardingHelpMenu:
             return "Editor Onboarding Help Menu"
+        case .unifiedCommentsAndNotificationsList:
+            return "Unified List for Comments and Notifications"
         }
     }
 
