@@ -17,7 +17,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
-    case globalStyleSettings
     case editorOnboardingHelpMenu
     case unifiedCommentsAndNotificationsList
 
@@ -31,7 +30,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .readerCSS:
             return false
         case .homepageSettings:
@@ -58,12 +57,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .globalStyleSettings:
-            return false
         case .editorOnboardingHelpMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedCommentsAndNotificationsList:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -120,8 +117,6 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .globalStyleSettings:
-            return "Global Style Settings"
         case .editorOnboardingHelpMenu:
             return "Editor Onboarding Help Menu"
         case .unifiedCommentsAndNotificationsList:

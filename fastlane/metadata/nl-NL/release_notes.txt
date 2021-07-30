@@ -1,0 +1,7 @@
+Tekstblokken krijgen wat liefde. Kleur- en achtergrond aanpassing wordt toegevoegd aan de tekstblokken van de blok-editor.
+
+Andere updates van de blok-editor omvatten het oplossen van een probleem met de blokkiezer op de iPad en het laden van updates en mislukte schermen voor de webversie van de editor.
+
+Als je wat ververs problemen hebt ondervonden met de volgknoppen in de Reader, kun je nu gerust zijn, omdat die problemen zijn opgelost.
+
+Auteurs en bijdragers zijn niet langer in het donker! Ze kunnen nu de reacties van een site bekijken via Mijn site > reacties.

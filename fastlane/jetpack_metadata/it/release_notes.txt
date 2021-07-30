@@ -1,0 +1,9 @@
+I blocchi di testo ottengono un po' di interesse. La personalizzazione di colori e sfondo viene aggiunta ai blocchi di testo dell'editor a blocchi.
+
+Altri aggiornamenti dell'editor a blocchi includono la risoluzione di un problema con il selettore di blocchi su iPad e le schermate di caricamento e di errore aggiornate per la versione web dell'editor.
+
+Se hai riscontrato alcuni problemi di aggiornamento con i pulsanti Segui nel Reader, ora puoi stare tranquillo, perché tali problemi sono stati risolti.
+
+Autori e Collaboratori non saranno più all'oscuro. Ora possono visualizzare i Commenti di un sito tramite Il mio sito > Commenti.
+
+Risolto un bug quando venivano toccate le notifiche.

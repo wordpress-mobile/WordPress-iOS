@@ -40,7 +40,7 @@ class ReaderDetailCoordinator {
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
-        guard let account = AccountService(managedObjectContext: coreDataStack.mainContext).defaultWordPressComAccount() else {
+        guard let account = accountService.defaultWordPressComAccount() else {
             DDLogInfo("Account not available for Reader authentication")
             return nil
         }
@@ -59,6 +59,9 @@ class ReaderDetailCoordinator {
 
     /// Post Service
     private let postService: PostService
+
+    /// Used for `RequestAuthenticator` creation and likes filtering logic.
+    private let accountService: AccountService
 
     /// Post Sharing Controller
     private let sharingController: PostSharingController
@@ -103,6 +106,7 @@ class ReaderDetailCoordinator {
          readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {
@@ -110,6 +114,7 @@ class ReaderDetailCoordinator {
         self.readerPostService = readerPostService
         self.topicService = topicService
         self.postService = postService
+        self.accountService = accountService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
         self.view = view
@@ -156,10 +161,26 @@ class ReaderDetailCoordinator {
         postService.getLikesFor(postID: postID,
                                 siteID: post.siteID,
                                 success: { [weak self] users, totalLikes, _ in
+                                    var filteredUsers = users
+                                    var currentLikeUser: LikeUser? = nil
+                                    let totalLikesExcludingSelf = totalLikes - (post.isLiked ? 1 : 0)
+
+                                    // Split off current user's like from the list.
+                                    // Likes from self will always be placed in the last position, regardless of the when the post was liked.
+                                    if let userID = self?.accountService.defaultWordPressComAccount()?.userID.int64Value,
+                                       let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
+                                        currentLikeUser = filteredUsers.remove(at: userIndex)
+                                    }
+
                                     self?.totalLikes = totalLikes
-                                    self?.view?.updateLikes(users: Array(users.prefix(ReaderDetailLikesView.maxAvatarsDisplayed)), totalLikes: totalLikes)
+                                    self?.view?.updateLikes(with: filteredUsers.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
+                                                            totalLikes: totalLikesExcludingSelf)
+                                    // Only pass current user's avatar when we know *for sure* that the post is liked.
+                                    // This is to work around a possible race condition that causes an unliked post to have current user's LikeUser, which
+                                    // would cause a display bug in ReaderDetailLikesView. The race condition issue will be investigated separately.
+                                    self?.view?.updateSelfLike(with: post.isLiked ? currentLikeUser?.avatarUrl : nil)
                                 }, failure: { [weak self] error in
-                                    self?.view?.updateLikes(users: [LikeUser](), totalLikes: 0)
+                                    self?.view?.updateLikes(with: [String](), totalLikes: 0)
                                     DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
                                 })
     }
@@ -626,6 +647,17 @@ extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
 extension ReaderDetailCoordinator: ReaderDetailLikesViewDelegate {
     func didTapLikesView() {
         showLikesList()
+    }
+}
+
+// MARK: - ReaderDetailToolbarDelegate
+extension ReaderDetailCoordinator: ReaderDetailToolbarDelegate {
+    func didTapLikeButton(isLiked: Bool) {
+        guard let userAvatarURL = accountService.defaultWordPressComAccount()?.avatarURL else {
+            return
+        }
+
+        self.view?.updateSelfLike(with: isLiked ? userAvatarURL : nil)
     }
 }
 

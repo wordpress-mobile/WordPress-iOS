@@ -1,0 +1,9 @@
+We hebben tekstblokken onder handen genomen. We hebben aanpassing van kleur en achtergrond toegevoegd aan de tekstblokken van de blokeditor.
+
+Andere updates aan de blokeditor omvatten: een probleem verholpen met de blokkiezer op de iPad en de schermen Laden en Mislukt bijgewerkt voor de webversie van de editor.
+
+Liep je tegen problemen aan met vernieuwen bij de volgknoppen in de lezer? Dan hoef je je geen zorgen meer te maken, want deze problemen zijn nu verholpen.
+
+Auteurs en bijdragers hoeven niet langer in het duister te tasten! Ze kunnen nu de opmerkingen op een site bekijken via Mijn site > Opmerkingen.
+
+Een bug verholpen bij het tikken op meldingen.
