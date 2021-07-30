@@ -45,12 +45,17 @@ extension Comment {
         return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
     }
 
-//    @objc func sectionIdentifier() -> String {
-//        let formatter = DateFormatter()
-//        formatter.dateStyle = .long
-//        formatter.timeStyle = .none
-//        return formatter.string(from: dateCreated ?? Date())
-//    }
+    @objc func sectionIdentifier() -> String? {
+        // allow nil values as temporary workaround for issue #16950 to unblock 17.9 release.
+        guard dateCreated != nil else {
+            return nil
+        }
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter.string(from: dateCreated)
+    }
 
     func numberOfLikes() -> Int {
         return likeCount.intValue

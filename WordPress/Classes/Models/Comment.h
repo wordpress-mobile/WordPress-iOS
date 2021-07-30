@@ -37,8 +37,4 @@
 @property (nonatomic, assign) BOOL isNew;
 @property (nonatomic) BOOL canModerate;
 
-/// Helper methods
-///
-- (NSString *)sectionIdentifier;
-
 @end
