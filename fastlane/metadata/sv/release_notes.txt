@@ -1,7 +1,0 @@
-Vi har verkligen brytt oss om textblocken denna gång. Nu går det att anpassa färg och bakgrund för textblock i blockredigeraren.
-
-Bland andra uppdateringar i blockredigeraren har vi rättat ett problem vid val av block på iPad och uppdaterad skärmarna för laddning och misslyckande i webbversionen av redigeraren.
-
-Om du tidigare upplevt vissa problem med uppdatering av prenumerationsknapparna i läsaren kan du nu sova bättre om natten eftersom vi nu löst de problemen.
-
-Författare och bidragsgivare står inte längre utanför informationsflödet! Nu kan de följa kommentarerna på en webbplats via Min webbplats > kommentarer.

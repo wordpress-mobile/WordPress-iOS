@@ -1,7 +1,0 @@
-Metin blokları biraz sevgi gördü. Renk ve arka plan özelleştirmeleri blok düzenleyicinin metin bloklarına eklendi.
-
-Diğer blok düzenleyici güncellemeleri; iPad üzerinde blok seçici ile ilgili bir problemin düzeltilmesi ve düzenleyicinin web sürümü için yükleme/başarısız olma ekranlarının güncellenmesi.
-
-Eğer okuyucudaki takip düğmeleri ile ilgili yenileme sorunları yaşadıysanız artık bu problemin düzeltildiğini duymak umarız sizi mutlu edecektir.
-
-Yazarlar ve katılımcılar da artık karanlıkta kalmayacak! Artık onlar da sitenin youmlarını Sitem > Yorumlar bölümünden görüntüleyebilecekler.
