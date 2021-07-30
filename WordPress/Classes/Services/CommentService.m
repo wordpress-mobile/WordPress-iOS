@@ -1008,7 +1008,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)updateCommentAndSave:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
-    [self updateReaderComment:comment withRemoteComment:remoteComment];
+    [self updateComment:comment withRemoteComment:remoteComment];
     // Find its parent comment (if it exists)
     Comment *parentComment;
     if (comment.parentID) {
@@ -1039,7 +1039,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
         }
 
-        [self updateReaderComment:comment withRemoteComment:remoteComment];
+        [self updateComment:comment withRemoteComment:remoteComment];
 
         // Calculate hierarchy and depth.
         ancestors = [self ancestorsForCommentWithParentID:comment.parentID andCurrentAncestors:ancestors];
@@ -1142,41 +1142,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
     comment.authorAvatarURL = remoteComment.authorAvatarURL;
-    // Ref: https://github.com/wordpress-mobile/WordPressKit-iOS/pull/413
-    // Use raw_content for blog comments so
-    // This is a temporary mixmatch of properties for a frozen branch bug fix that we'll sort out properly in develop.
-    // - @aerych
-    // Also, self-hosted doesn't have rawContent, so default to content.
-    comment.content = remoteComment.rawContent ?: remoteComment.content;
-    comment.dateCreated = remoteComment.date;
-    comment.link = remoteComment.link;
-    comment.parentID = remoteComment.parentID;
-    comment.postID = remoteComment.postID;
-    comment.postTitle = remoteComment.postTitle;
-    comment.status = remoteComment.status;
-    comment.type = remoteComment.type;
-    comment.isLiked = remoteComment.isLiked;
-    comment.likeCount = remoteComment.likeCount;
-    comment.canModerate = remoteComment.canModerate;
-
-    // if the post for the comment is not set, check if that post is already stored and associate them
-    if (!comment.post) {
-        PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        comment.post = [postService findPostWithID:comment.postID inBlog:comment.blog];
-    }
-}
-
-// Temporary duplication of [updateComment:withRemoteComment:] to address an issue in a frozen branch
-// We'll sort it out properly in develop.
-// - @aerych
-- (void)updateReaderComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
-{
-    comment.commentID = remoteComment.commentID;
-    comment.author = remoteComment.author;
-    comment.author_email = remoteComment.authorEmail;
-    comment.author_url = remoteComment.authorUrl;
-    comment.authorAvatarURL = remoteComment.authorAvatarURL;
     comment.content = remoteComment.content;
+    comment.rawContent = remoteComment.rawContent;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
     comment.parentID = remoteComment.parentID;

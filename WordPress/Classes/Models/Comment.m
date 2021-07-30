@@ -16,6 +16,7 @@
 @dynamic authorAvatarURL;
 @dynamic commentID;
 @dynamic content;
+@dynamic rawContent;
 @dynamic dateCreated;
 @dynamic depth;
 @dynamic hierarchy;
