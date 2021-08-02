@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, strong) NSNumber *commentID;
 @property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *rawContent;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSNumber *depth;
 // Hierarchy is a string representation of a comments ancestors. Each ancestor's

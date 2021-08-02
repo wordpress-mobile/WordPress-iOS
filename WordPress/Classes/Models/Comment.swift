@@ -36,6 +36,10 @@ extension Comment {
         return authorURL()?.host ?? String()
     }
 
+    @objc func contentForEdit() -> String {
+        return rawContent ?? content ?? String()
+    }
+
     @objc func isApproved() -> Bool {
         return status.isEqual(to: CommentStatusType.approved.description)
     }
@@ -54,7 +58,7 @@ extension Comment {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
-        return formatter.string(from: dateCreated)
+        return formatter.string(from: dateCreated ?? Date())
     }
 
     func numberOfLikes() -> Int {
@@ -70,7 +74,11 @@ extension Comment {
 private extension Comment {
 
     func decodedContent() -> String {
-        return content?.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
+        guard let displayContent = rawContent ?? content else {
+            return String()
+        }
+        // rawContent/content contains markup for Gutenberg comments. Remove it so it's not displayed.
+        return displayContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
 
     func authorName() -> String {
@@ -105,10 +113,12 @@ extension Comment: PostContentProvider {
         return displayAuthor.isEmpty ? String() : displayAuthor
     }
 
+    // Used in Comment details (non-threaded)
     public func contentForDisplay() -> String {
         return decodedContent()
     }
 
+    // Used in Comments list (non-threaded)
     public func contentPreviewForDisplay() -> String {
         return decodedContent()
     }

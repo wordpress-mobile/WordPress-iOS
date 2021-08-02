@@ -249,6 +249,8 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     }
 }
 
+// MARK: - Private Helpers
+
 private class ReaderPostServiceMock: ReaderPostService {
     var didCallFetchPostWithPostID: UInt?
     var didCallFetchPostWithSiteID: UInt?
@@ -329,7 +331,9 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func updateHeader() { }
 
-    func  updateLikes(users: [LikeUser], totalLikes: Int) { }
+    func updateLikes(with avatarURLStrings: [String], totalLikes: Int) { }
+
+    func updateSelfLike(with avatarURLString: String?) { }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) { }
 
