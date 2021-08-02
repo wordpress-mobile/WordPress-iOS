@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-29 08:54:08+0000 */
+/* Translation-Revision-Date: 2021-07-30 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -2283,7 +2283,7 @@
 "Double tap to preview page." = "ダブルタップで固定ページをプレビューできます。";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "ダブルタップでブログ投稿をプレビューできます。";
+"Double tap to preview post." = "ダブルタップで投稿をプレビューできます。";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "ダブルタップして前回の変更をやり直す";
