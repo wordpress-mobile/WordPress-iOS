@@ -17,7 +17,7 @@ private struct ElementStringIDs {
     static let switchSiteButton = "SwitchSiteButton"
 }
 
-///This screen object represents the My Site screen. This is the home-base screen for an individual site. It is used in many of our UI tests.
+/// The home-base screen for an individual site. Used in many of our UI tests.
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
     let navBar: XCUIElement

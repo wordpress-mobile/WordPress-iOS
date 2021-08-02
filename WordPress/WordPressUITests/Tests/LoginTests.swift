@@ -138,8 +138,8 @@ class LoginTests: XCTestCase {
             .verifyLoginError()
     }
 
-    //Self-Hosted after WordPress.com login
-    //Login to a WordPress.com account, then add a self-hosted site.
+    // Self-Hosted after WordPress.com login.
+    // Login to a WordPress.com account, open site switcher, then add a self-hosted site.
     func testAddSelfHostedSiteAfterWPcomLogin() {
         _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
@@ -147,21 +147,22 @@ class LoginTests: XCTestCase {
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite() //returns MySite screen
 
-            //From here, bring up the sites list and choose to add a new self-hosted site.
+            // From here, bring up the sites list and choose to add a new self-hosted site.
             .showSiteSwitcher()
             .addSelfHostedSite()
 
-            //Then, go through the self-hosted login flow:
+            // Then, go through the self-hosted login flow:
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelfHostedSiteAddedFromSitesList()
 
-            //Login flow returns MySites modal, which needs to be closed.
+            // Login flow returns MySites modal, which needs to be closed.
             .closeModal()
 
-            //TODO: rewrite logoutIfNeeded() to handle logging out of a self-hosted site and then WordPress.com
-            //Currently, logoutIfNeeded() cannot handle logging out of both self-hosted and WordPress.com during tearDown(). So, we remove the self-hosted site before tearDown() starts.
+            // TODO: rewrite logoutIfNeeded() to handle logging out of a self-hosted site and then WordPress.com account.
+            // Currently, logoutIfNeeded() cannot handle logging out of both self-hosted and WordPress.com during tearDown().
+            // So, we remove the self-hosted site before tearDown() starts.
             .removeSelfHostedSite()
 
         XCTAssert(MySiteScreen().isLoaded())

@@ -8,7 +8,7 @@ private struct ElementStringIDs {
     static let addSelfHostedSiteButton = "Add self-hosted site"
 }
 
-/// This screen object is for the My Sites screen, aka site switcher or blog list. In the app, it's a modal we can get to from My Site by tapping the down arrow next to the site title.
+/// The site switcher aka blog list. In the app, it's a modal we can get to from My Site by tapping the down arrow next to the site title.
 class MySitesScreen: BaseScreen {
     let blogsTable: XCUIElement
     let cancelButton: XCUIElement
