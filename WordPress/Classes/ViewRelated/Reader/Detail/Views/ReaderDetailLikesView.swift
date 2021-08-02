@@ -96,7 +96,7 @@ private extension ReaderDetailLikesView {
     func updateSummaryLabel() {
         switch (displaysSelfAvatar, totalLikes) {
         case (true, 0):
-            summaryLabel.text = SummaryLabelFormats.onlySelf
+            summaryLabel.attributedText = highlightedText(SummaryLabelFormats.onlySelf)
         case (true, 1):
             summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singularWithSelf, totalLikes))
         case (true, _) where totalLikes > 1:
@@ -157,13 +157,13 @@ private extension ReaderDetailLikesView {
     }
 
     struct SummaryLabelFormats {
-        static let onlySelf = NSLocalizedString("You like this.",
+        static let onlySelf = NSLocalizedString("You_ like this.",
                                                 comment: "Describes that the current user is the only one liking the post.")
-        static let singularWithSelf = NSLocalizedString("You and _%1$d blogger_ like this.",
+        static let singularWithSelf = NSLocalizedString("You and %1$d blogger_ like this.",
                                                         comment: "Singular format string for displaying the number of post likes, including the like from self."
                                                             + " %1$d is the number of likes, excluding the like by current user."
                                                             + " The underscore denotes underline and is not displayed.")
-        static let pluralWithSelf = NSLocalizedString("You and _%1$d bloggers_ like this.",
+        static let pluralWithSelf = NSLocalizedString("You and %1$d bloggers_ like this.",
                                                       comment: "Plural format string for displaying the number of post likes, including the like from self."
                                                         + " %1$d is the number of likes, excluding the like by current user."
                                                         + " The underscore denotes underline and is not displayed.")
@@ -177,25 +177,14 @@ private extension ReaderDetailLikesView {
 
     func highlightedText(_ text: String) -> NSAttributedString {
         let labelParts = text.components(separatedBy: "_")
-        let indexToUnderline: Int = {
-            switch labelParts.count {
-            case 2: // handles singular and plural SummaryLabelFormats.
-                return 0
-            case 3: // handles singularWithSelf and pluralWithSelf SummaryLabelFormats.
-                return 1
-            default: // for other cases, do not apply the underline style.
-                return -1
-            }
-        }()
+        let countPart = labelParts.first ?? ""
+        let likesPart = labelParts.last ?? ""
 
-        let normalAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.secondaryLabel]
         let underlineAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
                                                                   .underlineStyle: NSUnderlineStyle.single.rawValue]
 
-        let attributedString = NSMutableAttributedString()
-        for (index, string) in labelParts.enumerated() {
-            attributedString.append(.init(string: string, attributes: index == indexToUnderline ? underlineAttributes : normalAttributes))
-        }
+        let attributedString = NSMutableAttributedString(string: countPart, attributes: underlineAttributes)
+        attributedString.append(NSAttributedString(string: likesPart, attributes: [.foregroundColor: UIColor.secondaryLabel]))
 
         return attributedString
     }
