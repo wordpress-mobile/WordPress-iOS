@@ -11,8 +11,8 @@ extension BlockEditorSettings: GutenbergEditorSettings {
         elementsByType(.gradient)
     }
 
-    public var galleryRefactor: Bool {
-        return experimentalFeature(.galleryRefactor)
+    public var galleryWithImageBlocks: Bool {
+        return experimentalFeature(.galleryWithImageBlocks)
     }
 
     private func elementsByType(_ type: BlockEditorSettingElementTypes) -> [[String: String]]? {
@@ -74,9 +74,9 @@ extension BlockEditorSettings {
         })
 
         // Experimental Features
-        let galleryKey = BlockEditorExperimentalFeatureKeys.galleryRefactor.rawValue
+        let galleryKey = BlockEditorExperimentalFeatureKeys.galleryWithImageBlocks.rawValue
         let galleryRefactor = BlockEditorSettingElement(name: galleryKey,
-                                                         value: "\(remoteSettings.galleryRefactor)",
+                                                         value: "\(remoteSettings.galleryWithImageBlocks)",
                                                          slug: galleryKey,
                                                          type: .experimentalFeatures,
                                                          order: 0,
