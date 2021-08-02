@@ -108,7 +108,7 @@
                     <constraints>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" secondItem="bxz-wi-I73" secondAttribute="bottom" constant="20" id="LOU-MU-PJx"/>
                         <constraint firstAttribute="bottom" secondItem="DE5-R9-8tB" secondAttribute="bottom" priority="750" constant="24" id="MbU-Zk-mLK"/>
-                        <constraint firstItem="nio-Wp-Ebw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="5" id="Naz-hw-4xT"/>
+                        <constraint firstItem="nio-Wp-Ebw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="20" id="Naz-hw-4xT"/>
                         <constraint firstItem="bxz-wi-I73" firstAttribute="centerX" secondItem="LGN-fD-c9Q" secondAttribute="centerX" id="NvC-eg-qbU"/>
                         <constraint firstItem="nio-Wp-Ebw" firstAttribute="centerX" secondItem="LGN-fD-c9Q" secondAttribute="centerX" id="UNn-H7-WWo"/>
                         <constraint firstItem="9w9-KC-2W9" firstAttribute="leading" secondItem="LGN-fD-c9Q" secondAttribute="leading" id="X3f-jY-uff"/>
