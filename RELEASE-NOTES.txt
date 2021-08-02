@@ -1,12 +1,14 @@
 18.0
 -----
 * [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
+* [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
 
 17.9
 -----
 * [internal] Redirect Terms and service to open the page in an external web view [#16907]
-* [internal] Converted parts of Comment model to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908]
+* [internal] Converted Comment model methods to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908, #16913]
 * [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
+* [***] Block editor: New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
 
 17.8
 -----

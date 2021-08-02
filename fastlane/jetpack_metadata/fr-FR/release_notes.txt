@@ -1,9 +1,0 @@
-Les blocs paragraphe sont géniaux. Il est désormais possible de personnaliser la couleur et l’arrière-plan des blocs paragraphe dans l’éditeur de blocs.
-
-D’autres mises à jour ont été apportées à l’éditeur de blocs dont la résolution d’un problème avec le sélecteur de bloc sur iPad et la mise à jour des écrans de chargement et d’échec de la version Web de l’éditeur.
-
-Les problèmes d’actualisation que vous avez peut-être rencontrés avec les boutons d’abonnement dans le Lecteur sont désormais résolus.
-
-Les auteurs et les contributeurs ont désormais accès aux avis ! Ils peuvent consulter les commentaires sous Mon site > Commentaires.
-
-Résolution d’un bug lors de la saisie des notifications.

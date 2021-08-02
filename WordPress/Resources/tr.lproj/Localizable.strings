@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-21 17:20:54+0000 */
+/* Translation-Revision-Date: 2021-07-29 20:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "Tehditleri düzeltmek için %1$@.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d Beğen";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Beğenilenler";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blog yazarı bunu beğendi.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d blog yazarı_ bunu beğendi.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d blog yazarı bunu beğendi.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d blog yazarı_ bunu beğendi.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d tamamlandı";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(Başlıksız)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(başlık yok)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Tuş stili";
-
-/* No comment provided by engineer. */
-"Button inside" = "Düğme içi";
-
-/* No comment provided by engineer. */
-"Button outside" = "Düğme dışı";
 
 /* No comment provided by engineer. */
 "Button position" = "Düğme konumu";
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "Uygun seçenekleri içeren Alt Sayfayı açmak için iki kez dokunun";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Sayfayı önizlemek için iki kez dokunun.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Gönderiyi önizlemek için iki kez dokunun.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Son değişikliği yinelemek için çift dokunun";
 
 /* No comment provided by engineer. */
@@ -2342,7 +2343,7 @@
 "Duplicate block" = "Bloğu çoğalt";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "DÜZENLEME BAĞLANTISI";
+"EDIT LINK" = "BAĞLANTIYI DÜZENLE";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Doğu";
@@ -2465,17 +2466,20 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-posta gönderildi!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Gömülü blok önizlemeleri yakında geliyor";
+
 /* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Gömme başlığı. %s";
+"Embed caption. %s" = "Açıklama göm. %s";
 
 /* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Gömme başlığı. Boş";
+"Embed caption. Empty" = "Açıklama göm. Boş";
 
 /* No comment provided by engineer. */
-"Embed link" = "Gömme bağlantısı";
+"Embed link" = "Bağlantı göm";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "%s tarafından sağlanan gömülü içerik mobil düzenleyicide şu an görüntülenemiyor. Lütfen gömülü içeriği görmek için sayfaya ön izleme yapın.";
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Gömülü içerik önizlemeleri henüz kullanılamıyor";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3431,7 +3435,7 @@
 "Invalid URL. Audio file not found." = "Geçersiz URL. Ses dosyası bulunamadı.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Geçersiz adres. Lütfen geçerli bir adres girin.";
+"Invalid URL. Please enter a valid URL." = "Geçersiz URL. Lütfen geçerli bir URL girin.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Geçersiz uç nokta";
@@ -3482,7 +3486,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "İstatistikler için Jetpack %@ veya sonraki sürümü gerekir. Jetpack’in sürümünü güncelleştirmek ister misiniz?";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Çoklu siteler için Jetpack yedekleri indirilebilir yedek dosyaları sunar, tek tıkla geri yükleme yoktur. Daha fazla bilgi için %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Çoklu site kurulumları için Jetpack Backup, indirilebilir yedekler sunar, tek tıkla geri yükleme sunmaz. Daha fazla bilgi için %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack SSS";
@@ -3619,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Açık renkli arka planlar";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Beğen";
 
 /* A comment is marked as liked */
@@ -3632,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -4279,7 +4282,7 @@
 "No available sites" = "Kullanılabilir site yok";
 
 /* No comment provided by engineer. */
-"No button" = "Düğme yok";
+"No blocks found" = "Blok bulunamadı";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Yorum yok";
@@ -4549,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "Resmi tuşlar";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "İki günden daha eski";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Bir aydan daha eski";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Bir haftadan daha eski";
 
 /* Sort Order */
@@ -4789,9 +4795,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Bekleyen";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "Onay bekliyor";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5142,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "Önizleme kullanılamıyor";
+
+/* No comment provided by engineer. */
+"Preview page" = "Sayfa önizleme";
+
+/* No comment provided by engineer. */
+"Preview post" = "Yazı önizleme";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Ziyaretçilerinizi neyin beklediğini görmek için yeni sitenizi önizleyin.";
@@ -5617,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Bekleyen değişiklikleri geri al";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Bu bildirimde gerçekleştirilen eylemi geri alır.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Site sayfalarını inceleyin";
 
@@ -5767,6 +5779,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Arama bloğu etiketi. Mevcut metin";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Arama blokları";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Arama düğmesi. Geçerli düğme metni";
@@ -7083,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Bu uygulamayı %@ için kullanabilmek istiyorsanız Jetpack eklentisini yükleyip etkinleştirmeniz gerekir.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Bugün";
@@ -7195,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Tekrar deneyin";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Başka bir arama terimi deneyin";
+
 /* Customize Insights button title */
 "Try it now" = "Şimdi deneyin";
 
@@ -7284,6 +7303,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Dosya indirilemiyor";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Ortam gömülemiyor";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Sohbet takip edilemiyor";
@@ -8025,7 +8047,7 @@
 "We're restoring your site back to %1$@." = "Siteniz %1$@ konumuna geri yükleniyor.";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Üzgünüz, Jetpack Tarama henüz çoklu site WordPress yüklemelerine uyumlu değil.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Üzgünüz, Jetpack Scan henüz çoklu site WordPress yüklemelerine uyumlu değil.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Ayrıca dosyanızın bağlantısı da e-postayla adresinize gönderildi.";
@@ -8088,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Sitenizi oluşturma ve geliştirme konusundaki temel bilgiler hakkında size rehberlik edeceğiz";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Gömülü içerik önizlemelerine yönelik destek eklemek için çalışmalarımız devam ediyor. Bu arada, sayfadaki gömülü içeriği önizleyebilirsiniz.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Gömülü içerik önizlemelerine yönelik destek eklemek için çalışmalarımız devam ediyor. Bu arada, gönderideki gömülü içeriği önizleyebilirsiniz.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Kitlenizi geliştirmenize yardımcı olacak daha fazla görev ekledik.";
 
@@ -8102,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Bu dosya ile ne yapmak istersiniz: yükleyip, yazınızın içine bir bağlantı olarak mı eklemek istersiniz yoksa içeriğini direkt yazınıza mı eklemek istersiniz?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "Blok nedir?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Alternatif metin nedir?";
@@ -8208,7 +8239,7 @@
 "WordPress for iOS Support" = "iOS için WordPress desteği";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress çoklu siteleri desteklenmiyor";
+"WordPress multisites are not supported" = "WordPress çoklu siteler desteklenmez";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress mevcut yazıya konum bilgileri ekleyebilmek için cihazınızın şu anki konumuna erişme iznine ihtiyaç duyuyor. Lütfen gizlilik ayarlarınızı güncelleyin.";
@@ -8296,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Evet, göster";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Dün";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
@@ -8640,7 +8672,7 @@
 "viewer" = "izleyici";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "belgeler sayfamızı ziyaret edin";
+"visit our documentation page" = "belge sayfamızı ziyaret edin";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "gelecekte kullanılamayacak.";
