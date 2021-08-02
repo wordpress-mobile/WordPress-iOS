@@ -223,6 +223,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.view.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
