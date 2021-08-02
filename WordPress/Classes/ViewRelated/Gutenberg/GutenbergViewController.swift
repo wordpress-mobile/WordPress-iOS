@@ -894,13 +894,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidMount(unsupportedBlockNames: [String]) {
         if !editorSession.started {
-            let galleryRefactor = gutenbergEditorSettings()?.galleryRefactor
+            let galleryWithImageBlocks = gutenbergEditorSettings()?.galleryWithImageBlocks
 
             // Note that this method is also used to track startup performance
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding(), galleryRefactor: galleryRefactor)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding(), galleryWithImageBlocks: galleryWithImageBlocks)
         }
     }
 
