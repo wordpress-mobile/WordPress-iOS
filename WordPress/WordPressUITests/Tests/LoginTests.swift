@@ -141,7 +141,7 @@ class LoginTests: XCTestCase {
     // Self-Hosted after WordPress.com login.
     // Login to a WordPress.com account, open site switcher, then add a self-hosted site.
     func testAddSelfHostedSiteAfterWPcomLogin() {
-        _ = PrologueScreen().selectContinue()
+        PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
