@@ -1,9 +1,5 @@
-* [***] Added blogging reminders. Choose which days you'd like to be reminded, and we'll send you a notification prompting you to post on your site
-* [**] (Don't apply to Jetpack app): Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
-* [*] Upgraded the Zendesk SDK to version 5.3.0
-* [*] You can now subscribe to conversations by email from Reader lists and articles. [#16599]
-* [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
-* [**] Block editor: Fixed an issue where pressing enter inside a text-based block was not creating a new block when using Gboard [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3590]
-* [*] Block editor: Tweaks to the badge component's styling, including change of background color and reduced padding. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3642]
-* [***] Block editor: New block Layout grid. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3513]
+There’s a new block in town! With the Embed block, you can embed content from your favorite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.
 
+Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).
+
+We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and trash comments. We’ve also provided support for Global Styles, enabling settings like color and background customization for Full Site Editing themes.

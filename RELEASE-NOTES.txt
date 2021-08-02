@@ -1,6 +1,22 @@
+18.0
+-----
+* [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
+
+17.9
+-----
+* [internal] Redirect Terms and service to open the page in an external web view [#16907]
+* [internal] Converted Comment model methods to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908, #16913]
+* [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
+* [***] Block editor: New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
+
 17.8
 -----
 * [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
+* [*] [Jetpack-only] Fix bugs when tapping to notifications
+* [*] Fixed some refresh issues with the site follow buttons in the reader. [#16819]
+* [*] Block editor: Update loading and failed screens for web version of the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3573]
+* [*] Block editor: Handle floating keyboard case - Fix issue with the block selector on iPad. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3687]
+* [**] Block editor: Added color/background customization for text blocks. [https://github.com/WordPress/gutenberg/pull/33250]
 
 17.7
 -----
@@ -11,6 +27,7 @@
 * [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
 * [*] Block editor: Tweaks to the badge component's styling, including change of background color and reduced padding. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3642]
 * [***] Block editor: New block Layout grid. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3513]
+* [*] Fixed an issue where the SignUp flow could not be dismissed sometimes. [#16824]
 
 17.6
 -----

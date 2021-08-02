@@ -213,7 +213,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
                                         userInfo: [ReaderNotificationKeys.topic: site])
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleFollowing(forSite: site, success: { [weak self] in
+        service.toggleFollowing(forSite: site, success: { [weak self] follow in
             let siteURL = URL(string: site.siteURL)
             let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
                                 message: siteURL?.host,
@@ -222,7 +222,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
             self?.syncSites()
             self?.refreshFollowedPosts()
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] (follow, error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
 
             let notice = Notice(title: NSLocalizedString("Could not unfollow site", comment: "Title of a prompt."),

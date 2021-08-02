@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-18 16:01:00+0000 */
+/* Translation-Revision-Date: 2021-07-27 14:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@修复威胁。";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d 人喜欢";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 人喜欢";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d 位博主喜欢了。";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d 位博主为此文章点赞。";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d 位博主喜欢了。";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d 位博主为此文章点赞。";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
@@ -245,8 +247,7 @@
 "(Untitled)" = "（无标题）";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(无标题)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -296,6 +297,15 @@
 
 /* Age between dates less than one hour. */
 "< 1 hour" = "不到 1 小时";
+
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week" = "每周 <strong>%d<\/strong> 次";
+
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week" = "每周<strong>一次<\/strong>";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week" = "每周<strong>两次<\/strong>";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -498,6 +508,9 @@
 "Add image, or avatar, to represent this new account." = "添加图像或头像以表示此新帐户。";
 
 /* No comment provided by engineer. */
+"Add link" = "添加链接";
+
+/* No comment provided by engineer. */
 "Add link text" = "添加链接文字";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -639,6 +652,9 @@
    Label for the alt for a media asset (image) */
 "Alt Text" = "替代文本";
 
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "您也可以通过点击“转换为常规区块”来单独分离和编辑这些区块。";
+
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "其他方式：";
 
@@ -660,9 +676,6 @@
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "需要有效的互联网连接才能查看插件";
-
-/* Error message shown when trying to view Stats and there is no internet connection. */
-"An active internet connection is required to view stats" = "必须连接互联网才能查看统计数据";
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "必须连接互联网才能查看历史记录";
@@ -905,7 +918,7 @@
    Spoken accessibility label */
 "Back" = "返回";
 
-/* No comment provided by engineer. */
+/* Title for the Background Color section */
 "Background Color" = "背景颜色";
 
 /* Title of the cell displaying status of a backup in progress */
@@ -1016,6 +1029,9 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "博客查看者";
 
+/* Label for the blogging reminders setting */
+"Blogging Reminders" = "博客发布提醒";
+
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "粗体";
@@ -1049,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "按钮风格";
-
-/* No comment provided by engineer. */
-"Button inside" = "内部按钮";
-
-/* No comment provided by engineer. */
-"Button outside" = "外部按钮";
 
 /* No comment provided by engineer. */
 "Button position" = "按钮位置";
@@ -1842,7 +1852,7 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "创建文章、页面或故事";
 
-/* No comment provided by engineer. */
+/* Title for the Site Icon Picker */
 "Create a site icon" = "创建站点图标";
 
 /* Label that describes the download backup action */
@@ -2270,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "双击以打开带有可用选项的底部表页";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "轻点两次以预览页面。";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "轻点两次以预览文章。";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "轻点两次以恢复上次的更改";
 
 /* No comment provided by engineer. */
@@ -2325,6 +2341,9 @@
 
 /* No comment provided by engineer. */
 "Duplicate block" = "复制区块";
+
+/* No comment provided by engineer. */
+"EDIT LINK" = "编辑链接";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "东";
@@ -2394,6 +2413,12 @@
 /* Title of a Quick Start Tour */
 "Edit your homepage" = "编辑您的主页";
 
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for Android" = "Android 版 WordPress 尚不支持编辑可重用区块";
+
+/* No comment provided by engineer. */
+"Editing reusable blocks is not yet supported on WordPress for iOS" = "iOS 版 WordPress 尚不支持编辑可重用区块";
+
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "编辑此 GIF 将删除其动画。";
 
@@ -2442,6 +2467,21 @@
 "Email sent!" = "电子邮件已发送！";
 
 /* No comment provided by engineer. */
+"Embed block previews are coming soon" = "嵌入区块预览即将推出";
+
+/* translators: accessibility text. %s: Embed caption. */
+"Embed caption. %s" = "嵌入说明文字。%s";
+
+/* translators: accessibility text. Empty Embed caption. */
+"Embed caption. Empty" = "嵌入说明文字。空";
+
+/* No comment provided by engineer. */
+"Embed link" = "嵌入链接";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "嵌入预览尚不可用";
+
+/* Title for the Emoji section */
 "Emoji" = "表情图示";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
@@ -2457,6 +2497,9 @@
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "为站点启用快速入门";
 
+/* Title for the button that will enable the site stats module. */
+"Enable Site Stats" = "启用站点统计";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "启用麦克风来记录制视频中的声音。";
 
@@ -2465,6 +2508,12 @@
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "是否启用站点通知？";
+
+/* Error message shown when trying to view Stats and the stats module is disabled. */
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "启用站点统计可查看您的浏览量、点赞、评论和订阅者的详细信息。";
+
+/* Text displayed while activating the site stats module. */
+"Enabling Site Stats..." = "正在启用站点统计。。。";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "已加密日志";
@@ -2624,6 +2673,9 @@
 
 /* Title for the activity detail view */
 "Event" = "活动";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day" = "每天";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "所有人";
@@ -2956,8 +3008,7 @@
 /* Message to indicate progress of generating preview */
 "Generating Preview" = "正在生成预览";
 
-/* Title of the Get Started button of the Blogging Reminders card in My Site.
-   View title for initial auth views. */
+/* View title for initial auth views. */
 "Get Started" = "开始";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
@@ -3004,6 +3055,9 @@
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "转到“阅读器”";
+
+/* Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings. */
+"Go to Settings → Notifications → WordPress, and toggle Allow Notifications." = "进入“设置 &rarr; 通知 &rarr; WordPress”，然后切换到“允许通知”。";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -3104,7 +3158,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "六级标题";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "帮助";
 
 /* Link to Help section
@@ -3379,6 +3434,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
 
+/* No comment provided by engineer. */
+"Invalid URL. Please enter a valid URL." = "无效 URL。请输入有效 URL。";
+
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "端点无效";
 
@@ -3406,6 +3464,12 @@
 /* Latest post summary text including placeholder for time and the post title. */
 "It's been %@ since %@ was published. " = "“%2$@”已发布 %1$@。";
 
+/* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
+"It's time to blog on %@!" = "在 %@ 上发布博客的时间到了！";
+
+/* Title of a notification displayed prompting the user to create a new blog post */
+"It's time to blog!" = "发布博客的时间到了！";
+
 /* Description of a Quick Start Tour */
 "It's time! Draft and publish your very first post." = "是时候了！起草并发布您的第一篇文章。";
 
@@ -3420,6 +3484,9 @@
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "需要安装 Jetpack %@ 或更高版本。要更新 Jetpack 吗？";
+
+/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "多站点安装的 Jetpack Backup 只提供可下载的备份，没有一键还原。更多信息 %1$s。";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack 常见问答";
@@ -3556,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "浅色背景";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "顶";
 
 /* A comment is marked as liked */
@@ -3569,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3684,6 +3750,9 @@
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "正在加载数据流...";
 
+/* Loading message shown while the Unsupported Block Editor is loading. */
+"Loading the block editor." = "正在加载区块编辑器。";
+
 /* Shown while the app waits for the username suggestions web service to return during the site creation process. */
 "Loading usernames" = "正在加载用户名";
 
@@ -3764,6 +3833,9 @@
 /* No comment provided by engineer. */
 "Logs" = "日志";
 
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "想要查看统计？";
+
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "正在查找地址...";
 
@@ -3778,9 +3850,6 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主要导航";
-
-/* Description of the Blogging Reminders card in My Site. */
-"Make the most of your site by setting goals and tracking your progress." = "通过设定目标和跟踪进度，充分利用您的站点。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4137,8 +4206,7 @@
 /* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
-   Title of a button. The text should be capitalized.
-   Title of button to navigate to the next screen. */
+   Title of a button. The text should be capitalized. */
 "Next" = "继续";
 
 /* Table view title for the quick start section. */
@@ -4162,12 +4230,14 @@
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "无类别";
 
-/* Title for the error view when there's no connection
-   Title of error prompt when no internet connection is available. */
+/* Title of error prompt when no internet connection is available. */
 "No Connection" = "无连接";
 
 /* List Editor Empty State Message */
 "No Items" = "没有条目";
+
+/* Title when users have no Jetpack sites. */
+"No Jetpack sites found" = "未找到Jetpack站点";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "无菜单";
@@ -4212,7 +4282,7 @@
 "No available sites" = "无可用站点";
 
 /* No comment provided by engineer. */
-"No button" = "无按钮";
+"No blocks found" = "找不到区块";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "没有评论";
@@ -4362,6 +4432,9 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "无";
 
+/* Title shown on table row where no blogging reminders have been set up yet */
+"None set" = "无设置";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "North" = "北";
 
@@ -4426,6 +4499,9 @@
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "未读通知";
 
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "通知我";
+
 /* First story intro item title */
 "Now stories are for everyone" = "现在，每个人都可以创作自己的故事";
 
@@ -4476,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "官方按钮";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "超过 2 天";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "超过 1 个月";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "超过 1 周";
 
 /* Sort Order */
@@ -4717,9 +4796,6 @@
    Title of pending Comments filter. */
 "Pending" = "待审";
 
-/* No comment provided by engineer. */
-"Pending moderation" = "等待审核";
-
 /* Name for the status of a post pending review.
    Pending review
    Title of the Pending Review Badge */
@@ -4728,9 +4804,6 @@
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature. */
 "People" = "人员";
-
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"People who post at least twice weekly get 87% more views on their site." = "每周至少发文两次的人在其站点上获得的浏量会多87%。";
 
 /* Label for date periods. */
 "Period" = "时段";
@@ -4783,6 +4856,12 @@
 
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "请联系支持人员以获取帮助。";
+
+/* Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again. */
+"Please ensure the block editor is enabled on your site and try again." = "请确保您的站点已开启区块编辑器并重试。";
+
+/* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
+"Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "请确保您的站点已开启区块编辑器。 如果没有开启，将不会加载。";
 
 /* Error message shown when a URL is invalid. */
 "Please enter a complete website address, like example.com." = "请输入完整网址（如 example.com）。";
@@ -5003,6 +5082,9 @@
    Title for stats Posting Activity view. */
 "Posting Activity" = "博文发布情况";
 
+/* Informative tip shown to user in the Blogging Reminders Settings screen. */
+"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
+
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -5063,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "预览不可用";
+
+/* No comment provided by engineer. */
+"Preview page" = "预览页面";
+
+/* No comment provided by engineer. */
+"Preview post" = "预览文章";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "预览新网站以查看访问者将看到的内容。";
@@ -5309,6 +5397,9 @@
 /* Information of what related post are and how they are presented */
 "Related Posts displays relevant content from your site below your posts" = "“相关文章”在您的文章下方显示您站点中的相关内容";
 
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "删除提醒";
+
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
@@ -5532,14 +5623,11 @@
 /* Share extension error dialog cancel button text */
 "Return to post" = "返回文章";
 
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for Android" = "可重用区块在 Android 版 WordPress 上不可编辑";
-
-/* No comment provided by engineer. */
-"Reusable blocks aren't editable on WordPress for iOS" = "可重用区块在 iOS 版 WordPress 上不可编辑";
-
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "恢复未审核的更改";
+
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "还原对此通知执行的操作。";
 
 /* Title of a Quick Start Tour */
 "Review site pages" = "审核网站页面";
@@ -5573,6 +5661,7 @@
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
+   Title for the button that will save the site icon
    Title of action button to save a Reader post to read later. */
 "Save" = "保存";
 
@@ -5687,9 +5776,6 @@
 
 /* A short message that is a call to action for the Reader's Search feature. */
 "Search WordPress\nfor a site or post" = "在WordPress\n查找站点或文章";
-
-/* No comment provided by engineer. */
-"Search block" = "搜索区块";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "搜索区块标签。当前文字为";
@@ -5904,7 +5990,7 @@
 "Set as Posts Page" = "设为文章页面";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set goals" = "设定目标";
+"Set reminders" = "设置提醒";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "设置";
@@ -5912,9 +5998,11 @@
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "设置 Jetpack";
 
-/* Title of the Blogging Reminders card in My Site.
-   Title of the Blogging Reminders Settings screen. */
-"Set your blogging goals" = "设定你您的博客目标";
+/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
+"Set up your blogging reminders on days you want to post." = "在希望发布文章的日期设置博客发布提醒。";
+
+/* Title of the Blogging Reminders Settings screen. */
+"Set your blogging reminders" = "设置您的博客发布提醒";
 
 /* Title of a Quick Start Tour */
 "Set your site title" = "设置您的站点标题";
@@ -6879,6 +6967,9 @@
 /* Select domain name. Subtitle */
 "This is where people will find you on the internet." = "人们可以通过此域名在互联网上找到您。";
 
+/* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
+"This is your reminder to blog today ✍️" = "这是您今天的博客发布提醒 ✍️";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "此媒体项目已被删除。";
 
@@ -6998,13 +7089,17 @@
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "拍摄要在文章内使用的照片或视频。";
 
+/* Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature. */
+"To use blogging reminders, you'll need to turn on push notifications." = "要使用博客发布提醒，您需要开启推送通知。";
+
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "要在您的网站上使用“统计”功能，您需要安装Jetpack插件。";
 
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "要将此应用用于 ％@，您需要安装并启用 Jetpack 插件。";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "今日";
@@ -7116,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "请重试";
 
+/* No comment provided by engineer. */
+"Try another search term" = "尝试其他搜索字词";
+
 /* Customize Insights button title */
 "Try it now" = "立即试用";
 
@@ -7130,6 +7228,12 @@
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "关闭站点通知";
+
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "开启通知";
+
+/* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
+"Turn on push notifications" = "开启推送通知";
 
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "打开站点通知";
@@ -7200,6 +7304,9 @@
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "无法下载文件";
 
+/* No comment provided by engineer. */
+"Unable to embed media" = "无法嵌入媒体";
+
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "无法关注对话";
 
@@ -7214,6 +7321,9 @@
 
 /* Title for No results full page screen displayedfrom post list when there is no connection */
 "Unable to load posts right now." = "目前无法加载文章。";
+
+/* Title message shown when the Unsupported Block Editor fails to load. */
+"Unable to load the block editor right now." = "现在无法加载区块编辑器。";
 
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "无法加载图片。请选择其他图片或稍后重试。";
@@ -7313,6 +7423,9 @@
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "不可用";
 
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "未定义";
+
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "下划线";
@@ -7330,6 +7443,9 @@
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "取消关注 %@";
+
+/* Verb. Button title. The user is following the comments on a post. */
+"Unfollow conversation by email" = "通过电子邮件取消关注对话";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "取消关注站点";
@@ -7400,7 +7516,8 @@
 /* Help text shown below the list of debug logs. */
 "Up to seven days worth of logs are saved." = "最多保存七天日志。";
 
-/* Button label to update a plugin
+/* (Verb) Title of button confirming updating settings for blogging reminders.
+   Button label to update a plugin
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "更新";
@@ -7929,6 +8046,9 @@
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "我们正在恢复您的网站至 %1$@ 时的样子";
 
+/* Description for label when the user's site is a multisite. */
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "抱歉，Jetpack Scan 目前与多站点 WordPress 安装不兼容。";
+
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "我们还通过电子邮件向您发送了文件链接。";
 
@@ -7990,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "我们将带您了解构建和提升站点的基本知识。";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "我们正在努力添加对嵌入预览的支持。 同时，您可以预览页面上的嵌入内容。";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "我们正在努力添加对嵌入预览的支持。 同时，您可以预览文章上的嵌入内容。";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "我们添加了更多的任务，以帮助您增加受众。";
 
@@ -8004,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "您想要使用此文件完成的操作：上传此文件并在文章中添加指向此文件的链接，还是直接在文章中添加该文件的内容？";
+
+/* No comment provided by engineer. */
+"What is a block?" = "什么是区块？";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "什么是alt文字？";
@@ -8109,6 +8238,9 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS 支持";
 
+/* Title for label when the user's site is a multisite. */
+"WordPress multisites are not supported" = "不支持WordPress多站点。";
+
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress 必须获得访问设备当前位置的权限才能将其添加到您的文章。请更新您的隐私设置。";
 
@@ -8195,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "好的，显示相关内容";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "昨天";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
@@ -8276,6 +8409,9 @@
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!) */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "您对 %d 篇文章的更改尚未上传到站点。现在注销将删除这些更改。仍然注销？";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "您没有设置提醒。";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "尚有未保存的更改。";
@@ -8323,8 +8459,11 @@
 /* Paragraph text that needs to be highlighted */
 "You will not be able to change your username back." = "您将无法撤消对用户名所做的更改。";
 
-/* Description shown on the completion screen of the Blogging Reminders Settings screen. */
-"You'll get reminders to blog X times a week on DAY and DAY." = "您会收到提醒，让您在每周的某天写X次博客。";
+/* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "您会收到每周在 %@ 上发布<strong>一次<\/strong>博客的提醒。";
+
+/* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
+"You'll get reminders to blog %@ times a week on %@." = "您会收到每周在 %2$@ 上发布 %1$@ 次博客的提醒。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "您已看完所有内容！";
@@ -8377,8 +8516,8 @@
 /* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
 "Your post is currently being uploaded. Please wait until this completes." = "您的文章当前正在上传。 请等待，直到此任务完成。";
 
-/* Description on the first screen of the Blogging Reminders Settings flow. */
-"Your post is publishing... in the meantime, set up your blogging goals to get reminders, and track your progress." = "您的文章正在发布......同时，设置您的博客目标以得到提醒并跟踪境况。";
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "您的文章正在发布...同时，在您希望发布文章的日期设置博客发布提醒。";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "文章、页面和设置将通过邮件发送给您（地址为：%@）。";
@@ -8398,7 +8537,7 @@
 /* Title of a message displayed when a site has finished rewinding */
 "Your site has been succesfully restored" = "已成功恢复您的站点";
 
-/* No comment provided by engineer. */
+/* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "您的站点图标会在网络中使用：包括浏览器选项卡、社交媒体上的站点预览和 WordPress.com 阅读器。";
 
 /* Title of a message displayed when user starts a restore operation */
@@ -8531,6 +8670,9 @@
 
 /* Noun. Describes a site's viewer. */
 "viewer" = "查看者";
+
+/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
+"visit our documentation page" = "访问我们的文档页面";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "今后将无法再访问。";
