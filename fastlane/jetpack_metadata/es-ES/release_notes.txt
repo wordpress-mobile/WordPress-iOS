@@ -1,9 +1,0 @@
-Dale un poco de amor a los bloques de texto. Se ha añadido la personalización del color y del fondo al Editor de bloques de texto.
-
-También se han añadido otras mejoras al Editor de bloques; por ejemplo, se ha resuelto un problema con el selector de bloques en el iPad y se han actualizado las pantallas de carga y de error en la versión web del editor.
-
-Si has tenido problemas al refrescar con los botones de seguir en el Lector, ya puedes relajarte: se han solucionado.
-
-¡Los autores y los colaboradores ya no están ocultos! Ahora pueden ver los comentarios de un sitio yendo a Mi sitio > Comentarios.
-
-Se ha solucionado un error que se producía al tocar las notificaciones.

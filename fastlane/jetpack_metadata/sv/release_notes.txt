@@ -1,9 +1,0 @@
-Lite kärlek till textblocken. Färg- och bakgrundsanpassning har lagts till för blockredigerarens textblock.
-
-Andra blockredigeraruppdateringar inkluderar ett åtgärdat problem med blockväljaren på iPad och uppdaterade hämtar- och misslyckades-skärmar för webbversionen av redigeraren.
-
-Om du har stött på problem med att uppdatera Följ-knapparna i läsaren kan du vara lugn nu. Dessa problem har nämligen åtgärdats.
-
-Författare och deltagare kan se mer! De kan nu visa kommentarer på en webbplats via Min webbplats > Kommentarer.
-
-Ett fel som uppstod när man tryckte på aviseringar har åtgärdats.
