@@ -1,0 +1,5 @@
+Şehirde yeni bir blok var! Gömme bloğu ile YouTube, TikTok, Instagram ve daha fazlası gibi favori hizmetlerinizden içerik gömebilirsiniz. Gelecek ek işlevler için bizi izlemeye devam edin.
+
+Blog hatırlatıcıları özelliğimizi beğendiniz mi? Önceden yalnızca site yöneticileri hatırlatıcıları yapılandırabilirdi, ancak şimdi bu özelliği sitenizdeki yazıları düzenleyebilen kişiler (editörler, yazarlar ve katkıda bulunanlar) için etkinleştirdik.
+
+Yorum denetlemede iyileştirmeler yaptık ve uygun kullanıcıların yorumları onaylamak/onaylamamak için sola kaydırabilmesini ve yorumları çöpe atabilmesini sağladık. Ayrıca, Tam site düzenleme temaları için renk ve arka plan özelleştirmesi gibi ayarları etkinleştiren global stiller için destek sağladık.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-27 10:44:53+0000 */
+/* Translation-Revision-Date: 2021-08-02 14:55:37+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -2370,7 +2370,7 @@
 "Edit Blocklist Word" = "Editează un cuvânt din Lista blocări";
 
 /* No comment provided by engineer. */
-"Edit Comment" = "Editare comentariu";
+"Edit Comment" = "Editează comentariul";
 
 /* IP Address or Range Edition Title */
 "Edit IP or IP Range" = "Editează IP sau interval de IP-uri";
@@ -4388,7 +4388,7 @@
 "No posts" = "Niciun articol";
 
 /* A message title */
-"No posts found" = "Niciun articol găsit";
+"No posts found" = "Nu am găsit niciun articol";
 
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "Nu s-au găsit articole care să potrivească cu %@ în limba ta.";
