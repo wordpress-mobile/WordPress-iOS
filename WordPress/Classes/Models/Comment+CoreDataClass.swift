@@ -29,16 +29,17 @@ public class Comment: NSManagedObject {
         return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
     }
 
+    // This can be removed when `unifiedCommentsAndNotificationsList` is permanently enabled
+    // as it's replaced by Comment+Interface:relativeDateSectionIdentifier.
     @objc func sectionIdentifier() -> String? {
-        // allow nil values as temporary workaround for issue #16950 to unblock 17.9 release.
-        guard dateCreated != nil else {
+        guard let dateCreated = dateCreated else {
             return nil
         }
 
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
-        return formatter.string(from: dateCreated ?? Date())
+        return formatter.string(from: dateCreated)
     }
 
     @objc func commentURL() -> URL? {
