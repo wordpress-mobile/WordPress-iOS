@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-01 20:09:56+0000 */
+/* Translation-Revision-Date: 2021-08-02 18:57:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nb_NO */
@@ -2513,7 +2513,7 @@
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
 
 /* Text displayed while activating the site stats module. */
-"Enabling Site Stats..." = "Enabling Site Stats...";
+"Enabling Site Stats..." = "Slår på nettstedstatistikk...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Krypterte logger";
@@ -3435,7 +3435,7 @@
 "Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+"Invalid URL. Please enter a valid URL." = "Ugyldig URL. Vennligst oppgi en gyldig URL.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Invalid endpoint";
@@ -7424,7 +7424,7 @@
 "Unavailable" = "Utilgjengelig";
 
 /* When the App can't figure out what language a blog is configured to use. */
-"Undefined" = "Undefined";
+"Undefined" = "Udefinert";
 
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
