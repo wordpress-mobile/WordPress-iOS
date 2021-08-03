@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, strong) NSNumber *commentID;
 @property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *rawContent;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSNumber *depth;
 // Hierarchy is a string representation of a comments ancestors. Each ancestor's
@@ -36,16 +37,5 @@
 @property (nonatomic) BOOL isLiked;
 @property (nonatomic, assign) BOOL isNew;
 @property (nonatomic) BOOL canModerate;
-
-/// Helper methods
-///
-+ (NSString *)titleForStatus:(NSString *)status;
-- (NSString *)authorUrlForDisplay;
-- (BOOL)hasAuthorUrl;
-- (BOOL)isApproved;
-- (NSString *)sectionIdentifier;
-- (BOOL)isReadOnly;
-- (BOOL)authorIsPostAuthor;
-- (NSNumber *)numberOfLikes;
 
 @end

@@ -635,7 +635,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)editComment
 {
     EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-    editViewController.content = self.comment.content;
+    editViewController.content = [self.comment contentForEdit];
 
     __typeof(self) __weak weakSelf = self;
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {

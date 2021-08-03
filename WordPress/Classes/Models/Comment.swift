@@ -27,16 +27,58 @@ import Foundation
 }
 
 extension Comment {
+
     @objc static func descriptionFor(_ commentStatus: CommentStatusType) -> String {
         return commentStatus.description
     }
-}
 
+    @objc func authorUrlForDisplay() -> String {
+        return authorURL()?.host ?? String()
+    }
+
+    @objc func contentForEdit() -> String {
+        return rawContent ?? content ?? String()
+    }
+
+    @objc func isApproved() -> Bool {
+        return status.isEqual(to: CommentStatusType.approved.description)
+    }
+
+    @objc func isReadOnly() -> Bool {
+        // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
+        return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
+    }
+
+    @objc func sectionIdentifier() -> String? {
+        // allow nil values as temporary workaround for issue #16950 to unblock 17.9 release.
+        guard dateCreated != nil else {
+            return nil
+        }
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter.string(from: dateCreated ?? Date())
+    }
+
+    func numberOfLikes() -> Int {
+        return likeCount.intValue
+    }
+
+    func hasAuthorUrl() -> Bool {
+        return author_url != nil && !author_url.isEmpty
+    }
+
+}
 
 private extension Comment {
 
     func decodedContent() -> String {
-        return content.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
+        guard let displayContent = rawContent ?? content else {
+            return String()
+        }
+        // rawContent/content contains markup for Gutenberg comments. Remove it so it's not displayed.
+        return displayContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
 
     func authorName() -> String {
@@ -71,33 +113,26 @@ extension Comment: PostContentProvider {
         return displayAuthor.isEmpty ? String() : displayAuthor
     }
 
-    public func blogNameForDisplay() -> String? {
-        return author_url
-    }
-
-    public func statusForDisplay() -> String {
-        var status = Comment.title(forStatus: status) ?? ""
-        if status.isEqual(to: NSLocalizedString("Comments", comment: "Comment status")) {
-            status = ""
-        }
-
-        return status
-    }
-
+    // Used in Comment details (non-threaded)
     public func contentForDisplay() -> String {
         return decodedContent()
     }
 
+    // Used in Comments list (non-threaded)
     public func contentPreviewForDisplay() -> String {
         return decodedContent()
     }
 
     public func avatarURLForDisplay() -> URL? {
-        return URL(string: authorAvatarURL)
+        guard let url = authorAvatarURL,
+              !url.isEmpty else {
+            return nil
+        }
+        return URL(string: url)
     }
 
     public func gravatarEmailForDisplay() -> String {
-        return author_email.trim() ?? String()
+        return author_email?.trim() ?? String()
     }
 
     public func dateForDisplay() -> Date? {
