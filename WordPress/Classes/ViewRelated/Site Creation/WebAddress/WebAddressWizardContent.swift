@@ -395,7 +395,6 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
 
     private func setAddressHintVisibility(isHidden: Bool) {
         sitePromptView.isHidden = isHidden
-        scrollableView.isScrollEnabled = isHidden
     }
 
     private func addAddressHintView() {

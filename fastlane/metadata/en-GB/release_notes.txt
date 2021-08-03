@@ -1,0 +1,5 @@
+There’s a new block in town! With the Embed block, you can embed content from your favourite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.
+
+Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).
+
+We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and bin comments. We’ve also provided support for Global Styles, enabling settings like colour and background customisation for Full Site Editing themes.
