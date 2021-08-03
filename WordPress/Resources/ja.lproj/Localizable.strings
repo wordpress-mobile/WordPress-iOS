@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-30 10:54:08+0000 */
+/* Translation-Revision-Date: 2021-08-02 07:54:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -42,7 +42,7 @@
 "%1$d Likes" = "%1$d個の「いいね」";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d blogger_ likes this.";
+"%1$d blogger_ likes this." = "%1$d人のブロガーが「いいね」をつけました。";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
 "%1$d bloggers_ like this." = "%1$d人のブロガーが「いいね」をつけました。";
@@ -8505,7 +8505,7 @@
 "Your first backup will be ready soon" = "初回のバックアップは間もなく完了します";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません。問題が解決しない場合、「自分 > ヘルプ & サポート」画面からお問い合わせください。";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "モバイルでも通知を受信し、コメントやいいねをリアルタイムで確認できます。";
