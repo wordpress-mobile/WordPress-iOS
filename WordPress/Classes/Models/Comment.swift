@@ -17,10 +17,14 @@ public class Comment: NSManagedObject {
     }
 
     @objc func isApproved() -> Bool {
-        return status.isEqual(to: CommentStatusType.approved.description)
+        return status?.isEqual(to: CommentStatusType.approved.description) ?? false
     }
 
     @objc func isReadOnly() -> Bool {
+        guard let blog = blog else {
+            return true
+        }
+
         // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
         return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
     }
@@ -32,12 +36,26 @@ public class Comment: NSManagedObject {
         return formatter.string(from: dateCreated ?? Date())
     }
 
+    @objc func commentURL() -> URL? {
+        guard let commentUrl = link,
+              !commentUrl.isEmpty else {
+            return nil
+        }
+
+        return URL(string: commentUrl)
+    }
+
     func numberOfLikes() -> Int {
-        return likeCount.intValue
+        return Int(likeCount)
     }
 
     func hasAuthorUrl() -> Bool {
-        return author_url != nil && !author_url.isEmpty
+        guard let url = author_url,
+              !url.isEmpty else {
+            return false
+        }
+
+        return true
     }
 
 }
@@ -78,10 +96,10 @@ extension Comment: PostContentProvider {
         var displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
 
         if displayAuthor.isEmpty {
-            displayAuthor = author_email.trim()
+            displayAuthor = author_email?.trim() ?? String()
         }
 
-        return displayAuthor.isEmpty ? String() : displayAuthor
+        return displayAuthor
     }
 
     // Used in Comment details (non-threaded)
@@ -111,7 +129,11 @@ extension Comment: PostContentProvider {
     }
 
     public func authorURL() -> URL? {
-        return URL(string: author_url)
+        guard let url = author_url,
+              !url.isEmpty else {
+            return nil
+        }
+        return URL(string: url)
     }
 
 }

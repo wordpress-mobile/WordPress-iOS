@@ -226,7 +226,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __weak __typeof(self) weakSelf = self;
 
     // when the post is updated, all it's comment will be associated to it, reloading tableView is enough
-    [postService getPostWithID:self.comment.postID
+    [postService getPostWithID:[NSNumber numberWithInt:self.comment.postID]
                        forBlog:self.comment.blog
                        success:^(AbstractPost *post) {
                            [weakSelf reloadData];
@@ -277,8 +277,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
             return;
         }
+        
+        ReaderDetailViewController *vc = [ReaderDetailViewController
+                                          controllerWithPostID:[NSNumber numberWithInt:self.comment.postID]
+                                          siteID:self.comment.blog.dotComID
+                                          isFeed:NO];
 
-        ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID isFeed:NO];
         [self.navigationController pushFullscreenViewController:vc animated:YES];
     }
 }
@@ -346,11 +350,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
     cell.isApproved = [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
-     __typeof(self) __weak weakSelf = self;
-    cell.onTimeStampLongPress = ^(void) {
-        NSURL *url = [NSURL URLWithString:weakSelf.comment.link];
-        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
-    };
+
+    __typeof(self) __weak weakSelf = self;
+    NSURL *commentURL = [weakSelf.comment commentURL];
+    if (commentURL) {
+        cell.onTimeStampLongPress = ^(void) {
+            [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:commentURL];
+        };
+    }
 
     if ([self.comment avatarURLForDisplay]) {
         [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
