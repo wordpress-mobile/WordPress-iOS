@@ -98,11 +98,11 @@ private extension ReaderDetailLikesView {
         case (true, 0):
             summaryLabel.attributedText = highlightedText(SummaryLabelFormats.onlySelf)
         case (true, 1):
-            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singularWithSelf, totalLikes))
+            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singularWithSelf))
         case (true, _) where totalLikes > 1:
             summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.pluralWithSelf, totalLikes))
         case (false, 1):
-            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singular, totalLikes))
+            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.singular))
         default:
             summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.plural, totalLikes))
         }
@@ -157,34 +157,37 @@ private extension ReaderDetailLikesView {
     }
 
     struct SummaryLabelFormats {
-        static let onlySelf = NSLocalizedString("You_ like this.",
-                                                comment: "Describes that the current user is the only one liking the post.")
-        static let singularWithSelf = NSLocalizedString("You and %1$d blogger_ like this.",
-                                                        comment: "Singular format string for displaying the number of post likes, including the like from self."
-                                                            + " %1$d is the number of likes, excluding the like by current user."
-                                                            + " The underscore denotes underline and is not displayed.")
-        static let pluralWithSelf = NSLocalizedString("You and %1$d bloggers_ like this.",
-                                                      comment: "Plural format string for displaying the number of post likes, including the like from self."
+        static let onlySelf = NSLocalizedString("_You_ like this.",
+                                                comment: "Describes that the current user is the only one liking a post."
+                                                    + " The underscores denote underline and is not displayed.")
+        static let singularWithSelf = NSLocalizedString("_You and 1 blogger_ like this.",
+                                                        comment: "Describes that the current user and one other user like a post."
+                                                            + " The underscores denote underline and is not displayed.")
+        static let pluralWithSelf = NSLocalizedString("_You and %1$d bloggers_ like this.",
+                                                      comment: "Plural format string for displaying the number of post likes, including the like from the current user."
                                                         + " %1$d is the number of likes, excluding the like by current user."
-                                                        + " The underscore denotes underline and is not displayed.")
-        static let singular = NSLocalizedString("%1$d blogger_ likes this.",
-                                                comment: "Singular format string for displaying the number of post likes."
-                                                    + " %1$d is the number of likes. The underscore denotes underline and is not displayed.")
-        static let plural = NSLocalizedString("%1$d bloggers_ like this.",
+                                                        + " The underscores denote underline and is not displayed.")
+        static let singular = NSLocalizedString("_1 blogger_ likes this.",
+                                                comment: "Describes that only one user likes a post. The underscores denote underline and is not displayed.")
+        static let plural = NSLocalizedString("_%1$d bloggers_ like this.",
                                               comment: "Plural format string for displaying the number of post likes."
-                                                + " %1$d is the number of likes. The underscore denotes underline and is not displayed.")
+                                                + " %1$d is the number of likes. The underscores denote underline and is not displayed.")
     }
 
     func highlightedText(_ text: String) -> NSAttributedString {
         let labelParts = text.components(separatedBy: "_")
-        let countPart = labelParts.first ?? ""
-        let likesPart = labelParts.last ?? ""
 
+        let firstPart = labelParts.first ?? ""
+        let countPart = labelParts[safe: 1] ?? ""
+        let lastPart = labelParts.last ?? ""
+
+        let foregroundAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.secondaryLabel]
         let underlineAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
                                                                   .underlineStyle: NSUnderlineStyle.single.rawValue]
 
-        let attributedString = NSMutableAttributedString(string: countPart, attributes: underlineAttributes)
-        attributedString.append(NSAttributedString(string: likesPart, attributes: [.foregroundColor: UIColor.secondaryLabel]))
+        let attributedString = NSMutableAttributedString(string: firstPart, attributes: foregroundAttributes)
+        attributedString.append(NSAttributedString(string: countPart, attributes: underlineAttributes))
+        attributedString.append(NSAttributedString(string: lastPart, attributes: foregroundAttributes))
 
         return attributedString
     }
