@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-26 08:10:54+0000 */
+/* Translation-Revision-Date: 2021-07-30 18:22:05+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -2467,7 +2467,7 @@
 "Email sent!" = "Письмо отправлено!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Просмотр блоков встроенных объектов пока не доступен";
+"Embed block previews are coming soon" = "Скоро будет доступен предварительный просмотр блока внедрённых объектов";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Подпись встроенного объекта. %s";
@@ -4282,7 +4282,7 @@
 "No available sites" = "Нет доступных сайтов";
 
 /* No comment provided by engineer. */
-"No blocks found" = "Блоков не найдено.";
+"No blocks found" = "Блоки не найдены";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Нет комментариев";
@@ -5627,7 +5627,7 @@
 "Revert Pending Change" = "Отменить ожидание изменения";
 
 /* Accessibility hint describing what happens if the undo button is tapped. */
-"Reverts the action performed on this notification." = "Отмена действия выполненного с этим уведомлением.";
+"Reverts the action performed on this notification." = "Отмена действия, выполненного в отношении этого уведомления.";
 
 /* Title of a Quick Start Tour */
 "Review site pages" = "Обзор страниц сайта";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-23 11:29:53+0000 */
+/* Translation-Revision-Date: 2021-08-01 20:09:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nb_NO */
@@ -35,11 +35,11 @@
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d liking";
 
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d likinger";
 
 /* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
 "%1$d blogger_ likes this." = "%1$d blogger_ likes this.";
@@ -214,7 +214,7 @@
 "%li words, %li characters" = "%1$li ord, %2$li tegn";
 
 /* translators: %s: Block name e.g. \"Image block\" */
-"%s block" = "%s block";
+"%s block" = "%s-blokk";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blokk-alternativer";
@@ -299,13 +299,13 @@
 "< 1 hour" = "< 1 time";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> times a week";
+"<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> ganger i uka";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week" = "<strong>Once<\/strong> a week";
+"<strong>Once<\/strong> a week" = "<strong>Én gang<\/strong> i uka";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week" = "<strong>Twice<\/strong> a week";
+"<strong>Twice<\/strong> a week" = "<strong>To ganger<\/strong> i uka";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -347,7 +347,7 @@
 "ACTIVE" = "AKTIV";
 
 /* No comment provided by engineer. */
-"ADD AUDIO" = "ADD AUDIO";
+"ADD AUDIO" = "LEGG TIL LYD";
 
 /* No comment provided by engineer. */
 "ADD BLOCK HERE" = "Legg til blokk her";
@@ -359,7 +359,7 @@
 "ADD IMAGE OR VIDEO" = "LEGG TIL BILDE ELLER VIDEO";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "ADD LINK";
+"ADD LINK" = "LEGG TIL LENKE";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "LEGG TIL VIDEO";
@@ -499,7 +499,7 @@
 "Add any topic" = "Legg ethvert emne";
 
 /* No comment provided by engineer. */
-"Add button text" = "Add button text";
+"Add button text" = "Legg til knappetekst";
 
 /* No comment provided by engineer. */
 "Add image or video" = "Add image or video";
@@ -508,7 +508,7 @@
 "Add image, or avatar, to represent this new account." = "Legger til bilde, eller avatar, for å representere den nye kontoen.";
 
 /* No comment provided by engineer. */
-"Add link" = "Add link";
+"Add link" = "Legg til lenke";
 
 /* No comment provided by engineer. */
 "Add link text" = "Legg til lenketekst";
@@ -826,7 +826,7 @@
 "Are you sure you want to update?" = "Er du sikker på at du vil oppdatere?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "Kunst";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Fra 1. august 2018 tillater ikke Facebook lenger direkte deling av innlegg til Facebook-profiler. Tilkoblinger til Facebook-sider forblir derimot uendret.";
@@ -919,7 +919,7 @@
 "Back" = "Tilbake";
 
 /* Title for the Background Color section */
-"Background Color" = "Background Color";
+"Background Color" = "Bakgrunnsfarge";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Backing up site";
@@ -930,7 +930,7 @@
    Title for Jetpack Backup Update Status Failed screen
    Title for the Jetpack's backup list
    Title of section showing backup status */
-"Backup" = "Backup";
+"Backup" = "Sikkerhetskopi";
 
 /* Title for error displayed when preparing a backup fails. */
 "Backup failed" = "Backup failed";
@@ -1030,7 +1030,7 @@
 "Blog's Viewer" = "Bloggens leser";
 
 /* Label for the blogging reminders setting */
-"Blogging Reminders" = "Blogging Reminders";
+"Blogging Reminders" = "Bloggepåminnere";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -1175,7 +1175,7 @@
 "Cancel media uploads" = "Avbryt mediaopplastning";
 
 /* No comment provided by engineer. */
-"Cancel search" = "Cancel search";
+"Cancel search" = "Avbryt søk";
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Avbryt deling";
@@ -1371,7 +1371,7 @@
 "Choose video" = "Velg video";
 
 /* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
+"Choose your topics" = "Velg dine emner";
 
 /* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
 "Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Når du velger et annet nettsted vil du miste redigeringene til nettstedsspesifikt innhold som media og kategorier. Er du sikker?";
@@ -1398,7 +1398,7 @@
 "Clear all old activity logs?" = "Clear all old activity logs?";
 
 /* No comment provided by engineer. */
-"Clear search" = "Clear search";
+"Clear search" = "Rensk søk";
 
 /* Title of a button. */
 "Clear search history" = "Slett søkehistorikk";
@@ -1449,10 +1449,10 @@
 "Collect information" = "Samle inn informasjon";
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
-"Colorful backgrounds" = "Colorful backgrounds";
+"Colorful backgrounds" = "Fargerike bakgrunner";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "Kolonneinnstillinger";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.";
@@ -1662,7 +1662,7 @@
 "Continue" = "Fortsett";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
-"Continue With WordPress.com" = "Continue With WordPress.com";
+"Continue With WordPress.com" = "Fortsett med WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Fortsett arbeidet";
@@ -1683,7 +1683,7 @@
 "Continuing with Apple" = "Fortsetter med Apple";
 
 /* An example tag used in the login prologue screens. */
-"Cooking" = "Cooking";
+"Cooking" = "Matlaging";
 
 /* No comment provided by engineer. */
 "Copied block" = "Kopierte blokk";
@@ -2062,7 +2062,7 @@
 "Deny" = "Nekte";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Describe the purpose of the image. Leave empty if the image is purely decorative. ";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Beskriv hensikten med bildet. La stå tom om bildet kun er dekorativt.";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2070,7 +2070,7 @@
 "Description" = "Beskrivelse";
 
 /* Shortened version of the main title to be used in back navigation */
-"Design" = "Design";
+"Design" = "Utforming";
 
 /* Title for the desktop web preview */
 "Desktop" = "Skrivebord";
@@ -2086,11 +2086,11 @@
 "Dimensions" = "Dimensjoner";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
-"Disable" = "Disable";
+"Disable" = "Slå av";
 
 /* Title. A call to action to disable invite links.
    Title. Title of a prompt to disable group invite links. */
-"Disable invite link" = "Disable invite link";
+"Disable invite link" = "Slå av invitasjonslenke";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Deaktivert";
@@ -2132,7 +2132,7 @@
 "Discover and follow blogs you love" = "Oppdag og følg blogger du liker";
 
 /* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
+"Discover more topics" = "Oppdag flere emner";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2226,7 +2226,7 @@
 "Double tap to add a block" = "Dobbelttrykk for å legge til en blokk";
 
 /* No comment provided by engineer. */
-"Double tap to add a link." = "Double tap to add a link.";
+"Double tap to add a link." = "Dobbelttrykk for å legge til lenke.";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Dobbelttrykk for å lukke";
@@ -2280,10 +2280,10 @@
 "Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
 
 /* No comment provided by engineer. */
-"Double tap to preview page." = "Double tap to preview page.";
+"Double tap to preview page." = "Dobbelttrykk for å forhåndsvise side.";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "Double tap to preview post.";
+"Double tap to preview post." = "Dobbelttrykk for å forhåndsvise innlegget.";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Dobbelttrykk for å gjenta siste endring";
@@ -2310,7 +2310,7 @@
 "Double tap to undo last change" = "Dobbelttrykk for å angre siste endring";
 
 /* Download button title */
-"Download" = "Download";
+"Download" = "Last ned";
 
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Download Backup";
@@ -2343,7 +2343,7 @@
 "Duplicate block" = "Dupliser blokk";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT LINK";
+"EDIT LINK" = "REDIGER LENKE";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Øst";
@@ -2470,13 +2470,13 @@
 "Embed block previews are coming soon" = "Embed block previews are coming soon";
 
 /* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Embed caption. %s";
+"Embed caption. %s" = "Innbyggingsundertekst. %s";
 
 /* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Embed caption. Empty";
+"Embed caption. Empty" = "Innbyggingsundertekst. Tom.";
 
 /* No comment provided by engineer. */
-"Embed link" = "Embed link";
+"Embed link" = "Bygg inn lenke";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Embed previews not yet available";
@@ -2675,7 +2675,7 @@
 "Event" = "Hendelse";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day" = "Every day";
+"Every day" = "Hver dag";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Alle";
@@ -2721,7 +2721,7 @@
 "Expands to select a different menu area" = "Expands to select a different menu area";
 
 /* Title. Indicates an expiration date. */
-"Expires on" = "Expires on";
+"Expires on" = "Utløper";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Forklar hva siden er om.";
@@ -2756,13 +2756,13 @@
 "Failed Media Export" = "Failed Media Export";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
+"Failed to insert audio file." = "Kunne ikke sette inn lydfil.";
 
 /* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
 
 /* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
+"Failed to insert media." = "Kunne ikke sette inn media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Kunne ikke sette inn medie.\nTrykk for flere valg.";
@@ -2849,7 +2849,7 @@
 "Filter by activity type" = "Filter by activity type";
 
 /* Title for the find out more button in the What's New page. */
-"Find out more" = "Find out more";
+"Find out more" = "Finn ut mer";
 
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Finn nettsteder som snakker til deg og følg dem for å få oppdateringer når de publiserer.";
@@ -2957,7 +2957,7 @@
 "Follows the tag." = "Follows the tag.";
 
 /* An example tag used in the login prologue screens. */
-"Football" = "Football";
+"Football" = "Fotball";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "For enkelhets skyld har vi fylt inn kontaktinformasjonen fra din WordPress.com-konto. Dobbeltsjekk om det er denne informasjonen du vil bruke for dette domenet.";
@@ -2996,7 +2996,7 @@
 "Gallery caption. %s" = "Galleritekst. %s";
 
 /* An example tag used in the login prologue screens. */
-"Gardening" = "Gardening";
+"Gardening" = "Hagestell";
 
 /* Add New Stats Card category title
    Title for the general section in site settings screen */
@@ -3302,7 +3302,7 @@
 "Image caption. %s" = "Bildetekst. %s";
 
 /* No comment provided by engineer. */
-"Image settings" = "Image settings";
+"Image settings" = "Bildeinnstillinger";
 
 /* Hint for image title on image settings. */
 "Image title" = "Bildetittel";
@@ -3450,7 +3450,7 @@
 "Invite" = "Inviter";
 
 /* Title for the Invite Link section of the Invite Person screen. */
-"Invite Link" = "Invite Link";
+"Invite Link" = "Invitasjonslenke";
 
 /* Invite People Title */
 "Invite People" = "Invite People";
@@ -3621,7 +3621,7 @@
 "Light" = "Lys";
 
 /* Title displayed for selection of custom app icons that have white backgrounds. */
-"Light backgrounds" = "Light backgrounds";
+"Light backgrounds" = "Lyse bakgrunner";
 
 /* Button title to Like a comment.
    Like (verb)
@@ -3680,7 +3680,7 @@
 "Link inserted" = "Lenke satt inn";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "Lenketekst";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Lenke til eksisterende innhold";
@@ -3821,7 +3821,7 @@
 "Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
 
 /* LogOut confirmation text, whenever there are no local changes */
-"Log out of Jetpack?" = "Log out of Jetpack?";
+"Log out of Jetpack?" = "Logge ut av Jetpack?";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Logge ut av WordPress?";
@@ -3834,7 +3834,7 @@
 "Logs" = "Logger";
 
 /* Title for the error view when the stats module is disabled. */
-"Looking for stats?" = "Looking for stats?";
+"Looking for stats?" = "Ser du etter statistikk?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Slår opp adresse...";
@@ -4041,7 +4041,7 @@
 "More Posts" = "Flere innlegg";
 
 /* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "More from %1$@";
+"More from %1$@" = "Mer fra %1$@";
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "More on WordPress.com";
@@ -4111,7 +4111,7 @@
 "Museums to See In London" = "Museums to See In London";
 
 /* An example tag used in the login prologue screens. */
-"Music" = "Music";
+"Music" = "Musikk";
 
 /* Link to My Profile section
    My Profile view title */
@@ -4237,7 +4237,7 @@
 "No Items" = "Ingen objekter";
 
 /* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "No Jetpack sites found";
+"No Jetpack sites found" = "Ingen Jetpack-nettsteder funnet";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Ingen meny";
@@ -4282,7 +4282,7 @@
 "No available sites" = "Ingen tilgjengelige sider";
 
 /* No comment provided by engineer. */
-"No blocks found" = "No blocks found";
+"No blocks found" = "Ingen blokker funnet";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Ingen kommentarer";
@@ -4544,7 +4544,7 @@
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"OPEN" = "OPEN";
+"OPEN" = "ÅPNE";
 
 /* Disabled */
 "Off" = "Av";
@@ -4982,7 +4982,7 @@
 "Plugins" = "Utvidelser";
 
 /* An example tag used in the login prologue screens. */
-"Politics" = "Politics";
+"Politics" = "Politikk";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -5147,7 +5147,7 @@
 "Preview Unavailable" = "Forhåndsvisning ikke tilgjengelig";
 
 /* No comment provided by engineer. */
-"Preview page" = "Preview page";
+"Preview page" = "Forhåndsvis side";
 
 /* No comment provided by engineer. */
 "Preview post" = "Forhåndsvis innlegg";
@@ -5781,7 +5781,7 @@
 "Search block label. Current text is" = "Search block label. Current text is";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "Søk blokker";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Search button. Current button text is";
@@ -5799,7 +5799,7 @@
 "Search posts" = "Søk i innlegg";
 
 /* No comment provided by engineer. */
-"Search settings" = "Search settings";
+"Search settings" = "Søkeinnstillinger";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "Søk for å finne GIF-bilder du kan legge til i Mediebiblioteket ditt!";
@@ -5947,7 +5947,7 @@
 "Send Link" = "Send lenke";
 
 /* The button title text for sending a magic link. */
-"Send Link by Email" = "Send Link by Email";
+"Send Link by Email" = "Send lenke med e-post";
 
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Send loggmelding";
@@ -5981,7 +5981,7 @@
 "Set Parent" = "Sett forelder";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Set as Featured Image ";
+"Set as Featured Image " = "Sett som Fremhevet bilde";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Sett som hjemmeside";
@@ -6043,7 +6043,7 @@
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Del informasjon med vårt analyseverktøy om din bruk av våre tjenester mens du er logget inn på din WordPress.com-konto.";
 
 /* Title. A call to action to share an invite link. */
-"Share invite link" = "Share invite link";
+"Share invite link" = "Del invitasjonslenke";
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Share link";
@@ -6169,7 +6169,7 @@
 "Siri Reset Prompt" = "Fjern forslag til Siri-snarveier";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "Nettsted";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Nettstedsikon";
@@ -6533,7 +6533,7 @@
 "Table showing %@ and %@" = "Tabell viser %1$@ og %2$@";
 
 /* Title for the tablet web preview */
-"Tablet" = "Tablet";
+"Tablet" = "Nettbrett";
 
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
@@ -7195,7 +7195,7 @@
 "Try Again" = "Prøv igjen";
 
 /* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "Try With Another Account";
+"Try With Another Account" = "Prøv med en annen konto";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Try adjusting your date range filter";
@@ -7212,7 +7212,7 @@
 "Try again" = "Prøv igjen";
 
 /* No comment provided by engineer. */
-"Try another search term" = "Try another search term";
+"Try another search term" = "Prøv et annet søkeord";
 
 /* Customize Insights button title */
 "Try it now" = "Prøv nå";
@@ -7305,7 +7305,7 @@
 "Unable to download file" = "Unable to download file";
 
 /* No comment provided by engineer. */
-"Unable to embed media" = "Unable to embed media";
+"Unable to embed media" = "Kunne ikke bygge inn media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Unable to follow conversation";
@@ -7499,7 +7499,7 @@
 "Unread" = "Ulest";
 
 /* Title of unreplied Comments filter. */
-"Unreplied" = "Unreplied";
+"Unreplied" = "Ubesvart";
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Ikke-lagrede endringer";
@@ -7775,7 +7775,7 @@
 "Visit %@ for more" = "Besøk %@ for mer";
 
 /* Title for the button that will open a link to this site. */
-"Visit site" = "Visit site";
+"Visit site" = "Besøk nettstedet";
 
 /* Support screen footer text displayed when Zendesk is enabled. */
 "Visit the Help Center to get answers to common questions, or contact us for more help." = "Besøk hjelpesenteret for å få svar på vanlige spørsmål, eller kontakte oss for mer hjelp.";
@@ -8132,7 +8132,7 @@
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Hva vil du gjøre med denne filen: laste den opp og legge til en lenke til filen i innlegge ditt, eller legge til innholdet i filen direkte i innlegget?";
 
 /* No comment provided by engineer. */
-"What is a block?" = "What is a block?";
+"What is a block?" = "Hva er en blokk?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "What is alt text?";
@@ -8607,7 +8607,7 @@
 "doesn’t it feel good to cross things off a list?" = "er det ikke deilig å kunne huke av ting på en liste?";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "double-tap to change unit";
+"double-tap to change unit" = "dobbelttrykk for endre enhet";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "f.eks. 12345678";
@@ -8648,7 +8648,7 @@
 "other" = "annet";
 
 /* No comment provided by engineer. */
-"password" = "password";
+"password" = "passord";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
