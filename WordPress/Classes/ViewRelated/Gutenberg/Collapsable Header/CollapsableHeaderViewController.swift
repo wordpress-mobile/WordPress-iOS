@@ -26,7 +26,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private let hasDefaultAction: Bool
     private var notificationObservers: [NSObjectProtocol] = []
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerView: CollapsableHeaderView!
     let titleView: UILabel = {
         let title = UILabel(frame: .zero)
         title.adjustsFontForContentSizeCategory = true
@@ -65,6 +65,8 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         didSet {
             visualEffects.forEach { (visualEffect) in
                 visualEffect.effect = UIBlurEffect.init(style: .systemChromeMaterial)
+                // Allow touches to pass through to the scroll view behind the header. 
+                visualEffect.contentView.isUserInteractionEnabled = false
             }
         }
     }
@@ -543,7 +545,8 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
     }
 
     internal func updateTitleViewVisibility(_ animated: Bool = true) {
-        let shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
+        var shouldHide = shouldUseCompactLayout ? false : (headerHeightConstraint.constant > midHeaderHeight)
+        shouldHide = headerHeightConstraint.isActive ? shouldHide : true
         titleView.animatableSetIsHidden(shouldHide, animated: animated)
     }
 

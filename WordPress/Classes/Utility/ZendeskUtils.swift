@@ -200,6 +200,10 @@ extension NSNotification.Name {
             var tags = ZendeskUtils.getTags()
             switch result {
             case .success(let metadata):
+                guard let metadata = metadata else {
+                    break
+                }
+
                 ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: metadata.plan))
                 ticketFields.append(CustomField(fieldId: TicketFieldIDs.addOns, value: metadata.jetpackAddons))
                 tags.append(contentsOf: metadata.jetpackAddons)
@@ -996,14 +1000,25 @@ private extension ZendeskUtils {
     ///   - completion: completion closure executed at the completion of the remote call
     static func getZendeskMetadata(planServiceRemote: PlanServiceRemote? = nil,
                                    siteID: Int? = nil,
-                                   completion: @escaping (Result<ZendeskMetadata, Error>) -> Void) {
+                                   completion: @escaping (Result<ZendeskMetadata?, Error>) -> Void) {
 
         guard let service = planServiceRemote ?? defaultPlanServiceRemote,
               let validSiteID = siteID ?? currentSiteID else {
+
+            // This is not considered an error condition, there's simply no ZendeskMetaData,
+            // most likely because the user is logged out.
+            completion(.success(nil))
             return
         }
 
-        service.getZendeskMetadata(siteID: validSiteID, completion: completion)
+        service.getZendeskMetadata(siteID: validSiteID, completion: { result in
+            switch result {
+            case .success(let metadata):
+                completion(.success(metadata))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
     }
 
     /// Provides the default PlanServiceRemote to `getZendeskMetadata`

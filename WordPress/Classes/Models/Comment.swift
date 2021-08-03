@@ -36,6 +36,10 @@ extension Comment {
         return authorURL()?.host ?? String()
     }
 
+    @objc func contentForEdit() -> String {
+        return rawContent ?? content ?? String()
+    }
+
     @objc func isApproved() -> Bool {
         return status.isEqual(to: CommentStatusType.approved.description)
     }
@@ -45,11 +49,16 @@ extension Comment {
         return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
     }
 
-    @objc func sectionIdentifier() -> String {
+    @objc func sectionIdentifier() -> String? {
+        // allow nil values as temporary workaround for issue #16950 to unblock 17.9 release.
+        guard dateCreated != nil else {
+            return nil
+        }
+
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
-        return formatter.string(from: dateCreated)
+        return formatter.string(from: dateCreated ?? Date())
     }
 
     func numberOfLikes() -> Int {
@@ -65,8 +74,11 @@ extension Comment {
 private extension Comment {
 
     func decodedContent() -> String {
-        // rawContent contains markup for Gutenberg comments. Remove it so it's not displayed.
-        return rawContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
+        guard let displayContent = rawContent ?? content else {
+            return String()
+        }
+        // rawContent/content contains markup for Gutenberg comments. Remove it so it's not displayed.
+        return displayContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
 
     func authorName() -> String {
@@ -112,11 +124,15 @@ extension Comment: PostContentProvider {
     }
 
     public func avatarURLForDisplay() -> URL? {
-        return URL(string: authorAvatarURL)
+        guard let url = authorAvatarURL,
+              !url.isEmpty else {
+            return nil
+        }
+        return URL(string: url)
     }
 
     public func gravatarEmailForDisplay() -> String {
-        return author_email.trim() ?? String()
+        return author_email?.trim() ?? String()
     }
 
     public func dateForDisplay() -> Date? {
