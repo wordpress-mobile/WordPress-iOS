@@ -1,6 +1,5 @@
 #import "ReaderCommentsViewController.h"
 
-#import "Comment.h"
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "ReaderPost.h"
@@ -14,6 +13,7 @@
 #import "WPAppAnalytics.h"
 #import <WordPressUI/WordPressUI.h>
 
+@class Comment;
 
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
 // crash in certain circumstances when the tableView lays out its visible cells,

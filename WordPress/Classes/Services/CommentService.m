@@ -1,7 +1,6 @@
 #import "CommentService.h"
 #import "AccountService.h"
 #import "Blog.h"
-#import "Comment.h"
 #import "ContextManager.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
