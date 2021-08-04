@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-12 22:03:32+0000 */
+/* Translation-Revision-Date: 2021-07-28 13:43:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ för att åtgärda hoten.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d gillar";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d gillar";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d bloggare gillar detta.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d bloggare_ gillade detta.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggare gillar detta.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d bloggare_ gillar detta.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d av %2$d är klara";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(Utan rubrik)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen rubrik)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Knappstil";
-
-/* No comment provided by engineer. */
-"Button inside" = "Knapp på insidan";
-
-/* No comment provided by engineer. */
-"Button outside" = "Knapp på utsidan";
 
 /* No comment provided by engineer. */
 "Button position" = "Knapposition";
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "Dubbeltryck för att öppna det nedre arket med tillgänliga alternativ";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Dubbeltryck för att förhandsgranska sidan.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Dubbeltryck för att förhandsgranska inlägget.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Dubbeltryck för att göra om senaste ändring";
 
 /* No comment provided by engineer. */
@@ -2465,6 +2466,9 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-postmeddelande skickat!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Förhandsgranskning av inbäddade block kommer snart";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Beskrivning för inbäddning. %s";
 
@@ -2474,8 +2478,8 @@
 /* No comment provided by engineer. */
 "Embed link" = "Länk för inbäddning";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Inbäddat innehåll från %s kan för närvarande inte visas i den mobila redigeraren. Förhandsvisa sidan för att se det inbäddade innehållet.";
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Förhandsgranskning av inbäddningar är inte tillgängligt ännu";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3619,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Ljusa bakgrunder";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Gilla";
 
 /* A comment is marked as liked */
@@ -3632,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -4279,7 +4282,7 @@
 "No available sites" = "Inga webbplatser tillgängliga";
 
 /* No comment provided by engineer. */
-"No button" = "Ingen knapp";
+"No blocks found" = "Inga block hittades";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Inga kommentarer";
@@ -4549,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "Officiella knappar";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Äldre än 2 dagar";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Äldre än en månad";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Äldre än en vecka";
 
 /* Sort Order */
@@ -4789,9 +4795,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Inväntar granskning";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "Inväntar granskning";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5142,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "Förhandsvisning inte tillgänglig";
+
+/* No comment provided by engineer. */
+"Preview page" = "Förhandsgranska sidan";
+
+/* No comment provided by engineer. */
+"Preview post" = "Förhandsgranska";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Förhandsgranska din nya webbplats för att se vad dina besökare kommer att se.";
@@ -5617,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Återställ väntande ändring";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Återställer åtgärden som utfördes på detta meddelande.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Granska webbplatsens sidor";
 
@@ -5767,6 +5779,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Etikett för sökblock. Aktuell text är";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Sök block";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Sökknapp. Den nuvarande knapptexten är";
@@ -7083,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "För att använda denna app för %@ måste du ha tillägget Jetpack installerat och aktiverat.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "I dag";
@@ -7195,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Försök igen";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Prova en annan sökterm";
+
 /* Customize Insights button title */
 "Try it now" = "Prova nu";
 
@@ -7284,6 +7303,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Det gick inte att ladda ned filen";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Kan inte bädda in media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Det gick inte att följa konversationen";
@@ -8088,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Vi hjälper dig genom grunderna i att bygga din webbplats och hitta fler läsare";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Vi jobbar hårt på att lägga till stöd för förhandsgranskning av inbäddningar. Tills dess kan du förhandsgranska det inbäddade innehållet på sidan.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Vi jobbar hårt på att lägga till stöd för förhandsgranskning av inbäddningar. Tills dess kan du förhandsgranska det inbäddade innehållet i inlägget.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Vi har lagt till några extra åtgärder som hjälper dig att hitta fler läsare.";
 
@@ -8102,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Vad vill du göra med denna fil: ladda upp den till webbplatsen och länka till filen i ditt inlägg eller lägga till filens innehåll direkt i inlägget?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "Vad är ett block?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Vad är alternativ text?";
@@ -8296,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Ja tack, visa mig";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "I går";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */

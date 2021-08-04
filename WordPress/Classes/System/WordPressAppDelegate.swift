@@ -298,6 +298,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
+        AccountService.loadDefaultAccountCookies()
+
         windowManager.showUI()
         setupNoticePresenter()
     }
@@ -728,6 +730,7 @@ extension WordPressAppDelegate {
             setupShareExtensionToken()
             configureNotificationExtension()
             startObservingAppleIDCredentialRevoked()
+            AccountService.loadDefaultAccountCookies()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()

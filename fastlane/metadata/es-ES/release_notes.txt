@@ -1,7 +1,5 @@
-Los bloques de texto reciben algo de cariño. Se ha añadido la personalización del color y del fondo a los bloques de texto del editor de bloques.
+¡Hay un nuevo bloque en la ciudad! Con el bloque de incrustación, puedes incrustar contenido de tus servicios favoritos, como YouTube, TikTok, Instagram y otros. Mantente atento a las nuevas funcionalidades que vendrán.
 
-Otras actualizaciones del editor de bloques incluyen la corrección de un problema con el selector de bloques en iPad y la actualización de las pantallas de carga y de fallo para la versión web del editor.
+¿Te gusta nuestra característica de recordatorios de blogueo? Antes, solo los administradores del sitio podían configurar los recordatorios, pero ahora hemos activado esta característica para la gente que puede editar entradas en tu sitio (editores, autores y colaboradores).
 
-Si has experimentado algunos problemas de refresco en el lector con los botones de seguimiento, ahora puedes estar tranquilo, ya que esos problemas han sido solucionados.
-
-¡Los autores y colaboradores ya no están a oscuras! Ahora pueden ver los comentarios de un sitio a través de «Mi sitio > Comentarios».
+Hemos hecho mejoras en la moderación de comentarios, asegurando que los usuarios apropiados pueden deslizar hacia la izquierda para aprobar/desaprobar y mandar a la papelera los comentarios. También hemos proporcionado compatibilidad para los estilos globales, activando ajustes como la personalización del color y del fondo para los temas de edición completa del sitio.

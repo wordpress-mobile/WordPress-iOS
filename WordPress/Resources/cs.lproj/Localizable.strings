@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-06-30 18:27:22+0000 */
+/* Translation-Revision-Date: 2021-07-29 15:15:05+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ k opravě hrozeb.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d to se mi líbí";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d to se mi líbí";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogerovi se to líbí.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d blogerovi se to líbí.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d blogerům se to líbí.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d blogerům se to líbí.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d z %2$d dokončeno";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(Bez názvu)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(žádný název)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -507,7 +508,7 @@
 "Add image, or avatar, to represent this new account." = "Přidejte obrázek nebo avatar, který představuje tento nový účet.";
 
 /* No comment provided by engineer. */
-"Add link" = "Add link";
+"Add link" = "Přidat odkaz";
 
 /* No comment provided by engineer. */
 "Add link text" = "Přidat text odkazu";
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Styl tlačítek";
-
-/* No comment provided by engineer. */
-"Button inside" = "Tlačítko uvnitř";
-
-/* No comment provided by engineer. */
-"Button outside" = "Tlačítko venku";
 
 /* No comment provided by engineer. */
 "Button position" = "Poloha tlačítka";
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "Dvojitým klepnutím otevřete spodní list s dostupnými možnostmi";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Double tap to preview page.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Double tap to preview post.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Poslední změnu provedete dvojitým klepnutím";
 
 /* No comment provided by engineer. */
@@ -2342,7 +2343,7 @@
 "Duplicate block" = "Duplicitní blok";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT LINK";
+"EDIT LINK" = "Upravit odkaz";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Východ";
@@ -2465,6 +2466,9 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail poslán!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Embed caption. %s";
 
@@ -2474,8 +2478,8 @@
 /* No comment provided by engineer. */
 "Embed link" = "Embed link";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Embed previews not yet available";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3619,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Světlé pozadí";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "To se mi líbí";
 
 /* A comment is marked as liked */
@@ -3632,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -4279,7 +4282,7 @@
 "No available sites" = "Žádné dostupné stránky";
 
 /* No comment provided by engineer. */
-"No button" = "Žádné tlačítko";
+"No blocks found" = "No blocks found";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Žádný komentář";
@@ -4549,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "Oficiální tlačítka";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Starší než 2 dny";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Starší než měsíc";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Starší než týden";
 
 /* Sort Order */
@@ -4789,9 +4795,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Čekající na schválení";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "Čekající na schválení";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5142,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "Náhled není k dispozici";
+
+/* No comment provided by engineer. */
+"Preview page" = "Preview page";
+
+/* No comment provided by engineer. */
+"Preview post" = "Zobrazit příspěvek";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Zobrazte náhled svého nového webu, abyste viděli, co uvidí vaši návštěvníci.";
@@ -5617,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Vrátit čekající změnu";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Reverts the action performed on this notification.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Zkontrolujte stránky webu";
 
@@ -5767,6 +5779,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Vyhledat štítek bloku. Aktuální text je";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Hledat bloky";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Search button. Current button text is";
@@ -7083,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Abyste mohli tuto aplikaci používat pro %@, musíte mít nainstalovaný a aktivovaný plugin Jetpack.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Dnes";
@@ -7195,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Zkus to znovu";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Try another search term";
+
 /* Customize Insights button title */
 "Try it now" = "Zkuste to teď";
 
@@ -7284,6 +7303,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Soubor nelze stáhnout";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Unable to embed media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Konverzaci nelze sledovat";
@@ -8088,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Provedeme vás základy budování a rozšiřování vašeho webu";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Přidali jsme další úkoly, abychom vám pomohli rozšířit publikum.";
 
@@ -8102,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Co chcete s tímto souborem udělat: nahrát jej a přidat odkaz na soubor do vašeho příspěvku, nebo přidat obsah souboru přímo do příspěvku?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "What is a block?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Co je alternativní text?";
@@ -8296,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Ano, ukažte mi to";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Včera";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
