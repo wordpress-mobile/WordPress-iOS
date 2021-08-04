@@ -1003,6 +1003,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestPreview() {
         displayPreview()
     }
+
+    func gutenbergDidRequestBlockTypeImpressions() -> [String: Int] {
+        return gutenbergSettings.blockTypeImpressions
+    }
+
+    func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
+        gutenbergSettings.blockTypeImpressions = impressions
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -1130,7 +1138,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .editorOnboarding: canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
+            .editorOnboarding: canViewEditorOnboarding(),
+            .firstGutenbergEditorSession: !gutenbergSettings.hasLaunchedGutenbergEditor
         ]
     }
 
