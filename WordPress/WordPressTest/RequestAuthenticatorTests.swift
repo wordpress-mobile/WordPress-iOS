@@ -155,18 +155,4 @@ class RequestAuthenticatorTests: XCTestCase {
 
         waitForExpectations(timeout: 0.2)
     }
-    func testDecideActionForNavigationResponse_ErrorNoCookies() {
-        let url = URL(string: "https://example.wordpress.com/some-page/")!
-        let authenticator = dotComAuthenticator
-        let cookieJar = MockCookieJar()
-        let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)!
-
-        let expectation = self.expectation(description: "Action Should be decided")
-        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
-            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.allow)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 0.2)
-    }
 }

@@ -341,23 +341,8 @@ extension RequestAuthenticator {
             return
         }
 
-        let done: (Bool) -> Void = { hasCookie in
-            if hasCookie {
-                // Auth Cookies exist lets cean those up and try again.
-                cookieJar.removeWordPressComCookies {
-                    completion(.reload)
-                }
-            } else {
-                // No cookies existed so we'll allow the request to proceed so the user at least sees the error.
-                completion(.allow)
-            }
-        }
-
-        switch authenticationType {
-        case .regular, .regularMapped:
-            cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: false, completion: done)
-        case .privateAtomic, .atomic:
-            cookieJar.hasWordPressComAuthCookie(username: username, atomicSite: true, completion: done)
+        cookieJar.removeWordPressComCookies {
+            completion(.reload)
         }
     }
 
@@ -366,7 +351,7 @@ extension RequestAuthenticator {
             return false
         }
 
-        if url.contains("r-login.wordpress.com") {
+        if url.contains("r-login.wordpress.com") || url.contains("wordpress.com/log-in?") {
             return true
         }
 
