@@ -8,6 +8,11 @@ private struct ElementStringIDs {
     static let myTickets = "my-tickets-button"
     static let contactEmail = "set-contact-email-button"
     static let activityLogs = "activity-logs-button"
+    // In Zendesk Views
+    static let contactSupportTitle = "Contact us"
+    static let myTicketsTitle = "My Tickets"
+    static let ZDcancelButton = "ZDKbackButton"
+    static let ZDticketsCancelButton = "Cancel"
 }
 
 /// This screen object is for the Support section. In the app, it's a modal we can get to from Me 
@@ -20,6 +25,12 @@ class SupportScreen: BaseScreen {
     let myTickets: XCUIElement
     let contactEmail: XCUIElement
     let activityLogs: XCUIElement
+    // In Zendesk Views
+    let contactSupportTitle: XCUIElement
+    let myTicketsTitle: XCUIElement
+    let ZDcancelButton: XCUIElement
+    let ZDticketsCancelButton: XCUIElement
+
 
     init() {
         let app = XCUIApplication()
@@ -29,6 +40,11 @@ class SupportScreen: BaseScreen {
         myTickets = app.cells[ElementStringIDs.myTickets]
         contactEmail = app.cells[ElementStringIDs.contactEmail]
         activityLogs = app.cells[ElementStringIDs.activityLogs]
+        // In Zendesk Views
+        contactSupportTitle = app.staticTexts[ElementStringIDs.contactSupportTitle]
+        myTicketsTitle = app.staticTexts[ElementStringIDs.myTicketsTitle]
+        ZDcancelButton = app.buttons[ElementStringIDs.ZDcancelButton]
+        ZDticketsCancelButton = app.buttons[ElementStringIDs.ZDticketsCancelButton]
 
         super.init(element: activityLogs)
 
