@@ -369,6 +369,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         gutenbergSettings.hasLaunchedGutenbergEditor = true
+
+        if post.isFirstTimePublish {
+            decrementBlockTypeImpressions()
+        }
     }
 
     override func viewLayoutMarginsDidChange() {
@@ -515,6 +519,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     func gutenbergDidRequestFeaturedImageId(_ mediaID: NSNumber) {
         gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
+    }
+
+    func decrementBlockTypeImpressions(_ amount: Int = 1) -> Void {
+        gutenbergSettings.blockTypeImpressions = gutenbergSettings.blockTypeImpressions.mapValues {count -> Int in
+            return max(count - amount, 0)
+        }
     }
 
     // MARK: - Event handlers
