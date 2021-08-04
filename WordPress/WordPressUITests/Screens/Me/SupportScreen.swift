@@ -60,6 +60,18 @@ class SupportScreen: BaseScreen {
         closeButton.tap()
     }
 
+    func loadContactUs() {
+        contact.tap()
+        XCTAssert(contactSupportTitle.exists)
+        ZDcancelButton.tap()
+    }
+
+    func loadMyTickets() {
+        myTickets.tap()
+        XCTAssert(myTicketsTitle.exists)
+        ZDticketsCancelButton.tap()
+    }
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons[ElementStringIDs.activityLogs].exists
     }
