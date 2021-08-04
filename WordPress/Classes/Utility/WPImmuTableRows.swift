@@ -132,6 +132,10 @@ struct CheckmarkRow: ImmuTableRow {
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = title
+        cell.accessibilityHint = subtitle
+
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = subtitle
         cell.selectionStyle = .none
