@@ -2,6 +2,7 @@
 -----
 * [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
 * [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
+* [*] Posts: Ampersands are correctly decoded in publishing notices instead of showing as HTML entites. [#16972]
 
 17.9
 -----
