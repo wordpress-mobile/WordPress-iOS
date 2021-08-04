@@ -51,8 +51,8 @@ extension LoginEpilogueUserInfo {
     mutating func update(with service: SocialService) {
         switch service {
         case .google(let user):
-            fullName = user.profile.name
-            email = user.profile.email
+            fullName = user.profile?.name ?? String()
+            email = user.profile?.email ?? String()
         case .apple(let user):
             fullName = user.fullName
             email = user.email
