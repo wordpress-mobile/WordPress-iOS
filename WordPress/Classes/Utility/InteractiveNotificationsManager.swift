@@ -320,6 +320,7 @@ extension InteractiveNotificationsManager {
         case shareUploadFailure     = "share-upload-failure"
         case login                  = "push_auth"
         case bloggingReminderWeekly = "blogging-reminder-weekly"
+        case weeklyRoundup          = "weekly-roundup"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -346,6 +347,8 @@ extension InteractiveNotificationsManager {
             case .login:
                 return [.approveLogin, .denyLogin]
             case .bloggingReminderWeekly:
+                return []
+            case .weeklyRoundup:
                 return []
             }
         }

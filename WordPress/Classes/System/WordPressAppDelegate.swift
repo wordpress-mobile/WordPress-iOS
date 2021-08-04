@@ -17,6 +17,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    let backgroundTasksCoordinator = BackgroundTasksCoordinator(tasks: [
+        WeeklyRoundupBackgroundTask()
+    ], eventHandler: WordPressBackgroundTaskEventHandler())
+    
     @objc
     lazy var windowManager: WindowManager = {
         guard let window = window else {
@@ -88,7 +92,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
-
+        
         // Configure WPCom API overrides
         configureWordPressComApi()
 
@@ -162,7 +166,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             app.endBackgroundTask(task)
             bgTask = .invalid
         }
-
+/*
         bgTask = app.beginBackgroundTask(expirationHandler: {
             // Synchronize the cleanup call on the main thread in case
             // the task actually finishes at around the same time.
@@ -172,7 +176,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                     self?.bgTask = .invalid
                 }
             }
-        })
+        })*/
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -233,9 +237,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
         // is no need to inspect the identifier beyond the simple check here.
         if identifier.contains(WPAppGroupName) {
+            /*
             let manager = ShareExtensionSessionManager(appGroup: WPAppGroupName, backgroundSessionIdentifier: identifier)
             manager.backgroundSessionCompletionBlock = completionHandler
-            manager.startBackgroundSession()
+            manager.startBackgroundSession()*/
         }
     }
 
@@ -317,8 +322,21 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private func setupNoticePresenter() {
         noticePresenter = NoticePresenter()
     }
+    
+    private func setupBackgroundTasks() {
+        
+    }
 
     private func setupBackgroundRefresh(_ application: UIApplication) {
+        backgroundTasksCoordinator.scheduleTasks { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                DDLogError("Error scheduling background tasks: \(error)")
+            }
+        }
+        
         application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
