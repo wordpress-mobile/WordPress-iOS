@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-07 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-07-28 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "위협을 해결할 %1$@입니다.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "좋아요 %1$d개";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "좋아요 %1$d개 ";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d명의 블로거가 좋아합니다.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d blogger_ likes this.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d명의 블로거가 좋아합니다.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d bloggers_ like this.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d 완료됨";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(제목 없음)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(제목 없음)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -507,7 +508,7 @@
 "Add image, or avatar, to represent this new account." = "새 계정을 나타내는 이미지 또는 아바타를 추가합니다.";
 
 /* No comment provided by engineer. */
-"Add link" = "Add link";
+"Add link" = "링크 추가";
 
 /* No comment provided by engineer. */
 "Add link text" = "링크 텍스트 추가";
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "버튼 스타일";
-
-/* No comment provided by engineer. */
-"Button inside" = "버튼 내부";
-
-/* No comment provided by engineer. */
-"Button outside" = "버튼 외부";
 
 /* No comment provided by engineer. */
 "Button position" = "버튼 위치";
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "사용할 수 있는 옵션이 포함된 하위 시트를 열려면 두 번 누르세요.";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "페이지를 미리 보려면 두 번 누르세요.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "글을 미리 보려면 두 번 누르세요.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "마지막 변경을 다시 실행하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
@@ -2342,7 +2343,7 @@
 "Duplicate block" = "블록 복제하기";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT LINK";
+"EDIT LINK" = "링크 편집";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "동쪽";
@@ -2465,17 +2466,20 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "이메일이 전송되었습니다.";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "임베드 블록 미리보기는 곧 공개 예정";
+
 /* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Embed caption. %s";
+"Embed caption. %s" = "캡션을 임베드합니다. %s";
 
 /* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Embed caption. Empty";
+"Embed caption. Empty" = "캡션을 임베드합니다. 비어 있음";
 
 /* No comment provided by engineer. */
-"Embed link" = "Embed link";
+"Embed link" = "링크 임베드";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "임베드 미리보기는 아직 사용할 수 없음";
 
 /* Title for the Emoji section */
 "Emoji" = "이모티콘";
@@ -2494,7 +2498,7 @@
 "Enable Quick Start for Site" = "사이트에 대한 빠른 시작 사용 설정";
 
 /* Title for the button that will enable the site stats module. */
-"Enable Site Stats" = "Enable Site Stats";
+"Enable Site Stats" = "사이트 통계 활성화";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "비디오에 소리를 녹음하려면 마이크 액세스를 허용하세요.";
@@ -2506,10 +2510,10 @@
 "Enable site notifications?" = "사이트 알림을 활성화하시겠습니까?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
-"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "트래픽, 좋아요, 댓글, 구독자에 대한 자세한 내용을 참조하려면 사이트 통계를 활성화하세요.";
 
 /* Text displayed while activating the site stats module. */
-"Enabling Site Stats..." = "Enabling Site Stats...";
+"Enabling Site Stats..." = "사이트 통계 활성화 중...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "암호화된 기록";
@@ -3431,7 +3435,7 @@
 "Invalid URL. Audio file not found." = "유효하지 않은 URL입니다. 오디오 파일을 찾을 수 없습니다.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+"Invalid URL. Please enter a valid URL." = "유효하지 않은 URL입니다. 유효한 URL을 입력하세요.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "유효하지 않은 엔드포인트입니다";
@@ -3482,7 +3486,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "통계를 보려면 젯팩 %@ 이상이 필요합니다. 젯팩을 업데이트하시겠어요?";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "멀티사이트 설치용 Jetpack Backup에서는 다운로드 가능한 백업이 제공되며, 원클릭 복원은 없습니다. 자세한 내용은 %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "젯팩 자주 찾는 질문";
@@ -3619,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "밝은 배경";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "좋아요";
 
 /* A comment is marked as liked */
@@ -3632,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3831,7 +3834,7 @@
 "Logs" = "로그";
 
 /* Title for the error view when the stats module is disabled. */
-"Looking for stats?" = "Looking for stats?";
+"Looking for stats?" = "통계를 찾으시나요?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "주소 찾기...";
@@ -4234,7 +4237,7 @@
 "No Items" = "항목 없음";
 
 /* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "No Jetpack sites found";
+"No Jetpack sites found" = "젯팩 사이트를 찾을 수 없음";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "메뉴 없음";
@@ -4279,7 +4282,7 @@
 "No available sites" = "이용할 수 있는 사이트 없음";
 
 /* No comment provided by engineer. */
-"No button" = "버튼 없음";
+"No blocks found" = "블록을 찾을 수 없음";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "댓글 없음";
@@ -4549,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "공식 버튼";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "2일 이상 지남";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "1달 이상 지남";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "1주 이상 지남";
 
 /* Sort Order */
@@ -4789,9 +4795,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "대기중";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "조정이 필요한 댓글";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5142,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "미리보기를 사용할 수 없음";
+
+/* No comment provided by engineer. */
+"Preview page" = "페이지 미리 보기";
+
+/* No comment provided by engineer. */
+"Preview post" = "글 미리보기";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "새 사이트를 미리 보고 방문자에게 어떤 것이 표시되는지 확인하세요.";
@@ -5617,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "보류 상태로 되돌림";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "이 알림에 대해 수행된 액션을 되돌립니다. ";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "사이트 페이지 검토";
 
@@ -5767,6 +5779,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "블록 레이블을 검색합니다. 현재 텍스트는";
+
+/* No comment provided by engineer. */
+"Search blocks" = "블록 검색";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "검색 버튼입니다. 현재 버튼 텍스트는";
@@ -7083,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "%@에 이 앱을 사용하려면 설치되고 활성화된 Jetpack 플러그인이 있어야 합니다.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "오늘";
@@ -7195,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "다시 시도";
 
+/* No comment provided by engineer. */
+"Try another search term" = "다른 검색어 시도";
+
 /* Customize Insights button title */
 "Try it now" = "지금 사용해 보기";
 
@@ -7284,6 +7303,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "파일을 다운로드할 수 없음";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "미디어를 임베드할 수 없음";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "대화를 팔로우할 수 없습니다.";
@@ -8025,7 +8047,7 @@
 "We're restoring your site back to %1$@." = "사이트를 %1$@(으)로 다시 복원하는 중입니다.";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "죄송합니다. 지금은 Jetpack Scan이 멀티사이트 WordPress 설치와 호환되지 않습니다.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "파일 링크도 이메일로 보내드렸습니다.";
@@ -8088,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "사이트 빌드 및 성장에 대한 기본 사항을 안내해 드립니다.";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "임베드 미리보기에 대한 지원을 추가하려고 노력하고 있습니다. 그동안에는 페이지에 임베드된 콘텐츠를 미리 볼 수 있습니다.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "임베드 미리보기에 대한 지원을 추가하려고 노력하고 있습니다. 그동안에는 글에 임베드된 콘텐츠를 미리 볼 수 있습니다.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "방문자 수를 늘리는 데 도움이 되는 작업이 추가되었습니다.";
 
@@ -8102,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "이 파일로 무엇을 하고 싶으신가요? 파일을 업로드하고 파일의 링크를 글에 추가하거나, 파일 콘텐츠를 글에 직접 추가하시겠습니까?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "블록이란 무엇인가요?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "대체 텍스트란 무엇인가요?";
@@ -8208,7 +8239,7 @@
 "WordPress for iOS Support" = "iOS용 워드프레스 지원";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress multisites are not supported";
+"WordPress multisites are not supported" = "WordPress 멀티사이트는 지원되지 않습니다.";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "워드프레스가 귀하의 글에 현재 위치를 추가하려면 장치의 현재 위치에 액세스할 수 있는 권한이 필요합니다. 프라이버시 설정을 업데이트하세요.";
@@ -8296,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "예, 보여 주세요.";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "어제";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
@@ -8640,7 +8672,7 @@
 "viewer" = "방문자";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
+"visit our documentation page" = "설명서 페이지 방문";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "을(를) 이후에 사용할 수 없게 됩니다.";
