@@ -126,7 +126,7 @@ struct PostNoticeViewModel {
 
     private var message: String {
         let title = post.titleForDisplay() ?? ""
-        if title.count > 0 {
+        if !title.isEmpty {
             return title
         }
 
