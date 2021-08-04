@@ -370,7 +370,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
 
     cell.onUserClick = ^{
-        NSURL *url = [NSURL URLWithString:self.comment.author_url];
+        NSURL *url = [self.comment authorURL];
         if (url) {
             [weakSelf openWebViewWithURL:url];
         }
