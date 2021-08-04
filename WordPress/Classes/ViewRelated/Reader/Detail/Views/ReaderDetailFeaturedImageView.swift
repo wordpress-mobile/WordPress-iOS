@@ -147,14 +147,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewDidScroll()
     }
 
-    public func deviceDidRotate() {
-        guard !useCompatibilityMode else {
-            return
-        }
-
-        updateInitialHeight(resetContentOffset: false)
-    }
-
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
         guard let navigationBar = navigationBar,
               useCompatibilityMode == false else {
