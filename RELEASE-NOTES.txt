@@ -2,6 +2,7 @@
 -----
 * [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
 * [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
+* [internal] Updated GoogleSignIn to 6.0.1 through WordPressAuthenticator. Should be no visible changes, but could cause regression in Google sign in flow. [#16974]
 
 17.9
 -----
