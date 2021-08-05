@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-27 07:59:10+0000 */
+/* Translation-Revision-Date: 2021-08-03 23:18:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -2280,10 +2280,10 @@
 "Double tap to open Bottom Sheet with available options" = "Dubbeltik om onderste blad te openen met beschikbare opties";
 
 /* No comment provided by engineer. */
-"Double tap to preview page." = "Dubbel tikken voor een voorvertoning van de pagina.";
+"Double tap to preview page." = "Dubbeltik om een voorbeeld van het bericht te bekijken.";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "Dubbel tikken voor een voorvertoning van het bericht.";
+"Double tap to preview post." = "Dubbeltikken om een voorbeeld van het bericht te bekijken";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Tik tweemaal om laatste wijziging opnieuw uit te voeren";
