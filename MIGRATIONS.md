@@ -3,6 +3,26 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 130
+
+@scoutharris 2021-08-03
+
+- `Comment`: set attribute default values
+  - `author`: empty string
+  - `author_email`: empty string
+  - `author_url`: empty string
+  - `authorAvatarURL`: empty string
+  - `commentID`: 0
+  - `content`: empty string
+  - `hierarchy`: empty string
+  - `isLiked`: `NO`
+  - `link`: empty string
+  - `parentID`: 0
+  - `postID`: 0
+  - `postTitle`: empty string
+  - `status`: empty string
+  - `type`: `comment`
+
 ## WordPress 129
 
 @scoutharris 2021-07-29

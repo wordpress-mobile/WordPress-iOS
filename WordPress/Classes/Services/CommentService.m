@@ -100,6 +100,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class])
                                                      inManagedObjectContext:blog.managedObjectContext];
+    comment.dateCreated = [NSDate new];
     comment.blog = blog;
     return comment;
 }
@@ -1141,7 +1142,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
-    comment.commentID = [remoteComment.commentID intValue] ?: 0;
+    comment.commentID = [remoteComment.commentID intValue];
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
@@ -1150,12 +1151,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.rawContent = remoteComment.rawContent;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
-    comment.parentID = [remoteComment.parentID intValue] ?: 0;
-    comment.postID = [remoteComment.postID intValue] ?: 0;
+    comment.parentID = [remoteComment.parentID intValue];
+    comment.postID = [remoteComment.postID intValue];
     comment.postTitle = remoteComment.postTitle;
     comment.status = remoteComment.status;
     comment.type = remoteComment.type;
-    comment.isLiked = remoteComment.isLiked ?: NO;
+    comment.isLiked = remoteComment.isLiked;
     comment.likeCount = [remoteComment.likeCount intValue];
     comment.canModerate = remoteComment.canModerate;
 

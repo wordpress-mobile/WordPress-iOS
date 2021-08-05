@@ -13,11 +13,11 @@ public class Comment: NSManagedObject {
     }
 
     @objc func contentForEdit() -> String {
-        return rawContent ?? content ?? String()
+        return availableContent()
     }
 
     @objc func isApproved() -> Bool {
-        return status?.isEqual(to: CommentStatusType.approved.description) ?? false
+        return status.isEqual(to: CommentStatusType.approved.description)
     }
 
     @objc func isReadOnly() -> Bool {
@@ -43,12 +43,11 @@ public class Comment: NSManagedObject {
     }
 
     @objc func commentURL() -> URL? {
-        guard let commentUrl = link,
-              !commentUrl.isEmpty else {
+        guard !link.isEmpty else {
             return nil
         }
 
-        return URL(string: commentUrl)
+        return URL(string: link)
     }
 
     func numberOfLikes() -> Int {
@@ -56,12 +55,7 @@ public class Comment: NSManagedObject {
     }
 
     func hasAuthorUrl() -> Bool {
-        guard let url = author_url,
-              !url.isEmpty else {
-            return false
-        }
-
-        return true
+        return !author_url.isEmpty
     }
 
 }
@@ -69,20 +63,28 @@ public class Comment: NSManagedObject {
 private extension Comment {
 
     func decodedContent() -> String {
-        guard let displayContent = rawContent ?? content else {
-            return String()
-        }
         // rawContent/content contains markup for Gutenberg comments. Remove it so it's not displayed.
-        return displayContent.stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
+        return availableContent().stringByDecodingXMLCharacters().trim().strippingHTML().normalizingWhitespace() ?? String()
     }
 
     func authorName() -> String {
-        guard let authorName = author,
-              !authorName.isEmpty else {
-            return NSLocalizedString("Anonymous", comment: "the comment has an anonymous author.")
+        return !author.isEmpty ? author : NSLocalizedString("Anonymous", comment: "the comment has an anonymous author.")
+    }
+
+    // The REST endpoint response contains both content and rawContent.
+    // The XMLRPC endpoint response contains only content.
+    // So for Comment display and Comment editing, use which content the Comment has.
+    // The result is WP sites will use rawContent, self-hosted will use content.
+    func availableContent() -> String {
+        if !rawContent.isEmpty {
+            return rawContent
         }
 
-        return authorName
+        if !content.isEmpty {
+            return content
+        }
+
+        return String()
     }
 
 }
@@ -90,22 +92,13 @@ private extension Comment {
 extension Comment: PostContentProvider {
 
     public func titleForDisplay() -> String {
-        guard let title = post?.postTitle ?? postTitle,
-              !title.isEmpty else {
-            return NSLocalizedString("(No Title)", comment: "Empty Post Title")
-        }
-
-        return title.stringByDecodingXMLCharacters()
+        let title = post?.postTitle ?? postTitle
+        return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
     public func authorForDisplay() -> String {
-        var displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
-
-        if displayAuthor.isEmpty {
-            displayAuthor = author_email?.trim() ?? String()
-        }
-
-        return displayAuthor
+        let displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
+        return !displayAuthor.isEmpty ? displayAuthor : gravatarEmailForDisplay()
     }
 
     // Used in Comment details (non-threaded)
@@ -119,27 +112,20 @@ extension Comment: PostContentProvider {
     }
 
     public func avatarURLForDisplay() -> URL? {
-        guard let url = authorAvatarURL,
-              !url.isEmpty else {
-            return nil
-        }
-        return URL(string: url)
+        return !authorAvatarURL.isEmpty ? URL(string: authorAvatarURL) : nil
     }
 
     public func gravatarEmailForDisplay() -> String {
-        return author_email?.trim() ?? String()
+        let displayEmail = author_email.trim()
+        return !displayEmail.isEmpty ? displayEmail : String()
     }
 
     public func dateForDisplay() -> Date? {
         return dateCreated
     }
 
-    public func authorURL() -> URL? {
-        guard let url = author_url,
-              !url.isEmpty else {
-            return nil
-        }
-        return URL(string: url)
+    @objc public func authorURL() -> URL? {
+        return !author_url.isEmpty ? URL(string: author_url) : nil
     }
 
 }
