@@ -23,6 +23,7 @@ function ensure_is_in_input_files_list() {
     echo "error: Input file list verification needs a path to verify!"
     exit 1
   fi
+  file_to_find=$1
 
   i=0
   found=false
@@ -30,9 +31,10 @@ function ensure_is_in_input_files_list() {
   do
     # Need this two step process to access the input at index
     file_list_resolved_var_name=SCRIPT_INPUT_FILE_LIST_${i}
-    # The following reads the processed xcfilelist line by line and
+    # The following reads the processed xcfilelist line by line looking for
+    # the given file
     while read input_file; do
-      if [ "$1" == "$input_file" ]; then
+      if [ "$file_to_find" == "$input_file" ]; then
         found=true
         break
       fi
@@ -40,7 +42,7 @@ function ensure_is_in_input_files_list() {
     let i=i+1
   done
   if [ "$found" = false ]; then
-    echo "error: Could not find $1 as an input to the build phase. Add $1 to the input files list using the .xcfilelist."
+    echo "error: Could not find $file_to_find as an input to the build phase. Add $file_to_find to the input files list using the .xcfilelist."
     exit 1
   fi
 }
