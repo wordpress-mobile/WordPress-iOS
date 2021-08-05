@@ -13,6 +13,10 @@ private struct ElementStringIDs {
     static let myTicketsTitle = "My Tickets"
     static let ZDcancelButton = "ZDKbackButton"
     static let ZDticketsCancelButton = "Cancel"
+    // Contact Alert Modal
+    static let contactEmailField = "contact-alert-email-field"
+    static let contactNameField = "contact-alert-name-field"
+    static let alertOkButton = "OK"
 }
 
 /// This screen object is for the Support section. In the app, it's a modal we can get to from Me 
@@ -30,6 +34,10 @@ class SupportScreen: BaseScreen {
     let myTicketsTitle: XCUIElement
     let ZDcancelButton: XCUIElement
     let ZDticketsCancelButton: XCUIElement
+    // Contact Alert Modal
+    let contactEmailField: XCUIElement
+    let contactNameField: XCUIElement
+    let alertOkButton: XCUIElement
 
 
     init() {
@@ -45,6 +53,10 @@ class SupportScreen: BaseScreen {
         myTicketsTitle = app.staticTexts[ElementStringIDs.myTicketsTitle]
         ZDcancelButton = app.buttons[ElementStringIDs.ZDcancelButton]
         ZDticketsCancelButton = app.buttons[ElementStringIDs.ZDticketsCancelButton]
+        // Contact Alert Modal
+        contactEmailField = app.textFields[ElementStringIDs.contactEmailField]
+        contactNameField = app.textFields[ElementStringIDs.contactNameField]
+        alertOkButton = app.buttons[ElementStringIDs.alertOkButton]
 
         super.init(element: activityLogs)
 
@@ -60,8 +72,19 @@ class SupportScreen: BaseScreen {
         closeButton.tap()
     }
 
+    func handleContactAlertModal() {
+        // first, check that the modal is here. Accessibility Inspector doesn't know how to look at the whole modal.
+        contactEmailField.tap()
+        contactEmailField.typeText("email@test.com")
+        contactNameField.tap()
+        contactNameField.typeText("my name")
+        alertOkButton.tap()
+    }
+
     func loadContactUs() {
         contact.tap()
+        // check.emailmodal or something - need to see if that modal is up and fill it if so.
+        handleContactAlertModal()
         XCTAssert(contactSupportTitle.exists)
         ZDcancelButton.tap()
     }
