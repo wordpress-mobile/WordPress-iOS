@@ -71,6 +71,10 @@ private extension Comment {
         return !author.isEmpty ? author : NSLocalizedString("Anonymous", comment: "the comment has an anonymous author.")
     }
 
+    // The REST endpoint response contains both content and rawContent.
+    // The XMLRPC endpoint response contains only content.
+    // So for Comment display and Comment editing, use which content the Comment has.
+    // The result is WP sites will use rawContent, self-hosted will use content.
     func availableContent() -> String {
         if !rawContent.isEmpty {
             return rawContent
