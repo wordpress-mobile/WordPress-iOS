@@ -53,8 +53,8 @@ PODS:
   - FSInteractiveMap (0.1.0)
   - Gifu (3.2.0)
   - glog (0.3.5)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
+  - GoogleSignIn (6.0.1):
+    - AppAuth (~> 1.4)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - Gridicons (1.1.0)
@@ -438,11 +438,11 @@ PODS:
   - WordPress-Aztec-iOS (1.19.4)
   - WordPress-Editor-iOS (1.19.4):
     - WordPress-Aztec-iOS (= 1.19.4)
-  - WordPressAuthenticator (1.41.0-beta.1):
+  - WordPressAuthenticator (1.41.0-beta.3):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
-    - GoogleSignIn (~> 5.0.2)
+    - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
     - lottie-ios (~> 3.1.6)
     - "NSURL+IDN (= 0.4)"
@@ -549,7 +549,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (~> 1.41.0-beta.1)
+  - WordPressAuthenticator (~> 1.41.0-beta)
   - WordPressKit (~> 4.39.0-beta)
   - WordPressMocks (~> 0.0.13)
   - WordPressShared (~> 1.16.0)
@@ -744,7 +744,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 6c71c0b92004b27010953ece976816563b29b769
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GoogleSignIn: 1b0c4ec33a6fe282f4fa35d8ac64263230ddaf36
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
@@ -803,7 +803,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 20c02910c3fbde243d2f6bb0b338227ad4468f65
+  WordPressAuthenticator: c44c7b7c0bed771e3815a7de264e5d682705f893
   WordPressKit: 1962ac8bd5ec0c137199feb575e526e3f7a3e4e2
   WordPressMocks: dfac50a938ac74dddf5f7cce5a9110126408dd19
   WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
@@ -820,6 +820,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 6c93d85867520d8213acd4661e8012d03a516075
+PODFILE CHECKSUM: 05a033327f45db12c6d501771117b198860f8b86
 
 COCOAPODS: 1.10.1
