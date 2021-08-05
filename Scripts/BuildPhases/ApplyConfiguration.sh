@@ -1,4 +1,4 @@
-#!/bin/sh -euo pipefail
+#!/bin/bash -euo pipefail
 
 # The Secrets File Sources
 SECRETS_ROOT="${HOME}/.configure/wordpress-ios/secrets"
