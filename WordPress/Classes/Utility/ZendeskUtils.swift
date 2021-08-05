@@ -805,6 +805,7 @@ private extension ZendeskUtils {
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
             textField.keyboardType = .emailAddress
+            textField.accessibilityIdentifier = "contact-alert-email-field"
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -820,6 +821,7 @@ private extension ZendeskUtils {
                 textField.text = ZendeskUtils.sharedInstance.userName
                 textField.delegate = ZendeskUtils.sharedInstance
                 textField.isEnabled = false
+                textField.accessibilityIdentifier = "contact-alert-name-field"
                 ZendeskUtils.sharedInstance.alertNameField = textField
             }
         }
