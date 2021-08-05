@@ -11,15 +11,23 @@ enum BackgroundTaskEvent {
 }
 
 protocol BackgroundTask {
-    var identifier: String { get }
+    static var identifier: String { get }
     //var log: (String) -> Void { get set }
-    
-    func expirationHandler()
-    
+
+    // MARK: - Scheduling
+
     /// Returns a schedule request for this task, so it can be scheduled by the coordinator.
     ///
     func request(completion: @escaping (Result<BGAppRefreshTaskRequest, Error>) -> Void)
-    
+
+    /// This method allows the task to perform extra processing after it's been scheduled.
+    ///
+    func scheduled(completion: @escaping (Result<Void, Error>) -> Void)
+
+    // MARK: - Execution
+
+    func expirationHandler()
+
     /// Runs the background task.
     ///
     /// - Parameters:
@@ -30,65 +38,114 @@ protocol BackgroundTask {
 }
 
 class WeeklyRoundupBackgroundTask: BackgroundTask {
-    let identifier = "org.wordpress.bgtask.weeklyroundup"
+    static let identifier = "org.wordpress.bgtask.weeklyroundup"
+
+    private lazy var staticNotificationIdentifier: String = {
+        "\(Self.identifier)-static"
+    }()
+
     private var lastSuccessfulRun = Date()
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-    
-    /*
-    var logInfo: (String) -> Void
-    var logError: (Error) -> Void
-    
-    init(logInfo: @escaping (String) -> Void, logError: @escaping (String) -> Void) {
-        self.logInfo = logInfo
-        self.logError = logError
-    }*/
-    
+
+    let dynamicNotificationDateComponents: DateComponents
+    let staticNotificationDateComponents: DateComponents
+
+    init(
+        userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current(),
+        dynamicNotificationDateComponents: DateComponents? = nil,
+        staticNotificationDateComponents: DateComponents? = nil) {
+
+        self.dynamicNotificationDateComponents = dynamicNotificationDateComponents ?? {
+            var dateComponents = DateComponents()
+
+            dateComponents.calendar = Calendar.current
+
+            // `DateComponent`'s weekday uses a 1-based index.
+            dateComponents.weekday = 1
+            dateComponents.hour = 9
+
+            return dateComponents
+        }()
+
+        self.staticNotificationDateComponents = staticNotificationDateComponents ?? {
+            var dateComponents = DateComponents()
+
+            dateComponents.calendar = Calendar.current
+
+            // `DateComponent`'s weekday uses a 1-based index.
+            dateComponents.weekday = 1
+            dateComponents.hour = 18
+
+            return dateComponents
+        }()
+    }
+
     enum NotificationSchedulingError: Error {
+        case staticNotificationAlreadyDelivered
+        case earliestBeginDateMissing
         case staticNotificationSchedulingError(error: Error)
         case dynamicNotificationSchedulingError(error: Error)
     }
-    
+
     func expirationHandler() {
         operationQueue.cancelAllOperations()
     }
-    
+
     func request(completion: @escaping (Result<BGAppRefreshTaskRequest, Error>) -> Void) {
+        let request = BGAppRefreshTaskRequest(identifier: Self.identifier)
+        let date = Calendar.current.nextDate(after: Date(), matching: dynamicNotificationDateComponents, matchingPolicy: .nextTime)
+
+        request.earliestBeginDate = date
+
+        completion(.success(request))
+    }
+
+    func scheduled(completion: @escaping (Result<Void, Error>) -> Void) {
         // We're scheduling a static notification in case the BG task won't run.
         // This will happen when the App has been explicitly killed by the user as of 2021/08/03,
         // as Apple doesn't let background tasks run in this scenario.
-        scheduleStaticNotification { result in
-            switch result {
-            case .success():
-                let request = BGAppRefreshTaskRequest(identifier: self.identifier)
-                
-                // Run no earlier than 30 secs from now.
-                request.earliestBeginDate = Date(timeIntervalSinceNow: 5)
-                
-                completion(.success(request))
-            case .failure(let error):
-                completion(.failure(NotificationSchedulingError.staticNotificationSchedulingError(error: error)))
-            }
-        }
+        scheduleStaticNotification(completion: completion)
     }
-    
+
     func run(onError: @escaping (Error) -> Void, completion: @escaping (Bool) -> Void) {
-        
+
         // We use multiple operations in series so that if the expiration handler is
         // called, the operation queue will cancell any pending operations, ensuring
         // that the task will exit as soon as possible.
-        
+
+        let cancelStaticNotification = BlockOperation {
+            let group = DispatchGroup()
+            group.enter()
+
+            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                defer {
+                    group.leave()
+                }
+
+                guard requests.contains( where: { $0.identifier == self.staticNotificationIdentifier }) else {
+                    onError(NotificationSchedulingError.staticNotificationAlreadyDelivered)
+                    self.operationQueue.cancelAllOperations()
+                    return
+                }
+
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.staticNotificationIdentifier])
+            }
+
+            group.wait()
+        }
+
         let requestData = BlockOperation {
             // Request data
         }
-        
+
         let scheduleNotification = BlockOperation {
             let group = DispatchGroup()
             group.enter()
-            
+
             self.scheduleDynamicNotification(views: 5, comments: 10, likes: 15) { result in
                 switch result {
                 case .success:
@@ -99,70 +156,80 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
                 group.leave()
             }
-            
+
             group.wait()
         }
-        
+
         // no-op: the reason we're adding this block is to get the completion handler below.
         // This closure may not be executed if the task is cancelled (through the operation queue)
         // but the completion closure below should always be called regardless.
         let completionOperation = BlockOperation {}
-        
+
         completionOperation.completionBlock = {
             completion(completionOperation.isCancelled)
         }
 
+        operationQueue.addOperation(cancelStaticNotification)
         operationQueue.addOperation(requestData)
         operationQueue.addOperation(scheduleNotification)
         operationQueue.addOperation(completionOperation)
     }
-    
+
+    // MARK: - Scheduling Notifications
+
     private func scheduleStaticNotification(completion: @escaping (Result<Void, Error>) -> Void) {
         let title = "Weekly Roundup"
         let body = "Your weekly roundup is ready, tap here to see the details!"
-        
-        scheduleNotification(title: title, body: body, completion: { result in
+
+        scheduleNotification(
+            identifier: staticNotificationIdentifier,
+            title: title,
+            body: body,
+            dateComponents: staticNotificationDateComponents) { result in
+
             switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(NotificationSchedulingError.staticNotificationSchedulingError(error: error)))
             }
-        })
+        }
     }
-    
+
     private func scheduleDynamicNotification(views: Int, comments: Int, likes: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         let title = "Weekly Roundup"
         let body = "Last week you had \(views) views, \(comments) comments and \(likes) likes."
-        
-        scheduleNotification(title: title, body: body, completion:  { result in
+
+        // The dynamic notification date is defined by when the background task is run.
+        // Since these lines of code execute when the BG Task is run, we can just schedule
+        // the dynamic notification after a few seconds.
+        let date = Date(timeIntervalSinceNow: 10)
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.hour, .minute, .second], from: date)
+
+        scheduleNotification(
+            identifier: Self.identifier,
+            title: title,
+            body: body,
+            dateComponents: dateComponents) { result in
+
             switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(NotificationSchedulingError.dynamicNotificationSchedulingError(error: error)))
             }
-        })
+        }
     }
-    
-    private func scheduleNotification(title: String, body: String, completion: @escaping (Result<Void, Error>) -> Void) {
+
+    private func scheduleNotification(identifier: String, title: String, body: String, dateComponents: DateComponents, completion: @escaping (Result<Void, Error>) -> Void) {
         let content = UNMutableNotificationContent()
-        content.title = "Yes this works!"
-        content.body = "Last week you had X views, N comments and Z likes."
+        content.title = title
+        content.body = body
         content.categoryIdentifier = InteractiveNotificationsManager.NoteCategoryDefinition.weeklyRoundup.rawValue
-        
+
         // We want to make sure all weekly roundup notifications are grouped together.
         content.threadIdentifier = "org.wordpress.notification.threadIdentifier.weeklyRoundup"
-
-        var dateComponents = DateComponents()
-        let calendar = Calendar.current
-        dateComponents.calendar = calendar
-        
-        // `DateComponent`'s weekday uses a 1-based index.
-        dateComponents.weekday = calendar.component(.weekday, from: Date())
-        dateComponents.hour = Date().dateAndTimeComponents().hour
-        dateComponents.minute = Date().dateAndTimeComponents().minute
-        dateComponents.second = ((Date().dateAndTimeComponents().second ?? 0) + 15) % 60
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
@@ -172,7 +239,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
                 completion(.failure(error))
                 return
             }
-            
+
             completion(.success(()))
         }
     }
@@ -187,16 +254,16 @@ protocol BackgroundTaskEventHandler {
 /// The task coordinator.  This is the entry point for registering and scheduling background tasks.
 ///
 class BackgroundTasksCoordinator {
-    
+
     enum SchedulingError: Error {
         case schedulingFailed(tasksAndErrors: [String: Error])
         case schedulingFailed(task: String, error: Error)
     }
-    
+
     /// Event handler.  Useful for logging or tracking purposes.
     ///
     private let eventHandler: BackgroundTaskEventHandler
-    
+
     /// The task scheduler.  It's a weak reference because the scheduler retains the coordinator through the
     ///
     private let scheduler: BGTaskScheduler
@@ -215,34 +282,34 @@ class BackgroundTasksCoordinator {
         scheduler: BGTaskScheduler = BGTaskScheduler.shared,
         tasks: [BackgroundTask],
         eventHandler: BackgroundTaskEventHandler) {
-        
+
         self.eventHandler = eventHandler
         self.scheduler = scheduler
         self.registeredTasks = tasks
-        
+
         for task in tasks {
-            scheduler.register(forTaskWithIdentifier: task.identifier, using: nil) { osTask in
-                
-                eventHandler.handle(.start(identifier: task.identifier))
-                
+            scheduler.register(forTaskWithIdentifier: type(of: task).identifier, using: nil) { osTask in
+
+                eventHandler.handle(.start(identifier: type(of: task).identifier))
+
                 osTask.expirationHandler = {
-                    eventHandler.handle(.expirationHandlerCalled(identifier: task.identifier))
+                    eventHandler.handle(.expirationHandlerCalled(identifier: type(of: task).identifier))
                     task.expirationHandler()
                 }
-                    
+
                 task.run(onError: { error in
-                    eventHandler.handle(.error(identifier: task.identifier, error: error))
+                    eventHandler.handle(.error(identifier: type(of: task).identifier, error: error))
                 }) { cancelled in
-                    eventHandler.handle(.taskCompleted(identifier: task.identifier, cancelled: cancelled))
-                    
+                    eventHandler.handle(.taskCompleted(identifier: type(of: task).identifier, cancelled: cancelled))
+
                     self.schedule(task) { result in
                         switch result {
                         case .success:
-                            eventHandler.handle(.rescheduled(identifier: task.identifier))
+                            eventHandler.handle(.rescheduled(identifier: type(of: task).identifier))
                         case .failure(let error):
-                            eventHandler.handle(.error(identifier: task.identifier, error: error))
+                            eventHandler.handle(.error(identifier: type(of: task).identifier, error: error))
                         }
-                        
+
                         osTask.setTaskCompleted(success: !cancelled)
                     }
                 }
@@ -258,20 +325,20 @@ class BackgroundTasksCoordinator {
     ///
     func scheduleTasks(completion: (Result<Void, Error>) -> Void) {
         var tasksAndErrors = [String: Error]()
-        
+
         scheduler.cancelAllTaskRequests()
-        
+
         for task in registeredTasks {
             schedule(task) { result in
                 switch result {
                 case .success:
                     break
                 case .failure(let error):
-                    tasksAndErrors[task.identifier] = error
+                    tasksAndErrors[type(of: task).identifier] = error
                 }
             }
         }
-        
+
         if tasksAndErrors.isEmpty {
             completion(.success(()))
         } else {
@@ -285,8 +352,9 @@ class BackgroundTasksCoordinator {
             case .success(let request):
                 do {
                     try self.scheduler.submit(request)
+                    task.scheduled(completion: completion)
                 } catch {
-                    completion(.failure(SchedulingError.schedulingFailed(task: task.identifier, error: error)))
+                    completion(.failure(SchedulingError.schedulingFailed(task: type(of: task).identifier, error: error)))
                 }
             case .failure(let error):
                 completion(.failure(error))

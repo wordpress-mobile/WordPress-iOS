@@ -64,7 +64,7 @@ class DebugMenuViewController: UITableViewController {
         })
     }
 
-    // MARK: Quick Start
+    // MARK: Tools
 
     private var toolsRows: [ImmuTableRow] {
         return [
@@ -73,7 +73,10 @@ class DebugMenuViewController: UITableViewController {
             }),
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
-            })
+            }),
+            ButtonRow(title: "Weekly Roundup", action: { [weak self] _ in
+                self?.displayWeeklyRoundupDebugTools()
+            }),
         ]
     }
 
@@ -134,6 +137,13 @@ class DebugMenuViewController: UITableViewController {
 
     private func displayStoreSandboxSecretInserter() {
         let view = StoreSandboxSecretScreen(cookieJar: HTTPCookieStorage.shared)
+        let viewController = UIHostingController(rootView: view)
+
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func displayWeeklyRoundupDebugTools() {
+        let view = WeeklyRoundupDebugScreen()
         let viewController = UIHostingController(rootView: view)
 
         self.navigationController?.pushViewController(viewController, animated: true)

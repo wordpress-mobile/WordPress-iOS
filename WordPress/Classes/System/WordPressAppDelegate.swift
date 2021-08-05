@@ -20,7 +20,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     let backgroundTasksCoordinator = BackgroundTasksCoordinator(tasks: [
         WeeklyRoundupBackgroundTask()
     ], eventHandler: WordPressBackgroundTaskEventHandler())
-    
+
     @objc
     lazy var windowManager: WindowManager = {
         guard let window = window else {
@@ -92,7 +92,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
-        
+
         // Configure WPCom API overrides
         configureWordPressComApi()
 
@@ -324,9 +324,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private func setupNoticePresenter() {
         noticePresenter = NoticePresenter()
     }
-    
+
     private func setupBackgroundTasks() {
-        
+
     }
 
     private func setupBackgroundRefresh(_ application: UIApplication) {
@@ -338,7 +338,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
         }
-        
+
         application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
