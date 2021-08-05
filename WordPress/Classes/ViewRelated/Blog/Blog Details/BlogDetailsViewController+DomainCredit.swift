@@ -47,7 +47,7 @@ extension BlogDetailsViewController {
     private func presentDomainCreditRedemptionSuccess(domain: String) {
         let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
         present(controller, animated: true) { [weak self] in
-            self?.updateHeaderAndMetadata()
+            self?.updateTableViewAndHeader()
         }
     }
 }

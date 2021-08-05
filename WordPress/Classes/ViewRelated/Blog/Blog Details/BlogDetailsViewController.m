@@ -1969,7 +1969,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 /// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
 /// Used to update My Site after a successful domain registration.
-- (void)updateHeaderAndMetadata
+- (void)updateTableViewAndHeader
 {
     __weak __typeof(self) weakSelf = self;
     [self.blogService syncBlogAndAllMetadata:self.blog
