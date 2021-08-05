@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 131
+
+@scoutharris 2021-08-04
+
+- `Comment`: set `author_ip` default value to empty string
+
 ## WordPress 130
 
 @scoutharris 2021-08-03

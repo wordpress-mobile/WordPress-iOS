@@ -15,6 +15,7 @@ extension Comment {
     @NSManaged public var author_email: String
     @NSManaged public var author_url: String
     @NSManaged public var authorAvatarURL: String
+    @NSManaged public var author_ip: String
 
     // Relationships
     @NSManaged public var blog: Blog?
