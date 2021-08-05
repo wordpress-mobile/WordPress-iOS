@@ -4,7 +4,6 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPError.h"
-#import "Comment.h"
 #import "Media.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
@@ -15,6 +14,8 @@
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
+
+@class Comment;
 
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";

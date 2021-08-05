@@ -5,18 +5,21 @@ private struct ElementStringIDs {
     static let navBar = "WordPress.GetStartedView"
     static let emailTextField = "Email address"
     static let continueButton = "Get Started Email Continue Button"
+    static let helpButton = "authenticator-help-button"
 }
 
 class GetStartedScreen: BaseScreen {
     let navBar: XCUIElement
     let emailTextField: XCUIElement
     let continueButton: XCUIElement
+    let helpButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
         navBar = app.navigationBars[ElementStringIDs.navBar]
         emailTextField = app.textFields[ElementStringIDs.emailTextField]
         continueButton = app.buttons[ElementStringIDs.continueButton]
+        helpButton = app.buttons[ElementStringIDs.helpButton]
 
         super.init(element: emailTextField)
     }
@@ -27,6 +30,12 @@ class GetStartedScreen: BaseScreen {
         continueButton.tap()
 
         return PasswordScreen()
+    }
+
+    func selectHelp() -> SupportScreen {
+        helpButton.tap()
+
+        return SupportScreen()
     }
 
     static func isLoaded() -> Bool {

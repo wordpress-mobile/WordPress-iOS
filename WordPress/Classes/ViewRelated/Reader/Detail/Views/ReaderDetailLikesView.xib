@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -52,15 +53,22 @@
                                 <constraint firstAttribute="width" secondItem="Fsb-ih-Vxd" secondAttribute="height" multiplier="1:1" id="RMT-Xw-wR0"/>
                             </constraints>
                         </imageView>
+                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="Pod-MR-Wzr" userLabel="Self Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                            <rect key="frame" x="148" y="0.0" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Pod-MR-Wzr" secondAttribute="height" multiplier="1:1" id="a3o-uv-Xqr"/>
+                                <constraint firstAttribute="width" constant="32" id="mtM-Ff-eOI"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="deH-0r-cgY"/>
                     </constraints>
                 </stackView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilc-NW-l0X" userLabel="Summary Label">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilc-NW-l0X" userLabel="Summary Label">
                     <rect key="frame" x="160" y="0.0" width="0.0" height="42"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" systemColor="secondaryLabelColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -78,6 +86,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="avatarStackView" destination="ZiQ-mD-QJO" id="hMm-un-1IW"/>
+                <outlet property="selfAvatarImageView" destination="Pod-MR-Wzr" id="jSJ-DS-UWW"/>
                 <outlet property="summaryLabel" destination="ilc-NW-l0X" id="C48-jT-Uq7"/>
             </connections>
             <point key="canvasLocation" x="-1275.3623188405797" y="-395.75892857142856"/>
@@ -85,5 +94,8 @@
     </objects>
     <resources>
         <image name="gravatar" width="85" height="85"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
