@@ -147,6 +147,21 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         scrollViewDidScroll()
     }
 
+    public func deviceDidRotate() {
+        guard insetsNeedAdjustment() else {
+            return
+        }
+        updateInitialHeight(resetContentOffset: false)
+    }
+
+    func insetsNeedAdjustment() -> Bool {
+        guard let imageSize = self.imageSize else {
+            return false
+        }
+        // Insets should be adjusted for squareish and portrait images, but not landscape.
+        return 1.1 > (imageSize.width / imageSize.height)
+    }
+
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
         guard let navigationBar = navigationBar,
               useCompatibilityMode == false else {
