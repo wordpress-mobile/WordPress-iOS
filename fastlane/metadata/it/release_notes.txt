@@ -1,0 +1,5 @@
+C'è un nuovo blocco in città! Il blocco incorporato consente di incorporare contenuti dai tuoi servizi preferiti, come YouTube, TikTok, Instagram e altri. Non perderti i prossimi aggiornamenti su ulteriori funzionalità.
+
+Ti piace la nostra funzionalità Promemoria relativi al blog? In precedenza, solo gli amministratori del sito potevano configurare i promemoria, ma ora questa funzionalità è disponibile per tutti gli utenti che possono modificare i post sul sito (editor, autori e collaboratori).
+
+Abbiamo migliorato la moderazione dei commenti, garantendo che gli utenti adeguati possano scorrere a sinistra per approvare/non approvare ed eliminare i commenti. Abbiamo anche aggiunto supporto per Stili globali, attivando impostazioni come la personalizzazione del colore e dello sfondo per i temi di modifica completa del sito.
