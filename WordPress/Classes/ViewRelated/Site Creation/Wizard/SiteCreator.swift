@@ -36,21 +36,13 @@ final class SiteCreator {
     /// - Returns: an Encodable object
     ///
     func build() throws -> SiteCreationRequest {
-        guard FeatureFlag.siteCreationHomePagePicker.enabled || segment?.identifier != nil else {
-            throw SiteCreationRequestAssemblyError.invalidSegmentIdentifier
-        }
-
         let verticalIdentifier = vertical?.identifier.description
 
         guard let domainSuggestion = address else {
             throw SiteCreationRequestAssemblyError.invalidDomain
         }
         let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
-
-        var siteDesign: String? = nil
-        if FeatureFlag.siteCreationHomePagePicker.enabled {
-            siteDesign = design?.slug ?? "default"
-        }
+        let siteDesign = design?.slug ?? "default"
 
         let request = SiteCreationRequest(
             segmentIdentifier: segment?.identifier,
