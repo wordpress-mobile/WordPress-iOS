@@ -101,6 +101,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         static let frameLoadInterrupted = 102
     }
 
+    /// Precautionary variable that's in place to make sure the web view doesn't run into an endless loop of reloads if it encounters an error.
+    private var hasAttemptedAuthRecovery = false
+
     @objc init(configuration: WebViewControllerConfiguration) {
         let config = WKWebViewConfiguration()
         // The default on iPad is true. We want the iPhone to be true as well.
@@ -492,6 +495,27 @@ extension WebKitViewController: WKNavigationDelegate {
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
 
         decisionHandler(policy)
+    }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        guard navigationResponse.isForMainFrame, let authenticator = authenticator, !hasAttemptedAuthRecovery else {
+            decisionHandler(.allow)
+            return
+        }
+
+        let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+        authenticator.decideActionFor(response: navigationResponse.response, cookieJar: cookieStore) { [unowned self] action in
+            switch action {
+            case .reload:
+                decisionHandler(.cancel)
+
+                /// We've cleared the stored cookies so let's try again.
+                self.hasAttemptedAuthRecovery = true
+                self.loadWebViewRequest()
+            case .allow:
+                decisionHandler(.allow)
+            }
+        }
     }
 }
 
