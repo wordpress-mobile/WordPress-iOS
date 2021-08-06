@@ -1,5 +1,5 @@
-There’s a new block in town! With the Embed block, you can embed content from your favorite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.
+C'è un nuovo blocco in città! Il blocco incorporato consente di incorporare contenuti dai tuoi servizi preferiti, come YouTube, TikTok, Instagram e altri. Non perderti i prossimi aggiornamenti su ulteriori funzionalità.
 
-Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).
+Ti piace la nostra funzionalità Promemoria relativi al blog? In precedenza, solo gli amministratori del sito potevano configurare i promemoria, ma ora questa funzionalità è disponibile per tutti gli utenti che possono modificare i post sul sito (editor, autori e collaboratori).
 
-We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and trash comments. We’ve also provided support for Global Styles, enabling settings like color and background customization for Full Site Editing themes.
+Abbiamo migliorato la moderazione dei commenti, garantendo che gli utenti adeguati possano scorrere a sinistra per approvare/non approvare ed eliminare i commenti. Abbiamo anche aggiunto supporto per Stili globali, attivando impostazioni come la personalizzazione del colore e dello sfondo per i temi di modifica completa del sito.
