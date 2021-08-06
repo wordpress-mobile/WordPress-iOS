@@ -8,6 +8,7 @@
 * [*] Posts: Ampersands are correctly decoded in publishing notices instead of showing as HTML entites. [#16972]
 * [***] Adjusted the image size of Theme Images for more optimal download speeds. [#16914]
 * [*] Comments and Notifications list are now displayed with a unified design. [#16985]
+* [*] Block editor: Add a "featured" banner and ability to set or remove an image as featured. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3449]
 
 17.9
 -----
