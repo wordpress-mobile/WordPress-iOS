@@ -122,11 +122,16 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             group.enter()
 
             UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                // Whatever exit path this method takes, we need to ensure we leave the dispatch group.
                 defer {
                     group.leave()
                 }
 
                 guard requests.contains( where: { $0.identifier == self.staticNotificationIdentifier }) else {
+                    // The reason why we're cancelling the background task if there's no static notification scheduled is because
+                    // it means we've already shown the static notification to the user.  Since iOS doesn't ensure an execution time
+                    // for background tasks, we assume this is the case where the static notification was shown before the dynamic
+                    // task was run.
                     onError(NotificationSchedulingError.staticNotificationAlreadyDelivered)
                     self.operationQueue.cancelAllOperations()
                     return
@@ -139,7 +144,77 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         }
 
         let requestData = BlockOperation {
-            // Request data
+            let context = ContextManager.sharedInstance().mainContext
+            let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
+
+            request.sortDescriptors = [
+                NSSortDescriptor(key: "accountForDefaultBlog.userID", ascending: false),
+                NSSortDescriptor(key: "settings.name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+            ]
+
+            let controller = NSFetchedResultsController<Blog>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            do {
+                try controller.performFetch()
+            } catch {
+                DDLogError("Error fetching blogs list: \(error)")
+                return
+            }
+
+            guard let blogs = controller.fetchedObjects?.filter({ (blog: Blog) in
+                blog.capabilities?["own_site"] as? Bool == true
+            }), blogs.count > 0 else {
+                return
+            }
+
+            var endDateComponents = DateComponents()
+            endDateComponents.weekday = 1
+            endDateComponents.hour = 23
+            endDateComponents.minute = 59
+            endDateComponents.second = 59
+
+            // The DateComponents timezone is ignored when calling `Calendar.current.nextDate(...)`, so we need to
+            // create a GMT Calendar to perform the date search using it, instead.
+            var gmtCalendar = Calendar(identifier: .gregorian)
+            gmtCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+
+            guard let periodEndDate = gmtCalendar.nextDate(after: Date(), matching: endDateComponents, matchingPolicy: .nextTime, direction: .backward) else {
+                DDLogError("Something's wrong with the preiod end date selection.")
+                return
+            }
+
+            for blog in blogs {
+                guard let authToken = blog.account?.authToken else {
+                    continue
+                }
+
+                let wpApi = WordPressComRestApi.defaultApi(oAuthToken: authToken, userAgent: WPUserAgent.wordPress())
+
+                guard let dotComID = blog.dotComID?.intValue else {
+                    // Report a blog without a dotComID as an error
+                    continue
+                }
+
+                let statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: blog.timeZone)
+
+                statsServiceRemote.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+                    guard let timeStats = timeStats else {
+                        guard let error = error else {
+                            // Report unknown error
+                            return
+                        }
+
+                        onError(error)
+                        return
+                    }
+
+                    guard let lastResult = timeStats.summaryData.last else {
+                        // No stats for this site!  This could mean the site
+                        return
+                    }
+
+                    timeStats.summaryData
+                }
+            }
         }
 
         let scheduleNotification = BlockOperation {
