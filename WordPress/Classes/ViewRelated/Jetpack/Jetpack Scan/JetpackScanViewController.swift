@@ -309,9 +309,8 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
             showNoResults(noResultsViewModel)
         } else {
             noResultsViewController?.view.isHidden = true
+            tableView.reloadData()
         }
-
-        tableView.reloadData()
     }
 
     private func showNoResults(_ viewModel: NoResultsViewController.Model) {
