@@ -100,8 +100,13 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     func showMultisiteNotSuportedError() {
-        let model = NoResultsViewController.Model(title: "Hey you're broken",
-                                                  subtitle: "Order a pizza?")
+        guard let scanStatusViewModel = JetpackScanStatusViewModel(coordinator: coordinator) else {
+            return
+        }
+
+        let model = NoResultsViewController.Model(title: scanStatusViewModel.title,
+                                                  subtitle: scanStatusViewModel.description,
+                                                  imageName: scanStatusViewModel.imageName)
         updateNoResults(model)
         refreshControl.endRefreshing()
     }
