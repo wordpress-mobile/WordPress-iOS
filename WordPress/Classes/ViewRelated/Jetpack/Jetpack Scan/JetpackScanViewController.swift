@@ -103,6 +103,9 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     }
 
+    func showMultisiteNotSuportedError() {
+    }
+
     func presentAlert(_ alert: UIAlertController) {
         present(alert, animated: true, completion: nil)
     }
