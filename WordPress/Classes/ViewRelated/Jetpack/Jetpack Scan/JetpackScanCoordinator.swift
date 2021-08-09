@@ -255,7 +255,7 @@ class JetpackScanCoordinator {
         scan = scanObj
 
         switch (scanObj.state, scanObj.reason) {
-        case (.unavailable, "multisite_not_supported"):
+        case (.unavailable, JetpackScan.Reason.multiSiteNotSupported):
             view.showMultisiteNotSuportedError()
         default:
             view.render()
@@ -387,6 +387,12 @@ extension JetpackScan {
 
     var fixableThreats: [JetpackScanThreat]? {
         return threats?.filter { $0.fixable != nil }
+    }
+}
+
+extension JetpackScan {
+    struct Reason {
+        static let multiSiteNotSupported = "multisite_not_supported"
     }
 }
 
