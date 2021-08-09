@@ -79,28 +79,24 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     func showGenericError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.error.title,
-                                                   subtitle: NoResultsText.error.subtitle,
-                                                   buttonText: NoResultsText.contactSupportButtonText)
-
+        let model = NoResultsViewController.Model(title: NoResultsText.error.title,
+                                                  subtitle: NoResultsText.error.subtitle,
+                                                  buttonText: NoResultsText.contactSupportButtonText)
         updateNoResults(model)
     }
 
     func showNoConnectionError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.noConnection.title,
-                                                   subtitle: NoResultsText.noConnection.subtitle,
-                                                   buttonText: NoResultsText.tryAgainButtonText)
-
+        let model = NoResultsViewController.Model(title: NoResultsText.noConnection.title,
+                                                  subtitle: NoResultsText.noConnection.subtitle,
+                                                  buttonText: NoResultsText.tryAgainButtonText)
         updateNoResults(model)
     }
 
     func showScanStartError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.scanStartError.title,
-                                                   subtitle: NoResultsText.scanStartError.subtitle,
-                                                   buttonText: NoResultsText.contactSupportButtonText)
-
+        let model = NoResultsViewController.Model(title: NoResultsText.scanStartError.title,
+                                                  subtitle: NoResultsText.scanStartError.subtitle,
+                                                  buttonText: NoResultsText.contactSupportButtonText)
         updateNoResults(model)
-
     }
 
     func showMultisiteNotSuportedError() {
