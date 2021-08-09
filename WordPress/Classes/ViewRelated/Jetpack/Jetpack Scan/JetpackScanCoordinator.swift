@@ -8,7 +8,7 @@ protocol JetpackScanView {
     func showGenericError()
     func showScanStartError()
     func showMultisiteNotSuportedError()
-    
+
     func toggleHistoryButton(_ isEnabled: Bool)
 
     func presentAlert(_ alert: UIAlertController)
