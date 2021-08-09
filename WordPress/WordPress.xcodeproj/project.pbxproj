@@ -2458,6 +2458,7 @@
 		F1D8C6E926BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6E826BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift */; };
 		F1D8C6EB26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6EA26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift */; };
 		F1D8C6EC26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6EA26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift */; };
+		F1D8C6F026C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6EF26C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift */; };
 		F1DB8D292288C14400906E2F /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D282288C14400906E2F /* Uploader.swift */; };
 		F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D2A2288C24500906E2F /* UploadsManager.swift */; };
 		F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3536A25B9F74C00992E3A /* WindowManager.swift */; };
@@ -7301,6 +7302,7 @@
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		F1D8C6E826BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressBackgroundTaskEventHandler.swift; sourceTree = "<group>"; };
 		F1D8C6EA26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRoundupDebugScreen.swift; sourceTree = "<group>"; };
+		F1D8C6EF26C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRoundupBackgroundTask.swift; sourceTree = "<group>"; };
 		F1DB8D282288C14400906E2F /* Uploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploader.swift; sourceTree = "<group>"; };
 		F1DB8D2A2288C24500906E2F /* UploadsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadsManager.swift; sourceTree = "<group>"; };
 		F1E3536A25B9F74C00992E3A /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
@@ -13903,6 +13905,7 @@
 			isa = PBXGroup;
 			children = (
 				F181EDE426B2AC7200C61241 /* BackgroundTasksCoordinator.swift */,
+				F1D8C6EF26C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift */,
 				F1D8C6E826BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift */,
 			);
 			path = BackgroundTasks;
@@ -16799,6 +16802,7 @@
 				F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */,
 				E1BEEC651C4E3978000B4FA0 /* PaddedLabel.swift in Sources */,
 				E1A6DBE519DC7D230071AC1E /* PostService.m in Sources */,
+				F1D8C6F026C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift in Sources */,
 				E62AFB6E1DC8E593007484FC /* WPTextAttachmentManager.swift in Sources */,
 				9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */,
 				D8160442209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift in Sources */,
