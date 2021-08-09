@@ -253,7 +253,14 @@ class JetpackScanCoordinator {
     // MARK: - Private: Network Handlers
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
-        view.render()
+
+        switch (scanObj.state, scanObj.reason) {
+        case (.unavailable, "multisite_not_supported"):
+            view.showMultisiteNotSuportedError()
+        default:
+            view.render()
+        }
+
         view.toggleHistoryButton(scan?.isEnabled ?? false)
 
         togglePolling()
