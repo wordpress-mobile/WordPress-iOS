@@ -62,9 +62,6 @@ WordPress/Derived Sources/
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
 
-# Bundler
-.bundle
-
 # Dependencies
 vendor
 

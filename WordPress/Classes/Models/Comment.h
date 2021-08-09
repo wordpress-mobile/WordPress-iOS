@@ -1,22 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "WPCommentContentViewProvider.h"
 
 @class Blog;
 @class BasePost;
 
-// This is the notification name used with NSNotificationCenter
-extern NSString * const CommentUploadFailedNotification;
 
-extern NSString * const CommentStatusPending;
-extern NSString * const CommentStatusApproved;
-extern NSString * const CommentStatusUnapproved;
-extern NSString * const CommentStatusSpam;
-// Draft status is for comments that have not yet been successfully published
-// we can use this status to restore comment replies that the user has written
-extern NSString * const CommentStatusDraft;
-
-@interface Comment : NSManagedObject<WPCommentContentViewProvider>
+@interface Comment: NSManagedObject
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) BasePost *post;
@@ -47,14 +36,5 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic) BOOL isLiked;
 @property (nonatomic, assign) BOOL isNew;
 @property (nonatomic) BOOL canModerate;
-
-/// Helper methods
-///
-+ (NSString *)titleForStatus:(NSString *)status;
-- (NSString *)authorUrlForDisplay;
-- (BOOL)hasAuthorUrl;
-- (BOOL)isApproved;
-- (NSString *)sectionIdentifier;
-- (BOOL)isReadOnly;
 
 @end

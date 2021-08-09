@@ -226,26 +226,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
-- (NSUInteger)numberOfPendingComments
-{
-    NSUInteger pendingComments = 0;
-    if ([self hasFaultForRelationshipNamed:@"comments"]) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
-        [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
-        [request setIncludesSubentities:NO];
-        NSError *error;
-        pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
-    } else {
-        for (Comment *element in self.comments) {
-            if ( [CommentStatusPending isEqualToString:element.status] ) {
-                pendingComments++;
-            }
-        }
-    }
-
-    return pendingComments;
-}
-
 - (NSArray *)sortedCategories
 {
     NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"

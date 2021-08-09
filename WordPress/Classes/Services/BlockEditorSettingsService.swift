@@ -2,7 +2,16 @@ import Foundation
 import WordPressKit
 
 class BlockEditorSettingsService {
-    typealias BlockEditorSettingsServiceCompletion = (_ hasChanges: Bool, _ blockEditorSettings: BlockEditorSettings?) -> Void
+    struct SettingsServiceResult {
+        let hasChanges: Bool
+        let blockEditorSettings: BlockEditorSettings?
+    }
+
+    enum BlockEditorSettingsServiceError: Int, Error {
+        case blogNotFound
+    }
+
+    typealias BlockEditorSettingsServiceCompletion = (Swift.Result<SettingsServiceResult, Error>) -> Void
 
     let blog: Blog
     let remote: BlockEditorSettingsServiceRemote
@@ -52,10 +61,12 @@ private extension BlockEditorSettingsService {
             case .success(let editorTheme):
                 self.context.perform {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
+                    self.track(isBlockEditorSettings: false, isFSE: false)
                     self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
                 }
-            case .failure(let error):
-                DDLogError("Error loading active theme: \(error)")
+            case .failure(let err):
+                DDLogError("Error loading active theme: \(err)")
+                completion(.failure(err))
             }
         }
     }
@@ -64,7 +75,8 @@ private extension BlockEditorSettingsService {
         let newChecksum = editorTheme?.checksum ?? ""
         guard originalChecksum != newChecksum else {
             /// The fetched Editor Theme is the same as the cached one so respond with no new changes.
-            completion(false, self.blog.blockEditorSettings)
+            let result = SettingsServiceResult(hasChanges: false, blockEditorSettings: self.blog.blockEditorSettings)
+            completion(.success(result))
             return
         }
 
@@ -76,27 +88,29 @@ private extension BlockEditorSettingsService {
 
         /// The fetched Editor Theme is different than the cached one so persist the new one and delete the old one.
         context.perform {
-            self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { success in
-                guard success else {
-                    completion(false, nil)
-                    return
-                }
-
-                self.context.perform {
-                    completion(true, self.blog.blockEditorSettings)
+            self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { callback in
+                switch callback {
+                case .success:
+                    self.context.perform {
+                        let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
+                        completion(.success(result))
+                    }
+                case .failure(let err):
+                    completion(.failure(err))
                 }
             }
         }
     }
 
-    func persistEditorThemeToCoreData(blogID: NSManagedObjectID, editorTheme: RemoteEditorTheme, completion: @escaping (_ success: Bool) -> Void) {
+    func persistEditorThemeToCoreData(blogID: NSManagedObjectID, editorTheme: RemoteEditorTheme, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         parsingContext.parent = context
         parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
 
         parsingContext.perform {
             guard let blog = parsingContext.object(with: blogID) as? Blog else {
-                completion(false)
+                let err = BlockEditorSettingsServiceError.blogNotFound
+                completion(.failure(err))
                 return
             }
 
@@ -106,8 +120,13 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(editorTheme: editorTheme, context: parsingContext)
-            try? parsingContext.save()
-            completion(true)
+            do {
+                try parsingContext.save()
+            } catch let err {
+                completion(.failure(err))
+            }
+
+            completion(.success(()))
         }
     }
 }
@@ -115,16 +134,20 @@ private extension BlockEditorSettingsService {
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
     func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        remote.fetchBlockEditorSettings { [weak self] (response) in
+        remote.fetchBlockEditorSettings(forSiteID: blog.dotComID?.intValue) { [weak self] (response) in
             guard let `self` = self else { return }
             switch response {
             case .success(let remoteSettings):
                 self.context.perform {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
+                    self.track(isBlockEditorSettings: true, isFSE: remoteSettings?.isFSETheme ?? false)
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
                 }
-            case .failure(let error):
-                DDLogError("Error loading Block Editor Settings: \(error)")
+            case .failure(let err):
+                DDLogError("Error fetching editor settings: \(err)")
+                // The user may not have the gutenberg plugin installed so try /wp/v2/themes to maintain feature support.
+                // In WP 5.9 we may be able to skip this attempt.
+                self.fetchTheme(completion)
             }
         }
     }
@@ -133,7 +156,8 @@ private extension BlockEditorSettingsService {
         let newChecksum = remoteSettings?.checksum ?? ""
         guard originalChecksum != newChecksum else {
             /// The fetched Block Editor Settings is the same as the cached one so respond with no new changes.
-            completion(false, self.blog.blockEditorSettings)
+            let result = SettingsServiceResult(hasChanges: false, blockEditorSettings: self.blog.blockEditorSettings)
+            completion(.success(result))
             return
         }
 
@@ -145,27 +169,29 @@ private extension BlockEditorSettingsService {
 
         /// The fetched Block Editor Settings is different than the cached one so persist the new one and delete the old one.
         context.perform {
-            self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { success in
-                guard success else {
-                    completion(false, nil)
-                    return
-                }
-
-                self.context.perform {
-                    completion(true, self.blog.blockEditorSettings)
+            self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { callback in
+                switch callback {
+                case .success:
+                    self.context.perform {
+                        let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
+                        completion(.success(result))
+                    }
+                case .failure(let err):
+                    completion(.failure(err))
                 }
             }
         }
     }
 
-    func persistBlockEditorSettingsToCoreData(blogID: NSManagedObjectID, remoteSettings: RemoteBlockEditorSettings, completion: @escaping (_ success: Bool) -> Void) {
+    func persistBlockEditorSettingsToCoreData(blogID: NSManagedObjectID, remoteSettings: RemoteBlockEditorSettings, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         parsingContext.parent = context
         parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
 
         parsingContext.perform {
             guard let blog = parsingContext.object(with: blogID) as? Blog else {
-                completion(false)
+                let err = BlockEditorSettingsServiceError.blogNotFound
+                completion(.failure(err))
                 return
             }
 
@@ -175,13 +201,18 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: parsingContext)
-            try? parsingContext.save()
-            completion(true)
+            do {
+                try parsingContext.save()
+            } catch let err {
+                completion(.failure(err))
+            }
+
+            completion(.success(()))
         }
     }
 }
 
-// MARK: Shared Core Data Support
+// MARK: Shared Events
 private extension BlockEditorSettingsService {
     func clearCoreData(completion: @escaping BlockEditorSettingsServiceCompletion) {
         self.context.perform {
@@ -189,7 +220,15 @@ private extension BlockEditorSettingsService {
                 // Block Editor Settings nullify on delete
                 self.context.delete(blockEditorSettings)
             }
-            completion(true, nil)
+            let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: nil)
+            completion(.success(result))
         }
+    }
+
+    func track(isBlockEditorSettings: Bool, isFSE: Bool) {
+        let endpoint = isBlockEditorSettings ? "wp-block-editor" : "theme_supports"
+        let properties: [AnyHashable: Any] = ["endpoint": endpoint,
+                                              "full_site_editing": "\(isFSE)"]
+        WPAnalytics.track(.gutenbergEditorSettingsFetched, properties: properties)
     }
 }

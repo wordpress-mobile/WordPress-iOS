@@ -184,9 +184,7 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.setTitleColor(.primaryLight, for: .highlighted)
         authorButton.setTitleColor(.neutral(.shade60), for: .disabled)
 
-        if comment.authorIsPostAuthor() {
-            authorButton.setTitleColor(.accent, for: .normal)
-        } else if comment.hasAuthorUrl() {
+        if comment.hasAuthorUrl() {
             authorButton.setTitleColor(.primary, for: .normal)
         } else {
             authorButton.isEnabled = false
@@ -225,18 +223,27 @@ class ReaderCommentCell: UITableViewCell {
         actionBar.isHidden = !enableLoggedInFeatures
         replyButton.isHidden = !showReply
 
-        var title = NSLocalizedString("Like", comment: "Verb. Button title. Tap to like a commnet")
-        let count = comment.numberOfLikes().intValue
-        if count == 1 {
-            title = "\(count) \(title)"
-        } else if count > 1 {
-            title = NSLocalizedString("Likes", comment: "Noun. Button title.  Tap to like a comment.")
-            title = "\(count) \(title)"
-        }
-        likeButton.setTitle(title, for: .normal)
+        let likesCount = comment.numberOfLikes()
+
+        let likesTitle: String = {
+            if likesCount == 0 {
+                return LikesTitles.none
+            }
+
+            let likesTitleFormat = likesCount == 1 ? LikesTitles.singular : LikesTitles.plural
+            return String(format: likesTitleFormat, likesCount)
+        }()
+
+        likeButton.setTitle(likesTitle, for: .normal)
         likeButton.isSelected = comment.isLiked
     }
 
+    private struct LikesTitles {
+        static let plural = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+        static let singular = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+        static let none = NSLocalizedString("Like", comment: "Button title to Like a comment.")
+
+    }
 
     @objc func updateLeadingContentConstraint() {
         leadingContentConstraint?.constant = CGFloat(indentationLevel) * indentationWidth

@@ -442,7 +442,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         setTitle(post.postTitle ?? "")
         setHTML(content)
 
-        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog) { [weak self] in
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
             self?.gutenberg.updateCapabilities()
         }
     }
@@ -937,6 +937,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
+
+    func gutenbergDidRequestPreview() {
+        displayPreview()
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -1210,9 +1214,16 @@ extension GutenbergViewController {
     }
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] (hasChanges, settings) in
-            guard hasChanges, let `self` = self else { return }
-            self.gutenberg.updateEditorSettings(settings)
+        editorSettingsService?.fetchSettings({ [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let response):
+                if response.hasChanges {
+                    self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+                }
+            case .failure(let err):
+                DDLogError("Error fetching settings: \(err)")
+            }
         })
     }
 }
