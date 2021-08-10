@@ -1,9 +1,5 @@
-Lite kärlek till textblocken. Färg- och bakgrundsanpassning har lagts till för blockredigerarens textblock.
+Det har kommit ett nytt block! Med inbäddningsblocket kan du bädda in innehåll från favorittjänster som YouTube, TikTok, Instagram med mera. Håll ögonen öppna efter ytterligare funktioner.
 
-Andra blockredigeraruppdateringar inkluderar ett åtgärdat problem med blockväljaren på iPad och uppdaterade hämtar- och misslyckades-skärmar för webbversionen av redigeraren.
+Älskar du funktionen Bloggningspåminnelser? Tidigare kunde endast webbplatsadministratörer konfigurera påminnelser, men nu har vi även aktiverat den här funktionen för personer som kan redigera inlägg på din webbplats (redigerare, författare och deltagare).
 
-Om du har stött på problem med att uppdatera Följ-knapparna i läsaren kan du vara lugn nu. Dessa problem har nämligen åtgärdats.
-
-Författare och deltagare kan se mer! De kan nu visa kommentarer på en webbplats via Min webbplats > Kommentarer.
-
-Ett fel som uppstod när man tryckte på aviseringar har åtgärdats.
+Vi har förbättrat kommentarsmodereringen, så att lämpliga användare kan svepa åt vänster för att välja att godkänna/inte godkänna och ta bort kommentarer. Vi har också lagt till stöd för globala stilar, vilket gör det möjligt att ändra inställningar som färg- och bakgrundsanpassning för teman med fullständig webbplatsredigering.

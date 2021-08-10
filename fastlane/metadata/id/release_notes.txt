@@ -1,7 +1,5 @@
-Blok teks sudah ditingkatkan. Fungsi penyesuaian warna dan latar belakang ditambahkan ke blok teks editor blok.
+Ada blok baru! Dengan blok Sematan, Anda bisa menyematkan konten dari layanan favorit Anda seperti YouTube, TikTok, Instagram, dan sebagainya. Terus ikuti kami untuk fungsi tambahan lainnya.
 
-Pembaruan untuk editor blok lainnya mencakup teratasinya masalah pemilih blok di iPad dan masalah layar yang memuat pembaruan dan pembaruan gagal di editor versi web.
+Suka fitur Pengingat Blogging kami? Sebelumnya, hanya admin situs yang bisa mengonfigurasi pengingat tetapi sekarang kami telah mengaktifkan fitur ini bagi orang-orang yang bisa menyunting pos di situs Anda (penyunting, penyusun, dan kontributor).
 
-Pernah mengalami masalah saat menyegarkan tombol ikuti pada Pembaca? Jangan khawatir, masalahnya kini sudah teratasi.
-
-Penulis dan Kontributor kini tidak lagi ketinggalan berita! Mereka kini bisa melihat Komentar situs melalui Situs Saya > Komentar.
+Kami telah melakukan peningkatan untuk moderasi komentar yang memastikan bahwa pengguna yang sesuai dapat menggeser ke kiri untuk menyetujui/menolak serta membuang komentar. Kami juga telah menyediakan dukungan untuk Gaya Global yang memungkinkan pengaturan seperti warna dan penyesuaian latar belakang pada tema Penyuntingan Situs Penuh.

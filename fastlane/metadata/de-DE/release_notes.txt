@@ -1,7 +1,5 @@
-Wir haben uns um die Text-Blöcke gekümmert. Die Anpassung von Farbe und Hintergrund wurde den Text-Blöcken im Block-Editor hinzugefügt.
+Es gibt einen neuen Block! Mit dem Embed-Block kannst du Inhalte aus deinen Lieblingsdiensten wie YouTube, TikTok, Instagram und anderen einbetten. Bleib dran, es folgen bald weitere Funktionen.
 
-Außerdem haben wir einen Fehler bei der Blockauswahl auf iPads behoben und die Bildschirme für die Anzeige von „wird geladen“ und „fehlgeschlagen“ in der Web-Version des Editors aktualisiert.
+Dir gefällt unser Feature „Blog-Erinnerungen“? Bislang konnten nur Website-Administratoren Erinnerungen konfigurieren. Jetzt haben wir dieses Feature aber für Personen aktiviert, die auf deiner Website Beiträge bearbeiten können (Redakteure, Autoren und Mitarbeiter).
 
-Wenn du Probleme beim Aktualisieren mit dem Folgen-Button im Reader hattest, kannst du dich jetzt entspannt zurücklehnen. Alle Probleme wurden behoben.
-
-Autoren und Mitarbeiter tappen jetzt nicht mehr im Dunkeln! Kommentare einer Website können ab sofort über Meine Websites > Kommentare angezeigt werden.
+Wir haben Verbesserungen an der Kommentarmoderation vorgenommen: Die entsprechenden Benutzer können jetzt nach links wischen, um Kommentare zu genehmigen/abzulehnen und in den Papierkorb zu verschieben. Außerdem bieten wir jetzt Unterstützung für globale Stile: Damit stehen dir für die Themes zur Website-Bearbeitung Einstellungen wie Farb- und Hintergrundanpassung zur Verfügung.

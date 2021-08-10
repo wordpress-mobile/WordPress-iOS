@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-04-09 23:21:35+0000 */
+/* Translation-Revision-Date: 2021-08-01 11:15:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: da_DK */
@@ -33,17 +33,19 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ to fix threats.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d Like";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Likes";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger likes this.";
+/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d blogger_ likes this." = "%1$d blogger_ likes this.";
 
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggers like this.";
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
+"%1$d bloggers_ like this." = "%1$d bloggers_ like this.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d of %2$d completed";
@@ -245,8 +247,7 @@
 "(Untitled)" = "(Untitled)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen titel)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -483,7 +484,7 @@
 "Add a shortcode…" = "Add a shortcode…";
 
 /* No Tags View Button Label */
-"Add a site" = "Add a site";
+"Add a site" = "Tilføj et websted";
 
 /* No Topics View Button Label */
 "Add a topic" = "Add a topic";
@@ -819,13 +820,13 @@
 "Are you sure you want to trash this page?" = "Are you sure you want to trash this page?";
 
 /* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Are you sure you want to trash this post?";
+"Are you sure you want to trash this post?" = "Er du sikker på, du vil slette dette indlæg?";
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Are you sure you want to update?";
 
 /* An example tag used in the login prologue screens. */
-"Art" = "Art";
+"Art" = "Kunst";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged.";
@@ -1000,7 +1001,7 @@
 "Block settings" = "Block settings";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
+"Block this site" = "Bloker dette websted";
 
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Bloker websted";
@@ -1064,12 +1065,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Button Style";
-
-/* No comment provided by engineer. */
-"Button inside" = "Button inside";
-
-/* No comment provided by engineer. */
-"Button outside" = "Button outside";
 
 /* No comment provided by engineer. */
 "Button position" = "Button position";
@@ -1186,7 +1181,7 @@
 "Cancel sharing" = "Cancel sharing";
 
 /* The action was canceled */
-"Canceled" = "Canceled";
+"Canceled" = "Annulleret";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Canceling...";
@@ -1820,11 +1815,11 @@
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
-"Create Page" = "Create Page";
+"Create Page" = "Opret side";
 
 /* Button title, encourages users to create post on their blog.
    Label for action to create a new post. */
-"Create Post" = "Create Post";
+"Create Post" = "Opret indlæg";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title */
@@ -2285,6 +2280,12 @@
 "Double tap to open Bottom Sheet with available options" = "Double tap to open Bottom Sheet with available options";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Double tap to preview page.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Double tap to preview post.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Double tap to redo last change";
 
 /* No comment provided by engineer. */
@@ -2386,13 +2387,13 @@
 "Edit cover media" = "Edit cover media";
 
 /* No comment provided by engineer. */
-"Edit file" = "Edit file";
+"Edit file" = "Rediger fil";
 
 /* No comment provided by engineer. */
 "Edit focal point" = "Edit focal point";
 
 /* No comment provided by engineer. */
-"Edit media" = "Edit media";
+"Edit media" = "Rediger medie";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
@@ -2465,6 +2466,9 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email sent!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Embed caption. %s";
 
@@ -2474,8 +2478,8 @@
 /* No comment provided by engineer. */
 "Embed link" = "Embed link";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Embed previews not yet available";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3005,7 +3009,7 @@
 "Generating Preview" = "Generating Preview";
 
 /* View title for initial auth views. */
-"Get Started" = "Get Started";
+"Get Started" = "Kom i gang!";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
 "Get a login link by email" = "Get a login link by email";
@@ -3404,7 +3408,7 @@
 "Installing %@…" = "Installing %@…";
 
 /* The Jetpack view title used while the is installing */
-"Installing Jetpack" = "Installing Jetpack";
+"Installing Jetpack" = "Installer Jetpack";
 
 /* The Jetpack view message used while the state is installing */
 "Installing Jetpack on your site. This can take up to a few minutes to complete." = "Installing Jetpack on your site. This can take up to a few minutes to complete.";
@@ -3619,11 +3623,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Light backgrounds";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Synes godt om";
 
 /* A comment is marked as liked */
@@ -3632,7 +3636,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3730,7 +3733,7 @@
 "Loading Scan History..." = "Loading Scan History...";
 
 /* Text displayed while loading the scan section for a site */
-"Loading Scan..." = "Loading Scan...";
+"Loading Scan..." = "Indlæser scan...";
 
 /* Shown while the app waits for the domain suggestions web service to return during the site creation process. */
 "Loading domains" = "Loading domains";
@@ -4219,7 +4222,7 @@
 "No" = "Nej";
 
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
-"No %@ yet" = "No %@ yet";
+"No %@ yet" = "Ingen %@ endnu";
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "No Accounts Found";
@@ -4279,7 +4282,7 @@
 "No available sites" = "No available sites";
 
 /* No comment provided by engineer. */
-"No button" = "No button";
+"No blocks found" = "Ingen blokke fundet.";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "No comments";
@@ -4369,7 +4372,7 @@
 "No new topics to follow" = "No new topics to follow";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
-"No notifications yet" = "No notifications yet";
+"No notifications yet" = "Ingen notifikationer endnu";
 
 /* Displayed when the user is searching the pages list and there are no matching pages
    Text displayed when there's no matching with the text search */
@@ -4436,7 +4439,7 @@
 "North" = "Nord";
 
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Not Connected";
+"Not Connected" = "Ikke forbundet";
 
 /* Nicer dialog answer for \"No\". */
 "Not Now" = "Ikke nu";
@@ -4549,13 +4552,16 @@
 /* Title of a button style */
 "Official Buttons" = "Officielle knapper";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Older than 2 days";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Ældre end en måned";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Ældre end en uge";
 
 /* Sort Order */
@@ -4790,9 +4796,6 @@
    Title of pending Comments filter. */
 "Pending" = "Afventer godkendelse";
 
-/* No comment provided by engineer. */
-"Pending moderation" = "Afventer godkendelse";
-
 /* Name for the status of a post pending review.
    Pending review
    Title of the Pending Review Badge */
@@ -4815,7 +4818,7 @@
 "Photo Library" = "Photo Library";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "Foto";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Photos provided by Pexels";
@@ -5142,6 +5145,12 @@
 
 /* Title on display preview error */
 "Preview Unavailable" = "Preview Unavailable";
+
+/* No comment provided by engineer. */
+"Preview page" = "Preview page";
+
+/* No comment provided by engineer. */
+"Preview post" = "Forhåndsvis indlæg";
 
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Preview your new site to see what your visitors will see.";
@@ -5617,6 +5626,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Revert Pending Change";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Reverts the action performed on this notification.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Review site pages";
 
@@ -5767,6 +5779,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Search block label. Current text is";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Search blocks";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Search button. Current button text is";
@@ -6342,7 +6357,7 @@
 "Sort By" = "Sort By";
 
 /* No comment provided by engineer. */
-"Sorting and filtering" = "Sorting and filtering";
+"Sorting and filtering" = "Sortering og filtrering";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Source Code";
@@ -6694,7 +6709,7 @@
 "The WordPress for Android App Gets a Big Facelift" = "The WordPress for Android App Gets a Big Facelift";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
-"The World's Best Fans" = "The World's Best Fans";
+"The World's Best Fans" = "Verdens bedste fans";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "The app can't recognize the server response. Please, check the configuration of your site.";
@@ -7083,7 +7098,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "To use this app for %@ you'll need to have the Jetpack plugin installed and activated.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "I dag";
@@ -7195,6 +7211,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Try again";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Try another search term";
+
 /* Customize Insights button title */
 "Try it now" = "Try it now";
 
@@ -7284,6 +7303,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Unable to download file";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Unable to embed media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Unable to follow conversation";
@@ -7658,7 +7680,7 @@
 "Version" = "Version";
 
 /* Description for the version label in the What's new page. */
-"Version " = "Version ";
+"Version " = "Version";
 
 /* Version of a plugin to install
    Version of an installed plugin */
@@ -8088,6 +8110,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "We’ll walk you through the basics of building and growing your site";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "We’ve added more tasks to help you grow your audience.";
 
@@ -8102,6 +8130,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "What is a block?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "What is alt text?";
@@ -8296,7 +8327,8 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Yes, show me";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Yesterday";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
@@ -8394,7 +8426,7 @@
 "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here.";
 
 /* Title for a view milestone push notification */
-"You hit a milestone 🚀" = "";
+"You hit a milestone 🚀" = "Du har ramt en milepæl 🚀";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
 "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.";

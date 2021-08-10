@@ -1,7 +1,5 @@
-Tekstblokken krijgen wat liefde. Kleur- en achtergrond aanpassing wordt toegevoegd aan de tekstblokken van de blok-editor.
+Er is een nieuw blok in de stad! Met het Insluit blok, kun je inhoud van je favoriete diensten zoals YouTube, TikTok, Instagram, en meer insluiten. Blijf op de hoogte van de komende extra functies.
 
-Andere updates van de blok-editor omvatten het oplossen van een probleem met de blokkiezer op de iPad en het laden van updates en mislukte schermen voor de webversie van de editor.
+Houd je van onze Blog herinnering functie? Vroeger konden alleen site beheerders herinneringen instellen, maar we hebben deze functie nu ingeschakeld voor mensen die berichten op je site kunnen bewerken (redacteuren, auteurs en bijdragers).
 
-Als je wat ververs problemen hebt ondervonden met de volgknoppen in de Reader, kun je nu gerust zijn, omdat die problemen zijn opgelost.
-
-Auteurs en bijdragers zijn niet langer in het donker! Ze kunnen nu de reacties van een site bekijken via Mijn site > reacties.
+We hebben verbeteringen aangebracht in de moderatie van reacties, zodat de juiste gebruikers naar links kunnen vegen om reacties goed/af te keuren en in de prullenbak te gooien. We hebben ook ondersteuning geboden voor Globale stijlen, waardoor instellingen zoals kleur en achtergrond kunnen worden aangepast voor thema's voor volledige site bewerking.
