@@ -99,7 +99,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         updateNoResults(model)
     }
 
-    func showMultisiteNotSuportedError() {
+    func showMultisiteNotSupportedError() {
         guard let scanStatusViewModel = JetpackScanStatusViewModel(coordinator: coordinator) else {
             return
         }

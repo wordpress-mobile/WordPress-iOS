@@ -7,7 +7,7 @@ protocol JetpackScanView {
     func showNoConnectionError()
     func showGenericError()
     func showScanStartError()
-    func showMultisiteNotSuportedError()
+    func showMultisiteNotSupportedError()
 
     func toggleHistoryButton(_ isEnabled: Bool)
 
@@ -256,7 +256,7 @@ class JetpackScanCoordinator {
 
         switch (scanObj.state, scanObj.reason) {
         case (.unavailable, JetpackScan.Reason.multiSiteNotSupported):
-            view.showMultisiteNotSuportedError()
+            view.showMultisiteNotSupportedError()
         default:
             view.render()
         }
