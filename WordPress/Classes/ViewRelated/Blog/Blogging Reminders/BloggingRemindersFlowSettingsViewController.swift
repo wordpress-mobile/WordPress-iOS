@@ -104,9 +104,9 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         makeDivider()
     }()
 
-    private lazy var timeSelectionButton: TimePickerButton = {
+    private lazy var timeSelectionButton: TimeSelectionButton = {
         /// - TODO: inject the correct time here
-        let button = TimePickerButton(selectedTime: "3:00 PM")
+        let button = TimeSelectionButton(selectedTime: "3:00 PM")
         button.isUserInteractionEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
@@ -476,8 +476,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             }
         }
     }
-
-
 
     // MARK: - Completion Paths
 
