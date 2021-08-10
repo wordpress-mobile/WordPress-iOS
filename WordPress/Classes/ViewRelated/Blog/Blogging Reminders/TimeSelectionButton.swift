@@ -1,6 +1,6 @@
 import UIKit
 
-class TimePickerButton: UIButton {
+class TimeSelectionButton: UIButton {
 
     private(set) var selectedTime: String {
         didSet {
@@ -12,6 +12,12 @@ class TimePickerButton: UIButton {
         didSet {
             backgroundColor = isHighlighted ? .divider : .basicBackground
             setNeedsDisplay()
+        }
+    }
+
+    var isChevronHidden = false {
+        didSet {
+            chevronStackView.isHidden = isChevronHidden
         }
     }
 
@@ -29,7 +35,7 @@ class TimePickerButton: UIButton {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
-        label.text = Constants.title
+        label.text = Self.title
         return label
     }()
 
@@ -51,7 +57,7 @@ class TimePickerButton: UIButton {
         return imageView
     }()
 
-    private lazy var chavronStackView: UIStackView = {
+    private lazy var chevronStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +66,8 @@ class TimePickerButton: UIButton {
     }()
 
     private func configureStackView() {
-        stackView.addArrangedSubviews([pickerTitleLabel, UIView(), timeLabel, chavronStackView])
+        stackView.addArrangedSubviews([pickerTitleLabel, UIView(), timeLabel, chevronStackView])
+        chevronStackView.isHidden = isChevronHidden
     }
 
     init(selectedTime: String) {
@@ -68,7 +75,7 @@ class TimePickerButton: UIButton {
         super.init(frame: .zero)
         configureStackView()
         addSubview(stackView)
-        pinSubviewToAllEdges(stackView, insets: Constants.insets)
+        pinSubviewToAllEdges(stackView)
     }
 
     required init?(coder: NSCoder) {
@@ -79,8 +86,5 @@ class TimePickerButton: UIButton {
         self.selectedTime = selectedTime
     }
 
-    enum Constants {
-        static let title = NSLocalizedString("Notification time", comment: "Title for the time picker button in Blogging Reminders.")
-        static let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    }
+    static let title = NSLocalizedString("Notification time", comment: "Title for the time picker button in Blogging Reminders.")
 }
