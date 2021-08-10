@@ -89,10 +89,22 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    private let topDivider: UIView
-    private let bottomDivider: UIView
+    // adds dividers for the time selection
+    private func makeDivider() -> UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.divider
+        return view
+    }
 
-    private let timeSelectionButton: TimePickerButton = {
+    private lazy var topDivider: UIView = {
+        makeDivider()
+    }()
+
+    private lazy var bottomDivider: UIView = {
+        makeDivider()
+    }()
+
+    private lazy var timeSelectionButton: TimePickerButton = {
         /// - TODO: inject the correct time here
         let button = TimePickerButton(selectedTime: "3:00 PM")
         button.isUserInteractionEnabled = true
@@ -107,9 +119,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     }
 
 
-    private let timeSelectionStackView: UIStackView = {
+    private lazy var timeSelectionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.addArrangedSubviews([topDivider, timeSelectionButton, bottomDivider])
         return stackView
     }()
 
@@ -156,8 +169,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         tipDescriptionLabel.numberOfLines = 0
 
         rightStack.addArrangedSubviews([tipLabel, tipDescriptionLabel])
-
-        timeSelectionStackView.addArrangedSubviews([topDivider, timeSelectionButton, bottomDivider])
     }
 
     private let dismissButton: UIButton = {
@@ -213,16 +224,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
 
         weekdays = previousWeekdays
-
-        // adds dividers for the time selection
-        func makeDivider() -> UIView {
-            let view = UIView()
-            view.backgroundColor = UIColor.divider
-            return view
-        }
-
-        self.topDivider = makeDivider()
-        self.bottomDivider = makeDivider()
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -324,9 +325,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
             button.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: stackView.topAnchor, constant: Metrics.edgeMargins.right),
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right),
             topDivider.heightAnchor.constraint(equalToConstant: Metrics.dividerHeight),
             bottomDivider.heightAnchor.constraint(equalToConstant: Metrics.dividerHeight),
             timeSelectionStackView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
