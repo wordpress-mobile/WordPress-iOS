@@ -24,7 +24,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IA9-vZ-mee" userLabel="Icon Image View">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IA9-vZ-mee" userLabel="Icon Image View">
                         <rect key="frame" x="129.5" y="13.5" width="20" height="19"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="0dh-Z6-Vjj"/>
@@ -50,6 +50,8 @@
             <connections>
                 <outlet property="buttonLabel" destination="luP-wf-ZhP" id="cPt-Sq-CGl"/>
                 <outlet property="iconImageView" destination="IA9-vZ-mee" id="9vR-uv-Tqb"/>
+                <outlet property="iconTrailingConstraint" destination="MCa-9X-e1q" id="gW6-gf-cAL"/>
+                <outlet property="labelCenterXConstraint" destination="V9B-D2-OqW" id="Rzl-nD-D9C"/>
             </connections>
             <point key="canvasLocation" x="-133" y="156"/>
         </tableViewCell>

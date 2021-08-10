@@ -33,8 +33,8 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
 
     @IBOutlet private weak var buttonLabel: UILabel!
     @IBOutlet private weak var iconImageView: UIImageView!
-
-    // TODO: (Low) Pull in centerX constraint and adjust as the image view is hidden?
+    @IBOutlet weak var labelCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var iconTrailingConstraint: NSLayoutConstraint!
 
     // MARK: Initialization
 
@@ -52,7 +52,6 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
         setupViews()
     }
 
-    // TODO: Test if this changes the color properly.
     override func tintColorDidChange() {
         buttonLabel.textColor = tintColor
         iconImageView.tintColor = tintColor
@@ -67,7 +66,7 @@ private extension SingleButtonTableViewCell {
         selectionStyle = .none
 
         // hide the icon initially.
-        iconImageView.isHidden = true
+        toggleIcon(visible: false)
         iconImageView.tintColor = tintColor
         iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
@@ -81,8 +80,9 @@ private extension SingleButtonTableViewCell {
     func toggleIcon(visible: Bool) {
         iconImageView.isHidden = !visible
 
-        // TODO: (Low) Adjust label center X constraints.
-        // labelCenterXConstraint.constant = visible ? iconImageView.frame.width / 2 : 0
+        // adjust the label's center alignment when the icon is visible, to make the button properly centered.
+        let adjustmentValue = (iconImageView.frame.width + iconTrailingConstraint.constant) / 2
+        labelCenterXConstraint.constant = visible ? adjustmentValue : 0
     }
 
 }
