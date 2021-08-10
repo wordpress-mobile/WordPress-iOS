@@ -93,7 +93,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private let bottomDivider: UIView
 
     private let timeSelectionButton: TimePickerButton = {
-        let button = TimePickerButton()
+        /// - TODO: inject the correct time here
+        let button = TimePickerButton(selectedTime: "3:00 PM")
         button.isUserInteractionEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
@@ -325,13 +326,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right),
+            dismissButton.topAnchor.constraint(equalTo: stackView.topAnchor, constant: Metrics.edgeMargins.right),
             topDivider.heightAnchor.constraint(equalToConstant: Metrics.dividerHeight),
-            topDivider.widthAnchor.constraint(equalTo: view.widthAnchor),
             bottomDivider.heightAnchor.constraint(equalToConstant: Metrics.dividerHeight),
-            bottomDivider.widthAnchor.constraint(equalTo: view.widthAnchor),
             timeSelectionStackView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
-            timeSelectionStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            timeSelectionStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
     }
 
