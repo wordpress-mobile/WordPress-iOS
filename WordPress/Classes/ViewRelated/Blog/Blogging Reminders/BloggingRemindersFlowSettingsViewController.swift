@@ -116,6 +116,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     @objc private func navigateToTimePicker() {
         /// - TODO: add the actual navigation code here
         print("Navigation Goes Here")
+        presentTimeSelectionViewController()
     }
 
 
@@ -475,6 +476,11 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 }
             }
         }
+    }
+
+    private func presentTimeSelectionViewController() {
+        let viewController = TimeSelectionViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Completion Paths

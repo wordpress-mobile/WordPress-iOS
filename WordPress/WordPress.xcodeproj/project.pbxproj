@@ -509,6 +509,7 @@
 		3F8513DF260D091500A4B938 /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
 		3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
 		3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851427260D1EA300A4B938 /* CircledIcon.swift */; };
+		3F88065B26C30F2A0074DD21 /* TimeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */; };
 		3F8A087D253E4337000F35ED /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		3F8B136D25D08F34004FAC0A /* HomeWidgetThisWeekData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */; };
 		3F8B138F25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B138E25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift */; };
@@ -5090,6 +5091,7 @@
 		3F8513DE260D091500A4B938 /* RoundRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRectangleView.swift; sourceTree = "<group>"; };
 		3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueEditorContentView.swift; sourceTree = "<group>"; };
 		3F851427260D1EA300A4B938 /* CircledIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircledIcon.swift; sourceTree = "<group>"; };
+		3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionViewController.swift; sourceTree = "<group>"; };
 		3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetThisWeekData.swift; sourceTree = "<group>"; };
 		3F8B138E25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetThisWeek.swift; sourceTree = "<group>"; };
 		3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogAction.swift; sourceTree = "<group>"; };
@@ -8856,6 +8858,7 @@
 				F1C197A52670DDB100DE1FF7 /* BloggingRemindersTracker.swift */,
 				178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */,
 				3F73388126C1CE9B0075D1DD /* TimeSelectionButton.swift */,
+				3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */,
 			);
 			path = "Blogging Reminders";
 			sourceTree = "<group>";
@@ -16698,6 +16701,7 @@
 				57CCB3812358ED07003ECD0C /* WordPress-91-92.xcmappingmodel in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				FE02F95F269DC14A00752A44 /* Comment+Interface.swift in Sources */,
+				3F88065B26C30F2A0074DD21 /* TimeSelectionViewController.swift in Sources */,
 				E1E89C6C1FD80E74006E7A33 /* Plugin.swift in Sources */,
 				8B7C97E325A8BFA2004A3373 /* JetpackActivityLogViewController.swift in Sources */,
 				7E4123BD20F4097B00DF8486 /* FormattableMediaContent.swift in Sources */,
