@@ -4329,6 +4329,10 @@
 		FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088002696E7F600193358 /* ListTableHeaderView.swift */; };
 		FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEA088022696E81F00193358 /* ListTableHeaderView.xib */; };
 		FEA088052696F7AA00193358 /* WPStyleGuide+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */; };
+		FEC3B81726C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */; };
+		FEC3B81826C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */; };
+		FEC3B81926C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */; };
+		FEC3B81A26C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */; };
 		FEDA1AD8269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDA1AD9269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
@@ -7481,6 +7485,8 @@
 		FEA088002696E7F600193358 /* ListTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableHeaderView.swift; sourceTree = "<group>"; };
 		FEA088022696E81F00193358 /* ListTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableHeaderView.xib; sourceTree = "<group>"; };
 		FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+List.swift"; sourceTree = "<group>"; };
+		FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleButtonTableViewCell.swift; sourceTree = "<group>"; };
+		FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleButtonTableViewCell.xib; sourceTree = "<group>"; };
 		FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Comments.swift"; sourceTree = "<group>"; };
 		FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Notifications.swift"; sourceTree = "<group>"; };
 		FEF93A01F06919BDB9486A8E /* Pods-WordPressHomeWidgetToday.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressHomeWidgetToday.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressHomeWidgetToday/Pods-WordPressHomeWidgetToday.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -10779,6 +10785,8 @@
 				1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */,
 				43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */,
 				43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */,
+				FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */,
+				FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -15192,6 +15200,7 @@
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */,
+				FEC3B81926C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */,
 				5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */,
 				43134379217954F100DA2176 /* QuickStartSkipAllCell.xib in Resources */,
 				17222DAB261DDDF90047B163 /* blue-icon-app-60x60@3x.png in Resources */,
@@ -15600,6 +15609,7 @@
 				FABB203D2602FC2C00C8785C /* Localizable.strings in Resources */,
 				FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */,
 				FABB203E2602FC2C00C8785C /* QuickStartListTitleCell.xib in Resources */,
+				FEC3B81A26C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */,
 				FABB203F2602FC2C00C8785C /* ReaderRecommendedSiteCardCell.xib in Resources */,
 				FABB20402602FC2C00C8785C /* Nunito-Bold.ttf in Resources */,
 				FABB20412602FC2C00C8785C /* ImageCropViewController.xib in Resources */,
@@ -16990,6 +17000,7 @@
 				400A2C782217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				D853723C21952DC90076F461 /* SiteSegmentsStep.swift in Sources */,
 				32E1BFDA24A66F2A007A08F0 /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */,
+				FEC3B81726C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */,
 				FF70A3221FD5840500BC270D /* PHAsset+Metadata.swift in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
 				D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */,
@@ -20221,6 +20232,7 @@
 				FABB25FC2602FC2C00C8785C /* StreakInsightStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB25FD2602FC2C00C8785C /* JetpackRemoteInstallState.swift in Sources */,
 				FABB25FE2602FC2C00C8785C /* Scheduler.swift in Sources */,
+				FEC3B81826C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */,
 				F1C740C026B1D4D2005D0809 /* StoreSandboxSecretScreen.swift in Sources */,
 				FABB25FF2602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				98E082A02637545C00537BF1 /* PostService+Likes.swift in Sources */,
