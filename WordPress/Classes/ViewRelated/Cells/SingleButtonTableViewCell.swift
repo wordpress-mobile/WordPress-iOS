@@ -7,7 +7,7 @@ import UIKit
 ///
 /// Views are properly configured to react to `tintColor` changes.
 ///
-class SingleButtonTableViewCell: WPReusableTableViewCell {
+class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
 
     // MARK: Public Properties
 
@@ -45,7 +45,6 @@ class SingleButtonTableViewCell: WPReusableTableViewCell {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
     }
 
     override func awakeFromNib() {
@@ -65,15 +64,18 @@ class SingleButtonTableViewCell: WPReusableTableViewCell {
 private extension SingleButtonTableViewCell {
 
     func setupViews() {
+        selectionStyle = .none
+
+        // hide the icon initially.
+        iconImageView.isHidden = true
+        iconImageView.tintColor = tintColor
+        iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
+
         buttonLabel.adjustsFontForContentSizeCategory = true
         buttonLabel.adjustsFontSizeToFitWidth = true
         buttonLabel.font = WPStyleGuide.tableviewTextFont()
         buttonLabel.textColor = tintColor
         buttonLabel.numberOfLines = 0
-
-        // hide the icon initially.
-        iconImageView.isHidden = true
-        iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
     }
 
     func toggleIcon(visible: Bool) {
