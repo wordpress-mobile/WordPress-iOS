@@ -2,6 +2,12 @@ import UIKit
 
 class TimePickerButton: UIButton {
 
+    private(set) var selectedTime: String {
+        didSet {
+            timeLabel.text = selectedTime
+        }
+    }
+
     override var isHighlighted: Bool {
         didSet {
             backgroundColor = isHighlighted ? .divider : .basicBackground
@@ -32,7 +38,7 @@ class TimePickerButton: UIButton {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
-        label.text = "3:00 PM"
+        label.text = selectedTime
         label.textColor = .secondaryLabel
         return label
     }()
@@ -53,12 +59,13 @@ class TimePickerButton: UIButton {
         return stackView
     }()
 
-    func configureStackView() {
+    private func configureStackView() {
         stackView.addArrangedSubviews([pickerTitleLabel, UIView(), timeLabel, chavronStackView])
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(selectedTime: String) {
+        self.selectedTime = selectedTime
+        super.init(frame: .zero)
         configureStackView()
         addSubview(stackView)
         pinSubviewToAllEdges(stackView, insets: Constants.insets)
@@ -66,6 +73,10 @@ class TimePickerButton: UIButton {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setSelectedTime(_ selectedTime: String) {
+        self.selectedTime = selectedTime
     }
 
     enum Constants {
