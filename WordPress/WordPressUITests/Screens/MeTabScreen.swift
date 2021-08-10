@@ -5,26 +5,24 @@ import XCTest
 class MeTabScreen: ScreenObject {
     let logOutButton: XCUIElement
     let logOutAlert: XCUIElement
-    let appSettingsButton: XCUIElement
+    var appSettingsButton: XCUIElement { expectedElement }
     let myProfileButton: XCUIElement
     let accountSettingsButton: XCUIElement
     let notificationSettingsButton: XCUIElement
     let doneButton: XCUIElement
 
-    // TODO: Make this public in ScreenObject
-    let app: XCUIApplication
-
     init(app: XCUIApplication = XCUIApplication()) throws {
-        self.app = app
         logOutButton = app.cells["logOutFromWPcomButton"]
         logOutAlert = app.alerts.element(boundBy: 0)
-        appSettingsButton = app.cells["appSettings"]
         myProfileButton = app.cells["myProfile"]
         accountSettingsButton = app.cells["accountSettings"]
         notificationSettingsButton = app.cells["notificationSettings"]
         doneButton = app.navigationBars.buttons["doneBarButton"]
 
-        try super.init(element: appSettingsButton)
+        try super.init(
+            expectedElementGetter: { $0.cells["appSettings"] },
+            app: app
+        )
     }
 
     func isLoggedInToWpcom() -> Bool {
