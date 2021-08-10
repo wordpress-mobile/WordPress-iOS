@@ -100,13 +100,9 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     func showMultisiteNotSupportedError() {
-        guard let scanStatusViewModel = JetpackScanStatusViewModel(coordinator: coordinator) else {
-            return
-        }
-
-        let model = NoResultsViewController.Model(title: scanStatusViewModel.title,
-                                                  subtitle: scanStatusViewModel.description,
-                                                  imageName: scanStatusViewModel.imageName)
+        let model = NoResultsViewController.Model(title: NoResultsText.multisiteError.title,
+                                                  subtitle: NoResultsText.multisiteError.subtitle,
+                                                  imageName: NoResultsText.multisiteError.imageName)
         updateNoResults(model)
         refreshControl.endRefreshing()
     }
@@ -349,6 +345,12 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
         struct scanStartError {
             static let title = NSLocalizedString("Something went wrong", comment: "Title for the error view when the scan start has failed")
             static let subtitle = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Error message shown when the scan start has failed.")
+        }
+
+        struct multisiteError {
+            static let title = NSLocalizedString("WordPress multisites are not supported", comment: "Title for label when the user's site is a multisite.")
+            static let subtitle = NSLocalizedString("We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.", comment: "Description for label when the user's site is a multisite.")
+            static let imageName = "jetpack-scan-state-error"
         }
 
         struct error {
