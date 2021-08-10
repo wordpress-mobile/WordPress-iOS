@@ -4,12 +4,12 @@ class TimePickerButton: UIButton {
 
     override var isHighlighted: Bool {
         didSet {
-            backgroundColor = isHighlighted ? .divider : .white
+            backgroundColor = isHighlighted ? .divider : .basicBackground
             setNeedsDisplay()
         }
     }
 
-    let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.isUserInteractionEnabled = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,7 +18,7 @@ class TimePickerButton: UIButton {
         return stackView
     }()
 
-    let pickerTitleLabel: UILabel = {
+    private lazy var pickerTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
@@ -27,16 +27,17 @@ class TimePickerButton: UIButton {
         return label
     }()
 
-    let timeLabel: UILabel = {
+    private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.text = "3:00 PM"
+        label.textColor = .secondaryLabel
         return label
     }()
 
-    lazy var chevron: UIImageView = {
+    private lazy var chevron: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage.gridicon(.chevronRight)
@@ -44,7 +45,7 @@ class TimePickerButton: UIButton {
         return imageView
     }()
 
-    lazy var chavronStackView: UIStackView = {
+    private lazy var chavronStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
