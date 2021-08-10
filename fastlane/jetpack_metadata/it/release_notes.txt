@@ -1,9 +1,5 @@
-I blocchi di testo ottengono un po' di interesse. La personalizzazione di colori e sfondo viene aggiunta ai blocchi di testo dell'editor a blocchi.
+C'è un nuovo blocco in città! Il blocco incorporato consente di incorporare contenuti dai tuoi servizi preferiti, come YouTube, TikTok, Instagram e altri. Non perderti i prossimi aggiornamenti su ulteriori funzionalità.
 
-Altri aggiornamenti dell'editor a blocchi includono la risoluzione di un problema con il selettore di blocchi su iPad e le schermate di caricamento e di errore aggiornate per la versione web dell'editor.
+Ti piace la nostra funzionalità Promemoria relativi al blog? In precedenza, solo gli amministratori del sito potevano configurare i promemoria, ma ora questa funzionalità è disponibile per tutti gli utenti che possono modificare i post sul sito (editor, autori e collaboratori).
 
-Se hai riscontrato alcuni problemi di aggiornamento con i pulsanti Segui nel Reader, ora puoi stare tranquillo, perché tali problemi sono stati risolti.
-
-Autori e Collaboratori non saranno più all'oscuro. Ora possono visualizzare i Commenti di un sito tramite Il mio sito > Commenti.
-
-Risolto un bug quando venivano toccate le notifiche.
+Abbiamo migliorato la moderazione dei commenti, garantendo che gli utenti adeguati possano scorrere a sinistra per approvare/non approvare ed eliminare i commenti. Abbiamo anche aggiunto supporto per Stili globali, attivando impostazioni come la personalizzazione del colore e dello sfondo per i temi di modifica completa del sito.

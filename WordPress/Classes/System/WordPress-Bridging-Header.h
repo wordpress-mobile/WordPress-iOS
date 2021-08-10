@@ -16,7 +16,6 @@
 #import "BlogDetailsViewController.h"
 #import "BlogSiteVisibilityHelper.h"
 
-#import "Comment.h"
 #import "CommentService.h"
 #import "CommentViewController.h"
 #import "CommentsViewController+Network.h"

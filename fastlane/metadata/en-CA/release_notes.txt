@@ -1,7 +1,5 @@
-Text blocks get some love. Colour and background customisation is added to the block editor’s text blocks.
+There’s a new block in town! With the Embed block, you can embed content from your favourite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.
 
-Other block editor updates include fixing an issue with the block selector on iPad and update loading and failed screens for the editor’s web version.
+Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).
 
-If you’ve experienced some refresh issues with the follow buttons in the Reader, you can rest easy now, as those issues have been solved.
-
-Authors and Contributors are no longer in the dark! They can now view a site’s Comments via My Site > Comments.
+We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and trash comments. We’ve also provided support for Global Styles, enabling settings like colour and background customization for Full Site Editing themes.

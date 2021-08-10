@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case stories
     case contactInfo
     case layoutGrid
-    case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
     case bloggingReminders
@@ -47,8 +46,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .layoutGrid:
             return true
-        case .siteCreationHomePagePicker:
-            return true
         case .todayWidget:
             return true
         case .milestoneNotifications:
@@ -60,7 +57,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .editorOnboardingHelpMenu:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedCommentsAndNotificationsList:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         }
     }
 
@@ -107,8 +104,6 @@ extension FeatureFlag {
             return "Contact Info"
         case .layoutGrid:
             return "Layout Grid"
-        case .siteCreationHomePagePicker:
-            return "Site Creation: Home Page Picker"
         case .todayWidget:
             return "iOS 14 Today Widget"
         case .milestoneNotifications:

@@ -1,9 +1,5 @@
-Les blocs paragraphe sont géniaux. Il est désormais possible de personnaliser la couleur et l’arrière-plan des blocs paragraphe dans l’éditeur de blocs.
+Bienvenue au nouveau bloc ! Grâce au bloc de contenu embarqué, intégrez des contenus issus de vos services préférés, tels que YouTube, TikTok, Instagram et bien d’autres. Ne manquez pas les nouvelles fonctionnalités à venir.
 
-D’autres mises à jour ont été apportées à l’éditeur de blocs dont la résolution d’un problème avec le sélecteur de bloc sur iPad et la mise à jour des écrans de chargement et d’échec de la version Web de l’éditeur.
+Vous aimez notre fonctionnalité de Rappels de blog ? Auparavant, seuls les administrateurs de site pouvaient configurer des rappels, mais cette fonctionnalité est désormais accessible à toutes les personnes à même de modifier les articles de blog sur votre site (éditeurs, auteurs et contributeurs).
 
-Les problèmes d’actualisation que vous avez peut-être rencontrés avec les boutons d’abonnement dans le Lecteur sont désormais résolus.
-
-Les auteurs et les contributeurs ont désormais accès aux avis ! Ils peuvent consulter les commentaires sous Mon site > Commentaires.
-
-Résolution d’un bug lors de la saisie des notifications.
+Nous avons apporté des améliorations à la modération des commentaires, garantissant ainsi que les utilisateurs appropriés peuvent faire glisser vers la gauche pour approuver/désapprouver les commentaires ou les déplacer vers la corbeille. Nous avons également ajouté une prise en charge des Styles globaux, permettant d’utiliser des réglages de couleur et de personnalisation de l’arrière-plan pour les thèmes avec modification complète du site (Full Site Editing).
