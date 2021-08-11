@@ -37,7 +37,7 @@ open class AboutViewController: UITableViewController {
 
     // MARK: - Private Helpers
     fileprivate func setupNavigationItem() {
-        title = NSLocalizedString("About", comment: "About this app (information page title)")
+        title = .navigationTitleText
 
         // Don't show 'About' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
@@ -53,7 +53,7 @@ open class AboutViewController: UITableViewController {
         imageView.contentMode       = .top
 
         // Let's add a bottom padding!
-        imageView.frame.size.height += iconBottomPadding
+        imageView.frame.size.height += Constants.iconBottomPadding
 
         // Finally, setup the TableView
         tableView.tableHeaderView   = imageView
@@ -93,9 +93,9 @@ open class AboutViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: .defaultReuseIdentifier)
         if cell == nil {
-            cell = WPTableViewCell(style: .value1, reuseIdentifier: reuseIdentifier)
+            cell = WPTableViewCell(style: .value1, reuseIdentifier: .defaultReuseIdentifier)
         }
 
         let row = rows[indexPath.section][indexPath.row]
@@ -187,20 +187,10 @@ open class AboutViewController: UITableViewController {
         }
     }
 
-
-
-    // MARK: - Private Constants
-    fileprivate let reuseIdentifier = "reuseIdentifierValue1"
-    fileprivate let iconBottomPadding   = CGFloat(30)
-    fileprivate let footerBottomPadding = CGFloat(12)
-
-
-
     // MARK: - Private Properties
     fileprivate lazy var footerTitleText: String = {
         let year = Calendar.current.component(.year, from: Date())
-        let localizedTitleText = NSLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
-        return String(format: localizedTitleText, year)
+        return String(format: .footerTitleTextFormat, year)
     }()
 
     fileprivate lazy var versionString: String = {
@@ -220,46 +210,71 @@ open class AboutViewController: UITableViewController {
     fileprivate var rows: [[Row]] {
         let appsBlogHostname = URL(string: AppConstants.productBlogURL)?.host ?? String()
 
-        let acknowledgementsString = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
-
         return [
             [
-                Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
+                Row(title: .versionRowText,
                     details: versionString,
                     handler: nil),
 
-                Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
+                Row(title: .termsOfServiceRowText,
                     details: nil,
                     handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.appendingLocale()) }),
 
-                Row(title: NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
+                Row(title: .privacyPolicyRowText,
                     details: nil,
                     handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
             ],
             [
-                Row(title: NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
+                Row(title: .twitterRowText,
                     details: AppConstants.productTwitterHandle,
                     handler: { self.displayTwitterAccount() }),
 
-                Row(title: NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
+                Row(title: .blogRowText,
                     details: appsBlogHostname,
                     handler: { self.displayWebView(AppConstants.productBlogURL) }),
 
-                Row(title: NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store"),
+                Row(title: .rateUsRowText,
                     details: nil,
                     handler: { self.displayRatingPrompt() }),
 
-                Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
+                Row(title: .sourceCodeRowText,
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
 
-                Row(title: acknowledgementsString,
+                Row(title: .acknowledgementsRowText,
                     details: nil,
-                    handler: {
-                        let url = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
-                        self.displayWebView(url, title: acknowledgementsString)
-                }),
+                    handler: { self.displayWebView(Constants.acknowledgementsURL, title: .acknowledgementsRowText) }),
             ]
         ]
+    }
+}
+
+// MARK: Constants
+
+private extension String {
+    // view controller
+    static let navigationTitleText = NSLocalizedString("About", comment: "About this app (information page title)")
+    static let navigationDismissButtonText = NSLocalizedString("Close", comment: "Dismiss the current view")
+
+    // reuse identifiers
+    static let defaultReuseIdentifier = "reuseIdentifierValue1"
+    static let buttonReuseIdentifier = SingleButtonTableViewCell.defaultReuseID
+
+    // table view strings
+    static let versionRowText = NSLocalizedString("Version", comment: "Displays the version of the App")
+    static let termsOfServiceRowText = NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web")
+    static let privacyPolicyRowText = NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web")
+    static let twitterRowText = NSLocalizedString("Twitter", comment: "Launches the Twitter App")
+    static let blogRowText = NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog")
+    static let sourceCodeRowText = NSLocalizedString("Source Code", comment: "Opens the Github Repository Web")
+    static let rateUsRowText = NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store")
+    static let acknowledgementsRowText = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
+    static let footerTitleTextFormat = NSLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
+}
+
+private extension AboutViewController {
+    struct Constants {
+        static let iconBottomPadding: CGFloat = 30.0
+        static let acknowledgementsURL: URL? = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
     }
 }
