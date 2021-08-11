@@ -93,7 +93,6 @@ class LoginTests: XCTestCase {
     }
 
     // Unified self hosted login/out
-    // Replaces testSelfHostedUsernamePasswordLoginLogout
     func testSelfHostedLoginLogout() {
         PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
@@ -103,20 +102,6 @@ class LoginTests: XCTestCase {
             .removeSelfHostedSite()
 
         XCTAssert(PrologueScreen().isLoaded())
-    }
-
-    // Old self hosted login/out
-    // TODO: remove when unifiedAuth is permanent.
-    func testSelfHostedUsernamePasswordLoginLogout() {
-        WelcomeScreen().selectLogin()
-            .goToSiteAddressLogin()
-            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
-            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .continueWithSelectedSite()
-            .removeSelfHostedSite()
-
-        XCTAssert(WelcomeScreen().isLoaded())
     }
 
     // Unified WordPress.com email login failure due to incorrect password
