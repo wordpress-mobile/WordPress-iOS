@@ -4324,8 +4324,8 @@
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
 		FE3D058026C3E0F2002A51B0 /* share-app-link-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE3D057F26C3E0F2002A51B0 /* share-app-link-success.json */; };
-		FE3D058326C419C4002A51B0 /* ShareAppContentPresenter+ImmuTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */; };
-		FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+ImmuTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */; };
+		FE3D058326C419C4002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */; };
+		FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */; };
 		FE3E427826A868E300C596CE /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE3E427926A868EC00C596CE /* ListTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEA088022696E81F00193358 /* ListTableHeaderView.xib */; };
 		FE3E427A26A8690100C596CE /* ListSimpleOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3E83E326A58646008CE851 /* ListSimpleOverlayView.swift */; };
@@ -7490,7 +7490,7 @@
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
 		FE3D057F26C3E0F2002A51B0 /* share-app-link-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "share-app-link-success.json"; sourceTree = "<group>"; };
-		FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareAppContentPresenter+ImmuTable.swift"; sourceTree = "<group>"; };
+		FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareAppContentPresenter+TableView.swift"; sourceTree = "<group>"; };
 		FE3E83E326A58646008CE851 /* ListSimpleOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSimpleOverlayView.swift; sourceTree = "<group>"; };
 		FE3E83E426A58646008CE851 /* ListSimpleOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListSimpleOverlayView.xib; sourceTree = "<group>"; };
 		FEA088002696E7F600193358 /* ListTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableHeaderView.swift; sourceTree = "<group>"; };
@@ -14370,7 +14370,7 @@
 			children = (
 				FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */,
 				FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */,
-				FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */,
+				FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -17735,7 +17735,7 @@
 				FAB985C12697550C00B172A3 /* NoResultsViewController+StatsModule.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */,
-				FE3D058326C419C4002A51B0 /* ShareAppContentPresenter+ImmuTable.swift in Sources */,
+				FE3D058326C419C4002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
 				436110E022C4241A000773AD /* UIColor+MurielColorsObjC.swift in Sources */,
 				B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsManager.swift in Sources */,
@@ -19521,7 +19521,7 @@
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
 				FABB233A2602FC2C00C8785C /* RevisionsNavigationController.swift in Sources */,
-				FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+ImmuTable.swift in Sources */,
+				FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
 				FABB233B2602FC2C00C8785C /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB233C2602FC2C00C8785C /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				46F584832624DCC80010A723 /* BlockEditorSettingsService.swift in Sources */,
