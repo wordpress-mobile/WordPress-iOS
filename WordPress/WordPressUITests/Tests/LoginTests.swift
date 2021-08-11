@@ -65,26 +65,10 @@ class LoginTests: XCTestCase {
     }
 
     // Unified WordPress.com login
-    // Replaces testWpcomUsernamePasswordLogin
     func testWPcomLogin() {
         _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
-
-        XCTAssert(MySiteScreen().isLoaded())
-    }
-
-    // Old WordPress.com login/out
-    // TODO: remove when unifiedAuth is permanent.
-    func testWpcomUsernamePasswordLogin() {
-        _ = WelcomeScreen().selectLogin()
-            .selectEmailLogin()
-            .goToSiteAddressLogin()
-            .proceedWith(siteUrl: "WordPress.com")
-            .proceedWith(username: WPUITestCredentials.testWPcomSitePrimaryAddress, password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
