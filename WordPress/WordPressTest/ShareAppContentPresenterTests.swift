@@ -17,7 +17,6 @@ final class ShareAppContentPresenterTests: XCTestCase {
         account = AccountBuilder(contextManager).build()
         presenter = ShareAppContentPresenter(account: account)
         viewController = MockViewController()
-        triggerLoadView(for: viewController!)
         presenter.delegate = viewController
     }
 
@@ -38,13 +37,13 @@ final class ShareAppContentPresenterTests: XCTestCase {
 
         let expectation = expectation(description: "Present share sheet success")
         presenter.present(for: .wordpress, in: viewController) {
-            XCTAssertNotNil(self.viewController.presentedViewController)
-            XCTAssertTrue(self.viewController.presentedViewController! is UIActivityViewController)
+            XCTAssertNotNil(self.viewController.viewControllerToPresent)
+            XCTAssertTrue(self.viewController.viewControllerToPresent! is UIActivityViewController)
             XCTAssertEqual(self.viewController.stateHistory, [true, false])
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 0.4, handler: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
 
     func test_present_givenFailedResponse_displaysFailureNotice() {
@@ -55,8 +54,8 @@ final class ShareAppContentPresenterTests: XCTestCase {
             XCTAssertNotNil(self.viewController.noticeTitle)
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 0.4, handler: nil)
 
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
 
     func test_present_givenCachedContent_immediatelyPresentsShareSheet() {
@@ -66,19 +65,19 @@ final class ShareAppContentPresenterTests: XCTestCase {
         presenter.present(for: .wordpress, in: viewController) {
             firstExpectation.fulfill()
         }
-        waitForExpectations(timeout: 0.4, handler: nil)
-        viewController.presentedViewController?.dismiss(animated: false, completion: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
         viewController.stateHistory = [] // reset state
 
         // present the share sheet again.
         let secondExpectation = expectation(description: "Second present share sheet success")
         presenter.present(for: .wordpress, in: viewController) {
-            XCTAssertNotNil(self.viewController.presentedViewController)
-            XCTAssertTrue(self.viewController.presentedViewController! is UIActivityViewController)
-            XCTAssertTrue(self.viewController.stateHistory.isEmpty)
+            XCTAssertNotNil(self.viewController.viewControllerToPresent)
+            XCTAssertTrue(self.viewController.viewControllerToPresent! is UIActivityViewController)
+            XCTAssertTrue(self.viewController.stateHistory.isEmpty) // state should still be empty since there should be no more loading state changes.
             secondExpectation.fulfill()
         }
-        waitForExpectations(timeout: 0.4, handler: nil)
+
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
 }
 
@@ -94,22 +93,22 @@ private extension ShareAppContentPresenterTests {
             return HTTPStubsResponse(data: Data(), statusCode: 500, headers: nil)
         }
     }
-
-    func triggerLoadView(for viewController: UIViewController) {
-        UIWindow().addSubview(viewController.view)
-        RunLoop.current.run(until: Date())
-    }
-
 }
 
 private class MockViewController: UIViewController, ShareAppContentPresenterDelegate {
     var noticeTitle: String? = nil
     var noticeMessage: String? = nil
     var stateHistory = [Bool]()
+    var viewControllerToPresent: UIViewController? = nil
 
     @objc override func displayNotice(title: String, message: String? = nil) {
         noticeTitle = title
         noticeMessage = message
+    }
+
+    // pretend to present the view, to shave off test time.
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        self.viewControllerToPresent = viewControllerToPresent
     }
 
     func didUpdateLoadingState(_ loading: Bool) {
