@@ -3,18 +3,18 @@ import XCTest
 class MainNavigationTests: XCTestCase {
     private var mySiteScreen: MySiteScreen!
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         mySiteScreen = TabNavComponent()
          .gotoMySiteScreen()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        try LoginFlow.logoutIfNeeded()
+        try super.tearDownWithError()
     }
 
     func testTabBarNavigation() {
