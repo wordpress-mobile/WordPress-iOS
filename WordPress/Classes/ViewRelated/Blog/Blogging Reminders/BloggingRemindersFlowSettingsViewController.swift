@@ -114,8 +114,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     }()
 
     @objc private func navigateToTimePicker() {
-        /// - TODO: add the actual navigation code here
-        print("Navigation Goes Here")
         presentTimeSelectionViewController()
     }
 
