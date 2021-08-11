@@ -216,25 +216,6 @@ struct LinkWithValueRow: ImmuTableRow {
     }
 }
 
-struct ButtonWithIconRow: ImmuTableRow {
-    typealias CellType = SingleButtonTableViewCell
-    static let cell = ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-
-    let title: String
-    let iconImage: UIImage?
-    let action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-        guard let buttonCell = cell as? SingleButtonTableViewCell else {
-            return
-        }
-
-        buttonCell.title = title
-        buttonCell.iconImage = iconImage
-        buttonCell.tintColor = .primary
-    }
-}
-
 struct ButtonRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
