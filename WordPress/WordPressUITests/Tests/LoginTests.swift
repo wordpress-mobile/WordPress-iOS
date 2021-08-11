@@ -16,7 +16,6 @@ class LoginTests: XCTestCase {
     }
 
     // Unified email login/out
-    // Replaces testEmailPasswordLoginLogout
     func testWordPressLoginLogout() throws {
         let prologueScreen = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
@@ -28,23 +27,6 @@ class LoginTests: XCTestCase {
             .logoutToPrologue()
 
         XCTAssert(prologueScreen.isLoaded())
-    }
-
-    // Old email login/out
-    // TODO: remove when unifiedAuth is permanent.
-    func testEmailPasswordLoginLogout() throws {
-        let welcomeScreen = try WelcomeScreen().selectLogin()
-            .selectEmailLogin()
-            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWithPassword()
-            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
-            .tabBar.gotoMeScreen()
-            .logout()
-
-        XCTAssert(welcomeScreen.isLoaded())
     }
 
     /**
