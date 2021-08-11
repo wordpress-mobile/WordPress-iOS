@@ -120,21 +120,9 @@ class LoginTests: XCTestCase {
     }
 
     // Unified WordPress.com email login failure due to incorrect password
-    // Replaces testUnsuccessfulLogin
     func testWPcomInvalidPassword() {
         _ = PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .tryProceed(password: "invalidPswd")
-            .verifyLoginError()
-    }
-
-    // Old email login fail
-    // TODO: remove when unifiedAuth is permanent.
-    func testUnsuccessfulLogin() {
-        _ = WelcomeScreen().selectLogin()
-            .selectEmailLogin()
-            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWithPassword()
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()
     }
