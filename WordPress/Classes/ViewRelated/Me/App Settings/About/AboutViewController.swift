@@ -109,7 +109,9 @@ open class AboutViewController: UITableViewController {
 
             buttonCell.title = buttonRow.title
             buttonCell.iconImage = buttonRow.iconImage
-            buttonCell.tintColor = ShareAppContentPresenter.RowConstants.buttonTintColor
+            buttonCell.tintColor = buttonRow.tintColor
+            buttonCell.isLoading = buttonRow.isLoading
+
             return buttonCell
         }
 
@@ -192,12 +194,15 @@ open class AboutViewController: UITableViewController {
         UIApplication.shared.open(twitterURL)
     }
 
-    private func displaySharePresenter() {
-        guard let presenter = sharePresenter else {
+    private func displayShareApp() {
+        tableView.deselectSelectedRowWithAnimation(true)
+
+        guard let presenter = sharePresenter,
+              isRecommendAppSectionEnabled,
+              !presenter.isLoading else {
             return
         }
 
-        tableView.deselectSelectedRowWithAnimation(true)
         presenter.present(for: .wordpress, in: self)
     }
 
@@ -300,7 +305,7 @@ open class AboutViewController: UITableViewController {
                           iconImage: ButtonRowConstants.buttonIconImage,
                           tintColor: ButtonRowConstants.buttonTintColor,
                           isLoading: presenter.isLoading,
-                          handler: { presenter.present(for: .wordpress, in: self) })
+                          handler: { self.displayShareApp() })
             ])
         }
 
