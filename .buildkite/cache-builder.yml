@@ -1,0 +1,36 @@
+# Nodes with values to reuse in the pipeline.
+common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &common_plugins
+    - automattic/bash-cache#v1.4.0
+    - automattic/git-s3-cache#v1.1.0:
+        bucket: "a8c-repo-mirrors"
+        repo: "wordpress-mobile/wordpress-ios/"
+  # Common environment values to use with the `env` key.
+  - &common_env
+    IMAGE_ID: xcode-12.5.1
+
+steps:
+
+  #################
+  # Build the CocoaPods Base Cache
+  #################
+  - label: ":cocoapods: Rebuild CocoaPods cache"
+    command: |
+      echo "--- :rubygems: Setting up Gems"
+      install_gems
+
+      echo "--- :cocoapods: Rebuilding Pod Cache"
+      cache_cocoapods
+    <<: *common_env
+    <<: *common_plugins
+
+  #################
+  # Build the CI cache
+  #################
+  - label: ":git: Rebuild git cache"
+    command: |
+      cache_repo "a8c-repo-mirrors"
+    agents:
+      queue: "default"
+    <<: *common_plugins
