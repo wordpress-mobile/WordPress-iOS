@@ -70,12 +70,12 @@ class TimeSelectionButton: UIButton {
         chevronStackView.isHidden = isChevronHidden
     }
 
-    init(selectedTime: String) {
+    init(selectedTime: String, insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)) {
         self.selectedTime = selectedTime
         super.init(frame: .zero)
         configureStackView()
         addSubview(stackView)
-        pinSubviewToAllEdges(stackView)
+        pinSubviewToAllEdges(stackView, insets: insets)
     }
 
     required init?(coder: NSCoder) {

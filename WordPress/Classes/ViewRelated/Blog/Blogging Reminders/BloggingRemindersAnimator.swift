@@ -2,7 +2,9 @@
 /// Does not handle the pop animation since the BloggingReminders setup flow does not allow to navigate back.
 class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
-    private static let animationDuration: TimeInterval = 0.2
+    var popStyle = false
+
+    private static let animationDuration: TimeInterval = 3
     private static let sourceEndFrameOffset: CGFloat = -60.0
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -11,11 +13,15 @@ class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
+        guard !popStyle else {
+            animatePop(using: transitionContext)
+            return
+        }
+
         guard let sourceViewController =
                 transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
               let destinationViewController =
                 transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
-
             return
         }
         // final position of the destination view
@@ -32,6 +38,28 @@ class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning
         UIView.animate(withDuration: transitionDuration(using: transitionContext),
                        animations: {
                         destinationViewController.view.frame = destinationEndFrame
+                        sourceViewController.view.frame = sourceEndFrame
+                       }, completion: {_ in
+                        transitionContext.completeTransition(true)
+                       })
+    }
+
+    func animatePop(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let sourceViewController =
+                transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
+              let destinationViewController =
+                transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
+            return
+        }
+
+        let sourceInitialFrame = transitionContext.initialFrame(for: sourceViewController)
+
+        let sourceEndFrame = sourceInitialFrame.offsetBy(dx: sourceInitialFrame.width, dy: .zero)
+
+        transitionContext.containerView.insertSubview(destinationViewController.view, belowSubview: sourceViewController.view)
+
+        UIView.animate(withDuration: transitionDuration(using: transitionContext),
+                       animations: {
                         sourceViewController.view.frame = sourceEndFrame
                        }, completion: {_ in
                         transitionContext.completeTransition(true)

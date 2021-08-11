@@ -114,6 +114,9 @@ extension BloggingRemindersNavigationController: UINavigationControllerDelegate 
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-        return BloggingRemindersAnimator()
+        let animator = BloggingRemindersAnimator()
+        animator.popStyle = (operation == .pop)
+
+        return animator
     }
 }

@@ -480,6 +480,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private func presentTimeSelectionViewController() {
         let viewController = TimeSelectionViewController()
+        viewController.preferredWidth = self.view.frame.width
         navigationController?.pushViewController(viewController, animated: true)
     }
 
