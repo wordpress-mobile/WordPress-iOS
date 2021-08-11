@@ -3,10 +3,10 @@ import XCTest
 class MainNavigationTests: XCTestCase {
     private var mySiteScreen: MySiteScreen!
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         mySiteScreen = TabNavComponent()
          .gotoMySiteScreen()
     }

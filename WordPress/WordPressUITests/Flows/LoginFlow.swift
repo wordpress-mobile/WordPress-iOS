@@ -4,8 +4,8 @@ import XCTest
 class LoginFlow {
 
     @discardableResult
-    static func login(email: String, password: String) -> MySiteScreen {
-        try! logoutIfNeeded()
+    static func login(email: String, password: String) throws -> MySiteScreen {
+        try logoutIfNeeded()
 
         return PrologueScreen().selectContinue()
             .proceedWith(email: email)
@@ -16,8 +16,8 @@ class LoginFlow {
 
     // Login with self-hosted site via Site Address.
     @discardableResult
-    static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
-        try! logoutIfNeeded()
+    static func login(siteUrl: String, username: String, password: String) throws -> MySiteScreen {
+        try logoutIfNeeded()
 
         return PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: siteUrl)
@@ -37,8 +37,8 @@ class LoginFlow {
 
     // Login with WP site via Site Address.
     @discardableResult
-    static func login(siteUrl: String, email: String, password: String) -> MySiteScreen {
-        try! logoutIfNeeded()
+    static func login(siteUrl: String, email: String, password: String) throws -> MySiteScreen {
+        try logoutIfNeeded()
 
         return PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
@@ -49,17 +49,17 @@ class LoginFlow {
     }
 
     // Login with self-hosted site via Site Address.
-    static func loginIfNeeded(siteUrl: String, username: String, password: String) -> TabNavComponent {
+    static func loginIfNeeded(siteUrl: String, username: String, password: String) throws -> TabNavComponent {
         guard TabNavComponent.isLoaded() else {
-            return login(siteUrl: siteUrl, username: username, password: password).tabBar
+            return try login(siteUrl: siteUrl, username: username, password: password).tabBar
         }
         return TabNavComponent()
     }
 
     // Login with WP site via Site Address.
-    static func loginIfNeeded(siteUrl: String, email: String, password: String) -> TabNavComponent {
+    static func loginIfNeeded(siteUrl: String, email: String, password: String) throws -> TabNavComponent {
         guard TabNavComponent.isLoaded() else {
-            return login(siteUrl: siteUrl, email: email, password: password).tabBar
+            return try login(siteUrl: siteUrl, email: email, password: password).tabBar
         }
         return TabNavComponent()
     }

@@ -3,10 +3,10 @@ import XCTest
 class EditorAztecTests: XCTestCase {
     private var editorScreen: AztecEditorScreen!
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()

@@ -3,10 +3,10 @@ import XCTest
 class EditorGutenbergTests: XCTestCase {
     private var editorScreen: BlockEditorScreen!
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .gotoMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
