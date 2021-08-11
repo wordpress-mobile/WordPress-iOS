@@ -14,6 +14,7 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
     var title: String? = nil {
         didSet {
             buttonLabel.text = title
+            accessibilityLabel = title
         }
     }
 
@@ -64,6 +65,7 @@ private extension SingleButtonTableViewCell {
 
     func setupViews() {
         selectionStyle = .none
+        accessibilityTraits = .button
 
         // hide the icon initially.
         toggleIcon(visible: false)
