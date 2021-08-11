@@ -40,9 +40,10 @@ class ShareAppContentPresenter {
 
     /// Fetches the content needed for sharing, and presents the share sheet through the provided `sender` instance.
     ///
-    func present(for appName: ShareAppName, in sender: UIViewController) {
+    func present(for appName: ShareAppName, in sender: UIViewController, completion: (() -> Void)? = nil) {
         if let content = cachedContent {
             presentShareSheet(with: content, in: sender)
+            completion?()
             return
         }
 
@@ -50,8 +51,6 @@ class ShareAppContentPresenter {
 
         remote.getContent(for: appName) { [weak self] result in
             guard let self = self else { return }
-
-            self.isLoading = false
 
             switch result {
             case .success(let content):
@@ -61,6 +60,9 @@ class ShareAppContentPresenter {
             case .failure:
                 self.showFailureNotice(in: sender)
             }
+
+            self.isLoading = false
+            completion?()
         }
     }
 }
