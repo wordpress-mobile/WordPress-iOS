@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Build a website or blog"
+msgid "Build a website or blog
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -40,13 +41,17 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v17.9-whats-new"
+msgctxt "v18.0-whats-new"
 msgid ""
-"There’s a new block in town! With the Embed block, you can embed content from your favorite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.\n"
+"In 18.0 we’ve optimized the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.\n"
 "\n"
-"Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).\n"
+"You can now set or remove a featured image for a post from the image block’s settings. And in case you forget, a new ‘featured’ banner highlights your current selection.\n"
 "\n"
-"We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and trash comments. We’ve also provided support for Global Styles, enabling settings like color and background customization for Full Site Editing themes.\n"
+"Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.\n"
+"\n"
+"When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.\n"
+"\n"
+"Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
