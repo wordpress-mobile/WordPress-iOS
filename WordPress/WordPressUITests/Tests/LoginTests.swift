@@ -46,18 +46,6 @@ class LoginTests: XCTestCase {
         XCTAssert(welcomeScreen.isLoaded())
     }
 
-    // Unified WordPress.com login
-    func testWPcomLogin() {
-        _ = PrologueScreen().selectContinue()
-            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
-
-        XCTAssert(MySiteScreen().isLoaded())
-    }
-
     // Unified self hosted login/out
     func testSelfHostedLoginLogout() {
         PrologueScreen().selectSiteAddress()
