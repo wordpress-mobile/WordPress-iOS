@@ -90,8 +90,8 @@ private extension ShareAppContentPresenter {
         }
 
         let activityItems = [
-            linkURL as Any,
-            ShareAppTextActivityItemSource(message: content.message) as Any
+            ShareAppTextActivityItemSource(message: content.message) as Any,
+            linkURL as Any
         ]
 
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
