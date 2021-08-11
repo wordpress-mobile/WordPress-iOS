@@ -30,12 +30,38 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
         }
     }
 
+    /// Toggles the loading state of the cell.
+    var isLoading: Bool = false {
+        didSet {
+            toggleLoading(isLoading)
+        }
+    }
+
     // MARK: IBOutlets
 
     @IBOutlet private weak var buttonLabel: UILabel!
     @IBOutlet private weak var iconImageView: UIImageView!
     @IBOutlet weak var labelCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var iconTrailingConstraint: NSLayoutConstraint!
+
+    // MARK: Activity Indicator
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = false
+        return indicator
+    }()
+
+    private lazy var loadingOverlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .listForeground
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(activityIndicator)
+        view.pinSubviewAtCenter(activityIndicator)
+        return view
+    }()
 
     // MARK: Initialization
 
@@ -85,6 +111,23 @@ private extension SingleButtonTableViewCell {
         // adjust the label's center alignment when the icon is visible, to make the button properly centered.
         let adjustmentValue = (iconImageView.frame.width + iconTrailingConstraint.constant) / 2
         labelCenterXConstraint.constant = visible ? adjustmentValue : 0
+    }
+
+    func toggleLoading(_ loading: Bool) {
+        if loadingOverlayView.superview == nil {
+            contentView.addSubview(loadingOverlayView)
+            contentView.pinSubviewToAllEdges(loadingOverlayView)
+        }
+
+        if loading {
+            activityIndicator.startAnimating()
+            bringSubviewToFront(loadingOverlayView)
+        } else {
+            activityIndicator.stopAnimating()
+            sendSubviewToBack(loadingOverlayView)
+        }
+
+        loadingOverlayView.isHidden = !loading
     }
 
 }
