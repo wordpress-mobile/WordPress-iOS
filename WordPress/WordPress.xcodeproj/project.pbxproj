@@ -4324,6 +4324,7 @@
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
 		FE3D058026C3E0F2002A51B0 /* share-app-link-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE3D057F26C3E0F2002A51B0 /* share-app-link-success.json */; };
+		FE3D058226C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */; };
 		FE3E427826A868E300C596CE /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE3E427926A868EC00C596CE /* ListTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEA088022696E81F00193358 /* ListTableHeaderView.xib */; };
 		FE3E427A26A8690100C596CE /* ListSimpleOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3E83E326A58646008CE851 /* ListSimpleOverlayView.swift */; };
@@ -7488,6 +7489,7 @@
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
 		FE3D057F26C3E0F2002A51B0 /* share-app-link-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "share-app-link-success.json"; sourceTree = "<group>"; };
+		FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareAppContentPresenter+ImmuTable.swift"; sourceTree = "<group>"; };
 		FE3E83E326A58646008CE851 /* ListSimpleOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSimpleOverlayView.swift; sourceTree = "<group>"; };
 		FE3E83E426A58646008CE851 /* ListSimpleOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListSimpleOverlayView.xib; sourceTree = "<group>"; };
 		FEA088002696E7F600193358 /* ListTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableHeaderView.swift; sourceTree = "<group>"; };
@@ -14367,6 +14369,7 @@
 			children = (
 				FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */,
 				FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */,
+				FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -18693,6 +18696,7 @@
 				73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */,
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				321955C124BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift in Sources */,
+				FE3D058226C40E66002A51B0 /* ShareAppContentPresenter+ImmuTable.swift in Sources */,
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */,
 				D842EA4021FABB1800210E96 /* SiteSegmentTests.swift in Sources */,
