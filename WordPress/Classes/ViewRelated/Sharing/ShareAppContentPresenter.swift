@@ -21,10 +21,11 @@ class ShareAppContentPresenter {
 
     // MARK: Private Properties
 
-    private var account: WPAccount
+    /// The API used for fetching the share app link. Anonymous profile is allowed.
+    private let api: WordPressComRestApi
 
     private lazy var remote: ShareAppContentServiceRemote = {
-        ShareAppContentServiceRemote(wordPressComRestApi: account.wordPressComRestV2Api)
+        ShareAppContentServiceRemote(wordPressComRestApi: api)
     }()
 
     /// In-memory cache. As long as the same presenter instance is used, there's no need to re-fetch the content everytime `shareContent` is called.
@@ -32,8 +33,9 @@ class ShareAppContentPresenter {
 
     // MARK: Initialization
 
-    init(account: WPAccount) {
-        self.account = account
+    /// Instantiates the presenter. When the provided account is nil, the presenter will default to anonymous API.
+    init(account: WPAccount?) {
+        self.api = account?.wordPressComRestV2Api ?? .anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 
     // MARK: Public Methods
