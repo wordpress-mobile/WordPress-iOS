@@ -16,7 +16,7 @@ class LoginTests: XCTestCase {
     }
 
     // Unified email login/out
-    func testWordPressLoginLogout() throws {
+    func testWPcomLoginLogout() throws {
         let prologueScreen = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
