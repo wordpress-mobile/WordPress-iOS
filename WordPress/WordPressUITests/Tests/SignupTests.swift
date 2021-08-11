@@ -2,16 +2,17 @@ import XCTest
 
 class SignupTests: XCTestCase {
 
-    override func setUp() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite()
 
-        LoginFlow.logoutIfNeeded()
+        try LoginFlow.logoutIfNeeded()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        try LoginFlow.logoutIfNeeded()
+        try super.tearDownWithError()
     }
 
     func testEmailSignup() {
