@@ -36,8 +36,9 @@ steps:
   #################
   # Build the Git Repo cache
   #
-  # Because this repo is so large, we create a Git Mirror and copy it to S3, where
-  # it can be fetch by agents more quickly than from GitHub.
+  # Because this repo is so large, we periodically create a Git Mirror and copy it to S3,
+  # from where it can be fetched by agents more quickly than from GitHub, and so that
+  # agents then have less new commits to `git pull` by using that cache as starting point
   #################
   - label: ":git: Rebuild git cache"
     command: "cache_repo a8c-repo-mirrors"
