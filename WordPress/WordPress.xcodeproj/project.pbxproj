@@ -4345,6 +4345,8 @@
 		FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEDDD47026A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEFA263E26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */; };
+		FEFA263F26C5AE9A009CCB7E /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
+		FEFA264026C5AE9E009CCB7E /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
 		FF00889B204DF3ED007CCE66 /* Blog+Quota.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889A204DF3ED007CCE66 /* Blog+Quota.swift */; };
 		FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */; };
 		FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889E204E01AE007CCE66 /* MediaQuotaCell.swift */; };
@@ -18906,6 +18908,7 @@
 				FABB20F12602FC2C00C8785C /* RecentSitesService.swift in Sources */,
 				FABB20F22602FC2C00C8785C /* PlanService.swift in Sources */,
 				FABB20F32602FC2C00C8785C /* Routes+Mbar.swift in Sources */,
+				FEFA264026C5AE9E009CCB7E /* ShareAppTextActivityItemSource.swift in Sources */,
 				FABB20F42602FC2C00C8785C /* PostListEditorPresenter.swift in Sources */,
 				FABB20F52602FC2C00C8785C /* PreviewDeviceLabel.swift in Sources */,
 				FABB20F62602FC2C00C8785C /* WPStyleGuide+ReaderComments.swift in Sources */,
@@ -19488,6 +19491,7 @@
 				FABB230D2602FC2C00C8785C /* SiteCreator.swift in Sources */,
 				FABB230E2602FC2C00C8785C /* CalendarMonthView.swift in Sources */,
 				FABB230F2602FC2C00C8785C /* RestoreStatusFailedView.swift in Sources */,
+				FEFA263F26C5AE9A009CCB7E /* ShareAppContentPresenter.swift in Sources */,
 				FABB23112602FC2C00C8785C /* PostingActivityLegend.swift in Sources */,
 				FABB23122602FC2C00C8785C /* WPImmuTableRows.swift in Sources */,
 				FABB23132602FC2C00C8785C /* WordPress-87-88.xcmappingmodel in Sources */,
