@@ -7,7 +7,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case readerCSS
     case homepageSettings
     case unifiedPrologueCarousel
-    case stories
     case layoutGrid
     case todayWidget
     case milestoneNotifications
@@ -32,8 +31,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .homepageSettings:
             return true
         case .unifiedPrologueCarousel:
-            return true
-        case .stories:
             return true
         case .layoutGrid:
             return true
@@ -85,8 +82,6 @@ extension FeatureFlag {
             return "Homepage Settings"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
-        case .stories:
-            return "Stories"
         case .layoutGrid:
             return "Layout Grid"
         case .todayWidget:
