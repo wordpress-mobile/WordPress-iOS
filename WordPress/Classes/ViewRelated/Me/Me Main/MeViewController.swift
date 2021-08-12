@@ -145,35 +145,34 @@ class MeViewController: UITableViewController {
 
         let wordPressComAccount = HeaderTitles.wpAccount
 
-        if loggedIn {
-            return ImmuTable(
-                sections: [
-                    ImmuTableSection(rows: [
-                        myProfile,
-                        accountSettings,
-                        appSettingsRow
-                    ]),
-                    ImmuTableSection(rows: [helpAndSupportIndicator]),
-                    ImmuTableSection(
-                        headerText: wordPressComAccount,
-                        rows: [
-                            logOut
-                    ])
-            ])
-        } else { // Logged out
-            return ImmuTable(
-                sections: [
-                    ImmuTableSection(rows: [
-                        appSettingsRow,
-                    ]),
-                    ImmuTableSection(rows: [helpAndSupportIndicator]),
-                    ImmuTableSection(
-                        headerText: wordPressComAccount,
-                        rows: [
-                            logIn
-                    ])
-            ])
-        }
+        return ImmuTable(sections: [
+            // first section
+            .init(rows: {
+                var rows: [ImmuTableRow] = [appSettingsRow]
+                if loggedIn {
+                    rows = [myProfile, accountSettings] + rows
+                }
+                return rows
+            }()),
+
+            // middle section
+            .init(rows: {
+                var rows: [ImmuTableRow] = [helpAndSupportIndicator]
+                if isRecommendAppRowEnabled {
+                    rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                                                  icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                                  accessoryType: accessoryType,
+                                                  action: displayShareFlow(),
+                                                  loading: sharePresenter.isLoading))
+                }
+                return rows
+            }()),
+
+            // last section
+            .init(headerText: wordPressComAccount, rows: {
+                return [loggedIn ? logOut : logIn]
+            }())
+        ])
     }
 
     // MARK: - UITableViewDelegate
@@ -243,6 +242,13 @@ class MeViewController: UITableViewController {
             self.navigationController?.pushViewController(controller,
                                                           animated: true,
                                                           rightBarButton: self.navigationItem.rightBarButtonItem)
+        }
+    }
+
+    func displayShareFlow() -> ImmuTableAction {
+        return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            self.sharePresenter.present(for: .wordpress, in: self)
         }
     }
 
@@ -395,6 +401,17 @@ class MeViewController: UITableViewController {
     fileprivate func promptForLoginOrSignup() {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
     }
+
+    /// Convenience property to determine whether the recomend app row should be displayed or not.
+    private var isRecommendAppRowEnabled: Bool {
+        FeatureFlag.recommendAppToOthers.enabled && !AppConfiguration.isJetpack
+    }
+
+    private lazy var sharePresenter: ShareAppContentPresenter = {
+        let presenter = ShareAppContentPresenter(account: defaultAccount())
+        presenter.delegate = self
+        return presenter
+    }()
 }
 
 // MARK: - SearchableActivity Conformance
@@ -473,6 +490,18 @@ private extension MeViewController {
 private extension MeViewController {
 
     @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
+        reloadViewModel()
+    }
+}
+
+// MARK: - ShareAppContentPresenterDelegate
+
+extension MeViewController: ShareAppContentPresenterDelegate {
+    func didUpdateLoadingState(_ loading: Bool) {
+        guard isRecommendAppRowEnabled else {
+            return
+        }
+
         reloadViewModel()
     }
 }
