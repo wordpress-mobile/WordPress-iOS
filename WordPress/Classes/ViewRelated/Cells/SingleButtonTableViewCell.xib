@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,45 +19,57 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="luP-wf-ZhP" userLabel="Button Label">
-                        <rect key="frame" x="153.5" y="13" width="33" height="20"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IA9-vZ-mee" userLabel="Icon Image View">
-                        <rect key="frame" x="129.5" y="13.5" width="20" height="19"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYX-Yt-4C8" userLabel="Centered View">
+                        <rect key="frame" x="131.5" y="13" width="57" height="20"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IA9-vZ-mee" userLabel="Icon Image View">
+                                <rect key="frame" x="0.0" y="0.5" width="20" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="IA9-vZ-mee" secondAttribute="height" multiplier="1:1" id="wYa-T8-Tgd"/>
+                                </constraints>
+                                <imageReference key="image" image="info.circle" catalog="system" symbolScale="default"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="luP-wf-ZhP" userLabel="Button Label">
+                                <rect key="frame" x="24" y="0.0" width="33" height="20"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="0dh-Z6-Vjj"/>
-                            <constraint firstAttribute="width" secondItem="IA9-vZ-mee" secondAttribute="height" multiplier="1:1" id="wYa-T8-Tgd"/>
+                            <constraint firstItem="luP-wf-ZhP" firstAttribute="leading" secondItem="IA9-vZ-mee" secondAttribute="trailing" constant="4" id="3D9-EH-Qfq"/>
+                            <constraint firstItem="IA9-vZ-mee" firstAttribute="leading" secondItem="lYX-Yt-4C8" secondAttribute="leading" id="A24-L3-BFI"/>
+                            <constraint firstAttribute="bottom" secondItem="luP-wf-ZhP" secondAttribute="bottom" id="GgG-53-09j"/>
+                            <constraint firstItem="luP-wf-ZhP" firstAttribute="top" secondItem="lYX-Yt-4C8" secondAttribute="top" id="UQl-bS-dU0"/>
+                            <constraint firstItem="IA9-vZ-mee" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lYX-Yt-4C8" secondAttribute="top" id="Viq-O8-aLE"/>
+                            <constraint firstItem="IA9-vZ-mee" firstAttribute="centerY" secondItem="luP-wf-ZhP" secondAttribute="centerY" id="Yzw-35-iSN"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IA9-vZ-mee" secondAttribute="bottom" id="bm5-po-Ndc"/>
+                            <constraint firstAttribute="trailing" secondItem="luP-wf-ZhP" secondAttribute="trailing" id="i2R-nc-2hC"/>
                         </constraints>
-                        <imageReference key="image" image="info.circle" catalog="system" symbolScale="default"/>
-                    </imageView>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IA9-vZ-mee" secondAttribute="bottom" constant="13" id="9BD-mZ-Eq9"/>
-                    <constraint firstItem="IA9-vZ-mee" firstAttribute="centerY" secondItem="luP-wf-ZhP" secondAttribute="centerY" id="9tR-Ub-Pd0"/>
-                    <constraint firstItem="luP-wf-ZhP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" id="DEZ-rv-FlM"/>
-                    <constraint firstItem="IA9-vZ-mee" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="JL9-r3-FP5"/>
-                    <constraint firstItem="luP-wf-ZhP" firstAttribute="leading" secondItem="IA9-vZ-mee" secondAttribute="trailing" constant="4" id="MCa-9X-e1q"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="luP-wf-ZhP" secondAttribute="trailing" id="TaG-fe-ETW"/>
-                    <constraint firstItem="luP-wf-ZhP" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" constant="10" id="V9B-D2-OqW"/>
-                    <constraint firstItem="luP-wf-ZhP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="idw-63-nAV"/>
-                    <constraint firstAttribute="bottom" secondItem="luP-wf-ZhP" secondAttribute="bottom" constant="13" id="wlJ-tt-IfD"/>
-                    <constraint firstItem="IA9-vZ-mee" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="4" id="yae-FV-1wZ"/>
+                    <constraint firstItem="lYX-Yt-4C8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="4cY-qH-NUL"/>
+                    <constraint firstItem="lYX-Yt-4C8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="4" id="AAK-YN-Dr9"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lYX-Yt-4C8" secondAttribute="trailing" constant="4" id="DiF-jp-38L"/>
+                    <constraint firstItem="lYX-Yt-4C8" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="YzW-73-N0R"/>
+                    <constraint firstItem="lYX-Yt-4C8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="jWa-mc-q3V"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="lYX-Yt-4C8" secondAttribute="bottom" constant="4" id="wCj-hr-cmb"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="buttonLabel" destination="luP-wf-ZhP" id="cPt-Sq-CGl"/>
                 <outlet property="iconImageView" destination="IA9-vZ-mee" id="9vR-uv-Tqb"/>
-                <outlet property="iconTrailingConstraint" destination="MCa-9X-e1q" id="gW6-gf-cAL"/>
-                <outlet property="labelCenterXConstraint" destination="V9B-D2-OqW" id="Rzl-nD-D9C"/>
             </connections>
             <point key="canvasLocation" x="-133" y="156"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="info.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
