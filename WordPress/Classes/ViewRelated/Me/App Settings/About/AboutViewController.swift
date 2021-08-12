@@ -197,13 +197,13 @@ open class AboutViewController: UITableViewController {
     private func displayShareApp() {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        guard let presenter = sharePresenter,
-              isRecommendAppSectionEnabled,
-              !presenter.isLoading else {
+        guard let sharePresenter = sharePresenter,
+              !sharePresenter.isLoading,
+              isRecommendAppSectionEnabled else {
             return
         }
 
-        presenter.present(for: .wordpress, in: self)
+        sharePresenter.present(for: .wordpress, in: self)
     }
 
     // MARK: - Nested Row Class
@@ -298,6 +298,7 @@ open class AboutViewController: UITableViewController {
                 handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
         ])
 
+        // append the share app section in the middle section.
         if isRecommendAppSectionEnabled,
            let presenter = sharePresenter {
             sections.append([
@@ -345,7 +346,7 @@ extension AboutViewController: ShareAppContentPresenterDelegate {
             return
         }
 
-        tableView.reloadSections([Constants.buttonCellSection], with: .fade)
+        tableView.reloadSections([Constants.shareButtonCellSection], with: .fade)
     }
 }
 
@@ -378,7 +379,6 @@ private extension AboutViewController {
     struct Constants {
         static let iconBottomPadding: CGFloat = 30.0
         static let acknowledgementsURL: URL? = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
-
-        static let buttonCellSection: Int = 1
+        static let shareButtonCellSection: Int = 1
     }
 }
