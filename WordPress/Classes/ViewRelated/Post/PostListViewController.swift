@@ -170,7 +170,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.createPost()
             }, source: Constants.source)
         ]
-        if Feature.enabled(.stories) && blog.supports(.stories) {
+        if blog.supports(.stories) {
             actions.insert(StoryAction(handler: { [weak self] in
                 guard let self = self else {
                     return
