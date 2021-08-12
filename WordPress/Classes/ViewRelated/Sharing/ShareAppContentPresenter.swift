@@ -34,7 +34,7 @@ class ShareAppContentPresenter {
     // MARK: Initialization
 
     /// Instantiates the presenter. When the provided account is nil, the presenter will default to anonymous API.
-    init(account: WPAccount?) {
+    init(account: WPAccount? = nil) {
         self.api = account?.wordPressComRestV2Api ?? .anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
     }
 
@@ -45,6 +45,11 @@ class ShareAppContentPresenter {
     func present(for appName: ShareAppName, in sender: UIViewController, completion: (() -> Void)? = nil) {
         if let content = cachedContent {
             presentShareSheet(with: content, in: sender)
+            completion?()
+            return
+        }
+
+        guard !isLoading else {
             completion?()
             return
         }
