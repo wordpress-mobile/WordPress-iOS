@@ -88,14 +88,17 @@ struct WeeklyRoundupDebugScreen: View {
     }
 
     func scheduleImmediately() {
+        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
+            if authorized {
+                typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
 
-        typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
+                let selector = Selector(("_simulateLaunchForTaskWithIdentifier:"))
+                let methodImp = BGTaskScheduler.shared.method(for: selector)
+                let method = unsafeBitCast(methodImp, to: LaunchTaskWithIdentifier.self)
 
-        let selector = Selector(("_simulateLaunchForTaskWithIdentifier:"))
-        let methodImp = BGTaskScheduler.shared.method(for: selector)
-        let method = unsafeBitCast(methodImp, to: LaunchTaskWithIdentifier.self)
-
-        method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
+                method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
+            }
+        }
     }
 
     func scheduleDelayed(taskRunDelay: TimeInterval, staticNotificationDelay: TimeInterval) {

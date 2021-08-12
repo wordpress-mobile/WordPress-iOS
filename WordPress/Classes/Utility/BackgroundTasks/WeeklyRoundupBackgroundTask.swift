@@ -195,7 +195,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             matchingPolicy: .nextTime)
     }
 
-    func scheduled(success: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+    func willSchedule(completion: @escaping (Result<Void, Error>) -> Void) {
         // We're scheduling a static notification in case the BG task won't run.
         // This will happen when the App has been explicitly killed by the user as of 2021/08/03,
         // as Apple doesn't let background tasks run in this scenario.
@@ -322,7 +322,7 @@ class WeeklyRoundupNotificationScheduler {
     static let threadIdentifier = "org.wordpress.notification.threadIdentifier.weeklyRoundup"
 
     private lazy var staticNotificationIdentifier: String = {
-        "\(Self.notificationIdentifier)-static"
+        "\(Self.notificationIdentifier).static"
     }()
 
     func dynamicNotificationIdentifier(for blogID: Int) -> String {
