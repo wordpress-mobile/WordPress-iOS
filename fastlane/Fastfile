@@ -900,6 +900,7 @@ platform :ios do
       scheme: 'WordPress',
       device: options[:device],
       deployment_target_version: options[:ios_version],
+      ensure_devices_found: true,
       test_without_building: true,
       xctestrun: test_plan_path,
       try_count: options[:try_count],
