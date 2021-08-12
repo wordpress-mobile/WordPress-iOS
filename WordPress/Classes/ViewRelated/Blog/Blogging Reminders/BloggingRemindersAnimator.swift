@@ -51,11 +51,14 @@ class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning
                 transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
             return
         }
-
+        let destinationEndFrame = transitionContext.finalFrame(for: destinationViewController)
+        let destinationStartFrame = destinationEndFrame.offsetBy(dx: Self.sourceEndFrameOffset, dy: .zero)
+        destinationViewController.view.frame = destinationStartFrame
         transitionContext.containerView.insertSubview(destinationViewController.view, belowSubview: sourceViewController.view)
 
         UIView.animate(withDuration: transitionDuration(using: transitionContext),
                        animations: {
+                        destinationViewController.view.frame = destinationEndFrame
                         sourceViewController.view.transform = sourceViewController.view.transform.translatedBy(x: sourceViewController.view.frame.width, y: 0)
                        }, completion: {_ in
                         transitionContext.completeTransition(true)
