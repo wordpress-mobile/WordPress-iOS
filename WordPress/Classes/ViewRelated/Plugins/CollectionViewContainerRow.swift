@@ -67,7 +67,9 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
         cell.titleLabel.text = title
 
         cell.actionButton.setTitle(secondaryTitle, for: .normal)
-        cell.buttonTappedAction = { self.action?(self) }
+        cell.buttonTappedAction = {
+            self.action?(self)
+        }
 
         cell.noResultsView = noResultsView
 
@@ -80,6 +82,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
 
         cell.collectionView.delegate = helper
         cell.collectionView.dataSource = helper
+        cell.collectionView.isUserInteractionEnabled = true
     }
 
 }
