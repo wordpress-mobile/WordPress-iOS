@@ -46,7 +46,6 @@ protocol BackgroundTaskEventHandler {
 /// The task coordinator.  This is the entry point for registering and scheduling background tasks.
 ///
 class BackgroundTasksCoordinator {
-
     enum SchedulingError: Error {
         case schedulingFailed(tasksAndErrors: [String: Error])
         case schedulingFailed(task: String, error: Error)
@@ -81,6 +80,11 @@ class BackgroundTasksCoordinator {
 
         for task in tasks {
             scheduler.register(forTaskWithIdentifier: type(of: task).identifier, using: nil) { osTask in
+                guard Feature.enabled(.weeklyRoundup) else {
+                    osTask.setTaskCompleted(success: false)
+                    eventHandler.handle(.taskCompleted(identifier: type(of: task).identifier, cancelled: true))
+                    return
+                }
 
                 eventHandler.handle(.start(identifier: type(of: task).identifier))
 

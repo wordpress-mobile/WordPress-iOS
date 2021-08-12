@@ -21,6 +21,7 @@ final class InteractiveNotificationsManager: NSObject {
 
         enum NotificationType: String {
             case bloggingReminders = "blogging_reminders"
+            case weeklyRoundup = "weekly_roundup"
         }
 
         private let track: (AnalyticsEvent) -> Void
@@ -237,11 +238,43 @@ final class InteractiveNotificationsManager: NSObject {
 
                     WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
                 }
+            case .weeklyRoundup:
+                eventTracker.notificationTapped(type: .weeklyRoundup)
+
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    guard let targetBlog = blog(from: userInfo) else {
+                        DDLogError("Could not obtain the blog from the Weekly Notification thread ID.")
+                        break
+                    }
+
+                    let targetDate = date(from: userInfo)
+
+                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showStats(
+                        for: targetBlog,
+                        timePeriod: .weeks,
+                        date: targetDate)
+                }
             default: break
             }
         }
 
         return true
+    }
+}
+
+// MARK: - Notifications: Retrieving Stored Data
+
+extension InteractiveNotificationsManager {
+
+    static let blogIDKey = "blogID"
+    static let dateKey = "date"
+
+    private func blog(from userInfo: NSDictionary) -> Blog? {
+        if let blogID = userInfo[Self.blogIDKey] as? Int {
+            return try? Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext)
+        }
+
+        return nil
     }
 
     private func blog(from threadId: String?) -> Blog? {
@@ -251,6 +284,12 @@ final class InteractiveNotificationsManager: NSObject {
         }
 
         return nil
+    }
+
+    /// Retrieves a date from the userInfo dictionary using a generic "date" key.  This was made generic on purpose.
+    ///
+    private func date(from userInfo: NSDictionary) -> Date? {
+        userInfo[Self.dateKey] as? Date
     }
 }
 
@@ -409,7 +448,7 @@ extension InteractiveNotificationsManager {
         }
 
         static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup]
     }
 
 

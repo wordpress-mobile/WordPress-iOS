@@ -67,17 +67,22 @@ class DebugMenuViewController: UITableViewController {
     // MARK: Tools
 
     private var toolsRows: [ImmuTableRow] {
-        return [
+        var toolsRows = [
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
             }),
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
             }),
-            ButtonRow(title: "Weekly Roundup", action: { [weak self] _ in
-                self?.displayWeeklyRoundupDebugTools()
-            }),
         ]
+
+        if Feature.enabled(.weeklyRoundup) {
+            toolsRows.append(ButtonRow(title: "Weekly Roundup", action: { [weak self] _ in
+                self?.displayWeeklyRoundupDebugTools()
+            }))
+        }
+
+        return toolsRows
     }
 
     // MARK: Crash Logging

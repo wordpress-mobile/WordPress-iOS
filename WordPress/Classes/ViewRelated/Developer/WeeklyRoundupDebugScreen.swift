@@ -36,7 +36,7 @@ struct WeeklyRoundupDebugScreen: View {
                     Spacer()
 
                     Button("Schedule in 10 sec / 5 min") {
-                        self.scheduleDelayed(staticSecs: 5 * 60, dynamicSecs: 10)
+                        self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 5 * 60)
                     }
                     .buttonStyle(BlueButton())
                     .frame(width: 350)
@@ -51,7 +51,7 @@ struct WeeklyRoundupDebugScreen: View {
                     Spacer()
 
                     Button("Schedule in 10 sec / 30 min") {
-                        self.scheduleDelayed(staticSecs: 30 * 60, dynamicSecs: 10)
+                        self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 30 * 60)
                     }
                     .buttonStyle(BlueButton())
                     .frame(width: 350)
@@ -66,7 +66,7 @@ struct WeeklyRoundupDebugScreen: View {
                     Spacer()
 
                     Button("Schedule in 10 sec / 60 min") {
-                        self.scheduleDelayed(staticSecs: 60 * 60, dynamicSecs: 10)
+                        self.scheduleDelayed(taskRunDelay: 10, staticNotificationDelay: 60 * 60)
                     }
                     .buttonStyle(BlueButton())
                     .frame(width: 350)
@@ -98,19 +98,19 @@ struct WeeklyRoundupDebugScreen: View {
         method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
     }
 
-    func scheduleDelayed(staticSecs: TimeInterval, dynamicSecs: TimeInterval) {
+    func scheduleDelayed(taskRunDelay: TimeInterval, staticNotificationDelay: TimeInterval) {
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
             if authorized {
                 DispatchQueue.main.async {
-                    let dynamicNotificationDate = Date(timeIntervalSinceNow: dynamicSecs)
-                    let staticNotificationDate = Date(timeIntervalSinceNow: staticSecs)
+                    let taskRunDate = Date(timeIntervalSinceNow: taskRunDelay)
+                    let staticNotificationDate = Date(timeIntervalSinceNow: staticNotificationDelay)
                     let calendar = Calendar.current
 
-                    let dynamicNotificationDateComponents = calendar.dateComponents([.hour, .minute, .second], from: dynamicNotificationDate)
+                    let runDateComponents = calendar.dateComponents([.hour, .minute, .second], from: taskRunDate)
                     let staticNotificationDateComponents = calendar.dateComponents([.hour, .minute, .second], from: staticNotificationDate)
 
                     let backgroundTask = WeeklyRoundupBackgroundTask(
-                        dynamicNotificationDateComponents: dynamicNotificationDateComponents,
+                        runDateComponents: runDateComponents,
                         staticNotificationDateComponents: staticNotificationDateComponents)
 
                     WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { result in

@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteIconCreator
     case editorOnboardingHelpMenu
     case unifiedCommentsAndNotificationsList
+    case weeklyRoundup
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -61,6 +62,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedCommentsAndNotificationsList:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .weeklyRoundup:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -121,6 +124,8 @@ extension FeatureFlag {
             return "Editor Onboarding Help Menu"
         case .unifiedCommentsAndNotificationsList:
             return "Unified List for Comments and Notifications"
+        case .weeklyRoundup:
+            return "Weekly Roundup"
         }
     }
 
@@ -132,6 +137,19 @@ extension FeatureFlag {
             return false
         default:
             return true
+        }
+    }
+
+    func overrideChanged() {
+        switch self {
+        case .weeklyRoundup:
+            if Feature.enabled(.weeklyRoundup) {
+                // Reschedule BG task and notifications
+            } else {
+                // Cancel BG task and notifications
+            }
+        default:
+            break
         }
     }
 }
