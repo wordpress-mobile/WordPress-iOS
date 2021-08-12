@@ -546,6 +546,7 @@
 		3FBF21B7267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
 		3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
 		3FC2C33D26C4CF0A00C6D98F /* XCUITestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */; };
+		3FC2C33F26C4E75F00C6D98F /* ScreenObject in Frameworks */ = {isa = PBXBuildFile; productRef = 3FC2C33E26C4E75F00C6D98F /* ScreenObject */; };
 		3FC7F89E2612341900FD8728 /* UnifiedPrologueStatsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7F89D2612341900FD8728 /* UnifiedPrologueStatsContentView.swift */; };
 		3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */; };
 		3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -7777,6 +7778,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA640672670D1290064401E /* UITestsFoundation.framework in Frameworks */,
+				3FC2C33F26C4E75F00C6D98F /* ScreenObject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14780,6 +14782,9 @@
 				FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */,
 			);
 			name = JetpackScreenshotGeneration;
+			packageProductDependencies = (
+				3FC2C33E26C4E75F00C6D98F /* ScreenObject */,
+			);
 			productName = WordPressScreenshotGeneration;
 			productReference = FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -24795,6 +24800,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */;
 			productName = XCUITestHelpers;
+		};
+		3FC2C33E26C4E75F00C6D98F /* ScreenObject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */;
+			productName = ScreenObject;
 		};
 		3FF1442F266F3C2400138163 /* ScreenObject */ = {
 			isa = XCSwiftPackageProductDependency;
