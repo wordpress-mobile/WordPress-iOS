@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,14 +28,14 @@
                                 </constraints>
                                 <imageReference key="image" image="info.circle" catalog="system" symbolScale="default"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="luP-wf-ZhP" userLabel="Button Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="luP-wf-ZhP" userLabel="Button Label">
                                 <rect key="frame" x="24" y="0.0" width="33" height="20"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="luP-wf-ZhP" firstAttribute="leading" secondItem="IA9-vZ-mee" secondAttribute="trailing" constant="4" id="3D9-EH-Qfq"/>
                             <constraint firstItem="IA9-vZ-mee" firstAttribute="leading" secondItem="lYX-Yt-4C8" secondAttribute="leading" id="A24-L3-BFI"/>
@@ -54,8 +53,8 @@
                     <constraint firstItem="lYX-Yt-4C8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="4" id="AAK-YN-Dr9"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lYX-Yt-4C8" secondAttribute="trailing" constant="4" id="DiF-jp-38L"/>
                     <constraint firstItem="lYX-Yt-4C8" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="YzW-73-N0R"/>
-                    <constraint firstItem="lYX-Yt-4C8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="jWa-mc-q3V"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="lYX-Yt-4C8" secondAttribute="bottom" constant="4" id="wCj-hr-cmb"/>
+                    <constraint firstItem="lYX-Yt-4C8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="jWa-mc-q3V"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="lYX-Yt-4C8" secondAttribute="bottom" constant="12" id="wCj-hr-cmb"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -68,8 +67,5 @@
     </objects>
     <resources>
         <image name="info.circle" catalog="system" width="128" height="121"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
