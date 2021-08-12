@@ -1,3 +1,8 @@
+# This script is run via Buildkite's scheduled jobs feature.
+#
+# It's meant to rebuild various CI caches on a periodic async basis, so as
+# not to waste time on every CI job updating the cache.
+
 # Nodes with values to reuse in the pipeline.
 common_params:
   # Common plugin settings to use with the `plugins` key.
@@ -14,6 +19,9 @@ steps:
 
   #################
   # Build the CocoaPods Base Cache
+  # 
+  # This prevents the base cache from infinite growth caused by storing every
+  # version of every pod we've ever used.
   #################
   - label: ":cocoapods: Rebuild CocoaPods cache"
     command: |
@@ -26,7 +34,10 @@ steps:
     plugins: *common_plugins
 
   #################
-  # Build the CI cache
+  # Build the Git Repo cache
+  #
+  # Because this repo is so large, we create a Git Mirror and copy it to S3, where
+  # it can be fetch by agents more quickly than from GitHub.
   #################
   - label: ":git: Rebuild git cache"
     command: "cache_repo a8c-repo-mirrors"
