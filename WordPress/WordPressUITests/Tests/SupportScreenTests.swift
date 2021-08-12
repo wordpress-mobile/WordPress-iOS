@@ -2,15 +2,15 @@ import XCTest
 
 class SupportScreenTests: XCTestCase {
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        LoginFlow.logoutIfNeeded()
+        try LoginFlow.logoutIfNeeded()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
+        try LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 

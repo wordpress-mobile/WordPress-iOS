@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-08 08:08:57+0000 */
+/* Translation-Revision-Date: 2021-08-05 08:39:38+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -7579,7 +7579,7 @@
 
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
-"Uploaded" = "Przesłano";
+"Uploaded" = "Wysłano";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Uploaded 1 draft post, %ld files";

@@ -1,0 +1,5 @@
+Er is een nieuw blok in de stad! Met het Insluit blok, kun je inhoud van je favoriete diensten zoals YouTube, TikTok, Instagram, en meer insluiten. Blijf op de hoogte van de komende extra functies.
+
+Houd je van onze Blog herinnering functie? Vroeger konden alleen site beheerders herinneringen instellen, maar we hebben deze functie nu ingeschakeld voor mensen die berichten op je site kunnen bewerken (redacteuren, auteurs en bijdragers).
+
+We hebben verbeteringen aangebracht in de moderatie van reacties, zodat de juiste gebruikers naar links kunnen vegen om reacties goed/af te keuren en in de prullenbak te gooien. We hebben ook ondersteuning geboden voor Globale stijlen, waardoor instellingen zoals kleur en achtergrond kunnen worden aangepast voor thema's voor volledige site bewerking.
