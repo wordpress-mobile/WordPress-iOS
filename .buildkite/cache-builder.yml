@@ -29,7 +29,7 @@ steps:
       install_gems
 
       echo "--- :cocoapods: Rebuilding Pod Cache"
-      cache_cocoapods_specs_repo
+      cache_cocoapods_specs_repos
     env: *common_env
     plugins: *common_plugins
 
