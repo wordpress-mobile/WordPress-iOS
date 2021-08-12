@@ -7,7 +7,7 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/bash-cache#v1.4.0
+    - automattic/bash-cache#v1.5.0
     - automattic/git-s3-cache#v1.1.0:
         bucket: "a8c-repo-mirrors"
         repo: "wordpress-mobile/wordpress-ios/"
@@ -29,7 +29,7 @@ steps:
       install_gems
 
       echo "--- :cocoapods: Rebuilding Pod Cache"
-      cache_cocoapods
+      cache_cocoapods_specs_repo
     env: *common_env
     plugins: *common_plugins
 
