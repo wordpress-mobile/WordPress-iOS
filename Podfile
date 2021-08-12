@@ -47,11 +47,11 @@ def wordpress_ui
 end
 
 def wordpress_kit
-#    pod 'WordPressKit', '~> 4.39.0'
+    pod 'WordPressKit', '~> 4.40.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-     pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def kanvas
@@ -130,6 +130,7 @@ def gutenberg_dependencies(options)
         'react-native-safe-area',
         'react-native-safe-area-context',
         'react-native-video',
+        'react-native-webview',
         'RNSVG',
         'react-native-slider',
         'BVLinearGradient',
@@ -165,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.59.0'
+    gutenberg :tag => 'v1.60.0-alpha1'
 
     ## Third party libraries
     ## =====================
