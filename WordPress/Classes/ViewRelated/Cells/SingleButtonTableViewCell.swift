@@ -21,12 +21,12 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
     var iconImage: UIImage? = nil {
         didSet {
             guard let someImage = iconImage else {
-                toggleIcon(visible: false)
+                iconImageView.isHidden = true
                 return
             }
 
             iconImageView.image = someImage.withRenderingMode(.alwaysTemplate)
-            toggleIcon(visible: true)
+            iconImageView.isHidden = false
         }
     }
 
@@ -41,8 +41,6 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
 
     @IBOutlet private weak var buttonLabel: UILabel!
     @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet weak var labelCenterXConstraint: NSLayoutConstraint!
-    @IBOutlet weak var iconTrailingConstraint: NSLayoutConstraint!
 
     // MARK: Activity Indicator
 
@@ -93,8 +91,8 @@ private extension SingleButtonTableViewCell {
         selectionStyle = .none
         accessibilityTraits = .button
 
-        // hide the icon initially.
-        toggleIcon(visible: false)
+        // hide the image view initially.
+        iconImageView.isHidden = true
         iconImageView.tintColor = tintColor
         iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
@@ -103,14 +101,6 @@ private extension SingleButtonTableViewCell {
         buttonLabel.font = WPStyleGuide.tableviewTextFont()
         buttonLabel.textColor = tintColor
         buttonLabel.numberOfLines = 0
-    }
-
-    func toggleIcon(visible: Bool) {
-        iconImageView.isHidden = !visible
-
-        // adjust the label's center alignment when the icon is visible, to make the button properly centered.
-        let adjustmentValue = (iconImageView.frame.width + iconTrailingConstraint.constant) / 2
-        labelCenterXConstraint.constant = visible ? adjustmentValue : 0
     }
 
     func toggleLoading(_ loading: Bool) {
