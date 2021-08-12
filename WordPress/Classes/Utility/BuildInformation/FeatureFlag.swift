@@ -60,7 +60,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unifiedCommentsAndNotificationsList:
             return true
         case .recommendAppToOthers:
-            return true
+            return false
         }
     }
 
