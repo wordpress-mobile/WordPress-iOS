@@ -22,15 +22,14 @@ steps:
 
       echo "--- :cocoapods: Rebuilding Pod Cache"
       cache_cocoapods
-    <<: *common_env
-    <<: *common_plugins
+    env: *common_env
+    plugins: *common_plugins
 
   #################
   # Build the CI cache
   #################
   - label: ":git: Rebuild git cache"
-    command: |
-      cache_repo "a8c-repo-mirrors"
+    command: "cache_repo a8c-repo-mirrors"
+    plugins: *common_plugins
     agents:
       queue: "default"
-    <<: *common_plugins
