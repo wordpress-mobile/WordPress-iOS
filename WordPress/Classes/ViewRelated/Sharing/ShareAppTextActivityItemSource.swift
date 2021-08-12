@@ -1,6 +1,6 @@
 /// A text-type UIActivityItemSource for the share app activity.
 ///
-/// This provides a subject string so the subject line is filled when sharing the app via mail.
+/// Provides additional subject string so the subject line is filled when sharing the app via mail.
 ///
 final class ShareAppTextActivityItemSource: NSObject {
     private let message: String

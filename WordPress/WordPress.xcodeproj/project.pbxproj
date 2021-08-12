@@ -4342,6 +4342,7 @@
 		FEDA1AD9269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
 		FEDDD47026A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
+		FEFA263E26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */; };
 		FF00889B204DF3ED007CCE66 /* Blog+Quota.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889A204DF3ED007CCE66 /* Blog+Quota.swift */; };
 		FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */; };
 		FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889E204E01AE007CCE66 /* MediaQuotaCell.swift */; };
@@ -7499,6 +7500,7 @@
 		FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Comments.swift"; sourceTree = "<group>"; };
 		FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Notifications.swift"; sourceTree = "<group>"; };
 		FEF93A01F06919BDB9486A8E /* Pods-WordPressHomeWidgetToday.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressHomeWidgetToday.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressHomeWidgetToday/Pods-WordPressHomeWidgetToday.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSourceTests.swift; sourceTree = "<group>"; };
 		FF00889A204DF3ED007CCE66 /* Blog+Quota.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Quota.swift"; sourceTree = "<group>"; };
 		FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaQuotaCell.xib; sourceTree = "<group>"; };
 		FF00889E204E01AE007CCE66 /* MediaQuotaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaQuotaCell.swift; sourceTree = "<group>"; };
@@ -14377,6 +14379,7 @@
 			isa = PBXGroup;
 			children = (
 				FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */,
+				FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */,
 			);
 			name = Sharing;
 			sourceTree = "<group>";
@@ -18690,6 +18693,7 @@
 				8BE69512243E674300FF492F /* PrepublishingHeaderViewTests.swift in Sources */,
 				40F50B82221310F000CBBB73 /* StatsTestCase.swift in Sources */,
 				02BE5CC02281B53F00E351BA /* RegisterDomainDetailsViewModelLoadingStateTests.swift in Sources */,
+				FEFA263E26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift in Sources */,
 				40EE948222132F5800CD264F /* PublicizeConectionStatsRecordValueTests.swift in Sources */,
 				577C2AAB22936DCB00AD1F03 /* PostCardCellGhostableTests.swift in Sources */,
 				02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */,
