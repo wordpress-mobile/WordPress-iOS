@@ -41,8 +41,6 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
 
     @IBOutlet private weak var buttonLabel: UILabel!
     @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet weak var labelCenterXConstraint: NSLayoutConstraint!
-    @IBOutlet weak var iconTrailingConstraint: NSLayoutConstraint!
 
     // MARK: Activity Indicator
 
@@ -93,7 +91,7 @@ private extension SingleButtonTableViewCell {
         selectionStyle = .none
         accessibilityTraits = .button
 
-        // hide the icon initially.
+        // hide the image view initially.
         iconImageView.isHidden = true
         iconImageView.tintColor = tintColor
         iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
