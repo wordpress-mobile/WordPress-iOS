@@ -38,6 +38,9 @@ class TimeSelectionViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        if isMovingFromParent {
+            /// - TODO: Read the selected date here
+        }
     }
 }
 
