@@ -5,7 +5,7 @@ class TimeSelectionViewController: UIViewController {
     var preferredWidth: CGFloat?
 
     private lazy var timeSelectionView: TimeSelectionView = {
-        let view = TimeSelectionView(selectedTime: "10:00 AM")
+        let view = TimeSelectionView(selectedTime: Date(timeIntervalSinceNow: 3600))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

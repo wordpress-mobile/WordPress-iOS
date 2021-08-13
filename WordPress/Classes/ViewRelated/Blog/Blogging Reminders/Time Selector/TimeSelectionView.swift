@@ -3,7 +3,7 @@ import UIKit
 /// A view that contains a time picker and a title reporting the selected time
 class TimeSelectionView: UIView {
 
-    private var selectedTime: String
+    private var selectedTime: Date
 
     private lazy var timePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -14,6 +14,7 @@ class TimeSelectionView: UIView {
 
         datePicker.datePickerMode = .time
         datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.setDate(selectedTime, animated: false)
         return datePicker
     }()
 
@@ -25,7 +26,7 @@ class TimeSelectionView: UIView {
     }()
 
     private lazy var titleBar: TimeSelectionButton = {
-        let button = TimeSelectionButton(selectedTime: selectedTime, insets: Self.titleInsets)
+        let button = TimeSelectionButton(selectedTime: selectedTime.toTime(), insets: Self.titleInsets)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         button.isChevronHidden = true
@@ -66,7 +67,7 @@ class TimeSelectionView: UIView {
         makeSpacer()
     }()
 
-    init(selectedTime: String) {
+    init(selectedTime: Date) {
         self.selectedTime = selectedTime
         super.init(frame: .zero)
 
@@ -84,5 +85,18 @@ class TimeSelectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func getDate() -> Date {
+        timePicker.date
+    }
+
     static let titleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+}
+
+/// Extracts the time from the passed date
+private extension Date {
+    func toTime() -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        return formatter.string(from: self)
+    }
 }
