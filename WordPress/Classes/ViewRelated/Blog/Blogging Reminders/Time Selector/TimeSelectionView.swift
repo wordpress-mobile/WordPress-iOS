@@ -96,7 +96,7 @@ class TimeSelectionView: UIView {
 private extension Date {
     func toTime() -> String {
         let formatter = DateFormatter()
-        formatter.timeStyle = .medium
+        formatter.timeStyle = .short
         return formatter.string(from: self)
     }
 }
