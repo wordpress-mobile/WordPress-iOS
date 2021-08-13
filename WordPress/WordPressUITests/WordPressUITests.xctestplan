@@ -26,7 +26,8 @@
         "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
-        "SignupTests\/testEmailSignup()"
+        "SignupTests\/testEmailSignup()",
+        "SupportScreenTests\/testSupportScreenLoads()"
       ],
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
