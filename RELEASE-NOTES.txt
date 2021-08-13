@@ -1,5 +1,6 @@
 18.1
 -----
+* [*] Fixed a bug that would make it impossible to scroll the plugins the first time the plugin section was opened.
 
 
 18.0
