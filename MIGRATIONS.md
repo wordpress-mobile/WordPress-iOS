@@ -3,6 +3,44 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 131
+
+@scoutharris 2021-08-04
+
+- `Comment`: set `author_ip` default value to empty string
+
+## WordPress 130
+
+@scoutharris 2021-08-03
+
+- `Comment`: set attribute default values
+  - `author`: empty string
+  - `author_email`: empty string
+  - `author_url`: empty string
+  - `authorAvatarURL`: empty string
+  - `commentID`: 0
+  - `content`: empty string
+  - `hierarchy`: empty string
+  - `isLiked`: `NO`
+  - `link`: empty string
+  - `parentID`: 0
+  - `postID`: 0
+  - `postTitle`: empty string
+  - `status`: empty string
+  - `type`: `comment`
+
+## WordPress 129
+
+@scoutharris 2021-07-29
+
+- `Comment`: set `rawContent` attribute as optional. Self-hosted does not have this property.
+
+## WordPress 128
+
+@scoutharris 2021-07-27
+
+- `Comment`: added `rawContent` attribute. (required, default empty string, `String`)
+
 ## WordPress 127
 
 @chipsnyder 2021-07-1

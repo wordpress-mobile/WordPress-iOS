@@ -210,7 +210,7 @@ class ReaderCommentCell: UITableViewCell {
             return
         }
 
-        // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
+        // Use `content` vs `contentForDisplay`. Hierarchical comments are already
         // correctly formatted during the sync process.
         textView.attributedText = attributedString
     }
