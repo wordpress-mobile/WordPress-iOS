@@ -120,6 +120,11 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(changePassword(with: settings, service: service))
         )
 
+        let closeAccount = EditableTextRow(
+            title: "Close account",
+            value: "",
+            action: nil)
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
@@ -127,7 +132,8 @@ private class AccountSettingsController: SettingsController {
                     email,
                     password,
                     primarySite,
-                    webAddress
+                    webAddress,
+                    closeAccount
                 ])
             ])
     }
