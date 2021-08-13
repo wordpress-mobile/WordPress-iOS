@@ -12,6 +12,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
+    private var lastSelectedDate: Date
     private var lastRequestedDate: Date
     private var lastRequestedPeriod: StatsPeriodUnit {
         didSet {
@@ -44,7 +45,8 @@ class SiteStatsPeriodViewModel: Observable {
          periodDelegate: SiteStatsPeriodDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
-        self.lastRequestedDate = selectedDate
+        self.lastSelectedDate = selectedDate
+        self.lastRequestedDate = Date()
         self.lastRequestedPeriod = selectedPeriod
 
         changeReceipt = store.onChange { [weak self] in
@@ -209,7 +211,7 @@ class SiteStatsPeriodViewModel: Observable {
             mostRecentChartData = nil
         }
 
-        lastRequestedDate = date
+        lastSelectedDate = date
         lastRequestedPeriod = period
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
     }
@@ -239,7 +241,11 @@ class SiteStatsPeriodViewModel: Observable {
         } else {
             currentEntryIndex -= 1
         }
-        return chartDate(for: currentEntryIndex)
+        guard let date = chartDate(for: currentEntryIndex) else {
+            return Date()
+        }
+        
+        return date
     }
 }
 
@@ -323,7 +329,7 @@ private extension SiteStatsPeriodViewModel {
             barChartStyling.append(contentsOf: chart.barChartStyling)
 
             indexToHighlight = chartData.summaryData.lastIndex(where: {
-                lastRequestedDate.normalizedDate() >= $0.periodStartDate.normalizedDate()
+                lastSelectedDate.normalizedDate() >= $0.periodStartDate.normalizedDate()
             })
         }
 
