@@ -4,7 +4,7 @@ class BloggingRemindersAnimator: NSObject, UIViewControllerAnimatedTransitioning
 
     var popStyle = false
 
-    private static let animationDuration: TimeInterval = 3
+    private static let animationDuration: TimeInterval = 0.2
     private static let sourceEndFrameOffset: CGFloat = -60.0
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
