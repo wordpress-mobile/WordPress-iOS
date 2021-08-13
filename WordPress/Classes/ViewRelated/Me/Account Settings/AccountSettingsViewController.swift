@@ -243,7 +243,7 @@ private class AccountSettingsController: SettingsController {
     private var closeAccountAlert: UIAlertController {
         let alert = UIAlertController(title: "Close account", message: "Are you sure you want to close your account?", preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
-            // TODO
+            self?.service.closeAccount()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 

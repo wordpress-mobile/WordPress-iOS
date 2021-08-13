@@ -20,6 +20,7 @@ protocol AccountSettingsRemoteInterface {
     func changeUsername(to username: String, success: @escaping () -> Void, failure: @escaping () -> Void)
     func suggestUsernames(base: String, finished: @escaping ([String]) -> Void)
     func updatePassword(_ password: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func closeAccount(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
 }
 
 extension AccountSettingsRemote: AccountSettingsRemoteInterface {}
@@ -146,6 +147,14 @@ class AccountSettingsService {
             NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: error as NSError)
 
             finished?(false, error)
+        }
+    }
+
+    func closeAccount() {
+        remote.closeAccount {
+            AccountHelper.logOutDefaultWordPressComAccount()
+        } failure: { error in
+            DDLogError(error.localizedDescription)
         }
     }
 
