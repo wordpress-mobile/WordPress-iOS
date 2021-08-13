@@ -84,6 +84,7 @@ class TimeSelectionViewController: UIViewController {
         let targetSize = CGSize(width: view.bounds.width,
           height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
+        navigationController?.preferredContentSize = preferredContentSize
     }
 
     override func viewWillAppear(_ animated: Bool) {
