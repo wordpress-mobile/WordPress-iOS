@@ -123,7 +123,7 @@ private class AccountSettingsController: SettingsController {
         let closeAccount = EditableTextRow(
             title: "Close account",
             value: "",
-            action: nil)
+            action: presenter.present(closeAccountAction))
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -232,6 +232,26 @@ private class AccountSettingsController: SettingsController {
 
             return selectorViewController
         }
+    }
+
+    private var closeAccountAction: (ImmuTableRow) -> UIAlertController {
+        return { [weak self] _ in
+            return self?.closeAccountAlert ?? UIAlertController()
+        }
+    }
+
+    private var closeAccountAlert: UIAlertController {
+        let alert = UIAlertController(title: "Close account", message: "Are you sure you want to close your account?", preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+            // TODO
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        [yesAction, cancelAction].forEach {
+            alert.addAction($0)
+        }
+
+        return alert
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
