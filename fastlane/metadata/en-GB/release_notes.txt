@@ -1,5 +1,9 @@
-There’s a new block in town! With the Embed block, you can embed content from your favourite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.
+In 18.0 we’ve optimised the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.
 
-Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).
+You can now set or remove a featured image for a post from the image block’s settings. And, in case you forget, a new ‘featured’ banner highlights your current selection.
 
-We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and bin comments. We’ve also provided support for Global Styles, enabling settings like colour and background customisation for Full Site Editing themes.
+Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.
+
+When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.
+
+Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.

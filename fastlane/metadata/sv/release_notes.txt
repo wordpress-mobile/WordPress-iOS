@@ -1,5 +1,0 @@
-Säg hej till ett nytt block! Inbäddningsblocket låter dig bädda in innehåll från dina favorittjänster, såsom YouTube, TikTok, Instagram med flera. Och vi har fler funktioner planerade för framtiden.
-
-Älskar du bloggningspåminnelserna? Tidigare kunde bara webbplatsens administratör konfigurera påminnelserna, men nu har vi aktiverat funktionen för alla användare som har rätt att redigera inlägg på webbplatsen (redaktörer, författare och bidragsgivare).
-
-Vi har förbättrat kommentarsmodereringen, och sett till att alla behöriga användare kan svepa åt vänster för att godkänna eller förkasta och kasta kommentarer. Dessutom har vi lagt till stöd för globala stilar, där vi möjliggör inställningar som anpassning av färger och bakgrund för teman som låter dig redigera hela webbplatsen.
