@@ -3,23 +3,23 @@ import XCTest
 class EditorGutenbergTests: XCTestCase {
     private var editorScreen: BlockEditorScreen!
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .gotoMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
         if editorScreen != nil && !TabNavComponent.isVisible() {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        try LoginFlow.logoutIfNeeded()
+        try super.tearDownWithError()
     }
 
     func testTextPostPublish() throws {
