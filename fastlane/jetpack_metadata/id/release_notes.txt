@@ -1,5 +1,0 @@
-Ada blok baru! Dengan blok Sematan, Anda bisa menyematkan konten dari layanan favorit Anda seperti YouTube, TikTok, Instagram, dan sebagainya. Terus ikuti kami untuk fungsi tambahan lainnya.
-
-Suka fitur Pengingat Blogging kami? Sebelumnya, hanya admin situs yang bisa mengonfigurasi pengingat tetapi sekarang kami telah mengaktifkan fitur ini bagi orang-orang yang bisa menyunting pos di situs Anda (penyunting, penyusun, dan kontributor).
-
-Kami telah melakukan peningkatan untuk moderasi komentar yang memastikan bahwa pengguna yang sesuai dapat menggeser ke kiri untuk menyetujui/menolak serta membuang komentar. Kami juga telah menyediakan dukungan untuk Gaya Global yang memungkinkan pengaturan seperti warna dan penyesuaian latar belakang pada tema Penyuntingan Situs Penuh.
