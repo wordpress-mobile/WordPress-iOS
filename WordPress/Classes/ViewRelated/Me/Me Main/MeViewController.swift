@@ -248,7 +248,7 @@ class MeViewController: UITableViewController {
     func displayShareFlow() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            self.sharePresenter.present(for: .wordpress, in: self)
+            self.sharePresenter.present(for: .wordpress, in: self, source: .me)
         }
     }
 

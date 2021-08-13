@@ -42,9 +42,10 @@ class ShareAppContentPresenter {
 
     /// Fetches the content needed for sharing, and presents the share sheet through the provided `sender` instance.
     ///
-    func present(for appName: ShareAppName, in sender: UIViewController, completion: (() -> Void)? = nil) {
+    func present(for appName: ShareAppName, in sender: UIViewController, source: ShareAppEventSource, completion: (() -> Void)? = nil) {
         if let content = cachedContent {
             presentShareSheet(with: content, in: sender)
+            trackEngagement(source: source)
             completion?()
             return
         }
@@ -63,15 +64,27 @@ class ShareAppContentPresenter {
             case .success(let content):
                 self.cachedContent = content
                 self.presentShareSheet(with: content, in: sender)
+                self.trackEngagement(source: source)
 
             case .failure:
                 self.showFailureNotice(in: sender)
+                self.trackContentFetchFailed()
             }
 
             self.isLoading = false
             completion?()
         }
     }
+}
+
+// MARK: - Tracking Source Definition
+
+enum ShareAppEventSource: String {
+    // Feature engaged from the Me page.
+    case me
+
+    // Feature engaged form the About page.
+    case about
 }
 
 // MARK: - Delegate Definition
@@ -110,11 +123,22 @@ private extension ShareAppContentPresenter {
     func showFailureNotice(in viewController: UIViewController) {
         viewController.displayNotice(title: .failureNoticeText, message: nil)
     }
+
+    // MARK: Tracking Helpers
+
+    func trackEngagement(source: ShareAppEventSource) {
+        WPAnalytics.track(.recommendAppEngaged, properties: [String.sourceParameterKey: source.rawValue])
+    }
+
+    func trackContentFetchFailed() {
+        WPAnalytics.track(.recommendAppContentFetchFailed)
+    }
 }
 
 // MARK: Localized Strings
 
 private extension String {
+    static let sourceParameterKey = "source"
     static let failureNoticeText = NSLocalizedString("Something went wrong. Please try again.",
                                                      comment: "Error message shown when user tries to share the app with others, "
                                                         + "but failed due to unknown errors.")

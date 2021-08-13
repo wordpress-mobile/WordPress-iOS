@@ -203,7 +203,7 @@ open class AboutViewController: UITableViewController {
             return
         }
 
-        sharePresenter.present(for: .wordpress, in: self)
+        sharePresenter.present(for: .wordpress, in: self, source: .about)
     }
 
     // MARK: - Nested Row Class
