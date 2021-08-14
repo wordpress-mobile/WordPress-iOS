@@ -1,9 +1,16 @@
-//
-//  Date+BloggingReminders.swift
-//  WordPress
-//
-//  Created by Giorgio Ruscigno on 8/14/21.
-//  Copyright © 2021 WordPress. All rights reserved.
-//
-
 import Foundation
+
+extension Date {
+    /// Extracts the time from the passed date
+    func toLocalTime() -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: self)
+    }
+
+    func toLocal24HTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: self)
+    }
+}
