@@ -15,8 +15,13 @@ class TimeSelectionView: UIView {
         datePicker.datePickerMode = .time
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.setDate(selectedTime, animated: false)
+        datePicker.addTarget(self, action: #selector(onSelectedTimeChanged), for: .valueChanged)
         return datePicker
     }()
+
+    @objc private func onSelectedTimeChanged() {
+        titleBar.setSelectedTime(timePicker.date.toLocalTime())
+    }
 
     private lazy var timePickerContainerView: UIView = {
         let view = UIView()
@@ -26,7 +31,7 @@ class TimeSelectionView: UIView {
     }()
 
     private lazy var titleBar: TimeSelectionButton = {
-        let button = TimeSelectionButton(selectedTime: selectedTime.toTime(), insets: Self.titleInsets)
+        let button = TimeSelectionButton(selectedTime: selectedTime.toLocalTime(), insets: Self.titleInsets)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         button.isChevronHidden = true
@@ -90,13 +95,4 @@ class TimeSelectionView: UIView {
     }
 
     static let titleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-}
-
-/// Extracts the time from the passed date
-private extension Date {
-    func toTime() -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: self)
-    }
 }
