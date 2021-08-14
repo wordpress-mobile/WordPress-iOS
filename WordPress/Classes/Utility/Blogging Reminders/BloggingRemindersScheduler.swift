@@ -24,6 +24,7 @@ class BloggingRemindersScheduler {
     typealias BlogIdentifier = BloggingRemindersStore.BlogIdentifier
     typealias ScheduledReminders = BloggingRemindersStore.ScheduledReminders
     typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
+    typealias ScheduledWeekdaysWithTime = BloggingRemindersStore.ScheduledWeekdaysWithTime
 
     // MARK: - Error Handling
 
@@ -91,6 +92,18 @@ class BloggingRemindersScheduler {
     ///
     private let pushNotificationAuthorizer: PushNotificationAuthorizer
 
+    /// The time of the day when blogging reminders will be received for the given blog
+    /// - Parameter blog: the given blog
+    /// - Returns: the time of the day
+    func scheduledTime(for blog: Blog) -> Date {
+        switch scheduledReminders(for: blog) {
+        case .weekDaysWithTime(let daysWithTime):
+            return daysWithTime.time
+        default:
+            return Calendar.current.date(from: DateComponents(calendar: Calendar.current, hour: Weekday.defaultHour, minute: 0)) ?? Date()
+        }
+    }
+
     /// Active schedule.
     ///
     func schedule(for blog: Blog) -> Schedule {
@@ -99,6 +112,8 @@ class BloggingRemindersScheduler {
             return .none
         case .weekdays(let days):
             return .weekdays(days.map({ $0.weekday }))
+        case .weekDaysWithTime(let daysWithTime):
+            return .weekdays(daysWithTime.days.map({ $0.weekday }))
         }
     }
 
@@ -162,10 +177,10 @@ class BloggingRemindersScheduler {
     /// - Parameters:
     ///     - schedule: the blogging reminders schedule.
     ///
-    func schedule(_ schedule: Schedule, for blog: Blog, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
+    func schedule(_ schedule: Schedule, for blog: Blog, time: Date? = nil, completion: @escaping (Result<Void, Swift.Error>) -> ()) {
         guard schedule != .none else {
             // If there's no schedule, then we don't need to request authorization
-            pushAuthorizationReceived(blog: blog, schedule: schedule, completion: completion)
+            pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
             return
         }
 
@@ -179,13 +194,13 @@ class BloggingRemindersScheduler {
                 return
             }
 
-            self.pushAuthorizationReceived(blog: blog, schedule: schedule, completion: completion)
+            self.pushAuthorizationReceived(blog: blog, schedule: schedule, time: time, completion: completion)
         }
     }
 
     /// You should not be calling this method directly.  Instead, make sure to use `schedule(_:completion:)`.
     ///
-    private func pushAuthorizationReceived(blog: Blog, schedule: Schedule, completion: (Result<Void, Swift.Error>) -> ()) {
+    private func pushAuthorizationReceived(blog: Blog, schedule: Schedule, time: Date?, completion: (Result<Void, Swift.Error>) -> ()) {
         unschedule(scheduledReminders(for: blog))
 
         let scheduledReminders: BloggingRemindersStore.ScheduledReminders
@@ -194,7 +209,11 @@ class BloggingRemindersScheduler {
         case .none:
             scheduledReminders = .none
         case .weekdays(let days):
-            scheduledReminders = .weekdays(scheduled(days, for: blog))
+            guard let time = time else {
+                scheduledReminders = .weekdays(scheduled(days, for: blog))
+                break
+            }
+            scheduledReminders = .weekDaysWithTime(scheduledWithtime(days, time: time, for: blog))
         }
 
         do {
@@ -219,6 +238,15 @@ class BloggingRemindersScheduler {
         weekdays.map { scheduled($0, for: blog) }
     }
 
+    /// Schedules a notifications for the passed days, and returns a `ScheduledWeekdaysWithTime` instance
+    ///  containing the scheduling time and an array of `ScheduledWeekday`
+    /// - Parameters:
+    ///   - weekdays: the weekdays to schedule notifications for.
+    ///   - time: the time of the day when the notification will be received
+    private func scheduledWithtime(_ weekdays: [Weekday], time: Date, for blog: Blog) -> ScheduledWeekdaysWithTime {
+        ScheduledWeekdaysWithTime(time: time, days: weekdays.map { scheduled($0, time: time, for: blog) })
+    }
+
     /// Schedules a notification for the passed day, and returns the day with the associated notification ID.
     ///
     /// - Parameters:
@@ -226,14 +254,14 @@ class BloggingRemindersScheduler {
     ///
     /// - Returns: the weekday with the associated notification ID.
     ///
-    private func scheduled(_ weekday: Weekday, for blog: Blog) -> ScheduledWeekday {
-        let notificationID = scheduleNotification(for: weekday, blog: blog)
+    private func scheduled(_ weekday: Weekday, time: Date? = nil, for blog: Blog) -> ScheduledWeekday {
+        let notificationID = scheduleNotification(for: weekday, time: time, blog: blog)
         return ScheduledWeekday(weekday: weekday, notificationID: notificationID)
     }
 
     /// Schedules a notification for the specified weekday.
     ///
-    private func scheduleNotification(for weekday: Weekday, blog: Blog) -> String {
+    private func scheduleNotification(for weekday: Weekday, time: Date?, blog: Blog) -> String {
         let content = UNMutableNotificationContent()
         if let title = blog.title {
             content.title = String(format: TextContent.notificationTitle, title)
@@ -252,7 +280,8 @@ class BloggingRemindersScheduler {
 
         // `DateComponent`'s weekday uses a 1-based index.
         dateComponents.weekday = weekday.rawValue + 1
-        dateComponents.hour = Weekday.defaultHour
+        dateComponents.hour = time?.dateAndTimeComponents().hour ?? Weekday.defaultHour
+        dateComponents.minute = time?.dateAndTimeComponents().minute
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
@@ -287,6 +316,8 @@ class BloggingRemindersScheduler {
             return
         case .weekdays(let days):
             unschedule(days)
+        case .weekDaysWithTime(let daysWithTime):
+            unschedule(daysWithTime.days)
         }
     }
 
