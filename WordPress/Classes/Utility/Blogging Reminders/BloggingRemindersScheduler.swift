@@ -213,7 +213,7 @@ class BloggingRemindersScheduler {
                 scheduledReminders = .weekdays(scheduled(days, for: blog))
                 break
             }
-            scheduledReminders = .weekDaysWithTime(scheduledWithtime(days, time: time, for: blog))
+            scheduledReminders = .weekDaysWithTime(scheduledWithTime(days, time: time, for: blog))
         }
 
         do {
@@ -243,7 +243,7 @@ class BloggingRemindersScheduler {
     /// - Parameters:
     ///   - weekdays: the weekdays to schedule notifications for.
     ///   - time: the time of the day when the notification will be received
-    private func scheduledWithtime(_ weekdays: [Weekday], time: Date, for blog: Blog) -> ScheduledWeekdaysWithTime {
+    private func scheduledWithTime(_ weekdays: [Weekday], time: Date, for blog: Blog) -> ScheduledWeekdaysWithTime {
         ScheduledWeekdaysWithTime(time: time, days: weekdays.map { scheduled($0, time: time, for: blog) })
     }
 
