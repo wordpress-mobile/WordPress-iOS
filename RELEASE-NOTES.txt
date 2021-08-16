@@ -1,6 +1,6 @@
 18.1
 -----
-
+* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#16978]
 
 18.0
 -----
@@ -11,7 +11,6 @@
 * [internal] Updated GoogleSignIn to 6.0.1 through WordPressAuthenticator. Should be no visible changes, but could cause regression in Google sign in flow. [#16974]
 * [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969]
 * [*] Posts: Ampersands are correctly decoded in publishing notices instead of showing as HTML entites. [#16972]
-* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#16978]
 * [***] Adjusted the image size of Theme Images for more optimal download speeds. [#16914]
 * [*] Comments and Notifications list are now displayed with a unified design. [#16985]
 * [*] Block editor: Add a "featured" banner and ability to set or remove an image as featured. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3449]
