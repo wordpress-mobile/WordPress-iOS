@@ -148,18 +148,11 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     public func deviceDidRotate() {
-        guard insetsNeedAdjustment() else {
+        guard !useCompatibilityMode else {
             return
         }
-        updateInitialHeight(resetContentOffset: false)
-    }
 
-    func insetsNeedAdjustment() -> Bool {
-        guard let imageSize = self.imageSize else {
-            return false
-        }
-        // Insets should be adjusted for squareish and portrait images, but not landscape.
-        return 1.1 > (imageSize.width / imageSize.height)
+        updateInitialHeight()
     }
 
     func applyTransparentNavigationBarAppearance(to navigationBar: UINavigationBar?) {
@@ -367,26 +360,22 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func didFinishLoading(timedOut: Bool = false) {
-        // Don't reset the scroll position if we timed out to prevent a jump
-        // if the user has started reading / scrolling
-        updateInitialHeight(resetContentOffset: !timedOut)
+        updateInitialHeight()
         update()
 
         isHidden = false
     }
 
-    private func updateInitialHeight(resetContentOffset: Bool = true) {
+    private func updateInitialHeight() {
         let height = featuredImageHeight() - topMargin()
 
         heightConstraint.constant = height
 
-        if let scrollView = self.scrollView {
-            scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
+        guard let scrollView = self.scrollView else {
+            return
 
-            if resetContentOffset {
-                scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
-            }
         }
+        scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
     }
 
     private func reset() {
