@@ -535,6 +535,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)trashComment
 {
+    // If the comment was optimistically deleted, and the user has managed to
+    // trigger this action again before the controller was dismissed, ignore
+    // the action.
+    if (![[self comment] managedObjectContext]) {
+        return;
+    }
+
     __typeof(self) __weak weakSelf = self;
 
     // If the Comment is currently Spam or Trash, the Trash action will permanently delete the Comment.
