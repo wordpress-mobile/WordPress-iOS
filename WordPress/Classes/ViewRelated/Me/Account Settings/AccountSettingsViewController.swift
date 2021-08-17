@@ -23,7 +23,8 @@ private class AccountSettingsController: SettingsController {
     var immuTableRows: [ImmuTableRow.Type] {
         return [
             TextRow.self,
-            EditableTextRow.self
+            EditableTextRow.self,
+            DestructiveButtonRow.self
         ]
     }
 
@@ -120,10 +121,10 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(changePassword(with: settings, service: service))
         )
 
-        let closeAccount = EditableTextRow(
+        let closeAccount = DestructiveButtonRow(
             title: "Close account",
-            value: "",
-            action: presenter.present(closeAccountAction))
+            action: presenter.present(closeAccountAction),
+            accessibilityIdentifier: "closeAccountButtonRow")
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -132,12 +133,14 @@ private class AccountSettingsController: SettingsController {
                     email,
                     password,
                     primarySite,
-                    webAddress,
+                    webAddress
+                ]),
+            ImmuTableSection(
+                rows: [
                     closeAccount
                 ])
-            ])
+        ])
     }
-
 
     // MARK: - Actions
 
