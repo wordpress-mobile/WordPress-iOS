@@ -481,6 +481,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     func showEditorHelp() {
+        WPAnalytics.track(.gutenbergEditorHelpShown)
         gutenberg.showEditorHelp()
     }
 
