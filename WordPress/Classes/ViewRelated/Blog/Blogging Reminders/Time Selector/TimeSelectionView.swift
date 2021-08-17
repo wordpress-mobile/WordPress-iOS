@@ -3,7 +3,7 @@ import UIKit
 /// A view that contains a time picker and a title reporting the selected time
 class TimeSelectionView: UIView {
 
-    private var selectedTime: String
+    private var selectedTime: Date
 
     private lazy var timePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -14,8 +14,14 @@ class TimeSelectionView: UIView {
 
         datePicker.datePickerMode = .time
         datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.setDate(selectedTime, animated: false)
+        datePicker.addTarget(self, action: #selector(onSelectedTimeChanged), for: .valueChanged)
         return datePicker
     }()
+
+    @objc private func onSelectedTimeChanged() {
+        titleBar.setSelectedTime(timePicker.date.toLocalTime())
+    }
 
     private lazy var timePickerContainerView: UIView = {
         let view = UIView()
@@ -25,7 +31,7 @@ class TimeSelectionView: UIView {
     }()
 
     private lazy var titleBar: TimeSelectionButton = {
-        let button = TimeSelectionButton(selectedTime: selectedTime, insets: Self.titleInsets)
+        let button = TimeSelectionButton(selectedTime: selectedTime.toLocalTime(), insets: Self.titleInsets)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         button.isChevronHidden = true
@@ -66,7 +72,7 @@ class TimeSelectionView: UIView {
         makeSpacer()
     }()
 
-    init(selectedTime: String) {
+    init(selectedTime: Date) {
         self.selectedTime = selectedTime
         super.init(frame: .zero)
 
@@ -82,6 +88,10 @@ class TimeSelectionView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func getDate() -> Date {
+        timePicker.date
     }
 
     static let titleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
