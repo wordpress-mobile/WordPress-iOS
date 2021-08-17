@@ -122,7 +122,7 @@ private class AccountSettingsController: SettingsController {
         )
 
         let closeAccount = DestructiveButtonRow(
-            title: "Close account",
+            title: NSLocalizedString("Close Account", comment: "Close account action label"),
             action: presenter.present(closeAccountAction),
             accessibilityIdentifier: "closeAccountButtonRow")
 
