@@ -216,6 +216,11 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     @objc func refreshData() {
+        guard !insightsToShow.isEmpty else {
+            refreshControl?.endRefreshing()
+            return
+        }
+
         refreshControl?.beginRefreshing()
         clearExpandedRows()
         refreshInsights()
