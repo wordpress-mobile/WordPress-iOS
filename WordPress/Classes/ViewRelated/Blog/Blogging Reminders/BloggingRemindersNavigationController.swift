@@ -17,6 +17,7 @@ class BloggingRemindersNavigationController: LightNavigationController {
 
         delegate = self
         setNavigationBarHidden(true, animated: false)
+        navigationBar.isTranslucent = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -114,6 +115,9 @@ extension BloggingRemindersNavigationController: UINavigationControllerDelegate 
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-        return BloggingRemindersAnimator()
+        let animator = BloggingRemindersAnimator()
+        animator.popStyle = (operation == .pop)
+
+        return animator
     }
 }

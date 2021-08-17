@@ -664,9 +664,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsLayoutGrid
 {
-    if (![Feature enabled:FeatureFlagLayoutGrid]) {
-        return false;
-    }
     return self.isHostedAtWPcom || self.isAtomic;
 }
 
