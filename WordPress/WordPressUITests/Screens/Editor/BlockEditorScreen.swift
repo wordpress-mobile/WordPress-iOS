@@ -80,7 +80,7 @@ class BlockEditorScreen: BaseScreen {
         XCTContext.runActivity(named: "Close the block editor") { (activity) in
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
                 if actionSheet.exists {
-                    if isIpad {
+                    if XCUIDevice.isPad {
                         app.otherElements["PopoverDismissRegion"].tap()
                     } else {
                         keepEditingButton.tap()

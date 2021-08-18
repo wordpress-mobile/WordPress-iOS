@@ -17,7 +17,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let app = XCUIApplication()
         setupSnapshot(app)
 
-        if isIpad {
+        if XCUIDevice.isPad {
             XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
         } else {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
@@ -42,7 +42,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
-        if isIpad {
+        if XCUIDevice.isPad {
             BlockEditorScreen()
                 .thenTakeScreenshot(1, named: "Editor")
         } else {
@@ -54,7 +54,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         postEditorScreenshot.close()
 
         // Get a screenshot of the editor with keyboard (iPad only)
-        if isIpad {
+        if XCUIDevice.isPad {
             let ipadScreenshot = MySiteScreen()
                 .showSiteSwitcher()
                 .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
@@ -80,7 +80,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         sleep(imagesWaitTime) // wait for post images to load
         mySite.thenTakeScreenshot(6, named: "Media")
 
-        if !isIpad {
+        if !XCUIDevice.isPad {
             postList.pop()
         }
 
@@ -102,7 +102,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let notificationList = TabNavComponent()
             .gotoNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
-        if isIpad {
+        if XCUIDevice.isPad {
             notificationList
                 .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
                 .replyToNotification()
