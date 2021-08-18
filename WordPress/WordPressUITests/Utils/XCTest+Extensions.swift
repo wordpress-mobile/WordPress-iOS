@@ -100,9 +100,4 @@ extension XCTestCase {
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
     }
-
-    public func elementIsFullyVisibleOnScreen(element: XCUIElement) -> Bool {
-        guard element.exists && !element.frame.isEmpty && element.isHittable else { return false }
-        return XCUIApplication().windows.element(boundBy: 0).frame.contains(element.frame)
-    }
 }
