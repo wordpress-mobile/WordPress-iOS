@@ -14,6 +14,7 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
 func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
+    viewController.handler.automaticallyDeselectCells = true
     return viewController
 }
 
@@ -259,7 +260,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private func closeAccount() {
-        let status = NSLocalizedString("Closing Account…", comment: "Overlay message displayed while closing account")
+        let status = NSLocalizedString("Closing account…", comment: "Overlay message displayed while closing account")
         SVProgressHUD.setDefaultMaskType(.black)
         SVProgressHUD.show(withStatus: status)
 
