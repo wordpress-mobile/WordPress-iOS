@@ -25,7 +25,7 @@ class EditorPublishEpilogueScreen: BaseScreen {
 
         XCTAssertEqual(expectedPostTitle, actualPostTitle, "Post title doesn't match expected title")
         XCTAssertEqual(expectedSiteAddress, actualSiteAddress, "Site address doesn't match expected address")
-
+Asserte
         return self
     }
 }

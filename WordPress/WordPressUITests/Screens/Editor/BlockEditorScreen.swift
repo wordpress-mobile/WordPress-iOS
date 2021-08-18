@@ -20,6 +20,10 @@ class BlockEditorScreen: BaseScreen {
 
     // Toolbar
     let addBlockButton = XCUIApplication().buttons["add-block-button"] // Uses a testID
+    // Paragraph block options
+    let blockOptions = XCUIApplication().buttons["Paragraph block options"]
+    let copyBlock = XCUIApplication().buttons["Copy block"]
+    let pasteBlockAfter = XCUIApplication().buttons["Paste block after"]
 
     // Action sheets
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
@@ -54,7 +58,24 @@ class BlockEditorScreen: BaseScreen {
 
         return self
     }
+    /**
+    Copies a paragraph block
+     */
+    func copyParagraphBlock() -> BlockEditorScreen {
+        blockOptions.tap()
+        copyBlock.tap()
 
+        return self
+    }
+    /**
+    Pastes paragraph after block
+     */
+    func pasteAfterParagraphBlock() -> BlockEditorScreen {
+        blockOptions.tap()
+        pasteBlockAfter.tap()
+
+        return self
+    }
     /**
      Adds an image block with latest image from device.
      */
