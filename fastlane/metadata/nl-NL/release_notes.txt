@@ -1,5 +1,9 @@
-Er is een nieuw blok in de stad! Met het Insluit blok, kun je inhoud van je favoriete diensten zoals YouTube, TikTok, Instagram, en meer insluiten. Blijf op de hoogte van de komende extra functies.
+In 18.0 hebben we de voor thema's gebruikte afbeeldingen geoptimaliseerd, zodat je ze sneller kunt downloaden en minder invloed heeft op je mobiele gegevensabonnement.
 
-Houd je van onze Blog herinnering functie? Vroeger konden alleen site beheerders herinneringen instellen, maar we hebben deze functie nu ingeschakeld voor mensen die berichten op je site kunnen bewerken (redacteuren, auteurs en bijdragers).
+Je kunt nu een uitgelichte afbeelding voor een bericht instellen of verwijderen in de instellingen van het afbeeldingsblok. En voor het geval je het vergeet, een nieuwe 'uitgelichte' banner markeert je huidige selectie.
 
-We hebben verbeteringen aangebracht in de moderatie van reacties, zodat de juiste gebruikers naar links kunnen vegen om reacties goed/af te keuren en in de prullenbak te gooien. We hebben ook ondersteuning geboden voor Globale stijlen, waardoor instellingen zoals kleur en achtergrond kunnen worden aangepast voor thema's voor volledige site bewerking.
+Ook op het gebied van vormgeving hebben reacties en meldingen nu een eenduidige look en feel. En bij het kiezen van een domein of ontwerp voor je site zijn de headings verfijnd met het oog op toegankelijkheid op apparaten die grotere tekstgroottes gebruiken.
+
+Wanneer we je laten weten dat je een bericht gepubliceerd hebt met een in-app kennisgeving, zie je nu ampersands in je titel in hun volle, niet-HTML entiteit glorie verschijnen.
+
+Last but not least hebben we een hobbel in de weg gladgestreken bij het herstellen van ongeldig gemaakte authenticatie tokens.

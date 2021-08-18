@@ -5,7 +5,7 @@ import XCTest
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
 
-    override func setUp() {
+    override func setUpWithError() throws {
         super.setUp()
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -23,7 +23,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
+        try LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
     }
 
     override func tearDown() {

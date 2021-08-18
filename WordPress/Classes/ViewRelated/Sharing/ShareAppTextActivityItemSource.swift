@@ -30,7 +30,7 @@ extension ShareAppTextActivityItemSource: UIActivityItemSource {
 // MARK: - Localized Strings
 
 private extension String {
-    static let defaultSubjectText = NSLocalizedString("WordPress.com Apps - Apps for any screen",
+    static let defaultSubjectText = NSLocalizedString("WordPress Apps - Apps for any screen",
                                                       comment: "Subject line for when sharing the app with others through mail or any other activity types "
                                                         + "that support contains a subject field.")
 }
