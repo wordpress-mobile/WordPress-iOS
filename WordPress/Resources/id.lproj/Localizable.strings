@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-28 16:03:08+0000 */
+/* Translation-Revision-Date: 2021-08-13 13:32:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -215,7 +215,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s pilihan blok";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s block, newly available";
+"%s block, newly available" = "%s blok, baru tersedia";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Kosong";
@@ -476,7 +476,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Tambahkan blok baru kapan saja dengan mengetuk ikon + di toolbar di kiri bawah.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Tambahkan situs hosting sendiri";
@@ -827,7 +827,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "Anda yakin ingin memperbarui?";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Atur konten Anda ke dalam kolom, tambahkan tombol Call to Action, dan overlay gambar dengan teks.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Seni";
@@ -1015,10 +1015,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Daftar blokir";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blok memungkinkan Anda untuk fokus menulis konten Anda, mengetahui bahwa semua alat pemformatan yang Anda butuhkan ada untuk membantu Anda menyampaikan pesan Anda.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1065,7 +1065,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "Perlindungan Terhadap Serangan Paksa";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "Bangun tata letak";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Daftar Bullet";
@@ -2297,7 +2297,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to preview page." = "Ketuk dua kali untuk melakukan pratinjau halaman.";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "Ketuk dua kali untuk melakukan pratinjau artikel.";
+"Double tap to preview post." = "Ketuk dua kali untuk melihat artikel.";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Ketuk dua kali untuk mengulangi perubahan terakhir";
@@ -2360,7 +2360,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "EDIT TAUTAN";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Setiap blok memiliki pengaturannya sendiri. Untuk menemukannya, klik pada blok. Pengaturannya akan muncul di toolbar di bagian bawah layar.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Timur";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Embed link" = "Sematkan tautan";
 
 /* No comment provided by engineer. */
-"Embed media" = "Embed media";
+"Embed media" = "Sematkan media";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Pratinjau sematan belum tersedia";
@@ -2816,7 +2816,7 @@ translators: Block name. %s: The localized block name */
 "Featured Image" = "Gambar Terfitur";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Featured Image Already Set";
+"Featured Image Already Set" = "Gambar Unggulan Sudah Diatur";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Pilihan Gambar Andalan";
@@ -3068,7 +3068,7 @@ translators: Block name. %s: The localized block name */
 "Give Up" = "Menyerah";
 
 /* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
+"Give it a try by adding a few blocks to your post or page!" = "Cobalah dengan menambahkan beberapa blok ke artikel atau halaman Anda!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Berikan nama situs yang mencerminkan karakteristik dan topik situs Anda. Kesan pertama sangat berarti!";
@@ -3878,7 +3878,7 @@ translators: Block name. %s: The localized block name */
 "Main Navigation" = "Navigasi Utama";
 
 /* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Buat konten Anda menonjol dengan menambahkan gambar, gif, video, dan media tersemat ke halaman Anda.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4600,7 +4600,7 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Setelah tautan undangan ini dinonaktifkan, tidak ada yang dapat menggunakannya lagi untuk bergabung dengan tim Anda. Apakah Anda yakin?";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Setelah Anda terbiasa dengan nama blok yang berbeda, Anda dapat menambahkan blok dengan mengetikkan garis miring diikuti dengan nama blok — misalnya, \/image atau \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
@@ -5495,7 +5495,7 @@ translators: Block name. %s: The localized block name */
 "Removed" = "Dibuang";
 
 /* Notice confirming that an image has been removed as the post's featured image. */
-"Removed as featured image" = "Removed as featured image";
+"Removed as featured image" = "Hapus dari gambar andalan ";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Menghapus metadata lokasi dari foto sebelum diunggah ke situs.";
@@ -5507,7 +5507,7 @@ translators: Block name. %s: The localized block name */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Menghapus Langkah Berikutnya akan menyembunyikan semua tur di situs ini. Tindakan ini tidak dapat diurungkan.";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace" = "Replace";
+"Replace" = "Gantikan";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ganti Blok Saat Ini";
@@ -6031,7 +6031,7 @@ translators: Block name. %s: The localized block name */
 "Set as Posts Page" = "Atur sebagai Halaman Pos";
 
 /* Notice confirming that an image has been set as the post's featured image. */
-"Set as featured image" = "Set as featured image";
+"Set as featured image" = "Atur sebagai gambar andalan";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Setel pengingat";
@@ -6316,7 +6316,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Sosial";
 
 /* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Beberapa blok memiliki pengaturan tambahan. Ketuk ikon pengaturan di kanan bawah blok untuk melihat pilihan lainnya.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Gagal mengunggah beberapa media. Tindakan ini akan menghapus semua media yang gagal dari pos tersebut.\nTetap simpan?";
@@ -7134,7 +7134,7 @@ translators: Block name. %s: The localized block name */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Untuk melanjutkan dengan akun Google ini, harap login terlebih dahulu dengan kata sandi WordPress.com Anda. Hal ini hanya akan ditanyakan sekali.";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Untuk menghapus blok, pilih blok dan klik tiga titik di kanan bawah blok untuk melihat pengaturan. Dari sana, pilih pilihan untuk menghapus blok.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Untuk mengambil foto atau video agar dapat digunakan di pos Anda.";
@@ -8136,7 +8136,7 @@ translators: Block name. %s: The localized block name */
 "Welcome to the Reader" = "Selamat Datang di Pembaca";
 
 /* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Welcome to the world of blocks";
+"Welcome to the world of blocks" = "Selamat datang di dunia blok";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Selamat datang di pembuat situs web terpopuler di dunia.";
@@ -8388,7 +8388,7 @@ translators: Block name. %s: The localized block name */
 "Yesterday" = "Kemarin";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+"You already have a featured image set. Do you want to replace it?" = "Anda sudah memiliki kumpulan gambar unggulan. Apakah Anda ingin menggantinya?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Anda akan mengubah nama pengguna Anda, yang saat ini adalah %1$@. %2$@";
@@ -8421,7 +8421,7 @@ translators: Block name. %s: The localized block name */
 "You can override these settings for individual posts." = "Anda dapat membatalkan pengaturan tersebut untuk pos individual.";
 
 /* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Anda dapat mengatur ulang blok dengan mengetuk satu blok lalu mengetuk panah atas dan bawah yang muncul di sisi kiri bawah blok untuk memindahkannya ke atas atau ke bawah blok lain.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
@@ -8642,19 +8642,19 @@ translators: Block name. %s: The localized block name */
 "[COMMENT]" = "[KOMENTAR]";
 
 /* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+"_%1$d blogger_ likes this." = "_%1$d blogger_ menyukai ini.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+"_%1$d bloggers_ like this." = "_%1$d blogger_ menyukai ini.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+"_You and %1$d blogger_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+"_You and %1$d bloggers_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_You_ like this.";
+"_You_ like this." = "_Anda_ menyukai ini.";
 
 /* Age between dates equaling one day. */
 "a day" = "satu hari";

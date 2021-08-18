@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-13 05:57:53+0000 */
+/* Translation-Revision-Date: 2021-08-13 06:14:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -215,7 +215,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "Inställningar för blocket %s";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s block, newly available";
+"%s block, newly available" = "Blocket %s, ett nytt tillskott";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Block av typen %s. Tomt";
@@ -476,7 +476,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Lägg till en anpassad CSS-URL här som ska hämtas i läsaren. Om du kör Calypso lokalt kan länken se ut ungefär så här: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Lägg till ett nytt block när som helst genom att trycka på ikonen + i verktygsfältet nere till vänster.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Lägg till en webbplats på webbhotell\/egen server";
@@ -827,7 +827,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "Är du säker på att du vill uppdatera?";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Ordna ditt innehåll i kolumner, lägg till knappar för uppmaningar, och överläggstexter på bilder.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Konst";
@@ -1015,10 +1015,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Blockeringslista";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Block låter dig fokusera på innehållet med den trygga vetskapen att alla formateringsverktyg du behöver för att få fram ditt budskap finns tillgängliga.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Block är innehållsbitar som du kan lägga in, sortera om och stilsätta utan att du behöver kunna programmera eller koda. Block är ett enkelt och modernt sätt för dig att skapa vackra layouter.";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blogg";
@@ -1065,7 +1065,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "Skydd mot brute force-attacker";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "Bygg layouter";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Punktlista";
@@ -2360,7 +2360,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "REDIGERA  LÄNK";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Varje block har sina egna inställningar. För att se dem trycker du på blocket i fråga. Inställningarna visas i verktygsfältet längst ned på skärmen.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Öster";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Embed link" = "Länk för inbäddning";
 
 /* No comment provided by engineer. */
-"Embed media" = "Embed media";
+"Embed media" = "Bädda in media";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Förhandsgranskning av inbäddningar är inte tillgängligt ännu";
@@ -3068,7 +3068,7 @@ translators: Block name. %s: The localized block name */
 "Give Up" = "Ge upp";
 
 /* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
+"Give it a try by adding a few blocks to your post or page!" = "Prova nu direkt genom att lägga till några block i ditt inlägg eller din sida!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Ge din webbplats ett namn som återspeglar dess personlighet och ämnesområde. Första intrycket är viktigt!";
@@ -3878,7 +3878,7 @@ translators: Block name. %s: The localized block name */
 "Main Navigation" = "Huvudmeny";
 
 /* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Förstärk ditt innehåll genom att lägga till bilder, gif-illustrationer, videoklipp och inbäddade media i ditt sidinnehåll.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4600,7 +4600,7 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "När denna inbjudningslänk har inaktiverats kan ingen använda den för att ansluta sig till ditt team. Är du säker?";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Om du vet namnen på de block du behöver kan du lägga till ett block genom att skriva ett snedstreck följt av blockets namn, exempelvis \/bild eller \/rubrik.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Rich Content" = "Formaterat innehåll";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "Redigering av formaterad text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Höger";
@@ -6316,7 +6316,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Sociala nät";
 
 /* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Vissa block har ytterligare inställningar. Tryck på ikonen för inställningar i blockets nedre högra hörn för att se fler alternativ.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Uppladdning av vissa mediefiler misslyckades. Om du fortsätter med den här åtgärden kommer de mediefiler som inte laddats upp inte med i inlägget.\nSpara ändå?";
@@ -7678,7 +7678,7 @@ translators: Block name. %s: The localized block name */
 "Use Current Location" = "Använd nuvarande plats";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Use Sandbox Store";
+"Use Sandbox Store" = "Använd sandlåde-lagring";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Använd blockredigeraren";
@@ -8642,19 +8642,19 @@ translators: Block name. %s: The localized block name */
 "[COMMENT]" = "[KOMMENTAR]";
 
 /* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+"_%1$d blogger_ likes this." = "_%1$d bloggare_ gillar detta.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+"_%1$d bloggers_ like this." = "_%1$d bloggare_ gillar detta.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+"_You and %1$d blogger_ like this." = "_Du och %1$d bloggare_ gillar detta.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+"_You and %1$d bloggers_ like this." = "_Du och %1$d bloggare_ gillar detta.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_You_ like this.";
+"_You_ like this." = "_Du_ gillar detta.";
 
 /* Age between dates equaling one day. */
 "a day" = "en dag";
