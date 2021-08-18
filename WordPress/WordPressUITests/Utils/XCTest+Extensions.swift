@@ -19,10 +19,6 @@ extension XCUIElement {
         self.tap()
         self.typeText(text)
     }
-
-    var stringValue: String? {
-        return self.value as? String
-    }
 }
 
 extension XCTestCase {
