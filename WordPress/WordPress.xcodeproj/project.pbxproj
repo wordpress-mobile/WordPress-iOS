@@ -907,8 +907,6 @@
 		5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
 		5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Pages.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4E30D01AA4B41A000D9904 /* WPStyleGuide+Pages.m */; };
 		5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */; };
-		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
-		5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
 		5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */; };
 		5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */; };
 		5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
@@ -925,7 +923,6 @@
 		5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D732F981AE84E5400CD89E7 /* PostListFooterView.xib */; };
 		5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DEA2819D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift */; };
 		5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */; };
-		5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */; };
 		5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */; };
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5DA3EE161925090A00294E0B /* MediaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3EE151925090A00294E0B /* MediaService.m */; };
@@ -2880,7 +2877,6 @@
 		FABB20E02602FC2C00C8785C /* CookieJar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E161B7EB1F839345000FDF0B /* CookieJar.swift */; };
 		FABB20E12602FC2C00C8785C /* WebAddressStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D853723921952DAF0076F461 /* WebAddressStep.swift */; };
 		FABB20E22602FC2C00C8785C /* NotificationSyncMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F67AC61DB7D81300482C62 /* NotificationSyncMediator.swift */; };
-		FABB20E32602FC2C00C8785C /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
 		FABB20E42602FC2C00C8785C /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FABB20E52602FC2C00C8785C /* SiteStatsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874767221963D320080967F /* SiteStatsInformation.swift */; };
 		FABB20E62602FC2C00C8785C /* TitleSubtitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4B21B85CF20005062B /* TitleSubtitleHeader.swift */; };
@@ -4027,7 +4023,6 @@
 		FABB25602602FC2C00C8785C /* GutenbergViewController+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */; };
 		FABB25612602FC2C00C8785C /* MarkAsSpam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1F320E0895E00C4D82F /* MarkAsSpam.swift */; };
 		FABB25622602FC2C00C8785C /* BlogDetailsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349BFF6221205740084F200 /* BlogDetailsSectionHeaderView.swift */; };
-		FABB25632602FC2C00C8785C /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
 		FABB25642602FC2C00C8785C /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA501C10419200732665 /* Math.swift */; };
 		FABB25652602FC2C00C8785C /* MediaProgressCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C591EF42A2600372C65 /* MediaProgressCoordinator.swift */; };
 		FABB25662602FC2C00C8785C /* NSMutableAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574CE141B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift */; };
@@ -4189,7 +4184,6 @@
 		FABB26022602FC2C00C8785C /* PostingActivityMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9826AE8921B5CC7300C851FA /* PostingActivityMonth.swift */; };
 		FABB26032602FC2C00C8785C /* StreakStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F45D2214F50300D261AB /* StreakStatsRecordValue+CoreDataClass.swift */; };
 		FABB26042602FC2C00C8785C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
-		FABB26052602FC2C00C8785C /* PostGeolocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */; };
 		FABB26062602FC2C00C8785C /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4402213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift */; };
 		FABB26072602FC2C00C8785C /* JetpackBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */; };
 		FABB26082602FC2C00C8785C /* NotificationsViewController+JetpackPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8236EB4F2024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift */; };
@@ -5516,10 +5510,6 @@
 		5D4E30CF1AA4B41A000D9904 /* WPStyleGuide+Pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WPStyleGuide+Pages.h"; path = "../Post/WPStyleGuide+Pages.h"; sourceTree = "<group>"; };
 		5D4E30D01AA4B41A000D9904 /* WPStyleGuide+Pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WPStyleGuide+Pages.m"; path = "../Post/WPStyleGuide+Pages.m"; sourceTree = "<group>"; };
 		5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-20-21.xcmappingmodel"; sourceTree = "<group>"; };
-		5D577D31189127BE00B964C3 /* PostGeolocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationViewController.h; sourceTree = "<group>"; };
-		5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationViewController.m; sourceTree = "<group>"; };
-		5D577D341891360900B964C3 /* PostGeolocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationView.h; sourceTree = "<group>"; };
-		5D577D351891360900B964C3 /* PostGeolocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationView.m; sourceTree = "<group>"; };
 		5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCell.swift; sourceTree = "<group>"; };
 		5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderPostCardCell.xib; sourceTree = "<group>"; };
 		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
@@ -5543,8 +5533,6 @@
 		5D7DEA2819D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+ReaderComments.swift"; sourceTree = "<group>"; };
 		5D839AA6187F0D6B00811F4A /* PostFeaturedImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFeaturedImageCell.h; sourceTree = "<group>"; };
 		5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFeaturedImageCell.m; sourceTree = "<group>"; };
-		5D839AA9187F0D8000811F4A /* PostGeolocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationCell.h; sourceTree = "<group>"; };
-		5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationCell.m; sourceTree = "<group>"; };
 		5D8D53ED19250412003C8859 /* BlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorViewController.h; sourceTree = "<group>"; };
 		5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		5D91D9021AE1AD12000BF163 /* WordPress 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 29.xcdatamodel"; sourceTree = "<group>"; };
@@ -9917,17 +9905,6 @@
 			name = "20-21";
 			sourceTree = "<group>";
 		};
-		5D577D301891278D00B964C3 /* Geolocation */ = {
-			isa = PBXGroup;
-			children = (
-				5D577D31189127BE00B964C3 /* PostGeolocationViewController.h */,
-				5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */,
-				5D577D341891360900B964C3 /* PostGeolocationView.h */,
-				5D577D351891360900B964C3 /* PostGeolocationView.m */,
-			);
-			path = Geolocation;
-			sourceTree = "<group>";
-		};
 		5D5A6E901B613C1800DAF819 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
@@ -10792,8 +10769,6 @@
 				B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */,
 				5D839AA6187F0D6B00811F4A /* PostFeaturedImageCell.h */,
 				5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */,
-				5D839AA9187F0D8000811F4A /* PostGeolocationCell.h */,
-				5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */,
 				B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */,
 				9F74696A209EFD0C0074D52B /* CheckmarkTableViewCell.swift */,
 				E1BB92311FDAAFFA00F2D817 /* TextWithAccessoryButtonCell.swift */,
@@ -12030,7 +12005,6 @@
 				4349B0A6218A2E810034118A /* Revisions */,
 				5D1EBF56187C9B95003393F8 /* Categories */,
 				5DF3DD691A9377220051A229 /* Controllers */,
-				5D577D301891278D00B964C3 /* Geolocation */,
 				5DF3DD6B1A93773B0051A229 /* Style */,
 				5D09CBA61ACDE532007A23BD /* Utils */,
 				5DF3DD6A1A93772D0051A229 /* Views */,
@@ -16718,7 +16692,6 @@
 				C7F7BDD026262A4C00CE547F /* AppDependency.swift in Sources */,
 				D853723A21952DAF0076F461 /* WebAddressStep.swift in Sources */,
 				B5F67AC71DB7D81300482C62 /* NotificationSyncMediator.swift in Sources */,
-				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
 				FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */,
 				9874767321963D330080967F /* SiteStatsInformation.swift in Sources */,
 				738B9A5821B85CF20005062B /* TitleSubtitleHeader.swift in Sources */,
@@ -17939,7 +17912,6 @@
 				912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */,
 				D816C1F420E0895E00C4D82F /* MarkAsSpam.swift in Sources */,
 				4349BFF7221205740084F200 /* BlogDetailsSectionHeaderView.swift in Sources */,
-				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				E1C9AA511C10419200732665 /* Math.swift in Sources */,
 				B50C0C5A1EF42A2600372C65 /* MediaProgressCoordinator.swift in Sources */,
 				B574CE151B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift in Sources */,
@@ -18110,7 +18082,6 @@
 				9826AE8A21B5CC7300C851FA /* PostingActivityMonth.swift in Sources */,
 				4054F4612214F50300D261AB /* StreakStatsRecordValue+CoreDataClass.swift in Sources */,
 				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,
-				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				4054F4422213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
 				FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */,
 				17171374265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift in Sources */,
@@ -18886,7 +18857,6 @@
 				C7F7BDBD26262A1B00CE547F /* AppDependency.swift in Sources */,
 				FABB20E12602FC2C00C8785C /* WebAddressStep.swift in Sources */,
 				FABB20E22602FC2C00C8785C /* NotificationSyncMediator.swift in Sources */,
-				FABB20E32602FC2C00C8785C /* PostGeolocationViewController.m in Sources */,
 				FABB20E42602FC2C00C8785C /* ThemeBrowserHeaderView.swift in Sources */,
 				FABB20E52602FC2C00C8785C /* SiteStatsInformation.swift in Sources */,
 				FABB20E62602FC2C00C8785C /* TitleSubtitleHeader.swift in Sources */,
@@ -20115,7 +20085,6 @@
 				FABB25602602FC2C00C8785C /* GutenbergViewController+Localization.swift in Sources */,
 				FABB25612602FC2C00C8785C /* MarkAsSpam.swift in Sources */,
 				FABB25622602FC2C00C8785C /* BlogDetailsSectionHeaderView.swift in Sources */,
-				FABB25632602FC2C00C8785C /* PostGeolocationView.m in Sources */,
 				FABB25642602FC2C00C8785C /* Math.swift in Sources */,
 				F1A38F222678C4DA00849843 /* BloggingRemindersFlow.swift in Sources */,
 				FABB25652602FC2C00C8785C /* MediaProgressCoordinator.swift in Sources */,
@@ -20292,7 +20261,6 @@
 				FABB26022602FC2C00C8785C /* PostingActivityMonth.swift in Sources */,
 				FABB26032602FC2C00C8785C /* StreakStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB26042602FC2C00C8785C /* ReaderTabItem.swift in Sources */,
-				FABB26052602FC2C00C8785C /* PostGeolocationCell.m in Sources */,
 				FABB26062602FC2C00C8785C /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB26072602FC2C00C8785C /* JetpackBackupService.swift in Sources */,
 				FABB26082602FC2C00C8785C /* NotificationsViewController+JetpackPrompt.swift in Sources */,

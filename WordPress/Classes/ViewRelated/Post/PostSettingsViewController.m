@@ -3,8 +3,6 @@
 #import "FeaturedImageViewController.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
-#import "PostGeolocationCell.h"
-#import "PostGeolocationViewController.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "WPTableViewActivityCell.h"
