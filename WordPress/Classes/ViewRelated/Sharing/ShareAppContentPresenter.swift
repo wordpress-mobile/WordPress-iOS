@@ -83,7 +83,7 @@ enum ShareAppEventSource: String {
     // Feature engaged from the Me page.
     case me
 
-    // Feature engaged form the About page.
+    // Feature engaged from the About page.
     case about
 }
 
