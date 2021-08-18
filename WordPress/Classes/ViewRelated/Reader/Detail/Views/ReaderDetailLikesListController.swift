@@ -65,10 +65,6 @@ private extension ReaderDetailLikesListController {
                                               comment: "Plural format string for view title displaying the number of post likes. %1$d is the number of likes.")
     }
 
-    struct NoResultsText {
-        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading notification likes.")
-        static let errorSubtitle = NSLocalizedString("There was an error loading likes", comment: "Text displayed when there is a failure loading notification likes.")
-    }
 }
 
 // MARK: - LikesListController Delegate
@@ -79,10 +75,10 @@ extension ReaderDetailLikesListController: LikesListControllerDelegate {
         displayUserProfile(user, from: indexPath)
     }
 
-    func showErrorView() {
+    func showErrorView(title: String, subtitle: String?) {
         configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultsText.errorTitle,
-                                     subtitle: NoResultsText.errorSubtitle,
+                                     title: title,
+                                     subtitle: subtitle,
                                      image: "wp-illustration-reader-empty")
     }
 

@@ -491,6 +491,7 @@
 		3F6BC07E25B247A4007369D3 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		3F6DA04125646F96002AB88F /* HomeWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DA04025646F96002AB88F /* HomeWidgetData.swift */; };
 		3F71D5302548C2B200A4BA93 /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
+		3F73388226C1CE9B0075D1DD /* TimeSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73388126C1CE9B0075D1DD /* TimeSelectionButton.swift */; };
 		3F73BE5D24EB38E200BE99FF /* WhatIsNewScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5C24EB38E200BE99FF /* WhatIsNewScenePresenter.swift */; };
 		3F73BE5F24EB3B4400BE99FF /* WhatIsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
@@ -507,6 +508,7 @@
 		3F8513DF260D091500A4B938 /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
 		3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
 		3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851427260D1EA300A4B938 /* CircledIcon.swift */; };
+		3F88065B26C30F2A0074DD21 /* TimeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */; };
 		3F8A087D253E4337000F35ED /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		3F8B136D25D08F34004FAC0A /* HomeWidgetThisWeekData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */; };
 		3F8B138F25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B138E25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift */; };
@@ -523,6 +525,7 @@
 		3F8EEC7025B4849A00EC9DAE /* SiteListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EEC6F25B4849A00EC9DAE /* SiteListProvider.swift */; };
 		3F946C592684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */; };
 		3F946C5A2684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F946C582684DD8E00B946F6 /* BloggingRemindersActions.swift */; };
+		3F95FF4026C4F385007731D3 /* ScreenObject in Frameworks */ = {isa = PBXBuildFile; productRef = 3FC2C34226C4E8B700C6D98F /* ScreenObject */; };
 		3F9E724125A8E69900AAAB1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F9E724325A8E69900AAAB1A /* Localizable.strings */; };
 		3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
 		3FA53E9D256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
@@ -535,10 +538,17 @@
 		3FA640662670CEFF0064401E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640652670CEFE0064401E /* XCTest.framework */; };
 		3FA640672670D1290064401E /* UITestsFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA640572670CCD40064401E /* UITestsFoundation.framework */; };
 		3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */; };
+		3FB1929026C6109F000F5AA3 /* TimeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */; };
+		3FB1929126C6C56E000F5AA3 /* TimeSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F73388126C1CE9B0075D1DD /* TimeSelectionButton.swift */; };
+		3FB1929226C6C575000F5AA3 /* TimeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */; };
+		3FB1929326C6C57A000F5AA3 /* TimeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */; };
+		3FB1929526C79EC6000F5AA3 /* Date+TimeStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1929426C79EC6000F5AA3 /* Date+TimeStrings.swift */; };
+		3FB1929626C79EC6000F5AA3 /* Date+TimeStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1929426C79EC6000F5AA3 /* Date+TimeStrings.swift */; };
 		3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		3FBF21B7267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
 		3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */; };
+		3FC2C33D26C4CF0A00C6D98F /* XCUITestHelpers in Frameworks */ = {isa = PBXBuildFile; productRef = 3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */; };
 		3FC7F89E2612341900FD8728 /* UnifiedPrologueStatsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7F89D2612341900FD8728 /* UnifiedPrologueStatsContentView.swift */; };
 		3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */; };
 		3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -558,7 +568,6 @@
 		3FE3D1FF26A6F56700F3CD10 /* Comment+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE02F95E269DC14A00752A44 /* Comment+Interface.swift */; };
 		3FE77C8325B0CA89007DE9E5 /* LocalizableStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE77C8225B0CA89007DE9E5 /* LocalizableStrings.swift */; };
 		3FEC241525D73E8B007AFE63 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEC241425D73E8B007AFE63 /* ConfettiView.swift */; };
-		3FF14430266F3C2400138163 /* ScreenObject in Frameworks */ = {isa = PBXBuildFile; productRef = 3FF1442F266F3C2400138163 /* ScreenObject */; };
 		3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
@@ -5086,6 +5095,7 @@
 		3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsCache.swift; sourceTree = "<group>"; };
 		3F6DA04025646F96002AB88F /* HomeWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetData.swift; sourceTree = "<group>"; };
+		3F73388126C1CE9B0075D1DD /* TimeSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionButton.swift; sourceTree = "<group>"; };
 		3F73BE5C24EB38E200BE99FF /* WhatIsNewScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewScenePresenter.swift; sourceTree = "<group>"; };
 		3F73BE5E24EB3B4400BE99FF /* WhatIsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewView.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
@@ -5102,6 +5112,7 @@
 		3F8513DE260D091500A4B938 /* RoundRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRectangleView.swift; sourceTree = "<group>"; };
 		3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueEditorContentView.swift; sourceTree = "<group>"; };
 		3F851427260D1EA300A4B938 /* CircledIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircledIcon.swift; sourceTree = "<group>"; };
+		3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionViewController.swift; sourceTree = "<group>"; };
 		3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetThisWeekData.swift; sourceTree = "<group>"; };
 		3F8B138E25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetThisWeek.swift; sourceTree = "<group>"; };
 		3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogAction.swift; sourceTree = "<group>"; };
@@ -5153,6 +5164,8 @@
 		3FA640632670CED80064401E /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
 		3FA640652670CEFE0064401E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfiguredView.swift; sourceTree = "<group>"; };
+		3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionView.swift; sourceTree = "<group>"; };
+		3FB1929426C79EC6000F5AA3 /* Date+TimeStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+TimeStrings.swift"; sourceTree = "<group>"; };
 		3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetTodayData.swift; sourceTree = "<group>"; };
 		3FBF21B6267AA17A0098335F /* BloggingRemindersAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersAnimator.swift; sourceTree = "<group>"; };
 		3FC7F89D2612341900FD8728 /* UnifiedPrologueStatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedPrologueStatsContentView.swift; sourceTree = "<group>"; };
@@ -7653,6 +7666,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA640662670CEFF0064401E /* XCTest.framework in Frameworks */,
+				3FC2C33D26C4CF0A00C6D98F /* XCUITestHelpers in Frameworks */,
+				3F95FF4026C4F385007731D3 /* ScreenObject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7796,7 +7811,6 @@
 			files = (
 				3FA640612670CE210064401E /* UITestsFoundation.framework in Frameworks */,
 				4B2DD0F29CD6AC353C056D41 /* Pods_WordPressUITests.framework in Frameworks */,
-				3FF14430266F3C2400138163 /* ScreenObject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8877,6 +8891,7 @@
 				178DDD2F266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift */,
 				F1C197A52670DDB100DE1FF7 /* BloggingRemindersTracker.swift */,
 				178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */,
+				3FB1928E26C6106C000F5AA3 /* Time Selector */,
 			);
 			path = "Blogging Reminders";
 			sourceTree = "<group>";
@@ -9295,6 +9310,16 @@
 				3F762E9826784CC90088CD45 /* XCUIElementQuery+Utils.swift */,
 			);
 			path = UITestsFoundation;
+			sourceTree = "<group>";
+		};
+		3FB1928E26C6106C000F5AA3 /* Time Selector */ = {
+			isa = PBXGroup;
+			children = (
+				3F73388126C1CE9B0075D1DD /* TimeSelectionButton.swift */,
+				3F88065A26C30F2A0074DD21 /* TimeSelectionViewController.swift */,
+				3FB1928F26C6109F000F5AA3 /* TimeSelectionView.swift */,
+			);
+			path = "Time Selector";
 			sourceTree = "<group>";
 		};
 		3FB34ABB25672A59001A74A6 /* Model */ = {
@@ -10960,6 +10985,7 @@
 				74729CA12056F9DB00D1394D /* Spotlight */,
 				B526DC241B1E473B002A8C5F /* WebViewController */,
 				E1BEEC621C4E35A8000B4FA0 /* Animator.swift */,
+				3FB1929426C79EC6000F5AA3 /* Date+TimeStrings.swift */,
 				E14BCABA1E0BC817002E0603 /* Delay.swift */,
 				40D78238206ABD970015A3A1 /* Scheduler.swift */,
 				E11000981CDB5F1E00E33887 /* KeychainTools.swift */,
@@ -14563,6 +14589,10 @@
 			dependencies = (
 			);
 			name = UITestsFoundation;
+			packageProductDependencies = (
+				3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */,
+				3FC2C34226C4E8B700C6D98F /* ScreenObject */,
+			);
 			productName = UITestsFoundation;
 			productReference = 3FA640572670CCD40064401E /* UITestsFoundation.framework */;
 			productType = "com.apple.product-type.framework";
@@ -14639,6 +14669,8 @@
 				8511CFBC1C607A7000B7CEED /* PBXTargetDependency */,
 			);
 			name = WordPressScreenshotGeneration;
+			packageProductDependencies = (
+			);
 			productName = WordPressScreenshotGeneration;
 			productReference = 8511CFB61C607A7000B7CEED /* WordPressScreenshotGeneration.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -14800,6 +14832,8 @@
 				FAF64C3A2637E02700E8A1DF /* PBXTargetDependency */,
 			);
 			name = JetpackScreenshotGeneration;
+			packageProductDependencies = (
+			);
 			productName = WordPressScreenshotGeneration;
 			productReference = FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -14821,7 +14855,6 @@
 			);
 			name = WordPressUITests;
 			packageProductDependencies = (
-				3FF1442F266F3C2400138163 /* ScreenObject */,
 			);
 			productName = WordPressUITests;
 			productReference = FF27168F1CAAC87A0006E2D4 /* WordPressUITests.xctest */;
@@ -15021,6 +15054,7 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
+				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -16753,6 +16787,7 @@
 				57CCB3812358ED07003ECD0C /* WordPress-91-92.xcmappingmodel in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				FE02F95F269DC14A00752A44 /* Comment+Interface.swift in Sources */,
+				3F88065B26C30F2A0074DD21 /* TimeSelectionViewController.swift in Sources */,
 				E1E89C6C1FD80E74006E7A33 /* Plugin.swift in Sources */,
 				8B7C97E325A8BFA2004A3373 /* JetpackActivityLogViewController.swift in Sources */,
 				7E4123BD20F4097B00DF8486 /* FormattableMediaContent.swift in Sources */,
@@ -16956,6 +16991,7 @@
 				C3E2462926277B7700B99EA6 /* PostAuthorSelectorViewController.swift in Sources */,
 				F5E032E62408D537003AF350 /* ActionSheetViewController.swift in Sources */,
 				9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */,
+				3F73388226C1CE9B0075D1DD /* TimeSelectionButton.swift in Sources */,
 				5DED0E181B432E0400431FCD /* SourcePostAttribution.m in Sources */,
 				1715179420F4B5CD002C4A38 /* MySitesCoordinator.swift in Sources */,
 				08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */,
@@ -17248,6 +17284,7 @@
 				17C1D7DC26735631006C8970 /* EmojiRenderer.swift in Sources */,
 				C81CCD7B243BF7A600A83E27 /* TenorStrings.swift in Sources */,
 				91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */,
+				3FB1929526C79EC6000F5AA3 /* Date+TimeStrings.swift in Sources */,
 				178DDD57266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */,
 				73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
@@ -17599,6 +17636,7 @@
 				1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */,
 				E11C4B702010930B00A6619C /* Blog+Jetpack.swift in Sources */,
 				F1DB8D292288C14400906E2F /* Uploader.swift in Sources */,
+				3FB1929026C6109F000F5AA3 /* TimeSelectionView.swift in Sources */,
 				FAB8AB8B25AFFE7500F9F8A0 /* JetpackRestoreService.swift in Sources */,
 				821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
@@ -19335,6 +19373,7 @@
 				FABB227F2602FC2C00C8785C /* SettingsTextViewController.m in Sources */,
 				FABB22802602FC2C00C8785C /* PlanListViewController.swift in Sources */,
 				FABB22812602FC2C00C8785C /* GutenbergRequestAuthenticator.swift in Sources */,
+				3FB1929626C79EC6000F5AA3 /* Date+TimeStrings.swift in Sources */,
 				FABB22822602FC2C00C8785C /* WPTableViewActivityCell.m in Sources */,
 				FABB22832602FC2C00C8785C /* DomainsListViewController.swift in Sources */,
 				FABB22842602FC2C00C8785C /* PeopleViewController.swift in Sources */,
@@ -19680,6 +19719,7 @@
 				FABB23C02602FC2C00C8785C /* FeatureItemRow.swift in Sources */,
 				FABB23C12602FC2C00C8785C /* ReaderTagsTableViewController+Cells.swift in Sources */,
 				FABB23C22602FC2C00C8785C /* PrepublishingHeaderView.swift in Sources */,
+				3FB1929126C6C56E000F5AA3 /* TimeSelectionButton.swift in Sources */,
 				FABB23C32602FC2C00C8785C /* StatsWidgetsStore.swift in Sources */,
 				FABB23C42602FC2C00C8785C /* MenuItemsVisualOrderingView.m in Sources */,
 				FABB23C52602FC2C00C8785C /* JetpackScanViewController.swift in Sources */,
@@ -20052,6 +20092,7 @@
 				FABB251E2602FC2C00C8785C /* GutenbergLightNavigationController.swift in Sources */,
 				FABB251F2602FC2C00C8785C /* AppFeedbackPromptView.swift in Sources */,
 				FABB25202602FC2C00C8785C /* UIView+ExistingConstraints.swift in Sources */,
+				3FB1929226C6C575000F5AA3 /* TimeSelectionViewController.swift in Sources */,
 				FABB25212602FC2C00C8785C /* CountryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB25222602FC2C00C8785C /* MediaRequestAuthenticator.swift in Sources */,
 				FABB25232602FC2C00C8785C /* StatsCellHeader.swift in Sources */,
@@ -20201,6 +20242,7 @@
 				FABB25AB2602FC2C00C8785C /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				FABB25AC2602FC2C00C8785C /* Charts+Support.swift in Sources */,
 				FABB25AD2602FC2C00C8785C /* SharingAuthorizationWebViewController.swift in Sources */,
+				3FB1929326C6C57A000F5AA3 /* TimeSelectionView.swift in Sources */,
 				FABB25AE2602FC2C00C8785C /* SearchWrapperView.swift in Sources */,
 				FABB25AF2602FC2C00C8785C /* UserSettings.swift in Sources */,
 				FABB25B02602FC2C00C8785C /* MediaImportService.swift in Sources */,
@@ -24794,6 +24836,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Automattic/XCUITestHelpers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/ScreenObject";
@@ -24809,7 +24859,12 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = WordPressFlux;
 		};
-		3FF1442F266F3C2400138163 /* ScreenObject */ = {
+		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */;
+			productName = XCUITestHelpers;
+		};
+		3FC2C34226C4E8B700C6D98F /* ScreenObject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */;
 			productName = ScreenObject;

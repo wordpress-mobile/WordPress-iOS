@@ -436,16 +436,45 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
-
-    if (comment.commentID != 0) {
-        RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
-        id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
-        [remote trashComment:remoteComment success:success failure:failure];
+    // If this comment is local only, just delete. No need to query the endpoint or do any other work.
+    if (comment.commentID == 0) {
+        [self.managedObjectContext deleteObject:comment];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
+        return;
     }
-    [self.managedObjectContext deleteObject:comment];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
 
+    // For the best user experience we want to optimistically delete the comment.
+    // However, if there is an error we need to restore it.
+    RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
+    NSManagedObjectID *blogObjID = comment.blog.objectID;
+    NSManagedObjectContext *context = self.managedObjectContext;
+    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+
+    [context deleteObject:comment];
+    [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+        [remote trashComment:remoteComment success:success failure:^(NSError *error) {
+            // Failure.  Restore the comment.
+            Blog *blog = (Blog *)[context objectWithID:blogObjID];
+            if (!blog) {
+                if (failure) {
+                    failure(error);
+                }
+                return;
+            }
+
+            Comment *comment = [self createCommentForBlog:blog];
+            [self updateComment:comment withRemoteComment:remoteComment];
+            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+                if (failure) {
+                    failure(error);
+                }
+            }];
+        }];
+    }];
+}
 
 #pragma mark - Post-centric methods
 

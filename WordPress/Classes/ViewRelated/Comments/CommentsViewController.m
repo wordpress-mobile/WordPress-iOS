@@ -69,7 +69,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [self refreshPullToRefresh];
     [self refreshNoResultsView];
     [self refreshAndSyncIfNeeded];
 }

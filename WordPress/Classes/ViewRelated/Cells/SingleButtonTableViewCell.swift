@@ -88,7 +88,6 @@ class SingleButtonTableViewCell: WPReusableTableViewCell, NibLoadable {
 private extension SingleButtonTableViewCell {
 
     func setupViews() {
-        selectionStyle = .none
         accessibilityTraits = .button
 
         // hide the image view initially.
