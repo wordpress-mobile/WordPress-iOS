@@ -26,6 +26,15 @@ class BloggingRemindersStore {
         /// Scheduled weekday reminders.
         ///
         case weekdays(_ days: [ScheduledWeekday])
+
+        /// Scheduled weekday reminders with time of the day
+        ///
+        case weekDaysWithTime(_ daysWithTime: ScheduledWeekdaysWithTime)
+    }
+
+    struct ScheduledWeekdaysWithTime: Codable {
+        let time: Date
+        let days: [ScheduledWeekday]
     }
 
     /// A weekday with an associated notification that has already been scheduled.
@@ -82,7 +91,7 @@ class BloggingRemindersStore {
         switch scheduledReminders {
         case .none:
             configuration.removeValue(forKey: blogIdentifier)
-        case .weekdays:
+        case .weekdays, .weekDaysWithTime:
             configuration[blogIdentifier] = scheduledReminders
         }
         try save()
@@ -122,10 +131,12 @@ extension BloggingRemindersStore.ScheduledReminders: Equatable {
 
 extension BloggingRemindersStore.ScheduledReminders: Codable {
     typealias ScheduledWeekday = BloggingRemindersStore.ScheduledWeekday
+    typealias ScheduledWeekdaysWithTime = BloggingRemindersStore.ScheduledWeekdaysWithTime
 
     private enum CodingKeys: String, CodingKey {
         case none
         case weekdays
+        case weekDaysWithTime
     }
 
     private enum Error: Swift.Error {
@@ -147,7 +158,15 @@ extension BloggingRemindersStore.ScheduledReminders: Codable {
                 let days = try container.decode([ScheduledWeekday].self, forKey: .weekdays)
                 self = .weekdays(days)
             } catch {
-                print(error)
+                DDLogError("Failed to decode days from Blogging Reminders store :\(error)")
+                self = .none
+            }
+        case .weekDaysWithTime:
+            do {
+                let daysWithTime = try container.decode(ScheduledWeekdaysWithTime.self, forKey: .weekDaysWithTime)
+                self = .weekDaysWithTime(daysWithTime)
+            } catch {
+                DDLogError("Failed to decode days from Blogging Reminders store :\(error)")
                 self = .none
             }
         }
@@ -161,6 +180,9 @@ extension BloggingRemindersStore.ScheduledReminders: Codable {
             try container.encode(true, forKey: .none)
         case .weekdays(let days):
             try container.encode(days, forKey: .weekdays)
+        case .weekDaysWithTime(let daysWithTime):
+            try container.encode(daysWithTime, forKey: .weekDaysWithTime)
+
         }
     }
 }
