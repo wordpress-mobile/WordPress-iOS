@@ -16,7 +16,7 @@ import WordPressKit
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
 
     /// Ask the delegate to show an error view when fetching fails or there is no connection.
-    func showErrorView()
+    func showErrorView(title: String, subtitle: String?)
 
     /// Send likes count to delegate.
     @objc optional func updatedTotalLikes(_ totalLikes: Int)
@@ -39,6 +39,9 @@ class LikesListController: NSObject {
     private var totalLikesFetched = 0
     private var lastFetchedDate: String?
     private var excludeUserIDs: [NSNumber]?
+
+    private let errorTitle = NSLocalizedString("Error loading likes",
+                                               comment: "Text displayed when there is a failure loading notification likes.")
 
     private var hasMoreLikes: Bool {
         return totalLikesFetched < totalLikes
@@ -163,7 +166,7 @@ class LikesListController: NSObject {
             isLoadingContent = false
 
             if likingUsers.isEmpty {
-                delegate?.showErrorView()
+                delegate?.showErrorView(title: errorTitle, subtitle: nil)
             }
 
             return
@@ -190,9 +193,23 @@ class LikesListController: NSObject {
             self.isFirstLoad = false
             self.isLoadingContent = false
             self.trackUsersToExclude()
-        }, failure: { [weak self] _ in
-            self?.isLoadingContent = false
-            self?.delegate?.showErrorView()
+        }, failure: { [weak self] error in
+            guard let self = self else {
+                return
+            }
+
+            let errorMessage: String? = {
+                // Get error message from API response if provided.
+                if let error = error,
+                   let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
+                   !message.isEmpty {
+                    return message
+                }
+                return nil
+            }()
+
+            self.isLoadingContent = false
+            self.delegate?.showErrorView(title: self.errorTitle, subtitle: errorMessage)
         })
     }
 

@@ -39,8 +39,7 @@ extension BlogDetailsViewController {
         return coordinator
     }
 
-    //TODO: Can be removed after stories launches
     private var shouldShowNewStory: Bool {
-        return Feature.enabled(.stories) && blog.supports(.stories) && !UIDevice.isPad()
+        return blog.supports(.stories) && !UIDevice.isPad()
     }
 }

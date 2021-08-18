@@ -1,6 +1,6 @@
 18.1
 -----
-
+* [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
 
 18.0
 -----
