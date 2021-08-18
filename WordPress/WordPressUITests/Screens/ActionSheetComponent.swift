@@ -19,7 +19,7 @@ class ActionSheetComponent: BaseScreen {
 
     func gotoBlogPost() {
         XCTAssert(blogPostButton.waitForExistence(timeout: 3))
-        XCTAssert(blogPostButton.waitForHittability(timeout: 3))
+        XCTAssert(blogPostButton.waitForIsHittable(timeout: 3))
 
         XCTAssert(blogPostButton.isHittable)
         blogPostButton.tap()
@@ -27,7 +27,7 @@ class ActionSheetComponent: BaseScreen {
 
     func gotoSitePage() {
         XCTAssert(sitePageButton.waitForExistence(timeout: 3))
-        XCTAssert(sitePageButton.waitForHittability(timeout: 3))
+        XCTAssert(sitePageButton.waitForIsHittable(timeout: 3))
 
         XCTAssert(sitePageButton.isHittable)
         sitePageButton.tap()

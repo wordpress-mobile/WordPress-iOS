@@ -89,7 +89,7 @@ class BlockEditorScreen: BaseScreen {
             }
 
             // Wait for close button to be hittable (i.e. React "Loading from pre-bundled file" message is gone)
-            editorCloseButton.waitForHittability(timeout: 3)
+            editorCloseButton.waitForIsHittable(timeout: 3)
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
