@@ -42,6 +42,7 @@ private class AccountSettingsController: SettingsController {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
+    private let alertHelper = DestructiveAlertHelper()
 
     init(service: AccountSettingsService) {
         self.service = service
@@ -243,18 +244,21 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    private var closeAccountAlert: UIAlertController {
-        let alert = UIAlertController(title: "Close account", message: "Are you sure you want to close your account?", preferredStyle: .alert)
-        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
-            self?.service.closeAccount()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-
-        [yesAction, cancelAction].forEach {
-            alert.addAction($0)
+    private var closeAccountAlert: UIAlertController? {
+        guard let value = settings?.username else {
+            return nil
         }
 
-        return alert
+        let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
+        let message = NSLocalizedString("\nTo confirm, please re-enter your username before closing.\n\n",
+                                        comment: "Message of Close Account confirmation alert")
+        let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
+                                                       comment: "Close Account confirmation action title")
+        func temp() {
+            print("test closeAccountAlert")
+        }
+
+        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: temp)
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
