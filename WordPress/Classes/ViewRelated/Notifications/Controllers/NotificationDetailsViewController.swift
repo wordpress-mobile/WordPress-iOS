@@ -1229,6 +1229,7 @@ private extension NotificationDetailsViewController {
         if FeatureFlag.newCommentEdit.enabled {
             let editViewController = EditCommentTableViewController()
             navController = UINavigationController(rootViewController: editViewController)
+            navController.modalPresentationStyle = .fullScreen
         } else {
             let editViewController = EditCommentViewController.newEdit()
             editViewController?.content = block.text
@@ -1243,9 +1244,9 @@ private extension NotificationDetailsViewController {
             }
 
             navController = UINavigationController(rootViewController: editViewController!)
+            navController.modalPresentationStyle = .formSheet
         }
 
-        navController.modalPresentationStyle = .formSheet
         navController.modalTransitionStyle = .coverVertical
         navController.navigationBar.isTranslucent = false
 

@@ -645,6 +645,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     if ([Feature enabled:FeatureFlagNewCommentEdit]) {
         EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] init];
         navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
     } else {
         EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
         editViewController.content = [self.comment contentForEdit];
@@ -659,9 +660,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         };
         
         navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
 
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
 
