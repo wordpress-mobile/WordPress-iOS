@@ -189,7 +189,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    /// The weekdays that have been saved / scheduled in a previous blogging reminders configuration.
+    /// The weekdays that have been saved and scheduled in a previous blogging reminders configuration.
     ///
     private let previousWeekdays: [BloggingRemindersScheduler.Weekday]
 
