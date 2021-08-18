@@ -7,7 +7,7 @@ extension XCUIElement {
      - Parameter text: the text to enter into the field
      */
     func clearAndEnterText(text: String) -> Void {
-        clearTextIfNeeded()
+        clearText()
         self.tap()
         self.typeText(text)
     }
