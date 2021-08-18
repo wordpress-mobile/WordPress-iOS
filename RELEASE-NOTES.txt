@@ -1,5 +1,6 @@
 18.1
 -----
+* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
 * [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
 
 18.0
