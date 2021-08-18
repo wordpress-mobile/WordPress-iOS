@@ -114,7 +114,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 extension BaseScreen {
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
-        let mode = isDarkMode ? "dark" : "light"
+        let mode = XCUIDevice.inDarkMode ? "dark" : "light"
         let filename = "\(index)-\(mode)-\(title)"
 
         snapshot(filename)

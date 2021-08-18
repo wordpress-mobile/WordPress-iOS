@@ -1,14 +1,6 @@
 import UITestsFoundation
 import XCTest
 
-var isDarkMode: Bool {
-    if #available(iOS 12.0, *) {
-        return UIViewController().traitCollection.userInterfaceStyle == .dark
-    } else {
-        return false
-    }
-}
-
 extension XCUIElement {
     /**
      Removes any current text in the field before typing in the new value
