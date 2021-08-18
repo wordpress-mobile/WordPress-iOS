@@ -15,14 +15,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Images.calendarImageName))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemRed
         return imageView
     }()
 
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
@@ -34,7 +34,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    let promptLabel: UILabel = {
+    private let promptLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
@@ -48,14 +48,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    let button: UIButton = {
+    private let button: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)
         return button
     }()
 
-    let daysOuterStackView: UIStackView = {
+    private let daysOuterStackView: UIStackView = {
         let daysOuterStack = UIStackView()
         daysOuterStack.axis = .vertical
         daysOuterStack.alignment = .center
@@ -64,14 +64,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return daysOuterStack
     }()
 
-    let daysTopInnerStackView: UIStackView = {
+    private let daysTopInnerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = Metrics.innerStackSpacing
         return stackView
     }()
 
-    let daysBottomInnerStackView: UIStackView = {
+    private let daysBottomInnerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = Metrics.innerStackSpacing
@@ -89,7 +89,42 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    lazy var bottomTipPanel: UIView = {
+    // adds dividers for the time selection
+    private func makeDivider() -> UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.divider
+        return view
+    }
+
+    private lazy var topDivider: UIView = {
+        makeDivider()
+    }()
+
+    private lazy var bottomDivider: UIView = {
+        makeDivider()
+    }()
+
+    private lazy var timeSelectionButton: TimeSelectionButton = {
+        let button = TimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
+        button.isUserInteractionEnabled = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
+        return button
+    }()
+
+    @objc private func navigateToTimePicker() {
+        pushTimeSelectionViewController()
+    }
+
+
+    private lazy var timeSelectionStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.addArrangedSubviews([topDivider, timeSelectionButton, bottomDivider])
+        return stackView
+    }()
+
+    private lazy var bottomTipPanel: UIView = {
         let view = UIView()
         view.backgroundColor = .quaternaryBackground
         view.layer.cornerRadius = Metrics.tipPanelCornerRadius
@@ -99,7 +134,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return view
     }()
 
-    func populateTipPanel(_ panel: UIView) {
+    private func populateTipPanel(_ panel: UIView) {
         let innerStack = UIStackView()
         innerStack.spacing = Metrics.tipPanelHorizontalStackSpacing
         innerStack.translatesAutoresizingMaskIntoConstraints = false
@@ -162,6 +197,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
+    private var scheduledTime: Date
 
     init(
         for blog: Blog,
@@ -187,6 +223,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
 
         weekdays = previousWeekdays
+
+        scheduledTime = scheduler.scheduledTime(for: blog)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -265,6 +303,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             promptLabel,
             daysOuterStackView,
             frequencyLabel,
+            timeSelectionStackView,
             fillerView,
             bottomTipPanel,
             bottomPadding,
@@ -287,9 +326,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
             button.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right)
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right),
+            topDivider.heightAnchor.constraint(equalToConstant: Metrics.dividerHeight),
+            bottomDivider.heightAnchor.constraint(equalToConstant: Metrics.dividerHeight),
+            timeSelectionStackView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
+            timeSelectionStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
     }
 
@@ -351,7 +395,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         if previousWeekdays.isEmpty {
             button.setTitle(TextContent.nextButtonTitle, for: .normal)
             button.isEnabled = !weekdays.isEmpty
-        } else if weekdays == previousWeekdays {
+        } else if (weekdays == previousWeekdays) && (scheduledTime == scheduler.scheduledTime(for: blog)) {
             button.setTitle(TextContent.nextButtonTitle, for: .normal)
             button.isEnabled = true
         } else {
@@ -363,10 +407,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private func refreshFrequencyLabel() {
         guard weekdays.count > 0 else {
             frequencyLabel.isHidden = true
+            timeSelectionStackView.isHidden = true
             return
         }
 
         frequencyLabel.isHidden = false
+        timeSelectionStackView.isHidden = false
 
         let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
             .foregroundColor: UIColor.text,
@@ -404,14 +450,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             schedule = .none
         }
 
-        scheduler.schedule(schedule, for: blog) { [weak self] result in
+        scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
             guard let self = self else {
                 return
             }
 
             switch result {
             case .success:
-                self.tracker.scheduled(schedule)
+                self.tracker.scheduled(schedule, time: self.scheduledTime)
 
                 DispatchQueue.main.async { [weak self] in
                     self?.presentCompletionViewController()
@@ -432,7 +478,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-
+    private func pushTimeSelectionViewController() {
+        let viewController = TimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog),
+                                                         tracker: tracker) { [weak self] date in
+            self?.scheduledTime = date
+            self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
+            self?.refreshNextButton()
+        }
+        viewController.preferredWidth = self.view.frame.width
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 
     // MARK: - Completion Paths
 
@@ -505,4 +560,6 @@ private enum Metrics {
     static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
 
     static let topRowDayCount = 4
+
+    static let dividerHeight: CGFloat = .hairlineBorderWidth
 }

@@ -41,12 +41,6 @@
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Gefällt mir";
 
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d Blogger_ gefällt das.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d Bloggern_ gefällt das.";
-
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d von %2$d komplett";
 
@@ -213,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li Wörter, %2$li Zeichen";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s blockieren";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s Blockoptionen";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s block, newly available";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s-Block. Leer";
@@ -476,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Füge hier eine individuelle CSS-URL hinzu, die im Reader geladen werden soll. Wenn du Calypso lokal ausführst, kann das etwa folgendermaßen aussehen: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Eine selbst gehostete Website hinzufügen";
@@ -825,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "Kunst";
 
@@ -1010,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Sperrliste";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
@@ -1053,6 +1063,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Schutz vor Brute-Force-Angriffen";
+
+/* No comment provided by engineer. */
+"Build layouts" = "Build layouts";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Liste mit Aufzählungszeichen";
@@ -1117,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2345,6 +2359,9 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "Link bearbeiten";
 
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Ost";
 
@@ -2477,6 +2494,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "Link einbetten";
+
+/* No comment provided by engineer. */
+"Embed media" = "Embed media";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Eingebettete Vorschau noch nicht verfügbar";
@@ -2795,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Artikelbild";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Featured Image Already Set";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Optionen für Beitragsbilder";
 
@@ -3043,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "Aufgeben";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Wähle einen Namen für deine Website, der am besten zu ihrer Persönlichkeit und Ausrichtung passt. Erste Eindrücke zählen!";
@@ -3851,6 +3877,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "Hauptnavigation";
 
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -4569,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Wenn dieser Einladungslink deaktiviert ist, kann ihn niemand verwenden, um deinem Team beizutreten. Bist du dir sicher?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Sobald du eine Website bei WordPress.com erstellt hast, kannst du Inhalte, die dir gefallen, auf deiner eigenen Website rebloggen.";
@@ -5462,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Entfernt";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Removed as featured image";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Entfernt vor dem Hochladen von Fotos zu deiner Website die jeweiligen Standort-Metadaten.";
 
@@ -5470,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Das Entfernen der nächsten Schritte blendet alle Touren auf dieser Seite aus. Diese Aktion kann nicht rückgängig gemacht werden.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Replace";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Aktuellen Block ersetzen";
@@ -5637,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Formatierter Inhalt";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Rich text editing";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rechts";
@@ -5989,6 +6030,9 @@
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Als Beitragsseite festlegen";
 
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Set as featured image";
+
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Erinnerungen festlegen";
 
@@ -6270,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Social Media";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Einige Medien-Uploads sind fehlgeschlagen. Durch diese Aktion werden alle Medien, für die das Hochladen fehlgeschlagen ist, aus dem Beitrag entfernt.\nTrotzdem speichern?";
@@ -7086,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Um mit diesem Google-Konto fortzufahren, melde dich bitte zuerst mit deinem WordPress.com-Passwort an. Dies wird nur einmal nachgefragt.";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Um Fotos oder Videos für deine Beiträge aufzunehmen.";
 
@@ -7627,6 +7677,9 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Nutze aktuellen Standort";
 
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Use Sandbox Store";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Block-Editor benutzen";
 
@@ -8082,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "Willkommen zum Reader";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Welcome to the world of blocks";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Willkommen beim beliebtesten Website-Baukasten der Welt.";
 
@@ -8331,6 +8387,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "Gestern";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du bist dabei, deinen Benutzernamen zu ändern, bisher %1$@. %2$@";
 
@@ -8360,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Unter „Meine Website“ &rarr; „Einstellungen“ kannst du dies jederzeit aktualisieren.";
@@ -8578,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMMENTAR]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_You_ like this.";
 
 /* Age between dates equaling one day. */
 "a day" = "ein Tag";

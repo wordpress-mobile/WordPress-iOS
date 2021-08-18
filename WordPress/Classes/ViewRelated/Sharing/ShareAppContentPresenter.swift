@@ -115,6 +115,7 @@ private extension ShareAppContentPresenter {
         ]
 
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = viewController.view
         viewController.present(activityViewController, animated: true, completion: nil)
     }
 

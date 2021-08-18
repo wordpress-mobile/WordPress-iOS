@@ -35,7 +35,7 @@ private extension ShareAppTextActivityItemSourceTests {
 
     struct Expectations {
         static let message = "Expected message"
-        static let subject = NSLocalizedString("WordPress.com Apps - Apps for any screen",
+        static let subject = NSLocalizedString("WordPress Apps - Apps for any screen",
                                                comment: "Subject line for when sharing the app with others through mail or any other activity types "
                                                 + "that support contains a subject field.")
     }

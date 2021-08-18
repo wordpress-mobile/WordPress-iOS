@@ -247,7 +247,11 @@ platform :ios do
   desc 'Creates a new hotfix branch for the given version:x.y.z. The branch will be cut from the tag x.y of the previous release'
   lane :new_hotfix_release do |options|
     prev_ver = ios_hotfix_prechecks(options)
-    ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
+    ios_bump_version_hotfix(
+      previous_version: prev_ver,
+      version: options[:version],
+      skip_deliver: true
+    )
   end
 
   #####################################################################################
@@ -900,6 +904,7 @@ platform :ios do
       scheme: 'WordPress',
       device: options[:device],
       deployment_target_version: options[:ios_version],
+      ensure_devices_found: true,
       test_without_building: true,
       xctestrun: test_plan_path,
       try_count: options[:try_count],

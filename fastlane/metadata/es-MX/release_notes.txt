@@ -1,5 +1,0 @@
-¡Hay un nuevo bloque en la ciudad! Con el bloque de incrustación, puedes incrustar contenido de tus servicios favoritos, como YouTube, TikTok, Instagram y otros. Mantente atento a las nuevas funcionalidades que vendrán.
-
-¿Te gusta nuestra característica de recordatorios de blogueo? Antes, solo los administradores del sitio podían configurar los recordatorios, pero ahora hemos activado esta característica para la gente que puede editar entradas en tu sitio (editores, autores y colaboradores).
-
-Hemos hecho mejoras en la moderación de comentarios, asegurando que los usuarios apropiados pueden deslizar hacia la izquierda para aprobar/desaprobar y mandar a la papelera los comentarios. También hemos proporcionado compatibilidad para los estilos globales, activando ajustes como la personalización del color y del fondo para los temas de edición completa del sitio.
