@@ -150,11 +150,11 @@ class AccountSettingsService {
         }
     }
 
-    func closeAccount() {
+    func closeAccount(result: @escaping (Result<Void, Error>) -> Void) {
         remote.closeAccount {
-            AccountHelper.logOutDefaultWordPressComAccount()
+            result(.success(()))
         } failure: { error in
-            DDLogError(error.localizedDescription)
+            result(.failure(error))
         }
     }
 

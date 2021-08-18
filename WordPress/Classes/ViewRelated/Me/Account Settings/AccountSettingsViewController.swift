@@ -254,11 +254,26 @@ private class AccountSettingsController: SettingsController {
                                         comment: "Message of Close Account confirmation alert")
         let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
                                                        comment: "Close Account confirmation action title")
-        func temp() {
-            print("test closeAccountAlert")
-        }
 
-        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: temp)
+        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+    }
+
+    private func closeAccount() {
+        let status = NSLocalizedString("Closing Account…", comment: "Overlay message displayed while closing account")
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: status)
+
+        service.closeAccount {
+            switch $0 {
+            case .success:
+                let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
+                SVProgressHUD.showDismissibleSuccess(withStatus: status)
+                AccountHelper.logOutDefaultWordPressComAccount()
+            case .failure(let error):
+                SVProgressHUD.dismiss()
+                DDLogError(error.localizedDescription)
+            }
+        }
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
