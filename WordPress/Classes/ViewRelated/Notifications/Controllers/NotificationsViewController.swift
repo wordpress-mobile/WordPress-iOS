@@ -596,7 +596,7 @@ private extension NotificationsViewController {
         filterTabBarBottomConstraint.constant = usesUnifiedList ? Constants.filterTabBarBottomSpace : 0
 
         // With the 10pt bottom padding addition, ensure that the extra padding has the same background color
-        // as the table header cell.
+        // as the table header cell. NOTE: Move this line to `setupFilterBar` once the feature flag is removed.
         filterTabBar.superview?.backgroundColor = usesUnifiedList ? .systemBackground : .filterBarBackground
     }
 }
