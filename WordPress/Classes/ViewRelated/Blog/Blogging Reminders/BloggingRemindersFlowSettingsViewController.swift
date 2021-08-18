@@ -105,8 +105,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     }()
 
     private lazy var timeSelectionButton: TimeSelectionButton = {
-        /// - TODO: inject the correct time here
-        let button = TimeSelectionButton(selectedTime: "3:00 PM")
+        let button = TimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
         button.isUserInteractionEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
@@ -114,7 +113,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     }()
 
     @objc private func navigateToTimePicker() {
-        presentTimeSelectionViewController()
+        pushTimeSelectionViewController()
     }
 
 
@@ -198,6 +197,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
+    private var scheduledTime: Date
 
     init(
         for blog: Blog,
@@ -223,6 +223,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
 
         weekdays = previousWeekdays
+
+        scheduledTime = scheduler.scheduledTime(for: blog)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -393,7 +395,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         if previousWeekdays.isEmpty {
             button.setTitle(TextContent.nextButtonTitle, for: .normal)
             button.isEnabled = !weekdays.isEmpty
-        } else if weekdays == previousWeekdays {
+        } else if (weekdays == previousWeekdays) && (scheduledTime == scheduler.scheduledTime(for: blog)) {
             button.setTitle(TextContent.nextButtonTitle, for: .normal)
             button.isEnabled = true
         } else {
@@ -448,14 +450,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             schedule = .none
         }
 
-        scheduler.schedule(schedule, for: blog) { [weak self] result in
+        scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
             guard let self = self else {
                 return
             }
 
             switch result {
             case .success:
-                self.tracker.scheduled(schedule)
+                self.tracker.scheduled(schedule, time: self.scheduledTime)
 
                 DispatchQueue.main.async { [weak self] in
                     self?.presentCompletionViewController()
@@ -476,8 +478,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    private func presentTimeSelectionViewController() {
-        let viewController = TimeSelectionViewController()
+    private func pushTimeSelectionViewController() {
+        let viewController = TimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog),
+                                                         tracker: tracker) { [weak self] date in
+            self?.scheduledTime = date
+            self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
+            self?.refreshNextButton()
+        }
         viewController.preferredWidth = self.view.frame.width
         navigationController?.pushViewController(viewController, animated: true)
     }

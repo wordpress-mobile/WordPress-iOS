@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-10 13:55:57+0000 */
+/* Translation-Revision-Date: 2021-08-14 12:48:44+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -5035,7 +5035,7 @@ translators: Block name. %s: The localized block name */
 
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Format articol";
+"Post Format" = "Format de articol";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Articol restaurat la schiță";
@@ -5102,7 +5102,7 @@ translators: Block name. %s: The localized block name */
 "Post to WordPress" = "Publică pe WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Articol actualizat";
+"Post updated" = "Articolul a fost actualizat";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Cod poștal";
@@ -6698,7 +6698,7 @@ translators: Block name. %s: The localized block name */
 "Testimonials" = "Testimoniale";
 
 /* Title of a button style */
-"Text Only" = "Doar text";
+"Text Only" = "Numai text";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -8725,7 +8725,7 @@ translators: Block name. %s: The localized block name */
 "of" = "din";
 
 /* Label displayed on media items that are not video, image, or audio. */
-"other" = "alte";
+"other" = "altele";
 
 /* No comment provided by engineer. */
 "password" = "parolă";
