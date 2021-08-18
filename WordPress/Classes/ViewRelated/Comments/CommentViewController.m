@@ -640,19 +640,27 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)editComment
 {
-    EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-    editViewController.content = [self.comment contentForEdit];
+    UINavigationController *navController;
+    
+    if ([Feature enabled:FeatureFlagNewCommentEdit]) {
+        EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] init];
+        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    } else {
+        EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
+        editViewController.content = [self.comment contentForEdit];
+        
+        __typeof(self) __weak weakSelf = self;
+        editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (hasNewContent) {
+                    [weakSelf updateCommentForNewContent:newContent];
+                }
+            }];
+        };
+        
+        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    }
 
-    __typeof(self) __weak weakSelf = self;
-    editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            if (hasNewContent) {
-                [weakSelf updateCommentForNewContent:newContent];
-            }
-        }];
-    };
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
