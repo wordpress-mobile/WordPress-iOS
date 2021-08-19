@@ -413,10 +413,9 @@ class PostTests: XCTestCase {
         post.wp_slug = "lorem-ipsum"
         post.publicID = "90210"
         post.tags = "lorem,ipsum,test"
-        post.geolocation = Coordinate(coordinate: CLLocationCoordinate2D(latitude: 52.520833, longitude: 13.409444))
         post.isStickyPost = true
 
-        let correctHash = "36d7cd8138748d779453d30e8f758592b40b61af464921133c9db12cd71cf0ca"
+        let correctHash = "4889b28f7061f11ea295583a34decf42b3cba7191912b3d2ed0472362495b0d2"
 
         XCTAssertEqual(post.calculateConfirmedChangesContentHash(), correctHash)
 
