@@ -1,11 +1,9 @@
-* [*] Resolved an issue where authentication tokens weren't be regenerated when disabled on the server. [#16920]
-* [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
-* [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
-* [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969, #16980]
-* [internal] Updated GoogleSignIn to 6.0.1 through WordPressAuthenticator. Should be no visible changes, but could cause regression in Google sign in flow. [#16974]
-* [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969]
-* [*] Posts: Ampersands are correctly decoded in publishing notices instead of showing as HTML entites. [#16972]
-* [***] Adjusted the image size of Theme Images for more optimal download speeds. [#16914]
-* [*] Comments and Notifications list are now displayed with a unified design. [#16985]
-* [*] Block editor: Add a "featured" banner and ability to set or remove an image as featured. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3449]
+In 18.0 we’ve optimized the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.
 
+You can now set or remove a featured image for a post from the image block’s settings. And in case you forget, a new ‘featured’ banner highlights your current selection.
+
+Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.
+
+When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.
+
+Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.

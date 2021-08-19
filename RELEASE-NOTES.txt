@@ -1,9 +1,11 @@
 18.1
 -----
-
+* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
+* [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
 
 18.0
 -----
+* [*] Fixed a bug that would make it impossible to scroll the plugins the first time the plugin section was opened.
 * [*] Resolved an issue where authentication tokens weren't be regenerated when disabled on the server. [#16920]
 * [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
 * [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]

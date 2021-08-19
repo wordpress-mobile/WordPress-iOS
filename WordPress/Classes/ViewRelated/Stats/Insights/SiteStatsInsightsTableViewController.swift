@@ -173,6 +173,7 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            self?.displayEmptyViewIfNecessary()
             self?.refreshTableView()
         }
     }
@@ -215,6 +216,11 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     @objc func refreshData() {
+        guard !insightsToShow.isEmpty else {
+            refreshControl?.endRefreshing()
+            return
+        }
+
         refreshControl?.beginRefreshing()
         clearExpandedRows()
         refreshInsights()
