@@ -13,44 +13,44 @@ struct BloggingRemindersScheduleFormatter {
 
     /// Attributed description string of the current schedule for the specified blog.
     ///
-    func shortIntervalDescription(for schedule: BloggingRemindersScheduler.Schedule) -> NSAttributedString {
+    func shortIntervalDescription(for schedule: BloggingRemindersScheduler.Schedule, time: String) -> NSAttributedString {
         switch schedule {
         case .none:
             return Self.stringToAttributedString(TextContent.shortNoRemindersDescription)
         case .weekdays(let days):
             guard days.count > 0 else {
-                return shortIntervalDescription(for: .none)
+                return shortIntervalDescription(for: .none, time: time)
             }
 
-            return Self.shortIntervalDescription(for: days.count)
+            return Self.shortIntervalDescription(for: days.count, time: time)
         }
     }
 
-    static func shortIntervalDescription(for days: Int) -> NSAttributedString {
+    static func shortIntervalDescription(for days: Int, time: String) -> NSAttributedString {
         let text: String = {
             switch days {
             case 1:
-                return NSLocalizedString("<strong>Once</strong> a week", comment: "Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags.")
+                return String(format: NSLocalizedString("<strong>Once</strong> a week at %@", comment: "Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags."), time)
             case 2:
-                return NSLocalizedString("<strong>Twice</strong> a week", comment: "Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags.")
+                return String(format: NSLocalizedString("<strong>Twice</strong> a week at %@", comment: "Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags."), time)
             case 7:
-                return "<strong>" + NSLocalizedString("Every day", comment: "Short title telling the user they will receive a blogging reminder every day of the week.") + "</strong>"
+                return "<strong>" + String(format: NSLocalizedString("Every day at %@", comment: "Short title telling the user they will receive a blogging reminder every day of the week."), time) + "</strong>"
             default:
-                return String(format: NSLocalizedString("<strong>%d</strong> times a week",
-                                                        comment: "A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags."), days)
+                return String(format: NSLocalizedString("<strong>%d</strong> times a week at %@",
+                                                        comment: "A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags."), days, time)
             }
         }()
 
         return Self.stringToAttributedString(text)
     }
 
-    func longScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule) -> NSAttributedString {
+    func longScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule, time: String) -> NSAttributedString {
         switch schedule {
         case .none:
             return NSAttributedString(string: TextContent.longNoRemindersDescription)
         case .weekdays(let days):
             guard days.count > 0 else {
-                return longScheduleDescription(for: .none)
+                return longScheduleDescription(for: .none, time: time)
             }
 
             // We want the days sorted by their localized index because under some locale configurations
@@ -69,11 +69,11 @@ struct BloggingRemindersScheduleFormatter {
             let text: String
 
             if days.count == 1 {
-                text = String(format: TextContent.longNoRemindersDescriptionSingular, markedUpDays.first ?? "")
+                text = String(format: TextContent.longNoRemindersDescriptionSingular, markedUpDays.first ?? "", "<strong>\(time)</strong>")
             } else {
                 let formatter = ListFormatter()
                 let formattedDays = formatter.string(from: markedUpDays) ?? ""
-                text = String(format: TextContent.longNoRemindersDescriptionPlural, "<strong>\(days.count)</strong>", formattedDays)
+                text = String(format: TextContent.longNoRemindersDescriptionPlural, "<strong>\(days.count)</strong>", formattedDays, "<strong>\(time)</strong>")
             }
 
             return Self.stringToAttributedString(text)
@@ -113,10 +113,10 @@ struct BloggingRemindersScheduleFormatter {
         static let longNoRemindersDescription = NSLocalizedString("You have no reminders set.", comment: "Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders.")
 
         // Ideally we should use stringsdict to translate plurals, but GlotPress currently doesn't support this.
-        static let longNoRemindersDescriptionSingular = NSLocalizedString("You'll get a reminder to blog <strong>once</strong> a week on %@.",
+        static let longNoRemindersDescriptionSingular = NSLocalizedString("You'll get a reminder to blog <strong>once</strong> a week on %@ at %@.",
                                                               comment: "Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'.")
 
-        static let longNoRemindersDescriptionPlural = NSLocalizedString("You'll get reminders to blog %@ times a week on %@.",
+        static let longNoRemindersDescriptionPlural = NSLocalizedString("You'll get reminders to blog %@ times a week on %@ at %@.",
                                                               comment: "Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday.")
     }
 }
