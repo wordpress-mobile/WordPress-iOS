@@ -1223,20 +1223,30 @@ private extension NotificationDetailsViewController {
     }
 
     func displayCommentEditorWithBlock(_ block: FormattableCommentContent) {
-        let editViewController = EditCommentViewController.newEdit()
-        editViewController?.content = block.text
-        editViewController?.onCompletion = { (hasNewContent, newContent) in
-            self.dismiss(animated: true, completion: {
-                guard hasNewContent else {
-                    return
-                }
-                let newContent = newContent ?? ""
-                self.updateComment(with: block, content: newContent)
-            })
+
+        var navController: UINavigationController
+
+        if FeatureFlag.newCommentEdit.enabled {
+            let editViewController = EditCommentTableViewController()
+            navController = UINavigationController(rootViewController: editViewController)
+            navController.modalPresentationStyle = .fullScreen
+        } else {
+            let editViewController = EditCommentViewController.newEdit()
+            editViewController?.content = block.text
+            editViewController?.onCompletion = { (hasNewContent, newContent) in
+                self.dismiss(animated: true, completion: {
+                    guard hasNewContent else {
+                        return
+                    }
+                    let newContent = newContent ?? ""
+                    self.updateComment(with: block, content: newContent)
+                })
+            }
+
+            navController = UINavigationController(rootViewController: editViewController!)
+            navController.modalPresentationStyle = .formSheet
         }
 
-        let navController = UINavigationController(rootViewController: editViewController!)
-        navController.modalPresentationStyle = .formSheet
         navController.modalTransitionStyle = .coverVertical
         navController.navigationBar.isTranslucent = false
 
