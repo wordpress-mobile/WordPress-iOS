@@ -149,7 +149,10 @@ open class AboutViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectSelectedRowWithAnimation(true)
+        // some handlers may need to query selected index path in the handler closure, so let's defer the deselect.
+        defer {
+            tableView.deselectSelectedRowWithAnimation(true)
+        }
 
         if let handler = rows[indexPath.section][indexPath.row].handler {
             handler()
@@ -195,15 +198,15 @@ open class AboutViewController: UITableViewController {
     }
 
     private func displayShareApp() {
-        tableView.deselectSelectedRowWithAnimation(true)
-
-        guard let sharePresenter = sharePresenter,
+        guard let selectedIndexPath = tableView.indexPathForSelectedRow,
+              let selectedCell = tableView.cellForRow(at: selectedIndexPath),
+              let sharePresenter = sharePresenter,
               !sharePresenter.isLoading,
               isRecommendAppSectionEnabled else {
             return
         }
 
-        sharePresenter.present(for: .wordpress, in: self)
+        sharePresenter.present(for: .wordpress, in: self, sourceView: selectedCell)
     }
 
     // MARK: - Nested Row Class
