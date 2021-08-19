@@ -327,7 +327,7 @@ extension SiteSettingsViewController {
         }
 
         let formatter = BloggingRemindersScheduleFormatter()
-        return formatter.shortIntervalDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
+        return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
     }
 
     // MARK: - Handling General Setting Cell Taps

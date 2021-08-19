@@ -381,7 +381,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             self?.scheduledTime = date
             self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
             self?.refreshNextButton()
-            self?.refreshFrequencyLabel(time: date.toLocalTime())
+            self?.refreshFrequencyLabel()
         }
         viewController.preferredWidth = self.view.frame.width
         navigationController?.pushViewController(viewController, animated: true)
@@ -447,7 +447,7 @@ private extension BloggingRemindersFlowSettingsViewController {
     }
 
     /// Updates the label that contains the number of scheduled days as users change them
-    func refreshFrequencyLabel(time: String? = nil) {
+    func refreshFrequencyLabel() {
         guard weekdays.count > 0 else {
             frequencyLabel.isHidden = true
             timeSelectionStackView.isHidden = true
@@ -461,7 +461,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             .foregroundColor: UIColor.text,
         ]
 
-        let frequencyDescription = scheduleFormatter.shortIntervalDescription(for: .weekdays(weekdays), time: time ?? scheduler.scheduledTime(for: blog).toLocalTime())
+        let frequencyDescription = scheduleFormatter.shortScheduleDescription(for: .weekdays(weekdays))
         let attributedText = NSMutableAttributedString(attributedString: frequencyDescription)
         attributedText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedText.length))
 
