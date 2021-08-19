@@ -264,7 +264,7 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.setDefaultMaskType(.black)
         SVProgressHUD.show(withStatus: status)
 
-        service.closeAccount {
+        service.closeAccount { [weak self] in
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
@@ -272,9 +272,18 @@ private class AccountSettingsController: SettingsController {
                 AccountHelper.logOutDefaultWordPressComAccount()
             case .failure(let error):
                 SVProgressHUD.dismiss()
-                DDLogError(error.localizedDescription)
+                DDLogError("Error closing account: \(error.localizedDescription)")
+                self?.showErrorAlert(message: error.localizedDescription)
             }
         }
+    }
+
+    private func showErrorAlert(message: String) {
+        let title = NSLocalizedString("Error", comment: "General error title")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
+        alert.addDefaultActionWithTitle(okAction, handler: nil)
+        alert.presentFromRootViewController()
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
