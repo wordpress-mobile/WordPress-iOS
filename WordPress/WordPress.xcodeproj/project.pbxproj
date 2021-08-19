@@ -1586,6 +1586,10 @@
 		98906508237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */; };
 		98906509237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */; };
 		98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF621372E12004949AA /* MediaCoordinator.swift */; };
+		9894080C26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */; };
+		9894080D26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */; };
+		9894080E26CEE03A0035FB4C /* EditCommentSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */; };
+		9894080F26CEE03B0035FB4C /* EditCommentSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */; };
 		9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */; };
 		9895401226C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */; };
 		9895B6E021ED49160053D370 /* TopTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9895B6DF21ED49160053D370 /* TopTotalsCell.xib */; };
@@ -6250,6 +6254,8 @@
 		989064FD237CC1DE00218CD2 /* WidgetTwoColumnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetTwoColumnCell.swift; sourceTree = "<group>"; };
 		989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WidgetTwoColumnCell.xib; sourceTree = "<group>"; };
 		98921EF621372E12004949AA /* MediaCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaCoordinator.swift; sourceTree = "<group>"; };
+		9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCommentSingleLineCell.swift; sourceTree = "<group>"; };
+		9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCommentSingleLineCell.xib; sourceTree = "<group>"; };
 		9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCommentTableViewController.swift; sourceTree = "<group>"; };
 		9895B6DF21ED49160053D370 /* TopTotalsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopTotalsCell.xib; sourceTree = "<group>"; };
 		989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDifferenceCell.swift; sourceTree = "<group>"; };
@@ -12420,6 +12426,8 @@
 				9835F16D25E492EE002EFF23 /* CommentsList.storyboard */,
 				B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */,
 				B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */,
+				9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */,
+				9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */,
 				5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */,
 				FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */,
 			);
@@ -15347,6 +15355,7 @@
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				17222DA4261DDDF90047B163 /* spectrum-icon-app-83.5x83.5@2x.png in Resources */,
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
+				9894080E26CEE03A0035FB4C /* EditCommentSingleLineCell.xib in Resources */,
 				469CE06E24BCED75003BDC8B /* CategorySectionTableViewCell.xib in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
 				1761F18026209AEE000815EF /* jetpack-green-icon-app-76x76.png in Resources */,
@@ -15643,6 +15652,7 @@
 				FABB1FF72602FC2C00C8785C /* Revisions.storyboard in Resources */,
 				FABB1FF82602FC2C00C8785C /* ActivityDetailViewController.storyboard in Resources */,
 				FABB1FF92602FC2C00C8785C /* ReaderDetailHeaderView.xib in Resources */,
+				9894080F26CEE03B0035FB4C /* EditCommentSingleLineCell.xib in Resources */,
 				FABB1FFA2602FC2C00C8785C /* ReaderTagsFooter.xib in Resources */,
 				FABB1FFB2602FC2C00C8785C /* PostingActivityLegend.xib in Resources */,
 				FABB1FFC2602FC2C00C8785C /* PostingActivityViewController.storyboard in Resources */,
@@ -17808,6 +17818,7 @@
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */,
 				436D56242117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
+				9894080C26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */,
 				C81CCD65243AECA200A83E27 /* TenorGIF.swift in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
 				4353BFA9219E0E820009CED3 /* RevisionOperationViewController.swift in Sources */,
@@ -19986,6 +19997,7 @@
 				FABB24B52602FC2C00C8785C /* RestoreStatusView.swift in Sources */,
 				FABB24B62602FC2C00C8785C /* CustomizeInsightsCell.swift in Sources */,
 				FABB24B72602FC2C00C8785C /* SVProgressHUD+Dismiss.m in Sources */,
+				9894080D26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */,
 				FABB24B82602FC2C00C8785C /* DynamicHeightCollectionView.swift in Sources */,
 				FABB24B92602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				FABB24BA2602FC2C00C8785C /* TenorGIF.swift in Sources */,
