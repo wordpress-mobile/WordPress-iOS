@@ -256,7 +256,7 @@ class MeViewController: UITableViewController {
                 return
             }
 
-            self.sharePresenter.present(for: .wordpress, in: self, sourceView: selectedCell)
+            self.sharePresenter.present(for: .wordpress, in: self, source: .me, sourceView: selectedCell)
         }
     }
 

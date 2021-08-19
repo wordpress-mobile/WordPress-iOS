@@ -206,7 +206,7 @@ open class AboutViewController: UITableViewController {
             return
         }
 
-        sharePresenter.present(for: .wordpress, in: self, sourceView: selectedCell)
+        sharePresenter.present(for: .wordpress, in: self, source: .about, sourceView: selectedCell)
     }
 
     // MARK: - Nested Row Class

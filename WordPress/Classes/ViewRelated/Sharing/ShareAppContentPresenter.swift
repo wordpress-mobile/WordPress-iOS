@@ -45,12 +45,14 @@ class ShareAppContentPresenter {
     /// - Parameters:
     ///   - appName: The name of the app to be shared. Fetched contents will differ depending on the provided value.
     ///   - sender: The view that will be presenting the share sheet.
+    ///   - source: Provides tracking context on where the share app feature is engaged from.
     ///   - sourceView: The view to be the anchor for the popover view on iPad.
     ///   - completion: A closure that's invoked after the process completes.
-    func present(for appName: ShareAppName, in sender: UIViewController, sourceView: UIView? = nil, completion: (() -> Void)? = nil) {
+    func present(for appName: ShareAppName, in sender: UIViewController, source: ShareAppEventSource, sourceView: UIView? = nil, completion: (() -> Void)? = nil) {
         let anchorView = sourceView ?? sender.view
         if let content = cachedContent {
             presentShareSheet(with: content, in: sender, sourceView: anchorView)
+            trackEngagement(source: source)
             completion?()
             return
         }
@@ -69,15 +71,27 @@ class ShareAppContentPresenter {
             case .success(let content):
                 self.cachedContent = content
                 self.presentShareSheet(with: content, in: sender, sourceView: anchorView)
+                self.trackEngagement(source: source)
 
             case .failure:
                 self.showFailureNotice(in: sender)
+                self.trackContentFetchFailed()
             }
 
             self.isLoading = false
             completion?()
         }
     }
+}
+
+// MARK: - Tracking Source Definition
+
+enum ShareAppEventSource: String {
+    // Feature engaged from the Me page.
+    case me
+
+    // Feature engaged from the About page.
+    case about
 }
 
 // MARK: - Delegate Definition
@@ -118,11 +132,22 @@ private extension ShareAppContentPresenter {
     func showFailureNotice(in viewController: UIViewController) {
         viewController.displayNotice(title: .failureNoticeText, message: nil)
     }
+
+    // MARK: Tracking Helpers
+
+    func trackEngagement(source: ShareAppEventSource) {
+        WPAnalytics.track(.recommendAppEngaged, properties: [String.sourceParameterKey: source.rawValue])
+    }
+
+    func trackContentFetchFailed() {
+        WPAnalytics.track(.recommendAppContentFetchFailed)
+    }
 }
 
 // MARK: Localized Strings
 
 private extension String {
+    static let sourceParameterKey = "source"
     static let failureNoticeText = NSLocalizedString("Something went wrong. Please try again.",
                                                      comment: "Error message shown when user tries to share the app with others, "
                                                         + "but failed due to unknown errors.")
