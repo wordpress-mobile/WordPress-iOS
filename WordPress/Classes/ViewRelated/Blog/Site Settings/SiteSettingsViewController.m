@@ -990,8 +990,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     [service syncSettingsForBlog:self.blog success:^{
         [weakSelf.refreshControl endRefreshing];
-        [weakSelf.tableView reloadData];
         self.tableSections = nil; // force the tableSections to be repopulated.
+        [weakSelf.tableView reloadData];
     } failure:^(NSError *error) {
         [weakSelf.refreshControl endRefreshing];
     }];
