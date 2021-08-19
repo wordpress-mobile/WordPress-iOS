@@ -274,8 +274,7 @@ private class AccountSettingsController: SettingsController {
             case .failure(let error):
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
-                let message = NSLocalizedString(self.generateLocalizedMessage(error), comment: "Error message displayed when unable to close user account.")
-                self.showErrorAlert(message: message)
+                self.showErrorAlert(message: self.generateLocalizedMessage(error))
             }
         }
     }
@@ -286,17 +285,23 @@ private class AccountSettingsController: SettingsController {
 
         switch errorCode {
         case "unauthorized":
-            return "You're not authorized to close the account."
+            return NSLocalizedString("You're not authorized to close the account.",
+                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
         case "atomic-site":
-            return "This user account cannot be closed while it has active atomic sites."
+            return NSLocalizedString("This user account cannot be closed while it has active atomic sites.",
+                                     comment: "Error message displayed when unable to close user account due to having active atomic site.")
         case "chargebacked-site":
-            return "This user account cannot be closed if there are unresolved chargebacks."
+            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
+                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
         case "active-subscriptions":
-            return "This user account cannot be closed while it has active subscriptions."
+            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
+                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
         case "active-memberships":
-            return "This user account cannot be closed while it has active purchases."
+            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
+                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
         default:
-            return "An error occured while closing account."
+            return NSLocalizedString("An error occured while closing account.",
+                                     comment: "Default error message displayed when unable to close user account.")
         }
     }
 
