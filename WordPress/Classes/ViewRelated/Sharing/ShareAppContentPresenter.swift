@@ -42,9 +42,16 @@ class ShareAppContentPresenter {
 
     /// Fetches the content needed for sharing, and presents the share sheet through the provided `sender` instance.
     ///
-    func present(for appName: ShareAppName, in sender: UIViewController, source: ShareAppEventSource, completion: (() -> Void)? = nil) {
+    /// - Parameters:
+    ///   - appName: The name of the app to be shared. Fetched contents will differ depending on the provided value.
+    ///   - sender: The view that will be presenting the share sheet.
+    ///   - source: Provides tracking context on where the share app feature is engaged from.
+    ///   - sourceView: The view to be the anchor for the popover view on iPad.
+    ///   - completion: A closure that's invoked after the process completes.
+    func present(for appName: ShareAppName, in sender: UIViewController, source: ShareAppEventSource, sourceView: UIView? = nil, completion: (() -> Void)? = nil) {
+        let anchorView = sourceView ?? sender.view
         if let content = cachedContent {
-            presentShareSheet(with: content, in: sender)
+            presentShareSheet(with: content, in: sender, sourceView: anchorView)
             trackEngagement(source: source)
             completion?()
             return
@@ -63,7 +70,7 @@ class ShareAppContentPresenter {
             switch result {
             case .success(let content):
                 self.cachedContent = content
-                self.presentShareSheet(with: content, in: sender)
+                self.presentShareSheet(with: content, in: sender, sourceView: anchorView)
                 self.trackEngagement(source: source)
 
             case .failure:
@@ -104,7 +111,8 @@ private extension ShareAppContentPresenter {
     /// - Parameters:
     ///   - content: The model containing information metadata for the sharing activity.
     ///   - viewController: The view controller that will be presenting the activity.
-    func presentShareSheet(with content: RemoteShareAppContent, in viewController: UIViewController) {
+    ///   - sourceView: The view set to be the anchor for the popover.
+    func presentShareSheet(with content: RemoteShareAppContent, in viewController: UIViewController, sourceView: UIView?) {
         guard let linkURL = content.linkURL() else {
             return
         }
@@ -115,7 +123,7 @@ private extension ShareAppContentPresenter {
         ]
 
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = viewController.view
+        activityViewController.popoverPresentationController?.sourceView = sourceView
         viewController.present(activityViewController, animated: true, completion: nil)
     }
 
