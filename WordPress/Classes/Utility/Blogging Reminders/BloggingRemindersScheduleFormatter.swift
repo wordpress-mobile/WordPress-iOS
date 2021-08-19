@@ -1,7 +1,7 @@
 import Foundation
 
 struct BloggingRemindersScheduleFormatter {
-    let calendar: Calendar
+    private let calendar: Calendar
 
     init(calendar: Calendar? = nil) {
         self.calendar = calendar ?? {
@@ -11,7 +11,7 @@ struct BloggingRemindersScheduleFormatter {
         }()
     }
 
-    /// Attributed description string of the current schedule for the specified blog.
+    /// Attributed short description string of the current schedule for the specified blog.
     ///
     func shortScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule, time: String? = nil) -> NSAttributedString {
         switch schedule {
@@ -25,6 +25,50 @@ struct BloggingRemindersScheduleFormatter {
             return Self.shortScheduleDescription(for: days.count, time: time)
         }
     }
+
+    /// Attributed long description string of the current schedule for the specified blog.
+    ///
+    func longScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule, time: String) -> NSAttributedString {
+        switch schedule {
+        case .none:
+            return NSAttributedString(string: TextContent.longNoRemindersDescription)
+        case .weekdays(let days):
+            guard days.count > 0 else {
+                return longScheduleDescription(for: .none, time: time)
+            }
+
+            // We want the days sorted by their localized index because under some locale configurations
+            // Sunday is the first day of the week, whereas in some other localizations Monday comes first.
+            let sortedDays = days.sorted { (first, second) -> Bool in
+                let firstIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: first.rawValue)
+                let secondIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: second.rawValue)
+
+                return firstIndex < secondIndex
+            }
+
+            let markedUpDays: [String] = sortedDays.compactMap({ day in
+                return "<strong>\(self.calendar.weekdaySymbols[day.rawValue])</strong>"
+            })
+
+            let text: String
+
+            if days.count == 1 {
+                text = String(format: TextContent.oneReminderLongDescriptionWithTime, markedUpDays.first ?? "", "<strong>\(time)</strong>")
+            } else {
+                let formatter = ListFormatter()
+                let formattedDays = formatter.string(from: markedUpDays) ?? ""
+                text = String(format: TextContent.manyRemindersLongDescriptionWithTime, "<strong>\(days.count)</strong>", formattedDays, "<strong>\(time)</strong>")
+            }
+
+            return Self.stringToAttributedString(text)
+        }
+    }
+
+
+}
+
+// MARK: - Private type methods and properties
+private extension BloggingRemindersScheduleFormatter {
 
     static func shortScheduleDescription(for days: Int, time: String?) -> NSAttributedString {
         guard let time = time else {
@@ -68,43 +112,7 @@ struct BloggingRemindersScheduleFormatter {
         return Self.stringToAttributedString(text)
     }
 
-    func longScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule, time: String) -> NSAttributedString {
-        switch schedule {
-        case .none:
-            return NSAttributedString(string: TextContent.longNoRemindersDescription)
-        case .weekdays(let days):
-            guard days.count > 0 else {
-                return longScheduleDescription(for: .none, time: time)
-            }
-
-            // We want the days sorted by their localized index because under some locale configurations
-            // Sunday is the first day of the week, whereas in some other localizations Monday comes first.
-            let sortedDays = days.sorted { (first, second) -> Bool in
-                let firstIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: first.rawValue)
-                let secondIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: second.rawValue)
-
-                return firstIndex < secondIndex
-            }
-
-            let markedUpDays: [String] = sortedDays.compactMap({ day in
-                return "<strong>\(self.calendar.weekdaySymbols[day.rawValue])</strong>"
-            })
-
-            let text: String
-
-            if days.count == 1 {
-                text = String(format: TextContent.oneReminderLongDescriptionWithTime, markedUpDays.first ?? "", "<strong>\(time)</strong>")
-            } else {
-                let formatter = ListFormatter()
-                let formattedDays = formatter.string(from: markedUpDays) ?? ""
-                text = String(format: TextContent.manyRemindersLongDescriptionWithTime, "<strong>\(days.count)</strong>", formattedDays, "<strong>\(time)</strong>")
-            }
-
-            return Self.stringToAttributedString(text)
-        }
-    }
-
-    private static func stringToAttributedString(_ string: String) -> NSAttributedString {
+    static func stringToAttributedString(_ string: String) -> NSAttributedString {
         let htmlData = NSString(string: string).data(using: String.Encoding.unicode.rawValue) ?? Data()
         let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html]
 
@@ -131,7 +139,7 @@ struct BloggingRemindersScheduleFormatter {
         return attributedString
     }
 
-    private enum TextContent {
+    enum TextContent {
         static let shortNoRemindersDescription = NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
 
         static let longNoRemindersDescription = NSLocalizedString("You have no reminders set.", comment: "Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders.")
