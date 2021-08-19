@@ -75,8 +75,6 @@ extension BaseScreen {
     /// TODO: The implementation of this could use work:
     /// - What happens if the element is above the current scroll view position?
     /// - What happens if it's a really long scroll view?
-    //
-    // FIXME: This is already part of XCUITestHelpers
     public func scrollElementIntoView(element: XCUIElement, within scrollView: XCUIElement, threshold: Int = 1000) {
 
         var iteration = 0
