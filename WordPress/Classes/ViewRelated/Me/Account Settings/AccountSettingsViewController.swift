@@ -265,6 +265,7 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.show(withStatus: status)
 
         service.closeAccount { [weak self] in
+            guard let self = self else { return }
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
@@ -273,8 +274,29 @@ private class AccountSettingsController: SettingsController {
             case .failure(let error):
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
-                self?.showErrorAlert(message: error.localizedDescription)
+                let message = NSLocalizedString(self.generateLocalizedMessage(error), comment: "Error message displayed when unable to close user account.")
+                self.showErrorAlert(message: message)
             }
+        }
+    }
+
+    private func generateLocalizedMessage(_ error: Error) -> String {
+        let userInfo = (error as NSError).userInfo
+        let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+
+        switch errorCode {
+        case "unauthorized":
+            return "You're not authorized to close the account."
+        case "atomic-site":
+            return "This user account cannot be closed while it has active atomic sites."
+        case "chargebacked-site":
+            return "This user account cannot be closed if there are unresolved chargebacks."
+        case "active-subscriptions":
+            return "This user account cannot be closed while it has active subscriptions."
+        case "active-memberships":
+            return "This user account cannot be closed while it has active purchases."
+        default:
+            return "An error occured while closing account."
         }
     }
 
