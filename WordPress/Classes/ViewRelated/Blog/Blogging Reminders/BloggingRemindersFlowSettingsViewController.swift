@@ -381,6 +381,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             self?.scheduledTime = date
             self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
             self?.refreshNextButton()
+            self?.refreshFrequencyLabel()
         }
         viewController.preferredWidth = self.view.frame.width
         navigationController?.pushViewController(viewController, animated: true)
@@ -460,7 +461,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             .foregroundColor: UIColor.text,
         ]
 
-        let frequencyDescription = scheduleFormatter.shortIntervalDescription(for: .weekdays(weekdays))
+        let frequencyDescription = scheduleFormatter.shortScheduleDescription(for: .weekdays(weekdays))
         let attributedText = NSMutableAttributedString(attributedString: frequencyDescription)
         attributedText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedText.length))
 
