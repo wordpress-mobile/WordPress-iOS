@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G95" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -549,11 +549,8 @@
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
         <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="disabledPublicizeConnections" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
-        <attribute name="geolocation" optional="YES" attributeType="Transformable" valueTransformerName="CoordinateValueTransformer"/>
         <attribute name="isStickyPost" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="latitudeID" optional="YES" attributeType="String"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="longitudeID" optional="YES" attributeType="String"/>
         <attribute name="postFormat" optional="YES" attributeType="String"/>
         <attribute name="postType" attributeType="String" defaultValueString="post" syncable="YES"/>
         <attribute name="publicID" optional="YES" attributeType="String"/>
@@ -1007,7 +1004,7 @@
         <element name="Plan" positionX="-1802.80859375" positionY="-272.67578125" width="128" height="223"/>
         <element name="PlanFeature" positionX="-1656.703125" positionY="-166.43359375" width="128" height="90"/>
         <element name="PlanGroup" positionX="-1656.13671875" positionY="-275.78515625" width="128" height="90"/>
-        <element name="Post" positionX="-678.7734375" positionY="-84.65625" width="128" height="253"/>
+        <element name="Post" positionX="-678.7734375" positionY="-84.65625" width="128" height="194"/>
         <element name="PostTag" positionX="577.68359375" positionY="407.53515625" width="128" height="135"/>
         <element name="PostType" positionX="159.7578125" positionY="48.80859375" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="721.8203125" positionY="-528.5625" width="128" height="330"/>
