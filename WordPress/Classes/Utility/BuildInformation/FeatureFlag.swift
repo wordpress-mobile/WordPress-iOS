@@ -12,6 +12,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingReminders
     case siteIconCreator
     case unifiedCommentsAndNotificationsList
+    case recommendAppToOthers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,6 +41,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current != .appStore
         case .unifiedCommentsAndNotificationsList:
             return true
+        case .recommendAppToOthers:
+            return false
         }
     }
 
@@ -86,6 +89,8 @@ extension FeatureFlag {
             return "Site Icon Creator"
         case .unifiedCommentsAndNotificationsList:
             return "Unified List for Comments and Notifications"
+        case .recommendAppToOthers:
+            return "Recommend App to Others"
         }
     }
 
