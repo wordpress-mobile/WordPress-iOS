@@ -657,7 +657,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     UINavigationController *navController;
     
     if ([Feature enabled:FeatureFlagNewCommentEdit]) {
-        EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] init];
+        EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
         navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
     } else {
