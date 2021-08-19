@@ -11,7 +11,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
-    case editorOnboardingHelpMenu
     case unifiedCommentsAndNotificationsList
 
     /// Returns a boolean indicating if the feature is enabled
@@ -39,8 +38,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .editorOnboardingHelpMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedCommentsAndNotificationsList:
             return true
         }
@@ -87,8 +84,6 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .editorOnboardingHelpMenu:
-            return "Editor Onboarding Help Menu"
         case .unifiedCommentsAndNotificationsList:
             return "Unified List for Comments and Notifications"
         }
