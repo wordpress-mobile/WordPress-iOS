@@ -773,11 +773,11 @@ SPEC CHECKSUMS:
   React-jsinspector: dce15903df657a565e1f753e20b0864ceab7a181
   react-native-blur: 7f21bce1eeae924f28a4cefc7b23ce035c015ea5
   react-native-get-random-values: b441122f57ce07abacef889e87e77768fe5c9360
-  react-native-keyboard-aware-scroll-view: 1e8ddbe0138444283e6ca56e6a62ae835597fc84
+  react-native-keyboard-aware-scroll-view: 70e9aee078c494fba15d91b576bfbbd53639caca
   react-native-safe-area: e3de9e959c7baaae8db9bcb015d99ed1da25c9d5
-  react-native-safe-area-context: 713924ac0d8e1f324b45c73f2df7d5443292daa9
+  react-native-safe-area-context: ba2b2ec84d7a532d19c6b86f0deb2fd6d8a28362
   react-native-slider: 5ae4a65e7a80d5f0048cbb07944de6470b4a101b
-  react-native-video: a3ed30e1cbabaeac8f7e303ffd9985a353bc2268
+  react-native-video: 79b566a04ba3e90f2d21b2a7deb27b47b0123aa3
   React-perflogger: 1b191be4af85b046824841466b530926af106423
   React-RCTActionSheet: 6381fffb79f8574784be60e06b8a196ea31b694d
   React-RCTAnimation: 342a55b7d70b9f70dc3fa7cf9dcf0c2638c58cf4
@@ -790,7 +790,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 464cbf174f0c11d4853401fefe2627a3e648714d
   React-runtimeexecutor: 86375fe8e12dd6927345c677081b512d603d8adc
   ReactCommon: 05f421bbdca720b5706a988729512f0a482140eb
-  RNCMaskedView: 5db2009db2c2e72ec738e4f503f7cd4822c4235a
+  RNCMaskedView: e001674a509c52d3cfb7c5a0a2ca6f5d85d752d8
   RNGestureHandler: aaadb03e3637b3e7faf1f52d4872ffe32e613357
   RNReanimated: af718db8a69c9df3138aa6bb66ed48519fbf0afe
   RNScreens: 05c9398ab729aeaa010872cee9b0162876dffc31
