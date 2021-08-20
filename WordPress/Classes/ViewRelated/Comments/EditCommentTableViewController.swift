@@ -5,6 +5,11 @@ class EditCommentTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+    private var authorName: String?
+    private var commentContent: String?
+    private var authorWebAddress: String?
+    private var authorEmailAddress: String?
+
     private let sectionHeaders =
         [NSLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase,
          NSLocalizedString("Comment", comment: "Header for a comment's content, shown when editing a comment.").localizedUppercase,
@@ -12,6 +17,14 @@ class EditCommentTableViewController: UITableViewController {
          NSLocalizedString("Email Address", comment: "Header for a comment author's email address, shown when editing a comment.").localizedUppercase]
 
     // MARK: - Init
+
+    @objc convenience init(comment: Comment) {
+        self.init()
+        authorName = comment.author
+        commentContent = comment.contentForEdit()
+        authorWebAddress = comment.author_url
+        authorEmailAddress = comment.author_email
+    }
 
     required convenience init() {
         self.init(style: .insetGrouped)
@@ -29,6 +42,7 @@ class EditCommentTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
         setupNavBar()
     }
 
@@ -47,8 +61,26 @@ class EditCommentTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: return custom cell
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EditCommentSingleLineCell.defaultReuseID) as? EditCommentSingleLineCell else {
+            return UITableViewCell()
+        }
+
+        switch indexPath.section {
+        case 0:
+            cell.configure(text: authorName)
+        case 1:
+            // TODO: use multiline textView
+            cell.configure(text: commentContent)
+        case 2:
+            cell.configure(text: authorWebAddress, style: .url)
+        case 3:
+            cell.configure(text: authorEmailAddress, style: .email)
+        default:
+            DDLogError("Edit Comment: unsupported table section.")
+            break
+        }
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -66,6 +98,11 @@ class EditCommentTableViewController: UITableViewController {
 private extension EditCommentTableViewController {
 
     // MARK: - View Config
+
+    func setupTableView() {
+        tableView.register(EditCommentSingleLineCell.defaultNib,
+                           forCellReuseIdentifier: EditCommentSingleLineCell.defaultReuseID)
+    }
 
     func setupNavBar() {
         title = NSLocalizedString("Edit Comment", comment: "View title when editing a comment.")
