@@ -1,0 +1,9 @@
+In der Version 18.0 haben wir die Bilder optimiert, die für Themes verwendet werden. Dadurch geht das Herunterladen schneller und es wirkt sich weniger auf deinen Datentarif aus.
+
+Du kannst Beitragsbilder jetzt in den Einstellungen des Bildblocks für einen Beitrag einrichten oder entfernen. Und falls du es vergessen solltest zeigt ein neues Banner „Beitragsbild“ deine aktuelle Auswahl.
+
+Außerdem haben wir den Kommentaren und Benachrichtigungen jetzt einen einheitlichen Look verpasst. Bezüglich der Auswahl der Domain oder des Designs für deine Website, stehen dir jetzt zugänglichere Überschriften für Geräte zur Verfügung, die auf größere Schriftgrößen eingestellt sind.
+
+Wenn wir dir mit einer In-App-Benachrichtigung mitteilen, dass du einen Beitrag veröffentlicht hast, werden jetzt alle Und-Zeichen (&) in deinem Titel als tatsächlich Zeichen angezeigt und nicht mehr verschlüsselt als HTML.
+
+Zu guter Letzt haben wir einen Fehler bei der Wiederherstellung mit ungültigen Authentifizierungstoken behoben.
