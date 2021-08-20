@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-10 07:24:11+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:51:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -215,7 +215,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s blok seçenekleri";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s block, newly available";
+"%s block, newly available" = "%s blok, hazır";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s bloku. Boş";
@@ -476,7 +476,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader'a yüklenmek üzere buraya özel bir CSS URL'si ekleyin. Calypso'yu yerel olarak çalıştırıyorsanız şu şekilde olabilir: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Sol alttaki araç çubuğundaki + simgesine dokunarak istediğiniz zaman yeni bir blok ekleyin. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Barındırılan site ekle";
@@ -827,7 +827,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "Güncellemek istediğinizden emin misiniz?";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "İçeriğinizi sütunlar halinde düzenleyin, Harekete Geçirici Mesaj düğmeleri ekleyin ve görselleri metinle kaplayın.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Sanat";
@@ -1015,10 +1015,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Kara Liste";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Bloklar, mesajınızı iletmenize yardımcı olmak için ihtiyacınız olan tüm biçimlendirme araçlarını kullanabileceğinizi bilerek içeriğinizi yazmaya odaklanmanızı sağlar.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Bloklar, kodlama bilmenize gerek kalmadan ekleyebileceğiniz, yeniden düzenleyebileceğiniz ve stilini değiştirebileceğiniz içerik parçalarıdır. Bloklar, güzel düzenler oluşturmanın kolay ve modern bir yoludur.";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1065,7 +1065,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "Deneme yanılma saldırılarına karşı koruma";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "Düzenler oluşturun";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "İmli liste";
@@ -2360,7 +2360,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "BAĞLANTIYI DÜZENLE";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Her blokun kendi ayarları vardır. Bunları bulmak için bir bloka tıklayın. Ayarları, ekranın altındaki araç çubuğunda görünür.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Doğu";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Embed link" = "Bağlantı göm";
 
 /* No comment provided by engineer. */
-"Embed media" = "Embed media";
+"Embed media" = "Medya gömün";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Gömülü içerik önizlemeleri henüz kullanılamıyor";
@@ -2816,7 +2816,7 @@ translators: Block name. %s: The localized block name */
 "Featured Image" = "Öne çıkan görsel";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Featured Image Already Set";
+"Featured Image Already Set" = "Öne Çıkan Görsel Zaten Ayarlanmış";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Öne çıkan görsel seçenekleri";
@@ -3068,7 +3068,7 @@ translators: Block name. %s: The localized block name */
 "Give Up" = "Vazgeç";
 
 /* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
+"Give it a try by adding a few blocks to your post or page!" = "Gönderinize veya sayfanıza birkaç blok ekleyerek deneyin!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Sitenize kişiliğini ve konuyu yansıtan bir ad verin. İlk izlenim önemlidir.";
@@ -3878,7 +3878,7 @@ translators: Block name. %s: The localized block name */
 "Main Navigation" = "Ana gezinti";
 
 /* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Sayfalarınıza görsel, gif, video ve gömülü medya ekleyerek içeriğinizin öne çıkmasını sağlayın.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4600,7 +4600,7 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Davet bağlantısı dışı bırakıldığında hiç kimse onu kullanarak ekibinize katılamaz. Emin misiniz?";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Farklı blokların adların aşina olduktan sonra, bir eğik çizgi ve ardından blok adını (örneğin, \/image veya \/heading) yazarak blok ekleyebilirsiniz.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Bir WordPress.com sitesi oluşturduktan sonra, beğendiğiniz içeriği kendi sitenize yeniden bloglayabilirsiniz.";
@@ -5495,7 +5495,7 @@ translators: Block name. %s: The localized block name */
 "Removed" = "Kaldırıldı";
 
 /* Notice confirming that an image has been removed as the post's featured image. */
-"Removed as featured image" = "Removed as featured image";
+"Removed as featured image" = "Öne çıkan resim kaldırıldı";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Sitenize fotoğraflar yüklenmeden önce konum meta verisini kaldırır.";
@@ -6316,7 +6316,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Sosyal";
 
 /* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Bazı blokların ek ayarları vardır. Daha fazla seçenek görüntülemek için blokun sağ alt kısmındaki ayarlar simgesine dokunun.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Bazı görsel yüklemeleri başarısız oldu. Bu eylem, başarısız olan görsellerin  tümünü gönderiden kaldıracak.\nYine de kaydedilsin mi?";
@@ -7134,7 +7134,7 @@ translators: Block name. %s: The localized block name */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Bu Google hesabı ile devam etmek için lütfen ilk önce WordPress.com parolanızla giriş yapın. Bu sadece bir kez sorulacak.";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Bir bloku kaldırmak için bloku seçin ve blokun sağ alt kısmındaki üç noktaya tıklayıp ayarları görüntüleyin. Oradan bloku kaldırma seçeneğini seçin.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Yazılarınızda kullanacağınız fotoğraf veya videoları çekmek için.";
@@ -7678,7 +7678,7 @@ translators: Block name. %s: The localized block name */
 "Use Current Location" = "Mevcut konumu kullan";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Use Sandbox Store";
+"Use Sandbox Store" = "Sandbox Store'u kullanın";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Blok düzenleyici kullan";
@@ -8136,7 +8136,7 @@ translators: Block name. %s: The localized block name */
 "Welcome to the Reader" = "Okuyucuya hoşgeldiniz";
 
 /* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Welcome to the world of blocks";
+"Welcome to the world of blocks" = "Bloklar dünyasına hoş geldiniz";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Dünyanın en popüler web sitesi oluşturucusuna hoş geldiniz.";
@@ -8388,7 +8388,7 @@ translators: Block name. %s: The localized block name */
 "Yesterday" = "Dün";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+"You already have a featured image set. Do you want to replace it?" = "Zaten öne çıkan bir görsel grubunuz var. Değiştirmek ister misiniz?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Şu anda %1$@. %2$@ olan kullanıcı adınızı değiştirmek üzeresiniz";
@@ -8421,7 +8421,7 @@ translators: Block name. %s: The localized block name */
 "You can override these settings for individual posts." = "Bu ayarları yazı özelinde değiştirebilirsiniz.";
 
 /* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Bir bloka dokunup ardından bloku diğer blokların üstüne veya altına taşımak için blokun sol alt tarafında görünen yukarı ve aşağı oklara dokunarak blokların sırasını yeniden düzenleyebilirsiniz.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Bunu, Sitem > Site Ayarları'ndan istediğiniz zaman güncelleyebilirsiniz.";
@@ -8648,7 +8648,7 @@ translators: Block name. %s: The localized block name */
 "_%1$d bloggers_ like this." = "_%1$d blog yazarı_ bunu beğendi.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+"_You and %1$d blogger_ like this." = "_Sizinle birlikte %1$d kişisel blog yazarı bunu beğendi.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_Siz ve %1$d blog yazarı_ bunu beğendi.";

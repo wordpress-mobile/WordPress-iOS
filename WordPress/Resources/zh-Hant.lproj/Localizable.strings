@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-29 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:49:27+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -215,7 +215,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s 區塊選項";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s block, newly available";
+"%s block, newly available" = "%s區塊，全新推出";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 區塊空白";
@@ -476,7 +476,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "隨時都能點選左下角工具列的「+」號圖示新增區塊。 ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "新增一個自助託管網站";
@@ -827,7 +827,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "是否確定要更新？";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "在欄位中排列你的內容、新增「行動呼籲」按鈕，並在圖片中加上文字。";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "藝術";
@@ -1015,10 +1015,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Blocklist";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "區塊可讓你專心撰寫內容，瞭解所有必要的格式工具一應俱全，協助你傳達自己的訊息。";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "區塊是讓你可以不必瞭解如何編寫程式碼，就能插入、重新排列及調整樣式的塊狀內容。 區塊可讓你用簡單且現代化的方式建立美麗的版面配置。";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "網誌";
@@ -1065,7 +1065,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "蠻力攻擊防護";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "建構版面形式";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "項目符號清單";
@@ -2360,7 +2360,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "編輯連結";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每個區塊都有其各自的設定。 若要找到這些設定，請按一下區塊。 區塊設定會顯示在畫面底部的工具列。";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "東";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Embed link" = "內嵌連結";
 
 /* No comment provided by engineer. */
-"Embed media" = "Embed media";
+"Embed media" = "嵌入媒體";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "內嵌預覽尚無法使用";
@@ -2816,7 +2816,7 @@ translators: Block name. %s: The localized block name */
 "Featured Image" = "精選圖片";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Featured Image Already Set";
+"Featured Image Already Set" = "已設定特色圖片";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "特色圖片選項";
@@ -3068,7 +3068,7 @@ translators: Block name. %s: The localized block name */
 "Give Up" = "放棄";
 
 /* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
+"Give it a try by adding a few blocks to your post or page!" = "馬上嘗試為你的文章或頁面新增幾個區塊！";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
@@ -3878,7 +3878,7 @@ translators: Block name. %s: The localized block name */
 "Main Navigation" = "主導覽";
 
 /* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "為頁面新增圖片、GIF、影片和嵌入式媒體，讓你的內容脫穎而出。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4600,7 +4600,7 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "一旦停用這個邀請連結，就沒有人可以再用此連結加入你的團隊。 確定要這麼做嗎？";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "熟悉不同區塊的名稱後，輸入正斜線，後面加上區塊名稱 (例如 \/image 或 \/heading)，就能新增區塊。";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "建立 WordPress.com 網站後，可以將喜歡的內容轉發到自己的網站。";
@@ -5495,7 +5495,7 @@ translators: Block name. %s: The localized block name */
 "Removed" = "已移除";
 
 /* Notice confirming that an image has been removed as the post's featured image. */
-"Removed as featured image" = "Removed as featured image";
+"Removed as featured image" = "已移除特色圖片";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "將相片上傳至網站前，請先從相片移除位置中繼資料。";
@@ -5507,7 +5507,7 @@ translators: Block name. %s: The localized block name */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "「移除後續步驟」會隱藏此網站的所有導覽。此動作無法復原。";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace" = "Replace";
+"Replace" = "取代";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "取代目前區塊";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Rich Content" = "豐富內容";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "RTF 編輯";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "靠右";
@@ -6031,7 +6031,7 @@ translators: Block name. %s: The localized block name */
 "Set as Posts Page" = "設定為文章頁面";
 
 /* Notice confirming that an image has been set as the post's featured image. */
-"Set as featured image" = "Set as featured image";
+"Set as featured image" = "設為特色圖片";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "設定提醒";
@@ -6316,7 +6316,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "社交";
 
 /* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "有些區塊具有其他設定。 請點選區塊右下角的設定圖示以檢視更多選項。";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒體上傳失敗。此動作將移除文章中所有上傳失敗的媒體。\n是否仍要儲存？";
@@ -7134,7 +7134,7 @@ translators: Block name. %s: The localized block name */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Google 帳號，請先使用你的 WordPress.com 密碼登入。系統只會向你要求一次。";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "若要移除區塊，請選取區塊，並按一下區塊右下角的三個點以檢視設定。 在設定中選擇移除區塊的選項。";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "拍些相片或影片供文章使用。";
@@ -7678,7 +7678,7 @@ translators: Block name. %s: The localized block name */
 "Use Current Location" = "使用目前的位置";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Use Sandbox Store";
+"Use Sandbox Store" = "使用沙盒商店";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Use block editor";
@@ -8136,7 +8136,7 @@ translators: Block name. %s: The localized block name */
 "Welcome to the Reader" = "歡迎使用讀取器";
 
 /* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Welcome to the world of blocks";
+"Welcome to the world of blocks" = "歡迎進入內容區塊領域";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
@@ -8388,7 +8388,7 @@ translators: Block name. %s: The localized block name */
 "Yesterday" = "昨天";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+"You already have a featured image set. Do you want to replace it?" = "你已有特色圖片設定。 是否要更換特色圖片？";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "你即將變更你的使用者名稱 (目前為 %1$@)。%2$@";
@@ -8421,7 +8421,7 @@ translators: Block name. %s: The localized block name */
 "You can override these settings for individual posts." = "你可以針對不同的文章覆寫這些設定。";
 
 /* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "若要重新排列區塊，請依序點選區塊和區塊左下角顯示的上下鍵，將其移動到其他區塊的上方或下方。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "你可以隨時前往「我的網站」>「網站設定」更新此設定。";
@@ -8642,19 +8642,19 @@ translators: Block name. %s: The localized block name */
 "[COMMENT]" = "[留言]";
 
 /* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+"_%1$d blogger_ likes this." = "_%1$d 位部落客_說這個讚。";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+"_%1$d bloggers_ like this." = "_%1$d 位部落客_說這個讚。";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+"_You and %1$d blogger_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+"_You and %1$d bloggers_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_You_ like this.";
+"_You_ like this." = "_你_說這個讚。";
 
 /* Age between dates equaling one day. */
 "a day" = "一天";

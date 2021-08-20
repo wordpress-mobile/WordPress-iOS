@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-14 12:48:44+0000 */
+/* Translation-Revision-Date: 2021-08-19 07:53:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -2992,7 +2992,7 @@ translators: Block name. %s: The localized block name */
 "Forward" = "Înaintează";
 
 /* Browse free themes selection title */
-"Free" = "Gratuit";
+"Free" = "Gratuite";
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free GIF Library" = "Bibliotecă de GIF-uri gratuite";

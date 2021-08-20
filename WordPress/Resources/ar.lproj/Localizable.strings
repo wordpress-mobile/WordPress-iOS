@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-28 16:54:07+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:51:24+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -215,7 +215,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "خيارات المكوِّن %s";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s block, newly available";
+"%s block, newly available" = "%s مكوِّن متاح حديثًا";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "مكوِّن %s. فارغ";
@@ -476,7 +476,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "أضف عنوان URL الخاص بـ CSS المخصصة هنا ليتم تحميلها في القارئ. إذا كنتَ تقوم بتشغيل Calypso محليًا، فقد يبدو هذا مثل: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "أضف مكوِّنًا جديدًا في أي وقت عن طريق النقر على أيقونة + الموجودة في شريط الأدوات في أسفل اليسار. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "إضافة موقع مستضاف ذاتيًا";
@@ -827,7 +827,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "هل ترغب بالتأكيد في التحديث؟";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "قم بترتيب محتواك إلى أعمدة، وإضافة أزرار الدعوة إلى اتخاذ إجراء، وتراكب الصور باستخدام النص.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "الفن";
@@ -1015,10 +1015,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "قائمة الحظر";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "تسمح لك المكوِّنات بالتركيز على كتابة محتواك، مع العلم بأن جميع أدوات التنسيق التي تحتاج إليها متوافرة هناك لمساعدتك على توصيل رسالتك.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "المكوِّنات عبارة عن أجزاء من المحتوى التي يمكنك إدراجها وإعادة ترتيبها وتصميمها من دون الحاجة إلى معرفة كيفية ترميزها. المكوِّنات عبارة عن طريقة سهلة وعصرية لك لإنشاء تخطيطات جميلة.";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "مدونة";
@@ -1065,7 +1065,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "الحماية من هجمات القوة الغاشمة";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "إنشاء تخطيطات";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "قائمة النقاط";
@@ -2360,7 +2360,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "تحرير رابط";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "لكل مكوِّن الإعدادات الخاصة به. للعثور عليها، انقر على مكوِّن. ستظهر إعداداته على شريط الأدوات في الجزء السفلي من الشاشة.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "شرق";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Embed link" = "تضمين رابط";
 
 /* No comment provided by engineer. */
-"Embed media" = "Embed media";
+"Embed media" = "تضمين وسائط";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "تضمين المعاينات ليس متاحًا بعد";
@@ -2816,7 +2816,7 @@ translators: Block name. %s: The localized block name */
 "Featured Image" = "الصورة البارزة";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Featured Image Already Set";
+"Featured Image Already Set" = "تم تعيين صورة بارزة بالفعل";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "خيارات الصور المتميزة";
@@ -3068,7 +3068,7 @@ translators: Block name. %s: The localized block name */
 "Give Up" = "توقف";
 
 /* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
+"Give it a try by adding a few blocks to your post or page!" = "جربه عن طريق إضافة القليل من المكوِّنات إلى مقالتك أو صفحتك!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "حدِّد اسمًا لموقعك يعكس هويته وموضوعه. الاعتماد على الانطباعات الأولى!";
@@ -3878,7 +3878,7 @@ translators: Block name. %s: The localized block name */
 "Main Navigation" = "التنقل الرئيسي";
 
 /* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "اجعل محتواك مميزًا عن طريق إضافة صور وصورgif ومقاطع فيديو ووسائط مضمنة إلى صفحاتك.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4600,7 +4600,7 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "بمجرد تعطيل رابط الدعوة هذا، لن يتمكن أي شخص من استخدامه للانضمام إلى فريقك. هل أنتَ متأكد؟";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "بمجرد التعرف على أسماء المكوِّنات المختلفة، يمكنك إضافة مكوِّن عن طريق كتابة شرطة مائلة للأمام متبوعة باسم المكوِّن — على سبيل المثال، \/image أو \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "بمجرد إنشاء موقع WordPress.com، يمكنك إعادة تدوين المحتوى الذي أعجبك على موقعك الخاص.";
@@ -5495,7 +5495,7 @@ translators: Block name. %s: The localized block name */
 "Removed" = "تمت الإزالة";
 
 /* Notice confirming that an image has been removed as the post's featured image. */
-"Removed as featured image" = "Removed as featured image";
+"Removed as featured image" = "تمت الإزالة كصورة بارزة";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "يقوم بإزالة بيانات تعرييف الموقع من الصور قبل رفعها على موقعك.";
@@ -5507,7 +5507,7 @@ translators: Block name. %s: The localized block name */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "ستؤدي إزالة الخطوات التالية إلى إخفاء جميع الجولات الإرشادية على هذا الموقع. لا يمكن التراجع عن هذا الإجراء.";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace" = "Replace";
+"Replace" = "استبدال";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "استبدال المكوِّن الحالي";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Rich Content" = "المحتوى المنسق";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "تحرير النص المنسَّق";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "يمين";
@@ -6031,7 +6031,7 @@ translators: Block name. %s: The localized block name */
 "Set as Posts Page" = "تعيين كصفحة مقالات";
 
 /* Notice confirming that an image has been set as the post's featured image. */
-"Set as featured image" = "Set as featured image";
+"Set as featured image" = "تعيين كصورة بارزة";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "تعيين التذكيرات";
@@ -6316,7 +6316,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "اجتماعي";
 
 /* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "تتضمن بعض المكوِّنات إعدادات إضافية. انقر على أيقونة الإعدادات الموجودة في أسفل يمين المكوِّن لعرض مزيد من الخيارات.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "فشلت بعض عمليات رفع الوسائط. سيؤدي هذا الإجراء إلى إزالة كل الوسائط الفاشلة من المقالة.\nهل تريد الحفظ على أي حال؟";
@@ -7134,7 +7134,7 @@ translators: Block name. %s: The localized block name */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "للاستمرار باستخدام حساب Google هذا، يُرجى تسجيل الدخول أولاً باستخدام كلمة مرور حساب WordPress.com الخاص بك. سيُطلب منك هذا مرة واحدة فقط.";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "لإزالة مكوِّن، حدِّد المكوِّن وانقر على النقاط الثلاث الموجودة في أسفل يمين المكوِّن لعرض الإعدادات. من هناك، اختر خيار إزالة المكوِّن.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "لالتقاط صور أو مقاطع فيديو لاستخدامها في مقالاتك.";
@@ -7678,7 +7678,7 @@ translators: Block name. %s: The localized block name */
 "Use Current Location" = "استخدام الموقع الحالي";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Use Sandbox Store";
+"Use Sandbox Store" = "استخدام مخزن Sandbox";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "استخدام مُحرر المكوّنات";
@@ -8136,7 +8136,7 @@ translators: Block name. %s: The localized block name */
 "Welcome to the Reader" = "أهلاً بك في القارئ";
 
 /* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Welcome to the world of blocks";
+"Welcome to the world of blocks" = "مرحبًا في عالم المكوِّنات";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
@@ -8388,7 +8388,7 @@ translators: Block name. %s: The localized block name */
 "Yesterday" = "الأمس";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+"You already have a featured image set. Do you want to replace it?" = "لديك صورة بارزة معيَّنة بالفعل. هل ترغب في استبدالها؟";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "أنت على وشك تغيير اسم المستخدم الخاص بك، اسم المستخدم الحالي هو %1$@. %2$@";
@@ -8421,7 +8421,7 @@ translators: Block name. %s: The localized block name */
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
 
 /* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "يمكنك إعادة ترتيب المكوِّنات عن طريق النقر على مكوِّن، ثم النقر على الأسهم المتجهة إلى الأعلى والأسفل التي تظهر أسفل يسار المكوِّن لنقله فوق المكوِّنات الأخرى أو أسفلها.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "يمكن تحديث هذا في أي وقت من خلال موقعي > إعدادات الموقع";
@@ -8642,19 +8642,19 @@ translators: Block name. %s: The localized block name */
 "[COMMENT]" = "[تعليق]";
 
 /* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+"_%1$d blogger_ likes this." = "_⁦%1$d⁩ مدون_ معجب بهذا.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+"_%1$d bloggers_ like this." = "_⁦%1$d⁩ من المدونين_ معجبين بهذا.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+"_You and %1$d blogger_ like this." = "_أنت و⁦%1$d⁩ مدوِّن_ معجبان بهذا.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+"_You and %1$d bloggers_ like this." = "_أنت و ⁦%1$d⁩ من المدونين_ معجبين بهذا.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_You_ like this.";
+"_You_ like this." = "_أنت_ معجب بهذا.";
 
 /* Age between dates equaling one day. */
 "a day" = "يوم";

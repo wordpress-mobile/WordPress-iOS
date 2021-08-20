@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-27 20:22:56+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:48:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -215,7 +215,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s Blockoptionen";
 
 /* translators: Newly available block name. %s: The localized block name */
-"%s block, newly available" = "%s block, newly available";
+"%s block, newly available" = "%s Block, neu verfügbar";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s-Block. Leer";
@@ -476,7 +476,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Füge hier eine individuelle CSS-URL hinzu, die im Reader geladen werden soll. Wenn du Calypso lokal ausführst, kann das etwa folgendermaßen aussehen: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Du kannst jederzeit einen neuen Block hinzufügen, indem du auf das Plus-Icon (+) in der Toolbar unten links klickst. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Eine selbst gehostete Website hinzufügen";
@@ -827,7 +827,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Ordne deinen Inhalt in Spalten an und füge Buttons mit Handlungsaufrufen sowie überlagerte Texte auf Bildern hinzu.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Kunst";
@@ -1015,10 +1015,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Sperrliste";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks geben dir die Möglichkeit, dich voll und ganz auf das Verfassen deiner Inhalte zu konzentrieren. Alle Tools zur Formatierung sind vorhanden, damit du deine Ideen und Meinungen ganz nach deinen Wünschen präsentieren kannst.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks sind Teile deines Inhalts, die du ganz ohne Coding-Kenntnisse einfügen, neu anordnen und gestalten kannst. Blocks sind eine einfache und moderne Art und Weise, wunderschöne Layouts zu erstellen.";
 
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
@@ -1065,7 +1065,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "Schutz vor Brute-Force-Angriffen";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "Layouts erstellen";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Liste mit Aufzählungszeichen";
@@ -2360,7 +2360,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "Link bearbeiten";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Jeder Block weist eigene Einstellungen auf. Klicke auf den jeweiligen Block, um sie zu finden. Die Einstellungen werden in der Toolbar unten auf dem Bildschirm angezeigt.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Ost";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Embed link" = "Link einbetten";
 
 /* No comment provided by engineer. */
-"Embed media" = "Embed media";
+"Embed media" = "Medien einbetten";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Eingebettete Vorschau noch nicht verfügbar";
@@ -2816,7 +2816,7 @@ translators: Block name. %s: The localized block name */
 "Featured Image" = "Artikelbild";
 
 /* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"Featured Image Already Set" = "Featured Image Already Set";
+"Featured Image Already Set" = "Beitragsbild bereits eingerichtet";
 
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Optionen für Beitragsbilder";
@@ -3068,7 +3068,7 @@ translators: Block name. %s: The localized block name */
 "Give Up" = "Aufgeben";
 
 /* No comment provided by engineer. */
-"Give it a try by adding a few blocks to your post or page!" = "Give it a try by adding a few blocks to your post or page!";
+"Give it a try by adding a few blocks to your post or page!" = "Probier es aus, indem du deinem Beitrag oder deiner Seite ein paar Blocks hinzufügst!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Wähle einen Namen für deine Website, der am besten zu ihrer Persönlichkeit und Ausrichtung passt. Erste Eindrücke zählen!";
@@ -3878,7 +3878,7 @@ translators: Block name. %s: The localized block name */
 "Main Navigation" = "Hauptnavigation";
 
 /* No comment provided by engineer. */
-"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Sorge dafür, dass dein Inhalt hervorsticht, indem du Bilder, GIFs, Videos und andere eingebettete Medien zu deinen Seiten hinzufügst.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4600,7 +4600,7 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Wenn dieser Einladungslink deaktiviert ist, kann ihn niemand verwenden, um deinem Team beizutreten. Bist du dir sicher?";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Wenn du mit den Bezeichnungen der verschiedenen Blöcke vertraut bist, kannst du Blöcke auch so hinzufügen: Gib einen Schrägstrich gefolgt vom Namen des Blocks ein, z. B. \/image oder \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Sobald du eine Website bei WordPress.com erstellt hast, kannst du Inhalte, die dir gefallen, auf deiner eigenen Website rebloggen.";
@@ -5495,7 +5495,7 @@ translators: Block name. %s: The localized block name */
 "Removed" = "Entfernt";
 
 /* Notice confirming that an image has been removed as the post's featured image. */
-"Removed as featured image" = "Removed as featured image";
+"Removed as featured image" = "Als Beitragsbild entfernt";
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Entfernt vor dem Hochladen von Fotos zu deiner Website die jeweiligen Standort-Metadaten.";
@@ -5507,7 +5507,7 @@ translators: Block name. %s: The localized block name */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Das Entfernen der nächsten Schritte blendet alle Touren auf dieser Seite aus. Diese Aktion kann nicht rückgängig gemacht werden.";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace" = "Replace";
+"Replace" = "Ersetzen";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Aktuellen Block ersetzen";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Rich Content" = "Formatierter Inhalt";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "Rich Text bearbeiten";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rechts";
@@ -6031,7 +6031,7 @@ translators: Block name. %s: The localized block name */
 "Set as Posts Page" = "Als Beitragsseite festlegen";
 
 /* Notice confirming that an image has been set as the post's featured image. */
-"Set as featured image" = "Set as featured image";
+"Set as featured image" = "Als Beitragsbild festlegen";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Erinnerungen festlegen";
@@ -6316,7 +6316,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Social Media";
 
 /* No comment provided by engineer. */
-"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Einige Blöcke verfügen über zusätzliche Einstellungen. Tippe auf das Einstellungs-Icon unten rechts im Block, um dir die Optionen anzusehen.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Einige Medien-Uploads sind fehlgeschlagen. Durch diese Aktion werden alle Medien, für die das Hochladen fehlgeschlagen ist, aus dem Beitrag entfernt.\nTrotzdem speichern?";
@@ -7134,7 +7134,7 @@ translators: Block name. %s: The localized block name */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Um mit diesem Google-Konto fortzufahren, melde dich bitte zuerst mit deinem WordPress.com-Passwort an. Dies wird nur einmal nachgefragt.";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Wenn du einen Block entfernen möchtest, wähle ihn aus und klicke auf die drei Punkte unten rechts im Block, um die Einstellungen anzuzeigen. Hier kannst du die Option zum Entfernen des Blocks auswählen.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Um Fotos oder Videos für deine Beiträge aufzunehmen.";
@@ -7678,7 +7678,7 @@ translators: Block name. %s: The localized block name */
 "Use Current Location" = "Nutze aktuellen Standort";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Use Sandbox Store";
+"Use Sandbox Store" = "Sandbox Store verwenden";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Block-Editor benutzen";
@@ -8136,7 +8136,7 @@ translators: Block name. %s: The localized block name */
 "Welcome to the Reader" = "Willkommen zum Reader";
 
 /* No comment provided by engineer. */
-"Welcome to the world of blocks" = "Welcome to the world of blocks";
+"Welcome to the world of blocks" = "Willkommen in der Welt der Blöcke";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Willkommen beim beliebtesten Website-Baukasten der Welt.";
@@ -8388,7 +8388,7 @@ translators: Block name. %s: The localized block name */
 "Yesterday" = "Gestern";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+"You already have a featured image set. Do you want to replace it?" = "Es ist bereits ein Beitragsbild eingestellt. Möchtest du es ersetzen?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du bist dabei, deinen Benutzernamen zu ändern, bisher %1$@. %2$@";
@@ -8421,7 +8421,7 @@ translators: Block name. %s: The localized block name */
 "You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
 
 /* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Du kannst Blocks neu anordnen, indem du auf einen Block tippst und ihn dann mit den Pfeilen nach oben und unten, die unten links auf dem Block erscheinen, an die passende Stelle navigieren.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Unter „Meine Website“ &rarr; „Einstellungen“ kannst du dies jederzeit aktualisieren.";
@@ -8648,13 +8648,13 @@ translators: Block name. %s: The localized block name */
 "_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
+"_You and %1$d blogger_ like this." = "_Dir und %1$d Blogger_ gefällt das.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
+"_You and %1$d bloggers_ like this." = "_Dir und %1$d Bloggern_ gefällt das.";
 
 /* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_You_ like this.";
+"_You_ like this." = "_Dir_ gefällt das.";
 
 /* Age between dates equaling one day. */
 "a day" = "ein Tag";
