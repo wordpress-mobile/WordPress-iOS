@@ -49,7 +49,7 @@ protocol ImmuTableController {
 /// a "controller" class that handles all the logic, and updates the view
 /// controller, like you would update a view.
 final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
-    fileprivate lazy var handler: ImmuTableViewHandler = {
+    private(set) lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
