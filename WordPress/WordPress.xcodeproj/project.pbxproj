@@ -5205,7 +5205,7 @@
 		40232A9D230A6A740036B0B6 /* AbstractPost+HashHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AbstractPost+HashHelpers.m"; sourceTree = "<group>"; };
 		40247E012120FE3600AE1C3C /* AutomatedTransferHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomatedTransferHelper.swift; sourceTree = "<group>"; };
 		402B2A7820ACD7690027C1DC /* ActivityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStore.swift; sourceTree = "<group>"; };
-		402FFB1B218C27C100FF4A0B /* RegisterDomain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = RegisterDomain.storyboard; path = Register/RegisterDomain.storyboard; sourceTree = "<group>"; };
+		402FFB1B218C27C100FF4A0B /* RegisterDomain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RegisterDomain.storyboard; sourceTree = "<group>"; };
 		402FFB20218C33BF00FF4A0B /* WordPress 84.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 84.xcdatamodel"; sourceTree = "<group>"; };
 		402FFB23218C36CF00FF4A0B /* AztecVerificationPromptHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AztecVerificationPromptHelper.swift; sourceTree = "<group>"; };
 		403269912027719C00608441 /* PluginDirectoryAccessoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryAccessoryItem.swift; sourceTree = "<group>"; };
@@ -7820,13 +7820,13 @@
 			path = DomainCredit;
 			sourceTree = "<group>";
 		};
-		02BF30512271D76F00616558 /* Domain Credit */ = {
+		02BF30512271D76F00616558 /* Domain credit */ = {
 			isa = PBXGroup;
 			children = (
 				027AC51C227896540033E56E /* DomainCreditEligibilityChecker.swift */,
 				02BF30522271D7F000616558 /* DomainCreditRedemptionSuccessViewController.swift */,
 			);
-			path = "Domain Credit";
+			path = "Domain credit";
 			sourceTree = "<group>";
 		};
 		031662E60FFB14C60045D052 /* Views */ = {
@@ -8187,12 +8187,9 @@
 		173BCE711CEB365400AE8817 /* Domains */ = {
 			isa = PBXGroup;
 			children = (
-				02BF30512271D76F00616558 /* Domain Credit */,
-				402FFB1B218C27C100FF4A0B /* RegisterDomain.storyboard */,
-				43D74AD220FB5A82004AD934 /* Views */,
-				437EF0C820F79C0C0086129B /* Register */,
-				173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */,
-				173BCE741CEB369900AE8817 /* Domains.storyboard */,
+				02BF30512271D76F00616558 /* Domain credit */,
+				3FAF9CC026D01C2500268EA2 /* Domains list */,
+				437EF0C820F79C0C0086129B /* Domain registration */,
 			);
 			path = Domains;
 			sourceTree = "<group>";
@@ -9308,6 +9305,15 @@
 			path = UITestsFoundation;
 			sourceTree = "<group>";
 		};
+		3FAF9CC026D01C2500268EA2 /* Domains list */ = {
+			isa = PBXGroup;
+			children = (
+				173BCE741CEB369900AE8817 /* Domains.storyboard */,
+				173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */,
+			);
+			path = "Domains list";
+			sourceTree = "<group>";
+		};
 		3FB1928E26C6106C000F5AA3 /* Time Selector */ = {
 			isa = PBXGroup;
 			children = (
@@ -9603,13 +9609,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		437EF0C820F79C0C0086129B /* Register */ = {
+		437EF0C820F79C0C0086129B /* Domain registration */ = {
 			isa = PBXGroup;
 			children = (
+				402FFB1B218C27C100FF4A0B /* RegisterDomain.storyboard */,
 				436D560E2117312700CEAA33 /* RegisterDomainDetails */,
 				436D560B2117312600CEAA33 /* RegisterDomainSuggestions */,
+				43D74AD220FB5A82004AD934 /* Views */,
 			);
-			path = Register;
+			path = "Domain registration";
 			sourceTree = "<group>";
 		};
 		4395A15E210672C900844E8E /* QuickStart */ = {
