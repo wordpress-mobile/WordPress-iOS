@@ -8187,6 +8187,7 @@
 		173BCE711CEB365400AE8817 /* Domains */ = {
 			isa = PBXGroup;
 			children = (
+				02BF30512271D76F00616558 /* Domain Credit */,
 				402FFB1B218C27C100FF4A0B /* RegisterDomain.storyboard */,
 				43D74AD220FB5A82004AD934 /* Views */,
 				437EF0C820F79C0C0086129B /* Register */,
@@ -12073,7 +12074,6 @@
 				3F43603523F368CA001DEE70 /* Blog List */,
 				3F43603623F36962001DEE70 /* Blog Selector */,
 				3F37609B23FD803300F0D87F /* Blog + Me */,
-				02BF30512271D76F00616558 /* Domain Credit */,
 				4395A15E210672C900844E8E /* QuickStart */,
 				E6431DDE1C4E890B00FD8D90 /* Sharing */,
 				FA5C74091C596E69000B528C /* Site Management */,
