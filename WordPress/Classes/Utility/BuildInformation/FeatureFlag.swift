@@ -14,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedCommentsAndNotificationsList
     case recommendAppToOthers
     case newCommentEdit
+    case domains
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -46,6 +47,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .newCommentEdit:
             return false
+        case .domains:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -96,6 +99,8 @@ extension FeatureFlag {
             return "Recommend App to Others"
         case .newCommentEdit:
             return "New Comment Edit"
+        case .domains:
+            return "Domains selling"
         }
     }
 
