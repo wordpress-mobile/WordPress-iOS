@@ -981,6 +981,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [rows addObject:row];
 
+    if ([Feature enabled:FeatureFlagDomains]) {
+        BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
+                                                         identifier:BlogDetailsSettingsCellIdentifier
+                                            accessibilityIdentifier:@"Domains Row"
+                                                                     image:[UIImage gridiconOfType:GridiconTypeDomains]
+                                                           callback:^{
+            [weakSelf showDomains];
+
+        }];
+
+        [rows addObject:domainsRow];
+    }
+
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryConfigure];
 }
@@ -1741,6 +1754,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (void)showDomains
+{
+    /// - TODO: DOMAINS - Add tracking and navigation code here
 }
 
 -(void)showJetpackSettings
