@@ -68,7 +68,7 @@ extension GutenbergViewController {
             ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
-        if FeatureFlag.editorOnboardingHelpMenu.enabled {
+        if canViewEditorOnboarding() {
             alert.addDefaultActionWithTitle(MoreSheetAlert.editorHelpTitle) { [weak self] _ in
                 self?.showEditorHelp()
                 ActionDispatcher.dispatch(NoticeAction.unlock)

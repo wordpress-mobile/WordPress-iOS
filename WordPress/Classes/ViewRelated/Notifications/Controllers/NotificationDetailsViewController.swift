@@ -1223,20 +1223,30 @@ private extension NotificationDetailsViewController {
     }
 
     func displayCommentEditorWithBlock(_ block: FormattableCommentContent) {
-        let editViewController = EditCommentViewController.newEdit()
-        editViewController?.content = block.text
-        editViewController?.onCompletion = { (hasNewContent, newContent) in
-            self.dismiss(animated: true, completion: {
-                guard hasNewContent else {
-                    return
-                }
-                let newContent = newContent ?? ""
-                self.updateComment(with: block, content: newContent)
-            })
+
+        var navController: UINavigationController
+
+        if FeatureFlag.newCommentEdit.enabled {
+            let editViewController = EditCommentTableViewController()
+            navController = UINavigationController(rootViewController: editViewController)
+            navController.modalPresentationStyle = .fullScreen
+        } else {
+            let editViewController = EditCommentViewController.newEdit()
+            editViewController?.content = block.text
+            editViewController?.onCompletion = { (hasNewContent, newContent) in
+                self.dismiss(animated: true, completion: {
+                    guard hasNewContent else {
+                        return
+                    }
+                    let newContent = newContent ?? ""
+                    self.updateComment(with: block, content: newContent)
+                })
+            }
+
+            navController = UINavigationController(rootViewController: editViewController!)
+            navController.modalPresentationStyle = .formSheet
         }
 
-        let navController = UINavigationController(rootViewController: editViewController!)
-        navController.modalPresentationStyle = .formSheet
         navController.modalTransitionStyle = .coverVertical
         navController.navigationBar.isTranslucent = false
 
@@ -1385,18 +1395,14 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
         displayUserProfile(user, from: indexPath)
     }
 
-    func showErrorView() {
+    func showErrorView(title: String, subtitle: String?) {
         hideNoResults()
         configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultsText.errorTitle,
-                                     subtitle: NoResultsText.errorSubtitle,
+                                     title: title,
+                                     subtitle: subtitle,
                                      image: "wp-illustration-notifications")
     }
 
-    private struct NoResultsText {
-        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading notification likes.")
-        static let errorSubtitle = NSLocalizedString("There was an error loading likes", comment: "Text displayed when there is a failure loading notification likes.")
-    }
 }
 
 // MARK: - Private Properties
