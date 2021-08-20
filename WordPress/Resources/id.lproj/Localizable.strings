@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-13 13:32:48+0000 */
+/* Translation-Revision-Date: 2021-08-20 03:33:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Rich Content" = "Konten Kaya";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "Editing rich text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rata Kanan";
@@ -7678,7 +7678,7 @@ translators: Block name. %s: The localized block name */
 "Use Current Location" = "Gunakan Lokasi Saat Ini";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Use Sandbox Store" = "Use Sandbox Store";
+"Use Sandbox Store" = "Gunakan Toko Sandbox";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gunakan penyunting blok";
