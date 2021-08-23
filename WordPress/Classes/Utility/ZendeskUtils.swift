@@ -697,7 +697,7 @@ private extension ZendeskUtils {
             }
         }
 
-        if let currentSite = blogService.lastUsedOrFirstBlog(), !currentSite.isHostedAtWPcom {
+        if let currentSite = blogService.lastUsedOrFirstBlog(), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
             tags.append(Constants.mobileSelfHosted)
         }
 

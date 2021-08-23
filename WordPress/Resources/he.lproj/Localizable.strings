@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-29 12:54:53+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:53:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -40,12 +40,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "⁦%1$d⁩ לייקים";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "⁦%1$d⁩ בלוגר_ סימן לייק על זה.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "⁦%1$d⁩ בלוגרים_ סימנו לייק על זה.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d מתוך %2$d הושלמו";
@@ -213,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li מילים, %2$li תווים";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "בלוק %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s אפשרויות הבלוק";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "בלוק %s, נוסף לאחרונה";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "הבלוק %s. ריק";
@@ -476,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "להוסיף כאן כתובת URL של CSS מותאם כדי לטעון אותה ב-Reader. אם השירות של Calypso מופעל אצלך באופן מקומי, הכתובת תוצג בצורה הבאה: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "ניתן להוסיף בלוק בכל עת על ידי הקשה על הסמל '+' בסרגל הכלים שנמצא בפינה השמאלית התחתונה. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "להוסיף אתר באחסון עצמי";
@@ -825,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "האם ברצונך לעדכן?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "אפשר לארגן את התוכן בטורים, להוסיף כפתורים של קריאה לפעולה ולהוסיף שכבה של טקסט על תמונות.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "אומנות";
 
@@ -1010,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "רשימת החסימות";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "הבלוקים מאפשרים לך להתמקד בכתיבת התוכן ולדעת שכל כלי העיצוב שנדרשים לך נמצאים בהישג יד כדי לעזור לך להעביר את המסר.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "הבלוקים הם חלקים של תוכן שאפשר להוסיף, לארגן ולעצב ללא צורך בניסיון עם כתיבת קודים. בלוקים הם אפשרות פשוטה ומודרנית ליצור פריסות יפות.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "אתר";
 
@@ -1053,6 +1063,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "הגנה מפני התקפות של ניחוש סיסמה";
+
+/* No comment provided by engineer. */
+"Build layouts" = "לבנות פריסות";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "רשימת תבליטים";
@@ -1117,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2345,6 +2359,9 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "ערוך קישור";
 
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "לכל בלוק יש הגדרות משלו. כדי למצוא אותן, יש ללחוץ על הבלוק. ההגדרות שלו יופיעו בסרגל הכלים שנמצא בתחתית המסך.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "מזרח";
 
@@ -2477,6 +2494,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "קישור מוטמע";
+
+/* No comment provided by engineer. */
+"Embed media" = "להטמיע מדיה";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "תצוגות מקדימות מוטמעות עדיין לא זמינות";
@@ -2795,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "תמונה ראשית";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "התמונה המרכזית כבר הוגדרה";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "אפשרויות לתמונה המרכזית";
 
@@ -3043,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "לוותר";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "אפשר לנסות את האפשרויות על ידי הוספה של כמה בלוקים לפוסט או לעמוד שלך!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "כדאי לתת לאתר שלך שם שמשקף את האישיות שלו והנושאים שמוצגים בו. הרושם הראשוני חשוב!";
@@ -3851,6 +3877,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "ניווט ראשי";
 
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "כדאי להבליט את התוכן על ידי הוספה של תמונות, הנפשות GIF, סרטונים ומדיה מוטמעת בעמודים שלך.";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -4569,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "לאחר שהקישור להזמנה יושבת, לא תהיה עוד לאף אחד אפשרות להשתמש בו כדי להצטרף לצוות שלך. האם ההחלטה סופית?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "אחרי שהכרת את השמות של הבלוקים השונים, אפשר להוסיף בלוק על ידי הקלדה של קו נטוי ולאחריו שם הבלוק – לדוגמה, ‎\/image או ‎\/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "לאחר יצירת אתר ב-WordPress.com, אפשר לפרסם מחדש בבלוג את התוכן שברצונך להציג באתר שלך.";
@@ -5462,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "נמחק";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "התמונה הוסרה בתור תמונה מרכזית";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "הפעולה מסירה מטא-נתונים של מיקום מהתמונות שלך לפני ההעלאה לאתר.";
 
@@ -5470,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "ההסרה של השלבים הבאים תסתיר את כל הסיורים באתר זה. לא ניתן לבטל פעולה זו.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "להחליף";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "יש להחליף את הבלוק הנוכחי";
@@ -5637,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "תוכן עשיר";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "עריכה של טקסט עשיר";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "ימין";
@@ -5989,6 +6030,9 @@
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "להגדיר כעמוד פוסטים";
 
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "להגדיר כתמונה מרכזית";
+
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "הגדרת תזכורות";
 
@@ -6270,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "רשתות חברתיות";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "בבלוקים מסוימים יש הגדרות נוספות. יש להקיש על סמל ההגדרות בפינה הימנית התחתונה של הבלוק כדי להציג את האפשרויות הנוספות.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "מספר טעינות מדיה נכשלו. פעולה זו תסיר את כל המדיה שנכשלה מהפוסט.\nלשמור בכל זאת?";
@@ -7086,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "כדי להמשיך עם חשבון Google, ראשית יש להתחבר עם הסיסמה שלך ב-WordPress.com. נבקש את הנתון הזה פעם אחת בלבד.";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "כדי להסיר בלוק, יש לבחור את הבלוק, ללחוץ על שלוש הנקודות בפינה הימנית התחתונה של הבלוק ולהציג את ההגדרות. במקטע הזה יש לבחור באפשרות להסיר את הבלוק.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
 
@@ -7627,6 +7677,9 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "שימוש במיקום נוכחי";
 
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "להשתמש בחנות של Sandbox";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "להשתמש בעורך הבלוקים";
 
@@ -8082,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "ברוכים הבאים ל-Reader";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "ברוך בואך אל עולם הבלוקים";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "ברוך בואך לבונה האתרים הפופולרי ביותר בעולם.";
 
@@ -8331,6 +8387,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "אתמול";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "כבר הגדרת תמונה מרכזית. האם ברצונך להחליף אותה?";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "You are about to change your username, which is currently %1$@. %2$@";
 
@@ -8360,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "אפשר לעקוף הגדרות אלה בפוסטים נפרדים.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "כדי לשנות את סדר הבלוקים, יש להקיש על הבלוק ולאחר מכן להקיש על החצים למעלה ולמטה שמופיעים בפינה השמאלית התחתונה כדי להזיז את הבלוק מעל הבלוקים האחרים או מתחתיהם.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "אפשר לעדכן את ההגדרה הזאת בכל עת דרך 'האתר שלי' > 'הגדרות אתר'";
@@ -8578,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[תגובה]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "הפוסט קיבל לייק _ממך ומבלוגר ⁦%1$d⁩_.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "הפוסט קיבל לייק _ממך ומ-⁦%1$d⁩ בלוגרים_.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "הפוסט קיבל לייק _ממך_.";
 
 /* Age between dates equaling one day. */
 "a day" = "יום";

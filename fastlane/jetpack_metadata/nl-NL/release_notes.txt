@@ -1,5 +1,9 @@
-Er is weer een nieuw blok! Met het Insluitblok kun je content van je favoriete diensten insluiten, zoals van YouTube, TikTok, Instagram en nog veel meer. Binnenkort wordt meer bekend gemaakt over de extra functies.
+In 18.0 hebben we de afbeeldingen die voor Thema's worden gebruikt, geoptimaliseerd. Zo geniet je van snellere downloads en verbruik je minder mobiele data.
 
-Fan van onze functie voor Blog-herinneringen? Voorheen konden alleen sitebeheerders herinneringen instellen, maar nu hebben we deze functie beschikbaar gesteld aan personen die gemachtigd zijn berichten op je site te bewerken (editors, auteurs en bijdragers).
+Je kunt een uitgelichte afbeelding instellen of verwijderen voor een bericht via de instellingen van het afbeeldingblok. Mocht je het vergeten zijn: een nieuwe banner 'uitgelicht' toont je huidige selectie.
 
-We hebben de functie voor het beheer van opmerkingen verbeterd: de bevoegde gebruikers kunnen nu naar links vegen om opmerkingen goed- of af te keuren en te verwijderen. Daarnaast ondersteunen we nu Algemene stijlen. Hiermee kun je instellingen als kleur- en achtergrondaanpassing voor thema's die de hele site beslaan, aanpassen.
+Opmerkingen en meldingen zijn in een nieuw jasje gestoken en zien eruit als één geheel. Bij het kiezen van een domein of ontwerp voor je site, zijn de headers vernieuwd met het oog op toegankelijkheid voor apparaten die een groter lettertype gebruiken.
+
+Wanneer we je via een melding in de app laten weten dat je een bericht hebt gepubliceerd, zie je nu ampersands in je titel, weergegeven in al hun volledige, niet-HTML glorie.
+
+Ten slotte hebben we een plooi gladgestreken wat betreft het herstellen van niet-goedgekeurde authenticatietokens.

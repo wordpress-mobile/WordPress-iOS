@@ -1,5 +1,9 @@
-Det har kommit ett nytt block! Med inbäddningsblocket kan du bädda in innehåll från favorittjänster som YouTube, TikTok, Instagram med mera. Håll ögonen öppna efter ytterligare funktioner.
+I 18.0 har vi optimerat bilderna som används för teman, vilket ger dig snabbare nedladdningar och minskad påverkan på din mobildataplan.
 
-Älskar du funktionen Bloggningspåminnelser? Tidigare kunde endast webbplatsadministratörer konfigurera påminnelser, men nu har vi även aktiverat den här funktionen för personer som kan redigera inlägg på din webbplats (redigerare, författare och deltagare).
+Du kan nu ställa in eller ta bort en utvald bild för ett inlägg via bildblockets inställningar. Och för att hjälpa dig att komma ihåg finns det en ny "Utvald"-banner som framhäver ditt val.
 
-Vi har förbättrat kommentarsmodereringen, så att lämpliga användare kan svepa åt vänster för att välja att godkänna/inte godkänna och ta bort kommentarer. Vi har också lagt till stöd för globala stilar, vilket gör det möjligt att ändra inställningar som färg- och bakgrundsanpassning för teman med fullständig webbplatsredigering.
+En annan ändring på designfronten är att kommentarer och aviseringar nu har fått ett enhetligt utseende och en enhetlig känsla. Och när det kommer till att välja en domän eller en design för din webbplats har rubrikerna förfinats för ökad tillgänglighet på enheter som är inställda på att använda större textstorlekar.
+
+När vi meddelar dig i appen om att du har publicerat ett inlägg kommer du nu att se att eventuella et-tecken i din rubrik visas till fullo, utan HTML.
+
+Sist men inte minst har vi åtgärdat ett fel som uppstod vid återställning från ogiltiga autentiseringstokens.

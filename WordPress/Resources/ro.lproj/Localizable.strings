@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-02 14:55:37+0000 */
+/* Translation-Revision-Date: 2021-08-19 07:53:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -40,12 +40,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d aprecieri";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d bloger_ apreciază asta.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d blogeri_ apreciază asta.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d din %2$d finalizate";
@@ -213,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li cuvinte, %2$li de caractere";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "Bloc %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opțiuni bloc %s";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "Bloc %s, este disponibil acum";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Bloc %s. Gol";
@@ -476,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Poți să adaugi un bloc oricând prin atingerea iconului + din bara de unelte, în stânga jos.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Adaugă un site auto-găzduit";
@@ -825,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Sigur vrei să actualizezi?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Îți aranjezi conținutul pe coloane, adaugi butoane pentru Apeluri la acțiune și suprapui text peste imagini.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "Artă";
 
@@ -1010,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Listă blocări";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocurile îți permit să te concentrezi pe scrierea conținutului, știind că toate instrumentele de formatare de care ai nevoie sunt acolo ca să te ajute să transmiți mesajul.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocurile sunt părți de conținut pe care le poți insera, rearanja și folosi în forma lor fără să scrii sau să modifici vreun cod. Blocurile sunt o modalitate ușoară și modernă de a crea aranjamente frumoase.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
@@ -1053,6 +1063,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Protecție împotriva atacurilor cu forță-brută";
+
+/* No comment provided by engineer. */
+"Build layouts" = "Construiește aranjamente";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Listă punctată";
@@ -1117,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2345,6 +2359,9 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "EDITEAZĂ LEGĂTURA";
 
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, dă clic pe un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Est";
 
@@ -2480,6 +2497,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "Înglobează legătura";
+
+/* No comment provided by engineer. */
+"Embed media" = "Înglobează media";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Previzualizările înglobărilor nu sunt încă disponibile";
@@ -2798,6 +2818,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Imagine reprezentativă";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Ai stabilit deja imaginea reprezentativă";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Opțiuni imagine reprezentativă";
 
@@ -2969,7 +2992,7 @@
 "Forward" = "Înaintează";
 
 /* Browse free themes selection title */
-"Free" = "Gratuit";
+"Free" = "Gratuite";
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free GIF Library" = "Bibliotecă de GIF-uri gratuite";
@@ -3046,6 +3069,9 @@
 
 /* Cancel */
 "Give Up" = "Renunț";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Încearcă-le, adaugă câteva blocuri în articolele sau paginile tale!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Dă-i site-ului un nume care să-i reflecte personalitatea și subiectul (tema). Prima impresie este foarte importantă!";
@@ -3854,6 +3880,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
 
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Îți scoți conținutul în evidență prin adăugarea de imagini, imagini GIF, videouri și elemente media înglobate în paginile tale.";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -4573,6 +4602,9 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "După ce această legătură la invitație este dezactivată, nimeni nu o va putea folosi pentru a se alătura echipei. Sigur?";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "După ce te familiarizezi cu numele blocurilor, poți adăuga un bloc tastând mai întâi un slash (o bară oblică) și apoi numele blocului - de exemplu, \/imagine sau \/subtitlu.";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "După ce ai creat un site WordPress.com, poți republica un conținut care îți place pe propriul site.";
 
@@ -5003,7 +5035,7 @@
 
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Format articol";
+"Post Format" = "Format de articol";
 
 /* Prompts the user that a restored post was moved to the drafts list. */
 "Post Restored to Drafts" = "Articol restaurat la schiță";
@@ -5070,7 +5102,7 @@
 "Post to WordPress" = "Publică pe WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Articol actualizat";
+"Post updated" = "Articolul a fost actualizat";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Cod poștal";
@@ -5465,6 +5497,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Înlăturat";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "A fost înlăturată imaginea, ca imagine reprezentativă";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Înlătură metadatele locației din fotografii înainte de a le încărca pe site-ul tău.";
 
@@ -5473,6 +5508,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Înlăturarea pașilor următori va ascunde toate tururile de pe acest site. Această acțiune nu poate fi anulată.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Înlocuiește";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Înlocuiește blocul curent";
@@ -5640,6 +5678,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Conținut bogat";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Editare text îmbogățit";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Dreapta";
@@ -5992,6 +6033,9 @@
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Setează ca pagină articole";
 
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Setează ca imagine reprezentativă";
+
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Setează reamintiri";
 
@@ -6273,6 +6317,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Social";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Unele blocuri au setări suplimentare. Atinge iconul setări din dreapta jos a blocului pentru a vedea mai multe opțiuni.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Unele încărcări media au eșuat. Această acțiune va înlătura toate elementele media din articol care au eșuat. Salvează oricum?";
@@ -6651,7 +6698,7 @@
 "Testimonials" = "Testimoniale";
 
 /* Title of a button style */
-"Text Only" = "Doar text";
+"Text Only" = "Numai text";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7088,6 +7135,9 @@
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Pentru a continua cu acest cont Google, mai întâi te rog să te autentifici cu parola WordPress.com. Acest lucru va fi cerut o singură dată.";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Pentru a înlătura un bloc, selectează blocul și dă clic pe cele trei puncte din dreaptă jos a blocului pentru a vizualiza setările. Acolo, alege opțiunea de a înlătura blocul.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Să faci poze sau videouri pe care să le folosești în articolele tale.";
@@ -7630,6 +7680,9 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Folosește locația curentă";
 
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Folosește Sandbox Store";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Folosește editorul de blocuri";
 
@@ -8085,6 +8138,9 @@
 /* A message title */
 "Welcome to the Reader" = "Bine ai venit în cititor";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Bine ai venit în lumea blocurilor";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Bine ai venit la cel mai popular constructor de site-uri web din lume.";
 
@@ -8334,6 +8390,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "Ieri";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Ai stabilit deja o imagine reprezentativă. Vrei să o înlocuiești?";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Ești pe cale să-ți schimbi numele de utilizator, acum este %1$@. %2$@";
 
@@ -8363,6 +8422,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Poți suprascrie aceste setări pentru articole indiviluale.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Poți rearanja blocurile prin atingerea unui bloc și apoi a săgeților sus și jos care apar în stânga jos a blocului pentru a-l muta mai sus sau sub alte blocuri.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Poți actualiza oricând mergând la Site-ul meu > Setări site";
@@ -8582,6 +8644,21 @@
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMENTARIU]";
 
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d bloger_ apreciază asta.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d blogeri_ apreciază asta.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Tu și un alt bloger_ ați apreciat asta.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Tu și alți %1$d blogeri_ ați apreciat asta.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Ai_ apreciat asta.";
+
 /* Age between dates equaling one day. */
 "a day" = "o zi";
 
@@ -8648,7 +8725,7 @@
 "of" = "din";
 
 /* Label displayed on media items that are not video, image, or audio. */
-"other" = "alte";
+"other" = "altele";
 
 /* No comment provided by engineer. */
 "password" = "parolă";

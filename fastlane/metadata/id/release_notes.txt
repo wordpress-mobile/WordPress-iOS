@@ -1,5 +1,9 @@
-Ada blok baru! Dengan blok Sematan, Anda bisa menyematkan konten dari layanan favorit Anda seperti YouTube, TikTok, Instagram, dan sebagainya. Terus ikuti kami untuk fungsi tambahan lainnya.
+Di versi 18.0 kami mengoptimalkan gambar yang digunakan sebagai Tema, memberikan fitur pengunduhan yang lebih cepat, dan mengurangi dampak pada paket data ponsel Anda.
 
-Suka fitur Pengingat Blogging kami? Sebelumnya, hanya admin situs yang bisa mengonfigurasi pengingat tetapi sekarang kami telah mengaktifkan fitur ini bagi orang-orang yang bisa menyunting pos di situs Anda (penyunting, penyusun, dan kontributor).
+Kini Anda dapat mengatur atau menghapus gambar unggulan untuk sebuah pos dari pengaturan blok gambar. Selain itu, sekadar mengingatkan, spanduk 'unggulan' baru akan menyoroti pilihan Anda saat ini.
 
-Kami telah melakukan peningkatan untuk moderasi komentar yang memastikan bahwa pengguna yang sesuai dapat menggeser ke kiri untuk menyetujui/menolak serta membuang komentar. Kami juga telah menyediakan dukungan untuk Gaya Global yang memungkinkan pengaturan seperti warna dan penyesuaian latar belakang pada tema Penyuntingan Situs Penuh.
+Bagian depan, komentar dan notifikasi kini juga memiliki tampilan dan nuansa yang menyatu. Saat memilih domain atau desain untuk situs Anda, kami telah menyempurnakan judul agar dapat memberikan aksesibilitas pada perangkat yang disetel menggunakan ukuran teks yang lebih besar.
+
+Saat menerima pemberitahuan dari aplikasi bahwa Anda telah memublikasikan sebuah pos, kini Anda dapat melihat semua ampersand pada judul yang ditampilkan sepenuhnya dalam entitas non-HTML.
+
+Yang tak kalah penting, kami telah memperbaiki masalah saat memulihkan dari token autentikasi yang tidak valid.

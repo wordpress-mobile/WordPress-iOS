@@ -251,7 +251,7 @@ GEM
     octokit (4.21.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
-    oj (3.13.1)
+    oj (3.12.3)
     optimist (3.0.1)
     options (2.3.2)
     os (1.1.1)

@@ -1,5 +1,9 @@
-¡Ha llegado un nuevo bloque! Con el bloque de incrustar, puedes incrustar contenido de tus servicios favoritos como YouTube, TikTok o Instagram, entre otros. Sigue atento para conocer las funciones que están por llegar.
+En la versión 18.0, hemos optimizado las imágenes que se usan en los temas, para que las descargas sean más rápidas y para que tu plan de datos móviles no sufra tanto.
 
-¿Te gusta nuestra función Recordatorios de bloqueo? Hasta ahora, solo los administradores del sitio podían configurar recordatorios, pero ahora hemos activado esta función para todos los usuarios que pueden editar publicaciones en tu sitio (editores, autores y colaboradores).
+Ahora puedes establecer o eliminar una imagen destacada para una entrada desde la configuración del bloque Imagen. Hay un nuevo banner destacado que te avisa de lo que estás seleccionando, por si se te olvida.
 
-Hemos mejorado la moderación de comentarios, para que los usuarios apropiados puedan aprobar o rechazar comentarios y enviarlos a la papelera con solo deslizar el dedo hacia la izquierda. También hemos incluido soporte para los Estilos globales, y ahora hay ajustes como la personalización del color y el fondo para los temas de Edición completa del sitio.
+En cuanto al diseño, los comentarios y las notificaciones tienen un aspecto unificado. Al elegir un dominio o un diseño para tu sitio, se ha mejorado la accesibilidad de los encabezados en los dispositivos configurados para usar tamaños de letra grandes.
+
+Ahora, cuando te comuniquemos que has publicado una entrada con un aviso en la aplicación, no verás ningún signo "&" en el título, y lo verás en su máximo esplendor (no en HTML).
+
+Por último, pero no menos importante, hemos solucionado un problemilla que ocurría al recuperar tokens de autenticación no válidos.

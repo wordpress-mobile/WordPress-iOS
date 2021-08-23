@@ -1,5 +1,9 @@
-Há um novo bloco na cidade! Com o bloco Incorporar, você pode incorporar conteúdo de seus serviços favoritos, como YouTube, TikTok, Instagram e muito mais. Fique atento às funcionalidades adicionais que virão.
+Na versão 18.0, nós otimizamos as imagens usadas para temas, resultando em downloads mais rápidos e impacto reduzido em seu plano de dados móveis.
 
-Você adora nosso recurso Lembretes para publicação? Anteriormente, apenas os administradores do site podiam configurar lembretes, mas agora habilitamos esse recurso para as pessoas que podem editar posts em seu site (editores, autores e colaboradores).
+Agora você pode definir ou remover uma imagem destacada de um post nas configurações do bloco de imagem. E caso você esqueça, um novo banner "em destaque" evidencia sua seleção atual.
 
-Fizemos melhorias na moderação de comentários, garantindo que os usuários apropriados possam deslizar para a esquerda para aprovar / desaprovar e descartar os comentários. Também fornecemos suporte para Estilos globais, permitindo configurações como personalização de cor e plano de fundo para temas de Edição completa do site.
+Outra novidade no aspecto de design são os comentários e notificações, que agora têm uma aparência unificada. E quando se trata de escolher um domínio ou design para o seu site, os cabeçalhos foram aprimorados para oferecer acessibilidade em dispositivos configurados para usar tamanhos de texto maiores.
+
+Agora, quando enviarmos um aviso no aplicativo informando que você fez uma publicação, todos os "&" em seu título serão exibidos em sua forma completa e não HTML.
+
+Por último, mas não menos importante, corrigimos um problema na recuperação de tokens de autenticação invalidados.

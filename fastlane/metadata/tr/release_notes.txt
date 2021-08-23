@@ -1,5 +1,9 @@
-Şehirde yeni bir blok var! Gömme bloğu ile YouTube, TikTok, Instagram ve daha fazlası gibi favori hizmetlerinizden içerik gömebilirsiniz. Gelecek ek işlevler için bizi izlemeye devam edin.
+18.0'da Temalar için kullanılan görselleri optimize ettik, böylece indirme işlemlerini hızlandırdık ve mobil veri planınız üzerindeki etkiyi azalttık.
 
-Blog hatırlatıcıları özelliğimizi beğendiniz mi? Önceden yalnızca site yöneticileri hatırlatıcıları yapılandırabilirdi, ancak şimdi bu özelliği sitenizdeki yazıları düzenleyebilen kişiler (editörler, yazarlar ve katkıda bulunanlar) için etkinleştirdik.
+Artık bir gönderi için öne çıkan bir görseli görsel blokunun ayarlarından ayarlayabilir veya kaldırabilirsiniz. Ve unutmanız durumunda, yeni bir "öne çıkan" başlık ile mevcut seçiminiz vurgulanır.
 
-Yorum denetlemede iyileştirmeler yaptık ve uygun kullanıcıların yorumları onaylamak/onaylamamak için sola kaydırabilmesini ve yorumları çöpe atabilmesini sağladık. Ayrıca, Tam site düzenleme temaları için renk ve arka plan özelleştirmesi gibi ayarları etkinleştiren global stiller için destek sağladık.
+Ayrıca tasarım olarak, yorumlar ve bildirimler artık birleşik bir görünüme sahiptir. Siteniz için bir alan adı veya tasarım seçmeniz gereken durumlar için, başlıklar daha büyük metin boyutları kullanacak şekilde ayarlanmış cihazlarda erişilebilirlik açısından iyileştirildi.
+
+Bir gönderi yayınladığınızı size uygulama içi bir bildirimle bildirdiğimizde, başlığınızdaki tüm ve işaretlerini artık HTML olmayan tam varlık biçiminde göreceksiniz.
+
+Son olarak, geçersiz kılınmış kimlik doğrulama belirteçlerinden kurtarırken yoldaki bir engeli ortadan kaldırdık.

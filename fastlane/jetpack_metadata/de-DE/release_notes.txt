@@ -1,5 +1,9 @@
-Es gibt einen neuen Block! Mit dem Embed-Block kannst du Inhalte aus deinen Lieblingsdiensten wie YouTube, TikTok, Instagram und anderen einbetten. Bleib dran, es folgen bald weitere Funktionen.
+In der Version 18.0 haben wir die Bilder optimiert, die für Themes verwendet werden. Dadurch geht das Herunterladen schneller und es wirkt sich weniger auf deinen Datentarif aus.
 
-Dir gefällt unser Feature „Blog-Erinnerungen“? Bislang konnten nur Website-Administratoren Erinnerungen konfigurieren. Jetzt haben wir dieses Feature aber für Personen aktiviert, die auf deiner Website Beiträge bearbeiten können (Redakteure, Autoren und Mitarbeiter).
+Du kannst Beitragsbilder jetzt in den Einstellungen des Bildblocks für einen Beitrag einrichten oder entfernen. Und falls du es vergessen solltest zeigt ein neues Banner „Beitragsbild“ deine aktuelle Auswahl.
 
-Wir haben Verbesserungen an der Kommentarmoderation vorgenommen: Die entsprechenden Benutzer können jetzt nach links wischen, um Kommentare zu genehmigen/abzulehnen und in den Papierkorb zu verschieben. Außerdem bieten wir jetzt Unterstützung für globale Stile: Damit stehen dir für die Themes zur Website-Bearbeitung Einstellungen wie Farb- und Hintergrundanpassung zur Verfügung.
+Außerdem haben wir den Kommentaren und Benachrichtigungen jetzt einen einheitlichen Look verpasst. Bezüglich der Auswahl der Domain oder des Designs für deine Website, stehen dir jetzt zugänglichere Überschriften für Geräte zur Verfügung, die auf größere Schriftgrößen eingestellt sind.
+
+Wenn wir dir mit einer In-App-Benachrichtigung mitteilen, dass du einen Beitrag veröffentlicht hast, werden jetzt alle Und-Zeichen (&) in deinem Titel als tatsächlich Zeichen angezeigt und nicht mehr verschlüsselt als HTML.
+
+Zu guter Letzt haben wir einen Fehler bei der Wiederherstellung mit ungültigen Authentifizierungstoken behoben.

@@ -1,6 +1,5 @@
 #import "ReaderCommentsViewController.h"
 
-#import "Comment.h"
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "ReaderPost.h"
@@ -14,6 +13,7 @@
 #import "WPAppAnalytics.h"
 #import <WordPressUI/WordPressUI.h>
 
+@class Comment;
 
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
 // crash in certain circumstances when the tableView lays out its visible cells,
@@ -763,10 +763,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment
 {
-    NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:comment.commentID];
+    NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:[NSNumber numberWithInt:comment.commentID]];
     if (!attrStr || self.userInterfaceStyleChanged == YES) {
         attrStr = [WPRichContentView formattedAttributedStringForString: comment.content];
-        [self.cachedAttributedStrings setObject:attrStr forKey:comment.commentID];
+        [self.cachedAttributedStrings setObject:attrStr forKey:[NSNumber numberWithInt:comment.commentID]];
     }
     return attrStr;
 }
@@ -850,7 +850,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     if (replyToComment) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
-        [service replyToHierarchicalCommentWithID:comment.commentID
+        [service replyToHierarchicalCommentWithID:[NSNumber numberWithInt:comment.commentID]
                                              post:self.post
                                           content:content
                                           success:successBlock
@@ -961,14 +961,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     cell.indentationWidth = CommentIndentationWidth;
-    cell.indentationLevel = MIN([comment.depth integerValue], MaxCommentDepth);
+    cell.indentationLevel = MIN(comment.depth, MaxCommentDepth);
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.enableLoggedInFeatures = [self isLoggedIn];
-    cell.onTimeStampLongPress = ^(void) {
-        NSURL *url = [NSURL URLWithString:comment.link];
-        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
-    };
+
+    NSURL *commentURL = [comment commentURL];
+    if (commentURL) {
+        cell.onTimeStampLongPress = ^(void) {
+            [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:commentURL];
+        };
+    }
 
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure
