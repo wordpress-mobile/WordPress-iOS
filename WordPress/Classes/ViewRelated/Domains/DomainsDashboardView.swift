@@ -57,37 +57,6 @@ struct DomainsDashboardView: View {
         .frame(idealHeight: idealHeight)
         .fixedSize(horizontal: false, vertical: true)
     }
-
-    /// - TODO: - DOMAINS - At the moment there are a few issues with the modal presentation, so this is currently not used.
-    /// Adds an action that presents the domain registration flow modally
-    /// - Parameter site: the current site
-    /// - Returns: the view that presents the flow modallty
-    private func makeButtonForModalRegistration(site: JetpackSiteRef) -> some View {
-        Button(TextContent.paidPlanRegistrationLabelModal) {
-            showingPaidPlanDomainRegistration.toggle()
-        }
-        .buttonStyle(PlainButtonStyle())
-        .sheet(isPresented: $showingPaidPlanDomainRegistration) {
-            NavigationView {
-                if #available(iOS 14.0, *) {
-                    DomainSuggestionViewControllerWrapper(blog: blog)
-                        .navigationTitle(TextContent.paidPlanRegistrationNavigationTitle)
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationBarItems(leading: Button(TextContent.paidPlanModalCancelButtonTitle,
-                                                            action: {
-                                                                showingPaidPlanDomainRegistration = false
-                                                            }))
-                } else {
-                    DomainSuggestionViewControllerWrapper(blog: blog)
-                        /// - TODO: DOMAINS - This will likely need to be refactored for iOS 13, if we keep supporting it.
-                        .navigationBarItems(leading: Button(TextContent.paidPlanModalCancelButtonTitle,
-                                                            action: {
-                                                                showingPaidPlanDomainRegistration = false
-                                                            }))
-                }
-            }
-        }
-    }
 }
 
 // MARK: - Constants
@@ -112,9 +81,6 @@ private extension DomainsDashboardView {
                                                                            comment: "Footer of the free domain registration section for a paid plan.")
         static let paidPlanRegistrationLabelNavigation: String = NSLocalizedString("Register a free domain",
                                                                                    comment: "Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
-        /// - TODO: - DOMAINS - At the moment there are a few issues with the modal presentation, so this is currently not used.
-        static let paidPlanRegistrationLabelModal: String = NSLocalizedString("Register a free domain - modal presentation",
-                                                                              comment: "Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
 
         static let paidPlanRegistrationNavigationTitle: String = NSLocalizedString("Register Domain",
                                                                                    comment: "Navigation bar title of the free domain registration flow, used in the Domains Dashboard.")
