@@ -3,18 +3,26 @@ import SwiftUI
 /// The Domains dashboard screen, accessible from My Site
 struct DomainsDashboardView: View {
     @State private var showingPaidPlanDomainRegistration = false
-    let blog: Blog
+    @ObservedObject var blog: Blog
 
     var body: some View {
+        makeList(blog: blog)
+
+    }
+
+    /// Builds the main list of the view
+    /// - Parameter blog: the given blog
+    private func makeList(blog: Blog) -> some View {
         List {
             // primary site address
-            if let site = JetpackSiteRef(blog: blog), let urlString = blog.displayURL {
+            if let urlString = blog.displayURL {
                 Section(header: Text(TextContent.primarySiteSectionHeader),
                         footer: Text(TextContent.primarySiteSectionFooter)) {
                     Text("\(urlString)")
                 }
 
-                sectionPadding()
+                makeSectionPadding()
+
 
                 // register a free domain
                 Section(header: Text(TextContent.redirectedDomainsSectionHeader)) {
@@ -23,39 +31,14 @@ struct DomainsDashboardView: View {
                 }
 
                 // register a free domain with a paid plan
-                if DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog) {
+                if (blog.isHostedAtWPcom || blog.isAtomic()) && blog.hasDomainCredit {
 
-                    sectionPadding()
+                    makeSectionPadding()
 
                     Section(footer: Text(TextContent.paidPlanDomainSectionFooter)) {
                         /// - TODO: DOMAINS - We keep both options at the moment, for testing purposes. We will need to remove the one that we choose not to use.
-                        NavigationLink(destination: DomainSuggestionViewControllerWrapper(site: site)) {
+                        NavigationLink(destination: DomainSuggestionViewControllerWrapper(blog: blog)) {
                             Text(TextContent.paidPlanRegistrationLabelNavigation)
-                        }
-
-                        Button(TextContent.paidPlanRegistrationLabelModal) {
-                            showingPaidPlanDomainRegistration.toggle()
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .sheet(isPresented: $showingPaidPlanDomainRegistration) {
-                            NavigationView {
-                                if #available(iOS 14.0, *) {
-                                    DomainSuggestionViewControllerWrapper(site: site)
-                                        .navigationTitle(TextContent.paidPlanRegistrationNavigationTitle)
-                                        .navigationBarTitleDisplayMode(.inline)
-                                        .navigationBarItems(leading: Button(TextContent.paidPlanModalCancelButtonTitle,
-                                                                            action: {
-                                                                                showingPaidPlanDomainRegistration = false
-                                                                            }))
-                                } else {
-                                    DomainSuggestionViewControllerWrapper(site: site)
-                                        /// - TODO: DOMAINS - This will likely need to be refactored for iOS 13, if we keep supporting it.
-                                        .navigationBarItems(leading: Button(TextContent.paidPlanModalCancelButtonTitle,
-                                                                            action: {
-                                                                                showingPaidPlanDomainRegistration = false
-                                                                            }))
-                                }
-                            }
                         }
                     }
                 }
@@ -67,12 +50,43 @@ struct DomainsDashboardView: View {
     /// Creates an "empty" section to be used as a padding between sections
     /// - Parameter idealHeight: the ideal height of the padding
     /// - Returns: the view that creates the padding
-    private func sectionPadding(idealHeight: CGFloat = Metrics.sectionPaddingDefaultHeight) -> some View {
+    private func makeSectionPadding(idealHeight: CGFloat = Metrics.sectionPaddingDefaultHeight) -> some View {
         Section {
             EmptyView()
         }
         .frame(idealHeight: idealHeight)
         .fixedSize(horizontal: false, vertical: true)
+    }
+
+    /// - TODO: - DOMAINS - At the moment there are a few issues with the modal presentation, so this is currently not used.
+    /// Adds an action that presents the domain registration flow modally
+    /// - Parameter site: the current site
+    /// - Returns: the view that presents the flow modallty
+    private func makeButtonForModalRegistration(site: JetpackSiteRef) -> some View {
+        Button(TextContent.paidPlanRegistrationLabelModal) {
+            showingPaidPlanDomainRegistration.toggle()
+        }
+        .buttonStyle(PlainButtonStyle())
+        .sheet(isPresented: $showingPaidPlanDomainRegistration) {
+            NavigationView {
+                if #available(iOS 14.0, *) {
+                    DomainSuggestionViewControllerWrapper(blog: blog)
+                        .navigationTitle(TextContent.paidPlanRegistrationNavigationTitle)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationBarItems(leading: Button(TextContent.paidPlanModalCancelButtonTitle,
+                                                            action: {
+                                                                showingPaidPlanDomainRegistration = false
+                                                            }))
+                } else {
+                    DomainSuggestionViewControllerWrapper(blog: blog)
+                        /// - TODO: DOMAINS - This will likely need to be refactored for iOS 13, if we keep supporting it.
+                        .navigationBarItems(leading: Button(TextContent.paidPlanModalCancelButtonTitle,
+                                                            action: {
+                                                                showingPaidPlanDomainRegistration = false
+                                                            }))
+                }
+            }
+        }
     }
 }
 
@@ -96,9 +110,9 @@ private extension DomainsDashboardView {
         // paid plans
         static let paidPlanDomainSectionFooter: String = NSLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.",
                                                                            comment: "Footer of the free domain registration section for a paid plan.")
-        /// - TODO: - DOMAINS - Only one of these will remain after deciding what approach we keep for the registation (navigation or modal presentation).
-        static let paidPlanRegistrationLabelNavigation: String = NSLocalizedString("Register a free domain - simple navigation",
+        static let paidPlanRegistrationLabelNavigation: String = NSLocalizedString("Register a free domain",
                                                                                    comment: "Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
+        /// - TODO: - DOMAINS - At the moment there are a few issues with the modal presentation, so this is currently not used.
         static let paidPlanRegistrationLabelModal: String = NSLocalizedString("Register a free domain - modal presentation",
                                                                               comment: "Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
 
