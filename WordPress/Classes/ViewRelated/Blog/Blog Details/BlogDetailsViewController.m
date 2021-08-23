@@ -1758,7 +1758,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showDomains
 {
-    /// - TODO: DOMAINS - Add tracking and navigation code here
+    /// - TODO: DOMAINS - Add tracking  here
+    UIViewController *controller = [self makeDomainsDashboardViewController];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    [self showDetailViewController:controller sender:self];
 }
 
 -(void)showJetpackSettings
