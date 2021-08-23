@@ -14,6 +14,7 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
 func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
+    viewController.handler.automaticallyDeselectCells = true
     return viewController
 }
 
@@ -23,7 +24,8 @@ private class AccountSettingsController: SettingsController {
     var immuTableRows: [ImmuTableRow.Type] {
         return [
             TextRow.self,
-            EditableTextRow.self
+            EditableTextRow.self,
+            DestructiveButtonRow.self
         ]
     }
 
@@ -41,6 +43,7 @@ private class AccountSettingsController: SettingsController {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
+    private let alertHelper = DestructiveAlertHelper()
 
     init(service: AccountSettingsService) {
         self.service = service
@@ -120,6 +123,11 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(changePassword(with: settings, service: service))
         )
 
+        let closeAccount = DestructiveButtonRow(
+            title: NSLocalizedString("Close Account", comment: "Close account action label"),
+            action: presenter.present(closeAccountAction),
+            accessibilityIdentifier: "closeAccountButtonRow")
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
@@ -128,10 +136,13 @@ private class AccountSettingsController: SettingsController {
                     password,
                     primarySite,
                     webAddress
+                ]),
+            ImmuTableSection(
+                rows: [
+                    closeAccount
                 ])
-            ])
+        ])
     }
-
 
     // MARK: - Actions
 
@@ -226,6 +237,80 @@ private class AccountSettingsController: SettingsController {
 
             return selectorViewController
         }
+    }
+
+    private var closeAccountAction: (ImmuTableRow) -> UIAlertController {
+        return { [weak self] _ in
+            return self?.closeAccountAlert ?? UIAlertController()
+        }
+    }
+
+    private var closeAccountAlert: UIAlertController? {
+        guard let value = settings?.username else {
+            return nil
+        }
+
+        let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
+        let message = NSLocalizedString("\nTo confirm, please re-enter your username before closing.\n\n",
+                                        comment: "Message of Close Account confirmation alert")
+        let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
+                                                       comment: "Close Account confirmation action title")
+
+        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+    }
+
+    private func closeAccount() {
+        let status = NSLocalizedString("Closing account…", comment: "Overlay message displayed while closing account")
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: status)
+
+        service.closeAccount { [weak self] in
+            guard let self = self else { return }
+            switch $0 {
+            case .success:
+                let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
+                SVProgressHUD.showDismissibleSuccess(withStatus: status)
+                AccountHelper.logOutDefaultWordPressComAccount()
+            case .failure(let error):
+                SVProgressHUD.dismiss()
+                DDLogError("Error closing account: \(error.localizedDescription)")
+                self.showErrorAlert(message: self.generateLocalizedMessage(error))
+            }
+        }
+    }
+
+    private func generateLocalizedMessage(_ error: Error) -> String {
+        let userInfo = (error as NSError).userInfo
+        let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+
+        switch errorCode {
+        case "unauthorized":
+            return NSLocalizedString("You're not authorized to close the account.",
+                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
+        case "atomic-site":
+            return NSLocalizedString("This user account cannot be closed while it has active atomic sites.",
+                                     comment: "Error message displayed when unable to close user account due to having active atomic site.")
+        case "chargebacked-site":
+            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
+                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
+        case "active-subscriptions":
+            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
+                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
+        case "active-memberships":
+            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
+                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
+        default:
+            return NSLocalizedString("An error occured while closing account.",
+                                     comment: "Default error message displayed when unable to close user account.")
+        }
+    }
+
+    private func showErrorAlert(message: String) {
+        let title = NSLocalizedString("Error", comment: "General error title")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
+        alert.addDefaultActionWithTitle(okAction, handler: nil)
+        alert.presentFromRootViewController()
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {

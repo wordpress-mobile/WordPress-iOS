@@ -2,7 +2,6 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
-#import "Comment.h"
 #import "BasePost.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "EditCommentViewController.h"
@@ -227,7 +226,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __weak __typeof(self) weakSelf = self;
 
     // when the post is updated, all it's comment will be associated to it, reloading tableView is enough
-    [postService getPostWithID:self.comment.postID
+    [postService getPostWithID:[NSNumber numberWithInt:self.comment.postID]
                        forBlog:self.comment.blog
                        success:^(AbstractPost *post) {
                            [weakSelf reloadData];
@@ -278,8 +277,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
             return;
         }
+        
+        ReaderDetailViewController *vc = [ReaderDetailViewController
+                                          controllerWithPostID:[NSNumber numberWithInt:self.comment.postID]
+                                          siteID:self.comment.blog.dotComID
+                                          isFeed:NO];
 
-        ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID isFeed:NO];
         [self.navigationController pushFullscreenViewController:vc animated:YES];
     }
 }
@@ -347,11 +350,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
     cell.isApproved = [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]];
-     __typeof(self) __weak weakSelf = self;
-    cell.onTimeStampLongPress = ^(void) {
-        NSURL *url = [NSURL URLWithString:weakSelf.comment.link];
-        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
-    };
+
+    __typeof(self) __weak weakSelf = self;
+    NSURL *commentURL = [weakSelf.comment commentURL];
+    if (commentURL) {
+        cell.onTimeStampLongPress = ^(void) {
+            [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:commentURL];
+        };
+    }
 
     if ([self.comment avatarURLForDisplay]) {
         [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
@@ -364,7 +370,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
 
     cell.onUserClick = ^{
-        NSURL *url = [NSURL URLWithString:self.comment.author_url];
+        NSURL *url = [self.comment authorURL];
         if (url) {
             [weakSelf openWebViewWithURL:url];
         }
@@ -529,6 +535,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)trashComment
 {
+    // If the comment was optimistically deleted, and the user has managed to
+    // trigger this action again before the controller was dismissed, ignore
+    // the action.
+    if (![[self comment] managedObjectContext]) {
+        return;
+    }
+
     __typeof(self) __weak weakSelf = self;
 
     // If the Comment is currently Spam or Trash, the Trash action will permanently delete the Comment.
@@ -564,7 +577,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)deleteAction
 {
-    __typeof(self) __weak weakSelf = self;
+    UINavigationController *navController = self.navigationController;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     
@@ -572,13 +585,20 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     [commentService deleteComment:self.comment success:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.navigationController popViewControllerAnimated:YES];
+            [navController popViewControllerAnimated:YES];
         });
     } failure:^(NSError *error) {
+        // The comment was optimistically deleted from core data. Even tho the
+        // request failed, still pop the view controller to avoid presenting the
+        // user with a broken UI or risk oddness due to the faulted managed object.
+        // Dispatch the notice from the nav controller after a delay for the pop
+        // animation so it remains in view.
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf displayNoticeWithTitle:NSLocalizedString(@"Error deleting comment", @"Message shown when deleting a Comment fails.") message:nil];
             DDLogError(@"Error deleting comment: %@", error.localizedDescription);
-            [weakSelf reloadData];
+            [navController popViewControllerAnimated:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [navController displayNoticeWithTitle:NSLocalizedString(@"Error deleting comment", @"Message shown when deleting a Comment fails.") message:nil];
+            });
         });
     }];
 }
@@ -634,20 +654,29 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)editComment
 {
-    EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-    editViewController.content = [self.comment contentForEdit];
+    UINavigationController *navController;
+    
+    if ([Feature enabled:FeatureFlagNewCommentEdit]) {
+        EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
+        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    } else {
+        EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
+        editViewController.content = [self.comment contentForEdit];
+        
+        __typeof(self) __weak weakSelf = self;
+        editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (hasNewContent) {
+                    [weakSelf updateCommentForNewContent:newContent];
+                }
+            }];
+        };
+        
+        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
 
-    __typeof(self) __weak weakSelf = self;
-    editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            if (hasNewContent) {
-                [weakSelf updateCommentForNewContent:newContent];
-            }
-        }];
-    };
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
 

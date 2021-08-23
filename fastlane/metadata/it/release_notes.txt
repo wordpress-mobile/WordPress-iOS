@@ -1,0 +1,9 @@
+Nella versione 18.0 abbiamo ottimizzati le immagini usate nei Temi, per garantirti download più rapidi e un impatto ridotto sul piano della tua rete dati.
+
+Ora puoi impostare o rimuovere l'immagine in evidenza per un post dalle impostazioni del blocco immagine. E in caso te ne dimenticassi, un nuovo banner in evidenza mostra la selezione corrente.
+
+Anche dal punto di vista del design, i commenti e le notifiche hanno un aspetto più coerente. Nell'ambito della scelta del dominio o del design del sito, le intestazioni sono state ottimizzate per migliorare l'accessibilità sui dispositivi con il testo di grandi dimensioni.
+
+Quando ti confermiamo la pubblicazione di un post tramite un avviso in-app, ora vedrai le e commerciali nel titolo visualizzate correttamente e non in formato HTML.
+
+Last but not least, abbiamo ottimizzato il ripristino da token di accesso invalidati.

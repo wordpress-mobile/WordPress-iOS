@@ -1,5 +1,6 @@
-There’s a new block in town! With the Embed block, you can embed content from your favorite services like YouTube, TikTok, Instagram, and more. Stay tuned for additional functionality to come.
+* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
+* [*] Posts Settings: Removed deprecated Location feature. [#17052]
+* [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
+* [**] Block editor: Embed block: Add "Resize for smaller devices" setting. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3753]
+* [**] Account Settings: added the ability to close user account.
 
-Love our Blogging Reminders feature? Previously, only site admins could configure reminders, but we’ve now enabled this feature for people who are able to edit posts on your site (editors, authors, and contributors).
-
-We’ve made improvements to comment moderation, ensuring that the appropriate users can swipe left to approve/unapprove and trash comments. We’ve also provided support for Global Styles, enabling settings like color and background customization for Full Site Editing themes.

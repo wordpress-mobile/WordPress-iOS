@@ -881,9 +881,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 disabledPublicizeConnections[keyringConnectionID] = keyringConnectionData;
             }
         }
-        postPost.geolocation = geolocation;
-        postPost.latitudeID = latitudeID;
-        postPost.longitudeID = longitudeID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -957,48 +954,10 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 - (NSArray *)remoteMetadataForPost:(Post *)post {
     NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:3];
-    Coordinate *c = post.geolocation;
 
-    /*
-     This might look more complicated than it should be, but it needs to be that way.
-
-     Depending of the existence of geolocation and ID values, we need to add/update/delete the custom fields:
-     - geolocation  &&  ID: update
-     - geolocation  && !ID: add
-     - !geolocation &&  ID: delete
-     - !geolocation && !ID: noop
-     */
-    if (post.latitudeID || c) {
-        NSMutableDictionary *latitudeDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.latitudeID) {
-            latitudeDictionary[@"id"] = [post.latitudeID numericValue];
-        }
-        if (c) {
-            latitudeDictionary[@"key"] = @"geo_latitude";
-            latitudeDictionary[@"value"] = @(c.latitude);
-        }
-        [metadata addObject:latitudeDictionary];
-    }
-    if (post.longitudeID || c) {
-        NSMutableDictionary *longitudeDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.latitudeID) {
-            longitudeDictionary[@"id"] = [post.longitudeID numericValue];
-        }
-        if (c) {
-            longitudeDictionary[@"key"] = @"geo_longitude";
-            longitudeDictionary[@"value"] = @(c.longitude);
-        }
-        [metadata addObject:longitudeDictionary];
-    }
-    if (post.publicID || c) {
-        NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.publicID) {
-            publicDictionary[@"id"] = [post.publicID numericValue];
-        }
-        if (c) {
-            publicDictionary[@"key"] = @"geo_public";
-            publicDictionary[@"value"] = @1;
-        }
+    if (post.publicID) {
+        NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+        publicDictionary[@"id"] = [post.publicID numericValue];
         [metadata addObject:publicDictionary];
     }
     if (post.publicizeMessageID || post.publicizeMessage.length) {

@@ -5,7 +5,7 @@ import XCTest
 class JetpackScreenshotGeneration: XCTestCase {
     let scanWaitTime: UInt32 = 5
 
-    override func setUp() {
+    override func setUpWithError() throws {
         super.setUp()
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -23,7 +23,7 @@ class JetpackScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
     }
 
     override func tearDown() {

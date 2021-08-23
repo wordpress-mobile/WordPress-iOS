@@ -6,19 +6,14 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case debugMenu
     case readerCSS
     case homepageSettings
-    case gutenbergMentions
-    case gutenbergXposts
     case unifiedPrologueCarousel
-    case stories
-    case contactInfo
-    case layoutGrid
-    case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
-    case editorOnboardingHelpMenu
     case unifiedCommentsAndNotificationsList
+    case recommendAppToOthers
+    case newCommentEdit
     case weeklyRoundup
 
     /// Returns a boolean indicating if the feature is enabled
@@ -36,19 +31,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .homepageSettings:
             return true
-        case .gutenbergMentions:
-            return true
-        case .gutenbergXposts:
-            return true
         case .unifiedPrologueCarousel:
-            return true
-        case .stories:
-            return true
-        case .contactInfo:
-            return true
-        case .layoutGrid:
-            return true
-        case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
             return true
@@ -58,10 +41,12 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .editorOnboardingHelpMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .unifiedCommentsAndNotificationsList:
+            return true
+        case .recommendAppToOthers:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .newCommentEdit:
+            return false
         case .weeklyRoundup:
             return BuildConfiguration.current == .localDeveloper
         }
@@ -98,20 +83,8 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .homepageSettings:
             return "Homepage Settings"
-        case .gutenbergMentions:
-            return "Mentions in Gutenberg"
-        case .gutenbergXposts:
-            return "Xposts in Gutenberg"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
-        case .stories:
-            return "Stories"
-        case .contactInfo:
-            return "Contact Info"
-        case .layoutGrid:
-            return "Layout Grid"
-        case .siteCreationHomePagePicker:
-            return "Site Creation: Home Page Picker"
         case .todayWidget:
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
@@ -120,10 +93,12 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .editorOnboardingHelpMenu:
-            return "Editor Onboarding Help Menu"
         case .unifiedCommentsAndNotificationsList:
             return "Unified List for Comments and Notifications"
+        case .recommendAppToOthers:
+            return "Recommend App to Others"
+        case .newCommentEdit:
+            return "New Comment Edit"
         case .weeklyRoundup:
             return "Weekly Roundup"
         }

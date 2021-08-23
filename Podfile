@@ -47,9 +47,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    # pod 'WordPressKit', '~> 4.39.0-beta'
+    # pod 'WordPressKit', '~> 4.40.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/domain-registration-cart'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'e5543de546fa3823bd38d18b4c2715b86455d461'
     # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -130,6 +130,7 @@ def gutenberg_dependencies(options)
         'react-native-safe-area',
         'react-native-safe-area-context',
         'react-native-video',
+        'react-native-webview',
         'RNSVG',
         'react-native-slider',
         'BVLinearGradient',
@@ -165,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.59.0-alpha1'
+    gutenberg :tag => 'v1.60.0'
 
     ## Third party libraries
     ## =====================
@@ -214,9 +215,7 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.41.0-beta.1'
-
-    # While in PR
+    pod 'WordPressAuthenticator', '~> 1.42.0'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'

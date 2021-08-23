@@ -10,8 +10,7 @@ extension Comment {
     /// as well!
     ///
     @objc func relativeDateSectionIdentifier() -> String? {
-        // allow nil values as temporary workaround for issue #16950 to unblock 17.9 release.
-        guard dateCreated != nil else {
+        guard let dateCreated = dateCreated else {
             return nil
         }
 

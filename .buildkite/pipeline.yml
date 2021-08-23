@@ -2,8 +2,8 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/bash-cache#v1.0.0: ~
-    - automattic/git-s3-cache#add/vm-host-support:
+    - automattic/bash-cache#v1.5.0
+    - automattic/git-s3-cache#v1.1.0:
         bucket: "a8c-repo-mirrors"
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
@@ -25,13 +25,7 @@ steps:
   # Run Unit Tests
   #################
   - label: "🧪 Unit Tests"
-    command: |
-      echo "--- 📦 Downloading Build Artifacts"
-      buildkite-agent artifact download build-products.tar .
-      tar -xf build-products.tar
-      echo "--- 🧪 Testing"
-      bundle install
-      bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+    command: ".buildkite/commands/run-unit-tests.sh"
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
@@ -51,47 +45,18 @@ steps:
   # UI Tests
   #################
   - label: "🧪 UI Tests (iPhone)"
-    command: |
-      echo "--- 📦 Downloading Build Artifacts"
-      buildkite-agent artifact download build-products.tar .
-      tar -xf build-products.tar
-
-      echo "--- :wrench: Fixing VM"
-      brew install openjdk@11
-      sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-
-      echo "--- :rubygems: Setting up Gems"
-      bundle install
-
-      echo "--- :cocoapods: Setting up Pods"
-      bundle exec pod install
-
-      echo "--- 🧪 Testing"
-      rake mocks &
-      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 14.1
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
+    artifact_paths:
+      - "build/results/"
+
 
   - label: "🧪 UI Tests (iPad)"
-    command: |
-      echo "--- 📦 Downloading Build Artifacts"
-      buildkite-agent artifact download build-products.tar .
-      tar -xf build-products.tar
-
-      echo "--- :wrench: Fixing VM"
-      brew install openjdk@11
-      sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-
-      echo "--- :rubygems: Setting up Gems"
-      bundle install
-
-      echo "--- :cocoapods: Setting up Pods"
-      bundle exec pod install
-
-      echo "--- 🧪 Testing"
-      rake mocks &
-      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 14.1
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
+    artifact_paths:
+      - "build/results/"

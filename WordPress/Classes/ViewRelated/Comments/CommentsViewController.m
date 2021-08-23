@@ -1,12 +1,11 @@
 #import "CommentsViewController.h"
 #import "CommentViewController.h"
-#import "Comment.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPStyleGuide.h>
 
-
+@class Comment;
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
 static CGFloat const CommentsActivityFooterHeight               = 50.0;
@@ -70,7 +69,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [self refreshPullToRefresh];
     [self refreshNoResultsView];
     [self refreshAndSyncIfNeeded];
 }

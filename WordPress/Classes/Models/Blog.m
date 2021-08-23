@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "NSURL+IDN.h"
@@ -9,6 +8,8 @@
 #import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
+
+@class Comment;
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -663,9 +664,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsLayoutGrid
 {
-    if (![Feature enabled:FeatureFlagLayoutGrid]) {
-        return false;
-    }
     return self.isHostedAtWPcom || self.isAtomic;
 }
 

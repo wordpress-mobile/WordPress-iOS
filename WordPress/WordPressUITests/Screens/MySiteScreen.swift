@@ -15,9 +15,9 @@ private struct ElementStringIDs {
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
-    static let addNewSiteButton = "Add new site Button"
 }
 
+/// The home-base screen for an individual site. Used in many of our UI tests.
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
     let navBar: XCUIElement

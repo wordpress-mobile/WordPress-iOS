@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-27 14:54:08+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:52:38+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -40,12 +40,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 人喜欢";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d 位博主为此文章点赞。";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d 位博主为此文章点赞。";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
@@ -213,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s 区块";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s 区块全新推出";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 区块。空白";
@@ -476,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "轻点左下角工具栏上的 + 图标，随时添加新的区块。 ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "添加自托管站点";
@@ -825,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否确定要更新？";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "将您的内容编排成列，添加对操作按钮的调用，在图像上叠加文本。";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "艺术";
 
@@ -1010,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "禁止名单";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "区块让您能够专注于编写您的内容，因为您需要的所有格式化工具将帮助您清楚地传达您的消息。";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "博客";
 
@@ -1053,6 +1063,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "防范暴力攻击";
+
+/* No comment provided by engineer. */
+"Build layouts" = "构建布局";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "项目符号列表";
@@ -1117,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2345,6 +2359,9 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "编辑链接";
 
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每个区块都有各自的设置。 要找到这些设置，请点击一个区块。 区块的设置将出现在屏幕底部的工具栏上。";
+
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "东";
 
@@ -2477,6 +2494,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "嵌入链接";
+
+/* No comment provided by engineer. */
+"Embed media" = "嵌入媒体";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "嵌入预览尚不可用";
@@ -2795,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "特色图片";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "已经设置特色图片";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "特色图片选项";
 
@@ -3043,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "放弃";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "将一些区块添加到您的博文或页面，试试看吧！";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "为您的站点提供一个反映其个性和主题的名称。 第一印象很重要！";
@@ -3851,6 +3877,9 @@
 /* No comment provided by engineer. */
 "Main Navigation" = "主要导航";
 
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "将图像、GIF、视频和嵌入式媒体添加到您的页面，让您的内容脱颖而出。";
+
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
@@ -4569,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "禁用此邀请链接后，任何人都无法再使用它来加入您的团队。是否确定?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "熟悉不同区块的名称之后，您可以输入正斜杠，后跟区块名称（例如，\/image 或 \/heading），以此方式来添加区块。";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "创建 WordPress.com 站点后，您可以将喜欢的内容转载到您自己的站点。";
@@ -5462,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "已删除";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "已作为特色图片移除";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "请先删除照片中的位置元数据，然后再将其上传至您的站点。";
 
@@ -5470,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "删除后续步骤将隐藏此站点上的所有导览。此操作无法撤消。";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "替换";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "替换现有区块";
@@ -5637,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "富内容";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "富文本编辑";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "右";
@@ -5989,6 +6030,9 @@
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "设为文章页面";
 
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "设为特色图片";
+
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "设置提醒";
 
@@ -6270,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "社交";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "某些区块具有其他设置。 轻点区块右上角的“设置”图标，以查看更多选项。";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒体上传失败。该操作将从文章中删除所有失败的媒体。\n仍要保存？";
@@ -7086,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "要继续使用此 Google 帐户，请先使用您的 WordPress.com 密码登录。此要求只会出现一次。";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "要移除某个区块，请选中该区块，然后点击该区块右上角的三个点，以查看设置。 从该处，选择用于移除区块的选项。";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "拍摄要在文章内使用的照片或视频。";
 
@@ -7627,6 +7677,9 @@
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "使用当前位置";
 
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "使用沙盒商店";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用区块编辑器";
 
@@ -8082,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "欢迎使用阅读器";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "欢迎来到区块的世界";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "欢迎使用全球最热门的网站构建器。";
 
@@ -8331,6 +8387,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "昨天";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "您已经设置特色图片。 是否要替换该图片？";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "您即将更改自己的用户名，当前您的用户名为 %1$@. %2$@";
 
@@ -8360,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "您现在可以重新排列区块，方法是轻点一个区块，然后轻点该区块左下角出现的向上和向下箭头，将该区块移动到其他区块上方或下方。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "您可以随时通过“我的站点”>“站点设置”更新此设置";
@@ -8578,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[评论]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d 位博主为此内容点赞。";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d 位博主为此内容点赞。";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_您和 %1$d 位博主为此内容点赞。";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_您和 %1$d 位博主为此内容点赞。";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_您_ 为此内容点赞。";
 
 /* Age between dates equaling one day. */
 "a day" = "一天";
