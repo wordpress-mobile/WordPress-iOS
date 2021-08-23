@@ -4,17 +4,19 @@ import UIKit
 /// Makes RegisterDomainSuggestionsViewController available to SwiftUI
 final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
-    let site: JetpackSiteRef
+    let blog: Blog
 
     weak var presentingController: RegisterDomainSuggestionsViewController?
 
-    init(site: JetpackSiteRef) {
-        self.site = site
+    init(blog: Blog) {
+        self.blog = blog
     }
 
     func makeUIViewController(context: Context) -> RegisterDomainSuggestionsViewController {
+        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         let viewController = RegisterDomainSuggestionsViewController
-                .instance(site: site, domainPurchasedCallback: { domain in
+                .instance(site: JetpackSiteRef(blog: blog)!, domainPurchasedCallback: { domain in
+                    blogService.syncBlogAndAllMetadata(self.blog) { }
                     WPAnalytics.track(.domainCreditRedemptionSuccess)
                     self.presentDomainCreditRedemptionSuccess(domain: domain)
                 })
