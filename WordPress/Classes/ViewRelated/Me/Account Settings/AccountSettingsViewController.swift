@@ -274,42 +274,32 @@ private class AccountSettingsController: SettingsController {
             case .failure(let error):
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
-                self.showErrorAlert(message: self.generateLocalizedMessage(error))
+                self.showErrorAlert(error: self.generateLocalizedError(error))
             }
         }
     }
 
-    private func generateLocalizedMessage(_ error: Error) -> String {
+    private func generateLocalizedError(_ error: Error) -> CloseAccountError {
         let userInfo = (error as NSError).userInfo
         let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
-
-        switch errorCode {
-        case "unauthorized":
-            return NSLocalizedString("You're not authorized to close the account.",
-                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
-        case "atomic-site":
-            return NSLocalizedString("This user account cannot be closed while it has active atomic sites.",
-                                     comment: "Error message displayed when unable to close user account due to having active atomic site.")
-        case "chargebacked-site":
-            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
-                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
-        case "active-subscriptions":
-            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
-                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
-        case "active-memberships":
-            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
-                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
-        default:
-            return NSLocalizedString("An error occured while closing account.",
-                                     comment: "Default error message displayed when unable to close user account.")
-        }
+        return CloseAccountError(errorCode: errorCode)
     }
 
-    private func showErrorAlert(message: String) {
+    private func showErrorAlert(error: CloseAccountError) {
         let title = NSLocalizedString("Error", comment: "General error title")
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: title, message: error.errorDescription, preferredStyle: .alert)
         let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
         alert.addDefaultActionWithTitle(okAction, handler: nil)
+
+        switch error {
+        case .atomicSite:
+            let title = NSLocalizedString("Contact Support",
+                                          comment: "Title for a button displayed when unable to close user account due to having atomic site.")
+            alert.addActionWithTitle(title, style: .default, handler: nil)
+        default:
+            break
+        }
+
         alert.presentFromRootViewController()
     }
 
@@ -386,7 +376,7 @@ private class AccountSettingsController: SettingsController {
             }
         }
 
-        init(errorCode: String) {
+        init(errorCode: String?) {
             switch errorCode {
             case "unauthorized":
                 self = .unauthorized
