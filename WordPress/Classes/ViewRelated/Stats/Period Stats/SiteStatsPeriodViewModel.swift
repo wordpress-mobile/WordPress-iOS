@@ -37,6 +37,8 @@ class SiteStatsPeriodViewModel: Observable {
 
     private var currentEntryIndex: Int = 0
 
+    private let calendar: Calendar = .current
+
     // MARK: - Constructor
 
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
@@ -241,11 +243,17 @@ class SiteStatsPeriodViewModel: Observable {
         } else {
             currentEntryIndex -= 1
         }
-        guard let date = chartDate(for: currentEntryIndex) else {
-            return Date()
+
+        guard let nextDate = chartDate(for: currentEntryIndex) else {
+            // The date doesn't exist in the chart data... we need to manually calculate it and request
+            // a refresh.
+            let increment = forward ? 1 : -1
+            let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: lastSelectedDate)!
+            refreshPeriodOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
+            return nextDate
         }
-        
-        return date
+
+        return nextDate
     }
 }
 

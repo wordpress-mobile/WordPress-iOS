@@ -41,9 +41,6 @@ class WeeklyRoundupDataProvider {
 
         var endDateComponents = DateComponents()
         endDateComponents.weekday = 1
-        endDateComponents.hour = 23
-        endDateComponents.minute = 59
-        endDateComponents.second = 59
 
         // The DateComponents timezone is ignored when calling `Calendar.current.nextDate(...)`, so we need to
         // create a GMT Calendar to perform the date search using it, instead.
