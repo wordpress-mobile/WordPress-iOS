@@ -1,3 +1,7 @@
+18.2
+-----
+
+
 18.1
 -----
 * [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
