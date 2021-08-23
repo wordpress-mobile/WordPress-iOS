@@ -288,19 +288,39 @@ private class AccountSettingsController: SettingsController {
     private func showErrorAlert(error: CloseAccountError) {
         let title = NSLocalizedString("Error", comment: "General error title")
         let alert = UIAlertController(title: title, message: error.errorDescription, preferredStyle: .alert)
-        let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
-        alert.addDefaultActionWithTitle(okAction, handler: nil)
 
         switch error {
         case .atomicSite:
             let title = NSLocalizedString("Contact Support",
                                           comment: "Title for a button displayed when unable to close user account due to having atomic site.")
-            alert.addActionWithTitle(title, style: .default, handler: nil)
+            alert.addActionWithTitle(title, style: .default, handler: contactSupportAction)
         default:
             break
         }
 
+        let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
+        alert.addDefaultActionWithTitle(okAction, handler: nil)
         alert.presentFromRootViewController()
+    }
+
+    private var contactSupportAction: ((UIAlertAction) -> Void) {
+        return { action in
+            if ZendeskUtils.zendeskEnabled {
+                guard let leafViewController = UIApplication.shared.leafViewController else {
+                    return
+                }
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: nil) { [weak self] identityUpdated in
+                    if identityUpdated {
+                        self?.refreshModel()
+                    }
+                }
+            } else {
+                guard let url = Constants.forumsURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
+        }
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
@@ -341,6 +361,7 @@ private class AccountSettingsController: SettingsController {
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
+        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 
     // MARK: - Types
