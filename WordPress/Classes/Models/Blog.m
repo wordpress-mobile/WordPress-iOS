@@ -212,6 +212,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 {
     NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
+    DDLogInfo(@"15348 - XMLRPC: %@, path: %@", self.xmlrpc, path);
     return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
 }
 
