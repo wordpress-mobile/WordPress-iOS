@@ -293,12 +293,13 @@ private class AccountSettingsController: SettingsController {
             let title = NSLocalizedString("Contact Support",
                                           comment: "Title for a button displayed when unable to close user account due to having atomic site.")
             alert.addActionWithTitle(title, style: .default, handler: contactSupportAction)
+            let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+            alert.addCancelActionWithTitle(cancelAction)
         default:
-            break
+            let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
+            alert.addDefaultActionWithTitle(okAction)
         }
 
-        let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
-        alert.addDefaultActionWithTitle(okAction, handler: nil)
         alert.presentFromRootViewController()
     }
 
