@@ -10,12 +10,6 @@ class EditCommentTableViewController: UITableViewController {
     private var authorWebAddress: String?
     private var authorEmailAddress: String?
 
-    private let sectionHeaders =
-        [NSLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase,
-         NSLocalizedString("Comment", comment: "Header for a comment's content, shown when editing a comment.").localizedUppercase,
-         NSLocalizedString("Web Address", comment: "Header for a comment author's web address, shown when editing a comment.").localizedUppercase,
-         NSLocalizedString("Email Address", comment: "Header for a comment author's email address, shown when editing a comment.").localizedUppercase]
-
     // MARK: - Init
 
     @objc convenience init(comment: Comment) {
@@ -44,12 +38,13 @@ class EditCommentTableViewController: UITableViewController {
         super.viewDidLoad()
         setupTableView()
         setupNavBar()
+        addDismissKeyboardTapGesture()
     }
 
     // MARK: - UITableViewDelegate
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionHeaders.count
+        return TableSections.allCases.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,23 +52,37 @@ class EditCommentTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionHeaders[safe: section]
+        return TableSections(rawValue: section)?.header
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let tableSection = TableSections(rawValue: indexPath.section) else {
+            DDLogError("Edit Comment: invalid table section.")
+            return UITableViewCell()
+        }
+
+        // Comment content cell
+        if tableSection == TableSections.comment {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: EditCommentMultiLineCell.defaultReuseID) as? EditCommentMultiLineCell else {
+                return UITableViewCell()
+            }
+
+            cell.configure(text: commentContent)
+            cell.delegate = self
+            return cell
+        }
+
+        // All other cells
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditCommentSingleLineCell.defaultReuseID) as? EditCommentSingleLineCell else {
             return UITableViewCell()
         }
 
-        switch indexPath.section {
-        case 0:
+        switch tableSection {
+        case TableSections.name:
             cell.configure(text: authorName)
-        case 1:
-            // TODO: use multiline textView
-            cell.configure(text: commentContent)
-        case 2:
+        case TableSections.webAddress:
             cell.configure(text: authorWebAddress, style: .url)
-        case 3:
+        case TableSections.emailAddress:
             cell.configure(text: authorEmailAddress, style: .email)
         default:
             DDLogError("Edit Comment: unsupported table section.")
@@ -95,19 +104,30 @@ class EditCommentTableViewController: UITableViewController {
 
 }
 
+// MARK: - Private Extension
+
 private extension EditCommentTableViewController {
 
-    // MARK: - View Config
+    // MARK: - View config
 
     func setupTableView() {
         tableView.register(EditCommentSingleLineCell.defaultNib,
                            forCellReuseIdentifier: EditCommentSingleLineCell.defaultReuseID)
+
+        tableView.register(EditCommentMultiLineCell.defaultNib,
+                           forCellReuseIdentifier: EditCommentMultiLineCell.defaultReuseID)
     }
 
     func setupNavBar() {
         title = NSLocalizedString("Edit Comment", comment: "View title when editing a comment.")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
+    }
+
+    func addDismissKeyboardTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(tapGesture)
     }
 
     // MARK: - Nav bar button actions
@@ -120,6 +140,44 @@ private extension EditCommentTableViewController {
     @objc func doneButtonTapped(sender: UIBarButtonItem) {
         // TODO: save changes
         dismiss(animated: true)
+    }
+
+    // MARK: - Tap gesture handling
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
+    // MARK: - Table sections
+
+    private enum TableSections: Int, CaseIterable {
+        // The case order dictates the table row order.
+        case name
+        case webAddress
+        case emailAddress
+        case comment
+
+        var header: String {
+            switch self {
+            case .name: return NSLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase
+            case .webAddress:
+                return NSLocalizedString("Web Address", comment: "Header for a comment author's web address, shown when editing a comment.").localizedUppercase
+            case .emailAddress:
+                return NSLocalizedString("Email Address", comment: "Header for a comment author's email address, shown when editing a comment.").localizedUppercase
+            case .comment:
+                return NSLocalizedString("Comment", comment: "Header for a comment's content, shown when editing a comment.").localizedUppercase
+            }
+        }
+    }
+
+}
+
+extension EditCommentTableViewController: EditCommentMultiLineCellDelegate {
+
+    func textViewHeightUpdated() {
+        tableView.beginUpdates()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: TableSections.comment.rawValue), at: .bottom, animated: false)
+        tableView.endUpdates()
     }
 
 }
