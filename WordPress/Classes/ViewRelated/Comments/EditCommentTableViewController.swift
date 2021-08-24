@@ -10,6 +10,11 @@ class EditCommentTableViewController: UITableViewController {
     private var authorWebAddress: String?
     private var authorEmailAddress: String?
 
+    // If the textView cell is recreated via dequeueReusableCell,
+    // the cursor location is lost when the cell is scrolled off screen.
+    // So save and use one instance of the cell.
+    private let commentContentCell = EditCommentMultiLineCell.loadFromNib()
+
     // MARK: - Init
 
     @objc convenience init(comment: Comment) {
@@ -18,6 +23,7 @@ class EditCommentTableViewController: UITableViewController {
         commentContent = comment.contentForEdit()
         authorWebAddress = comment.author_url
         authorEmailAddress = comment.author_email
+        configureCommentContentCell()
     }
 
     required convenience init() {
@@ -63,13 +69,7 @@ class EditCommentTableViewController: UITableViewController {
 
         // Comment content cell
         if tableSection == TableSections.comment {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: EditCommentMultiLineCell.defaultReuseID) as? EditCommentMultiLineCell else {
-                return UITableViewCell()
-            }
-
-            cell.configure(text: commentContent)
-            cell.delegate = self
-            return cell
+            return commentContentCell
         }
 
         // All other cells
@@ -118,6 +118,11 @@ private extension EditCommentTableViewController {
                            forCellReuseIdentifier: EditCommentMultiLineCell.defaultReuseID)
     }
 
+    func configureCommentContentCell() {
+        commentContentCell.configure(text: commentContent)
+        commentContentCell.delegate = self
+    }
+
     func setupNavBar() {
         title = NSLocalizedString("Edit Comment", comment: "View title when editing a comment.")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
@@ -159,7 +164,8 @@ private extension EditCommentTableViewController {
 
         var header: String {
             switch self {
-            case .name: return NSLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase
+            case .name:
+                return NSLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase
             case .webAddress:
                 return NSLocalizedString("Web Address", comment: "Header for a comment author's web address, shown when editing a comment.").localizedUppercase
             case .emailAddress:
