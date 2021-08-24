@@ -6,7 +6,6 @@ struct DomainsDashboardView: View {
 
     var body: some View {
         makeList(blog: blog)
-
     }
 
     /// Builds the main list of the view
@@ -21,7 +20,6 @@ struct DomainsDashboardView: View {
                 }
 
                 makeSectionPadding()
-
 
                 // register a free domain
                 Section(header: Text(TextContent.redirectedDomainsSectionHeader)) {
@@ -80,7 +78,6 @@ private extension DomainsDashboardView {
                                                                            comment: "Footer of the free domain registration section for a paid plan.")
         static let paidPlanRegistrationLabelNavigation: String = NSLocalizedString("Register a free domain",
                                                                                    comment: "Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
-
         static let paidPlanRegistrationNavigationTitle: String = NSLocalizedString("Register Domain",
                                                                                    comment: "Navigation bar title of the free domain registration flow, used in the Domains Dashboard.")
 
