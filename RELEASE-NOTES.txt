@@ -1,10 +1,9 @@
 18.2
 -----
-
+* [***] Block Editor: Add Inserter Block Search [https://github.com/WordPress/gutenberg/pull/33237]
 
 18.1
 -----
-* [***] Block Editor: Add Inserter Block Seach [https://github.com/WordPress/gutenberg/pull/33237]
 * [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
 * [*] Posts Settings: Removed deprecated Location feature. [#17052]
 * [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
