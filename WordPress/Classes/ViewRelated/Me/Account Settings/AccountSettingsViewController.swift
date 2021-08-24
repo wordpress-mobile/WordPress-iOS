@@ -286,8 +286,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private func showErrorAlert(error: CloseAccountError) {
-        let title = NSLocalizedString("Error", comment: "General error title")
-        let alert = UIAlertController(title: title, message: error.errorDescription, preferredStyle: .alert)
+        let alert = UIAlertController(title: error.errorTitle, message: error.errorDescription, preferredStyle: .alert)
 
         switch error {
         case .atomicSite:
@@ -374,13 +373,22 @@ private class AccountSettingsController: SettingsController {
         case activeMemberships
         case `default`
 
+        var errorTitle: String {
+            switch self {
+            case .atomicSite:
+                return NSLocalizedString("Couldn’t close account", comment: "Error title displayed when unable to close user account due to having active atomic site.")
+            default:
+                return NSLocalizedString("Error", comment: "General error title")
+            }
+        }
+
         var errorDescription: String? {
             switch self {
             case .unauthorized:
                 return NSLocalizedString("You're not authorized to close the account.",
                                          comment: "Error message displayed when unable to close user account due to being unauthorized.")
             case .atomicSite:
-                return NSLocalizedString("This user account could not be closed. To close this account now, contact our support team.",
+                return NSLocalizedString("To close this account now, contact our support team.",
                                          comment: "Error message displayed when unable to close user account due to having active atomic site.")
             case .chargebackedSite:
                 return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
