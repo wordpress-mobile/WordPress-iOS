@@ -2,7 +2,6 @@ import SwiftUI
 
 /// The Domains dashboard screen, accessible from My Site
 struct DomainsDashboardView: View {
-    @State private var showingPaidPlanDomainRegistration = false
     @ObservedObject var blog: Blog
 
     var body: some View {
