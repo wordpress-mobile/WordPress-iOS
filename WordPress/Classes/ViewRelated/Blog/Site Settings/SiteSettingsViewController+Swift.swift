@@ -313,6 +313,8 @@ extension SiteSettingsViewController {
     private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
         cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
+        cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
+        cell.detailTextLabel?.minimumScaleFactor = 0.5
         cell.accessoryType = .none
         cell.textValue = schedule(for: blog)
     }
@@ -325,7 +327,7 @@ extension SiteSettingsViewController {
         }
 
         let formatter = BloggingRemindersScheduleFormatter()
-        return formatter.shortIntervalDescription(for: scheduler.schedule(for: blog)).string
+        return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
     }
 
     // MARK: - Handling General Setting Cell Taps

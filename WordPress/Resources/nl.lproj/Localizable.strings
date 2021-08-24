@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-13 05:31:28+0000 */
+/* Translation-Revision-Date: 2021-08-10 07:37:01+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -33,17 +33,13 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ om bedreigingen op te lossen.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d like";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d likes";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger vindt dit leuk.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggers vinden dit leuk.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d van %2$d afgerond";
@@ -211,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li woorden, %2$li karakters";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blokopties";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s blok, nieuw beschikbaar";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Leeg";
@@ -245,8 +245,7 @@
 "(Untitled)" = "(Zonder titel)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(Geen titel)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -475,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Voeg een URL voor eigen CSS toe die geladen wordt in Lezer. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Voeg op elk moment een nieuw blok toe, door te tikken op het + pictogram in de gereedschapsbalk links onderaan. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Voeg een zelf-gehoste site toe";
@@ -824,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Weet je zeker dat je wilt updaten?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Rangschik je inhoud in kolommen, voeg Oproep tot actie knoppen toe, en overlap afbeeldingen met tekst.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "Kunst";
 
@@ -1009,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Bloklijst";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blokken stellen je in staat je te concentreren op het schrijven van je inhoud, in de wetenschap dat alle opmaakhulpmiddelen die je nodig hebt aanwezig zijn om je te helpen je boodschap over te brengen.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blokken zijn stukjes inhoud die je kunt invoegen, herschikken en stylen zonder dat je hoeft te weten hoe je moet coderen. Blokken zijn een gemakkelijke en moderne manier voor je om mooie lay-outs te maken.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
@@ -1053,6 +1064,9 @@
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Brute Force Attack bescherming";
 
+/* No comment provided by engineer. */
+"Build layouts" = "Bouw lay-outs";
+
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Opsommingslijst";
 
@@ -1064,12 +1078,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Knop style";
-
-/* No comment provided by engineer. */
-"Button inside" = "Knop binnen";
-
-/* No comment provided by engineer. */
-"Button outside" = "Knop buiten";
 
 /* No comment provided by engineer. */
 "Button position" = "Knop positie";
@@ -1122,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2285,6 +2294,12 @@
 "Double tap to open Bottom Sheet with available options" = "Dubbeltik om onderste blad te openen met beschikbare opties";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Dubbeltik om een voorbeeld van het bericht te bekijken.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Dubbeltikken om een voorbeeld van het bericht te bekijken";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Tik tweemaal om laatste wijziging opnieuw uit te voeren";
 
 /* No comment provided by engineer. */
@@ -2343,6 +2358,9 @@
 
 /* No comment provided by engineer. */
 "EDIT LINK" = "LINK BEWERKEN";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, klik op een blok. Zijn instellingen zullen verschijnen in de gereedschapsbalk onderaan het scherm.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Oost";
@@ -2465,6 +2483,9 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail verzonden!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Insluit blok voorbeelden komen binnenkort";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Bijschrift ingesloten inhoud. %s";
 
@@ -2474,8 +2495,11 @@
 /* No comment provided by engineer. */
 "Embed link" = "Sluit link in";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Ingesloten inhoud van %s kan niet in de mobiele editor getoond worden op dit moment. Bekijk een voorbeeld van de pagina om de ingesloten inhoud te zien.";
+/* No comment provided by engineer. */
+"Embed media" = "Sluit media in";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Insluit voorbeelden nog niet beschikbaar";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2791,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Uitgelichte afbeelding";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Uitgelichte afbeelding al ingesteld";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Opties uitgelichte afbeelding";
 
@@ -3039,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "Opgeven";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Probeer het door een paar blokken toe te voegen aan je bericht of pagina!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Geef je site een naam die zijn personaliteit en onderwerp reflecteerd. De eerste indruk telt!";
@@ -3619,11 +3649,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Lichte achtergronden";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Vind ik leuk";
 
 /* A comment is marked as liked */
@@ -3632,7 +3662,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3847,6 +3876,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hoofdnavigatie";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Laat je inhoud opvallen door afbeeldingen, gifs, video's, en ingesloten media aan je pagina's toe te voegen.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4279,7 +4311,7 @@
 "No available sites" = "Geen beschikbare sites";
 
 /* No comment provided by engineer. */
-"No button" = "Geen knop";
+"No blocks found" = "Geen blokken gevonden";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Geen reacties";
@@ -4549,13 +4581,16 @@
 /* Title of a button style */
 "Official Buttons" = "Officiële knoppen";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Ouder dan 2 dagen";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Ouder dan een maand";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Ouder dan een week";
 
 /* Sort Order */
@@ -4563,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Als deze uitnodigingslink eenmaal is uitgeschakeld, kan niemand hem meer gebruiken om zich bij je team aan te sluiten. Weet je het zeker?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Als je eenmaal vertrouwd bent geraakt met de namen van de verschillende blokken, kun je een blok toevoegen door een voorwaartse schuine streep te typen, gevolgd door de bloknaam - bijvoorbeeld, \/afbeelding of \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Zodra je een WordPress.com site maakt, kun je inhoud die je leuk vindt rebloggen op je eigen site.";
@@ -4789,9 +4827,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "In afwachting";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "In afwachting van moderatie";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5143,6 +5178,12 @@
 /* Title on display preview error */
 "Preview Unavailable" = "Voorbeeld niet beschikbaar";
 
+/* No comment provided by engineer. */
+"Preview page" = "Voorvertoning pagina";
+
+/* No comment provided by engineer. */
+"Preview post" = "Bekijk voorbeeld";
+
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Bekijk een voorbeeld van je nieuwe site om te zien wat je bezoekers zien..";
 
@@ -5453,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Verwijderd";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Verwijderd als uitgelichte afbeelding";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Verwijdert locatiegegevens uit foto's alvorens ze naar je site te uploaden.";
 
@@ -5461,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Door 'Volgende stappen' te verwijderen, worden alle rondleidingen op deze site verborgen. Deze actie kan niet ongedaan worden gemaakt.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Vervang";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Vervang huidige blok";
@@ -5617,6 +5664,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Wijziging in behandeling terugzetten";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Herroept de actie die op deze kennisgeving is uitgevoerd.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Beoordeel site pagina's";
 
@@ -5625,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Verrijkte inhoud";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Rich tekst bewerking";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rechts";
@@ -5767,6 +5820,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Zoekblok label. Huidige tekst is";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Zoek blokken";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Zoekknop. Huidige knoptekst is";
@@ -5973,6 +6029,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Instellen als berichten pagina";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Instellen als uitgelichte afbeelding";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Herinneringen instellen";
@@ -6255,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Sociaal";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Sommige blokken hebben extra instellingen. Tik op het instellingen-pictogram rechts onderaan het blok om meer opties te zien.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Er zijn uploads van media mislukt. Door deze handeling worden alle mislukte media uit het bericht verwijderd.\nToch opslaan?";
@@ -7071,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Om verder te gaan met dit Google account, meld je eerst aan met je WordPress.com wachtwoord. Dit wordt maar één keer gevraagd.";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Om een blok te verwijderen, selecteer je het blok en klik je op de drie stippen rechts onderaan het blok om de instellingen te zien. Kies van daaruit de optie om het blok te verwijderen.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
 
@@ -7083,7 +7148,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Om deze app te gebruiken voor %@, moet de Jetpack plugin geïnstalleerd en geactiveerd zijn.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Vandaag";
@@ -7195,6 +7261,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Probeer opnieuw";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Probeer een andere zoekterm";
+
 /* Customize Insights button title */
 "Try it now" = "Probeer het nu";
 
@@ -7284,6 +7353,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Kan bestand niet downloaden";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Kan media niet insluiten";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Kan gesprek niet volgen";
@@ -7604,6 +7676,9 @@
 
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Gebruik huidige locatie";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Gebruik Sandbox Store";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gebruik blok-editor";
@@ -8060,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "Welkom bij de Reader";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Welkom in de wereld van blokken";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Welkom bij de wereld's meest populaire sitebouwer.";
 
@@ -8088,6 +8166,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "We lopen je door de basis om je site te bouwen en te laten groeien";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "We werken hard aan het toevoegen van ondersteuning voor insluiting voorbeelden. In de tussentijd kan je een voorbeeld van de ingesloten inhoud van de pagina bekijken.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "We werken hard aan het toevoegen van ondersteuning voor insluit voorbeelden. In de tussentijd kan je een voorbeeld van de ingesloten inhoud van het bericht bekijken.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "We hebben meer taken toegevoegd om je te helpen om je publiek te laten groeien.";
 
@@ -8102,6 +8186,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Wat wil je doen met dit bestand? Wil je het uploaden en een link naar het bestand aan je bericht toevoegen of wil je de inhoud van het bestand rechtstreeks aan het bericht toevoegen?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "Wat is een blok?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Wat is alt tekst?";
@@ -8296,8 +8383,12 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Ja, toon me";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Gisteren";
+
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Je hebt al een uitgelichte afbeelding ingesteld. Wil je die vervangen?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Je staat op het punt je gebruikersnaam te wijzigen, wat op dit moment %1$@. %2$@ is.";
@@ -8328,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Je kunt deze instellingen ongedaan maken voor individuele berichten.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Je kunt blokken herschikken door op een blok te tikken en dan op de omhoog en omlaag pijlen te tikken die links onderaan het blok verschijnen om het boven of onder andere blokken te zetten.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Je kunt dit op elk gewenst moment updaten via Mijn site > site-instellingen";
@@ -8546,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[REACTIE]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d blogger_ vindt dit leuk.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d bloggers_ vinden dit leuk.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Jij en %1$d blogger_ vinden dit leuk.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Jij en %1$d bloggers_ vinden dit leuk.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Je_ vindt dit leuk.";
 
 /* Age between dates equaling one day. */
 "a day" = "een dag";

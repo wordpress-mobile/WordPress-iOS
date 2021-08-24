@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-07 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-08-20 03:33:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -33,17 +33,13 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ untuk memperbaiki ancaman.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d Suka";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Suka";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d blogger menyukai ini.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d blogger menyukai ini.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d dari %2$d selesai";
@@ -211,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li kata, %2$li karakter";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s pilihan blok";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s blok, baru tersedia";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Kosong";
@@ -245,8 +245,7 @@
 "(Untitled)" = "(Tidak Berjudul)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(tanpa judul)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -476,6 +475,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Tambahkan blok baru kapan saja dengan mengetuk ikon + di toolbar di kiri bawah.";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Tambahkan situs hosting sendiri";
 
@@ -507,7 +509,7 @@
 "Add image, or avatar, to represent this new account." = "Tambahkan gambar, atau avatar, untuk mewakili akun baru ini.";
 
 /* No comment provided by engineer. */
-"Add link" = "Add link";
+"Add link" = "Tambahkan tautan";
 
 /* No comment provided by engineer. */
 "Add link text" = "Tambahkan teks tautan";
@@ -824,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Anda yakin ingin memperbarui?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Atur konten Anda ke dalam kolom, tambahkan tombol Call to Action, dan overlay gambar dengan teks.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "Seni";
 
@@ -1009,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Daftar blokir";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blok memungkinkan Anda untuk fokus menulis konten Anda, mengetahui bahwa semua alat pemformatan yang Anda butuhkan ada untuk membantu Anda menyampaikan pesan Anda.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
@@ -1053,6 +1064,9 @@
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Perlindungan Terhadap Serangan Paksa";
 
+/* No comment provided by engineer. */
+"Build layouts" = "Bangun tata letak";
+
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Daftar Bullet";
 
@@ -1064,12 +1078,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Gaya Tombol";
-
-/* No comment provided by engineer. */
-"Button inside" = "Tombol dalam";
-
-/* No comment provided by engineer. */
-"Button outside" = "Tombol luar";
 
 /* No comment provided by engineer. */
 "Button position" = "Posisi tombol";
@@ -1122,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1457,7 +1466,7 @@
 "Colorful backgrounds" = "Latar belakang berwarna";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "Pengaturan Kolom";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "Kombinasikan foto, video, dan teks untuk membuat pos cerita, yang menarik dan memancing pengunjung Anda untuk mengetuk, yang pasti disukai pengunjung Anda.";
@@ -2285,6 +2294,12 @@
 "Double tap to open Bottom Sheet with available options" = "Ketuk dua kali untuk membuka Lembar Bawah dengan opsi yang tersedia";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Ketuk dua kali untuk melakukan pratinjau halaman.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Ketuk dua kali untuk melihat artikel.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Ketuk dua kali untuk mengulangi perubahan terakhir";
 
 /* No comment provided by engineer. */
@@ -2342,7 +2357,10 @@
 "Duplicate block" = "Duplikasi blok";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT LINK";
+"EDIT LINK" = "EDIT TAUTAN";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Setiap blok memiliki pengaturannya sendiri. Untuk menemukannya, klik pada blok. Pengaturannya akan muncul di toolbar di bagian bawah layar.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Timur";
@@ -2465,17 +2483,23 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email terkirim!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Pratinjau blok sematan akan segera hadir";
+
 /* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Embed caption. %s";
+"Embed caption. %s" = "Sematkan keterangan. %s";
 
 /* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Embed caption. Empty";
+"Embed caption. Empty" = "Sematkan keterangan. Kosong";
 
 /* No comment provided by engineer. */
-"Embed link" = "Embed link";
+"Embed link" = "Sematkan tautan";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+/* No comment provided by engineer. */
+"Embed media" = "Sematkan media";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Pratinjau sematan belum tersedia";
 
 /* Title for the Emoji section */
 "Emoji" = "Emotikon";
@@ -2494,7 +2518,7 @@
 "Enable Quick Start for Site" = "Aktifkan Mulai Cepat untuk Situs";
 
 /* Title for the button that will enable the site stats module. */
-"Enable Site Stats" = "Enable Site Stats";
+"Enable Site Stats" = "Aktifkan Statistik Situs";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Izinkan akses mikrofon untuk merekam suara di video Anda.";
@@ -2506,10 +2530,10 @@
 "Enable site notifications?" = "Aktifkan pemberitahuan situs?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
-"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Aktifkan statistik situs untuk melihat detail informasi tentang lalu lintas kunjungan, suka, komentar, dan pelanggan Anda.";
 
 /* Text displayed while activating the site stats module. */
-"Enabling Site Stats..." = "Enabling Site Stats...";
+"Enabling Site Stats..." = "Mengaktifkan Statistik Situs...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Log Terenkripsi";
@@ -2791,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Gambar Terfitur";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Gambar Unggulan Sudah Diatur";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Pilihan Gambar Andalan";
 
@@ -2890,7 +2917,7 @@
 "Follow other sites" = "Ikuti situs lain";
 
 /* Verb. An option to follow a site. */
-"Follow site" = "Follow site";
+"Follow site" = "Ikuti situs";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Ikuti topik";
@@ -3039,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "Menyerah";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Cobalah dengan menambahkan beberapa blok ke artikel atau halaman Anda!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Berikan nama situs yang mencerminkan karakteristik dan topik situs Anda. Kesan pertama sangat berarti!";
@@ -3431,7 +3461,7 @@
 "Invalid URL. Audio file not found." = "URL tidak valid. Berkas audio tidak ditemukan.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+"Invalid URL. Please enter a valid URL." = "URL tidak valid. Silakan masukkan URL yang benar.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "Titik akhir tidak valid";
@@ -3482,7 +3512,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ atau yang lebih baru diperlukan. Apakah Anda ingin memperbarui Jetpack?";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Pemasangan Jetpack Backup untuk Multisitus memberikan fitur cadangan yang bisa diunduh, tanpa fitur permulihan sekali klik. Untuk informasi lebih lanjut %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "FAQ Jetpack";
@@ -3619,11 +3649,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Latar belakang terang";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Suka";
 
 /* A comment is marked as liked */
@@ -3632,7 +3662,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3677,7 +3706,7 @@
 "Link inserted" = "Tautan disisipkan";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "Teks tautan";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Tautkan ke konten yang sudah ada";
@@ -3831,7 +3860,7 @@
 "Logs" = "Log";
 
 /* Title for the error view when the stats module is disabled. */
-"Looking for stats?" = "Looking for stats?";
+"Looking for stats?" = "Mencari statistik?";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "Mencari alamat...";
@@ -3847,6 +3876,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigasi Utama";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Buat konten Anda menonjol dengan menambahkan gambar, gif, video, dan media tersemat ke halaman Anda.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4234,7 +4266,7 @@
 "No Items" = "Tak ada Item";
 
 /* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "No Jetpack sites found";
+"No Jetpack sites found" = "Situs Jetpack tidak ditemukan";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "Tidak Ada Menu";
@@ -4279,7 +4311,7 @@
 "No available sites" = "Tidak ada situs yang tersedia";
 
 /* No comment provided by engineer. */
-"No button" = "Tanpa tombol";
+"No blocks found" = "Blok tidak ditemukan.";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Tak ada komentar";
@@ -4549,13 +4581,16 @@
 /* Title of a button style */
 "Official Buttons" = "Tombol Resmi";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Lebih dari 2 hari";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Lebih dari satu Bulan";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Lebih dari satu Minggu";
 
 /* Sort Order */
@@ -4563,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Setelah tautan undangan ini dinonaktifkan, tidak ada yang dapat menggunakannya lagi untuk bergabung dengan tim Anda. Apakah Anda yakin?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Setelah Anda terbiasa dengan nama blok yang berbeda, Anda dapat menambahkan blok dengan mengetikkan garis miring diikuti dengan nama blok — misalnya, \/image atau \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
@@ -4790,9 +4828,6 @@
    Title of pending Comments filter. */
 "Pending" = "Tertunda";
 
-/* No comment provided by engineer. */
-"Pending moderation" = "Menunggu moderasi";
-
 /* Name for the status of a post pending review.
    Pending review
    Title of the Pending Review Badge */
@@ -4815,7 +4850,7 @@
 "Photo Library" = "Pustaka Foto";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "Foto";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Foto disediakan oleh Pexels";
@@ -5143,6 +5178,12 @@
 /* Title on display preview error */
 "Preview Unavailable" = "Pratinjau Tidak Tersedia";
 
+/* No comment provided by engineer. */
+"Preview page" = "Pratinjau halaman";
+
+/* No comment provided by engineer. */
+"Preview post" = "Pratinjau postingan";
+
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Pratinjau situs baru Anda untuk mengetahui tampilan situs yang akan dilihat oleh pengunjung.";
 
@@ -5453,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Dibuang";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Hapus dari gambar andalan ";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Menghapus metadata lokasi dari foto sebelum diunggah ke situs.";
 
@@ -5461,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Menghapus Langkah Berikutnya akan menyembunyikan semua tur di situs ini. Tindakan ini tidak dapat diurungkan.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Gantikan";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ganti Blok Saat Ini";
@@ -5503,7 +5550,7 @@
 "Reply to post…" = "Balas pos…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
+"Report this post" = "Melaporkan pos ini";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Wajibkan persetujuan manual untuk komentar yang memuat lebih dari jumlah tautan ini.";
@@ -5600,7 +5647,7 @@
 "Retry" = "Coba Lagi";
 
 /* Button title that triggers a scan */
-"Retry Scan" = "Retry Scan";
+"Retry Scan" = "Pindai Kembali";
 
 /* User action to retry media upload. */
 "Retry Upload" = "Coba Unggah Lagi";
@@ -5617,6 +5664,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Kembalikan Perubahan Tertunda";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Kembalikan aksi yang dijalankan pada pemberitahuan ini.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Tinjau halaman situs";
 
@@ -5625,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Konten Kaya";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Editing rich text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rata Kanan";
@@ -5705,7 +5758,7 @@
 "Scan" = "Pindai";
 
 /* Button title that triggers a scan */
-"Scan Again" = "Scan Again";
+"Scan Again" = "Pindai Lagi";
 
 /* Title for a notice informing the user their scan has completed */
 "Scan Finished" = "Pemindaian Selesai";
@@ -5714,10 +5767,10 @@
 "Scan History" = "Riwayat Pindai";
 
 /* Button title that triggers a scan */
-"Scan Now" = "Scan Now";
+"Scan Now" = "Pindai Sekarang";
 
 /* Title for label when the actively scanning the users site */
-"Scanning files" = "Scanning files";
+"Scanning files" = "Memindai berkas";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Jadwal";
@@ -5767,6 +5820,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Cari label blok. Teks saat ini adalah";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Cari blok";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Tombol cari. Teks tombol saat ini adalah";
@@ -5973,6 +6029,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Atur sebagai Halaman Pos";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Atur sebagai gambar andalan";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Setel pengingat";
@@ -6193,7 +6252,7 @@
 "Site address must be at least 4 characters." = "Alamat situs harus minimal 4 karakter.";
 
 /* Downloadable/Restorable items: Site Database */
-"Site database" = "Site database";
+"Site database" = "Basis data situs";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Situs dihapus!";
@@ -6255,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Sosial";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Beberapa blok memiliki pengaturan tambahan. Ketuk ikon pengaturan di kanan bawah blok untuk melihat pilihan lainnya.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Gagal mengunggah beberapa media. Tindakan ini akan menghapus semua media yang gagal dari pos tersebut.\nTetap simpan?";
@@ -7071,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Untuk melanjutkan dengan akun Google ini, harap login terlebih dahulu dengan kata sandi WordPress.com Anda. Hal ini hanya akan ditanyakan sekali.";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Untuk menghapus blok, pilih blok dan klik tiga titik di kanan bawah blok untuk melihat pengaturan. Dari sana, pilih pilihan untuk menghapus blok.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Untuk mengambil foto atau video agar dapat digunakan di pos Anda.";
 
@@ -7083,7 +7148,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "Untuk menggunakan aplikasi ini untuk %@ Anda perlu memasang dan mengaktifkan plugin Jetpack.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Hari ini";
@@ -7195,6 +7261,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Coba lagi";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Coba kata kunci pencarian lainnya";
+
 /* Customize Insights button title */
 "Try it now" = "Coba sekarang";
 
@@ -7284,6 +7353,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Tidak dapat mengunduh berkas";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Tidak dapat menyematkan media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Tidak dapat mengikuti percakapan";
@@ -7604,6 +7676,9 @@
 
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Gunakan Lokasi Saat Ini";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Gunakan Toko Sandbox";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gunakan penyunting blok";
@@ -8025,7 +8100,7 @@
 "We're restoring your site back to %1$@." = "Kami telah memulihkan situs Anda kembali ke %1$@.";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "Mohon maaf, Jetpack Scan tidak kompatibel dengan penginstalan WordPress multisitus saat ini.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Kami juga telah mengirimkan email berisi tautan ke file Anda.";
@@ -8060,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "Selamat Datang di Pembaca";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Selamat datang di dunia blok";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Selamat datang di pembuat situs web terpopuler di dunia.";
 
@@ -8088,6 +8166,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Kami akan memandu Anda dalam memahami dasar-dasar membuat dan mengembangkan situs";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Kami bekerja keras dalam menambahkan fitur pratinjau sematan. Saat ini, Anda dapat melakukan pratinjau konten sematan dalam halaman.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Kami bekerja keras dalam menambahkan fitur pratinjau sematan. Saat ini, Anda dapat melakukan pratinjau konten sematan dalam artikel.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Kami telah menambahkan lebih banyak tugas untuk membantu Anda menumbuhkan audiens.";
 
@@ -8102,6 +8186,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Apa yang ingin Anda lakukan dengan file ini: mengunggahnya dan menambahkan tautan ke file dalam pos Anda, atau menambahkan konten file langsung ke pos?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "Apakah blok?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Apa itu teks alt?";
@@ -8208,7 +8295,7 @@
 "WordPress for iOS Support" = "WordPress untuk Dukungan iOS";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress multisites are not supported";
+"WordPress multisites are not supported" = "Multisitus WordPress tidak didukung";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress membutuhkan izin untuk mengakses lokasi terkini perangkat Anda untuk ditambahkan ke pos Anda. Harap perbarui pengaturan privasi Anda.";
@@ -8296,8 +8383,12 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Ya, tunjukkan";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "Kemarin";
+
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Anda sudah memiliki kumpulan gambar unggulan. Apakah Anda ingin menggantinya?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Anda akan mengubah nama pengguna Anda, yang saat ini adalah %1$@. %2$@";
@@ -8328,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Anda dapat membatalkan pengaturan tersebut untuk pos individual.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Anda dapat mengatur ulang blok dengan mengetuk satu blok lalu mengetuk panah atas dan bawah yang muncul di sisi kiri bawah blok untuk memindahkannya ke atas atau ke bawah blok lain.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
@@ -8494,7 +8588,7 @@
 "Your restore is taking longer than usual, please check again in a few minutes." = "Pemulihan Anda memerlukan waktu lebih lama dari biasanya, periksa lagi dalam beberapa menit.";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Alamat situs Anda ditampilkan di bar bagian atas layar ketika Anda mengunjungi situs dengan Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Situs Anda telah dibuat!";
@@ -8524,7 +8618,7 @@
 "Your site is visible to everyone, but asks search engines not to index your site." = "Situs Anda dapat dilihat oleh semua orang, tetapi meminta mesin pencari untuk tidak mengindeks situs Anda.";
 
 /* Title for label when there are threats on the users site */
-"Your site may be at risk" = "Your site may be at risk";
+"Your site may be at risk" = "Situs Anda mungkin berada dalam risiko";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Your site will be ready shortly" = "Situs Anda akan siap sesaat lagi";
@@ -8546,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTAR]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d blogger_ menyukai ini.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d blogger_ menyukai ini.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Anda_ menyukai ini.";
 
 /* Age between dates equaling one day. */
 "a day" = "satu hari";
@@ -8640,7 +8749,7 @@
 "viewer" = "pemirsa";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
+"visit our documentation page" = "kunjungi halaman dokumentasi kami";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "akan tidak tersedia di waktu mendatang.";

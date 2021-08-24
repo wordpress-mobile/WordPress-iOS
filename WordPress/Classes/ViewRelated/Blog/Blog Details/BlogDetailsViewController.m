@@ -1965,4 +1965,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return nil;
 }
 
+#pragma mark - Domain Registration
+
+/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
+/// Used to update My Site after a successful domain registration.
+- (void)updateTableViewAndHeader
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.blogService syncBlogAndAllMetadata:self.blog
+                           completionHandler:^{
+                               [weakSelf configureTableViewData];
+                               [weakSelf reloadTableViewPreservingSelection];
+                               [weakSelf.headerView setBlog:weakSelf.blog];
+                           }];
+}
+
 @end

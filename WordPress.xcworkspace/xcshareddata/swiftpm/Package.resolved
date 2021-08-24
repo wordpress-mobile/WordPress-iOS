@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ScreenObject",
+        "repositoryURL": "https://github.com/Automattic/ScreenObject",
+        "state": {
+          "branch": null,
+          "revision": "df8ee4983e674b583b546bb0640ec83428be2465",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "XCUITestHelpers",
+        "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
+        "state": {
+          "branch": null,
+          "revision": "47d688b0b2a6356361a16836c4d23f12d6643a73",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

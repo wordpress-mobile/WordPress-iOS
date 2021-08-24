@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-12 22:03:32+0000 */
+/* Translation-Revision-Date: 2021-08-13 06:14:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -33,17 +33,13 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ för att åtgärda hoten.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d gillar";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d gillar";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d bloggare gillar detta.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d bloggare gillar detta.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d av %2$d är klara";
@@ -211,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li ord, %2$li tecken";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "Block av typen %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Inställningar för blocket %s";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "Blocket %s, ett nytt tillskott";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Block av typen %s. Tomt";
@@ -245,8 +245,7 @@
 "(Untitled)" = "(Utan rubrik)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen rubrik)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -475,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Lägg till en anpassad CSS-URL här som ska hämtas i läsaren. Om du kör Calypso lokalt kan länken se ut ungefär så här: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Lägg till ett nytt block när som helst genom att trycka på ikonen + i verktygsfältet nere till vänster.";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Lägg till en webbplats på webbhotell\/egen server";
@@ -824,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Är du säker på att du vill uppdatera?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Ordna ditt innehåll i kolumner, lägg till knappar för uppmaningar, och överläggstexter på bilder.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "Konst";
 
@@ -1009,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Blockeringslista";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Block låter dig fokusera på innehållet med den trygga vetskapen att alla formateringsverktyg du behöver för att få fram ditt budskap finns tillgängliga.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Block är innehållsbitar som du kan lägga in, sortera om och stilsätta utan att du behöver kunna programmera eller koda. Block är ett enkelt och modernt sätt för dig att skapa vackra layouter.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blogg";
 
@@ -1053,6 +1064,9 @@
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Skydd mot brute force-attacker";
 
+/* No comment provided by engineer. */
+"Build layouts" = "Bygg layouter";
+
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Punktlista";
 
@@ -1064,12 +1078,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "Knappstil";
-
-/* No comment provided by engineer. */
-"Button inside" = "Knapp på insidan";
-
-/* No comment provided by engineer. */
-"Button outside" = "Knapp på utsidan";
 
 /* No comment provided by engineer. */
 "Button position" = "Knapposition";
@@ -1122,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2285,6 +2294,12 @@
 "Double tap to open Bottom Sheet with available options" = "Dubbeltryck för att öppna det nedre arket med tillgänliga alternativ";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "Dubbeltryck för att förhandsgranska sidan.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "Dubbeltryck för att förhandsgranska inlägget.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "Dubbeltryck för att göra om senaste ändring";
 
 /* No comment provided by engineer. */
@@ -2343,6 +2358,9 @@
 
 /* No comment provided by engineer. */
 "EDIT LINK" = "REDIGERA  LÄNK";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Varje block har sina egna inställningar. För att se dem trycker du på blocket i fråga. Inställningarna visas i verktygsfältet längst ned på skärmen.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "Öster";
@@ -2465,6 +2483,9 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-postmeddelande skickat!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Förhandsgranskning av inbäddade block kommer snart";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Beskrivning för inbäddning. %s";
 
@@ -2474,8 +2495,11 @@
 /* No comment provided by engineer. */
 "Embed link" = "Länk för inbäddning";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Inbäddat innehåll från %s kan för närvarande inte visas i den mobila redigeraren. Förhandsvisa sidan för att se det inbäddade innehållet.";
+/* No comment provided by engineer. */
+"Embed media" = "Bädda in media";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "Förhandsgranskning av inbäddningar är inte tillgängligt ännu";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2791,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Utvald bild";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Utvald bild är redan angett";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Alternativ för utvald bild";
 
@@ -3039,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "Ge upp";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Prova nu direkt genom att lägga till några block i ditt inlägg eller din sida!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Ge din webbplats ett namn som återspeglar dess personlighet och ämnesområde. Första intrycket är viktigt!";
@@ -3619,11 +3649,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "Ljusa bakgrunder";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "Gilla";
 
 /* A comment is marked as liked */
@@ -3632,7 +3662,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3847,6 +3876,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Huvudmeny";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Förstärk ditt innehåll genom att lägga till bilder, gif-illustrationer, videoklipp och inbäddade media i ditt sidinnehåll.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4279,7 +4311,7 @@
 "No available sites" = "Inga webbplatser tillgängliga";
 
 /* No comment provided by engineer. */
-"No button" = "Ingen knapp";
+"No blocks found" = "Inga block hittades";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Inga kommentarer";
@@ -4549,13 +4581,16 @@
 /* Title of a button style */
 "Official Buttons" = "Officiella knappar";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "Äldre än 2 dagar";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "Äldre än en månad";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "Äldre än en vecka";
 
 /* Sort Order */
@@ -4563,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "När denna inbjudningslänk har inaktiverats kan ingen använda den för att ansluta sig till ditt team. Är du säker?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Om du vet namnen på de block du behöver kan du lägga till ett block genom att skriva ett snedstreck följt av blockets namn, exempelvis \/bild eller \/rubrik.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
@@ -4789,9 +4827,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Inväntar granskning";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "Inväntar granskning";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5143,6 +5178,12 @@
 /* Title on display preview error */
 "Preview Unavailable" = "Förhandsvisning inte tillgänglig";
 
+/* No comment provided by engineer. */
+"Preview page" = "Förhandsgranska sidan";
+
+/* No comment provided by engineer. */
+"Preview post" = "Förhandsgranska";
+
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "Förhandsgranska din nya webbplats för att se vad dina besökare kommer att se.";
 
@@ -5453,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Borttaget";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Borttagen som utvald bild ";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Rensar bort metadata om plats från foton innan de laddas upp till din webbplats.";
 
@@ -5461,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "När du tar bort återstående steg döljer detta alla rundvisningar på denna webbplats Åtgärden kan inte ångras.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Ersätt";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ersätt aktuellt block";
@@ -5617,6 +5664,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "Återställ väntande ändring";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "Återställer åtgärden som utfördes på detta meddelande.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "Granska webbplatsens sidor";
 
@@ -5625,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Formaterat innehåll";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Redigering av formaterad text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Höger";
@@ -5767,6 +5820,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Etikett för sökblock. Aktuell text är";
+
+/* No comment provided by engineer. */
+"Search blocks" = "Sök block";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Sökknapp. Den nuvarande knapptexten är";
@@ -5973,6 +6029,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Ställ in som inläggssida";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Ställ in som utvald bild";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Ställ in påminnelser";
@@ -6255,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "Sociala nät";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Vissa block har ytterligare inställningar. Tryck på ikonen för inställningar i blockets nedre högra hörn för att se fler alternativ.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Uppladdning av vissa mediefiler misslyckades. Om du fortsätter med den här åtgärden kommer de mediefiler som inte laddats upp inte med i inlägget.\nSpara ändå?";
@@ -7071,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "För att fortsätta med detta Google-konto måste du först logga in med ditt lösenord för WordPress.com. Detta behövs bara en gång.";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Ta bort ett block genom att markera blocket och klicka på de tre punkterna i blockets nedre högra hörn för att visa inställningarna. Där väljer du sedan alternativet att ta bort blocket.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "För att ta bilder eller spela in videoklipp som kan användas i dina inlägg.";
 
@@ -7083,7 +7148,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "För att använda denna app för %@ måste du ha tillägget Jetpack installerat och aktiverat.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "I dag";
@@ -7195,6 +7261,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "Försök igen";
 
+/* No comment provided by engineer. */
+"Try another search term" = "Prova en annan sökterm";
+
 /* Customize Insights button title */
 "Try it now" = "Prova nu";
 
@@ -7284,6 +7353,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "Det gick inte att ladda ned filen";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "Kan inte bädda in media";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Det gick inte att följa konversationen";
@@ -7604,6 +7676,9 @@
 
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "Använd nuvarande plats";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Använd sandlåde-lagring";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Använd blockredigeraren";
@@ -8060,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "Välkommen till Läsaren";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Välkommen till världen av block";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Välkommen till världens populäraste webbplatsbyggare.";
 
@@ -8088,6 +8166,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Vi hjälper dig genom grunderna i att bygga din webbplats och hitta fler läsare";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Vi jobbar hårt på att lägga till stöd för förhandsgranskning av inbäddningar. Tills dess kan du förhandsgranska det inbäddade innehållet på sidan.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Vi jobbar hårt på att lägga till stöd för förhandsgranskning av inbäddningar. Tills dess kan du förhandsgranska det inbäddade innehållet i inlägget.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Vi har lagt till några extra åtgärder som hjälper dig att hitta fler läsare.";
 
@@ -8102,6 +8186,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Vad vill du göra med denna fil: ladda upp den till webbplatsen och länka till filen i ditt inlägg eller lägga till filens innehåll direkt i inlägget?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "Vad är ett block?";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "Vad är alternativ text?";
@@ -8296,8 +8383,12 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Ja tack, visa mig";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "I går";
+
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Du har redan en utvald bild angiven. Vill du ersätta den?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du är på väg att ändra ditt användarnamn, som för närvarande är %1$@. %2$@";
@@ -8328,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Du kan åsidosätta dessa inställningar för enskilda inlägg.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Du kan ändra blockens ordning genom att trycka på ett block och sedan trycka på upp\/ned-pilarna som visas i blockets nedre vänstra hörn för att flytta blocket före eller efter andra block.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Du kan uppdatera detta när som helst via Min webbplats > Webbplatsinställningar";
@@ -8546,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMMENTAR]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d bloggare_ gillar detta.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d bloggare_ gillar detta.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Du och %1$d bloggare_ gillar detta.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Du och %1$d bloggare_ gillar detta.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Du_ gillar detta.";
 
 /* Age between dates equaling one day. */
 "a day" = "en dag";

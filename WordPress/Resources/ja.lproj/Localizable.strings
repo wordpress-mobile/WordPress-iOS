@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-13 05:40:58+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:50:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -33,17 +33,13 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "脅威を修正するには、%1$@。";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d個の「いいね」";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d個の「いいね」";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d人のブロガーが「いいね」をつけました。";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d人のブロガーが「いいね」";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d\/%2$d が完了";
@@ -211,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 単語、%2$li 文字";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%sブロック";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s ブロックオプション";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "新たに追加された%sブロック";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s ブロック。空";
@@ -245,8 +245,7 @@
 "(Untitled)" = "(無題)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(タイトルなし)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -475,6 +474,9 @@
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader に読み込むカスタム CSS URL はここに追加できます。Calypso をローカル環境で実行している場合、次のようになります: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "左下のツールバーにある + アイコンをタップすることで、いつでも新しいブロックを追加できます。 ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "インストール型サイトを追加";
@@ -824,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "更新してもよいですか ?";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "列へのコンテンツの配置、コールトゥアクションボタンの追加、テキストによる画像のオーバーレイを実行できます。";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "アート";
 
@@ -1009,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "ブロックリスト";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "ブロックがあることでコンテンツ作成に集中することができ、メッセージの発信に役立つすべての書式設定ツールが利用できます。";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "ブロックとは、コーディングについて知らなくても挿入、配置変更、スタイル設定が実行できる、コンテンツの集まりです。 ブロックを使うことで、簡単かつ洗練された方法で美しいレイアウトに仕上げることができます。";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "ブログ";
 
@@ -1053,6 +1064,9 @@
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "総当たり攻撃対策";
 
+/* No comment provided by engineer. */
+"Build layouts" = "レイアウトを構築";
+
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "番号なしリスト";
 
@@ -1064,12 +1078,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "ボタンスタイル";
-
-/* No comment provided by engineer. */
-"Button inside" = "内側ボタン";
-
-/* No comment provided by engineer. */
-"Button outside" = "外側ボタン";
 
 /* No comment provided by engineer. */
 "Button position" = "ボタン位置";
@@ -1122,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2285,6 +2294,12 @@
 "Double tap to open Bottom Sheet with available options" = "ダブルタップして「下部シート」と利用可能オプションを開く";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "ダブルタップで固定ページをプレビューできます。";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "ダブルタップで投稿をプレビューできます。";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "ダブルタップして前回の変更をやり直す";
 
 /* No comment provided by engineer. */
@@ -2343,6 +2358,9 @@
 
 /* No comment provided by engineer. */
 "EDIT LINK" = "リンクを編集";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "各ブロックには独自の設定があります。 これらの設定を表示するにはブロックをクリックします。 画面下部にあるツールバーに設定が表示されます。";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "東";
@@ -2465,6 +2483,9 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "メールを送信しました。";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "埋め込みブロックのプレビューはまもなく公開予定です";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "画像キャプション。%s";
 
@@ -2474,8 +2495,11 @@
 /* No comment provided by engineer. */
 "Embed link" = "埋め込みリンク";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+/* No comment provided by engineer. */
+"Embed media" = "メディアを埋め込み";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "埋め込みプレビューはまだ使用できません";
 
 /* Title for the Emoji section */
 "Emoji" = "絵文字";
@@ -2506,10 +2530,10 @@
 "Enable site notifications?" = "サイト通知を有効にしますか ?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
-"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "サイト統計情報を有効にすると、トラフィック、「いいね」、コメント、購読者に関する詳細を確認できます。";
 
 /* Text displayed while activating the site stats module. */
-"Enabling Site Stats..." = "Enabling Site Stats...";
+"Enabling Site Stats..." = "サイト統計情報を有効にしています...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "暗号化されたログ";
@@ -2791,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "アイキャッチ画像";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "アイキャッチ画像はすでに設定されています";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "アイキャッチ画像のオプション";
 
@@ -3039,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "諦める";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "投稿やページにブロックをいくつか追加して、どのようになるか見てみましょう。";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "サイトにその特徴とトピックがわかるような名前を付けてください。 第一印象が大事です。";
@@ -3431,7 +3461,7 @@
 "Invalid URL. Audio file not found." = "無効な URL。音声ファイルが見つかりません。";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+"Invalid URL. Please enter a valid URL." = "無効な URL。 正しい URL を入力してください。";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "無効のエンドポイント";
@@ -3482,7 +3512,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "統計情報機能には Jetpack %@ またはそれ以降が必須です。Jetpack を更新しますか ?";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup (Multisite) のインストールには、ダウンロード可能なバックアップは含まれますが、ワンクリックの復元機能は含まれません。 詳細については、%1$@。";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack よくある質問";
@@ -3619,11 +3649,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "明るい背景";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "いいね";
 
 /* A comment is marked as liked */
@@ -3632,7 +3662,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3847,6 +3876,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "メインナビゲーション";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "画像、gif、動画、埋め込みメディアをページに追加することで、コンテンツを差別化しましょう。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4279,7 +4311,7 @@
 "No available sites" = "利用できるサイトがありません";
 
 /* No comment provided by engineer. */
-"No button" = "ボタンなし";
+"No blocks found" = "ブロックが見つかりません";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "コメントなし";
@@ -4549,13 +4581,16 @@
 /* Title of a button style */
 "Official Buttons" = "公式ボタン";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "2日以上前";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "1ヶ月以上前";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "1週間以上前";
 
 /* Sort Order */
@@ -4563,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "招待リンクを無効化すると、このリンクを使用してチームに参加できなくなります。 本当に実行しますか ?";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "異なるブロックの名前を確認したら、フォワードスラッシュに続けてブロック名を入力して (「\/image」、「\/heading」など)、ブロックを追加します。";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "WordPress.com サイトの作成後は、お気に入りのコンテンツを自分のサイトにリブログできます。";
@@ -4789,9 +4827,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "承認待ち";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "承認待ち";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5143,6 +5178,12 @@
 /* Title on display preview error */
 "Preview Unavailable" = "プレビューは利用できません";
 
+/* No comment provided by engineer. */
+"Preview page" = "固定ページをプレビュー";
+
+/* No comment provided by engineer. */
+"Preview post" = "投稿をプレビュー";
+
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "新しいサイトをプレビューして訪問者に表示される内容を確認できます。";
 
@@ -5453,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "削除";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "アイキャッチ画像を削除";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "サイトにアップロードする前に、写真から位置情報メタデータを削除します。";
 
@@ -5461,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "「次のステップ」を削除すると、このサイトのすべてのツアーが非表示になります。この操作を元に戻すことはできません。";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "置換";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "現在のブロックを置き換え";
@@ -5617,6 +5664,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "保留中の変更を元に戻す";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "この通知で実行されたアクションを元に戻します。";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "サイトページをレビュー";
 
@@ -5625,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "リッチコンテンツ";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "リッチテキストの編集";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "右";
@@ -5767,6 +5820,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "検索ブロックのラベル。現在のテキストは";
+
+/* No comment provided by engineer. */
+"Search blocks" = "検索ブロック";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "検索ボタンです。現在のボタンテキストは";
@@ -5973,6 +6029,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "投稿ページとして設定";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "アイキャッチ画像として設定";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "リマインダーを設定";
@@ -6255,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "ソーシャル";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "一部のブロックには追加の設定があります。 ブロックの右下にある設定アイコンをタップしてその他のオプションを表示します。";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "アップロードに失敗したメディアがあります。この操作を行うと投稿から失敗したメディアを削除します。保存してもよいですか ?";
@@ -7071,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "この Google アカウントで先に進むには、最初に WordPress.com パスワードを使用してログインしてください。これは一度しか尋ねられません。";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "ブロックを削除するには、そのブロックを選択し、ブロックの右下にある3つの点をクリックして設定を表示します。 ここで、ブロックを削除するオプションを選択します。";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "投稿に使用する写真または動画を撮る。";
 
@@ -7083,7 +7148,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "﻿%@ にこのアプリを使用するには、Jetpack プラグインをインストールして有効化する必要があります。";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "今日";
@@ -7195,6 +7261,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "もう一度お試しください";
 
+/* No comment provided by engineer. */
+"Try another search term" = "別の検索キーワードを試す";
+
 /* Customize Insights button title */
 "Try it now" = "今すぐ試す";
 
@@ -7284,6 +7353,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "ファイルをダウンロードできません";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "メディアを埋め込むことができません";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "会話をフォローできません";
@@ -7604,6 +7676,9 @@
 
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "現在の位置を使用";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "サンドボックスストアを使用";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "ブロックエディターを使用";
@@ -8025,7 +8100,7 @@
 "We're restoring your site back to %1$@." = "サイトを %1$@ に復元しています。";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "現在、Jetpack スキャンは WordPress のマルチサイトインストールとの互換性がありません。";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "ファイルへのリンクはメールでも送信されました。";
@@ -8060,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "Reader へようこそ";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "ブロックの世界へようこそ";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "世界で最も人気のサイト構築サービスへようこそ。";
 
@@ -8088,6 +8166,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "サイトの構築と訪問者を増やす方法の基本について紹介します";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "埋め込みプレビューのサポートの追加に取り組んでいます。 それまでの間、固定ページで埋め込まれたコンテンツをプレビューできます。";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "埋め込みプレビューのサポートの追加に取り組んでいます。 それまでの間、ブログ投稿で埋め込まれたコンテンツをプレビューできます。";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "訪問者を増やすためのタスクをさらに追加しました。";
 
@@ -8102,6 +8186,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "このファイルで行う操作:アップロードし、そのファイルへのリンクを投稿に追加するか、ファイルのコンテンツを直接投稿を追加しますか ?";
+
+/* No comment provided by engineer. */
+"What is a block?" = "ブロックとは";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "代替テキストとは ?";
@@ -8208,7 +8295,7 @@
 "WordPress for iOS Support" = "WordPress for iOS のサポート";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress multisites are not supported";
+"WordPress multisites are not supported" = "WordPress マルチサイトには対応していません";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress が端末の現在位置にアクセスして投稿に追加するためには許可が必要です。プライバシー設定を更新してください。";
@@ -8296,8 +8383,12 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "はい、見てみます";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "昨日";
+
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "アイキャッチ画像はすでに設定されています。 他の画像に変更しますか ?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "ユーザー名を変更しようとしています。現在のユーザー名は %1$@ です。%2$@";
@@ -8328,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "各投稿のこれらの設定を上書きできます。";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "ブロックをタップし、ブロックの左下に表示される上下矢印をタップして他のブロックの上下に移動させることで、ブロックの配置を変更できます。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "この設定は、「参加サイト」→「サイト設定」でいつでも変更できます。";
@@ -8473,7 +8567,7 @@
 "Your first backup will be ready soon" = "初回のバックアップは間もなく完了します";
 
 /* Error message when picked media cannot be imported into stories. */
-"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+"Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません。問題が解決しない場合、「自分 > ヘルプ & サポート」画面からお問い合わせください。";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "モバイルでも通知を受信し、コメントやいいねをリアルタイムで確認できます。";
@@ -8546,6 +8640,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "%1$d人のブロガーが「いいね」をつけています。";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "%1$d人のブロガーが「いいね」をつけています。";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "あなたと%1$d人のブロガーが「いいね」をつけています。";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "あなたと%1$d人のブロガーが「いいね」をつけています。";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "あなたが「いいね」をつけています。";
 
 /* Age between dates equaling one day. */
 "a day" = "1日";
@@ -8640,7 +8749,7 @@
 "viewer" = "読者";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
+"visit our documentation page" = "ドキュメントページに移動する";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "は、いずれ利用できなくなります。";

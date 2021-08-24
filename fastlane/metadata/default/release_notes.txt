@@ -1,7 +1,9 @@
-Text blocks get some love. Color and background customization is added to the block editor’s text blocks.
+In 18.0 we’ve optimized the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.
 
-Other block editor updates include fixing an issue with the block selector on iPad and update loading and failed screens for the editor’s web version.
+You can now set or remove a featured image for a post from the image block’s settings. And in case you forget, a new ‘featured’ banner highlights your current selection.
 
-If you’ve experienced some refresh issues with the follow buttons in the Reader, you can rest easy now, as those issues have been solved.
+Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.
 
-Authors and Contributors are no longer in the dark! They can now view a site’s Comments via My Site > Comments.
+When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.
+
+Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.

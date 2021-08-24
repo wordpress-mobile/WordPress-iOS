@@ -3,23 +3,6 @@ import XCTest
 // TODO: This should go XCUITestHelpers if not there already
 public extension XCUIElement {
 
-    /**
-     Pastes text from clipboard to the field
-     Useful for scenarios where typing is problematic, e.g. secure text fields in Russian.
-     - Parameter text: the text to paste into the field
-     */
-    func pasteText(_ text: String) -> Void {
-        let previousPasteboardContents = UIPasteboard.general.string
-        UIPasteboard.general.string = text
-
-        press(forDuration: 1.2)
-        XCUIApplication().menuItems.firstMatch.tap()
-
-        if let string = previousPasteboardContents {
-            UIPasteboard.general.string = string
-        }
-    }
-
     @discardableResult
     // TODO: When moving to framework, find name that doesn't trigger grammar warning
     func waitForHittability(timeout: TimeInterval) -> Bool {

@@ -199,24 +199,31 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)showStatsModuleDisabled
 {
-    [self.noResultsViewController removeFromView];
-
+    [self instantiateNoResultsViewControllerIfNeeded];
     [self.noResultsViewController configureForStatsModuleDisabled];
     [self displayNoResults];
 }
 
 - (void)showEnablingSiteStats
 {
-    [self.noResultsViewController removeFromView];
-
+    [self instantiateNoResultsViewControllerIfNeeded];
     [self.noResultsViewController configureForActivatingStatsModule];
     [self displayNoResults];
+}
+
+- (void)instantiateNoResultsViewControllerIfNeeded
+{
+    if (!self.noResultsViewController) {
+        self.noResultsViewController = [NoResultsViewController controller];
+        self.noResultsViewController.delegate = self;
+    }
 }
 
 - (void)displayNoResults
 {
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.view.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 

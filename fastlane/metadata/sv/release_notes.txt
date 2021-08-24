@@ -1,7 +1,9 @@
-Vi har verkligen brytt oss om textblocken denna gång. Nu går det att anpassa färg och bakgrund för textblock i blockredigeraren.
+I version 18.0 har vi optimerat vilka bilder som används för teman, vilket resulterar i snabbare nedladdningar för dig och lägre förbrukning av din mobila datatrafik.
 
-Bland andra uppdateringar i blockredigeraren har vi rättat ett problem vid val av block på iPad och uppdaterad skärmarna för laddning och misslyckande i webbversionen av redigeraren.
+Nu kan du ange eller ta bort utvald bild för ett inlägg via inställningarna för bildblocket. Om du skulle råka glömma det, finns det ny en ny banderoll ”utvald” som framhäver din aktuella markering.
 
-Om du tidigare upplevt vissa problem med uppdatering av prenumerationsknapparna i läsaren kan du nu sova bättre om natten eftersom vi nu löst de problemen.
+På designsidan har nu kommentarer och aviseringar fått ett enhetligt utseende och layout. Och när du väljer domän eller design för din webbplats har nu rubrikerna förbättrats med avseende på tillgänglighet på enheter som använder stor textstorlek.
 
-Författare och bidragsgivare står inte längre utanför informationsflödet! Nu kan de följa kommentarerna på en webbplats via Min webbplats > kommentarer.
+När vi informerar dig om att ett inlägg har publicerats med en notis inne i appen kommer från och med nu eventuella ampersander (och-tecken) i rubriken att visas just som en ampersand och inte som något HTML-trolleri.
+
+Sist, men inte minst, har vi underlättat processen en aning när du återställer situationen efter att din autentiserings-token slutat att gälla.

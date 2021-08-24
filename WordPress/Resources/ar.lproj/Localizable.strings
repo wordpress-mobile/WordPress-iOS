@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-07 16:54:07+0000 */
+/* Translation-Revision-Date: 2021-08-19 20:51:24+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -33,17 +33,13 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ لإصلاح التهديدات.";
 
-/* Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d إعجاب";
 
-/* Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
+/* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
+   Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d إعجابات";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d blogger likes this." = "%1$d مدوّن معجب بهذا.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. */
-"%1$d bloggers like this." = "%1$d مدوِّنون معجبون بهذا.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "تم استكمال %1$d من %2$d";
@@ -211,11 +207,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li كلمات، %2$li أحرف";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "مكوّن [%s]";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "خيارات المكوِّن %s";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s مكوِّن متاح حديثًا";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "مكوِّن %s. فارغ";
@@ -245,8 +245,7 @@
 "(Untitled)" = "(بدون اسم)";
 
 /* (no title)
-   Lets a user know that a local draft does not have a title.
-   the post has no title. */
+   Lets a user know that a local draft does not have a title. */
 "(no title)" = "(بدون عنوان)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -476,6 +475,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "أضف عنوان URL الخاص بـ CSS المخصصة هنا ليتم تحميلها في القارئ. إذا كنتَ تقوم بتشغيل Calypso محليًا، فقد يبدو هذا مثل: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "أضف مكوِّنًا جديدًا في أي وقت عن طريق النقر على أيقونة + الموجودة في شريط الأدوات في أسفل اليسار. ";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "إضافة موقع مستضاف ذاتيًا";
 
@@ -507,7 +509,7 @@
 "Add image, or avatar, to represent this new account." = "أضف صورة أو أفاتار لتمثيل هذا الحساب الجديد.";
 
 /* No comment provided by engineer. */
-"Add link" = "Add link";
+"Add link" = "إضافة رابط";
 
 /* No comment provided by engineer. */
 "Add link text" = "إضافة نصّ للرابط";
@@ -824,6 +826,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "هل ترغب بالتأكيد في التحديث؟";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "قم بترتيب محتواك إلى أعمدة، وإضافة أزرار الدعوة إلى اتخاذ إجراء، وتراكب الصور باستخدام النص.";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "الفن";
 
@@ -1009,6 +1014,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "قائمة الحظر";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "تسمح لك المكوِّنات بالتركيز على كتابة محتواك، مع العلم بأن جميع أدوات التنسيق التي تحتاج إليها متوافرة هناك لمساعدتك على توصيل رسالتك.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "المكوِّنات عبارة عن أجزاء من المحتوى التي يمكنك إدراجها وإعادة ترتيبها وتصميمها من دون الحاجة إلى معرفة كيفية ترميزها. المكوِّنات عبارة عن طريقة سهلة وعصرية لك لإنشاء تخطيطات جميلة.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "مدونة";
 
@@ -1053,6 +1064,9 @@
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "الحماية من هجمات القوة الغاشمة";
 
+/* No comment provided by engineer. */
+"Build layouts" = "إنشاء تخطيطات";
+
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "قائمة النقاط";
 
@@ -1064,12 +1078,6 @@
 
 /* Title for a list of different button styles. */
 "Button Style" = "نمط الزر";
-
-/* No comment provided by engineer. */
-"Button inside" = "زر داخلي";
-
-/* No comment provided by engineer. */
-"Button outside" = "زر خارجي";
 
 /* No comment provided by engineer. */
 "Button position" = "موضع الزر";
@@ -1122,6 +1130,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -2285,6 +2294,12 @@
 "Double tap to open Bottom Sheet with available options" = "النقر المزدوج لفتح الورقة السفلية التي تحتوي على خيارات متوافرة";
 
 /* No comment provided by engineer. */
+"Double tap to preview page." = "انقر نقرًا مزدوجًا لمعاينة صفحة.";
+
+/* No comment provided by engineer. */
+"Double tap to preview post." = "انقر نقرًا مزدوجًا لمعاينة مقالة.";
+
+/* No comment provided by engineer. */
 "Double tap to redo last change" = "الضغط المزدوج لإعادة آخر تغيير";
 
 /* No comment provided by engineer. */
@@ -2342,7 +2357,10 @@
 "Duplicate block" = "تكرار المكوِّن";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT LINK";
+"EDIT LINK" = "تحرير رابط";
+
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "لكل مكوِّن الإعدادات الخاصة به. للعثور عليها، انقر على مكوِّن. ستظهر إعداداته على شريط الأدوات في الجزء السفلي من الشاشة.";
 
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "شرق";
@@ -2465,17 +2483,23 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "تم إرسال البريد الإلكتروني!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "يتوافر تضمين معاينات المكوِّن قريبًا";
+
 /* translators: accessibility text. %s: Embed caption. */
-"Embed caption. %s" = "Embed caption. %s";
+"Embed caption. %s" = "قم بتضمين تسمية توضيحية. %s";
 
 /* translators: accessibility text. Empty Embed caption. */
-"Embed caption. Empty" = "Embed caption. Empty";
+"Embed caption. Empty" = "قم بتضمين تسمية توضيحية. فارغ";
 
 /* No comment provided by engineer. */
-"Embed link" = "Embed link";
+"Embed link" = "تضمين رابط";
 
-/* translators: %s: host providing embed content e.g: www.youtube.com */
-"Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content." = "Embedded content from %s can't be viewed in the mobile editor at the moment. Please preview the page to see the embedded content.";
+/* No comment provided by engineer. */
+"Embed media" = "تضمين وسائط";
+
+/* No comment provided by engineer. */
+"Embed previews not yet available" = "تضمين المعاينات ليس متاحًا بعد";
 
 /* Title for the Emoji section */
 "Emoji" = "إيموجي Emoji";
@@ -2494,7 +2518,7 @@
 "Enable Quick Start for Site" = "تمكين البدء السريع للموقع";
 
 /* Title for the button that will enable the site stats module. */
-"Enable Site Stats" = "Enable Site Stats";
+"Enable Site Stats" = "تفعيل إحصاءات الموقع";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "قم بتمكين الوصول إلى الميكروفون لتسجيل الصوت في فيديوهاتك.";
@@ -2506,10 +2530,10 @@
 "Enable site notifications?" = "هل ترغب في تمكين التنبيهات في الموقع؟";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
-"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.";
+"Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "قم بتفعيل إحصاءات الموقع لمراجعة معلوماتك المفصّلة حول حركة المرور ومرات الإعجاب والتعليقات والمشتركين.";
 
 /* Text displayed while activating the site stats module. */
-"Enabling Site Stats..." = "Enabling Site Stats...";
+"Enabling Site Stats..." = "جارٍ تمكين إحصاءات الموقع...";
 
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "سجلات مشفَّرة";
@@ -2791,6 +2815,9 @@
    Title for the Featured Image view */
 "Featured Image" = "الصورة البارزة";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "تم تعيين صورة بارزة بالفعل";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "خيارات الصور المتميزة";
 
@@ -3039,6 +3066,9 @@
 
 /* Cancel */
 "Give Up" = "توقف";
+
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "جربه عن طريق إضافة القليل من المكوِّنات إلى مقالتك أو صفحتك!";
 
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "حدِّد اسمًا لموقعك يعكس هويته وموضوعه. الاعتماد على الانطباعات الأولى!";
@@ -3431,7 +3461,7 @@
 "Invalid URL. Audio file not found." = "رابط غير صالح. لم يتم العثور على ملف صوت.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
+"Invalid URL. Please enter a valid URL." = "رابط غير صالح. الرجاء إدخال عنوان موقع صالح.";
 
 /* Error message generated when announcement service is unable to return a valid endpoint. */
 "Invalid endpoint" = "نقطة نهاية غير صالحة";
@@ -3482,7 +3512,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "يلزم الإصدار %@ من Jetpack أو إصدار أحدث منه. هل تريد تحديث Jetpack؟";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "يوفِّر Jetpack Backup الخاصة بعمليات تثبيت مواقع متعددة نسخًا احتياطية قابلة للتنزيل، ولا يوفِّر عمليات استعادة من نقرة واحدة. لمزيد من المعلومات %1$@.";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "الأسئلة الشائعة عن Jetpack";
@@ -3619,11 +3649,11 @@
 /* Title displayed for selection of custom app icons that have white backgrounds. */
 "Light backgrounds" = "خلفيات فاتحة";
 
-/* Like (verb)
+/* Button title to Like a comment.
+   Like (verb)
    Like a post.
    Likes a Comment
-   Text for the 'like' button. Tapping marks a post in the reader as 'liked'.
-   Verb. Button title. Tap to like a commnet */
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
 "Like" = "أعجبني";
 
 /* A comment is marked as liked */
@@ -3632,7 +3662,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
@@ -3831,7 +3860,7 @@
 "Logs" = "السجلات";
 
 /* Title for the error view when the stats module is disabled. */
-"Looking for stats?" = "Looking for stats?";
+"Looking for stats?" = "هل تبحث عن الإحصاءات؟";
 
 /* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
 "Looking up address..." = "جاري البحث عن عنوان...";
@@ -3847,6 +3876,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "التنقل الرئيسي";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "اجعل محتواك مميزًا عن طريق إضافة صور وصورgif ومقاطع فيديو ووسائط مضمنة إلى صفحاتك.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4234,7 +4266,7 @@
 "No Items" = "لا توجد عناصر";
 
 /* Title when users have no Jetpack sites. */
-"No Jetpack sites found" = "No Jetpack sites found";
+"No Jetpack sites found" = "لم يتم العثور على أي مواقع Jetpack";
 
 /* Menus selection title for setting a location to not use a menu. */
 "No Menu" = "لا توجد قائمة";
@@ -4279,7 +4311,7 @@
 "No available sites" = "لا توجد مواقع متاحة";
 
 /* No comment provided by engineer. */
-"No button" = "بدون زر";
+"No blocks found" = "لم يتم العثور على أي مكوِّنات";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "لا توجد تعليقات";
@@ -4549,13 +4581,16 @@
 /* Title of a button style */
 "Official Buttons" = "الأزرار الرسمية";
 
-/* Notifications +2 Days Section Header */
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
 "Older than 2 days" = "قبل يومين";
 
-/* Notifications Months Section Header */
+/* Comments Months Section Header
+   Notifications Months Section Header */
 "Older than a Month" = "قبل شهر";
 
-/* Notifications Weeks Section Header */
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
 "Older than a Week" = "قبل أسبوع";
 
 /* Sort Order */
@@ -4563,6 +4598,9 @@
 
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "بمجرد تعطيل رابط الدعوة هذا، لن يتمكن أي شخص من استخدامه للانضمام إلى فريقك. هل أنتَ متأكد؟";
+
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "بمجرد التعرف على أسماء المكوِّنات المختلفة، يمكنك إضافة مكوِّن عن طريق كتابة شرطة مائلة للأمام متبوعة باسم المكوِّن — على سبيل المثال، \/image أو \/heading.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "بمجرد إنشاء موقع WordPress.com، يمكنك إعادة تدوين المحتوى الذي أعجبك على موقعك الخاص.";
@@ -4789,9 +4827,6 @@
 /* Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "انتظار";
-
-/* No comment provided by engineer. */
-"Pending moderation" = "في انتظار الإدارة";
 
 /* Name for the status of a post pending review.
    Pending review
@@ -5143,6 +5178,12 @@
 /* Title on display preview error */
 "Preview Unavailable" = "المعاينة غير متوفرة";
 
+/* No comment provided by engineer. */
+"Preview page" = "معاينة الصفحة";
+
+/* No comment provided by engineer. */
+"Preview post" = "معاينة المقالة";
+
 /* Description of a Quick Start Tour */
 "Preview your new site to see what your visitors will see." = "يمكنك معاينة موقعك الجديد لرؤية ما سيراه الزائرون.";
 
@@ -5453,6 +5494,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "تمت الإزالة";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "تمت الإزالة كصورة بارزة";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "يقوم بإزالة بيانات تعرييف الموقع من الصور قبل رفعها على موقعك.";
 
@@ -5461,6 +5505,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "ستؤدي إزالة الخطوات التالية إلى إخفاء جميع الجولات الإرشادية على هذا الموقع. لا يمكن التراجع عن هذا الإجراء.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "استبدال";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "استبدال المكوِّن الحالي";
@@ -5617,6 +5664,9 @@
 /* Cancels a pending Email Change */
 "Revert Pending Change" = "إرجاع التغيير المعلق";
 
+/* Accessibility hint describing what happens if the undo button is tapped. */
+"Reverts the action performed on this notification." = "تحويل الإجراء الذي تم تنفيذه بشأن هذا التنبيه.";
+
 /* Title of a Quick Start Tour */
 "Review site pages" = "مراجعة صفحات الموقع";
 
@@ -5625,6 +5675,9 @@
 
 /* Post Rich content */
 "Rich Content" = "المحتوى المنسق";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "تحرير النص المنسَّق";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "يمين";
@@ -5767,6 +5820,9 @@
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "تسمية مكون البحث. النص الحالي هو";
+
+/* No comment provided by engineer. */
+"Search blocks" = "البحث في المكوّنات";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "زر البحث. نص الزر الحالي هو";
@@ -5973,6 +6029,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "تعيين كصفحة مقالات";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "تعيين كصورة بارزة";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "تعيين التذكيرات";
@@ -6255,6 +6314,9 @@
 
 /* Follower Totals label for social media followers */
 "Social" = "اجتماعي";
+
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "تتضمن بعض المكوِّنات إعدادات إضافية. انقر على أيقونة الإعدادات الموجودة في أسفل يمين المكوِّن لعرض مزيد من الخيارات.";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "فشلت بعض عمليات رفع الوسائط. سيؤدي هذا الإجراء إلى إزالة كل الوسائط الفاشلة من المقالة.\nهل تريد الحفظ على أي حال؟";
@@ -7071,6 +7133,9 @@
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "للاستمرار باستخدام حساب Google هذا، يُرجى تسجيل الدخول أولاً باستخدام كلمة مرور حساب WordPress.com الخاص بك. سيُطلب منك هذا مرة واحدة فقط.";
 
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "لإزالة مكوِّن، حدِّد المكوِّن وانقر على النقاط الثلاث الموجودة في أسفل يمين المكوِّن لعرض الإعدادات. من هناك، اختر خيار إزالة المكوِّن.";
+
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "لالتقاط صور أو مقاطع فيديو لاستخدامها في مقالاتك.";
 
@@ -7083,7 +7148,8 @@
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "لاستخدام هذا التطبيق لـ %@، سيتعيَّن عليك تثبيت إضافة Jetpack وتفعيلها.";
 
-/* Insights 'Today' header
+/* Comments Today Section Header
+   Insights 'Today' header
    Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "اليوم";
@@ -7195,6 +7261,9 @@
    Share extension error dialog retry button label. */
 "Try again" = "حاول مرة أخرى";
 
+/* No comment provided by engineer. */
+"Try another search term" = "تجربة مصطلح بحث آخر";
+
 /* Customize Insights button title */
 "Try it now" = "جرّبه الآن";
 
@@ -7284,6 +7353,9 @@
 
 /* Message displayed when opening the link to the downloadable backup fails. */
 "Unable to download file" = "تعذّر تنزيل الملف";
+
+/* No comment provided by engineer. */
+"Unable to embed media" = "يتعذر تضمين وسائط";
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "غير قادر على متابعة المحادثة";
@@ -7604,6 +7676,9 @@
 
 /* Label for cell that sets the location of a post to the current location */
 "Use Current Location" = "استخدام الموقع الحالي";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "استخدام مخزن Sandbox";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "استخدام مُحرر المكوّنات";
@@ -8025,7 +8100,7 @@
 "We're restoring your site back to %1$@." = "نحن بصدد استعادة موقعك إلى %1$@.";
 
 /* Description for label when the user's site is a multisite. */
-"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.";
+"We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time." = "عذرًا، لكن عملية المسح على Jetpack Scan غير متوافقة مع تثبيت ووردبريس متعددة المواقع في الوقت الحالي.";
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "أرسلنا إليك أيضًا رابطًا إلى ملفك عبر البريد الإلكتروني.";
@@ -8060,6 +8135,9 @@
 /* A message title */
 "Welcome to the Reader" = "أهلاً بك في القارئ";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "مرحبًا في عالم المكوِّنات";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "مرحبًا بك في أداة إنشاء مواقع الويب الأكثر رواجًا في العالم.";
 
@@ -8088,6 +8166,12 @@
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "سنرشدك إلى أساسيات بناء موقعك وتنميته";
 
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "نعمل بجد على إضافة دعم المعاينات المضمَّنة. وفي هذه الأثناء، يمكنك معاينة المحتوى المضمَّن في الصفحة.";
+
+/* No comment provided by engineer. */
+"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "نعمل بجد على إضافة دعم المعاينات المضمَّنة. وفي هذه الأثناء، يمكنك معاينة المحتوى المضمَّن في المقالة.";
+
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "لقد أضفنا المزيد من المهام لمساعدتك على تنمية جمهورك.";
 
@@ -8102,6 +8186,9 @@
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "ما الذي ترغب في فعله بهذا الملف: هل ترغب في رفعه وإضافة رابط للملف إلى مقالتك، أو إضافة محتويات الملف مباشرة إلى المقالة؟";
+
+/* No comment provided by engineer. */
+"What is a block?" = "ماذا يُقصد بالمكوِّن؟";
 
 /* No comment provided by engineer. */
 "What is alt text?" = "ماهو النص البديل؟";
@@ -8208,7 +8295,7 @@
 "WordPress for iOS Support" = "دعم ووردبريس لـ iOS";
 
 /* Title for label when the user's site is a multisite. */
-"WordPress multisites are not supported" = "WordPress multisites are not supported";
+"WordPress multisites are not supported" = "مواقع ووردبريس المتعددة غير مدعومة";
 
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "يحتاج ووردبريس إلى صلاحية للوصول إلى الموقع الحالي لجهازك لإضافته إلى مقالتك. يُرجى تحديث إعدادات الخصوصية لديك.";
@@ -8296,8 +8383,12 @@
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "نعم، وضِّح لي";
 
-/* Notifications Yesterday Section Header */
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
 "Yesterday" = "الأمس";
+
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "لديك صورة بارزة معيَّنة بالفعل. هل ترغب في استبدالها؟";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "أنت على وشك تغيير اسم المستخدم الخاص بك، اسم المستخدم الحالي هو %1$@. %2$@";
@@ -8328,6 +8419,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "يمكنك إعادة ترتيب المكوِّنات عن طريق النقر على مكوِّن، ثم النقر على الأسهم المتجهة إلى الأعلى والأسفل التي تظهر أسفل يسار المكوِّن لنقله فوق المكوِّنات الأخرى أو أسفلها.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "يمكن تحديث هذا في أي وقت من خلال موقعي > إعدادات الموقع";
@@ -8547,6 +8641,21 @@
 /* Comment Attachment Label */
 "[COMMENT]" = "[تعليق]";
 
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_⁦%1$d⁩ مدون_ معجب بهذا.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_⁦%1$d⁩ من المدونين_ معجبين بهذا.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_أنت و⁦%1$d⁩ مدوِّن_ معجبان بهذا.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_أنت و ⁦%1$d⁩ من المدونين_ معجبين بهذا.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_أنت_ معجب بهذا.";
+
 /* Age between dates equaling one day. */
 "a day" = "يوم";
 
@@ -8640,7 +8749,7 @@
 "viewer" = "مشاهد";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
+"visit our documentation page" = "زيارة صفحة الوثائق الخاصة بنا";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "لن يكون متوفرًا في المستقبل.";

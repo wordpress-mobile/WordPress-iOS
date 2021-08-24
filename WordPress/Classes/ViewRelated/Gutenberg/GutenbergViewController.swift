@@ -5,7 +5,7 @@ import Aztec
 import WordPressFlux
 import Kanvas
 
-class GutenbergViewController: UIViewController, PostEditor {
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
@@ -210,6 +210,7 @@ class GutenbergViewController: UIViewController, PostEditor {
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+            featuredImageHelper = GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
             stockPhotos = GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             tenorMediaPicker = GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -232,6 +233,10 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+    }()
+
+    lazy var featuredImageHelper: GutenbergFeaturedImageHelper = {
+        return GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
     }()
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
@@ -442,7 +447,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         setTitle(post.postTitle ?? "")
         setHTML(content)
 
-        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog) { [weak self] in
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
             self?.gutenberg.updateCapabilities()
         }
     }
@@ -476,6 +481,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func showEditorHelp() {
+        WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
         gutenberg.showEditorHelp()
     }
 
@@ -506,6 +512,10 @@ class GutenbergViewController: UIViewController, PostEditor {
                 self?.gutenberg.updateCapabilities()
             }
         }
+    }
+
+    func gutenbergDidRequestFeaturedImageId(_ mediaID: NSNumber) {
+        gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
     }
 
     // MARK: - Event handlers
@@ -651,6 +661,59 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return
         }
         mediaInserterHelper.cancelUploadOf(media: media)
+    }
+
+    func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
+        let featuredImageId = post.featuredImage?.mediaID
+
+        let presentAlert = { [weak self] in
+            guard let `self` = self else { return }
+
+            guard featuredImageId as? Int32 != mediaID else {
+                // nothing special to do, trying to set the image that's already set as featured
+                return
+            }
+
+            guard mediaID != GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet else {
+                // user tries to clear the featured image setting
+                self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+                return
+            }
+
+            guard featuredImageId != nil else {
+                // current featured image is not set so, go ahead and set it to the provided one
+                self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+                return
+            }
+
+            // ask the user to confirm changing the featured image since there's already one set
+            self.showAlertForReplacingFeaturedImage(mediaID: mediaID)
+        }
+
+        if presentedViewController != nil {
+            dismiss(animated: false, completion: presentAlert)
+        } else {
+            presentAlert()
+        }
+    }
+
+    func showAlertForReplacingFeaturedImage(mediaID: Int32) {
+        let alertController = UIAlertController(title: NSLocalizedString("Featured Image Already Set", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                preferredStyle: .actionSheet)
+
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
+            self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+        }
+
+        alertController.addAction(replaceAction)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button to cancel the replacement of a featured image."))
+
+        alertController.popoverPresentationController?.sourceView = view
+        alertController.popoverPresentationController?.sourceRect = view.bounds
+        alertController.popoverPresentationController?.permittedArrowDirections = []
+
+        present(alertController, animated: true, completion: nil)
     }
 
     struct AnyEncodable: Encodable {
@@ -941,6 +1004,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestPreview() {
         displayPreview()
     }
+
+    func gutenbergDidRequestBlockTypeImpressions() -> [String: Int] {
+        return gutenbergSettings.blockTypeImpressions
+    }
+
+    func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
+        gutenbergSettings.blockTypeImpressions = impressions
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -1032,6 +1103,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post.postTitle ?? ""
     }
 
+    func gutenbergFeaturedImageId() -> NSNumber? {
+        return post.featuredImage?.mediaID
+    }
+
     func gutenbergPostType() -> String {
         return post is Page ? "page" : "post"
     }
@@ -1053,18 +1128,19 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
         return [
-            .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
-            .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
-            .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
+            .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .contactInfoBlock: post.blog.supports(.contactInfo),
             .layoutGridBlock: post.blog.supports(.layoutGrid),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
+            .mediaFilesCollectionBlock: post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .editorOnboarding: canViewEditorOnboarding() && !gutenbergSettings.hasLaunchedGutenbergEditor
+            .editorOnboarding: canViewEditorOnboarding(),
+            .firstGutenbergEditorSession: !gutenbergSettings.hasLaunchedGutenbergEditor
         ]
     }
 

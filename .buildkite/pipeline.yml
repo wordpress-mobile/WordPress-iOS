@@ -1,37 +1,34 @@
+# Nodes with values to reuse in the pipeline.
+common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &common_plugins
+    - automattic/bash-cache#v1.5.0
+    - automattic/git-s3-cache#v1.1.0:
+        bucket: "a8c-repo-mirrors"
+        repo: "wordpress-mobile/wordpress-ios/"
+  # Common environment values to use with the `env` key.
+  - &common_env
+    IMAGE_ID: xcode-12.5.1
 
 # This is the default pipeline – it will build and test the app
 steps:
-
   #################
   # Build the app
   #################
   - label: ":pipeline: Build"
     key: "build"
-    command: |
-      echo "--- 🔧 Setting up Gems"
-      gem install bundler
-      bundle install
-      echo "--- 🔨 Setting up Pods"
-      bundle exec pod install --repo-update
-      echo "--- ✍️ Copy Files"
-      cp fastlane/env/project.env-example .configure-files/project.env
-      echo "--- 🛠 Building"
-      bundle exec fastlane build_for_testing
-      echo "--- 🗜 Zip Build Products"
-      tar -cf build-products.tar DerivedData/Build/Products/
-    artifact_paths:
-      - build-products.tar
+    command: ".buildkite/commands/build-for-testing.sh"
+    env: *common_env
+    plugins: *common_plugins
 
   #################
   # Run Unit Tests
   #################
   - label: "🧪 Unit Tests"
-    command: |
-      buildkite-agent artifact download build-products.tar .
-      tar -xf build-products.tar
-      bundle install
-      bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+    command: ".buildkite/commands/run-unit-tests.sh"
     depends_on: "build"
+    env: *common_env
+    plugins: *common_plugins
 
   #################
   # Lint Translations
@@ -48,25 +45,18 @@ steps:
   # UI Tests
   #################
   - label: "🧪 UI Tests (iPhone)"
-    command: |
-      buildkite-agent artifact download build-products.tar .
-      tar -xf build-products.tar
-      bundle install
-      bundle exec pod install
-      rake mocks &
-      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPhone 11" ios-version:"14.1"
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 14.1
     depends_on: "build"
-    agents:
-      os: "macOS"
+    env: *common_env
+    plugins: *common_plugins
+    artifact_paths:
+      - "build/results/"
+
 
   - label: "🧪 UI Tests (iPad)"
-    command: |
-      buildkite-agent artifact download build-products.tar .
-      tar -xf build-products.tar
-      bundle install
-      bundle exec pod install
-      rake mocks &
-      bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:"iPad Air (4th generation)" ios-version:"14.1"
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 14.1
     depends_on: "build"
-    agents:
-      os: "macOS"
+    env: *common_env
+    plugins: *common_plugins
+    artifact_paths:
+      - "build/results/"

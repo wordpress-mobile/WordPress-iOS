@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+import OHHTTPStubs
 
 private extension URLRequest {
     var httpBodyString: String? {
@@ -104,4 +105,54 @@ class RequestAuthenticatorTests: XCTestCase {
         XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
     }
 
+    func testDecideActionForNavigationResponse() {
+        let url = URL(string: "https://example.wordpress.com/some-page/")!
+        let authenticator = dotComAuthenticator
+        let cookieJar = MockCookieJar()
+        cookieJar.setWordPressComCookie(username: dotComUser)
+
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+
+        let expectation = self.expectation(description: "Action Should be decided")
+        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
+            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.allow)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 0.2)
+    }
+
+    func testDecideActionForNavigationResponse_RemoteLoginError() {
+        let url = URL(string: "https://r-login.wordpress.com/remote-login.php?action=auth")!
+        let authenticator = dotComAuthenticator
+        let cookieJar = MockCookieJar()
+        cookieJar.setWordPressComCookie(username: dotComUser)
+
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+
+        let expectation = self.expectation(description: "Action Should be decided")
+        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
+            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.reload)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 0.2)
+    }
+
+    func testDecideActionForNavigationResponse_ClientError() {
+        let url = URL(string: "https://example.wordpress.com/some-page/")!
+        let authenticator = dotComAuthenticator
+        let cookieJar = MockCookieJar()
+        cookieJar.setWordPressComCookie(username: dotComUser)
+
+        let response = HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)!
+
+        let expectation = self.expectation(description: "Action Should be decided")
+        authenticator.decideActionFor(response: response, cookieJar: cookieJar) { action in
+            XCTAssertEqual(action, RequestAuthenticator.WPNavigationActionType.reload)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 0.2)
+    }
 }

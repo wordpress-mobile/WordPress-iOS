@@ -1,7 +1,9 @@
-Los bloques de texto reciben algo de cariño. Se ha añadido la personalización del color y del fondo a los bloques de texto del editor de bloques.
+En la versión 18.0 hemos optimizado las imágenes usadas en los temas, permitiéndote descargas más rápidas y un menor impacto en tu plan de datos móviles.
 
-Otras actualizaciones del editor de bloques incluyen la corrección de un problema con el selector de bloques en iPad y la actualización de las pantallas de carga y de fallo para la versión web del editor.
+Ahora puedes establecer o eliminar una imagen destacada para una entrada desde los ajustes del bloque de imágenes. Y, en caso de que lo olvides, un nuevo banner «destacado» resalta tu selección actual.
 
-Si has experimentado algunos problemas de refresco en el lector con los botones de seguimiento, ahora puedes estar tranquilo, ya que esos problemas han sido solucionados.
+Ahora también tenemos un aspecto unificado en el diseño de portada, los comentarios y los avisos. Y, a la hora de elegir un dominio o un diseño para tu sitio, los encabezados han sido perfeccionados para la accesibilidad en dispositivos configurados para usar tamaños de texto mayores.
 
-¡Los autores y colaboradores ya no están a oscuras! Ahora pueden ver los comentarios de un sitio a través de «Mi sitio > Comentarios».
+Ahora, cuando te hacemos saber que has publicado una entrada con un aviso dentro de la aplicación, verás cualquier signo «&» en tu título mostrado por completo, no en su forma HTML.
+
+Por último, pero no menos importante, hemos suavizado un bache en el camino cuando se recuperan tokens de identificación invalidados.

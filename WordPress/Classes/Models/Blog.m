@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "NSURL+IDN.h"
@@ -9,6 +8,8 @@
 #import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
+
+@class Comment;
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -226,26 +227,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
-- (NSUInteger)numberOfPendingComments
-{
-    NSUInteger pendingComments = 0;
-    if ([self hasFaultForRelationshipNamed:@"comments"]) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
-        [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
-        [request setIncludesSubentities:NO];
-        NSError *error;
-        pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
-    } else {
-        for (Comment *element in self.comments) {
-            if ( [CommentStatusPending isEqualToString:element.status] ) {
-                pendingComments++;
-            }
-        }
-    }
-
-    return pendingComments;
-}
-
 - (NSArray *)sortedCategories
 {
     NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
@@ -447,7 +428,21 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)version
 {
-    return [self getOptionValue:@"software_version"];
+    // Ensure the value being returned is a string to prevent a crash when using this value in Swift
+    id value = [self getOptionValue:@"software_version"];
+
+    // If its a string, then return its value 🎉
+    if([value isKindOfClass:NSString.class]) {
+        return value;
+    }
+
+    // If its not a string, but can become a string, then convert it
+    if([value respondsToSelector:@selector(stringValue)]) {
+        return [value stringValue];
+    }
+
+    // If the value is an unknown type, and can not become a string, then default to a blank string.
+    return @"";
 }
 
 - (NSString *)password
@@ -669,9 +664,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsLayoutGrid
 {
-    if (![Feature enabled:FeatureFlagLayoutGrid]) {
-        return false;
-    }
     return self.isHostedAtWPcom || self.isAtomic;
 }
 
