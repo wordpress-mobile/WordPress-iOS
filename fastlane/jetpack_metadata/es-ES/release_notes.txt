@@ -1,9 +1,0 @@
-En la versión 18.0, hemos optimizado las imágenes que se usan en los temas, para que las descargas sean más rápidas y para que tu plan de datos móviles no sufra tanto.
-
-Ahora puedes establecer o eliminar una imagen destacada para una entrada desde la configuración del bloque Imagen. Hay un nuevo banner destacado que te avisa de lo que estás seleccionando, por si se te olvida.
-
-En cuanto al diseño, los comentarios y las notificaciones tienen un aspecto unificado. Al elegir un dominio o un diseño para tu sitio, se ha mejorado la accesibilidad de los encabezados en los dispositivos configurados para usar tamaños de letra grandes.
-
-Ahora, cuando te comuniquemos que has publicado una entrada con un aviso en la aplicación, no verás ningún signo "&" en el título, y lo verás en su máximo esplendor (no en HTML).
-
-Por último, pero no menos importante, hemos solucionado un problemilla que ocurría al recuperar tokens de autenticación no válidos.
