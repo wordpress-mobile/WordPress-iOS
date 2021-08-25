@@ -578,7 +578,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         }
 
         // If it's a blogging reminder notification, display it in-app
-        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue {
+        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue
+            || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue {
+
             if #available(iOS 14.0, *) {
                 completionHandler([.banner, .list, .sound])
             } else {
