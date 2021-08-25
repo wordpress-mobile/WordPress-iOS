@@ -100,7 +100,7 @@ extension FeatureFlag {
         case .newCommentEdit:
             return "New Comment Edit"
         case .domains:
-            return "Domains selling"
+            return "Domain Purchases"
         }
     }
 
