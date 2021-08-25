@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 11:01:43+0000 */
+/* Translation-Revision-Date: 2021-08-24 19:10:27+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -4239,7 +4239,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to the previous content sheet" = "Navigates to the previous content sheet";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
-"Need Help?" = "Potrzebujesz wsparcia?";
+"Need Help?" = "Potrzebujesz pomocy?";
 
 /* A button title. */
 "Need help finding your site address?" = "Need help finding your site address?";
@@ -7734,7 +7734,7 @@ translators: Block name. %s: The localized block name */
 "Uploading post..." = "Uploading post...";
 
 /* Label to show while uploading media to server */
-"Uploading..." = "Wysyłanie...";
+"Uploading..." = "Przesyłanie…";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Uploading…";

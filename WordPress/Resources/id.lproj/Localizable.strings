@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 08:54:07+0000 */
+/* Translation-Revision-Date: 2021-08-24 14:27:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Tambahkan topik yang mana saja";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "Tambah blok";
 
 /* No comment provided by engineer. */
 "Add button text" = "Tambahkan teks tombol";
@@ -1460,7 +1460,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "Tutup";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "Tutup Akun";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "Tutup Komentar";
@@ -1478,7 +1478,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "Tutup layar Me";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "Menutup akun...";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kode";
@@ -2399,7 +2399,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "EDIT TAUTAN";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Setiap blok memiliki pengaturannya sendiri. Untuk menemukannya, ketuk pada blok. Pengaturannya akan muncul di toolbar di bagian bawah layar.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2678,7 +2678,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "Error saat menginstal %@.";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "Eror memuat suka";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Terjadi error saat memuat plugin";
@@ -2741,7 +2741,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "Tiap hari";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "Setiap hari pada %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Setiap Orang";
@@ -4897,7 +4897,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "Periode";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "Tutup Akun Permanen";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Hapus Situs Secara Permanen";
@@ -8591,7 +8591,7 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "Anda tidak akan dapat mengubah kembali nama pengguna Anda.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Anda akan mendapat pengingat blogging <strong>satu kali<\/strong> seminggu pada %1$@ pada %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Anda akan mendapat pengingat blogging %1$@ kali seminggu pada %2$@.";

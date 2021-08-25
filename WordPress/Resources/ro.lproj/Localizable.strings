@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 15:53:36+0000 */
+/* Translation-Revision-Date: 2021-08-24 06:30:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -1987,7 +1987,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "Personalizează-ți site-ul";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Personalizează blocuri";
+"Customize blocks" = "Personalizează blocurile";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "Personalizează mesajul";
@@ -4574,7 +4574,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "Setări notificare";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Momentul notificării";
+"Notification time" = "Ora notificării";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -6760,7 +6760,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Numai text";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii, în timpul editării unui bloc de text";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7098,16 +7098,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "Acest site nu a publicat nimic până acum. Încearcă din nou mai târziu.";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "Acest cont de utilizator nu poate fi închis dacă există restituiri nerezolvate.";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account cannot be closed while it has active atomic sites." = "This user account cannot be closed while it has active atomic sites.";
+"This user account cannot be closed while it has active atomic sites." = "Acest cont de utilizator nu poate fi închis deoarece are site-uri atomic active.";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "Acest cont de utilizator nu poate fi închis deoarece are cumpărături active.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "Acest cont de utilizator nu poate fi închis deoarece are abonamente active.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8322,7 +8322,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "Setări aplicații WordPress";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "Aplicații WordPress - aplicații pentru orice tip de ecran";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress ";

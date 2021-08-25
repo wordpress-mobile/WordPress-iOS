@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-11 11:55:01+0000 */
+/* Translation-Revision-Date: 2021-08-24 11:12:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -2399,7 +2399,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "PËRPUNONI LIDHJE";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Çdo bllok ka rregullimet e veta. Për t’i gjetur, klikoni mbi një bllok. Rregullimet e tij do të shfaqen te paneli në fund të ekranit.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -8591,7 +8591,7 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "S'do të jeni në gjendje të ndryshoni prapë emrin tuaj të përdoruesit.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Do të merrni një kujtues për të bloguar <strong>një herë<\/strong> në javë në të %1$@ më %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Do të merrni kujtues për të bloguar %1$@ në javë te %2$@.";
