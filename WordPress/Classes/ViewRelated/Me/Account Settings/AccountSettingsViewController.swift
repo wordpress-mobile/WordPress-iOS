@@ -278,12 +278,6 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    private func generateLocalizedError(_ error: Error) -> CloseAccountError {
-        let userInfo = (error as NSError).userInfo
-        let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
-        return CloseAccountError(errorCode: errorCode)
-    }
-
     private func showCloseAccountErrorAlert() {
         let title = NSLocalizedString("Couldn’t close account",
                                       comment: "Error title displayed when unable to close user account.")
@@ -359,65 +353,5 @@ private class AccountSettingsController: SettingsController {
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
-    }
-
-    // MARK: - Types
-
-    private enum CloseAccountError: String, Error, LocalizedError {
-        case unauthorized
-        case atomicSite
-        case chargebackedSite
-        case activeSubscriptions
-        case activeMemberships
-        case `default`
-
-        var errorTitle: String {
-            switch self {
-            case .atomicSite:
-                return NSLocalizedString("Couldn’t close account", comment: "Error title displayed when unable to close user account due to having active atomic site.")
-            default:
-                return NSLocalizedString("Error", comment: "General error title")
-            }
-        }
-
-        var errorDescription: String? {
-            switch self {
-            case .unauthorized:
-                return NSLocalizedString("You're not authorized to close the account.",
-                                         comment: "Error message displayed when unable to close user account due to being unauthorized.")
-            case .atomicSite:
-                return NSLocalizedString("To close this account now, contact our support team.",
-                                         comment: "Error message displayed when unable to close user account due to having active atomic site.")
-            case .chargebackedSite:
-                return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
-                                         comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
-            case .activeSubscriptions:
-                return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
-                                         comment: "Error message displayed when unable to close user account due to having active subscriptions.")
-            case .activeMemberships:
-                return NSLocalizedString("This user account cannot be closed while it has active purchases.",
-                                         comment: "Error message displayed when unable to close user account due to having active purchases.")
-            case .default:
-                return NSLocalizedString("An error occured while closing account.",
-                                         comment: "Default error message displayed when unable to close user account.")
-            }
-        }
-
-        init(errorCode: String?) {
-            switch errorCode {
-            case "unauthorized":
-                self = .unauthorized
-            case "atomic-site":
-                self = .atomicSite
-            case "chargebacked-site":
-                self = .chargebackedSite
-            case "active-subscriptions":
-                self = .activeSubscriptions
-            case "active-memberships":
-                self = .activeMemberships
-            default:
-                self = .default
-            }
-        }
     }
 }
