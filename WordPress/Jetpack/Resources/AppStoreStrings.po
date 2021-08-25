@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Make your WordPress site faster and safer.
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -38,17 +39,15 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.0-whats-new"
+msgctxt "v18.1-whats-new"
 msgid ""
-"In 18.0 we’ve optimized the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.\n"
+"Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.\n"
 "\n"
-"You can now set or remove a featured image for a post from the image block’s settings. And in case you forget, a new ‘featured’ banner highlights your current selection.\n"
+"Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.\n"
 "\n"
-"Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.\n"
+"Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.\n"
 "\n"
-"When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.\n"
-"\n"
-"Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.\n"
+"Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
