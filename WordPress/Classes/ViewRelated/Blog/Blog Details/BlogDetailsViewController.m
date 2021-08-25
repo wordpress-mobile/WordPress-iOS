@@ -983,14 +983,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([Feature enabled:FeatureFlagDomains]) {
         BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
-                                                         identifier:BlogDetailsSettingsCellIdentifier
-                                            accessibilityIdentifier:@"Domains Row"
+                                                                identifier:BlogDetailsSettingsCellIdentifier
+                                                   accessibilityIdentifier:@"Domains Row"
                                                                      image:[UIImage gridiconOfType:GridiconTypeDomains]
-                                                           callback:^{
-            [weakSelf showDomains];
-
-        }];
-
+                                                                  callback:^{
+                                                                    [weakSelf showDomains];
+                                                      }];
         [rows addObject:domainsRow];
     }
 
