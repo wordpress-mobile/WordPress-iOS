@@ -4,9 +4,9 @@ import UIKit
 /// Makes RegisterDomainSuggestionsViewController available to SwiftUI
 final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
-    let blog: Blog
+    private let blog: Blog
 
-    weak var presentingController: RegisterDomainSuggestionsViewController?
+    private weak var presentingController: RegisterDomainSuggestionsViewController?
 
     init(blog: Blog) {
         self.blog = blog
@@ -24,15 +24,28 @@ final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable
         return viewController
     }
 
-    func updateUIViewController(_ uiViewController: RegisterDomainSuggestionsViewController, context: Context) {
-
-    }
+    func updateUIViewController(_ uiViewController: RegisterDomainSuggestionsViewController, context: Context) { }
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
         guard let presentingController = presentingController else {
             return
         }
-        let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: presentingController)
+        let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
         presentingController.present(controller, animated: true)
+    }
+}
+
+/// Handles the action after the domain registration confirmation is dismissed - go back to Domains Dashboard
+extension DomainSuggestionViewControllerWrapper: DomainCreditRedemptionSuccessViewControllerDelegate {
+
+    func continueButtonPressed() {
+
+        presentingController?.dismiss(animated: true) { [weak self] in
+            if let popController = self?.presentingController?.navigationController?.viewControllers.first(where: {
+                                                                                $0 is UIHostingController<DomainsDashboardView>
+            }) ?? self?.presentingController?.navigationController?.topViewController {
+                self?.presentingController?.navigationController?.popToViewController(popController, animated: true)
+            }
+        }
     }
 }
