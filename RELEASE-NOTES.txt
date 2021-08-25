@@ -1,6 +1,6 @@
 18.2
 -----
-
+[internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
 
 18.1
 -----
