@@ -3,6 +3,7 @@ import Foundation
 struct PostEditorAnalyticsSession {
     private let sessionId = UUID().uuidString
     let postType: String
+    let blogID: NSNumber?
     let blogType: String
     let contentType: String
     var started = false
@@ -14,6 +15,7 @@ struct PostEditorAnalyticsSession {
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
+        blogID = post.blog.dotComID
         blogType = post.blog.analyticsType.rawValue
         contentType = ContentType(post: post).rawValue
     }
@@ -24,7 +26,7 @@ struct PostEditorAnalyticsSession {
 
         let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding)
 
-        WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
+        WPAppAnalytics.track(.editorSessionStart, withProperties: properties, withBlogID: blogID)
         started = true
     }
 
@@ -70,7 +72,7 @@ struct PostEditorAnalyticsSession {
 
         properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
 
-        WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
+        WPAppAnalytics.track(.editorSessionEnd, withProperties: properties, withBlogID: blogID)
     }
 }
 
