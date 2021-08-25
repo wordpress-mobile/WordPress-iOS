@@ -50,7 +50,7 @@ struct PostEditorAnalyticsSession {
 
     mutating func `switch`(editor: Editor) {
         currentEditor = editor
-        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
+        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties, withBlogID: blogID)
     }
 
     mutating func forceOutcome(_ newOutcome: Outcome) {
