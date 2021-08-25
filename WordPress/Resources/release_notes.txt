@@ -1,6 +1,9 @@
-* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
-* [*] Posts Settings: Removed deprecated Location feature. [#17052]
-* [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
-* [**] Block editor: Embed block: Add "Resize for smaller devices" setting. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3753]
-* [**] Account Settings: added the ability to close user account.
+Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.
 
+Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.
+
+Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.
+
+Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.
+
+We also made other improvements, including a fix to a cropping issue in the Reader, as well as the ability to recommend the app to your friends on your Me and About screens.

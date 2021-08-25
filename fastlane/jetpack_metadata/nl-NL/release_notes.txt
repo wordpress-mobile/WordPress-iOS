@@ -1,9 +1,0 @@
-In 18.0 hebben we de afbeeldingen die voor Thema's worden gebruikt, geoptimaliseerd. Zo geniet je van snellere downloads en verbruik je minder mobiele data.
-
-Je kunt een uitgelichte afbeelding instellen of verwijderen voor een bericht via de instellingen van het afbeeldingblok. Mocht je het vergeten zijn: een nieuwe banner 'uitgelicht' toont je huidige selectie.
-
-Opmerkingen en meldingen zijn in een nieuw jasje gestoken en zien eruit als één geheel. Bij het kiezen van een domein of ontwerp voor je site, zijn de headers vernieuwd met het oog op toegankelijkheid voor apparaten die een groter lettertype gebruiken.
-
-Wanneer we je via een melding in de app laten weten dat je een bericht hebt gepubliceerd, zie je nu ampersands in je titel, weergegeven in al hun volledige, niet-HTML glorie.
-
-Ten slotte hebben we een plooi gladgestreken wat betreft het herstellen van niet-goedgekeurde authenticatietokens.
