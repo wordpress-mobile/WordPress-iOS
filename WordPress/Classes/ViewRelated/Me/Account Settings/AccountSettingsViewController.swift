@@ -265,7 +265,6 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.show(withStatus: status)
 
         service.closeAccount { [weak self] in
-            guard let self = self else { return }
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
@@ -274,7 +273,7 @@ private class AccountSettingsController: SettingsController {
             case .failure(let error):
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
-                self.showErrorAlert(error: self.generateLocalizedError(error))
+                self?.showCloseAccountErrorAlert()
             }
         }
     }
@@ -285,20 +284,18 @@ private class AccountSettingsController: SettingsController {
         return CloseAccountError(errorCode: errorCode)
     }
 
-    private func showErrorAlert(error: CloseAccountError) {
-        let alert = UIAlertController(title: error.errorTitle, message: error.errorDescription, preferredStyle: .alert)
+    private func showCloseAccountErrorAlert() {
+        let title = NSLocalizedString("Couldn’t close account",
+                                      comment: "Error title displayed when unable to close user account.")
+        let message = NSLocalizedString("To close this account now, contact our support team.",
+                                        comment: "Error message displayed when unable to close user account.")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        switch error {
-        case .atomicSite:
-            let title = NSLocalizedString("Contact Support",
-                                          comment: "Title for a button displayed when unable to close user account due to having atomic site.")
-            alert.addActionWithTitle(title, style: .default, handler: contactSupportAction)
-            let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
-            alert.addCancelActionWithTitle(cancelAction)
-        default:
-            let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
-            alert.addDefaultActionWithTitle(okAction)
-        }
+        let contactSupportTitle = NSLocalizedString("Contact Support",
+                                      comment: "Title for a button displayed when unable to close user account due to having atomic site.")
+        alert.addActionWithTitle(contactSupportTitle, style: .default, handler: contactSupportAction)
+        let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        alert.addCancelActionWithTitle(cancelAction)
 
         alert.presentFromRootViewController()
     }
