@@ -1661,6 +1661,10 @@
 		98E5D4922620C2B40074A56A /* UserProfileSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */; };
 		98E5D4932620C2B40074A56A /* UserProfileSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */; };
 		98EB126A20D2DC2500D2D5B5 /* NoResultsViewController+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */; };
+		98EC6B7926D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */; };
+		98EC6B7A26D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */; };
+		98EC6B7B26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */; };
+		98EC6B7C26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */; };
 		98ED5963265EBD0000A0B33E /* ReaderDetailLikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */; };
 		98ED5964265EBD0000A0B33E /* ReaderDetailLikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */; };
 		98F0297C2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F0297A2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift */; };
@@ -6308,6 +6312,8 @@
 		98E58A432361019300E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileSectionHeader.xib; sourceTree = "<group>"; };
 		98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+Model.swift"; sourceTree = "<group>"; };
+		98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCommentMultiLineCell.swift; sourceTree = "<group>"; };
+		98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCommentMultiLineCell.xib; sourceTree = "<group>"; };
 		98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailLikesListController.swift; sourceTree = "<group>"; };
 		98F0297A2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEpilogueConnectSiteCell.swift; sourceTree = "<group>"; };
 		98F0297B2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginEpilogueConnectSiteCell.xib; sourceTree = "<group>"; };
@@ -12404,6 +12410,8 @@
 				9835F16D25E492EE002EFF23 /* CommentsList.storyboard */,
 				B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */,
 				B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */,
+				98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */,
+				98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */,
 				9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */,
 				9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */,
 				5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */,
@@ -15183,6 +15191,7 @@
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */,
+				98EC6B7B26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
 				B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */,
 				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
@@ -15765,6 +15774,7 @@
 				FABB20AD2602FC2C00C8785C /* StatsGhostSingleRowCell.xib in Resources */,
 				FABB20AE2602FC2C00C8785C /* ThemeBrowser.storyboard in Resources */,
 				FABB20AF2602FC2C00C8785C /* StatsGhostTabbedCell.xib in Resources */,
+				98EC6B7C26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */,
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
 				FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */,
 				FABB20B42602FC2C00C8785C /* WidgetUrlCell.xib in Resources */,
@@ -17198,6 +17208,7 @@
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
 				73CE3E0E21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift in Sources */,
 				436D56292117312700CEAA33 /* RegisterDomainDetailsViewController.swift in Sources */,
+				98EC6B7926D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */,
 				F5E29036243E4F5F00C19CA5 /* FilterProvider.swift in Sources */,
 				027AC51D227896540033E56E /* DomainCreditEligibilityChecker.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
@@ -20063,6 +20074,7 @@
 				FABB25072602FC2C00C8785C /* SiteAssemblyService.swift in Sources */,
 				FABB25082602FC2C00C8785C /* ManagedPerson.swift in Sources */,
 				FABB25092602FC2C00C8785C /* ChosenValueRow.swift in Sources */,
+				98EC6B7A26D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */,
 				FABB250A2602FC2C00C8785C /* ReplyTextView.swift in Sources */,
 				FABB250B2602FC2C00C8785C /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB250C2602FC2C00C8785C /* MenuItemEditingFooterView.m in Sources */,
