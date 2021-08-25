@@ -24845,8 +24845,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/XCUITestHelpers";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				branch = "add-helpers-from-woo";
+				kind = branch;
 			};
 		};
 		3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */ = {
