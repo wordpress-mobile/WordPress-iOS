@@ -1,9 +1,0 @@
-18.0'da Temalar için kullanılan görselleri optimize ettik, böylece indirme işlemlerini hızlandırdık ve mobil veri planınız üzerindeki etkiyi azalttık.
-
-Artık bir gönderi için öne çıkan bir görseli görsel blokunun ayarlarından ayarlayabilir veya kaldırabilirsiniz. Ve unutmanız durumunda, yeni bir "öne çıkan" başlık ile mevcut seçiminiz vurgulanır.
-
-Ayrıca tasarım olarak, yorumlar ve bildirimler artık birleşik bir görünüme sahiptir. Siteniz için bir alan adı veya tasarım seçmeniz gereken durumlar için, başlıklar daha büyük metin boyutları kullanacak şekilde ayarlanmış cihazlarda erişilebilirlik açısından iyileştirildi.
-
-Bir gönderi yayınladığınızı size uygulama içi bir bildirimle bildirdiğimizde, başlığınızdaki tüm ve işaretlerini artık HTML olmayan tam varlık biçiminde göreceksiniz.
-
-Son olarak, geçersiz kılınmış kimlik doğrulama belirteçlerinden kurtarırken yoldaki bir engeli ortadan kaldırdık.

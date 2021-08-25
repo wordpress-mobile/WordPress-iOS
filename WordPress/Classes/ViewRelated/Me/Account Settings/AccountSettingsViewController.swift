@@ -288,7 +288,7 @@ private class AccountSettingsController: SettingsController {
             return NSLocalizedString("You're not authorized to close the account.",
                                      comment: "Error message displayed when unable to close user account due to being unauthorized.")
         case "atomic-site":
-            return NSLocalizedString("This user account cannot be closed while it has active atomic sites.",
+            return NSLocalizedString("This user account could not be closed. Please contact us by going to Me > Help & Support screen.",
                                      comment: "Error message displayed when unable to close user account due to having active atomic site.")
         case "chargebacked-site":
             return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",

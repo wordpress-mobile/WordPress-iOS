@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-19 07:53:12+0000 */
+/* Translation-Revision-Date: 2021-08-24 06:30:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -8,6 +8,9 @@
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPentru a confirma, te rog reintrodu adresa site-lui înainte de a-l șterge.\n\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nPentru a confirma, te rog ca înainte de a-l închide să introduci din nou numele de utilizator.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Imagini „încărcate lent”";
@@ -299,11 +302,20 @@ translators: Block name. %s: The localized block name */
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "De <strong>%d<\/strong> ori pe săptămână";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "De <strong>%1$d<\/strong> ori pe săptămână la %2$@";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>O dată<\/strong> pe săptămână";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "<strong>O dată<\/strong> pe săptămână la %@";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>De două ori<\/strong> pe săptămână";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "<strong>De două ori<\/strong> pe săptămână la %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -392,6 +404,9 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Title
    Link to Account Settings section */
 "Account Settings" = "Setări cont";
+
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "Cont închis";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Certificări";
@@ -498,6 +513,9 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Adaugă orice subiect";
+
+/* No comment provided by engineer. */
+"Add blocks" = "Adaugă blocuri";
 
 /* No comment provided by engineer. */
 "Add button text" = "Adaugă text în buton";
@@ -681,6 +699,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Pentru a vedea istoricul, este necesară o conexiune activă la internet";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "A apărut o eroare la închiderea contului.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "A apărut o eroare la crearea meniului.";
 
@@ -734,6 +755,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentificarea Apple a eșuat.\nTe rog asigură-te că ești conectat la iCloud cu un ID Apple care folosește autentificarea pe două niveluri.";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "Aplică setările";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Aplică";
@@ -1265,6 +1289,9 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Modifică paginile, adaugă sau înlătură pagini pe site.";
 
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Modificările imaginii reprezentative nu vor fi afectate de butoanele revenire\/refacere.";
+
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Schimb numele de afișat";
 
@@ -1432,6 +1459,9 @@ translators: Block name. %s: The localized block name */
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Închidere";
 
+/* Close account action label */
+"Close Account" = "Închide contul";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "Închide comentarea";
 
@@ -1446,6 +1476,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Închide ecranul Eu";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "Închid contul...";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Cod";
@@ -1474,7 +1507,8 @@ translators: Block name. %s: The localized block name */
 /* Menu item label for linking a comic page. */
 "Comics" = "Benzi desenate";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "Comentariu";
 
@@ -1570,6 +1604,9 @@ translators: Block name. %s: The localized block name */
 /* Confirm
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirmă";
+
+/* Close Account alert title */
+"Confirm Close Account" = "Confirmă închiderea contului";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Confirmă ștergerea site-ului";
@@ -1949,6 +1986,9 @@ translators: Block name. %s: The localized block name */
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Personalizează-ți site-ul";
 
+/* No comment provided by engineer. */
+"Customize blocks" = "Personalizează blocurile";
+
 /* Title for the edition of the share message. */
 "Customize the message" = "Personalizează mesajul";
 
@@ -2214,7 +2254,6 @@ translators: Block name. %s: The localized block name */
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2360,10 +2399,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "EDITEAZĂ LEGĂTURA";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, dă clic pe un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "Est";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, atinge un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2386,7 +2422,7 @@ translators: Block name. %s: The localized block name */
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Editează un cuvânt din Lista blocări";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "Editează comentariul";
 
 /* IP Address or Range Edition Title */
@@ -2461,6 +2497,9 @@ translators: Block name. %s: The localized block name */
    Label for email followers
    Register Domain - Domain contact information field Email */
 "Email" = "Email";
+
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "Adresa de email";
 
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
@@ -2592,7 +2631,8 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Introdu datele de conectare la server";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Eroare";
@@ -2639,6 +2679,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Eroare la instalarea %@.";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Eroare la încărcarea aprecierilor";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Eroare la încărcarea modulelor";
@@ -2699,6 +2742,9 @@ translators: Block name. %s: The localized block name */
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Zilnic";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "În fiecare zi la %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Oricine";
@@ -2885,9 +2931,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "Găsește bloguri și povestiri care îți vor plăcea...";
-
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "Găsirea locației tale...";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -3079,6 +3122,9 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
 
+/* No comment provided by engineer. */
+"Go back" = "Du-te înapoi";
+
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Du-te la urmărire";
 
@@ -3260,6 +3306,12 @@ translators: Block name. %s: The localized block name */
 
 /* How to create story description */
 "How to create a story post" = "Cum să creezi un articol narațiune";
+
+/* No comment provided by engineer. */
+"How to edit your page" = "Cum să editezi pagina";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "Cum să editezi articolul";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Cum vom corecta asta?";
@@ -3802,9 +3854,7 @@ translators: Block name. %s: The localized block name */
    Title of the Local Changes Badge */
 "Local changes" = "Schimbări locale";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "Locație";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3864,9 +3914,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Cauți statisticile?";
-
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "Caut adresa...";
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Se pare că ai inițializat Jetpack pe site-ul tău. Felicitări! Autentifică-te pe WordPress.com cu datele tale de conectare pentru a activa statisticile și notificările.";
@@ -4111,6 +4158,9 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Mută blocul în sus de pe rândul %1$s pe rândul %2$s";
 
+/* No comment provided by engineer. */
+"Move blocks" = "Mută blocuri";
+
 /* Option to move Insight down in the view. */
 "Move down" = "Mută în jos";
 
@@ -4169,6 +4219,7 @@ translators: Block name. %s: The localized block name */
 "My Top Ten Cafes" = "Primele zece cafenele, pe gustul meu";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Nume";
 
@@ -4183,6 +4234,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navighează pentru a personaliza gradientul";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navighează pentru a selecta %s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navighează la foaia anterioară cu conținut";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Ai nevoie de ajutor?";
@@ -4467,9 +4524,6 @@ translators: Block name. %s: The localized block name */
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Nimic setat";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "Nord";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Neconectat";
 
@@ -4518,6 +4572,9 @@ translators: Block name. %s: The localized block name */
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Setări notificare";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "Ora notificării";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4619,7 +4676,6 @@ translators: Block name. %s: The localized block name */
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for date periods. */
 "Period" = "Perioada";
+
+/* Close Account confirmation action title */
+"Permanently Close Account" = "Închide definitiv contul";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Șterge site-ul definitiv";
@@ -5438,7 +5497,6 @@ translators: Block name. %s: The localized block name */
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5806,9 +5864,6 @@ translators: Block name. %s: The localized block name */
    Title of the Reader's search feature */
 "Search" = "Caută";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "Caută locații";
-
 /* Label for list of search term */
 "Search Term" = "Termen de căutare";
 
@@ -5924,6 +5979,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Select a color" = "Selectează o culoare";
 
+/* No comment provided by engineer. */
+"Select a color above" = "Selectează o culoare de mai sus";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Selectează câteva pentru a continua";
 
@@ -5972,6 +6030,9 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Media selectată este indisponibilă.";
 
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Selectat: %s";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Selectarea unui alte locații pentru meniu va anula modificările pe care le-ai făcut în meniul actual. Sigur vrei să continui?";
 
@@ -6016,9 +6077,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Setează imaginea reprezentativă";
-
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "Setare locație";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
@@ -6085,6 +6143,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for action to share post. */
 "Share Post" = "Partajează articolul";
+
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "Împărtășește WordPress cu un prieten";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Partajează informații cu instrumentul nostru de analitice despre utilizarea serviciilor în timp ce ești autentificat în contul tău WordPress.com.";
@@ -6335,7 +6396,8 @@ translators: Block name. %s: The localized block name */
 "Something went wrong. Please check your connectivity and try again." = "Ceva n-a mers bine. Te rog verifică conectivitatea și încearcă din nou.";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "Ceva a mers prost. Te rog încearcă din nou.";
 
 /* Invite Validation Alert
@@ -6411,9 +6473,6 @@ translators: Block name. %s: The localized block name */
 
 /* Opens the Github Repository Web */
 "Source Code" = "Cod sursă";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "Sud";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Spațiu folosit";
@@ -6700,6 +6759,9 @@ translators: Block name. %s: The localized block name */
 /* Title of a button style */
 "Text Only" = "Numai text";
 
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "În schimb, trimite-mi un mesaj text cu un cod";
@@ -6942,9 +7004,6 @@ translators: Block name. %s: The localized block name */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "A fost o eroare la încărcarea activităților";
 
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "A fost o eroare la încărcarea aprecierilor";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "A fost o eroare la încărcarea planurilor";
 
@@ -7037,6 +7096,18 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Acest site nu a publicat nimic până acum. Încearcă din nou mai târziu.";
+
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Acest cont de utilizator nu poate fi închis dacă există restituiri nerezolvate.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account cannot be closed while it has active atomic sites." = "Acest cont de utilizator nu poate fi închis deoarece are site-uri atomic active.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Acest cont de utilizator nu poate fi închis deoarece are cumpărături active.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Acest cont de utilizator nu poate fi închis deoarece are abonamente active.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7666,7 +7737,7 @@ translators: Block name. %s: The localized block name */
 "Uploading post..." = "Încarc articolul...";
 
 /* Label to show while uploading media to server */
-"Uploading..." = "Încărcare...";
+"Uploading..." = "Încarc...";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Încarc...";
@@ -7676,9 +7747,6 @@ translators: Block name. %s: The localized block name */
 
 /* Use the current image */
 "Use" = "Folosește";
-
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "Folosește locația curentă";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Folosește Sandbox Store";
@@ -8114,7 +8182,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Am avut probleme la modificarea domeniului principal pentru site-ul tău - dar nu-ți face griji, domeniul a fost cumpărat cu succes.";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Adresă web";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8146,9 +8215,6 @@ translators: Block name. %s: The localized block name */
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Bine ai venit la cel mai popular constructor de site-uri web din lume.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "Vest";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vom trimite întotdeauna emailuri importante cu privire la contul tău, dar poți de asemenea să primești unele extra utile.";
@@ -8254,6 +8320,9 @@ translators: Block name. %s: The localized block name */
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Setări aplicații WordPress";
+
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "Aplicații WordPress - aplicații pentru orice tip de ecran";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress ";
@@ -8525,13 +8594,16 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "Nu vei putea să-ți schimbi înapoi numele de utilizator.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Vei primi o reamintire pentru publicare <strong>o dată<\/strong> pe săptămână, %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Vei primi o reamintire pentru publicare <strong>o dată<\/strong> pe săptămână, %1$@ la %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Vei primi reamintiri pentru publicare %1$@ pe săptămână, %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Ești cu toate la zi!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Nu ești autorizat să închizi contul.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Ai modificări nesalvate la acest articol";
