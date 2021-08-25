@@ -279,7 +279,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private func showCloseAccountErrorAlert() {
-        let title = NSLocalizedString("Couldn’t close account",
+        let title = NSLocalizedString("Couldn’t close account automatically",
                                       comment: "Error title displayed when unable to close user account.")
         let message = NSLocalizedString("To close this account now, contact our support team.",
                                         comment: "Error message displayed when unable to close user account.")
