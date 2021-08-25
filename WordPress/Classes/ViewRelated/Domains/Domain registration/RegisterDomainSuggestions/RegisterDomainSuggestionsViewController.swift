@@ -141,36 +141,3 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }
-
-// MARK: - DomainCreditRedemptionSuccessViewControllerDelegate
-
-extension RegisterDomainSuggestionsViewController: DomainCreditRedemptionSuccessViewControllerDelegate {
-
-    /// Handles the dismission of the epilogue screen at the end of a successful domain registration, along with popping to the domains dashboard
-    func continueButtonPressed() {
-
-        dismiss(animated: true) { [weak self] in
-            if let popController = self?.navigationController?.viewControllers.first(where: {
-                                                                                $0 is UIHostingController<DomainsDashboardView>
-            }) ?? self?.navigationController?.topViewController {
-                self?.navigationController?.popToViewController(popController, animated: true)
-            }
-
-            guard let email = self?.accountEmail() else {
-                return
-            }
-            let title = String(format: NSLocalizedString("Verify your email address - instructions sent to %@",
-                                                         comment: "Notice displayed after domain credit redemption success."), email)
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
-        }
-    }
-
-    private func accountEmail() -> String? {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
-            return nil
-        }
-        return defaultAccount.email
-    }
-}
