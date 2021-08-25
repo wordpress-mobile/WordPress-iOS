@@ -4,9 +4,8 @@ import UIKit
 /// Makes RegisterDomainSuggestionsViewController available to SwiftUI
 final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
-    let blog: Blog
-
-    weak var presentingController: RegisterDomainSuggestionsViewController?
+    private let blog: Blog
+    private weak var presentingController: RegisterDomainSuggestionsViewController?
 
     init(blog: Blog) {
         self.blog = blog

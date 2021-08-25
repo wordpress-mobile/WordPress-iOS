@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 class RegisterDomainDetailsViewModel {
 
@@ -194,52 +195,62 @@ class RegisterDomainDetailsViewModel {
             // We'll manage.
 
             // First step is to create a cart.
-            strongSelf.registerDomainDetailsService.createShoppingCart(siteID: strongSelf.site.siteID,
-                                                                       domainSuggestion: strongSelf.domain,
-                                                                       privacyProtectionEnabled: privacyEnabled,
-                                                                       success: { cart in
-
-
+            strongSelf.registerDomainDetailsService.createShoppingCart(
+                siteID: strongSelf.site.siteID,
+                domainSuggestion: strongSelf.domain,
+                privacyProtectionEnabled: privacyEnabled,
+                success: { cart in
                     // And now that we have a cart — time to redeem it.
-                    strongSelf.registerDomainDetailsService.redeemCartUsingCredits(cart: cart,
-                                                                                   domainContactInformation: strongSelf.jsonRepresentation(),
-                                                                                   success: {
+                    strongSelf.registerDomainDetailsService.redeemCartUsingCredits(
+                        cart: cart,
+                        domainContactInformation: strongSelf.jsonRepresentation(),
+                        success: {
+                            // We've succeeded! The domain is purchased — time to drop out of this flow
+                            // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
+                            WPAnalytics.track(.automatedTransferCustomDomainPurchased)
 
-                            // Hey! We redeemed the cart sucessfully. Now we just need to set the new domain to primary...
-                            strongSelf.registerDomainDetailsService.changePrimaryDomain(siteID: strongSelf.site.siteID,
-                                                                             newDomain: strongSelf.domain.domainName,
-                                                                             success: {
+                            strongSelf.isLoading = false
+                            strongSelf.onChange?(.registerSucceeded(domain: strongSelf.domain.domainName))
 
-                                // We've succeeded! The domain is purchased and set to the primary one — time to drop out of this flow
-                                // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
-                                WPAnalytics.track(.automatedTransferCustomDomainPurchased)
-
-                                strongSelf.isLoading = false
-                                strongSelf.onChange?(.registerSucceeded(domain: strongSelf.domain.domainName))
-                            },
-                            failure: { error in
-
-                                // This means we've sucessfully bought/redeemed the domain, but something went wrong
-                                // when setting it to a primary.
-
-                                strongSelf.isLoading = false
-                                strongSelf.onChange?(.prefillError(message: Localized.changingPrimaryDomainError))
+                            strongSelf.setPrimaryDomain(strongSelf.domain.domainName)
+                        }, failure: { (error) in
+                            // Failure during the purchase step. Not much we can do from the mobile in any case,
+                            // so let's just show a generic error message.
+                            WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
+                            strongSelf.isLoading = false
+                            strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
                         })
-                    }, failure: { (error) in
-
-                        // Failure during the purchase step. Not much we can do from the mobile in any case,
-                        // so let's just show a generic error message.
-                        WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
-                        strongSelf.isLoading = false
-                        strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
-                    })
-            }) { (error) in
-
+                }) { (error) in
                 // Same as above. If adding items to cart fails, not much we can do to recover :(
                 WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
                 strongSelf.isLoading = false
                 strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
             }
+        })
+    }
+
+    /// Sets the primary domain for  the site.  The result closures are handled internally because we want this method to run
+    /// asynchronously from the rest of the domain purchase flow.   This method failing should not block the user from moving
+    /// forward in the UI.
+    ///
+    /// - Parameters:
+    ///         - domain: the domain to set as primary for the site.
+    ///
+    func setPrimaryDomain(_ domain: String) {
+        let noticeTitle = NSLocalizedString("Domain purchase", comment: "The notice title for the success and failure notices when the App changes the primary site domain to the one the user just purchased.")
+
+        registerDomainDetailsService.changePrimaryDomain(
+            siteID: site.siteID,
+            newDomain: domain,
+            success: {
+                let message = String(format: NSLocalizedString("You site's primary domain was changed to %@", comment: "Notice message shown when the App succeeds in setting the site's primary domain to the domain the user just purchased."), domain)
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: noticeTitle, message: message)))
+            },
+            failure: { error in
+                DDLogError(error.localizedDescription)
+
+                let message = String(format: NSLocalizedString("An unexpected error prevented us from automatically setting the primary site domain to %@", comment: "Notice message shown when the App fails to set the site's primary domain to the domain the user just purchased."), domain)
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: noticeTitle, message: message)))
         })
     }
 
