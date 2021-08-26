@@ -2,7 +2,6 @@ import BackgroundTasks
 
 protocol BackgroundTask {
     static var identifier: String { get }
-    //var log: (String) -> Void { get set }
 
     // MARK: - Scheduling
 
