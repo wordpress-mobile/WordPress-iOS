@@ -166,7 +166,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             app.endBackgroundTask(task)
             bgTask = .invalid
         }
-/*
+
         bgTask = app.beginBackgroundTask(expirationHandler: {
             // Synchronize the cleanup call on the main thread in case
             // the task actually finishes at around the same time.
@@ -176,7 +176,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                     self?.bgTask = .invalid
                 }
             }
-        })*/
+        })
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
