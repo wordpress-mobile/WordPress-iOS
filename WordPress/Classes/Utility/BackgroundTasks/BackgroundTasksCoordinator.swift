@@ -149,16 +149,13 @@ class BackgroundTasksCoordinator {
 
         let request = BGAppRefreshTaskRequest(identifier: type(of: task).identifier)
         request.earliestBeginDate = nextDate
-        let scheduleSuccess: Bool
 
         task.willSchedule(completion: completion)
 
         do {
             try self.scheduler.submit(request)
-            scheduleSuccess = true
         } catch {
             completion(.failure(SchedulingError.schedulingFailed(task: type(of: task).identifier, error: error)))
-            scheduleSuccess = false
         }
     }
 }
