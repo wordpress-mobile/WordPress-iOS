@@ -159,8 +159,13 @@ private extension SiteStatsDashboardViewController {
         UserDefaults.standard.object(forKey: Self.lastSelectedStatsDateKey) as? Date
     }
 
+    func removeLastSelectedDateFromUserDefaults() {
+        UserDefaults.standard.removeObject(forKey: Self.lastSelectedStatsDateKey)
+    }
+
     func restoreSelectedDateFromUserDefaults() {
         periodTableViewController.selectedDate = getLastSelectedDateFromUserDefaults()
+        removeLastSelectedDateFromUserDefaults()
     }
 
     func restoreSelectedPeriodFromUserDefaults() {
