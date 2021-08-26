@@ -6,7 +6,7 @@ final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable
 
     private let blog: Blog
 
-    private weak var presentingController: RegisterDomainSuggestionsViewController?
+    private weak var domainSuggestionViewController: RegisterDomainSuggestionsViewController?
 
     init(blog: Blog) {
         self.blog = blog
@@ -20,14 +20,14 @@ final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable
                     WPAnalytics.track(.domainCreditRedemptionSuccess)
                     self.presentDomainCreditRedemptionSuccess(domain: domain)
                 })
-        presentingController = viewController
+        domainSuggestionViewController = viewController
         return viewController
     }
 
     func updateUIViewController(_ uiViewController: RegisterDomainSuggestionsViewController, context: Context) { }
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
-        guard let presentingController = presentingController else {
+        guard let presentingController = domainSuggestionViewController else {
             return
         }
         let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
@@ -40,11 +40,11 @@ extension DomainSuggestionViewControllerWrapper: DomainCreditRedemptionSuccessVi
 
     func continueButtonPressed() {
 
-        presentingController?.dismiss(animated: true) { [weak self] in
-            if let popController = self?.presentingController?.navigationController?.viewControllers.first(where: {
+        domainSuggestionViewController?.dismiss(animated: true) { [weak self] in
+            if let popController = self?.domainSuggestionViewController?.navigationController?.viewControllers.first(where: {
                                                                                 $0 is UIHostingController<DomainsDashboardView>
-            }) ?? self?.presentingController?.navigationController?.topViewController {
-                self?.presentingController?.navigationController?.popToViewController(popController, animated: true)
+            }) ?? self?.domainSuggestionViewController?.navigationController?.topViewController {
+                self?.domainSuggestionViewController?.navigationController?.popToViewController(popController, animated: true)
             }
         }
     }
