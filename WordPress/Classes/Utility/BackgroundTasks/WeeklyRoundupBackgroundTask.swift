@@ -168,7 +168,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             dateComponents.calendar = Calendar.current
 
             // `DateComponent`'s weekday uses a 1-based index.
-            dateComponents.weekday = 1
+            dateComponents.weekday = 2
             dateComponents.hour = 10
 
             return dateComponents
@@ -344,7 +344,7 @@ class WeeklyRoundupNotificationScheduler {
             dateComponents.calendar = Calendar.current
 
             // `DateComponent`'s weekday uses a 1-based index.
-            dateComponents.weekday = 1
+            dateComponents.weekday = 2
             dateComponents.hour = 18
 
             return dateComponents
