@@ -1,9 +1,0 @@
-Dans la version 18.0, nous avons optimisé les images utilisées pour les thèmes, vous offrant des téléchargements plus rapides et un impact réduit sur votre forfait de données mobiles.
-
-Vous pouvez désormais définir ou supprimer une image mise en avant pour un article à partir des réglages du bloc d’image. Et en cas d’oubli, une nouvelle bannière « mise en avant » met en valeur votre sélection actuelle.
-
-Également côté design, les commentaires et les notifications ont désormais une apparence unifiée. De même, lors du choix d’un domaine ou d’un design pour votre site, les titres ont été améliorés pour l’accessibilité sur les appareils configurés avec des tailles de texte plus grandes.
-
-Lorsque nous vous informons que vous avez publié un article avec une notification dans l’application, vous voyez désormais les esperluettes dans votre titre affichées entièrement en mode non-HTML.
-
-Enfin dernier point, nous avons résolu un bogue relatif à la récupération à partir de jetons d’authentification non valides.

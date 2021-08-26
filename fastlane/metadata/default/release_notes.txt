@@ -1,9 +1,0 @@
-In 18.0 we’ve optimized the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.
-
-You can now set or remove a featured image for a post from the image block’s settings. And in case you forget, a new ‘featured’ banner highlights your current selection.
-
-Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.
-
-When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.
-
-Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.
