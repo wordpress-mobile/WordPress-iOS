@@ -1,6 +1,6 @@
 18.2
 -----
-
+* [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
 
 18.1
 -----
