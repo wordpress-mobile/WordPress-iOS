@@ -1,4 +1,5 @@
 import XCTest
+import XCUITestHelpers
 
 public class FancyAlertComponent: BaseScreen {
     let defaultAlertButton: XCUIElement
@@ -23,7 +24,7 @@ public class FancyAlertComponent: BaseScreen {
 
     public func acceptAlert() {
         XCTAssert(defaultAlertButton.waitForExistence(timeout: 3))
-        XCTAssert(defaultAlertButton.waitForHittability(timeout: 3))
+        XCTAssert(defaultAlertButton.waitForIsHittable(timeout: 3))
 
         XCTAssert(defaultAlertButton.isHittable)
         defaultAlertButton.tap()

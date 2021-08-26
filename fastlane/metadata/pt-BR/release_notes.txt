@@ -1,9 +1,0 @@
-Na versão 18.0, nós otimizamos as imagens usadas para temas, resultando em downloads mais rápidos e impacto reduzido em seu plano de dados móveis.
-
-Agora você pode definir ou remover uma imagem destacada de um post nas configurações do bloco de imagem. E caso você esqueça, um novo banner "em destaque" evidencia sua seleção atual.
-
-Outra novidade no aspecto de design são os comentários e notificações, que agora têm uma aparência unificada. E quando se trata de escolher um domínio ou design para o seu site, os cabeçalhos foram aprimorados para oferecer acessibilidade em dispositivos configurados para usar tamanhos de texto maiores.
-
-Agora, quando enviarmos um aviso no aplicativo informando que você fez uma publicação, todos os "&" em seu título serão exibidos em sua forma completa e não HTML.
-
-Por último, mas não menos importante, corrigimos um problema na recuperação de tokens de autenticação invalidados.
