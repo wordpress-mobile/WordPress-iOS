@@ -14,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedCommentsAndNotificationsList
     case recommendAppToOthers
     case newCommentEdit
+    case newCommentDetail
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -45,6 +46,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .recommendAppToOthers:
             return true
         case .newCommentEdit:
+            return false
+        case .newCommentDetail:
             return false
         }
     }
@@ -96,6 +99,8 @@ extension FeatureFlag {
             return "Recommend App to Others"
         case .newCommentEdit:
             return "New Comment Edit"
+        case .newCommentDetail:
+            return "New Comment Detail"
         }
     }
 
