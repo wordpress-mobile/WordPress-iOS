@@ -26,7 +26,7 @@ struct PostEditorAnalyticsSession {
 
         let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding)
 
-        WPAppAnalytics.track(.editorSessionStart, withProperties: properties, withBlogID: blogID)
+        WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
@@ -50,7 +50,7 @@ struct PostEditorAnalyticsSession {
 
     mutating func `switch`(editor: Editor) {
         currentEditor = editor
-        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties, withBlogID: blogID)
+        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
     }
 
     mutating func forceOutcome(_ newOutcome: Outcome) {
@@ -72,12 +72,13 @@ struct PostEditorAnalyticsSession {
 
         properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
 
-        WPAppAnalytics.track(.editorSessionEnd, withProperties: properties, withBlogID: blogID)
+        WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
 }
 
 private extension PostEditorAnalyticsSession {
     enum Property {
+        static let blogID = "blog_id"
         static let blogType = "blog_type"
         static let contentType = "content_type"
         static let editor = "editor"
@@ -96,6 +97,7 @@ private extension PostEditorAnalyticsSession {
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
             Property.postType: postType,
+            Property.blogID: blogID?.stringValue,
             Property.blogType: blogType,
             Property.sessionId: sessionId,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",
