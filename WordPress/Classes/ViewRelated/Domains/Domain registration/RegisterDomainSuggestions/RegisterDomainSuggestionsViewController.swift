@@ -1,5 +1,7 @@
+import SwiftUI
 import UIKit
 import WordPressAuthenticator
+import WordPressFlux
 
 class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestionsButtonViewPresenter {
 

@@ -14,9 +14,9 @@
         "package": "XCUITestHelpers",
         "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
         "state": {
-          "branch": "add-helpers-from-woo",
-          "revision": "fefe695dd1e81eeaf5389f0ddbe7ab53a54cdee5",
-          "version": null
+          "branch": null,
+          "revision": "3212ac32f0a58ea10604b5cf31fe5450f908ff65",
+          "version": "0.3.0"
         }
       }
     ]
