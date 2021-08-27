@@ -13,7 +13,6 @@ class EditCommentTableViewController: UITableViewController {
     private var updatedContent: String?
 
     private var isEmailValid = true
-    private var isUrlValid = true
 
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
@@ -199,6 +198,8 @@ extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
         switch type {
         case .text:
             updatedName = updatedText?.trim()
+        case .url:
+            updatedWebAddress = updatedText?.trim()
         case .email:
             updatedEmailAddress = updatedText?.trim()
             isEmailValid = {
@@ -207,9 +208,6 @@ extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
                 }
                 return isValid
             }()
-        case .url:
-            updatedWebAddress = updatedText?.trim()
-            isUrlValid = isValid
         }
 
         updateDoneButton()

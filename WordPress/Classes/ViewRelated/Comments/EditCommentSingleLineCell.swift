@@ -78,9 +78,6 @@ private extension EditCommentSingleLineCell {
     func validateText(_ text: String?) {
         let isValid: Bool = {
             switch textFieldStyle {
-            case .url:
-                // TODO: add URL validation
-                return true
             case .email:
                 return text?.isValidEmail() ?? false
             default:
