@@ -2,6 +2,7 @@ import Foundation
 
 protocol EditCommentMultiLineCellDelegate: AnyObject {
     func textViewHeightUpdated()
+    func textUpdated(_ updatedText: String?)
 }
 
 class EditCommentMultiLineCell: UITableViewCell, NibReusable {
@@ -34,6 +35,7 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
 extension EditCommentMultiLineCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
+        delegate?.textUpdated(textView.text)
         adjustHeight()
     }
 
