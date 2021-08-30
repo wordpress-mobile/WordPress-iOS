@@ -53,6 +53,18 @@ class CommentDetailViewController: UITableViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        switch rows[indexPath.row] {
+        case .header:
+            navigateToPost()
+
+        default:
+            break
+        }
+    }
+
 }
 
 // MARK: - Private Helpers
@@ -87,7 +99,32 @@ private extension CommentDetailViewController {
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
     }
 
-    // MARK: Button actions
+    // MARK: Actions and navigations
+
+    func navigateToPost() {
+        guard let blog = comment.blog,
+              let siteID = blog.dotComID,
+              blog.supports(.wpComRESTAPI) else {
+            viewPostInWebView()
+            return
+        }
+
+        let readerViewController = ReaderDetailViewController.controllerWithPostID(NSNumber(value: comment.postID), siteID: siteID, isFeed: false)
+        navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+    }
+
+    func viewPostInWebView() {
+        guard let post = comment.post,
+              let permalink = post.permaLink,
+              let url = URL(string: permalink) else {
+            return
+        }
+
+        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navigationControllerToPresent = UINavigationController(rootViewController: viewController)
+
+        present(navigationControllerToPresent, animated: true, completion: nil)
+    }
 
     @objc func editButtonTapped() {
         // NOTE: This depends on the new edit comment feature, which is still ongoing.
