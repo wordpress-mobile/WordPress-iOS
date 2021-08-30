@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 12:12:15+0000 */
+/* Translation-Revision-Date: 2021-08-25 07:03:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -7097,14 +7097,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Эту учетную запись пользователя нельзя закрыть, если есть неразрешенные возвратные платежи.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account cannot be closed while it has active atomic sites." = "Эту учетную запись пользователя нельзя закрыть, если есть активные атомарные сайты.";
-
 /* Error message displayed when unable to close user account due to having active purchases. */
 "This user account cannot be closed while it has active purchases." = "Эту учетную запись пользователя нельзя закрыть, если есть активные покупки.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Эту учетную запись пользователя нельзя закрыть, если есть активные подписки.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Эта учётная запись не может быть закрыта. Обратитесь в поддержку через меню Профиль > Помощь и поддержка.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */

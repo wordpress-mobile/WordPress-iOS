@@ -109,6 +109,12 @@ final class BlogBuilder {
         blog.options = options
         return self
     }
+
+    func with(postFormats: [String: String]) -> Self {
+        blog.postFormats = postFormats
+
+        return self
+    }
 }
 
 extension Blog {

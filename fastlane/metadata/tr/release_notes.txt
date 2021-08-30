@@ -1,0 +1,9 @@
+Gömme bloğu kullanıyor musunuz? Sitenize gömdüğünüz ortamlar için seçeneklerde "Küçük cihazlar için ölçeklendir" seçeneği göreceksiniz. İçeriğin ekrana sığması için açın, devre dışı bırakmak için kapatın.
+
+Bloglama hatırlatıcılarını sevdiniz mi? Bildirimi alabileceğiniz zamanı belirleyebilmeniz için yeni bir özellik ekledik.
+
+Hesabınızı mı kapatmanız gerekiyor? (Umarız bizi hiç bırakmazsınız!) Eğer gerekliyse Hesap ayarları bölümünden bu işlemi gerçekleştirebilirsiniz.
+
+Web için coğrafi işaretleme artık desteklenmiyor, biz de yazı ayarları altından Konum seçeneğini kaldırdık.
+
+Başka geliştirmeler de yaptık, örneğin okuyucudaki kırpma sorununu giderdik, Ben ve Hakkında ekranlarından arkadaşlarınıza uygulamayı önerebilmeniz için özellik ekledik.

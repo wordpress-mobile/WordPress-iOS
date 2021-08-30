@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-24 06:30:10+0000 */
+/* Translation-Revision-Date: 2021-08-27 05:41:04+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -4838,7 +4838,7 @@ translators: Block name. %s: The localized block name */
 "Page title. Empty" = "Titlu pagină. Gol";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Pagină actualizată";
+"Page updated" = "Pagina a fost actualizată";
 
 /* Noun. Title. Links to the blog's Pages screen.
    This is the section title */
@@ -7100,14 +7100,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Acest cont de utilizator nu poate fi închis dacă există restituiri nerezolvate.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account cannot be closed while it has active atomic sites." = "Acest cont de utilizator nu poate fi închis deoarece are site-uri atomic active.";
-
 /* Error message displayed when unable to close user account due to having active purchases. */
 "This user account cannot be closed while it has active purchases." = "Acest cont de utilizator nu poate fi închis deoarece are cumpărături active.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Acest cont de utilizator nu poate fi închis deoarece are abonamente active.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */

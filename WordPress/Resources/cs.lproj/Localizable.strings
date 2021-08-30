@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-29 15:15:05+0000 */
+/* Translation-Revision-Date: 2021-08-27 06:31:59+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -7097,14 +7097,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account cannot be closed while it has active atomic sites." = "This user account cannot be closed while it has active atomic sites.";
-
 /* Error message displayed when unable to close user account due to having active purchases. */
 "This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8714,10 +8714,10 @@ translators: Block name. %s: The localized block name */
 "[COMMENT]" = "[KOMENTÁŘ]";
 
 /* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
+"_%1$d blogger_ likes this." = "_%1$d blogerovi se to líbí.";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
+"_%1$d bloggers_ like this." = "_%1$d blogerům se to líbí.";
 
 /* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";

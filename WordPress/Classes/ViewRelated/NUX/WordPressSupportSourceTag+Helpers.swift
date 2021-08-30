@@ -28,4 +28,7 @@ extension WordPressSupportSourceTag {
     public static var deleteSite: WordPressSupportSourceTag {
         return WordPressSupportSourceTag(name: "deleteSite", origin: "origin:delete-site")
     }
+    public static var closeAccount: WordPressSupportSourceTag {
+        return WordPressSupportSourceTag(name: "closeAccount", origin: "origin:close-account")
+    }
 }

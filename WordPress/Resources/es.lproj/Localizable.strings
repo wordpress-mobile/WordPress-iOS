@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 11:39:16+0000 */
+/* Translation-Revision-Date: 2021-08-25 08:13:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -7097,14 +7097,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "No es posible cerrar la cuenta de este usuario si tiene devoluciones sin resolver.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account cannot be closed while it has active atomic sites." = "No es posible cerrar la cuenta de este usuario porque tiene activos sitios atomic. ";
-
 /* Error message displayed when unable to close user account due to having active purchases. */
 "This user account cannot be closed while it has active purchases." = "No es posible cerrar la cuenta de este usuario porque tiene compras activas. ";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "No es posible cerrar la cuenta de este usuario porque tiene suscripciones activas.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "No se ha podido cerrar esta cuenta de usuario. Por favor, contacta con nosotros yendo a la pantalla «Yo > Ayuda y soporte».";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */

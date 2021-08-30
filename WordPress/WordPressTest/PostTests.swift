@@ -210,6 +210,38 @@ class PostTests: XCTestCase {
         XCTAssertEqual(post.postFormat, secondaryPostFormat.key)
     }
 
+    func testPostFormatSorting() throws {
+        let postFormats = [
+            "b": "B",
+            "c": "C",
+            "q": "Q",
+            "z": "Z",
+            "standard": "Standard",
+            "a": "A",
+            "d": "D",
+        ]
+
+        let expectedPostFormats = [
+            ("standard", "Standard"),
+            ("a", "A"),
+            ("b", "B"),
+            ("c", "C"),
+            ("d", "D"),
+            ("q", "Q"),
+            ("z", "Z")
+        ]
+
+        let blog = BlogBuilder(context)
+            .with(postFormats: postFormats)
+            .build()
+
+        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats as? [String])
+        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames as? [String])
+
+        XCTAssertEqual(expectedPostFormats.map { $0.0 }, sortedPostFormats)
+        XCTAssertEqual(expectedPostFormats.map { $0.1 }, sortedPostFormatNames)
+    }
+
     func testThatHasCategoriesWorks() {
         let post = newTestPost()
 

@@ -7,14 +7,8 @@ import WordPressFlux
         // This method is required because the presenter ViewController must be visible, and we've got several
         // flows in which the VC that triggers the alert, might not be visible anymore.
         //
-        guard let rootViewController = UIApplication.shared.mainWindow?.rootViewController else {
-            print("Error loading the rootViewController")
+        guard let leafViewController = UIApplication.shared.leafViewController else {
             return
-        }
-
-        var leafViewController = rootViewController
-        while leafViewController.presentedViewController != nil && !leafViewController.presentedViewController!.isBeingDismissed {
-            leafViewController = leafViewController.presentedViewController!
         }
         popoverPresentationController?.sourceView = view
         popoverPresentationController?.permittedArrowDirections = []
