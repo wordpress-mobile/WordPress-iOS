@@ -5,10 +5,15 @@ class EditCommentTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    private var authorName: String?
-    private var commentContent: String?
-    private var authorWebAddress: String?
-    private var authorEmailAddress: String?
+    private let comment: Comment
+
+    private var updatedName: String?
+    private var updatedWebAddress: String?
+    private var updatedEmailAddress: String?
+    private var updatedContent: String?
+
+    private var isEmailValid = true
+    private var isUrlValid = true
 
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
@@ -17,21 +22,13 @@ class EditCommentTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    @objc convenience init(comment: Comment) {
-        self.init()
-        authorName = comment.author
-        commentContent = comment.contentForEdit()
-        authorWebAddress = comment.author_url
-        authorEmailAddress = comment.author_email
-        configureCommentContentCell()
-    }
-
-    required convenience init() {
-        self.init(style: .insetGrouped)
-    }
-
-    override init(style: UITableView.Style) {
-        super.init(style: style)
+    @objc required init(comment: Comment) {
+        self.comment = comment
+        updatedName = comment.author
+        updatedWebAddress = comment.author_url
+        updatedEmailAddress = comment.author_email
+        updatedContent = comment.contentForEdit()
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -42,6 +39,7 @@ class EditCommentTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCommentContentCell()
         setupTableView()
         setupNavBar()
         addDismissKeyboardTapGesture()
@@ -79,16 +77,17 @@ class EditCommentTableViewController: UITableViewController {
 
         switch tableSection {
         case TableSections.name:
-            cell.configure(text: authorName)
+            cell.configure(text: comment.author)
         case TableSections.webAddress:
-            cell.configure(text: authorWebAddress, style: .url)
+            cell.configure(text: comment.author_url, style: .url)
         case TableSections.emailAddress:
-            cell.configure(text: authorEmailAddress, style: .email)
+            cell.configure(text: comment.author_email, style: .email)
         default:
             DDLogError("Edit Comment: unsupported table section.")
             break
         }
 
+        cell.delegate = self
         return cell
     }
 
@@ -111,6 +110,8 @@ private extension EditCommentTableViewController {
     // MARK: - View config
 
     func setupTableView() {
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+
         tableView.register(EditCommentSingleLineCell.defaultNib,
                            forCellReuseIdentifier: EditCommentSingleLineCell.defaultReuseID)
 
@@ -119,7 +120,7 @@ private extension EditCommentTableViewController {
     }
 
     func configureCommentContentCell() {
-        commentContentCell.configure(text: commentContent)
+        commentContentCell.configure(text: comment.contentForEdit())
         commentContentCell.delegate = self
     }
 
@@ -127,6 +128,7 @@ private extension EditCommentTableViewController {
         title = NSLocalizedString("Edit Comment", comment: "View title when editing a comment.")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
+        updateDoneButton()
     }
 
     func addDismissKeyboardTapGesture() {
@@ -174,6 +176,43 @@ private extension EditCommentTableViewController {
                 return NSLocalizedString("Comment", comment: "Header for a comment's content, shown when editing a comment.").localizedUppercase
             }
         }
+    }
+
+    // MARK: - Helpers
+
+    func updateDoneButton() {
+        navigationItem.rightBarButtonItem?.isEnabled = commentHasChanged() && isEmailValid && isUrlValid
+    }
+
+    func commentHasChanged() -> Bool {
+        return comment.author != updatedName ||
+            comment.author_email != updatedEmailAddress ||
+            comment.author_url != updatedWebAddress ||
+            comment.contentForEdit() != updatedContent
+    }
+
+}
+
+extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
+
+    func fieldUpdated(_ type: TextFieldStyle, updatedText: String?, isValid: Bool) {
+        switch type {
+        case .text:
+            updatedName = updatedText?.trim()
+        case .email:
+            updatedEmailAddress = updatedText?.trim()
+            isEmailValid = {
+                if updatedEmailAddress == nil || updatedEmailAddress?.isEmpty == true {
+                    return true
+                }
+                return isValid
+            }()
+        case .url:
+            updatedWebAddress = updatedText?.trim()
+            isUrlValid = isValid
+        }
+
+        updateDoneButton()
     }
 
 }
