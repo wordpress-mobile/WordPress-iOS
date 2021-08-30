@@ -68,9 +68,3 @@ private extension CommentDetailViewController {
     }
 
 }
-
-// MARK: - Localization
-
-private extension String {
-    static let editBarButtonTitle = NSLocalizedString("Edit", comment: "Edits a Comment")
-}
