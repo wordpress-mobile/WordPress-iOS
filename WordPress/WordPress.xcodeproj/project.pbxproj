@@ -4357,6 +4357,8 @@
 		FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088002696E7F600193358 /* ListTableHeaderView.swift */; };
 		FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEA088022696E81F00193358 /* ListTableHeaderView.xib */; };
 		FEA088052696F7AA00193358 /* WPStyleGuide+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */; };
+		FEA7948D26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */; };
+		FEA7948E26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */; };
 		FEC3B81726C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */; };
 		FEC3B81826C2915A00A395C7 /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */; };
 		FEC3B81926C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */; };
@@ -7529,6 +7531,7 @@
 		FEA088002696E7F600193358 /* ListTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableHeaderView.swift; sourceTree = "<group>"; };
 		FEA088022696E81F00193358 /* ListTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableHeaderView.xib; sourceTree = "<group>"; };
 		FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+List.swift"; sourceTree = "<group>"; };
+		FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleButtonTableViewCell.xib; sourceTree = "<group>"; };
 		FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Comments.swift"; sourceTree = "<group>"; };
@@ -12427,6 +12430,7 @@
 		B56994481B7A82D400FF26FA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FEA7948B26DD134400CEC520 /* Detail */,
 				9835F16D25E492EE002EFF23 /* CommentsList.storyboard */,
 				B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */,
 				B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */,
@@ -14447,6 +14451,14 @@
 				FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		FEA7948B26DD134400CEC520 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */,
+			);
+			name = Detail;
 			sourceTree = "<group>";
 		};
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
@@ -17881,6 +17893,7 @@
 				400A2C832217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataClass.swift in Sources */,
 				F1C740BF26B18E42005D0809 /* StoreSandboxSecretScreen.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
+				FEA7948D26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
 				D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */,
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
@@ -19455,6 +19468,7 @@
 				FABB22AF2602FC2C00C8785C /* MenusService.m in Sources */,
 				FABB22B02602FC2C00C8785C /* QuickStartChecklistHeader.swift in Sources */,
 				FABB22B12602FC2C00C8785C /* ReaderDetailFeaturedImageView.swift in Sources */,
+				FEA7948E26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
 				FABB22B22602FC2C00C8785C /* StatsDataHelper.swift in Sources */,
 				FABB22B32602FC2C00C8785C /* PrepublishingViewController.swift in Sources */,
 				FABB22B42602FC2C00C8785C /* PageListTableViewHandler.swift in Sources */,
