@@ -8,6 +8,10 @@ class CommentDetailViewController: UITableViewController {
 
     private var rows = [RowType]()
 
+    // MARK: Views
+
+    private var headerCell = CommentHeaderTableViewCell()
+
     // MARK: Initialization
 
     @objc required init(comment: Comment) {
@@ -25,6 +29,7 @@ class CommentDetailViewController: UITableViewController {
         super.viewDidLoad()
         configureNavigationBar()
         configureTable()
+        configureRows()
     }
 
     // MARK: Table view data source
@@ -35,6 +40,17 @@ class CommentDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch rows[indexPath.row] {
+        case .header:
+            configureHeaderCell()
+            return headerCell
+
+        default:
+            return .init()
+        }
     }
 
 }
@@ -58,6 +74,21 @@ private extension CommentDetailViewController {
         tableView.tableFooterView = UIView(frame: .zero)
     }
 
+    func configureRows() {
+        rows = [.header]
+    }
+
+    // MARK: Cell configuration
+
+    func configureHeaderCell() {
+        // TODO: detect if the comment is a reply.
+
+        headerCell.textLabel?.text = .postCommentTitleText
+        headerCell.detailTextLabel?.text = comment.titleForDisplay()
+    }
+
+    // MARK: Button actions
+
     @objc func editButtonTapped() {
         // NOTE: This depends on the new edit comment feature, which is still ongoing.
         let navigationControllerToPresent = UINavigationController(rootViewController: EditCommentTableViewController(comment: comment))
@@ -67,4 +98,12 @@ private extension CommentDetailViewController {
         }
     }
 
+}
+
+// MARK: - Localization
+
+private extension String {
+    static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
+                                                            + "The title of the post will displayed below this string. "
+                                                            + "Example: Comment on \n My First Post")
 }
