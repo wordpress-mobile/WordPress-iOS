@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 11:06:03+0000 */
+/* Translation-Revision-Date: 2021-08-25 09:26:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -7097,14 +7097,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Detta användarkonto kan inte avslutas eftersom det fortfarande finns någon oavslutad chargeback.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account cannot be closed while it has active atomic sites." = "Detta användarkonto kan inte avslutas eftersom det fortfarande har aktiva atomic-webbplatser.";
-
 /* Error message displayed when unable to close user account due to having active purchases. */
 "This user account cannot be closed while it has active purchases." = "Detta användarkonto kan inte avslutas eftersom det har aktiva inköp.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Detta användarkonto kan inte avslutas eftersom det har aktiva abonnemang.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Det gick inte att avsluta detta användarkonto. Kontakta oss via skärmen Jag > Hjälp och support.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
