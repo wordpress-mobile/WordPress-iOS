@@ -13,7 +13,6 @@ class EditCommentTableViewController: UITableViewController {
     private var updatedContent: String?
 
     private var isEmailValid = true
-    private var isUrlValid = true
 
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
@@ -140,8 +139,12 @@ private extension EditCommentTableViewController {
     // MARK: - Nav bar button actions
 
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
-        // TODO: discard changes
-        dismiss(animated: true)
+        guard commentHasChanged() else {
+            finishWithoutUpdates()
+            return
+        }
+
+        showConfirmationAlert()
     }
 
     @objc func doneButtonTapped(sender: UIBarButtonItem) {
@@ -155,9 +158,45 @@ private extension EditCommentTableViewController {
         view.endEditing(true)
     }
 
+    // MARK: - View dismissal handling
+
+    func finishWithoutUpdates() {
+        // TODO: notify caller
+        dismiss(animated: true)
+    }
+
+    func showConfirmationAlert() {
+        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.")
+        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addCancelActionWithTitle(keepEditingTitle)
+
+        alertController.addDestructiveActionWithTitle(discardTitle) { [weak self] action in
+            self?.finishWithoutUpdates()
+        }
+
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // MARK: - Helpers
+
+    func updateDoneButton() {
+        navigationItem.rightBarButtonItem?.isEnabled = commentHasChanged() && isEmailValid
+    }
+
+    func commentHasChanged() -> Bool {
+        return comment.author != updatedName ||
+            comment.author_email != updatedEmailAddress ||
+            comment.author_url != updatedWebAddress ||
+            comment.contentForEdit() != updatedContent
+    }
+
     // MARK: - Table sections
 
-    private enum TableSections: Int, CaseIterable {
+    enum TableSections: Int, CaseIterable {
         // The case order dictates the table row order.
         case name
         case webAddress
@@ -178,19 +217,6 @@ private extension EditCommentTableViewController {
         }
     }
 
-    // MARK: - Helpers
-
-    func updateDoneButton() {
-        navigationItem.rightBarButtonItem?.isEnabled = commentHasChanged() && isEmailValid && isUrlValid
-    }
-
-    func commentHasChanged() -> Bool {
-        return comment.author != updatedName ||
-            comment.author_email != updatedEmailAddress ||
-            comment.author_url != updatedWebAddress ||
-            comment.contentForEdit() != updatedContent
-    }
-
 }
 
 extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
@@ -199,6 +225,8 @@ extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
         switch type {
         case .text:
             updatedName = updatedText?.trim()
+        case .url:
+            updatedWebAddress = updatedText?.trim()
         case .email:
             updatedEmailAddress = updatedText?.trim()
             isEmailValid = {
@@ -207,9 +235,6 @@ extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
                 }
                 return isValid
             }()
-        case .url:
-            updatedWebAddress = updatedText?.trim()
-            isUrlValid = isValid
         }
 
         updateDoneButton()
@@ -223,6 +248,11 @@ extension EditCommentTableViewController: EditCommentMultiLineCellDelegate {
         tableView.beginUpdates()
         tableView.scrollToRow(at: IndexPath(row: 0, section: TableSections.comment.rawValue), at: .bottom, animated: false)
         tableView.endUpdates()
+    }
+
+    func textUpdated(_ updatedText: String?) {
+        updatedContent = updatedText?.trim()
+        updateDoneButton()
     }
 
 }
