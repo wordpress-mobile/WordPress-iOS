@@ -47,7 +47,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .recommendAppToOthers:
             return true
         case .newCommentEdit:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .newCommentDetail:
             return false
         case .domains:
