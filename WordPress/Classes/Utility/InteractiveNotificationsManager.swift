@@ -10,40 +10,13 @@ import WordPressFlux
 ///
 final class InteractiveNotificationsManager: NSObject {
 
-    class EventTracker {
-        enum Event: String {
-            case notificationTapped = "notification_tapped"
-        }
-
-        enum Properties: String {
-            case notificationType = "notification_type"
-        }
-
-        enum NotificationType: String {
-            case bloggingReminders = "blogging_reminders"
-            case weeklyRoundup = "weekly_roundup"
-        }
-
-        private let track: (AnalyticsEvent) -> Void
-
-        init(trackMethod track: @escaping (AnalyticsEvent) -> Void = WPAnalytics.track) {
-            self.track = track
-        }
-
-        func notificationTapped(type: NotificationType) {
-            let event = AnalyticsEvent(name: Event.notificationTapped.rawValue, properties: [Properties.notificationType.rawValue: type.rawValue])
-
-            track(event)
-        }
-    }
-
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
     @objc static let shared = InteractiveNotificationsManager()
 
     /// The analytics event tracker.
     ///
-    private let eventTracker = EventTracker()
+    private let eventTracker = NotificationEventTracker()
 
     /// Returns the Core Data main context.
     ///
@@ -239,10 +212,13 @@ final class InteractiveNotificationsManager: NSObject {
                     WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
                 }
             case .weeklyRoundup:
-                eventTracker.notificationTapped(type: .weeklyRoundup)
+                let targetBlog = blog(from: userInfo)
+                let siteId = targetBlog?.dotComID?.intValue
+
+                eventTracker.notificationTapped(type: .weeklyRoundup, siteId: siteId)
 
                 if identifier == UNNotificationDefaultActionIdentifier {
-                    guard let targetBlog = blog(from: userInfo) else {
+                    guard let targetBlog = targetBlog else {
                         DDLogError("Could not obtain the blog from the Weekly Notification thread ID.")
                         break
                     }

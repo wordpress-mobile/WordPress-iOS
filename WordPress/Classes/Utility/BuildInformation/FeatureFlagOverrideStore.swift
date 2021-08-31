@@ -9,9 +9,6 @@ protocol OverrideableFlag: CustomStringConvertible {
 
     /// An optional key identifying this flag server-side. Not all flags will have this key – they may not use remote feature flagging
     var remoteKey: String? { get }
-
-    /// Called whenever the override value has changed for cleanup / extra logic purposes.
-    func overrideChanged()
 }
 
 /// Used to override values for feature flags at runtime in debug builds
@@ -44,12 +41,10 @@ struct FeatureFlagOverrideStore {
 
         if isOverridden(featureFlag) {
             store.removeObject(forKey: key)
-            featureFlag.overrideChanged()
         }
 
         if value != featureFlag.enabled {
             store.set(value, forKey: key)
-            featureFlag.overrideChanged()
         }
     }
 

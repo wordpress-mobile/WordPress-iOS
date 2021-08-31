@@ -2449,6 +2449,8 @@
 		F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15D1FBA265C41A900854EE5 /* BloggingRemindersStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15D1FB9265C41A900854EE5 /* BloggingRemindersStoreTests.swift */; };
+		F163541626DE2ECE008B625B /* NotificationEventTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F163541526DE2ECE008B625B /* NotificationEventTracker.swift */; };
+		F163541726DE2ECE008B625B /* NotificationEventTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F163541526DE2ECE008B625B /* NotificationEventTracker.swift */; };
 		F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */; };
 		F16601C423E9E783007950AE /* SharingAuthorizationWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */; };
 		F16C35D623F33DE400C81331 /* PageAutoUploadMessageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16C35D523F33DE400C81331 /* PageAutoUploadMessageProvider.swift */; };
@@ -7320,6 +7322,7 @@
 		F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthenticator.swift; sourceTree = "<group>"; };
 		F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Autosave.swift"; sourceTree = "<group>"; };
 		F15D1FB9265C41A900854EE5 /* BloggingRemindersStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersStoreTests.swift; sourceTree = "<group>"; };
+		F163541526DE2ECE008B625B /* NotificationEventTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEventTracker.swift; sourceTree = "<group>"; };
 		F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Mbar.swift"; sourceTree = "<group>"; };
 		F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingAuthorizationWebViewController.swift; sourceTree = "<group>"; };
 		F16C35D523F33DE400C81331 /* PageAutoUploadMessageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageAutoUploadMessageProvider.swift; path = ../Post/PageAutoUploadMessageProvider.swift; sourceTree = "<group>"; };
@@ -12246,6 +12249,7 @@
 		B53520991AF7BB9600B33BA8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				F163541526DE2ECE008B625B /* NotificationEventTracker.swift */,
 				B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */,
 				B5416CF41C171D7100006DD8 /* PushNotificationsManager.swift */,
 				B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsManager.swift */,
@@ -18084,6 +18088,7 @@
 				7E4123C820F417EF00DF8486 /* FormattableActivity.swift in Sources */,
 				9A162F2B21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift in Sources */,
 				73D86969223AF4040064920F /* StatsChartLegendView.swift in Sources */,
+				F163541626DE2ECE008B625B /* NotificationEventTracker.swift in Sources */,
 				3F8CBE0D24EED2CB00F71234 /* FindOutMoreCell.swift in Sources */,
 				FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */,
 				988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
@@ -19710,6 +19715,7 @@
 				46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */,
 				FABB23822602FC2C00C8785C /* FooterContentGroup.swift in Sources */,
 				FABB23832602FC2C00C8785C /* BasePageListCell.m in Sources */,
+				F163541726DE2ECE008B625B /* NotificationEventTracker.swift in Sources */,
 				FABB23842602FC2C00C8785C /* RegisterDomainSuggestionsTableViewController.swift in Sources */,
 				FABB23852602FC2C00C8785C /* WPError.m in Sources */,
 				FABB23862602FC2C00C8785C /* ContentRouter.swift in Sources */,

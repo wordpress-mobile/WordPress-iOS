@@ -126,21 +126,12 @@ extension FeatureFlag {
             return false
         case .todayWidget:
             return false
+        case .weeklyRoundup:
+            return false
+        case .weeklyRoundupStaticNotification:
+            return false
         default:
             return true
-        }
-    }
-
-    func overrideChanged() {
-        switch self {
-        case .weeklyRoundup:
-            if Feature.enabled(.weeklyRoundup) {
-                // Reschedule BG task and notifications
-            } else {
-                // Cancel BG task and notifications
-            }
-        default:
-            break
         }
     }
 }

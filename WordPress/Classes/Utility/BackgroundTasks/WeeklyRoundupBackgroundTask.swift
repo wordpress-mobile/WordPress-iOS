@@ -142,7 +142,6 @@ class WeeklyRoundupDataProvider {
 class WeeklyRoundupBackgroundTask: BackgroundTask {
     static let identifier = "org.wordpress.bgtask.weeklyroundup"
 
-    private var lastSuccessfulRun = Date()
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -153,13 +152,16 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         case staticNotificationAlreadyDelivered
     }
 
+    private let eventTracker: NotificationEventTracker
     let runDateComponents: DateComponents
     let notificationScheduler: WeeklyRoundupNotificationScheduler
 
     init(
+        eventTracker: NotificationEventTracker = NotificationEventTracker(),
         runDateComponents: DateComponents? = nil,
         staticNotificationDateComponents: DateComponents? = nil) {
 
+        self.eventTracker = eventTracker
         notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
 
         self.runDateComponents = runDateComponents ?? {
@@ -287,7 +289,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
                     switch result {
                     case .success:
-                        self.lastSuccessfulRun = Date()
+                        self.eventTracker.notificationScheduled(type: .weeklyRoundup, siteId: site.dotComID?.intValue)
                     case .failure(let error):
                         onError(error)
                     }
