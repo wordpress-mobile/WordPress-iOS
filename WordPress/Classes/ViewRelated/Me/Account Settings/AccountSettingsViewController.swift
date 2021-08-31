@@ -125,7 +125,7 @@ private class AccountSettingsController: SettingsController {
 
         let closeAccount = DestructiveButtonRow(
             title: NSLocalizedString("Close Account", comment: "Close account action label"),
-            action: presenter.present(closeAccountAction),
+            action: closeAccountAction,
             accessibilityIdentifier: "closeAccountButtonRow")
 
         return ImmuTable(sections: [
@@ -239,9 +239,8 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    private var closeAccountAction: (ImmuTableRow) -> UIAlertController {
+    private var closeAccountAction: (ImmuTableRow) -> Void {
         return { [weak self] _ in
-            return self?.closeAccountAlert ?? UIAlertController()
         }
     }
 
