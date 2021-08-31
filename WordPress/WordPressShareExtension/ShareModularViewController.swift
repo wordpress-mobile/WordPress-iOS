@@ -389,8 +389,9 @@ extension ShareModularViewController: UITableViewDelegate {
 
 fileprivate extension ShareModularViewController {
     func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        switch indexPath.section {
-        case ModulesSection.categories.rawValue:
+        let moduleSection = ModulesSection.init(rawValue: indexPath.section) ?? .summary
+        switch moduleSection {
+        case .categories:
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
             cell.accessibilityLabel = "Category"
@@ -421,7 +422,7 @@ fileprivate extension ShareModularViewController {
             } else {
                 cell.detailTextLabel?.textColor = .neutral(.shade70)
             }
-        case ModulesSection.tags.rawValue:
+        case .tags:
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType = .disclosureIndicator
@@ -433,7 +434,7 @@ fileprivate extension ShareModularViewController {
                 cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
                 cell.detailTextLabel?.textColor = .neutral(.shade30)
             }
-        default:
+        case .summary:
             // Summary section
             cell.textLabel?.text            = summaryRowText()
             cell.textLabel?.textAlignment   = .natural
