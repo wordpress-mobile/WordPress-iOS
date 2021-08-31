@@ -2,7 +2,7 @@ import Foundation
 
 
 protocol EditCommentSingleLineCellDelegate: AnyObject {
-    func fieldUpdated(_ type: TextFieldStyle, updatedText: String?, isValid: Bool)
+    func textUpdatedForCell(_ cell: EditCommentSingleLineCell)
 }
 
 // Used to determine TextField configuration options.
@@ -19,7 +19,8 @@ class EditCommentSingleLineCell: UITableViewCell, NibReusable {
 
     @IBOutlet weak var textField: UITextField!
     weak var delegate: EditCommentSingleLineCellDelegate?
-    private var textFieldStyle: TextFieldStyle = .text
+    private(set) var textFieldStyle: TextFieldStyle = .text
+    private(set) var isValid: Bool = true
 
     // MARK: - View
 
@@ -32,6 +33,17 @@ class EditCommentSingleLineCell: UITableViewCell, NibReusable {
         textField.text = text
         textFieldStyle = style
         applyTextFieldStyle()
+    }
+
+    func showInvalidState(_ show: Bool = true) {
+        guard show else {
+            contentView.layer.borderColor = UIColor.clear.cgColor
+            return
+        }
+
+        contentView.layer.borderColor = UIColor.red.cgColor
+        contentView.layer.borderWidth = 1.0
+        contentView.layer.cornerRadius = 10
     }
 
 }
@@ -76,7 +88,7 @@ private extension EditCommentSingleLineCell {
     }
 
     func validateText(_ text: String?) {
-        let isValid: Bool = {
+        isValid = {
             switch textFieldStyle {
             case .email:
                 return text?.isValidEmail() ?? false
@@ -85,7 +97,7 @@ private extension EditCommentSingleLineCell {
             }
         }()
 
-        delegate?.fieldUpdated(textFieldStyle, updatedText: text, isValid: isValid)
+        delegate?.textUpdatedForCell(self)
     }
 
 }
