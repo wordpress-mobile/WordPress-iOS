@@ -241,6 +241,13 @@ private class AccountSettingsController: SettingsController {
 
     private var closeAccountAction: (ImmuTableRow) -> Void {
         return { [weak self] _ in
+            guard let self = self else { return }
+            switch self.hasAtomicSite {
+            case true:
+                self.showCloseAccountErrorAlert()
+            case false :
+                self.closeAccountAlert?.presentFromRootViewController()
+            }
         }
     }
 
