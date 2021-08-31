@@ -244,6 +244,19 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
+    private var hasAtomicSite: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        guard let account = service.defaultWordPressComAccount() else {
+            return false
+        }
+
+        for blog in account.blogs where blog.isAtomic() {
+            return true
+        }
+        return false
+    }
+
     private var closeAccountAlert: UIAlertController? {
         guard let value = settings?.username else {
             return nil
