@@ -246,7 +246,7 @@ private class AccountSettingsController: SettingsController {
             case true:
                 self.showCloseAccountErrorAlert()
             case false :
-                self.closeAccountAlert?.presentFromRootViewController()
+                self.showCloseAccountAlert()
             }
         }
     }
@@ -264,9 +264,9 @@ private class AccountSettingsController: SettingsController {
         return false
     }
 
-    private var closeAccountAlert: UIAlertController? {
+    private func showCloseAccountAlert() {
         guard let value = settings?.username else {
-            return nil
+            return
         }
 
         let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
@@ -275,7 +275,8 @@ private class AccountSettingsController: SettingsController {
         let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
                                                        comment: "Close Account confirmation action title")
 
-        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+        let alert = alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+        alert.presentFromRootViewController()
     }
 
     private func closeAccount() {
