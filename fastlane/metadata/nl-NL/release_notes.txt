@@ -1,9 +1,9 @@
-In 18.0 hebben we de voor thema's gebruikte afbeeldingen geoptimaliseerd, zodat je ze sneller kunt downloaden en minder invloed heeft op je mobiele gegevensabonnement.
+Gebruik je het insluit blok? Voor media die je insluit op je site, zie je nu een optie om het formaat voor kleinere apparaten te wijzigen. Schakel in om het formaat van je inhoud aan te passen aan je scherm; uitschakelen om uit te schakelen.
 
-Je kunt nu een uitgelichte afbeelding voor een bericht instellen of verwijderen in de instellingen van het afbeeldingsblok. En voor het geval je het vergeet, een nieuwe 'uitgelichte' banner markeert je huidige selectie.
+Geniet je van de blog herinneringen gereedschap? We hebben een nieuwe functie toegevoegd waarmee je een specifiek tijdstip kunt kiezen om een kennisgeving te ontvangen.
 
-Ook op het gebied van vormgeving hebben reacties en meldingen nu een eenduidige look en feel. En bij het kiezen van een domein of ontwerp voor je site zijn de headings verfijnd met het oog op toegankelijkheid op apparaten die grotere tekstgroottes gebruiken.
+Wil je je account sluiten? (We hopen dat je ons nooit verlaat!) Maar als het nodig is, heb je nu de mogelijkheid om dit te doen in je accountinstellingen.
 
-Wanneer we je laten weten dat je een bericht gepubliceerd hebt met een in-app kennisgeving, zie je nu ampersands in je titel in hun volle, niet-HTML entiteit glorie verschijnen.
+Geotagging berichten worden niet langer ondersteund op internet, dus hebben we de optie Locatie verwijderd onder Berichtinstellingen.
 
-Last but not least hebben we een hobbel in de weg gladgestreken bij het herstellen van ongeldig gemaakte authenticatie tokens.
+We hebben ook andere verbeteringen aangebracht, waaronder een oplossing voor een bijsnijden probleem in de reader, evenals de mogelijkheid om de app aan te bevelen aan je vrienden op je Mij and Over schermen.

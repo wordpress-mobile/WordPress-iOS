@@ -17,7 +17,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         let app = XCUIApplication()
         setupSnapshot(app)
 
-        if isIpad {
+        if XCUIDevice.isPad {
             XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
         } else {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
@@ -44,7 +44,7 @@ class JetpackScreenshotGeneration: XCTestCase {
             .gotoActivityLog()
             .thenTakeScreenshot(2, named: "ActivityLog")
 
-        if !isIpad {
+        if !XCUIDevice.isPad {
             activityLog.pop()
         }
 
@@ -57,7 +57,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         jetpackScan
             .thenTakeScreenshot(3, named: "JetpackScan")
 
-        if !isIpad {
+        if !XCUIDevice.isPad {
             jetpackScan.pop()
         }
 
@@ -71,7 +71,7 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         jetpackBackupOptions.pop()
 
-        if !isIpad {
+        if !XCUIDevice.isPad {
             jetpackBackup.pop()
         }
 
@@ -87,7 +87,7 @@ class JetpackScreenshotGeneration: XCTestCase {
 extension BaseScreen {
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
-        let mode = isDarkMode ? "dark" : "light"
+        let mode = XCUIDevice.inDarkMode ? "dark" : "light"
         let filename = "\(index)-\(mode)-\(title)"
 
         snapshot(filename)

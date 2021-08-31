@@ -1,6 +1,8 @@
 18.2
 -----
-
+[internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
+* [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
+* [*] Added pull-to-refresh to My Site.
 
 18.1
 -----
@@ -9,6 +11,7 @@
 * [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
 * [**] Block editor: Embed block: Add "Resize for smaller devices" setting. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3753]
 * [**] Account Settings: added the ability to close user account.
+* [*] Users can now share WordPress app with friends. Accessible from Me and About screen. [#16995]
 
 18.0
 -----

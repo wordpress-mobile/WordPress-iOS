@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-10 05:03:32+0000 */
+/* Translation-Revision-Date: 2021-08-25 08:13:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -8,6 +8,9 @@
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPara confirmar, por favor, vuelve a introducir la dirección del sitio antes de borrarlo.\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nPara confirmar, por favor, vuelve a introducir tu nombre de usuario antes de cerrarlo.\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "«Carga perezosa» de imágenes";
@@ -299,11 +302,20 @@ translators: Block name. %s: The localized block name */
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> veces a la semana";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> veces a la semana a las %2$@";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Una vez<\/strong> a la semana";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "<strong>Una vez<\/strong> a la semana a las %@";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Dos veces<\/strong> a la semana";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "<strong>Dos veces<\/strong> a la semana a las %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -392,6 +404,9 @@ translators: Block name. %s: The localized block name */
 /* Account Settings Title
    Link to Account Settings section */
 "Account Settings" = "Ajustes de la cuenta";
+
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "Cuenta cerrada";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Agradecimientos";
@@ -498,6 +513,9 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Añadir cualquier debate";
+
+/* No comment provided by engineer. */
+"Add blocks" = "Añadir bloques";
 
 /* No comment provided by engineer. */
 "Add button text" = "Añadir el texto del botón";
@@ -681,6 +699,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Se necesita conexión a internet para ver el historial";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Ha ocurrido un error al cerrar la cuenta.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Ha habido un error creando el menú.";
 
@@ -734,6 +755,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Identificación de Apple fallida.\nPor favor, asegúrate de que has accedido a iCloud con un ID de Apple que use identificación de dos factores.";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "Aplica el ajuste";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Aplicar";
@@ -1265,6 +1289,9 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Cambia, añade o elimina páginas en tu sitio.";
 
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Los cambios en la imagen destacada no se verán afectados por los botones de deshacer\/rehacer.";
+
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Cambiando el nombre a mostrar";
 
@@ -1432,6 +1459,9 @@ translators: Block name. %s: The localized block name */
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Cerrar";
 
+/* Close account action label */
+"Close Account" = "Cerrar cuenta";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "Cerrar los comentarios";
 
@@ -1446,6 +1476,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Cerrar la pantalla «Yo»";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "Cerrando cuenta…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Código";
@@ -1474,7 +1507,8 @@ translators: Block name. %s: The localized block name */
 /* Menu item label for linking a comic page. */
 "Comics" = "Cómics";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "Comentario";
 
@@ -1570,6 +1604,9 @@ translators: Block name. %s: The localized block name */
 /* Confirm
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirmar";
+
+/* Close Account alert title */
+"Confirm Close Account" = "Confirmar el cierre de la cuenta";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Confirmar la eliminación del sitio";
@@ -1949,6 +1986,9 @@ translators: Block name. %s: The localized block name */
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Personaliza tu sitio";
 
+/* No comment provided by engineer. */
+"Customize blocks" = "Personalizar bloques";
+
 /* Title for the edition of the share message. */
 "Customize the message" = "Personalizar el mensaje";
 
@@ -2214,7 +2254,6 @@ translators: Block name. %s: The localized block name */
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2360,10 +2399,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "EDITAR ENLACE";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, click on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Cada bloque tiene sus propios ajustes. Para encontrarlos, haz clic en un bloque. Sus ajustes aparecerán en la barra de herramientas de la parte inferior de la pantalla.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "Este";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Cada bloque tiene sus propios ajustes. Para encontrarlos, toca en un bloque. Sus ajustes aparecerán en la barra de herramientas de la parte inferior de la pantalla.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2386,7 +2422,7 @@ translators: Block name. %s: The localized block name */
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Editar palabra de la lista negra";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "Editar comentario";
 
 /* IP Address or Range Edition Title */
@@ -2458,6 +2494,9 @@ translators: Block name. %s: The localized block name */
    Label for email followers
    Register Domain - Domain contact information field Email */
 "Email" = "Correo electrónico";
+
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "Email";
 
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
@@ -2589,7 +2628,8 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Introduce las credenciales de tu servidor";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Error";
@@ -2636,6 +2676,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Error al instalar %@.";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Error al cargar los me gusta";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Error al cargar plugins";
@@ -2696,6 +2739,9 @@ translators: Block name. %s: The localized block name */
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Todos los días";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "Cada día a las %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Todo el mundo";
@@ -2883,9 +2929,6 @@ translators: Block name. %s: The localized block name */
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "Encontrando blogs e historias que te encantarán...";
 
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "Buscando tu ubicación...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -2995,7 +3038,7 @@ translators: Block name. %s: The localized block name */
 "Free GIF Library" = "Biblioteca GIF gratuita";
 
 /* One of the options when selecting More in the Post Editor's format bar */
-"Free Photo Library" = "Librería de fotos gratuitas";
+"Free Photo Library" = "Biblioteca de fotos gratuitas";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Libera espacio de almacenamiento en este dispositivo eliminando archivos temporales de medios. Esto no afectará a los medios en tu sitio.";
@@ -3075,6 +3118,9 @@ translators: Block name. %s: The localized block name */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Volver";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Ir al siguiente";
@@ -3257,6 +3303,12 @@ translators: Block name. %s: The localized block name */
 
 /* How to create story description */
 "How to create a story post" = "Cómo crear una entrada de historias";
+
+/* No comment provided by engineer. */
+"How to edit your page" = "Cómo editar tu página";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "Cómo editar tu entrada";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "¿Cómo vamos a corregirlo?";
@@ -3799,9 +3851,7 @@ translators: Block name. %s: The localized block name */
    Title of the Local Changes Badge */
 "Local changes" = "Cambios locales";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "Ubicación";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3861,9 +3911,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "¿Buscas las estadísticas?";
-
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "Buscando dirección...";
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Parece que tienes Jetpack instalado. ¡Enhorabuena! Accede con tus credenciales de WordPress.com para activar las estadísticas y los avisos.";
@@ -4108,6 +4155,9 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Mover el bloque hacia arriba desde la fila %1$s a la fila %2$s";
 
+/* No comment provided by engineer. */
+"Move blocks" = "Mover bloques";
+
 /* Option to move Insight down in the view. */
 "Move down" = "Mover hacia abajo";
 
@@ -4166,6 +4216,7 @@ translators: Block name. %s: The localized block name */
 "My Top Ten Cafes" = "Mis diez mejores cafeterías";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Nombre";
 
@@ -4180,6 +4231,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navega para personalizar el degradado";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navega para seleccionar %s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navega a la hoja de contenido anterior";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "¿Necesitas ayuda?";
@@ -4464,9 +4521,6 @@ translators: Block name. %s: The localized block name */
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Ninguno establecido";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "Norte";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "No conectado";
 
@@ -4515,6 +4569,9 @@ translators: Block name. %s: The localized block name */
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Ajustes de avisos";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "Hora del aviso";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4616,7 +4673,6 @@ translators: Block name. %s: The localized block name */
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4839,6 +4895,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for date periods. */
 "Period" = "Período";
+
+/* Close Account confirmation action title */
+"Permanently Close Account" = "Cerrar cuenta permanentemente";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Borrar el sitio permanentemente";
@@ -5435,7 +5494,6 @@ translators: Block name. %s: The localized block name */
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5803,9 +5861,6 @@ translators: Block name. %s: The localized block name */
    Title of the Reader's search feature */
 "Search" = "Buscar";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "Buscar ubicaciones";
-
 /* Label for list of search term */
 "Search Term" = "Buscar término";
 
@@ -5921,6 +5976,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Select a color" = "Seleccionar un color";
 
+/* No comment provided by engineer. */
+"Select a color above" = "Selecciona un color de arriba";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Selecciona algunos para continuar";
 
@@ -5969,6 +6027,9 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "El elemento multimedia seleccionado no está disponible.";
 
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Selecionado: %s";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Seleccionando una ubicación diferente para el menú perderás los cambios que has hecho al menú actual. ¿Estás seguro de que quieres continuar?";
 
@@ -6013,9 +6074,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Set Featured Image" = "Establecer la imagen destacada";
-
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "Establecer ubicación";
 
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
@@ -6082,6 +6140,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for action to share post. */
 "Share Post" = "Compartir entrada";
+
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "Comparte WordPress con un amigo";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Comparte información con nuestra herramienta de análisis acerca del uso que haces de los servicios mientras estás conectado a tu cuenta de WordPress.com.";
@@ -6332,7 +6393,8 @@ translators: Block name. %s: The localized block name */
 "Something went wrong. Please check your connectivity and try again." = "Algo fue mal. Por favor, revisa tu conectividad e inténtalo de nuevo.";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "Algo ha salido mal. Por favor inténtalo de nuevo.";
 
 /* Invite Validation Alert
@@ -6408,9 +6470,6 @@ translators: Block name. %s: The localized block name */
 
 /* Opens the Github Repository Web */
 "Source Code" = "Código fuente";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "Sur";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Espacio utilizado";
@@ -6697,6 +6756,9 @@ translators: Block name. %s: The localized block name */
 /* Title of a button style */
 "Text Only" = "Solo texto";
 
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Los controles de formato de texto están dentro de la barra de herramientas situada encima del teclado mientras editas un bloque de texto";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Envía un código por mensaje de texto";
@@ -6939,9 +7001,6 @@ translators: Block name. %s: The localized block name */
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Hubo un error al cargar las actividades";
 
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "Se ha producido un error al cargar los \"Me gusta\".";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Hubo un error cargando los planes";
 
@@ -7034,6 +7093,18 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Este sitio no ha publicado nada aún. Inténtalo más tarde.";
+
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "No es posible cerrar la cuenta de este usuario si tiene devoluciones sin resolver.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "No es posible cerrar la cuenta de este usuario porque tiene compras activas. ";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "No es posible cerrar la cuenta de este usuario porque tiene suscripciones activas.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "No se ha podido cerrar esta cuenta de usuario. Por favor, contacta con nosotros yendo a la pantalla «Yo > Ayuda y soporte».";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7674,9 +7745,6 @@ translators: Block name. %s: The localized block name */
 /* Use the current image */
 "Use" = "Utilizar";
 
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "Usar ubicación actual";
-
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Usar la tienda en un entorno de pruebas";
 
@@ -8111,7 +8179,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Hemos tenido problemas al cambiar el dominio principal de tu sitio - pero no te preocupes, tu dominio se ha comprado con éxito.";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Dirección web";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8143,9 +8212,6 @@ translators: Block name. %s: The localized block name */
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Bienvenido al maquetador web más popular del mundo.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "Oeste";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Siempre enviamos correos electrónicos importantes que tengan que ver con tu cuenta, pero también puede que recibas extras interesantes.";
@@ -8251,6 +8317,9 @@ translators: Block name. %s: The localized block name */
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Ajustes de la aplicación WordPress";
+
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "Aplicaciones WordPress - Aplicaciones para cualquier pantalla";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
@@ -8522,13 +8591,16 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "No volverás a poder cambiar tu nombre de usuario.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Recibirás un recordatorio para bloguear <strong>una vez<\/strong> a la semana en %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Recibirás un recordatorio para bloguear <strong>una vez<\/strong> a la semana el %1$@ a las %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Tienes recordatorios para bloguear %1$@ veces a la semana el %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "¡Estás al día!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "No estás autorizado a cerrar la cuenta.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Has realizado cambios en esta entrada que no has guardado";

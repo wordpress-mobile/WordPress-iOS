@@ -265,7 +265,6 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.show(withStatus: status)
 
         service.closeAccount { [weak self] in
-            guard let self = self else { return }
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
@@ -274,43 +273,45 @@ private class AccountSettingsController: SettingsController {
             case .failure(let error):
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
-                self.showErrorAlert(message: self.generateLocalizedMessage(error))
+                self?.showCloseAccountErrorAlert()
             }
         }
     }
 
-    private func generateLocalizedMessage(_ error: Error) -> String {
-        let userInfo = (error as NSError).userInfo
-        let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+    private func showCloseAccountErrorAlert() {
+        let title = NSLocalizedString("Couldn’t close account automatically",
+                                      comment: "Error title displayed when unable to close user account.")
+        let message = NSLocalizedString("To close this account now, contact our support team.",
+                                        comment: "Error message displayed when unable to close user account.")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        switch errorCode {
-        case "unauthorized":
-            return NSLocalizedString("You're not authorized to close the account.",
-                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
-        case "atomic-site":
-            return NSLocalizedString("This user account cannot be closed while it has active atomic sites.",
-                                     comment: "Error message displayed when unable to close user account due to having active atomic site.")
-        case "chargebacked-site":
-            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
-                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
-        case "active-subscriptions":
-            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
-                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
-        case "active-memberships":
-            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
-                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
-        default:
-            return NSLocalizedString("An error occured while closing account.",
-                                     comment: "Default error message displayed when unable to close user account.")
-        }
+        let contactSupportTitle = NSLocalizedString("Contact Support",
+                                      comment: "Title for a button displayed when unable to close user account due to having atomic site.")
+        alert.addActionWithTitle(contactSupportTitle, style: .default, handler: contactSupportAction)
+        let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        alert.addCancelActionWithTitle(cancelAction)
+
+        alert.presentFromRootViewController()
     }
 
-    private func showErrorAlert(message: String) {
-        let title = NSLocalizedString("Error", comment: "General error title")
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = NSLocalizedString("OK", comment: "Alert dismissal title")
-        alert.addDefaultActionWithTitle(okAction, handler: nil)
-        alert.presentFromRootViewController()
+    private var contactSupportAction: ((UIAlertAction) -> Void) {
+        return { action in
+            if ZendeskUtils.zendeskEnabled {
+                guard let leafViewController = UIApplication.shared.leafViewController else {
+                    return
+                }
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) { [weak self] identityUpdated in
+                    if identityUpdated {
+                        self?.refreshModel()
+                    }
+                }
+            } else {
+                guard let url = Constants.forumsURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
+        }
     }
 
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
@@ -351,5 +352,6 @@ private class AccountSettingsController: SettingsController {
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
+        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 }

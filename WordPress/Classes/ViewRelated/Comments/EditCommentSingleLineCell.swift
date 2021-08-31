@@ -1,17 +1,25 @@
 import Foundation
 
+
+protocol EditCommentSingleLineCellDelegate: AnyObject {
+    func fieldUpdated(_ type: TextFieldStyle, updatedText: String?, isValid: Bool)
+}
+
+// Used to determine TextField configuration options.
+enum TextFieldStyle {
+    case text
+    case url
+    case email
+}
+
+
 class EditCommentSingleLineCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties
 
     @IBOutlet weak var textField: UITextField!
-
-    // Used to determine TextField configuration options.
-    enum TextFieldStyle {
-        case text
-        case url
-        case email
-    }
+    weak var delegate: EditCommentSingleLineCellDelegate?
+    private var textFieldStyle: TextFieldStyle = .text
 
     // MARK: - View
 
@@ -21,8 +29,9 @@ class EditCommentSingleLineCell: UITableViewCell, NibReusable {
     }
 
     func configure(text: String? = nil, style: TextFieldStyle = .text) {
-        applyTextFieldStyle(style)
         textField.text = text
+        textFieldStyle = style
+        applyTextFieldStyle()
     }
 
 }
@@ -36,6 +45,10 @@ extension EditCommentSingleLineCell: UITextFieldDelegate {
         return true
     }
 
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        validateText(sender.text)
+    }
+
 }
 
 // MARK: - Private Extension
@@ -47,8 +60,8 @@ private extension EditCommentSingleLineCell {
         textField.textColor = .text
     }
 
-    func applyTextFieldStyle(_ style: TextFieldStyle) {
-        switch style {
+    func applyTextFieldStyle() {
+        switch textFieldStyle {
         case .text:
             textField.autocorrectionType = .yes
             textField.keyboardType = .default
@@ -60,6 +73,19 @@ private extension EditCommentSingleLineCell {
             textField.autocorrectionType = .no
             textField.keyboardType = .emailAddress
         }
+    }
+
+    func validateText(_ text: String?) {
+        let isValid: Bool = {
+            switch textFieldStyle {
+            case .email:
+                return text?.isValidEmail() ?? false
+            default:
+                return true
+            }
+        }()
+
+        delegate?.fieldUpdated(textFieldStyle, updatedText: text, isValid: isValid)
     }
 
 }
