@@ -15882,7 +15882,7 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(SRCROOT)/secrets-manifest.xcfilelist",
+				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
 			);
 			inputPaths = (
 			);
@@ -15895,6 +15895,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/ApplyConfiguration.sh\n";
+			showEnvVarsInLog = 0;
 		};
 		2ACEBC2718E9AC320D2B2858 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -16516,7 +16517,7 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(SRCROOT)/secrets-manifest.xcfilelist",
+				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
 			);
 			inputPaths = (
 			);
