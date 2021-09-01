@@ -4,7 +4,7 @@ class CommentDetailViewController: UITableViewController {
 
     // MARK: Properties
 
-    private let comment: Comment
+    private var comment: Comment
 
     private var rows = [RowType]()
 
@@ -127,12 +127,38 @@ private extension CommentDetailViewController {
     }
 
     @objc func editButtonTapped() {
-        // NOTE: This depends on the new edit comment feature, which is still ongoing.
-        let navigationControllerToPresent = UINavigationController(rootViewController: EditCommentTableViewController(comment: comment))
+        let editCommentTableViewController = EditCommentTableViewController(comment: comment, completion: { [weak self] comment, commentChanged in
+            guard commentChanged else {
+                return
+            }
+
+            self?.comment = comment
+            self?.tableView.reloadData()
+            self?.updateComment()
+        })
+
+        let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
         navigationControllerToPresent.modalPresentationStyle = .fullScreen
-        present(navigationControllerToPresent, animated: true) {
-            self.tableView.reloadData()
-        }
+        present(navigationControllerToPresent, animated: true)
+    }
+
+    func updateComment() {
+        // Regardless of success or failure track the user's intent to save a change.
+        CommentAnalytics.trackCommentEdited(comment: comment)
+
+        let context = ContextManager.sharedInstance().mainContext
+        let commentService = CommentService(managedObjectContext: context)
+
+        commentService.uploadComment(comment,
+                                     success: { [weak self] in
+                                        // The comment might have changed its approval status
+                                        self?.tableView.reloadData()
+                                     },
+                                     failure: { [weak self] error in
+                                        let message = NSLocalizedString("There has been an unexpected error while editing your comment",
+                                                                        comment: "Error displayed if a comment fails to get updated")
+                                        self?.displayNotice(title: message)
+                                     })
     }
 
 }
