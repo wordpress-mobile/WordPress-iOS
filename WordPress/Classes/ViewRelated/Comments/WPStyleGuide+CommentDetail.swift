@@ -3,6 +3,7 @@
 extension WPStyleGuide {
     public struct CommentDetail {
         static let tintColor: UIColor = .primary
+        static let externalIconImage: UIImage = .gridicon(.external).imageFlippedForRightToLeftLayoutDirection()
 
         static let textFont = WPStyleGuide.fontForTextStyle(.body)
         static let textColor = UIColor.text
@@ -19,14 +20,16 @@ extension WPStyleGuide {
         }
 
         public struct ReplyIndicator {
-            static let tintColor = CommentDetail.secondaryTextColor
-
-            static let font = CommentDetail.secondaryTextFont
-            static let textColor = CommentDetail.secondaryTextColor
+            static let textAttributes: [NSAttributedString.Key: Any] = [
+                .font: CommentDetail.secondaryTextFont,
+                .foregroundColor: CommentDetail.secondaryTextColor
+            ]
 
             private static let symbolName = "arrowshape.turn.up.left.circle"
-            private static let symbolConfiguration = UIImage.SymbolConfiguration(font: font, scale: .small)
-            static let iconImage: UIImage? = .init(systemName: symbolName, withConfiguration: symbolConfiguration)
+            private static let symbolConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.secondaryTextFont, scale: .small)
+            static let iconImage: UIImage? = .init(systemName: symbolName, withConfiguration: symbolConfiguration)?
+                .withRenderingMode(.alwaysTemplate)
+                .imageFlippedForRightToLeftLayoutDirection()
         }
     }
 }
