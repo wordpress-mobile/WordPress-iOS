@@ -87,12 +87,23 @@ private extension CommentDetailViewController {
         case text(title: String, detail: String, image: UIImage? = nil, action: (() -> Void)? = nil)
     }
 
+    struct Constants {
+        static let tableLeadingInset: CGFloat = 20.0
+    }
+
     func configureNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped))
     }
 
     func configureTable() {
-        tableView.tableFooterView = UIView(frame: .zero)
+        // get rid of the separator line for the last cell.
+        tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+
+        // assign 20pt leading inset to the table view, as per the design.
+        // note that by default, the system assigns 16pt inset for .phone, and 20pt for .pad idioms.
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            tableView.directionalLayoutMargins.leading = Constants.tableLeadingInset
+        }
     }
 
     func configureRows() {
