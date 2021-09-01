@@ -80,6 +80,8 @@ class CommentDetailViewController: UITableViewController {
 
 private extension CommentDetailViewController {
 
+    typealias Style = WPStyleGuide.CommentDetail
+
     enum RowType {
         case header
         case content
@@ -129,14 +131,14 @@ private extension CommentDetailViewController {
             return
         }
 
-        cell.tintColor = .primary
+        cell.tintColor = Style.tintColor
 
-        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        cell.textLabel?.textColor = .textSubtle
+        cell.textLabel?.font = Style.secondaryTextFont
+        cell.textLabel?.textColor = Style.secondaryTextColor
         cell.textLabel?.text = title
 
-        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body)
-        cell.detailTextLabel?.textColor = .text
+        cell.detailTextLabel?.font = Style.textFont
+        cell.detailTextLabel?.textColor = Style.textColor
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
 
