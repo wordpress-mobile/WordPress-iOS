@@ -19,7 +19,16 @@ class EditCommentTableViewController: UITableViewController {
     // So save and use one instance of the cell.
     private let commentContentCell = EditCommentMultiLineCell.loadFromNib()
 
+    // A closure executed when the view is dismissed.
+    // Returns the Comment object and a Bool indicating if the Comment has been changed.
+    @objc var completion: ((Comment, Bool) -> Void)?
+
     // MARK: - Init
+
+    convenience init(comment: Comment, completion: ((Comment, Bool) -> Void)? = nil) {
+        self.init(comment: comment)
+        self.completion = completion
+    }
 
     @objc required init(comment: Comment) {
         self.comment = comment
@@ -148,8 +157,7 @@ private extension EditCommentTableViewController {
     }
 
     @objc func doneButtonTapped(sender: UIBarButtonItem) {
-        // TODO: save changes
-        dismiss(animated: true)
+        finishWithUpdates()
     }
 
     // MARK: - Tap gesture handling
@@ -160,8 +168,18 @@ private extension EditCommentTableViewController {
 
     // MARK: - View dismissal handling
 
+    func finishWithUpdates() {
+        comment.author = updatedName ?? ""
+        comment.author_url = updatedWebAddress ?? ""
+        comment.author_email = updatedEmailAddress ?? ""
+        comment.content = updatedContent ?? ""
+        completion?(comment, true)
+        dismiss(animated: true)
+    }
+
+
     func finishWithoutUpdates() {
-        // TODO: notify caller
+        completion?(comment, false)
         dismiss(animated: true)
     }
 
