@@ -25,9 +25,8 @@ extension WPStyleGuide {
                 .foregroundColor: CommentDetail.secondaryTextColor
             ]
 
-            private static let symbolName = "arrowshape.turn.up.left.circle"
             private static let symbolConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.secondaryTextFont, scale: .small)
-            static let iconImage: UIImage? = .init(systemName: symbolName, withConfiguration: symbolConfiguration)?
+            static let iconImage: UIImage? = .init(systemName: "arrowshape.turn.up.left.circle", withConfiguration: symbolConfiguration)?
                 .withRenderingMode(.alwaysTemplate)
                 .imageFlippedForRightToLeftLayoutDirection()
         }
