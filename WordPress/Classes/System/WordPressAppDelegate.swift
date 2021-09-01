@@ -325,10 +325,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         noticePresenter = NoticePresenter()
     }
 
-    private func setupBackgroundTasks() {
-
-    }
-
     private func setupBackgroundRefresh(_ application: UIApplication) {
         backgroundTasksCoordinator.scheduleTasks { result in
             if case .failure(let error) = result {
