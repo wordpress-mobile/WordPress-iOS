@@ -116,8 +116,7 @@ struct WeeklyRoundupDebugScreen: View {
                         runDateComponents: runDateComponents,
                         staticNotificationDateComponents: staticNotificationDateComponents)
 
-                    WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { result in
-                        print("Done!")
+                    WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { _ in
                     }
                 }
             }
