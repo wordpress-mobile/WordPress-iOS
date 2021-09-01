@@ -4352,6 +4352,10 @@
 		FE3E427B26A8690A00C596CE /* ListSimpleOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE3E83E426A58646008CE851 /* ListSimpleOverlayView.xib */; };
 		FE3E83E526A58646008CE851 /* ListSimpleOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3E83E326A58646008CE851 /* ListSimpleOverlayView.swift */; };
 		FE3E83E626A58646008CE851 /* ListSimpleOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE3E83E426A58646008CE851 /* ListSimpleOverlayView.xib */; };
+		FE43DAAF26DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */; };
+		FE43DAB026DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */; };
+		FE43DAB126DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */; };
+		FE43DAB226DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */; };
 		FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */; };
 		FE9CC71B26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */; };
 		FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088002696E7F600193358 /* ListTableHeaderView.swift */; };
@@ -7529,6 +7533,8 @@
 		FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareAppContentPresenter+TableView.swift"; sourceTree = "<group>"; };
 		FE3E83E326A58646008CE851 /* ListSimpleOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSimpleOverlayView.swift; sourceTree = "<group>"; };
 		FE3E83E426A58646008CE851 /* ListSimpleOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListSimpleOverlayView.xib; sourceTree = "<group>"; };
+		FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContentTableViewCell.swift; sourceTree = "<group>"; };
+		FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentContentTableViewCell.xib; sourceTree = "<group>"; };
 		FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailViewController.swift; sourceTree = "<group>"; };
 		FEA088002696E7F600193358 /* ListTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableHeaderView.swift; sourceTree = "<group>"; };
 		FEA088022696E81F00193358 /* ListTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableHeaderView.xib; sourceTree = "<group>"; };
@@ -14461,6 +14467,8 @@
 			isa = PBXGroup;
 			children = (
 				FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */,
+				FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */,
+				FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -15180,6 +15188,7 @@
 				9856A389261FC206008D6354 /* UserProfileUserInfoCell.xib in Resources */,
 				98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
+				FE43DAB126DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
 				433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
@@ -15634,6 +15643,7 @@
 				FABB1FB92602FC2C00C8785C /* RestoreStatusFailedView.xib in Resources */,
 				FABB1FBA2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				FABB1FBB2602FC2C00C8785C /* CollapsableHeaderCollectionViewCell.xib in Resources */,
+				FE43DAB226DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
 				FABB1FBC2602FC2C00C8785C /* PrepublishingHeaderView.xib in Resources */,
 				FABB1FBF2602FC2C00C8785C /* WPTableViewActivityCell.xib in Resources */,
 				FABB1FC12602FC2C00C8785C /* defaultPostTemplate.html in Resources */,
@@ -18226,6 +18236,7 @@
 				400A2C872217A985000A8A59 /* ReferrerStatsRecordValue+CoreDataProperties.swift in Sources */,
 				B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */,
 				57AA848F228715DA00D3C2A2 /* PostCardCell.swift in Sources */,
+				FE43DAAF26DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -20329,6 +20340,7 @@
 				FABB25CC2602FC2C00C8785C /* WPStyleGuide+Themes.swift in Sources */,
 				FABB25CD2602FC2C00C8785C /* WPStyleGuide+Reader.swift in Sources */,
 				FABB25CE2602FC2C00C8785C /* Interpolation.swift in Sources */,
+				FE43DAB026DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */,
 				FABB25CF2602FC2C00C8785C /* PostEditorAnalyticsSession.swift in Sources */,
 				FABB25D02602FC2C00C8785C /* SiteCreationWizardLauncher.swift in Sources */,
 				FABB25D12602FC2C00C8785C /* ReaderSitesCardCell.swift in Sources */,
