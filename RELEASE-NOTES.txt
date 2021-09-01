@@ -2,6 +2,7 @@
 -----
 [internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
 * [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
+* [*] Added pull-to-refresh to My Site.
 
 18.1
 -----

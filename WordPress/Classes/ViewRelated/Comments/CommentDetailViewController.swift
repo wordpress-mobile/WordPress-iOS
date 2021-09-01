@@ -8,6 +8,10 @@ class CommentDetailViewController: UITableViewController {
 
     private var rows = [RowType]()
 
+    // MARK: Views
+
+    private var headerCell = CommentHeaderTableViewCell()
+
     // MARK: Initialization
 
     @objc required init(comment: Comment) {
@@ -25,6 +29,7 @@ class CommentDetailViewController: UITableViewController {
         super.viewDidLoad()
         configureNavigationBar()
         configureTable()
+        configureRows()
     }
 
     // MARK: Table view data source
@@ -35,6 +40,29 @@ class CommentDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch rows[indexPath.row] {
+        case .header:
+            configureHeaderCell()
+            return headerCell
+
+        default:
+            return .init()
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        switch rows[indexPath.row] {
+        case .header:
+            navigateToPost()
+
+        default:
+            break
+        }
     }
 
 }
@@ -56,6 +84,46 @@ private extension CommentDetailViewController {
 
     func configureTable() {
         tableView.tableFooterView = UIView(frame: .zero)
+    }
+
+    func configureRows() {
+        rows = [.header]
+    }
+
+    // MARK: Cell configuration
+
+    func configureHeaderCell() {
+        // TODO: detect if the comment is a reply.
+
+        headerCell.textLabel?.text = .postCommentTitleText
+        headerCell.detailTextLabel?.text = comment.titleForDisplay()
+    }
+
+    // MARK: Actions and navigations
+
+    func navigateToPost() {
+        guard let blog = comment.blog,
+              let siteID = blog.dotComID,
+              blog.supports(.wpComRESTAPI) else {
+            viewPostInWebView()
+            return
+        }
+
+        let readerViewController = ReaderDetailViewController.controllerWithPostID(NSNumber(value: comment.postID), siteID: siteID, isFeed: false)
+        navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+    }
+
+    func viewPostInWebView() {
+        guard let post = comment.post,
+              let permalink = post.permaLink,
+              let url = URL(string: permalink) else {
+            return
+        }
+
+        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navigationControllerToPresent = UINavigationController(rootViewController: viewController)
+
+        present(navigationControllerToPresent, animated: true, completion: nil)
     }
 
     @objc func editButtonTapped() {
@@ -93,4 +161,12 @@ private extension CommentDetailViewController {
                                      })
     }
 
+}
+
+// MARK: - Localization
+
+private extension String {
+    static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
+                                                            + "The title of the post will displayed below this string. "
+                                                            + "Example: Comment on \n My First Post")
 }

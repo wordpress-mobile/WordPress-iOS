@@ -8,11 +8,11 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
         return nil
     }
     let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-    return AccountSettingsViewController(service: service)
+    return AccountSettingsViewController(accountSettingsService: service)
 }
 
-func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
-    let controller = AccountSettingsController(service: service)
+func AccountSettingsViewController(accountSettingsService: AccountSettingsService) -> ImmuTableViewController {
+    let controller = AccountSettingsController(accountSettingsService: accountSettingsService)
     let viewController = ImmuTableViewController(controller: controller)
     viewController.handler.automaticallyDeselectCells = true
     return viewController
@@ -32,7 +32,9 @@ private class AccountSettingsController: SettingsController {
 
     // MARK: - Initialization
 
-    let service: AccountSettingsService
+    private let accountSettingsService: AccountSettingsService
+    private let accountService: AccountService
+
     var settings: AccountSettings? {
         didSet {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
@@ -45,8 +47,10 @@ private class AccountSettingsController: SettingsController {
     }
     private let alertHelper = DestructiveAlertHelper()
 
-    init(service: AccountSettingsService) {
-        self.service = service
+    init(accountSettingsService: AccountSettingsService,
+         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)) {
+        self.accountSettingsService = accountSettingsService
+        self.accountService = accountService
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
@@ -54,15 +58,15 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshModel() {
-        service.refreshSettings()
+        accountSettingsService.refreshSettings()
     }
 
     @objc func loadStatus() {
-        noticeMessage = service.status.errorMessage ?? noticeForAccountSettings(service.settings)
+        noticeMessage = accountSettingsService.status.errorMessage ?? noticeForAccountSettings(accountSettingsService.settings)
     }
 
     @objc func loadSettings() {
-        settings = service.settings
+        settings = accountSettingsService.settings
         // Status is affected by settings changes (for pending email), so let's load that as well
         loadStatus()
     }
@@ -71,7 +75,7 @@ private class AccountSettingsController: SettingsController {
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
-        return mapViewModel(settings, service: service, presenter: presenter)
+        return mapViewModel(settings, service: accountSettingsService, presenter: presenter)
     }
 
 
@@ -125,7 +129,7 @@ private class AccountSettingsController: SettingsController {
 
         let closeAccount = DestructiveButtonRow(
             title: NSLocalizedString("Close Account", comment: "Close account action label"),
-            action: presenter.present(closeAccountAction),
+            action: closeAccountAction,
             accessibilityIdentifier: "closeAccountButtonRow")
 
         return ImmuTable(sections: [
@@ -199,12 +203,10 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+        guard let account = accountService.defaultWordPressComAccount() else {
             return
         }
-        service.updateUserDetails(for: account, success: { () in
+        accountService.updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()
@@ -239,15 +241,25 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    private var closeAccountAction: (ImmuTableRow) -> UIAlertController {
+    private var closeAccountAction: (ImmuTableRow) -> Void {
         return { [weak self] _ in
-            return self?.closeAccountAlert ?? UIAlertController()
+            guard let self = self else { return }
+            switch self.hasAtomicSite {
+            case true:
+                self.showCloseAccountErrorAlert()
+            case false :
+                self.showCloseAccountAlert()
+            }
         }
     }
 
-    private var closeAccountAlert: UIAlertController? {
+    private var hasAtomicSite: Bool {
+        return accountService.defaultWordPressComAccount()?.hasAtomicSite() ?? false
+    }
+
+    private func showCloseAccountAlert() {
         guard let value = settings?.username else {
-            return nil
+            return
         }
 
         let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
@@ -256,7 +268,8 @@ private class AccountSettingsController: SettingsController {
         let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
                                                        comment: "Close Account confirmation action title")
 
-        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+        let alert = alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+        alert.presentFromRootViewController()
     }
 
     private func closeAccount() {
@@ -264,7 +277,7 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.setDefaultMaskType(.black)
         SVProgressHUD.show(withStatus: status)
 
-        service.closeAccount { [weak self] in
+        accountSettingsService.closeAccount { [weak self] in
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")

@@ -49,5 +49,6 @@
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
 + (NSString *)tokenForUsername:(NSString *)username;
+- (BOOL)hasAtomicSite;
 
 @end
