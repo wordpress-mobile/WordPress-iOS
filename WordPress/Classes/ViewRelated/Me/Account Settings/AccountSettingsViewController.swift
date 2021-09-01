@@ -8,11 +8,11 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
         return nil
     }
     let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-    return AccountSettingsViewController(service: service)
+    return AccountSettingsViewController(accountSettingsService: service)
 }
 
-func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
-    let controller = AccountSettingsController(service: service)
+func AccountSettingsViewController(accountSettingsService: AccountSettingsService) -> ImmuTableViewController {
+    let controller = AccountSettingsController(accountSettingsService: accountSettingsService)
     let viewController = ImmuTableViewController(controller: controller)
     viewController.handler.automaticallyDeselectCells = true
     return viewController
@@ -32,7 +32,7 @@ private class AccountSettingsController: SettingsController {
 
     // MARK: - Initialization
 
-    let service: AccountSettingsService
+    private let accountSettingsService: AccountSettingsService
     var settings: AccountSettings? {
         didSet {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
@@ -45,8 +45,8 @@ private class AccountSettingsController: SettingsController {
     }
     private let alertHelper = DestructiveAlertHelper()
 
-    init(service: AccountSettingsService) {
-        self.service = service
+    init(accountSettingsService: AccountSettingsService) {
+        self.accountSettingsService = accountSettingsService
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
@@ -54,15 +54,15 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshModel() {
-        service.refreshSettings()
+        accountSettingsService.refreshSettings()
     }
 
     @objc func loadStatus() {
-        noticeMessage = service.status.errorMessage ?? noticeForAccountSettings(service.settings)
+        noticeMessage = accountSettingsService.status.errorMessage ?? noticeForAccountSettings(accountSettingsService.settings)
     }
 
     @objc func loadSettings() {
-        settings = service.settings
+        settings = accountSettingsService.settings
         // Status is affected by settings changes (for pending email), so let's load that as well
         loadStatus()
     }
@@ -71,7 +71,7 @@ private class AccountSettingsController: SettingsController {
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
-        return mapViewModel(settings, service: service, presenter: presenter)
+        return mapViewModel(settings, service: accountSettingsService, presenter: presenter)
     }
 
 
@@ -277,7 +277,7 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.setDefaultMaskType(.black)
         SVProgressHUD.show(withStatus: status)
 
-        service.closeAccount { [weak self] in
+        accountSettingsService.closeAccount { [weak self] in
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
