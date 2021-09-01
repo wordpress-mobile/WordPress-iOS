@@ -49,9 +49,9 @@ class CommentDetailViewController: UITableViewController {
             configureHeaderCell()
             return headerCell
 
-        case .text(_, _, _, _):
+        case .text:
             let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
-            configureTextCell(cell, row: row)
+            configureTextCell(cell, with: row)
             return cell
 
         default:
@@ -124,7 +124,7 @@ private extension CommentDetailViewController {
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
     }
 
-    func configureTextCell(_ cell: UITableViewCell, row: RowType) {
+    func configureTextCell(_ cell: UITableViewCell, with row: RowType) {
         guard case let .text(title, detail, image, _) = row else {
             return
         }
