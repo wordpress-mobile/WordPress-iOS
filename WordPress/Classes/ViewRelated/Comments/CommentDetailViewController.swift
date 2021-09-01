@@ -43,10 +43,16 @@ class CommentDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch rows[indexPath.row] {
+        let row = rows[indexPath.row]
+        switch row {
         case .header:
             configureHeaderCell()
             return headerCell
+
+        case .text(_, _, _, _):
+            let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
+            configureTextCell(cell, row: row)
+            return cell
 
         default:
             return .init()
@@ -59,6 +65,9 @@ class CommentDetailViewController: UITableViewController {
         switch rows[indexPath.row] {
         case .header:
             navigateToPost()
+
+        case .text(_, _, _, let action):
+            action?()
 
         default:
             break
@@ -75,7 +84,7 @@ private extension CommentDetailViewController {
         case header
         case content
         case replyIndicator
-        case textWithDescriptor(descriptor: String, content: String, imageName: String?, action: (() -> Void)?)
+        case text(title: String, detail: String, image: UIImage? = nil, action: (() -> Void)? = nil)
     }
 
     func configureNavigationBar() {
@@ -87,7 +96,12 @@ private extension CommentDetailViewController {
     }
 
     func configureRows() {
-        rows = [.header]
+        rows = [
+            .header,
+            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: .gridicon(.external), action: visitAuthorURL),
+            .text(title: .emailAddressLabelText, detail: comment.author_email),
+            .text(title: .ipAddressLabelText, detail: comment.author_ip)
+        ]
     }
 
     // MARK: Cell configuration
@@ -99,13 +113,38 @@ private extension CommentDetailViewController {
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
     }
 
+    func configureTextCell(_ cell: UITableViewCell, row: RowType) {
+        guard case let .text(title, detail, image, _) = row else {
+            return
+        }
+
+        cell.tintColor = .primary
+
+        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        cell.textLabel?.textColor = .textSubtle
+        cell.textLabel?.text = title
+
+        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body)
+        cell.detailTextLabel?.textColor = .text
+        cell.detailTextLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
+
+        cell.accessoryView = {
+            guard let image = image else {
+                return nil
+            }
+            return UIImageView(image: image)
+        }()
+    }
+
     // MARK: Actions and navigations
 
     func navigateToPost() {
         guard let blog = comment.blog,
               let siteID = blog.dotComID,
               blog.supports(.wpComRESTAPI) else {
-            viewPostInWebView()
+            let postPermalinkURL = URL(string: comment.post?.permaLink ?? "")
+            openWebView(for: postPermalinkURL)
             return
         }
 
@@ -113,10 +152,9 @@ private extension CommentDetailViewController {
         navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
-    func viewPostInWebView() {
-        guard let post = comment.post,
-              let permalink = post.permaLink,
-              let url = URL(string: permalink) else {
+    func openWebView(for url: URL?) {
+        guard let url = url else {
+            DDLogError("\(Self.classNameWithoutNamespaces()): Attempted to open an invalid URL [\(url?.absoluteString ?? "")]")
             return
         }
 
@@ -135,12 +173,27 @@ private extension CommentDetailViewController {
         }
     }
 
+    func visitAuthorURL() {
+        guard let authorURL = comment.authorURL() else {
+            return
+        }
+
+        openWebView(for: authorURL)
+    }
+
 }
 
-// MARK: - Localization
+// MARK: - Strings
 
 private extension String {
+    // MARK: Constants
+    static let textCellIdentifier = "textCell"
+
+    // MARK: Localization
     static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
                                                             + "The title of the post will displayed below this string. "
                                                             + "Example: Comment on \n My First Post")
+    static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
+    static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
+    static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
 }
