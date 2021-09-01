@@ -203,12 +203,10 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+        guard let account = accountService.defaultWordPressComAccount() else {
             return
         }
-        service.updateUserDetails(for: account, success: { () in
+        accountService.updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()
@@ -256,9 +254,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var hasAtomicSite: Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        return service.defaultWordPressComAccount()?.hasAtomicSite() ?? false
+        return accountService.defaultWordPressComAccount()?.hasAtomicSite() ?? false
     }
 
     private func showCloseAccountAlert() {
