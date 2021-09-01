@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-28 16:03:08+0000 */
+/* Translation-Revision-Date: 2021-08-24 14:27:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -8,6 +8,9 @@
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nUntuk konfirmasi, silakan masukkan kembali alamat situs Anda sebelum menghapus.\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Gambar \"Lazy-load\"";
@@ -40,12 +43,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Suka";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d blogger menyukai ini.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d blogger menyukai ini.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d dari %2$d selesai";
@@ -213,11 +210,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li kata, %2$li karakter";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s pilihan blok";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s blok, baru tersedia";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Kosong";
@@ -301,11 +302,20 @@
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> kali seminggu";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Satu kali<\/strong> seminggu";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Dua kali<\/strong> seminggu";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -395,6 +405,9 @@
    Link to Account Settings section */
 "Account Settings" = "Pengaturan Akun";
 
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "Account closed";
+
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Pernyataan";
 
@@ -477,6 +490,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Tambahkan blok baru kapan saja dengan mengetuk ikon + di toolbar di kiri bawah.";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Tambahkan situs hosting sendiri";
 
@@ -497,6 +513,9 @@
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Tambahkan topik yang mana saja";
+
+/* No comment provided by engineer. */
+"Add blocks" = "Tambah blok";
 
 /* No comment provided by engineer. */
 "Add button text" = "Tambahkan teks tombol";
@@ -541,7 +560,7 @@
 "Add paragraph block" = "Tambahkan blok paragraf";
 
 /* Add self-hosted site button */
-"Add self-hosted site" = "Tambahkan situs hosting sendiri";
+"Add self-hosted site" = "Tambahkan situs yang dikelola sendiri";
 
 /* Button title displayed when the user has removed all Insights from display.
    Label for action to add a new Insight. */
@@ -680,6 +699,9 @@
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Diperlukan koneksi internet yang aktif untuk melihat riwayat";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "An error occured while closing account.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Kesalahan terjadi ketika membuat Menu.";
 
@@ -733,6 +755,9 @@
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentikasi Apple gagal.\nPastikan Anda masuk ke iCloud dengan ID Apple yang menggunakan autentikasi dua faktor.";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "Applies the setting";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Terapkan";
@@ -824,6 +849,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Anda yakin ingin memperbarui?";
+
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Atur konten Anda ke dalam kolom, tambahkan tombol Call to Action, dan overlay gambar dengan teks.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Seni";
@@ -1010,6 +1038,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Daftar blokir";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blok memungkinkan Anda untuk fokus menulis konten Anda, mengetahui bahwa semua alat pemformatan yang Anda butuhkan ada untuk membantu Anda menyampaikan pesan Anda.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
@@ -1053,6 +1087,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Perlindungan Terhadap Serangan Paksa";
+
+/* No comment provided by engineer. */
+"Build layouts" = "Bangun tata letak";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Daftar Bullet";
@@ -1117,6 +1154,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1250,6 +1288,9 @@
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Ubah, tambahkan, atau hapus halaman situs.";
+
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Mengganti nama tampilan";
@@ -1418,6 +1459,9 @@
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Tutup";
 
+/* Close account action label */
+"Close Account" = "Tutup Akun";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "Tutup Komentar";
 
@@ -1432,6 +1476,9 @@
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Tutup layar Me";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "Menutup akun...";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kode";
@@ -1460,7 +1507,8 @@
 /* Menu item label for linking a comic page. */
 "Comics" = "Komik";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "Komentar";
 
@@ -1539,7 +1587,7 @@
 "Completed: Publish a post" = "Selesai: Publikasikan pos";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Selesai: Tinjau halaman situs";
+"Completed: Review site pages" = "Selesai: Tinjau laman situs";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Set your site title" = "Selesai: Buat judul situs Anda";
@@ -1556,6 +1604,9 @@
 /* Confirm
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Konfirmasi";
+
+/* Close Account alert title */
+"Confirm Close Account" = "Confirm Close Account";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Konfirmasi Penghapusan Situs";
@@ -1935,6 +1986,9 @@
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Sesuaikan Situs Anda";
 
+/* No comment provided by engineer. */
+"Customize blocks" = "Sesuaikan blok";
+
 /* Title for the edition of the share message. */
 "Customize the message" = "Sesuaikan pesan";
 
@@ -2123,7 +2177,7 @@
 "Disconnect from WordPress.com" = "Putuskan dari WordPress.com";
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Memutuskan akun ini berarti pos yang diterbitkan tidak akan lagi otomatis dibagikan ke %@";
+"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Memutuskan akun berikut artinya pos yang dipublikasikan tidak akan secara otomatis dibagikan ke %@";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Temukan Situs";
@@ -2200,7 +2254,6 @@
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2283,7 +2336,7 @@
 "Double tap to preview page." = "Ketuk dua kali untuk melakukan pratinjau halaman.";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "Ketuk dua kali untuk melakukan pratinjau artikel.";
+"Double tap to preview post." = "Ketuk dua kali untuk melihat artikel.";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Ketuk dua kali untuk mengulangi perubahan terakhir";
@@ -2345,8 +2398,8 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "EDIT TAUTAN";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "Timur";
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Setiap blok memiliki pengaturannya sendiri. Untuk menemukannya, ketuk pada blok. Pengaturannya akan muncul di toolbar di bagian bawah layar.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2369,7 +2422,7 @@
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Edit Daftar Blokir Kata";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "Sunting Komentar";
 
 /* IP Address or Range Edition Title */
@@ -2442,6 +2495,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "Surel";
 
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "Alamat Surel";
+
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
@@ -2477,6 +2533,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "Sematkan tautan";
+
+/* No comment provided by engineer. */
+"Embed media" = "Sematkan media";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Pratinjau sematan belum tersedia";
@@ -2560,7 +2619,7 @@
 "Enter your email address to log in or create a WordPress.com account." = "Masukkan alamat email Anda untuk login atau membuat akun WordPress.com.";
 
 /* Button title. Takes the user to the login by site address flow. */
-"Enter your existing site address" = "Masukkan alamat situs Anda yang sudah ada";
+"Enter your existing site address" = "Masukkan alamat situs Anda saat ini";
 
 /* Title of a button on the magic link screen.
    Title of a button. */
@@ -2569,7 +2628,8 @@
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Masukkan kredensial server Anda";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Galat";
@@ -2616,6 +2676,9 @@
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Error saat menginstal %@.";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Eror memuat suka";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Terjadi error saat memuat plugin";
@@ -2676,6 +2739,9 @@
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Tiap hari";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "Setiap hari pada %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Setiap Orang";
@@ -2795,6 +2861,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Gambar Terfitur";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Gambar Unggulan Sudah Diatur";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Pilihan Gambar Andalan";
 
@@ -2859,9 +2928,6 @@
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "Menemukan blog dan cerita yang akan Anda sukai...";
-
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "Mencari lokasi Anda...";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -3044,11 +3110,17 @@
 /* Cancel */
 "Give Up" = "Menyerah";
 
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Cobalah dengan menambahkan beberapa blok ke artikel atau halaman Anda!";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Berikan nama situs yang mencerminkan karakteristik dan topik situs Anda. Kesan pertama sangat berarti!";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Kembali";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Buka yang Diikuti";
@@ -3231,6 +3303,12 @@
 
 /* How to create story description */
 "How to create a story post" = "Cara membuat pos cerita";
+
+/* No comment provided by engineer. */
+"How to edit your page" = "How to edit your page";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "How to edit your post";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Bagaimana cara memperbaikinya?";
@@ -3462,7 +3540,7 @@
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Sepertinya Anda memasukkan kata sandi yang salah. Ingin mencoba lagi?";
 
 /* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Sudah %1$@ sejak %2$@ diterbitkan. ";
+"It's been %@ since %@ was published. " = "Sudah %1$@ sejak %2$@ dipublikasikan. ";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Waktunya menulis pos pada %@!";
@@ -3773,9 +3851,7 @@
    Title of the Local Changes Badge */
 "Local changes" = "Perubahan lokal";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "Lokasi";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3836,9 +3912,6 @@
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Mencari statistik?";
 
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "Mencari alamat...";
-
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Sepertinya Anda telah menyiapkan Jetpack di situs Anda. Selamat! Login dengan kredensial WordPress.com Anda untuk mengaktifkan Statistik dan Pemberitahuan.";
 
@@ -3850,6 +3923,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigasi Utama";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Buat konten Anda menonjol dengan menambahkan gambar, gif, video, dan media tersemat ke halaman Anda.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4079,6 +4155,9 @@
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Pindahkan balok ke atas dari baris %1$s ke baris %2$s";
 
+/* No comment provided by engineer. */
+"Move blocks" = "Move blocks";
+
 /* Option to move Insight down in the view. */
 "Move down" = "Geser bawah";
 
@@ -4137,6 +4216,7 @@
 "My Top Ten Cafes" = "Sepuluh Kafe Favorit Saya";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Nama";
 
@@ -4151,6 +4231,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigasikan untuk menyesuaikan gradasi";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navigates to select %s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navigasikan ke lembar konten sebelumnya";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Butuh Bantuan?";
@@ -4435,9 +4521,6 @@
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Tidak diatur";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "Utara";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Tidak Tersambung";
 
@@ -4486,6 +4569,9 @@
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Pengaturan Pemberitahuan";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "Notification time";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4570,6 +4656,9 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Setelah tautan undangan ini dinonaktifkan, tidak ada yang dapat menggunakannya lagi untuk bergabung dengan tim Anda. Apakah Anda yakin?";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Setelah Anda terbiasa dengan nama blok yang berbeda, Anda dapat menambahkan blok dengan mengetikkan garis miring diikuti dengan nama blok — misalnya, \/image atau \/heading.";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
 
@@ -4584,7 +4673,6 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4707,7 +4795,7 @@
 "Page Restored to Drafts" = "Halaman Dipulihkan ke Draf";
 
 /* Prompts the user that a restored page was moved to the published list. */
-"Page Restored to Published" = "Halaman Dipulihkan ke Dipublikasikan";
+"Page Restored to Published" = "Laman Dipulihkan ke Dipublikasikan";
 
 /* Prompts the user that a restored page was moved to the scheduled list. */
 "Page Restored to Scheduled" = "Halaman Dipulihkan ke Dijadwalkan";
@@ -4735,7 +4823,7 @@
 "Page pending review" = "Halaman menunggu peninjauan";
 
 /* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Halaman diterbitkan";
+"Page published" = "Laman dipublikasikan";
 
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Halaman yang dijadwalkan";
@@ -4807,6 +4895,9 @@
 
 /* Label for date periods. */
 "Period" = "Periode";
+
+/* Close Account confirmation action title */
+"Permanently Close Account" = "Tutup Akun Permanen";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Hapus Situs Secara Permanen";
@@ -5043,7 +5134,7 @@
 "Post pending review" = "Pos menunggu peninjauan";
 
 /* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Pos diterbitkan";
+"Post published" = "Pos dipublikasikan";
 
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Pos dihapus.";
@@ -5267,13 +5358,13 @@
    Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
-"Published" = "Telah dipublikasikan";
+"Published" = "Dipublikasikan";
 
 /* Precedes the name of the blog just posted on */
-"Published just now on" = "Baru saja diterbitkan di";
+"Published just now on" = "Baru saja dipublikasikan di";
 
 /* Published on [date] */
-"Published on" = "Diterbitkan pada";
+"Published on" = "Dipublikasikan pada";
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Memublikasikan ke";
@@ -5403,7 +5494,6 @@
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5462,6 +5552,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Dibuang";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Hapus dari gambar andalan ";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Menghapus metadata lokasi dari foto sebelum diunggah ke situs.";
 
@@ -5470,6 +5563,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Menghapus Langkah Berikutnya akan menyembunyikan semua tur di situs ini. Tindakan ini tidak dapat diurungkan.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Gantikan";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ganti Blok Saat Ini";
@@ -5630,13 +5726,16 @@
 "Reverts the action performed on this notification." = "Kembalikan aksi yang dijalankan pada pemberitahuan ini.";
 
 /* Title of a Quick Start Tour */
-"Review site pages" = "Tinjau halaman situs";
+"Review site pages" = "Tinjau laman situs";
 
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revisi";
 
 /* Post Rich content */
 "Rich Content" = "Konten Kaya";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Editing rich text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rata Kanan";
@@ -5762,9 +5861,6 @@
    Title of the Reader's search feature */
 "Search" = "Cari";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "Cari Lokasi";
-
 /* Label for list of search term */
 "Search Term" = "Istilah Pencarian";
 
@@ -5880,6 +5976,9 @@
 /* No comment provided by engineer. */
 "Select a color" = "Pilih warna";
 
+/* No comment provided by engineer. */
+"Select a color above" = "Select a color above";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Pilih beberapa untuk melanjutkan";
 
@@ -5928,6 +6027,9 @@
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Media yang dipilih tidak tersedia.";
 
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Selected: %s";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Memilih lokasi menu lain akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
 
@@ -5973,9 +6075,6 @@
 /* No comment provided by engineer. */
 "Set Featured Image" = "Atur Gambar Unggulan";
 
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "Atur Lokasi";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Atur Induk";
@@ -5988,6 +6087,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Atur sebagai Halaman Pos";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Atur sebagai gambar andalan";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Setel pengingat";
@@ -6038,6 +6140,9 @@
 
 /* Label for action to share post. */
 "Share Post" = "Bagikan Pos";
+
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "Share WordPress with a friend";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Berbagi informasi dengan alat analitik kami tentang penggunaan layanan Anda saat sudah login ke akun WordPress.com Anda.";
@@ -6180,7 +6285,7 @@
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Halaman Situs";
+"Site Pages" = "Laman Situs";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Pengalihan Situs";
@@ -6271,6 +6376,9 @@
 /* Follower Totals label for social media followers */
 "Social" = "Sosial";
 
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Beberapa blok memiliki pengaturan tambahan. Ketuk ikon pengaturan di kanan bawah blok untuk melihat pilihan lainnya.";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Gagal mengunggah beberapa media. Tindakan ini akan menghapus semua media yang gagal dari pos tersebut.\nTetap simpan?";
 
@@ -6285,7 +6393,8 @@
 "Something went wrong. Please check your connectivity and try again." = "Terjadi masalah. Periksa konektivitas Anda dan coba lagi.";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "Terjadi masalah. Silakan coba lagi.";
 
 /* Invite Validation Alert
@@ -6361,9 +6470,6 @@
 
 /* Opens the Github Repository Web */
 "Source Code" = "Kode Sumber";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "Selatan";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Ruang terpakai";
@@ -6570,7 +6676,7 @@
 "Take a Photo" = "Ambil Foto";
 
 /* No comment provided by engineer. */
-"Take a Photo or Video" = "Potret atau Rekam Video";
+"Take a Photo or Video" = "Ambil Foto atau Video";
 
 /* No comment provided by engineer. */
 "Take a Video" = "Ambil Video";
@@ -6649,6 +6755,9 @@
 
 /* Title of a button style */
 "Text Only" = "Hanya Teks";
+
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -6892,9 +7001,6 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Ada error saat memuat aktivitas";
 
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "Terjadi error saat memuat suka";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Ada masalah memuat paket";
 
@@ -6987,6 +7093,18 @@
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Situs ini belum memposting sesuatu. Coba kembali lagi nanti.";
+
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7085,6 +7203,9 @@
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Untuk melanjutkan dengan akun Google ini, harap login terlebih dahulu dengan kata sandi WordPress.com Anda. Hal ini hanya akan ditanyakan sekali.";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Untuk menghapus blok, pilih blok dan klik tiga titik di kanan bawah blok untuk melihat pengaturan. Dari sana, pilih pilihan untuk menghapus blok.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Untuk mengambil foto atau video agar dapat digunakan di pos Anda.";
@@ -7624,8 +7745,8 @@
 /* Use the current image */
 "Use" = "Gunakan";
 
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "Gunakan Lokasi Saat Ini";
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Gunakan Toko Sandbox";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gunakan penyunting blok";
@@ -8058,7 +8179,8 @@
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Kami mengalami masalah saat mengubah domain utama di situs Anda — tetapi jangan khawatir, domain Anda telah berhasil dibeli.";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Alamat Web";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8082,14 +8204,14 @@
 /* A message title */
 "Welcome to the Reader" = "Selamat Datang di Pembaca";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Selamat datang di dunia blok";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Selamat datang di pembuat situs web terpopuler di dunia.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Selamat datang di pembuat situs web terpopuler di dunia.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "Barat";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Kami akan selalu mengirim email penting terkait akun Anda, namun Anda juga dapat memperoleh beberapa tambahan yang bermanfaat.";
@@ -8195,6 +8317,9 @@
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Pengaturan Aplikasi WordPress";
+
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
@@ -8331,6 +8456,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "Kemarin";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Anda sudah memiliki kumpulan gambar unggulan. Apakah Anda ingin menggantinya?";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Anda akan mengubah nama pengguna Anda, yang saat ini adalah %1$@. %2$@";
 
@@ -8360,6 +8488,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Anda dapat membatalkan pengaturan tersebut untuk pos individual.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Anda dapat mengatur ulang blok dengan mengetuk satu blok lalu mengetuk panah atas dan bawah yang muncul di sisi kiri bawah blok untuk memindahkannya ke atas atau ke bawah blok lain.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
@@ -8417,7 +8548,7 @@
 "You have unsaved changes." = "Anda belum menyimpan perubahan.";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
-"You haven't published any pages yet" = "Anda belum menerbitkan halaman apa pun";
+"You haven't published any pages yet" = "Anda belum memublikasikan laman apa pun";
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Anda belum memublikasikan pos sama sekali";
@@ -8460,13 +8591,16 @@
 "You will not be able to change your username back." = "Anda tidak akan dapat mengubah kembali nama pengguna Anda.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Anda akan mendapat pengingat blogging <strong>satu kali<\/strong> seminggu pada %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Anda akan mendapat pengingat blogging <strong>satu kali<\/strong> seminggu pada %1$@ pada %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Anda akan mendapat pengingat blogging %1$@ kali seminggu pada %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Semua sudah diperbarui!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "You're not authorized to close the account.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Anda telah membuat perubahan yang tidak tersimpan di pos ini";
@@ -8578,6 +8712,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTAR]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d blogger_ menyukai ini.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d blogger_ menyukai ini.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Anda_ menyukai ini.";
 
 /* Age between dates equaling one day. */
 "a day" = "satu hari";

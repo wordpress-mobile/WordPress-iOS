@@ -1,30 +1,6 @@
 import UITestsFoundation
 import XCTest
 
-var isDarkMode: Bool {
-    if #available(iOS 12.0, *) {
-        return UIViewController().traitCollection.userInterfaceStyle == .dark
-    } else {
-        return false
-    }
-}
-
-extension XCUIElement {
-    /**
-     Removes any current text in the field before typing in the new value
-     - Parameter text: the text to enter into the field
-     */
-    func clearAndEnterText(text: String) -> Void {
-        clearTextIfNeeded()
-        self.tap()
-        self.typeText(text)
-    }
-
-    var stringValue: String? {
-        return self.value as? String
-    }
-}
-
 extension XCTestCase {
 
     public func setUpTestSuite() {
@@ -64,18 +40,6 @@ extension XCTestCase {
         }
     }
 
-    public func waitForElementToNotExist(element: XCUIElement, timeout: TimeInterval? = nil) {
-        let notExistsPredicate = NSPredicate(format: "exists == false")
-        let expectation = XCTNSPredicateExpectation(predicate: notExistsPredicate,
-                                                    object: element)
-
-        let timeoutValue = timeout ?? 30
-        guard XCTWaiter().wait(for: [expectation], timeout: timeoutValue) == .completed else {
-            XCTFail("\(element) still exists after \(timeoutValue) seconds.")
-            return
-        }
-    }
-
     public func getRandomPhrase() -> String {
         var wordArray: [String] = []
         let phraseLength = Int.random(in: 3...6)
@@ -111,15 +75,5 @@ extension XCTestCase {
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
-    }
-
-    public func elementIsFullyVisibleOnScreen(element: XCUIElement) -> Bool {
-        guard element.exists && !element.frame.isEmpty && element.isHittable else { return false }
-        return XCUIApplication().windows.element(boundBy: 0).frame.contains(element.frame)
-    }
-
-    // A shortcut to scroll TableViews or CollectionViews to top
-    func tapStatusBarToScrollToTop() {
-        XCUIApplication().statusBars.firstMatch.tap()
     }
 }

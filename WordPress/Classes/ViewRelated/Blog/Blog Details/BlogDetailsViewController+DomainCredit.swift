@@ -1,4 +1,5 @@
 import Gridicons
+import SwiftUI
 import WordPressFlux
 
 extension BlogDetailsViewController {
@@ -46,7 +47,9 @@ extension BlogDetailsViewController {
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
         let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true) { [weak self] in
+            self?.updateTableViewAndHeader()
+        }
     }
 }
 
@@ -68,5 +71,13 @@ extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewController
             return nil
         }
         return defaultAccount.email
+    }
+}
+
+// MARK: - Domains Dashboard access from My Site
+extension BlogDetailsViewController {
+
+    @objc func makeDomainsDashboardViewController() -> UIViewController {
+        UIHostingController(rootView: DomainsDashboardView(blog: self.blog))
     }
 }

@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "NSURL+IDN.h"
@@ -9,6 +8,8 @@
 #import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
+
+@class Comment;
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -241,16 +242,18 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     if ([self.postFormats count] == 0) {
         return @[];
     }
+
     NSMutableArray *sortedFormats = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
- 
+
     if (self.postFormats[PostFormatStandard]) {
         [sortedFormats addObject:PostFormatStandard];
     }
-    [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (![key isEqual:PostFormatStandard]) {
-            [sortedFormats addObject:key];
-        }
+
+    NSArray *sortedNonStandardFormats = [[self.postFormats keysSortedByValueUsingSelector:@selector(localizedCaseInsensitiveCompare:)] wp_filter:^BOOL(id obj) {
+        return ![obj isEqual:PostFormatStandard];
     }];
+
+    [sortedFormats addObjectsFromArray:sortedNonStandardFormats];
 
     return [NSArray arrayWithArray:sortedFormats];
 }
@@ -663,9 +666,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsLayoutGrid
 {
-    if (![Feature enabled:FeatureFlagLayoutGrid]) {
-        return false;
-    }
     return self.isHostedAtWPcom || self.isAtomic;
 }
 

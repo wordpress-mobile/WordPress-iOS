@@ -210,6 +210,38 @@ class PostTests: XCTestCase {
         XCTAssertEqual(post.postFormat, secondaryPostFormat.key)
     }
 
+    func testPostFormatSorting() throws {
+        let postFormats = [
+            "b": "B",
+            "c": "C",
+            "q": "Q",
+            "z": "Z",
+            "standard": "Standard",
+            "a": "A",
+            "d": "D",
+        ]
+
+        let expectedPostFormats = [
+            ("standard", "Standard"),
+            ("a", "A"),
+            ("b", "B"),
+            ("c", "C"),
+            ("d", "D"),
+            ("q", "Q"),
+            ("z", "Z")
+        ]
+
+        let blog = BlogBuilder(context)
+            .with(postFormats: postFormats)
+            .build()
+
+        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats as? [String])
+        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames as? [String])
+
+        XCTAssertEqual(expectedPostFormats.map { $0.0 }, sortedPostFormats)
+        XCTAssertEqual(expectedPostFormats.map { $0.1 }, sortedPostFormatNames)
+    }
+
     func testThatHasCategoriesWorks() {
         let post = newTestPost()
 
@@ -413,10 +445,9 @@ class PostTests: XCTestCase {
         post.wp_slug = "lorem-ipsum"
         post.publicID = "90210"
         post.tags = "lorem,ipsum,test"
-        post.geolocation = Coordinate(coordinate: CLLocationCoordinate2D(latitude: 52.520833, longitude: 13.409444))
         post.isStickyPost = true
 
-        let correctHash = "36d7cd8138748d779453d30e8f758592b40b61af464921133c9db12cd71cf0ca"
+        let correctHash = "4889b28f7061f11ea295583a34decf42b3cba7191912b3d2ed0472362495b0d2"
 
         XCTAssertEqual(post.calculateConfirmedChangesContentHash(), correctHash)
 

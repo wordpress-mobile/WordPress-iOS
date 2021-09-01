@@ -3,6 +3,7 @@ import Foundation
 struct PostEditorAnalyticsSession {
     private let sessionId = UUID().uuidString
     let postType: String
+    let blogID: NSNumber?
     let blogType: String
     let contentType: String
     var started = false
@@ -14,6 +15,7 @@ struct PostEditorAnalyticsSession {
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
+        blogID = post.blog.dotComID
         blogType = post.blog.analyticsType.rawValue
         contentType = ContentType(post: post).rawValue
     }
@@ -82,6 +84,7 @@ struct PostEditorAnalyticsSession {
 
 private extension PostEditorAnalyticsSession {
     enum Property {
+        static let blogID = "blog_id"
         static let blogType = "blog_type"
         static let contentType = "content_type"
         static let editor = "editor"
@@ -101,6 +104,7 @@ private extension PostEditorAnalyticsSession {
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
             Property.postType: postType,
+            Property.blogID: blogID?.stringValue,
             Property.blogType: blogType,
             Property.sessionId: sessionId,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",

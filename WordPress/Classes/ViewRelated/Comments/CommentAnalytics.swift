@@ -27,8 +27,8 @@ import Foundation
     static func defaultProperties(comment: Comment) -> [AnyHashable: Any] {
         return [
             Constants.context: trackingContext(),
-            WPAppAnalyticsKeyPostID: comment.postID != nil ? comment.postID.intValue : 0,
-            WPAppAnalyticsKeyCommentID: comment.commentID != nil ? comment.commentID.intValue : 0 // An unpublished comment could have a nil comment ID.
+            WPAppAnalyticsKeyPostID: comment.postID,
+            WPAppAnalyticsKeyCommentID: comment.commentID
         ]
     }
 

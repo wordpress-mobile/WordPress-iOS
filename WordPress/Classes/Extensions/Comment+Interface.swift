@@ -9,9 +9,13 @@ extension Comment {
     /// readable, and you should use the *descriptionForSectionIdentifier* method
     /// as well!
     ///
-    @objc func relativeDateSectionIdentifier() -> String {
+    @objc func relativeDateSectionIdentifier() -> String? {
+        guard let dateCreated = dateCreated else {
+            return nil
+        }
+
         // Normalize Dates: Time must not be considered. Just the raw dates
-        let fromDate = (dateCreated ?? Date()).normalizedDate()
+        let fromDate = dateCreated.normalizedDate()
         let toDate = Date().normalizedDate()
 
         // Analyze the Delta-Components

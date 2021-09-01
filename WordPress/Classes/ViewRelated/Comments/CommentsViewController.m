@@ -1,12 +1,11 @@
 #import "CommentsViewController.h"
 #import "CommentViewController.h"
-#import "Comment.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPStyleGuide.h>
 
-
+@class Comment;
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
 static CGFloat const CommentsActivityFooterHeight               = 50.0;
@@ -62,6 +61,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self configureRefreshControl];
     [self configureSyncHelper];
     [self configureTableView];
+    [self configureTableViewHeader];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
 }
@@ -69,7 +69,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [self refreshPullToRefresh];
     [self refreshNoResultsView];
     [self refreshAndSyncIfNeeded];
 }
@@ -144,6 +144,17 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
         UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
         [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
+    }
+}
+
+- (void)configureTableViewHeader
+{
+    // Add an extra 10pt space on top of the first header view when displaying comments using the new unified list.
+    // The conditional should be removed when the feature is fully rolled out. See: https://git.io/JBQlU
+    if ([self usesUnifiedList]) {
+        UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 10)];
+        tableHeaderView.backgroundColor = [UIColor systemBackgroundColor];
+        self.tableView.tableHeaderView = tableHeaderView;
     }
 }
 
@@ -252,13 +263,20 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     if (indexPath.row >= sectionInfo.numberOfObjects) {
         return;
     }
-    
-    // At last, push the details
-    Comment *comment            = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    CommentViewController *vc   = [CommentViewController new];
-    vc.comment                  = comment;
 
-    [self.navigationController pushViewController:vc animated:YES];
+    // At last, push the details
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    UIViewController *detailViewController;
+
+    if ([Feature enabled:FeatureFlagNewCommentDetail]) {
+        detailViewController = [[CommentDetailViewController alloc] initWithComment:comment];
+    } else {
+        CommentViewController *vc   = [CommentViewController new];
+        vc.comment                  = comment;
+        detailViewController        = vc;
+    }
+
+    [self.navigationController pushViewController:detailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 

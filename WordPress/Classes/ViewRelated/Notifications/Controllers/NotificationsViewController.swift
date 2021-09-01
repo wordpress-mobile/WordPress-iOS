@@ -28,6 +28,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
+    /// The unified list requires an extra 10pt space on top of the list, but returns to the original padding
+    /// while scrolled and stickied. This should be removed once the unified list is fully rolled out.
+    /// See: https://git.io/JBQlU
+    ///
+    @IBOutlet private weak var filterTabBarBottomConstraint: NSLayoutConstraint!
+
     /// Inline Prompt Header View
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
@@ -105,6 +111,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             // the value has changed in `viewWillAppear`. If so, reload the table view to use the correct design.
             if usesUnifiedList != oldValue {
                 reloadTableViewPreservingSelection()
+                updateFilterBarConstraints()
             }
         }
     }
@@ -579,6 +586,18 @@ private extension NotificationsViewController {
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        updateFilterBarConstraints()
+    }
+
+    /// If notifications are displayed with the new unified list, add an extra space below the filter tab bar.
+    /// Once unified list is fully rolled out, this should be applied in Notifications.storyboard instead.
+    /// See: https://git.io/JBQlU
+    func updateFilterBarConstraints() {
+        filterTabBarBottomConstraint.constant = usesUnifiedList ? Constants.filterTabBarBottomSpace : 0
+
+        // With the 10pt bottom padding addition, ensure that the extra padding has the same background color
+        // as the table header cell. NOTE: Move this line to `setupFilterBar` once the feature flag is removed.
+        filterTabBar.superview?.backgroundColor = usesUnifiedList ? .systemBackground : .filterBarBackground
     }
 }
 
@@ -1854,6 +1873,8 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         // number of notifications after which the second alert will show up
         static let secondNotificationsAlertThreshold = 10
         static let secondNotificationsAlertDisabled = -1
+        /// the amount of bottom padding added to the filter tab bar. To be used with unified list.
+        static let filterTabBarBottomSpace: CGFloat = 10.0
     }
 }
 

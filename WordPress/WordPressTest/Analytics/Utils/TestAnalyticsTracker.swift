@@ -4,6 +4,7 @@ import Foundation
 class TestAnalyticsTracker: NSObject {
     struct Tracked {
         let stat: WPAnalyticsStat
+        let event: String
         let properties: [AnyHashable: Any]
 
         func value<T>(for propertyName: String) -> T? {
@@ -29,19 +30,19 @@ class TestAnalyticsTracker: NSObject {
         return tracked.count
     }
 
-    private static func track(_ stat: WPAnalyticsStat, with properties: [AnyHashable: Any]? = nil) {
-        let trackedStat = Tracked(stat: stat, properties: properties ?? [:])
+    private static func track(_ stat: WPAnalyticsStat, event: String = "", with properties: [AnyHashable: Any]? = nil) {
+        let trackedStat = Tracked(stat: stat, event: event, properties: properties ?? [:])
         _tracked.append(trackedStat)
     }
 }
 
 extension TestAnalyticsTracker: WPAnalyticsTracker {
     func trackString(_ event: String) {
-
+        TestAnalyticsTracker.track(.noStat, event: event)
     }
 
     func trackString(_ event: String, withProperties properties: [AnyHashable: Any]!) {
-
+        TestAnalyticsTracker.track(.noStat, event: event, with: properties)
     }
 
     func track(_ stat: WPAnalyticsStat) {

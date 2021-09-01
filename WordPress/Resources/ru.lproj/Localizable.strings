@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-26 08:10:54+0000 */
+/* Translation-Revision-Date: 2021-08-25 07:03:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -8,6 +8,9 @@
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nДля подтверждения удаления введите адрес сайта еще раз.\n\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nВведите ваше имя пользователя для подтверждения закрытия.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Ленивая загрузка\" изображений";
@@ -40,12 +43,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d отметок \"нравится\"";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "Это нравится блогерам_: %1$d.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "Это нравится блогерам_: %1$d.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "Готово %1$d из %2$d";
@@ -213,11 +210,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li слов, %2$li символов";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "Блок %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "настройки блока %s";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "Недавно доступный, блок %s";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "Блок %s. Пустой";
@@ -301,11 +302,20 @@
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> раз в неделю";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> раз в неделю в %2$@";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Однократно<\/strong> в неделю";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "<strong>Однократно<\/strong> в неделю в %@";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Дважды<\/strong> в неделю";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "<strong>Дважды<\/strong> в неделю в %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -395,6 +405,9 @@
    Link to Account Settings section */
 "Account Settings" = "Настройки учетной записи";
 
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "Учётная запись закрыта";
+
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Благодарность";
 
@@ -477,6 +490,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Добавьте URL пользовательской CSS для загрузки в Чтиве. Если вы используете локальную установку Calypso, то он может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Добавьте новый блок в любое время, нажав на значок + на панели инструментов  внизу слева.";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Добавить автономный веб-сайт";
 
@@ -497,6 +513,9 @@
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Добавьте любую тему";
+
+/* No comment provided by engineer. */
+"Add blocks" = "Добавить блоки";
 
 /* No comment provided by engineer. */
 "Add button text" = "Добавить текст кнопки";
@@ -680,6 +699,9 @@
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Для просмотра истории требуется работающее подключение к Интернету";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "При закрытии учётной записи произошла ошибка.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "При создании меню произошла ошибка.";
 
@@ -733,6 +755,9 @@
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Ошибка авторизации в Apple.\nУбедитесь что вы вошли в iCloud с Apple ID использующим 2 факторную авторизацию.";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "Применить настройку";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Применить";
@@ -824,6 +849,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Вы точно хотите обновить?";
+
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Оформите содержимое в столбцы, добавьте кнопки призыва к действию и изображения с наложением текста.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Искусство";
@@ -1010,6 +1038,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Список блокировки";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Блоки позволяют вам сосредоточиться на написании, знайте о том, что все инструменты форматирования доступны здесь, чтобы оформить ваше сообщение.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Блоки - это части содержимого, которые можно вставлять, переставлять и стилизовать, без необходимости использования кода. Блоки - это простой и современный способ создавать красивые макеты.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Блог";
 
@@ -1053,6 +1087,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Защита от атак методом перебора";
+
+/* No comment provided by engineer. */
+"Build layouts" = "Макеты";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Маркированный список";
@@ -1117,6 +1154,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1250,6 +1288,9 @@
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Изменить, добавить или удалить страницы вашего сайта.";
+
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Изменения избранного изображения не будут затронуты кнопками отменить\/повторить.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Изменяем отображаемое имя";
@@ -1418,6 +1459,9 @@
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Закрыть";
 
+/* Close account action label */
+"Close Account" = "Закрыть учётную запись";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "Закрыть обсуждение";
 
@@ -1432,6 +1476,9 @@
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Закрыть мой профиль";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "Закрыть учётную запись...";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Код";
@@ -1460,7 +1507,8 @@
 /* Menu item label for linking a comic page. */
 "Comics" = "Комиксы";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "Комментарий";
 
@@ -1556,6 +1604,9 @@
 /* Confirm
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Подтвердить";
+
+/* Close Account alert title */
+"Confirm Close Account" = "Подтвердите закрытие учётной записи";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Подтвердить удаление сайта";
@@ -1935,6 +1986,9 @@
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Настроить ваш сайт";
 
+/* No comment provided by engineer. */
+"Customize blocks" = "Настроить блоки";
+
 /* Title for the edition of the share message. */
 "Customize the message" = "Редактировать сообщение";
 
@@ -2200,7 +2254,6 @@
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2345,8 +2398,8 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "ИЗМЕНИТЬ ССЫЛКУ";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "восток";
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "У каждого блока свои настройки. Чтобы найти их, нажмите на блок. Его настройки появятся на панели инструментов внизу экрана.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2369,7 +2422,7 @@
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Редактировать слово из списка блокировки";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "Изменить комментарий";
 
 /* IP Address or Range Edition Title */
@@ -2442,6 +2495,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "E-mail";
 
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "Адрес электронной почты";
+
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
@@ -2467,7 +2523,7 @@
 "Email sent!" = "Письмо отправлено!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Просмотр блоков встроенных объектов пока не доступен";
+"Embed block previews are coming soon" = "Скоро будет доступен предварительный просмотр блока внедрённых объектов";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Подпись встроенного объекта. %s";
@@ -2477,6 +2533,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "Встроить ссылку";
+
+/* No comment provided by engineer. */
+"Embed media" = "Встроить медиасодержимое";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Просмотр встроенных объектов пока не доступен";
@@ -2569,7 +2628,8 @@
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "введите учётные данные сервера";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Ошибка";
@@ -2616,6 +2676,9 @@
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Ошибка установки %@.";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Ошибка при загрузке отметок \"нравится\"";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Ошибка загрузки плагинов";
@@ -2676,6 +2739,9 @@
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Ежедневно";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "Каждый день в %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Все";
@@ -2795,6 +2861,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Миниатюра записи";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Изображение записи уже установлено";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Настройки изображения записи";
 
@@ -2859,9 +2928,6 @@
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "Поиск блогов и историй, которые вы полюбите...";
-
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "Поиск вашего местоположения...";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -3044,11 +3110,17 @@
 /* Cancel */
 "Give Up" = "Не отправлять";
 
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Попробуйте, добавив несколько блоков в запись или страницу!";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Первое впечатление важно! Назовите свой сайт так, как это отразит его индивидуальность и содержание.";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Назад";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Перейти к подписанным сайтам";
@@ -3231,6 +3303,12 @@
 
 /* How to create story description */
 "How to create a story post" = "Как создать историю";
+
+/* No comment provided by engineer. */
+"How to edit your page" = "Как отредактировать страницу";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "Как отредактировать страницу";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Как мы это исправим?";
@@ -3773,9 +3851,7 @@
    Title of the Local Changes Badge */
 "Local changes" = "Локальные изменения";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "Местоположение";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3836,9 +3912,6 @@
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Ищете статистику?";
 
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "Выполняется поиск адреса...";
-
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Похоже, на вашем сайте настроен Jetpack. Поздравляем!\nВойдите в систему с использованием ваших учетных данных на WordPress.com ниже, чтобы включить статистику и уведомления. ";
 
@@ -3850,6 +3923,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Меню навигации";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Сделайте содержимое заметным, добавив на свои страницы изображения, GIF-анимацию, видео и встроенные мультимедиа.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4079,6 +4155,9 @@
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Переместить блок вверх из ряда %1$s в ряд %2$s";
 
+/* No comment provided by engineer. */
+"Move blocks" = "Переместить блоки";
+
 /* Option to move Insight down in the view. */
 "Move down" = "Вниз";
 
@@ -4137,6 +4216,7 @@
 "My Top Ten Cafes" = "Мой выбор лучших 10 кафе";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Имя";
 
@@ -4151,6 +4231,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Переход к настройкам градиента";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Навигация для выделения %s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Переход на предыдущий экран содержимого";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Нужна помощь?";
@@ -4282,7 +4368,7 @@
 "No available sites" = "Нет доступных сайтов";
 
 /* No comment provided by engineer. */
-"No blocks found" = "Блоков не найдено.";
+"No blocks found" = "Блоки не найдены";
 
 /* An option in a list. Automatically approve no comments. */
 "No comments" = "Нет комментариев";
@@ -4435,9 +4521,6 @@
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Не установлены";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "север";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Нет подключения";
 
@@ -4486,6 +4569,9 @@
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Настройки уведомлений";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "Время уведомления";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4570,6 +4656,9 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Если эта ссылка для приглашения будет отключена, никто не сможет использовать её для присоединения к вашей команде. Вы уверены в этом?";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Когда вы познакомитесь с названиями различных блоков, вы можете добавить блок, набрав косую черту, за которой следует имя блока, например \/Изображение или \/Заголовок.";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "После создания сайта на WordPress.com вы сможете сделать перепубликацию понравившегося содержимого на своем сайте.";
 
@@ -4584,7 +4673,6 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4807,6 +4895,9 @@
 
 /* Label for date periods. */
 "Period" = "Период";
+
+/* Close Account confirmation action title */
+"Permanently Close Account" = "Навсегда закрыть учётную запись";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Удалить сайт навсегда";
@@ -5403,7 +5494,6 @@
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5462,6 +5552,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Удалено";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Удалено как изображение записи";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Убирать метаданные местоположения из фотографий перед их загрузкой на сайт.";
 
@@ -5470,6 +5563,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Пропуск следующих шагов отключит все гиды по этому сайту. Действие не может быть отменено.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Заменить";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Заменить текущий блок";
@@ -5627,7 +5723,7 @@
 "Revert Pending Change" = "Отменить ожидание изменения";
 
 /* Accessibility hint describing what happens if the undo button is tapped. */
-"Reverts the action performed on this notification." = "Отмена действия выполненного с этим уведомлением.";
+"Reverts the action performed on this notification." = "Отмена действия, выполненного в отношении этого уведомления.";
 
 /* Title of a Quick Start Tour */
 "Review site pages" = "Обзор страниц сайта";
@@ -5637,6 +5733,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Форматированное содержимое";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Редактирование форматированного текста";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Справа";
@@ -5762,9 +5861,6 @@
    Title of the Reader's search feature */
 "Search" = "Поиск";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "Поиск местоположений";
-
 /* Label for list of search term */
 "Search Term" = "Поиск";
 
@@ -5880,6 +5976,9 @@
 /* No comment provided by engineer. */
 "Select a color" = "Выберите цвет";
 
+/* No comment provided by engineer. */
+"Select a color above" = "Выберите цвет выше";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Выберите несколько для продолжения";
 
@@ -5928,6 +6027,9 @@
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Выбранный медиафайл недоступен.";
 
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Выбрано: %s";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Если выбрать другую область для меню, изменения текущего меню будут потеряны. Вы уверены, что хотите продолжить?";
 
@@ -5973,9 +6075,6 @@
 /* No comment provided by engineer. */
 "Set Featured Image" = "Установить миниатюру";
 
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "Задать местоположение";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Назначить родителя";
@@ -5988,6 +6087,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Установить как страницу записей";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Использовать как изображение записи";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Установить напоминания";
@@ -6038,6 +6140,9 @@
 
 /* Label for action to share post. */
 "Share Post" = "Поделиться записью";
+
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "Поделитесь WordPress с друзьями";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Поделиться информацией с нашей аналитикой по использованию сервисов при входе в вашу учетную запись WordPress.";
@@ -6271,6 +6376,9 @@
 /* Follower Totals label for social media followers */
 "Social" = "Соцсети";
 
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Некоторые блоки имеют дополнительные настройки. Коснитесь значка настроек в правом нижнем углу блока, чтобы просмотреть дополнительные параметры.";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Произошел сбой при загрузке некоторых медиафайлов. Это действие удалит из записи все медиафайлы, которые не удалось загрузить.\nВсе равно сохранить?";
 
@@ -6285,7 +6393,8 @@
 "Something went wrong. Please check your connectivity and try again." = "Что-то пошло не так. Проверьте подключение и попробуйте снова.";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "Произошла ошибка. Повторите попытку.";
 
 /* Invite Validation Alert
@@ -6361,9 +6470,6 @@
 
 /* Opens the Github Repository Web */
 "Source Code" = "Исходный код";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "юг";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Использованное место";
@@ -6650,6 +6756,9 @@
 /* Title of a button style */
 "Text Only" = "Только текст";
 
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Элементы управления форматированием текста расположены на панели инструментов над клавиатурой при редактировании текстового блока.";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "Пришлите мне сообщение с кодом";
@@ -6892,9 +7001,6 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Возникла ошибка загрузки канала активности";
 
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "При загрузке отметок \"нравится\" произошла ошибка";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "При загрузке тарифных планов произошла ошибка.";
 
@@ -6987,6 +7093,18 @@
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "На этом сайте еще не было ничего опубликовано. Повторите попытку позже.";
+
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Эту учетную запись пользователя нельзя закрыть, если есть неразрешенные возвратные платежи.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Эту учетную запись пользователя нельзя закрыть, если есть активные покупки.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Эту учетную запись пользователя нельзя закрыть, если есть активные подписки.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Эта учётная запись не может быть закрыта. Обратитесь в поддержку через меню Профиль > Помощь и поддержка.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7085,6 +7203,9 @@
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Чтобы войти через эту учетную запись Google, пожалуйста войдите сначала с паролем WordPress.com. Это запрашивается только один раз.";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Чтобы удалить блок, выберите блок и щелкните три точки в правом нижнем углу блока, чтобы просмотреть настройки. Оттуда выберите вариант удаления блока.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Для создания фотографий и видео, которые будут размещаться в ваших записях.";
@@ -7624,8 +7745,8 @@
 /* Use the current image */
 "Use" = "Использовать";
 
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "Использовать текущее местоположение";
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Использовать магазин-песочницу";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Использовать редактор блоков";
@@ -8058,7 +8179,8 @@
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "Возникла проблема смены основного домена для вашего сайта, но не волнуйтесь, ваш домен был успешно зарегистрирован.";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Веб-адрес";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8082,14 +8204,14 @@
 /* A message title */
 "Welcome to the Reader" = "Добро пожаловать в раздел «Чтиво».";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Добро пожаловать в мир блоков";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Добро пожаловать в самый популярный в мире конструктор сайтов.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Добро пожаловать в самый популярный в мире конструктор сайтов.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "запад";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Важные письма, касающиеся вашей учётной записи, мы отправляем всегда, но можно также включить и другие полезные уведомления.";
@@ -8195,6 +8317,9 @@
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Настройки приложения WordPress";
+
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "Приложения WordPress - приложения для любого экрана";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Блог на WordPress";
@@ -8331,6 +8456,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "Вчера";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Вы уже установили избранное изображение. Хотите заменить его?";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Вы собираетесь сменить имя пользователя, %1$@. %2$@";
 
@@ -8360,6 +8488,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Можно изменять эти параметры для отдельных записей.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Вы можете переупорядочить блоки, нажав на блок, а затем нажав стрелки вверх и вниз, которые появляются в нижней левой части блока, чтобы переместить его выше или ниже других блоков.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Вы можете обновить это в любое время в Мой сайт > Настройки сайта";
@@ -8460,13 +8591,16 @@
 "You will not be able to change your username back." = "Вы не сможете вернуть старое имя пользователя.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Вы получите уведомление о том, что нужно написать в блог <strong>однократно<\/strong> в неделю по %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Вы получите уведомление о том, что нужно написать в блог <strong>однократно<\/strong> в неделю по %1$@ в %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Вы получите напоминания о необходимости написать в блог %1$@ в неделю, по  %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Вы уже в курсе всего!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "У вас нет прав для закрытия учётной записи.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Вы внесли, но не сохранили изменения в эту запись";
@@ -8578,6 +8712,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "Это нравится блогерам: %1$d.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "Это нравится блогерам: %1$d.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Вам и %1$d другому блоггеру_ нравится это.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Вам и %1$d другим блоггерам_ нравится это.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Вам_ нравится это.";
 
 /* Age between dates equaling one day. */
 "a day" = "день";

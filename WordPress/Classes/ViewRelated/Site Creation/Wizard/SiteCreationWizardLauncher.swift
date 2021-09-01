@@ -24,9 +24,8 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var steps: [WizardStep] = {
-        let initialStep = FeatureFlag.siteCreationHomePagePicker.enabled ? self.designStep : self.segmentsStep
         return [
-            initialStep,
+            self.designStep,
             self.addressStep,
             self.siteAssemblyStep
         ]
@@ -41,12 +40,8 @@ final class SiteCreationWizardLauncher {
             return nil
         }
 
-        if FeatureFlag.siteCreationHomePagePicker.enabled {
-            wizardContent.modalPresentationStyle = .pageSheet
-            wizardContent.isModalInPresentation = true
-        } else {
-            wizardContent.modalPresentationStyle = .fullScreen
-        }
+        wizardContent.modalPresentationStyle = .pageSheet
+        wizardContent.isModalInPresentation = true
 
         return wizardContent
     }()

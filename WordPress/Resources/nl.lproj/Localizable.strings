@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-27 07:59:10+0000 */
+/* Translation-Revision-Date: 2021-08-26 12:49:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -8,6 +8,9 @@
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nOm te bevestigen, vul je site-adres opnieuw in alvorens te verwijderen.\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nOm te bevestigen, geef je gebruikersnaam opnieuw in voor het sluiten.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Lazy-load\" afbeeldingen";
@@ -40,12 +43,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d likes";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d blogger_ vindt dit leuk.";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d bloggers_ vinden dit leuk.";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d van %2$d afgerond";
@@ -213,11 +210,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li woorden, %2$li karakters";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blokopties";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s blok, nieuw beschikbaar";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s blok. Leeg";
@@ -263,7 +264,7 @@
 "+ Address line %@" = "+ Adresregel %@";
 
 /* Local notification displayed to the user when a single draft post has been successfully uploaded. */
-"1 draft post uploaded" = "1 concept bericht geüpload.";
+"1 draft post uploaded" = "1 concept bericht geüpload";
 
 /* Alert displayed to the user when a single media item has failed to upload. */
 "1 file not uploaded" = "1 bestand niet geüpload";
@@ -301,11 +302,20 @@
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> keer per week";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> keer per week op %2$@";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Een keer<\/strong> per week";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "<strong>Een<\/strong> keer per week";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Twee keer<\/strong> per week";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "<strong>Twee<\/strong> keer per week";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -395,6 +405,9 @@
    Link to Account Settings section */
 "Account Settings" = "Account instellingen";
 
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "Account gesloten";
+
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Referenties";
 
@@ -477,6 +490,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Voeg een URL voor eigen CSS toe die geladen wordt in Lezer. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Voeg op elk moment een nieuw blok toe, door te tikken op het + pictogram in de gereedschapsbalk links onderaan. ";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Voeg een zelf-gehoste site toe";
 
@@ -497,6 +513,9 @@
 
 /* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
 "Add any topic" = "Voeg elk onderwerp toe";
+
+/* No comment provided by engineer. */
+"Add blocks" = "Voeg blokken toe";
 
 /* No comment provided by engineer. */
 "Add button text" = "Voeg knoptekst toe";
@@ -680,6 +699,9 @@
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Een actieve internetverbinding is vereist om de geschiedenis te bekijken";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Fout bij het sluiten van account.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Fout bij aanmaken van het menu.";
 
@@ -705,7 +727,7 @@
 "An error occurred when attempting to attach uploaded media to the post." = "Er is een fout opgetreden bij het toevoegen van geüploade media aan het bericht.";
 
 /* Used when a remote response doesn't have a specific message for a specific request */
-"An error occurred while processing your request: " = "Er deed zich een fout voor tijdens verwerken van je verzoek:";
+"An error occurred while processing your request: " = "Er deed zich een fout voor tijdens verwerken van je aanvraag: ";
 
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Er is een fout opgetreden.";
@@ -733,6 +755,9 @@
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple authenticatie mislukt.\nZorg dat je ingelogd bent bij iCloud met een Apple ID die twee-factor-authenticatie gebruikt.";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "Past de instelling toe";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Bevestig";
@@ -824,6 +849,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Weet je zeker dat je wilt updaten?";
+
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Rangschik je inhoud in kolommen, voeg Oproep tot actie knoppen toe, en overlap afbeeldingen met tekst.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Kunst";
@@ -1010,6 +1038,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Bloklijst";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blokken stellen je in staat je te concentreren op het schrijven van je inhoud, in de wetenschap dat alle opmaakhulpmiddelen die je nodig hebt aanwezig zijn om je te helpen je boodschap over te brengen.";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blokken zijn stukjes inhoud die je kunt invoegen, herschikken en stylen zonder dat je hoeft te weten hoe je moet coderen. Blokken zijn een gemakkelijke en moderne manier voor je om mooie lay-outs te maken.";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
@@ -1046,13 +1080,16 @@
 "Break comment threads into multiple pages." = "Deel reacties in threads op in meerdere pagina's.";
 
 /* No comment provided by engineer. */
-"Briefly describe the link to help screen reader user" = "Beschrijf kort de link om de scherm reader gebruiker te helpen.";
+"Briefly describe the link to help screen reader user" = "Beschrijf kort de link om de scherm reader gebruiker te helpen";
 
 /* Description of a Quick Start Tour */
 "Browse all our themes to find your perfect fit." = "Blader door al onze thema's om het thema te vinden dat perfect bij je past.";
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Brute Force Attack bescherming";
+
+/* No comment provided by engineer. */
+"Build layouts" = "Bouw lay-outs";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Opsommingslijst";
@@ -1070,7 +1107,7 @@
 "Button position" = "Knop positie";
 
 /* Label for the post author in the post detail. */
-"By " = "Door";
+"By " = "Door ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Door %@.";
@@ -1117,6 +1154,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1250,6 +1288,9 @@
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Verander, voeg toe, of verwijder pagina's van je site.";
+
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Wijzigingen aan de afbeelding worden niet beïnvloed door de undo\/redo knoppen.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Weergavenaam wijzigen";
@@ -1418,6 +1459,9 @@
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Sluit";
 
+/* Close account action label */
+"Close Account" = "Sluit account";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "Reacties afsluiten";
 
@@ -1432,6 +1476,9 @@
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "Sluit het ik-scherm";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "Account aan het sluiten...";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Code";
@@ -1460,7 +1507,8 @@
 /* Menu item label for linking a comic page. */
 "Comics" = "Comics";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "Reactie";
 
@@ -1557,6 +1605,9 @@
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bevestigen";
 
+/* Close Account alert title */
+"Confirm Close Account" = "Bevestig sluiten account";
+
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Site verwijderen bevestigen";
 
@@ -1570,7 +1621,7 @@
 "Confirm your email first" = "Bevestig eerst je e-mail";
 
 /* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Gefeliciteerd, je hebt Snelstart afgerond 🎉";
+"Congrats on finishing Quick Start  🎉" = "Gefeliciteerd met het voltooien van Snel start  🎉";
 
 /* Title on domain credit redemption success screen */
 "Congratulations" = "Gefeliciteerd";
@@ -1853,7 +1904,7 @@
 "Create a post, page, or story" = "Een bericht, pagina of verhaal maken";
 
 /* Title for the Site Icon Picker */
-"Create a site icon" = "Maak een site pictogram ";
+"Create a site icon" = "Maak een site pictogram";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Maak downloadbare back-up";
@@ -1934,6 +1985,9 @@
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Je site aanpassen";
+
+/* No comment provided by engineer. */
+"Customize blocks" = "Blokken aanpassen";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "Het bericht aanpassen";
@@ -2062,7 +2116,7 @@
 "Deny" = "Weigeren";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Beschrijf het doel van de afbeelding. Laat leeg als de afbeelding puur decoratief is.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Beschrijf het doel van de afbeelding. Laat leeg als de afbeelding puur decoratief is. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2200,7 +2254,6 @@
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2244,7 +2297,7 @@
 "Double tap to edit this value" = "Tik tweemaal om deze waarde te bewerken";
 
 /* translators: accessibility text (hint for moving to color settings) */
-"Double tap to go to color settings" = "Tik tweemaal om naar de kleurinstellingen te gaan.";
+"Double tap to go to color settings" = "Tik tweemaal om naar de kleurinstellingen te gaan";
 
 /* No comment provided by engineer. */
 "Double tap to listen the audio file" = "Twee keer tikken om te luisteren naar het audiobestand";
@@ -2280,10 +2333,10 @@
 "Double tap to open Bottom Sheet with available options" = "Dubbeltik om onderste blad te openen met beschikbare opties";
 
 /* No comment provided by engineer. */
-"Double tap to preview page." = "Dubbel tikken voor een voorvertoning van de pagina.";
+"Double tap to preview page." = "Dubbeltik om een voorbeeld van het bericht te bekijken.";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "Dubbel tikken voor een voorvertoning van het bericht.";
+"Double tap to preview post." = "Dubbel tikken om een voorbeeld van het bericht te bekijken.";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Tik tweemaal om laatste wijziging opnieuw uit te voeren";
@@ -2345,8 +2398,8 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "LINK BEWERKEN";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "Oost";
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, tik op een blok. Zijn instellingen zullen verschijnen in de gereedschapsbalk onderaan het scherm.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2369,7 +2422,7 @@
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "Bewerk bloklijst woord";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "Reactie bewerken";
 
 /* IP Address or Range Edition Title */
@@ -2442,6 +2495,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "E-mail";
 
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "E-mailadres";
+
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
@@ -2477,6 +2533,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "Sluit link in";
+
+/* No comment provided by engineer. */
+"Embed media" = "Sluit media in";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "Insluit voorbeelden nog niet beschikbaar";
@@ -2569,7 +2628,8 @@
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Voer je server referenties in";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Fout";
@@ -2616,6 +2676,9 @@
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Fout tijdens installatie %@.";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Fout bij het laden van likes";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Fout bij laden plugins";
@@ -2676,6 +2739,9 @@
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Elke dag";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "Elke dag om %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Iedereen";
@@ -2795,6 +2861,9 @@
    Title for the Featured Image view */
 "Featured Image" = "Uitgelichte afbeelding";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "Uitgelichte afbeelding al ingesteld";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "Opties uitgelichte afbeelding";
 
@@ -2831,7 +2900,7 @@
 "File Downloads" = "Bestandsdownloads";
 
 /* No comment provided by engineer. */
-"File block settings" = " Blok-instellingen bestand";
+"File block settings" = "Bewaar blok instellingen";
 
 /* Label for the file name for a media asset (image / video) */
 "File name" = "Bestandsnaam";
@@ -2859,9 +2928,6 @@
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "Blogs en verhalen vinden die je geweldig zult vinden...";
-
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "Locatie zoeken...";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -3044,11 +3110,17 @@
 /* Cancel */
 "Give Up" = "Opgeven";
 
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "Probeer het door een paar blokken toe te voegen aan je bericht of pagina!";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "Geef je site een naam die zijn personaliteit en onderwerp reflecteerd. De eerste indruk telt!";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Ga terug";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Ga naar Volgers";
@@ -3232,6 +3304,12 @@
 /* How to create story description */
 "How to create a story post" = "Hoe maak je een verhaal";
 
+/* No comment provided by engineer. */
+"How to edit your page" = "Hoe je pagina te bewerken";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "Hoe je bericht te bewerken";
+
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Hoe lossen we het op?";
 
@@ -3245,7 +3323,7 @@
 "Icon & Text" = "Icon & Tekst";
 
 /* Title of a button style */
-"Icon Only" = "Enkel Icoon ";
+"Icon Only" = "Alleen pictogram";
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "Bijwerken van favicon mislukt";
@@ -3462,7 +3540,7 @@
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Het lijkt erop dat je een onjuist wachtwoord hebt ingevoerd. Wil je het nog eens proberen?";
 
 /* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Het is %1$@ sinds %2$@ is gepubliceerd.";
+"It's been %@ since %@ was published. " = "Het is %1$@ sinds %2$@ is gepubliceerd. ";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Het is tijd om te bloggen op %@!";
@@ -3773,9 +3851,7 @@
    Title of the Local Changes Badge */
 "Local changes" = "Lokale wijzigingen";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "Locatie";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3836,9 +3912,6 @@
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Op zoek naar statistieken?";
 
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "Adres aan het opzoeken...";
-
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Het lijkt er op dat Jetpack is geïnstalleerd op je site. Gefeliciteerd!\nLogin met je WordPress.com inloggegevens om statistieken en meldingen in te schakelen.";
 
@@ -3850,6 +3923,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hoofdnavigatie";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Laat je inhoud opvallen door afbeeldingen, gifs, video's, en ingesloten media aan je pagina's toe te voegen.";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -4079,6 +4155,9 @@
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "Verplaats blok omhoog van rij %1$s naar rij %2$s";
 
+/* No comment provided by engineer. */
+"Move blocks" = "Blokken verplaatsen";
+
 /* Option to move Insight down in the view. */
 "Move down" = "Omlaag verplaatsen";
 
@@ -4137,6 +4216,7 @@
 "My Top Ten Cafes" = "Mijn toptien cafés";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Naam";
 
@@ -4151,6 +4231,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigeert naar aanpassen van het verloop";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navigeert om %s te selecteren";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Navigeert naar het vorige inhoudsblad";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hulp nodig?";
@@ -4360,7 +4446,7 @@
 "No menus available" = "Geen menu's beschikbaar";
 
 /* A hint to users about creating a downloadable backup of their site. */
-"No need to wait around. We'll notify you when your backup is ready." = "Je hoeft niet te wachten. We laten het je weten als je back-up klaar is";
+"No need to wait around. We'll notify you when your backup is ready." = "Je hoeft niet te wachten. We laten het je weten als je back-up klaar is.";
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Je hoeft niet te wachten. We laten het je weten als je site compleet teruggezet is.";
@@ -4385,7 +4471,7 @@
 "No posts" = "Geen berichten";
 
 /* A message title */
-"No posts found" = "Geen berichten gevonden.";
+"No posts found" = "Geen berichten gevonden";
 
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "Geen berichten gevonden die overeenkomen met %@ in je taal.";
@@ -4435,9 +4521,6 @@
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "Geen ingesteld";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "Noord";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Niet verbonden";
 
@@ -4486,6 +4569,9 @@
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Meldingsinstellingen";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "Kennisgeving tijd";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4570,6 +4656,9 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Als deze uitnodigingslink eenmaal is uitgeschakeld, kan niemand hem meer gebruiken om zich bij je team aan te sluiten. Weet je het zeker?";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Als je eenmaal vertrouwd bent geraakt met de namen van de verschillende blokken, kun je een blok toevoegen door een voorwaartse schuine streep te typen, gevolgd door de bloknaam - bijvoorbeeld, \/afbeelding of \/heading.";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Zodra je een WordPress.com site maakt, kun je inhoud die je leuk vindt rebloggen op je eigen site.";
 
@@ -4584,7 +4673,6 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4667,7 +4755,7 @@
 
 /* Indicates a video will use its original size when uploaded.
    Indicates an image will use its original size when uploaded. */
-"Original" = "Origineel ";
+"Original" = "Origineel";
 
 /* Used to attribute a post back to its original author.  The '%@' characters are a placholder for the author's name. */
 "Originally posted by %@" = "Oorspronkelijk geplaatst door %@";
@@ -4808,6 +4896,9 @@
 /* Label for date periods. */
 "Period" = "Periode";
 
+/* Close Account confirmation action title */
+"Permanently Close Account" = "Sluit account permanent";
+
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Verwijder site permanent";
 
@@ -4936,7 +5027,7 @@
 "Please try again later." = "Probeer het later opnieuw.";
 
 /* No comment provided by engineer. */
-"Please try entering your login details again." = "Probeer nogmaals je login gegevens in te voeren";
+"Please try entering your login details again." = "Probeer nogmaals je login gegevens in te voeren.";
 
 /* Asks the usre to wait until the currently running fetch request completes. */
 "Please wait til the current fetch completes." = "Wacht tot de huidige ophaalactie voltooid is.";
@@ -5291,7 +5382,7 @@
 "Push Notifications" = "Pushmeldingen";
 
 /* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Pushmeldingen zijn uitgeschakeld in iOS-instellingen.";
+"Push Notifications have been turned off in iOS Settings" = "Push kennisgevingen zijn uitgeschakeld in iOS-instellingen";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Pushmeldingen zijn uitgeschakeld in de iOS-instellingen. Zet 'Sta berichtgeving toe' aan, om ze weer in te schakelen.";
@@ -5403,7 +5494,6 @@
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5442,7 +5532,7 @@
 "Remove Site Icon" = "Favicon verwijderen";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Verwijder als uitgelichte afbeelding";
+"Remove as Featured Image " = "Verwijder als uitgelichte afbeelding ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
@@ -5462,6 +5552,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Verwijderd";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "Verwijderd als uitgelichte afbeelding";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Verwijdert locatiegegevens uit foto's alvorens ze naar je site te uploaden.";
 
@@ -5470,6 +5563,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Door 'Volgende stappen' te verwijderen, worden alle rondleidingen op deze site verborgen. Deze actie kan niet ongedaan worden gemaakt.";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "Vervang";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Vervang huidige blok";
@@ -5548,7 +5644,7 @@
 "Reset filter" = "Herstel filter";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
-"Reset your password" = "Je wachtwoord opnieuw instellen.";
+"Reset your password" = "Je wachtwoord opnieuw instellen";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Afmeting wijzigen en bijsnijden";
@@ -5637,6 +5733,9 @@
 
 /* Post Rich content */
 "Rich Content" = "Verrijkte inhoud";
+
+/* No comment provided by engineer. */
+"Rich text editing" = "Rich tekst bewerking";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Rechts";
@@ -5762,9 +5861,6 @@
    Title of the Reader's search feature */
 "Search" = "Zoeken";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "Zoek locaties";
-
 /* Label for list of search term */
 "Search Term" = "Zoekterm";
 
@@ -5863,7 +5959,7 @@
 "Select %@ to see your page list." = "Selecteer %@ om je paginalijst te zien.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Selecteer %@ om een nieuwe titel in te stellen";
+"Select %@ to set a new title." = "Selecteer %@ om een nieuwe titel in te stellen.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to upload a new one." = "Selecteer %@ om een nieuwe te uploaden.";
@@ -5879,6 +5975,9 @@
 
 /* No comment provided by engineer. */
 "Select a color" = "Selecteer een kleur";
+
+/* No comment provided by engineer. */
+"Select a color above" = "Selecteer een kleur erboven";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Selecteer enkele om verder te gaan";
@@ -5928,6 +6027,9 @@
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Geselecteerde media is niet beschikbaar.";
 
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Geselecteerd: %s";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Door een andere menu-locatie te selecteren, gaan wijzigingen aan het huidige menu verloren. Weet je zeker dat je wilt doorgaan?";
 
@@ -5973,21 +6075,21 @@
 /* No comment provided by engineer. */
 "Set Featured Image" = "Stel uitgelichte afbeelding in";
 
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "Locatie instellen";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Instellen als bovenliggend item";
 
 /* No comment provided by engineer. */
-"Set as Featured Image " = "Instellen als uitgelichte afbeelding";
+"Set as Featured Image " = "Instellen als uitgelichte afbeelding ";
 
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Instellen als homepage";
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "Instellen als berichten pagina";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "Instellen als uitgelichte afbeelding";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Herinneringen instellen";
@@ -6038,6 +6140,9 @@
 
 /* Label for action to share post. */
 "Share Post" = "Deel bericht";
+
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "Deel WordPress met een vriend";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Deel informatie met onze analysetool over hoe je services gebruikt terwijl je bent ingelogd op je WordPress.com-account.";
@@ -6271,6 +6376,9 @@
 /* Follower Totals label for social media followers */
 "Social" = "Sociaal";
 
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Sommige blokken hebben extra instellingen. Tik op het instellingen-pictogram rechts onderaan het blok om meer opties te zien.";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "Er zijn uploads van media mislukt. Door deze handeling worden alle mislukte media uit het bericht verwijderd.\nToch opslaan?";
 
@@ -6285,7 +6393,8 @@
 "Something went wrong. Please check your connectivity and try again." = "Er ging iets fout. Controleer je verbinding en probeer opnieuw.";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "Er is iets fout gegaan. Probeer opnieuw.";
 
 /* Invite Validation Alert
@@ -6302,7 +6411,7 @@
 "Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Site adressen kunnen alleen kleine letters (a-z) en nummer bevatten.";
 
 /* No comment provided by engineer. */
-"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Site adres mag niet het &#8220;_&#8221;! karakter bevatten. ";
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Site adres mag niet het &#8220;_&#8221;! karakter bevatten!";
 
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Site adressen moeten ook letters bevatten!";
@@ -6332,7 +6441,7 @@
 "Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Gebruikersnamen kunnen alleen kleine letters (a-z) en nummers bevatten.";
 
 /* No comment provided by engineer. */
-"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Gebruikersnamen mogen niet het &#8220;_&#8221;! karakter bevatten.";
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Gebruikersnamen mogen niet het &#8220;_&#8221;! karakter bevatten!";
 
 /* No comment provided by engineer. */
 "Sorry, usernames must have letters (a-z) too!" = "De gebruikersnamen moeten ook de letter (a-z) bevatten!";
@@ -6354,16 +6463,13 @@
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
-"Sort By" = "Sorteer  Op";
+"Sort By" = "Sorteren op";
 
 /* No comment provided by engineer. */
 "Sorting and filtering" = "Sortering en filtering";
 
 /* Opens the Github Repository Web */
 "Source Code" = "Broncode";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "Zuid";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Ruimte verbruikt";
@@ -6494,7 +6600,7 @@
 "Switch to HTML Preview" = "Wissel naar HTML voorbeeld";
 
 /* Switches the Editor to Rich Text Mode */
-"Switch to Visual Mode" = "Schakel over op de Visuele modus.";
+"Switch to Visual Mode" = "Schakel over op de visuele modus";
 
 /* Switches the Content to Rich Text Preview */
 "Switch to Visual Preview" = "Wissel naar visueel voorbeeld";
@@ -6650,6 +6756,9 @@
 /* Title of a button style */
 "Text Only" = "Enkel tekst";
 
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "De tekstopmaak besturingen bevinden zich in de werkbalk boven het toetsenbord tijdens het bewerken van een tekstblok";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "SMS een code naar me toe";
@@ -6691,7 +6800,7 @@
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Het Google account \"%@\" komt niet overeen met een account op WordPress.com";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
-"The Internet connection appears to be offline." = "De internetverbinding is offline";
+"The Internet connection appears to be offline." = "De internetverbinding is offline.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
 "The Site Title can only be changed by a user with the administrator role." = "De site titel kan alleen worden gewijzigd door een gebruiker met beheerder rol.";
@@ -6883,7 +6992,7 @@
 "There was a problem when trying to access your media. Please try again later." = "Er is een probleem opgetreden bij het openen van je media. Probeer het later opnieuw.";
 
 /* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Er is een probleem opgetreden met de verhaal editor. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik > Help & ondersteuning.";
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Er was een probleem met de verhaal editor.  Als het probleem zich blijft voordoen, kun je contact met ons opnemen via het scherm Mij > Help & Support.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -6891,9 +7000,6 @@
 
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Er is iets fout gegaan tijdens laden activiteiten";
-
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "Er is een fout opgetreden bij het laden van likes";
 
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "Er is een fout opgetreden bij het laden van abonnementen";
@@ -6905,13 +7011,13 @@
 "There was an error loading the history" = "Er is een fout opgetreden bij het laden van de geschiedenis";
 
 /* Text displayed when there is a failure loading the plan details */
-"There was an error loading the plan" = "Er is een fout opgetreden bij het laden van het abonnement.";
+"There was an error loading the plan" = "Er is een fout opgetreden bij het laden van het abonnement";
 
 /* Text displayed when there is a failure loading the history feed */
 "There was an error loading the scan history" = "Er is een fout opgetreden bij het laden van de scan geschiedenis";
 
 /* Text displayed when there is a failure loading the status */
-"There was an error loading the scan status" = "Er is een fout opgetreden bij het laden van de scan status.";
+"There was an error loading the scan status" = "Er is een fout opgetreden bij het laden van de scan status";
 
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Er is een fout opgetreden bij het laden van deze plugin";
@@ -6987,6 +7093,18 @@
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Deze site heeft nog niets geplaatst. Probeer het later nog eens.";
+
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Dit gebruikersaccount kan niet worden gesloten als er onopgeloste terugvorderingen zijn.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Dit gebruikersaccount kan niet worden gesloten terwijl het actieve aankopen heeft.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Dit gebruikersaccount kan niet worden gesloten zolang het actieve abonnementen heeft.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Dit gebruikersaccount kon niet gesloten worden. Neem contact met ons op door te gaan naar Mij > Hulp & ondersteuning scherm.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7085,6 +7203,9 @@
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Om verder te gaan met dit Google account, meld je eerst aan met je WordPress.com wachtwoord. Dit wordt maar één keer gevraagd.";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Om een blok te verwijderen, selecteer je het blok en klik je op de drie stippen rechts onderaan het blok om de instellingen te zien. Kies van daaruit de optie om het blok te verwijderen.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
@@ -7415,7 +7536,7 @@
 "Unable to write image to file" = "Niet mogelijk afbeelding naar bestand te schrijven";
 
 /* Unapproves a Comment */
-"Unapprove" = "Niet beoordeeld ";
+"Unapprove" = "Afkeuren";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Wordt gebruikt om de reactie af te keuren.";
@@ -7493,7 +7614,7 @@
 "Unnamed Site" = "Naamloze site";
 
 /* Accessibility label for unordered list button on formatting toolbar. */
-"Unordered List" = "Ongeordende lijst ";
+"Unordered List" = "Ongeordende lijst";
 
 /* Filters Unread Notifications */
 "Unread" = "Ongelezen";
@@ -7624,8 +7745,8 @@
 /* Use the current image */
 "Use" = "Gebruik";
 
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "Gebruik huidige locatie";
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "Gebruik Sandbox Store";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Gebruik blok-editor";
@@ -7680,7 +7801,7 @@
 "Version" = "Versie";
 
 /* Description for the version label in the What's new page. */
-"Version " = "Versie";
+"Version " = "Versie ";
 
 /* Version of a plugin to install
    Version of an installed plugin */
@@ -8058,7 +8179,8 @@
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "We konden het primaire domein van je site niet wijzigen — maak je geen zorgen, je domein is succesvol aangeschaft.";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Web adres";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8082,14 +8204,14 @@
 /* A message title */
 "Welcome to the Reader" = "Welkom bij de Reader";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "Welkom in de wereld van blokken";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "Welkom bij de wereld's meest populaire sitebouwer.";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "Welkom bij de meest populaire sitebouwer van de wereld.";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "West";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "We sturen altijd belangrijke e-mails met betrekking tot je account, maar je kunt ook aanvullende nuttige berichten ontvangen.";
@@ -8172,13 +8294,13 @@
 "Which version would you like to edit?" = "Welke versie wil je bewerken?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
-"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oeps, er ging iets mis en we konden je niet inloggen. Probeer nogmaals.";
+"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Er ging iets mis en we konden je niet inloggen. Probeer nogmaals!";
 
 /* Share extension error dialog text. */
 "Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Oeps, er ging iets fout tijdens het delen. Je kan het opnieuw proberen, misschien was het een storing.";
 
 /* Error message shown when an incorrect two factor code is provided. */
-"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oeps, dat is geen geldige twee-factor verificatiecode. Controleer de code en probeer nogmaals.";
+"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Dat is geen geldige twee-factor verificatiecode. Controleer de code en probeer nogmaals!";
 
 /* Nav bar button title to set the site used for Stats widgets. */
 "Widgets" = "Widgets";
@@ -8195,6 +8317,9 @@
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress app-instellingen";
+
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "WordPress apps - Apps voor elk scherm";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress blog";
@@ -8331,8 +8456,11 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "Gisteren";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "Je hebt al een uitgelichte afbeelding ingesteld. Wil je die vervangen?";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
-"You are about to change your username, which is currently %@. %@" = "Je staat op het punt je gebruikersnaam te wijzigen, wat op dit moment %1$@. %2$@ is.";
+"You are about to change your username, which is currently %@. %@" = "Je staat op het punt je gebruikersnaam te wijzigen, wat op dit moment %1$@. %2$@ is";
 
 /* Error message informing the user that they are already following a site in their reader. */
 "You are already following this site." = "Je volgt deze site al.";
@@ -8360,6 +8488,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Je kunt deze instellingen ongedaan maken voor individuele berichten.";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Je kunt blokken herschikken door op een blok te tikken en dan op de omhoog en omlaag pijlen te tikken die links onderaan het blok verschijnen om het boven of onder andere blokken te zetten.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Je kunt dit op elk gewenst moment updaten via Mijn site > site-instellingen";
@@ -8460,13 +8591,16 @@
 "You will not be able to change your username back." = "Je kunt je gebruikersnaam niet meer terug veranderen.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "Je krijgt een herinnering om <strong>één keer<\/strong> per week te bloggen op %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Je krijgt een herinnering om <strong>één keer per<\/strong> week te bloggen op %1$@ op %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Je krijgt herinneringen om %1$@ keer per week te bloggen op %2$@.";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Je bent helemaal bij!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Je bent niet geautoriseerd om het account te sluiten.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Je hebt niet-opgeslagen wijzigingen in dit bericht";
@@ -8499,7 +8633,7 @@
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Je huidige gebruikersnaam is %1$@. Op een paar uitzonderingen na zullen anderen alleen jouw weergavenaam %2$@ zien.";
 
 /* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Je eerste back-up verschijnt hier binnen 24 uur en je ontvangt een bericht zodra de back-up is afgerond.";
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Je eerste back-up verschijnt hier binnen 24 uur en je ontvangt een bericht zodra de back-up is afgerond";
 
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Je eerste back-up is binnenkort klaar";
@@ -8578,6 +8712,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[REACTIE]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d blogger_ vindt dit leuk.";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d bloggers_ vinden dit leuk.";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_Jij en %1$d blogger_ vinden dit leuk.";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_Jij en %1$d bloggers_ vinden dit leuk.";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_Je_ vindt dit leuk.";
 
 /* Age between dates equaling one day. */
 "a day" = "een dag";

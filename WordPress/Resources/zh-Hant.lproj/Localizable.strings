@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-29 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-08-20 14:34:24+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -8,6 +8,9 @@
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "「延遲載入」圖片";
@@ -40,12 +43,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 按讚數";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d 位部落客都說讚。";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d 位部落客都說讚。";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %2$d 個，共 %1$d 個";
@@ -213,11 +210,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 個字、%2$li 個字元";
 
-/* translators: %s: Block name e.g. \"Image block\" */
-"%s block" = "%s block";
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
+"%s block" = "%s 區塊";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 區塊選項";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s區塊，全新推出";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 區塊空白";
@@ -301,11 +302,20 @@
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "一週 <strong>%d<\/strong> 次";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "一週<strong>一次<\/strong>";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "一週<strong>兩次<\/strong>";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -395,6 +405,9 @@
    Link to Account Settings section */
 "Account Settings" = "帳號設定";
 
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "Account closed";
+
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "合作廠商";
 
@@ -477,6 +490,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "隨時都能點選左下角工具列的「+」號圖示新增區塊。 ";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "新增一個自助託管網站";
 
@@ -499,6 +515,9 @@
 "Add any topic" = "新增任何主題";
 
 /* No comment provided by engineer. */
+"Add blocks" = "Add blocks";
+
+/* No comment provided by engineer. */
 "Add button text" = "新增按鈕文字";
 
 /* No comment provided by engineer. */
@@ -511,7 +530,7 @@
 "Add link" = "新增連結";
 
 /* No comment provided by engineer. */
-"Add link text" = "Add link text";
+"Add link text" = "新增連結文字";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "Add link to %s" = "新增連結至 %s";
@@ -680,6 +699,9 @@
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "需要有效的網際網路連線才能檢視歷史記錄";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "An error occured while closing account.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "建立「選單」時發生錯誤。";
 
@@ -733,6 +755,9 @@
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 驗證失敗。\n請確認你已透過 Apple ID 使用兩步驟驗證登入 iCloud。";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "Applies the setting";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "套用";
@@ -824,6 +849,9 @@
 
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否確定要更新？";
+
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "在欄位中排列你的內容、新增「行動呼籲」按鈕，並在圖片中加上文字。";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "藝術";
@@ -1010,6 +1038,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "Blocklist";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "區塊可讓你專心撰寫內容，瞭解所有必要的格式工具一應俱全，協助你傳達自己的訊息。";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "區塊是讓你可以不必瞭解如何編寫程式碼，就能插入、重新排列及調整樣式的塊狀內容。 區塊可讓你用簡單且現代化的方式建立美麗的版面配置。";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "網誌";
 
@@ -1053,6 +1087,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "蠻力攻擊防護";
+
+/* No comment provided by engineer. */
+"Build layouts" = "建構版面形式";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "項目符號清單";
@@ -1117,6 +1154,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1184,7 +1222,7 @@
 "Canceled" = "Canceled";
 
 /* A short message that informs the user the share extension is being canceled. */
-"Canceling..." = "Canceling...";
+"Canceling..." = "正在取消…";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -1251,6 +1289,9 @@
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "變更、新增或移除網站的頁面。";
 
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "變更顯示名稱";
 
@@ -1268,7 +1309,7 @@
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。";
 
 /* Instructional text on how to open the email containing a magic link. */
-"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder.";
+"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。\n\n沒看到電子郵件嗎？ 請檢查你的「垃圾郵件」資料夾。";
 
 /* Alert title for check your email during logIn/signUp. */
 "Check your email!" = "請檢查你的電子郵件！";
@@ -1418,6 +1459,9 @@
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "關閉";
 
+/* Close account action label */
+"Close Account" = "Close Account";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "關閉留言功能";
 
@@ -1432,6 +1476,9 @@
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "關閉「我」畫面";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "Closing account…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "程式碼";
@@ -1452,7 +1499,7 @@
 "Colorful backgrounds" = "彩色背景";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "欄位設定";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "結合相片、視訊和文字，建立吸睛又可點按的限時動態，你的訪客一定會喜歡。";
@@ -1460,7 +1507,8 @@
 /* Menu item label for linking a comic page. */
 "Comics" = "漫畫";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "留言";
 
@@ -1556,6 +1604,9 @@
 /* Confirm
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "確定";
+
+/* Close Account alert title */
+"Confirm Close Account" = "Confirm Close Account";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "確認刪除網站";
@@ -1662,7 +1713,7 @@
 "Continue" = "繼續";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
-"Continue With WordPress.com" = "Continue With WordPress.com";
+"Continue With WordPress.com" = "繼續使用 WordPress.com";
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "繼續操作";
@@ -1671,10 +1722,10 @@
 "Continue reading" = "繼續閱讀";
 
 /* Button title. Tapping begins log in using Apple. */
-"Continue with Apple" = "Continue with Apple";
+"Continue with Apple" = "繼續使用 Apple";
 
 /* Button title. Tapping begins log in using Google. */
-"Continue with Google" = "Continue with Google";
+"Continue with Google" = "繼續使用 Google";
 
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "繼續網站設定作業";
@@ -1868,7 +1919,7 @@
 "Create your site" = "建立網站";
 
 /* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+"Creates new post, or page" = "建立新文章或頁面";
 
 /* Accessibility hint for create floating action button */
 "Creates new post, page, or story" = "建立新文章、頁面或限時動態";
@@ -1934,6 +1985,9 @@
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "自訂你的網站";
+
+/* No comment provided by engineer. */
+"Customize blocks" = "Customize blocks";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "自訂訊息";
@@ -2200,7 +2254,6 @@
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2345,8 +2398,8 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "編輯連結";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "東";
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2369,7 +2422,7 @@
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "編輯封鎖清單字詞";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "編輯迴響";
 
 /* IP Address or Range Edition Title */
@@ -2442,6 +2495,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "電子郵件";
 
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "電子郵件地址";
+
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
@@ -2477,6 +2533,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "內嵌連結";
+
+/* No comment provided by engineer. */
+"Embed media" = "嵌入媒體";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "內嵌預覽尚無法使用";
@@ -2569,7 +2628,8 @@
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "輸入伺服器憑證";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "錯誤";
@@ -2616,6 +2676,9 @@
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "安裝 %@ 時發生錯誤。";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Error loading likes";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "載入外掛程式時發生錯誤";
@@ -2676,6 +2739,9 @@
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "每天";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "Every day at %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "所有人";
@@ -2795,6 +2861,9 @@
    Title for the Featured Image view */
 "Featured Image" = "精選圖片";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "已設定特色圖片";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "特色圖片選項";
 
@@ -2859,9 +2928,6 @@
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "尋找你會喜歡的網誌和故事…";
-
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "正在尋找您的位置…";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -3044,11 +3110,17 @@
 /* Cancel */
 "Give Up" = "放棄";
 
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "馬上嘗試為你的文章或頁面新增幾個區塊！";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "為網站取一個能反映出自我風格和主題的名稱。 第一印象很重要！";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "Go back";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "前往關注";
@@ -3231,6 +3303,12 @@
 
 /* How to create story description */
 "How to create a story post" = "如何建立限時動態文章";
+
+/* No comment provided by engineer. */
+"How to edit your page" = "How to edit your page";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "How to edit your post";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "如何修復？";
@@ -3680,7 +3758,7 @@
 "Link inserted" = "連結已插入";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "連結文字";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "連結至既有內容";
@@ -3773,9 +3851,7 @@
    Title of the Local Changes Badge */
 "Local changes" = "本機變更";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "位置";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3836,9 +3912,6 @@
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "在尋找統計資料嗎？";
 
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "正在查詢位址...";
-
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "你似乎已在網站上設定 Jetpack。恭喜！使用 WordPress.com 憑證登入，以啟用「統計與通知」。";
 
@@ -3850,6 +3923,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主導覽";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "為頁面新增圖片、GIF、影片和嵌入式媒體，讓你的內容脫穎而出。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3874,7 +3950,7 @@
 "Manage site" = "管理網站";
 
 /* shown in promotional screens during first launch */
-"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "Manage your Jetpack-powered site on the go — you've got WordPress in your pocket.";
+"Manage your Jetpack-powered site on the go — you've got WordPress in your pocket." = "隨時隨地管理以 Jetpack 建置的網站，就像把 WordPress 裝在口袋隨身帶著走。";
 
 /* Section name for manual offsets in time zone selector */
 "Manual Offsets" = "手動時差";
@@ -4079,6 +4155,9 @@
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "將區塊從第 %1$s 列向上移至第 %2$s　列";
 
+/* No comment provided by engineer. */
+"Move blocks" = "Move blocks";
+
 /* Option to move Insight down in the view. */
 "Move down" = "向下移動";
 
@@ -4137,6 +4216,7 @@
 "My Top Ten Cafes" = "我最愛的十家咖啡館";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "名稱";
 
@@ -4151,6 +4231,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "瀏覽至自訂漸層色彩";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navigates to select %s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "瀏覽至上一個內容表";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "需要幫助嗎？";
@@ -4435,9 +4521,6 @@
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "未設定任何目標";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "北";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "未連線";
 
@@ -4486,6 +4569,9 @@
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "通知設定";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "Notification time";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4570,6 +4656,9 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "一旦停用這個邀請連結，就沒有人可以再用此連結加入你的團隊。 確定要這麼做嗎？";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "熟悉不同區塊的名稱後，輸入正斜線，後面加上區塊名稱 (例如 \/image 或 \/heading)，就能新增區塊。";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "建立 WordPress.com 網站後，可以將喜歡的內容轉發到自己的網站。";
 
@@ -4584,7 +4673,6 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4808,6 +4896,9 @@
 /* Label for date periods. */
 "Period" = "期間";
 
+/* Close Account confirmation action title */
+"Permanently Close Account" = "Permanently Close Account";
+
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "永久刪除網站";
 
@@ -5025,7 +5116,7 @@
 "Post content settings" = "文章內容設定";
 
 /* The footer text appears within the footer displaying when the post has been created. */
-"Post created on %@" = "Post created on %@";
+"Post created on %@" = "文章於 %@ 建立";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "Post draft uploaded" = "已上傳文章草稿";
@@ -5403,7 +5494,6 @@
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5462,6 +5552,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "已移除";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "已移除特色圖片";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "將相片上傳至網站前，請先從相片移除位置中繼資料。";
 
@@ -5470,6 +5563,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "「移除後續步驟」會隱藏此網站的所有導覽。此動作無法復原。";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "取代";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "取代目前區塊";
@@ -5512,7 +5608,7 @@
 "Reply to post…" = "回覆文章...";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
+"Report this post" = "檢舉這篇文章";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "如果留言包含的連結超過此數量，需要進行人工審核。";
@@ -5638,6 +5734,9 @@
 /* Post Rich content */
 "Rich Content" = "豐富內容";
 
+/* No comment provided by engineer. */
+"Rich text editing" = "RTF 編輯";
+
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "靠右";
 
@@ -5762,9 +5861,6 @@
    Title of the Reader's search feature */
 "Search" = "搜尋";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "搜尋位置";
-
 /* Label for list of search term */
 "Search Term" = "搜尋字詞";
 
@@ -5799,7 +5895,7 @@
 "Search posts" = "搜尋文章";
 
 /* No comment provided by engineer. */
-"Search settings" = "Search settings";
+"Search settings" = "搜尋設定";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "搜尋免費 GIF 以新增至你的媒體庫！";
@@ -5880,6 +5976,9 @@
 /* No comment provided by engineer. */
 "Select a color" = "選擇顏色";
 
+/* No comment provided by engineer. */
+"Select a color above" = "Select a color above";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "選取幾項以繼續操作";
 
@@ -5928,6 +6027,9 @@
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "無法使用已選取的媒體。";
 
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Selected: %s";
+
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "若選擇其他選單位置，對目前選單所做的變更都會捨棄。確定要繼續？";
 
@@ -5973,9 +6075,6 @@
 /* No comment provided by engineer. */
 "Set Featured Image" = "設定精選圖片";
 
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "設定位置";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "設定上層項目";
@@ -5988,6 +6087,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "設定為文章頁面";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "設為特色圖片";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "設定提醒";
@@ -6038,6 +6140,9 @@
 
 /* Label for action to share post. */
 "Share Post" = "分享文章";
+
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "Share WordPress with a friend";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "在登入你的 WordPress.com 帳號時，請將你的服務使用情況相關資訊與我們的分析工具分享。";
@@ -6202,7 +6307,7 @@
 "Site achievements" = "網站成就";
 
 /* Accessibility label of the site address field shown when adding a self-hosted site. */
-"Site address" = "Site address";
+"Site address" = "網站位址";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "網站位址至少必須為 4 個字元。";
@@ -6271,6 +6376,9 @@
 /* Follower Totals label for social media followers */
 "Social" = "社交";
 
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "有些區塊具有其他設定。 請點選區塊右下角的設定圖示以檢視更多選項。";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒體上傳失敗。此動作將移除文章中所有上傳失敗的媒體。\n是否仍要儲存？";
 
@@ -6285,7 +6393,8 @@
 "Something went wrong. Please check your connectivity and try again." = "發生錯誤。請檢查你的連線並再試一次。";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "發生錯誤。請再試一次。";
 
 /* Invite Validation Alert
@@ -6361,9 +6470,6 @@
 
 /* Opens the Github Repository Web */
 "Source Code" = "原始碼";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "南";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "已使用的空間";
@@ -6500,7 +6606,7 @@
 "Switch to Visual Preview" = "切換至「視覺化預覽」";
 
 /* Switches from the classic editor to block editor. */
-"Switch to block editor" = "Switch to block editor";
+"Switch to block editor" = "切換至區塊編輯器";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "切換至Heading 1文字大小";
@@ -6649,6 +6755,9 @@
 
 /* Title of a button style */
 "Text Only" = "只顯示文字";
+
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -6892,9 +7001,6 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "載入活動時發生錯誤";
 
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "載入按讚數時發生錯誤";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "載入方案時發生錯誤";
 
@@ -6987,6 +7093,18 @@
 
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "此網站尚未發表任何文章。請稍後再返回重試。";
+
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -7085,6 +7203,9 @@
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Google 帳號，請先使用你的 WordPress.com 密碼登入。系統只會向你要求一次。";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "若要移除區塊，請選取區塊，並按一下區塊右下角的三個點以檢視設定。 在設定中選擇移除區塊的選項。";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "拍些相片或影片供文章使用。";
@@ -7624,11 +7745,11 @@
 /* Use the current image */
 "Use" = "使用";
 
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "使用目前的位置";
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "使用沙盒商店";
 
 /* Option to enable the block editor for new posts */
-"Use block editor" = "Use block editor";
+"Use block editor" = "使用區塊編輯器";
 
 /* No comment provided by engineer. */
 "Use icon button" = "使用圖示按鈕";
@@ -8053,12 +8174,13 @@
 "We've also emailed you a link to your file." = "我們也已將檔案連結透過電子郵件傳送給你。";
 
 /* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com.";
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我們已透過電子郵件傳送註冊連結給你，使用此連結即可建立新的 WordPress.com 帳號。 請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。";
 
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "變更網站的主要網域時發生問題。不過別擔心，你已成功購買網域。";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "網站位址";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8082,14 +8204,14 @@
 /* A message title */
 "Welcome to the Reader" = "歡迎使用讀取器";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "歡迎進入內容區塊領域";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "歡迎使用全球最受歡迎的網站建置工具。";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "西";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我們會隨時傳送與帳號資訊相關的重要電子郵件，除此之外，你也能獲得實用的額外內容。";
@@ -8195,6 +8317,9 @@
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress 應用程式設定";
+
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 網誌";
@@ -8331,6 +8456,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "昨天";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "你已有特色圖片設定。 是否要更換特色圖片？";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "你即將變更你的使用者名稱 (目前為 %1$@)。%2$@";
 
@@ -8360,6 +8488,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "你可以針對不同的文章覆寫這些設定。";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "若要重新排列區塊，請依序點選區塊和區塊左下角顯示的上下鍵，將其移動到其他區塊的上方或下方。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "你可以隨時前往「我的網站」>「網站設定」更新此設定。";
@@ -8460,13 +8591,16 @@
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "你每個%@會收到<strong>一次<\/strong>網誌提醒。";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "你每週會收到 %1$@ 次網誌提醒，分別在%2$@。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "全部都是最新版本！";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "You're not authorized to close the account.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "這篇文章有未儲存的變更";
@@ -8526,7 +8660,7 @@
 "Your restore is taking longer than usual, please check again in a few minutes." = "還原的時間比平常更長，請在數分鐘後再返回查看。";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "當你使用 Safari 造訪自己的網站時，網站位址會顯示在畫面上方的網址列中。";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "你的網站已建立！";
@@ -8578,6 +8712,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[留言]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d 位部落客_說這個讚。";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d 位部落客_說這個讚。";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_你_說這個讚。";
 
 /* Age between dates equaling one day. */
 "a day" = "一天";

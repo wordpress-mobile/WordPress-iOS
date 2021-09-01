@@ -5,10 +5,7 @@ extension Post {
 
     @NSManaged var commentCount: NSNumber?
     @NSManaged var disabledPublicizeConnections: [NSNumber: [String: String]]?
-    @NSManaged var geolocation: Coordinate?
-    @NSManaged var latitudeID: String?
     @NSManaged var likeCount: NSNumber?
-    @NSManaged var longitudeID: String?
     @NSManaged var postFormat: String?
     @NSManaged var postType: String?
     @NSManaged var publicID: String?
