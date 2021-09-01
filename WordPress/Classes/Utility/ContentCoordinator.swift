@@ -76,7 +76,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
            let action = match.action as? StatsRoute,
            let timePeriod = action.timePeriod {
             // Initializing a StatsPeriodType to ensure we have a valid period
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey)
         }
     }
 

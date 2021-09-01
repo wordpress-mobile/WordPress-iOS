@@ -10,39 +10,13 @@ import WordPressFlux
 ///
 final class InteractiveNotificationsManager: NSObject {
 
-    class EventTracker {
-        enum Event: String {
-            case notificationTapped = "notification_tapped"
-        }
-
-        enum Properties: String {
-            case notificationType = "notification_type"
-        }
-
-        enum NotificationType: String {
-            case bloggingReminders = "blogging_reminders"
-        }
-
-        private let track: (AnalyticsEvent) -> Void
-
-        init(trackMethod track: @escaping (AnalyticsEvent) -> Void = WPAnalytics.track) {
-            self.track = track
-        }
-
-        func notificationTapped(type: NotificationType) {
-            let event = AnalyticsEvent(name: Event.notificationTapped.rawValue, properties: [Properties.notificationType.rawValue: type.rawValue])
-
-            track(event)
-        }
-    }
-
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
     @objc static let shared = InteractiveNotificationsManager()
 
     /// The analytics event tracker.
     ///
-    private let eventTracker = EventTracker()
+    private let eventTracker = NotificationEventTracker()
 
     /// Returns the Core Data main context.
     ///
@@ -237,11 +211,46 @@ final class InteractiveNotificationsManager: NSObject {
 
                     WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
                 }
+            case .weeklyRoundup:
+                let targetBlog = blog(from: userInfo)
+                let siteId = targetBlog?.dotComID?.intValue
+
+                eventTracker.notificationTapped(type: .weeklyRoundup, siteId: siteId)
+
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    guard let targetBlog = targetBlog else {
+                        DDLogError("Could not obtain the blog from the Weekly Notification thread ID.")
+                        break
+                    }
+
+                    let targetDate = date(from: userInfo)
+
+                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showStats(
+                        for: targetBlog,
+                        timePeriod: .weeks,
+                        date: targetDate)
+                }
             default: break
             }
         }
 
         return true
+    }
+}
+
+// MARK: - Notifications: Retrieving Stored Data
+
+extension InteractiveNotificationsManager {
+
+    static let blogIDKey = "blogID"
+    static let dateKey = "date"
+
+    private func blog(from userInfo: NSDictionary) -> Blog? {
+        if let blogID = userInfo[Self.blogIDKey] as? Int {
+            return try? Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext)
+        }
+
+        return nil
     }
 
     private func blog(from threadId: String?) -> Blog? {
@@ -251,6 +260,12 @@ final class InteractiveNotificationsManager: NSObject {
         }
 
         return nil
+    }
+
+    /// Retrieves a date from the userInfo dictionary using a generic "date" key.  This was made generic on purpose.
+    ///
+    private func date(from userInfo: NSDictionary) -> Date? {
+        userInfo[Self.dateKey] as? Date
     }
 }
 
@@ -359,6 +374,7 @@ extension InteractiveNotificationsManager {
         case shareUploadFailure     = "share-upload-failure"
         case login                  = "push_auth"
         case bloggingReminderWeekly = "blogging-reminder-weekly"
+        case weeklyRoundup          = "weekly-roundup"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -386,6 +402,8 @@ extension InteractiveNotificationsManager {
                 return [.approveLogin, .denyLogin]
             case .bloggingReminderWeekly:
                 return []
+            case .weeklyRoundup:
+                return []
             }
         }
 
@@ -406,7 +424,7 @@ extension InteractiveNotificationsManager {
         }
 
         static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup]
     }
 
 
@@ -536,7 +554,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         }
 
         // If it's a blogging reminder notification, display it in-app
-        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue {
+        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue
+            || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue {
+
             if #available(iOS 14.0, *) {
                 completionHandler([.banner, .list, .sound])
             } else {
