@@ -41,7 +41,7 @@ class EditCommentSingleLineCell: UITableViewCell, NibReusable {
             return
         }
 
-        contentView.layer.borderColor = UIColor.red.cgColor
+        contentView.layer.borderColor = UIColor.error.cgColor
         contentView.layer.borderWidth = 1.0
         contentView.layer.cornerRadius = 10
     }
