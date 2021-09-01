@@ -33,6 +33,8 @@ private class AccountSettingsController: SettingsController {
     // MARK: - Initialization
 
     private let accountSettingsService: AccountSettingsService
+    private let accountService: AccountService
+
     var settings: AccountSettings? {
         didSet {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
@@ -45,8 +47,10 @@ private class AccountSettingsController: SettingsController {
     }
     private let alertHelper = DestructiveAlertHelper()
 
-    init(accountSettingsService: AccountSettingsService) {
+    init(accountSettingsService: AccountSettingsService,
+         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)) {
         self.accountSettingsService = accountSettingsService
+        self.accountService = accountService
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
