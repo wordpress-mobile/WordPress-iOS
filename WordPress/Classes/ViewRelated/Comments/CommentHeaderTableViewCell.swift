@@ -4,8 +4,8 @@ class CommentHeaderTableViewCell: UITableViewCell, Reusable {
 
     // MARK: Initialization
 
-    required init(reuseIdentifier: String = CommentHeaderTableViewCell.defaultReuseID) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+    required init() {
+        super.init(style: .subtitle, reuseIdentifier: Self.defaultReuseID)
         configureStyle()
     }
 
