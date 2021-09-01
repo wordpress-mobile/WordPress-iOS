@@ -237,10 +237,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
         // is no need to inspect the identifier beyond the simple check here.
         if identifier.contains(WPAppGroupName) {
-            /*
             let manager = ShareExtensionSessionManager(appGroup: WPAppGroupName, backgroundSessionIdentifier: identifier)
             manager.backgroundSessionCompletionBlock = completionHandler
-            manager.startBackgroundSession()*/
+            manager.startBackgroundSession()
         }
     }
 
