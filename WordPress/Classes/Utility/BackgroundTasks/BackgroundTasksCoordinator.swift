@@ -125,10 +125,7 @@ class BackgroundTasksCoordinator {
 
         for task in registeredTasks {
             schedule(task) { result in
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
+                if case .failure(let error) = result {
                     tasksAndErrors[type(of: task).identifier] = error
                 }
             }

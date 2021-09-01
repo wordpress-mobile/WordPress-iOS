@@ -331,10 +331,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupBackgroundRefresh(_ application: UIApplication) {
         backgroundTasksCoordinator.scheduleTasks { result in
-            switch result {
-            case .success:
-                break
-            case .failure(let error):
+            if case .failure(let error) = result {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
         }
