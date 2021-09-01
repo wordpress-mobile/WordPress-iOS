@@ -15,6 +15,8 @@ class CommentDetailViewController: UITableViewController {
     private lazy var replyIndicatorCell: UITableViewCell = {
         let cell = UITableViewCell()
 
+        // display the replied icon using attributed string instead of using the default image view.
+        // this is because the default image view is displayed beyond the separator line (within the layout margin area).
         let iconAttachment = NSTextAttachment()
         iconAttachment.image = Style.ReplyIndicator.iconImage
 
@@ -32,7 +34,7 @@ class CommentDetailViewController: UITableViewController {
         cell.textLabel?.attributedText = attributedString
         cell.textLabel?.numberOfLines = 0
 
-        // setup constraints for textLabel to match the spacing specified in the designs.
+        // setup constraints for textLabel to match the spacing specified in the design.
         if let textLabel = cell.textLabel {
             textLabel.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -105,6 +107,10 @@ class CommentDetailViewController: UITableViewController {
         case .header:
             navigateToPost()
 
+        case .replyIndicator:
+            // TODO: Navigate to the comment reply.
+            break
+
         case .text(_, _, _, let action):
             action?()
 
@@ -151,7 +157,7 @@ private extension CommentDetailViewController {
     func configureRows() {
         rows = [
             .header,
-            .replyIndicator,
+            .replyIndicator, // TODO: Conditionally add this when user has replied to the comment.
             .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage, action: visitAuthorURL),
             .text(title: .emailAddressLabelText, detail: comment.author_email),
             .text(title: .ipAddressLabelText, detail: comment.author_ip)
