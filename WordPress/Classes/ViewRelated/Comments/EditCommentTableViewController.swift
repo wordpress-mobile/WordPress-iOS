@@ -221,20 +221,23 @@ private extension EditCommentTableViewController {
 
 extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
 
-    func fieldUpdated(_ type: TextFieldStyle, updatedText: String?, isValid: Bool) {
-        switch type {
+    func textUpdatedForCell(_ cell: EditCommentSingleLineCell) {
+        let updatedText = cell.textField.text?.trim()
+
+        switch cell.textFieldStyle {
         case .text:
-            updatedName = updatedText?.trim()
+            updatedName = updatedText
         case .url:
-            updatedWebAddress = updatedText?.trim()
+            updatedWebAddress = updatedText
         case .email:
-            updatedEmailAddress = updatedText?.trim()
+            updatedEmailAddress = updatedText
             isEmailValid = {
                 if updatedEmailAddress == nil || updatedEmailAddress?.isEmpty == true {
                     return true
                 }
-                return isValid
+                return cell.isValid
             }()
+            cell.showInvalidState(!isEmailValid)
         }
 
         updateDoneButton()
