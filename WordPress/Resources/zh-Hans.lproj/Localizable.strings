@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-07-27 14:54:08+0000 */
+/* Translation-Revision-Date: 2021-08-28 00:13:44+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -7,7 +7,10 @@
 "\nPlease send us an email to have your content cleared out." = "\n要清除你的内容，请发送一封电子邮件给我们。";
 
 /* Message of Delete Site confirmation alert; substitution is site's host. */
-"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n要确认，请在删除之前重新输入您的网站地址。\n";
+"\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n如果您确认关闭站点，请在删除之前重新输入您的站点地址。\n";
+
+/* Message of Close Account confirmation alert */
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\n如果您确认关闭账户，请在关闭之前重新输入您的用户名。\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "“延迟加载”图片";
@@ -40,12 +43,6 @@
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d 人喜欢";
-
-/* Singular format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d blogger_ likes this." = "%1$d 位博主为此文章点赞。";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscore denotes underline and is not displayed. */
-"%1$d bloggers_ like this." = "%1$d 位博主为此文章点赞。";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "已完成 %1$d 个（共 %2$d 个）";
@@ -165,7 +162,7 @@
 "%d Posts" = "%d 篇文章";
 
 /* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d 个帐户";
+"%d accounts" = "%d 个账户";
 
 /* Age between dates over one day.
    Number of days */
@@ -213,11 +210,15 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
 
-/* translators: %s: Block name e.g. \"Image block\" */
+/* translators: %s: Block name e.g. \"Image block\"
+translators: Block name. %s: The localized block name */
 "%s block" = "%s 区块";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
+
+/* translators: Newly available block name. %s: The localized block name */
+"%s block, newly available" = "%s 区块全新推出";
 
 /* translators: accessibility text for the media block empty state. %s: media type */
 "%s block. Empty" = "%s 区块。空白";
@@ -301,11 +302,20 @@
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
 "<strong>%d<\/strong> times a week" = "每周 <strong>%d<\/strong> 次";
 
+/* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
+"<strong>%d<\/strong> times a week at %@" = "每周<strong>%1$d<\/strong>次（%2$@）";
+
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "每周<strong>一次<\/strong>";
 
+/* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
+"<strong>Once<\/strong> a week at %@" = "每周<strong>一<\/strong>次（%2$@）";
+
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "每周<strong>两次<\/strong>";
+
+/* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
+"<strong>Twice<\/strong> a week at %@" = "每周<strong>二<\/strong>次（%2$@）";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -320,7 +330,7 @@
 "A file contains a malicious code pattern" = "一个包含恶意代码模式的文件";
 
 /* Accessibility hint for My Sites list. */
-"A list of sites on this account." = "此帐户上的站点列表。";
+"A list of sites on this account." = "此账户上的站点列表。";
 
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "在您的站点上创建、发布吸引人内容的新方法。";
@@ -383,17 +393,20 @@
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
 
 /* Title for the account section in site settings screen */
-"Account" = "帐户";
+"Account" = "账户";
 
 /* Header for account details, shown after signing up. */
-"Account Details" = "帐户详细信息";
+"Account Details" = "账户详细信息";
 
 /* Accessibility description for account information after logging in. */
-"Account Information. %@. %@." = "帐户信息。%1$@。%2$@。";
+"Account Information. %@. %@." = "账户信息。%1$@。%2$@。";
 
 /* Account Settings Title
    Link to Account Settings section */
-"Account Settings" = "帐户设置";
+"Account Settings" = "账户设置";
+
+/* Overlay message displayed when account successfully closed */
+"Account closed" = "账户已关闭";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "确认";
@@ -477,6 +490,9 @@
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* No comment provided by engineer. */
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "轻点左下角工具栏上的 + 图标，随时添加新的区块。 ";
+
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "添加自托管站点";
 
@@ -490,7 +506,7 @@
 "Add a topic" = "添加主题";
 
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
-"Add account image." = "添加帐户图片。";
+"Add account image." = "添加账户图片。";
 
 /* No comment provided by engineer. */
 "Add alt text" = "添加替代文本";
@@ -499,13 +515,16 @@
 "Add any topic" = "添加任何主题";
 
 /* No comment provided by engineer. */
+"Add blocks" = "添加区块";
+
+/* No comment provided by engineer. */
 "Add button text" = "添加按钮文字";
 
 /* No comment provided by engineer. */
 "Add image or video" = "添加图片或视频";
 
 /* Accessibility hint text for adding an image to a new user account. */
-"Add image, or avatar, to represent this new account." = "添加图像或头像以表示此新帐户。";
+"Add image, or avatar, to represent this new account." = "添加图像或头像以代表此新账户。";
 
 /* No comment provided by engineer. */
 "Add link" = "添加链接";
@@ -680,6 +699,9 @@
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "必须连接互联网才能查看历史记录";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "关闭账户时发生错误";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "创建菜单时出错。";
 
@@ -733,6 +755,9 @@
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 验证失败。\n请确保通过使用双因素验证的 Apple ID 登录 iCloud。";
+
+/* No comment provided by engineer. */
+"Applies the setting" = "使用此设置";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "应用";
@@ -825,6 +850,9 @@
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否确定要更新？";
 
+/* No comment provided by engineer. */
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "将您的内容编排成列，添加对操作按钮的调用，在图像上叠加文本。";
+
 /* An example tag used in the login prologue screens. */
 "Art" = "艺术";
 
@@ -891,7 +919,7 @@
 "Automatically close comments on content after a certain number of days." = "一定时间后自动关闭对内容进行评论的功能。";
 
 /* Description of a Quick Start Tour */
-"Automatically share new posts to your social media accounts." = "自动将新文章共享到社交媒体帐户。";
+"Automatically share new posts to your social media accounts." = "自动将新文章共享到社交媒体账户。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
@@ -1010,6 +1038,12 @@
    Settings: Comments Blocklist */
 "Blocklist" = "禁止名单";
 
+/* No comment provided by engineer. */
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "区块让您能够专注于编写您的内容，因为您需要的所有格式化工具将帮助您清楚地传达您的消息。";
+
+/* No comment provided by engineer. */
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
+
 /* Opens the WordPress Mobile Blog */
 "Blog" = "博客";
 
@@ -1053,6 +1087,9 @@
 
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "防范暴力攻击";
+
+/* No comment provided by engineer. */
+"Build layouts" = "构建布局";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "项目符号列表";
@@ -1117,6 +1154,7 @@
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
+   Button to cancel the replacement of a featured image.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -1250,6 +1288,9 @@
 
 /* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "自您网站的页面更改、增加或删除内容。";
+
+/* No comment provided by engineer. */
+"Changes to featured image will not be affected by the undo\/redo buttons." = "更改特色图片的操作不受撤销、恢复按钮影响。";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "正在更改显示名";
@@ -1418,6 +1459,9 @@
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "关闭";
 
+/* Close account action label */
+"Close Account" = "关闭账户";
+
 /* Settings: Close comments after X period */
 "Close Commenting" = "关闭评论";
 
@@ -1432,6 +1476,9 @@
 
 /* Accessibility hint the  Done button in the Me screen. */
 "Close the Me screen" = "关闭“我”屏幕";
+
+/* Overlay message displayed while closing account */
+"Closing account…" = "关闭账户中……";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "代码";
@@ -1460,7 +1507,8 @@
 /* Menu item label for linking a comic page. */
 "Comics" = "漫画";
 
-/* Text for the 'comment' when there is 1 or 0 comments
+/* Header for a comment's content, shown when editing a comment.
+   Text for the 'comment' when there is 1 or 0 comments
    User facing, navigation bar title */
 "Comment" = "评论";
 
@@ -1557,11 +1605,14 @@
    Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "确定";
 
+/* Close Account alert title */
+"Confirm Close Account" = "确认关闭账户";
+
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "确认删除站点";
 
 /* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "请确认该帐户是否为您想要授权的帐户。请注意，您的文章将会自动分享至该帐户。";
+"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "请确认此账户是否为您想要授权的账户。请注意，您的文章将会自动分享至该账户。";
 
 /* Alert text field placeholder. */
 "Confirm username" = "确认用户名";
@@ -1583,7 +1634,7 @@
 "Connect" = "连接";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "连接其他帐户";
+"Connect Another Account" = "连接其他账户";
 
 /* Link to connect a site, shown after logging in. */
 "Connect a site" = "连接站点";
@@ -1601,7 +1652,7 @@
 "Connected" = "已连接";
 
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "已连接帐户";
+"Connected Accounts" = "已连接账户";
 
 /* Title shown when a user logs in with Google but no matching WordPress.com account is found */
 "Connected But…" = "已连接，但是…";
@@ -1801,7 +1852,7 @@
 "Create" = "创建";
 
 /* The button title text for creating a new account. */
-"Create Account" = "创建账号";
+"Create Account" = "创建账户";
 
 /* Title for button to make a blank page */
 "Create Blank Page" = "创建空白页面";
@@ -1934,6 +1985,9 @@
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website.
    Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "定制您的站点";
+
+/* No comment provided by engineer. */
+"Customize blocks" = "自定义区块";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "定制消息";
@@ -2080,7 +2134,7 @@
 "Details" = "详情";
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
-"Didn't mean to create a new account? Go back to re-enter your email address." = "不打算创建新帐户？ 返回以重新输入您的电子邮件地址。";
+"Didn't mean to create a new account? Go back to re-enter your email address." = "不打算创建新账户？ 返回以重新输入您的电子邮件地址。";
 
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "尺寸";
@@ -2123,7 +2177,7 @@
 "Disconnect from WordPress.com" = "从 WordPress.com 断开连接";
 
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "断开与此帐户的连接意味着已发布的文章将无法自动分享至 %@";
+"Disconnecting this account means published posts will no longer be automatically shared to %@" = "断开与此账户的连接意味着已发布的文章将无法自动分享至 %@";
 
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "发现站点";
@@ -2192,7 +2246,7 @@
 "Domains" = "域";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
-"Don't have an account? _Sign up_" = "还没有帐户？_注册_";
+"Don't have an account? _Sign up_" = "还没有账户？_注册_";
 
 /* A button title
    Accessibility label for the Done button in the Me screen.
@@ -2200,7 +2254,6 @@
    Done button title
    Done editing an image
    Label for confirm feature image of a post
-   Label for confirm location of a post
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
@@ -2345,8 +2398,8 @@
 /* No comment provided by engineer. */
 "EDIT LINK" = "编辑链接";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"East" = "东";
+/* No comment provided by engineer. */
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每个区块都有各自的设置。要找到这些设置，请点击一个区块。区块的设置将出现在屏幕底部的工具栏上。";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2369,7 +2422,7 @@
 /* Blocklist Keyword Edition Title */
 "Edit Blocklist Word" = "编辑禁止名单关键词";
 
-/* No comment provided by engineer. */
+/* View title when editing a comment. */
 "Edit Comment" = "编辑评论";
 
 /* IP Address or Range Edition Title */
@@ -2442,6 +2495,9 @@
    Register Domain - Domain contact information field Email */
 "Email" = "E-mail";
 
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "E-mail 地址";
+
 /* Accessibility label for the email address text field.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
@@ -2477,6 +2533,9 @@
 
 /* No comment provided by engineer. */
 "Embed link" = "嵌入链接";
+
+/* No comment provided by engineer. */
+"Embed media" = "嵌入媒体";
 
 /* No comment provided by engineer. */
 "Embed previews not yet available" = "嵌入预览尚不可用";
@@ -2548,16 +2607,16 @@
 "Enter the address of the WordPress site you'd like to connect." = "输入您要连接的 WordPress 站点的地址。";
 
 /* Instructional text shown when requesting the user's password for login. */
-"Enter the password for your WordPress.com account." = "输入您的 WordPress.com 帐户的密码。";
+"Enter the password for your WordPress.com account." = "输入您的 WordPress.com 账户的密码。";
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "输入用户名";
 
 /* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
-"Enter your account information for %@." = "输入您的 %@ 帐户信息。";
+"Enter your account information for %@." = "输入您的 %@ 账户信息。";
 
 /* Instruction text on the initial email address entry screen. */
-"Enter your email address to log in or create a WordPress.com account." = "输入您的电子邮件地址以登录或创建 WordPress.com 帐户。";
+"Enter your email address to log in or create a WordPress.com account." = "输入您的电子邮件地址以登录或创建 WordPress.com 账户。";
 
 /* Button title. Takes the user to the login by site address flow. */
 "Enter your existing site address" = "输入您的现有站点地址";
@@ -2569,7 +2628,8 @@
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "输入您的服务器凭据";
 
-/* Generic error alert title
+/* General error title
+   Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "错误";
@@ -2616,6 +2676,9 @@
 
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "安装 %@ 时出错。";
+
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "加载“喜欢”时出错";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "加载插件时出错";
@@ -2676,6 +2739,9 @@
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "每天";
+
+/* Short title telling the user they will receive a blogging reminder every day of the week. */
+"Every day at %@" = "每天%@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "所有人";
@@ -2795,6 +2861,9 @@
    Title for the Featured Image view */
 "Featured Image" = "特色图片";
 
+/* Title message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"Featured Image Already Set" = "已经设置特色图片";
+
 /* Title for action sheet with featured media options. */
 "Featured Image Options" = "特色图片选项";
 
@@ -2859,9 +2928,6 @@
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "查找您喜爱的博客和故事...";
-
-/* Geo-tagging posts, status message when geolocation is found. */
-"Finding your location..." = "定位中...";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -3044,11 +3110,17 @@
 /* Cancel */
 "Give Up" = "放弃";
 
+/* No comment provided by engineer. */
+"Give it a try by adding a few blocks to your post or page!" = "将一些区块添加到您的博文或页面，试试看吧！";
+
 /* Description of a Quick Start Tour */
 "Give your site a name that reflects its personality and topic. First impressions count!" = "为您的站点提供一个反映其个性和主题的名称。 第一印象很重要！";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
+
+/* No comment provided by engineer. */
+"Go back" = "返回";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "前往关注的站点";
@@ -3232,6 +3304,12 @@
 /* How to create story description */
 "How to create a story post" = "如何创作故事文章";
 
+/* No comment provided by engineer. */
+"How to edit your page" = "如何编辑您的页面";
+
+/* No comment provided by engineer. */
+"How to edit your post" = "如何编辑您的文章";
+
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "我们将如何解决？";
 
@@ -3257,7 +3335,7 @@
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "如果您已经拥有一个站点，则需要安装免费的 Jetpack 插件并将其连接到您的 WordPress.com 账户。";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
-"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果您继续使用 Apple 或 Google，并且还没有 WordPress.com 帐户，则需要创建一个帐户，并同意我们的_服务条款_。";
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果您继续使用 Apple 或 Google，并且还没有 WordPress.com 账户，则需要创建一个账户，并同意我们的_服务条款_。";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "删除 %1$@ 后，此用户将无法再访问此站点，但是 %2$@ 创建的所有内容仍会保留在此站点上。";
@@ -3486,7 +3564,7 @@
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "需要安装 Jetpack %@ 或更高版本。要更新 Jetpack 吗？";
 
 /* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "多站点安装的 Jetpack Backup 只提供可下载的备份，没有一键还原。更多信息 %1$s。";
+"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "多站点安装的 Jetpack Backup 提供了可直接下载的备份，无需点击即可还原。更多信息，%1$@。";
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack 常见问答";
@@ -3773,9 +3851,7 @@
    Title of the Local Changes Badge */
 "Local changes" = "本地更改";
 
-/* Label for the geolocation feature (tagging posts by their physical location).
-   Title for alert when a generic error happened when trying to find the location of the device
-   Title for screen to select post location */
+/* Title for alert when a generic error happened when trying to find the location of the device */
 "Location" = "位置";
 
 /* Explaining to the user that location services need to be enable in order to geotag a post. */
@@ -3812,10 +3888,10 @@
 "Log in or sign up with WordPress.com" = "使用 WordPress.com 登录或注册";
 
 /* Instruction text on the login's email address screen. */
-"Log in to the WordPress.com account you used to connect Jetpack." = "登录关联 Jetpack 时使用的 WordPress.com 帐户。";
+"Log in to the WordPress.com account you used to connect Jetpack." = "登录关联 Jetpack 时使用的 WordPress.com 账户。";
 
 /* Instruction text on the login's email address screen. */
-"Log in to your WordPress.com account with your email address." = "使用您的电子邮件地址登录 WordPress.com 帐户。";
+"Log in to your WordPress.com account with your email address." = "使用您的电子邮件地址登录 WordPress.com 账户。";
 
 /* Instructions on the WordPress.com username / password log in form. */
 "Log in with your WordPress.com username and password." = "使用您的 WordPress.com 用户名和密码登录。";
@@ -3836,9 +3912,6 @@
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "想要查看统计？";
 
-/* Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post. */
-"Looking up address..." = "正在查找地址...";
-
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "似乎您已在站点上设置 Jetpack。恭喜！使用下方的 WordPress.com 凭据登录，以启用“统计数据”与“通知”功能。";
 
@@ -3850,6 +3923,9 @@
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主要导航";
+
+/* No comment provided by engineer. */
+"Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "将图像、GIF、视频和嵌入式媒体添加到您的页面，让您的内容脱颖而出。";
 
 /* Button leading to a screen where users can manage their installed plugins
    Page title for the screen to manage your list of followed sites.
@@ -3907,7 +3983,7 @@
 "Marked post as unseen" = "将文章标记为未读";
 
 /* Jetpack Settings: Match accounts using email */
-"Match accounts using email" = "使用电子邮件地址匹配帐户";
+"Match accounts using email" = "使用电子邮件地址匹配账户";
 
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "图片上传尺寸上限";
@@ -4079,6 +4155,9 @@
 /* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
 "Move block up from row %1$s to row %2$s" = "将区块从第 %1$s 行向上移动到第 %2$s 行";
 
+/* No comment provided by engineer. */
+"Move blocks" = "移动区块";
+
 /* Option to move Insight down in the view. */
 "Move down" = "下移";
 
@@ -4137,6 +4216,7 @@
 "My Top Ten Cafes" = "我的十大咖啡馆";
 
 /* Accessibility label for the Email text field.
+   Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "名称";
 
@@ -4151,6 +4231,12 @@
 
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "导航以自定义渐变";
+
+/* translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "导航至选择%s";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "导航到上一个内容工作表";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "需要帮助？";
@@ -4225,7 +4311,7 @@
 "No %@ yet" = "尚无%@";
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "未找到任何帐户";
+"No Accounts Found" = "未找到任何账户";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "无类别";
@@ -4435,9 +4521,6 @@
 /* Title shown on table row where no blogging reminders have been set up yet */
 "None set" = "无设置";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"North" = "北";
-
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "未连接";
 
@@ -4486,6 +4569,9 @@
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "通知设置";
+
+/* Title for the time picker button in Blogging Reminders. */
+"Notification time" = "通知间隔";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4570,6 +4656,9 @@
 /* Warning message about disabling group invite links. */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "禁用此邀请链接后，任何人都无法再使用它来加入您的团队。是否确定?";
 
+/* No comment provided by engineer. */
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "熟悉不同区块的名称之后，您可以输入正斜杠，后跟区块名称（例如，\/image 或 \/heading），以此方式来添加区块。";
+
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "创建 WordPress.com 站点后，您可以将喜欢的内容转载到您自己的站点。";
 
@@ -4584,7 +4673,6 @@
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading Activity Log
-   Title for the view when there's an error loading notification likes.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4808,6 +4896,9 @@
 /* Label for date periods. */
 "Period" = "时段";
 
+/* Close Account confirmation action title */
+"Permanently Close Account" = "永久关闭账户";
+
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "永久删除站点";
 
@@ -4906,7 +4997,7 @@
 "Please enter a valid phone number" = "请输入有效的电话号码";
 
 /* No comment provided by engineer. */
-"Please enter the password for your WordPress.com account to log in with your Apple ID." = "请输入您的 WordPress.com 帐户密码，以使用 Apple ID 登录。";
+"Please enter the password for your WordPress.com account to log in with your Apple ID." = "请输入您的 WordPress.com 账户密码，以使用 Apple ID 登录。";
 
 /* Instruction text on the two-factor screen. */
 "Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "请输入验证器应用程序中的验证码，或轻点以下链接以通过短信接收验证码。";
@@ -5403,7 +5494,6 @@
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
    Button label when removing a blog
-   Label for remove location button
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
    Remove an image/posts/etc
@@ -5462,6 +5552,9 @@
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "已删除";
 
+/* Notice confirming that an image has been removed as the post's featured image. */
+"Removed as featured image" = "已作为特色图片移除";
+
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "请先删除照片中的位置元数据，然后再将其上传至您的站点。";
 
@@ -5470,6 +5563,9 @@
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "删除后续步骤将隐藏此站点上的所有导览。此操作无法撤消。";
+
+/* Button to confirm the replacement of a featured image. */
+"Replace" = "替换";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "替换现有区块";
@@ -5638,6 +5734,9 @@
 /* Post Rich content */
 "Rich Content" = "富内容";
 
+/* No comment provided by engineer. */
+"Rich text editing" = "富文本编辑";
+
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "右";
 
@@ -5762,9 +5861,6 @@
    Title of the Reader's search feature */
 "Search" = "搜索";
 
-/* Prompt in the location search bar. */
-"Search Locations" = "搜索位置";
-
 /* Label for list of search term */
 "Search Term" = "搜索字词";
 
@@ -5880,6 +5976,9 @@
 /* No comment provided by engineer. */
 "Select a color" = "选择一种颜色";
 
+/* No comment provided by engineer. */
+"Select a color above" = "从上方选择颜色";
+
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "选择一些以继续";
 
@@ -5893,10 +5992,10 @@
 "Select paragraph style" = "选择段落样式";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ to add your social media accounts" = "选择“%@”，添加您的社交媒体帐户";
+"Select the %@ to add your social media accounts" = "选择“%@”，添加您的社交媒体账户";
 
 /* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "选择您要授权的帐户。请注意，您的文章将会自动分享至已选帐户。";
+"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "选择您要授权的账户。请注意，您的文章将会自动分享至已选账户。";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "选择您想写博客的日子";
@@ -5927,6 +6026,9 @@
 
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "所选媒体不可用。";
+
+/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "已选择：%s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "选择其他菜单位置将放弃您对当前菜单所做的更改。是否确定要继续？";
@@ -5973,9 +6075,6 @@
 /* No comment provided by engineer. */
 "Set Featured Image" = "设置特色图像";
 
-/* Label for cell that allow users to set the location of a post */
-"Set Location" = "设置位置";
-
 /* Label for a button that opens the Set Parent options view controller
    Navigation title displayed on the navigation bar */
 "Set Parent" = "设置父项";
@@ -5988,6 +6087,9 @@
 
 /* Label for a button that sets the selected page as the site's Posts page */
 "Set as Posts Page" = "设为文章页面";
+
+/* Notice confirming that an image has been set as the post's featured image. */
+"Set as featured image" = "设为特色图片";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "设置提醒";
@@ -6020,7 +6122,7 @@
 "Settings for notifications that appear in the Notifications tab." = "显示在“通知”选项卡中的通知的设置。";
 
 /* Descriptive text for the Email Notifications Settings */
-"Settings for notifications that are sent to the email tied to your account." = "发送到与您的帐户相关联的电子邮件中的通知的设置。";
+"Settings for notifications that are sent to the email tied to your account." = "发送到与您的账户相关联的电子邮件中的通知的设置。";
 
 /* Descriptive text for the Push Notifications Settings */
 "Settings for push notifications that appear on your mobile device." = "显示在移动设备上的推送通知的设置。";
@@ -6039,8 +6141,11 @@
 /* Label for action to share post. */
 "Share Post" = "分享文章";
 
+/* Label for a button that recommends the app to others */
+"Share WordPress with a friend" = "将 WordPress 与您的朋友分享";
+
 /* Informational text for Collect Information setting */
-"Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "登录到您的 WordPress.com 帐户时，使用分析工具共享关于您使用服务的信息。";
+"Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "登录到您的 WordPress.com 账户时，使用分析工具共享关于您使用服务的信息。";
 
 /* Title. A call to action to share an invite link. */
 "Share invite link" = "分享邀请链接";
@@ -6271,6 +6376,9 @@
 /* Follower Totals label for social media followers */
 "Social" = "社交";
 
+/* No comment provided by engineer. */
+"Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "某些区块具有其他设置。 轻点区块右上角的“设置”图标，以查看更多选项。";
+
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
 "Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?" = "部分媒体上传失败。该操作将从文章中删除所有失败的媒体。\n仍要保存？";
 
@@ -6285,7 +6393,8 @@
 "Something went wrong. Please check your connectivity and try again." = "出错了。请检查连接并重试。";
 
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
-   Error message shown when the app fails to save user selected interests */
+   Error message shown when the app fails to save user selected interests
+   Error message shown when user tries to share the app with others, but failed due to unknown errors. */
 "Something went wrong. Please try again." = "出现错误。请重试。";
 
 /* Invite Validation Alert
@@ -6347,7 +6456,7 @@
 "Sorry. The content could not be loaded." = "抱歉，无法加载内容。";
 
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "抱歉。社交服务未指定可用于共享内容的帐户。";
+"Sorry. The social service did not tell us which account could be used for sharing." = "很抱歉，社交服务未指定可用于共享内容的账户。";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "抱歉，无法加载您的搜索结果。";
@@ -6361,9 +6470,6 @@
 
 /* Opens the Github Repository Web */
 "Source Code" = "源代码";
-
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"South" = "南";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "已使用的空间";
@@ -6650,6 +6756,9 @@
 /* Title of a button style */
 "Text Only" = "仅显示文字";
 
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "编辑文本区块时，文本格式控件位于键盘上方的工具栏内";
+
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
 "Text me a code instead" = "通过短信向我发送代码";
@@ -6688,7 +6797,7 @@
 "The GIF could not be added to the Media Library." = "无法将 GIF 格式的图片添加到媒体库。";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
-"The Google account \"%@\" doesn't match any account on WordPress.com" = "Google 帐户“%@”与 WordPress.com 上的任何帐户均不匹配";
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "Google 账户“%@”与 WordPress.com 上的任何账户均不匹配";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "未连接网络。";
@@ -6892,9 +7001,6 @@
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "加载活动时出现错误";
 
-/* Text displayed when there is a failure loading notification likes. */
-"There was an error loading likes" = "加载数据出错";
-
 /* Text displayed when there is a failure loading the plan list */
 "There was an error loading plans" = "加载套餐时出错。";
 
@@ -6988,6 +7094,18 @@
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "此站点尚未发布任何内容。请稍后重试。";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "这个用户账户在未解决的退款时不能被关闭。";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "这个用户账户在有活动订阅时不能被关闭。";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "这个用户账户在有活动订阅时不能被关闭。";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "您无法关闭此账户。请通过“我”→“帮助与支持”界面联系我们。";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "当人们使用“Twitter”按钮共享时会将其包含在推文中。";
@@ -7063,7 +7181,7 @@
 "To continue please enter your email address and name." = "请输入您的电子邮件地址和名称以继续。";
 
 /* Text instructing the user to enter their email address. */
-"To create your new WordPress.com account, please enter your email address." = "要创建新的 WordPress.com 帐户，请输入您的电子邮件地址。";
+"To create your new WordPress.com account, please enter your email address." = "要创建新的 WordPress.com 账户，请输入您的电子邮件地址。";
 
 /* Displayed when Push Notifications are disabled (iOS 7) */
 "To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "要启用通知功能，请执行以下操作：\n\n1.打开 **iOS 设置**\n2.轻点**通知**\n3.选择 **WordPress**\n4.打开**允许接收通知**";
@@ -7084,7 +7202,10 @@
 "To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "要继续使用此 Apple ID，请先使用您的 WordPress.com 密码登录。 此要求只会出现一次。";
 
 /* Instructional text shown when requesting the user's password for Google login. */
-"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "要继续使用此 Google 帐户，请先使用您的 WordPress.com 密码登录。此要求只会出现一次。";
+"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "要继续使用此 Google 账户，请先使用您的 WordPress.com 密码登录。此要求只会出现一次。";
+
+/* No comment provided by engineer. */
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "要移除某个区块，请选中该区块，然后点击该区块右上角的三个点，以查看设置。 从该处，选择用于移除区块的选项。";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "拍摄要在文章内使用的照片或视频。";
@@ -7195,7 +7316,7 @@
 "Try Again" = "重试";
 
 /* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "使用其他帐户尝试";
+"Try With Another Account" = "使用其他账户尝试";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "尝试调整您的时间范围过滤器。";
@@ -7624,8 +7745,8 @@
 /* Use the current image */
 "Use" = "使用";
 
-/* Label for cell that sets the location of a post to the current location */
-"Use Current Location" = "使用当前位置";
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Use Sandbox Store" = "使用沙盒商店";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用区块编辑器";
@@ -7993,7 +8114,7 @@
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我们将通过电子邮件向您发送一个神奇链接，利用它您无需密码即可立即登录。无需再输入密码了！";
 
 /* Instruction text on the Sign Up screen. */
-"We'll email you a signup link to create your new WordPress.com account." = "我们将通过电子邮件向您发送注册链接，供您创建新的 WordPress.com 帐户。";
+"We'll email you a signup link to create your new WordPress.com account." = "我们将通过电子邮件向您发送注册链接，供您创建新的 WordPress.com 账户。";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "当您获得粉丝、评论和赞时，我们将通知您。";
@@ -8029,7 +8150,7 @@
 "We'll submit your post for review when your device is back online." = "设备恢复在线状态后，我们将提交您的文章以供审核。";
 
 /* Text confirming email address to be used for new account. */
-"We'll use this email address to create your new WordPress.com account." = "我们将使用此电子邮件地址创建您的新 WordPress.com 帐户。";
+"We'll use this email address to create your new WordPress.com account." = "我们将使用此电子邮件地址创建您的新 WordPress.com 账户。";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
 "We're creating a downloadable backup of your site from %1$@." = "我们正在为您的站点创建 %1$@ 时点的可下载备份。";
@@ -8053,12 +8174,13 @@
 "We've also emailed you a link to your file." = "我们还通过电子邮件向您发送了文件链接。";
 
 /* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我们已通过电子邮件向您发送了注册链接，供您创建新的 WordPress.com 帐户。 请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我们已通过电子邮件向您发送了注册链接，供您创建新的 WordPress.com 账户。 请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
 
 /* Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site */
 "We've had problems changing the primary domain on your site — but don't worry, your domain was successfully purchased." = "在您的站点上更改主域名时出现问题，但不必担心，您已成功购买域。";
 
-/* Account Settings Web Address label */
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "网页地址";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
@@ -8082,17 +8204,17 @@
 /* A message title */
 "Welcome to the Reader" = "欢迎使用阅读器";
 
+/* No comment provided by engineer. */
+"Welcome to the world of blocks" = "欢迎来到区块的世界";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Welcome to the world's most popular website builder." = "欢迎使用全球最热门的网站构建器。";
 
 /* Shown in the prologue carousel (promotional screens) during first launch. */
 "Welcome to the world’s most popular website builder." = "欢迎使用全球最热门的网站生成器。";
 
-/* Used for Geo-tagging posts by latitude and longitude. Basic form. */
-"West" = "西";
-
 /* Title displayed in the Notification Settings for WordPress.com */
-"We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我们会将与您的帐户相关的重要电子邮件都发送给您，但是您还可以获得一些其他的有用信息。";
+"We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "我们会将与您的账户相关的重要电子邮件都发送给您，但是您还可以获得一些其他的有用信息。";
 
 /* The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings." = "我们将很快移除经典编辑器。同时，经典编辑器将无法用于撰写新文章，但这不会影响您编辑任何现有文章或页面。我们建议您立即在站点设置中启用“区块编辑器”。";
@@ -8196,6 +8318,9 @@
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress 应用程序设置";
 
+/* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
+"WordPress Apps - Apps for any screen" = "WordPress App——适用于任何屏幕的App";
+
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 博客";
 
@@ -8261,7 +8386,7 @@
 "WordPress.com" = "WordPress.com";
 
 /* WordPress.com sign-in/sign-out section header title */
-"WordPress.com Account" = "WordPress.com 帐户";
+"WordPress.com Account" = "WordPress.com 账户";
 
 /* Title for the Plans list header */
 "WordPress.com Plans" = "WordPress.com 套餐";
@@ -8331,6 +8456,9 @@
    Notifications Yesterday Section Header */
 "Yesterday" = "昨天";
 
+/* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
+"You already have a featured image set. Do you want to replace it?" = "您已经设置特色图片。 是否要替换该图片？";
+
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "您即将更改自己的用户名，当前您的用户名为 %1$@. %2$@";
 
@@ -8360,6 +8488,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
+
+/* No comment provided by engineer. */
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "您现在可以重新排列区块，方法是轻点一个区块，然后轻点该区块左下角出现的向上和向下箭头，将该区块移动到其他区块上方或下方。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "您可以随时通过“我的站点”>“站点设置”更新此设置";
@@ -8435,10 +8566,10 @@
 "You might like" = "您可能会喜欢";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
-"You must be signed in to a WordPress.com account to perform this action." = "您必须登录 WordPress.com 帐户才能执行此操作。";
+"You must be signed in to a WordPress.com account to perform this action." = "您必须登录 WordPress.com 账户才能执行此操作。";
 
 /* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "您需要验证您的帐户方可发布文章。\n别担心，您的文章仍会自动储存为草稿。";
+"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "您需要验证您的账户方可发布文章。\n别担心，您的文章仍会自动储存为草稿。";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "您的站点今天收到了*50个喜欢*";
@@ -8460,13 +8591,16 @@
 "You will not be able to change your username back." = "您将无法撤消对用户名所做的更改。";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@." = "您会收到每周在 %@ 上发布<strong>一次<\/strong>博客的提醒。";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "您会收到每周 %2$@ 在 %1$@ 上发布<strong>一次<\/strong>博客的提醒。";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "您会收到每周在 %2$@ 上发布 %1$@ 次博客的提醒。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "您已看完所有内容！";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "您不具备关闭此账户的权限";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
@@ -8484,7 +8618,7 @@
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "您的 WordPress.com 站点支持使用加速移动页面，这是一项由 Google 主导的计划，大大缩短了在移动设备上的加载时间。";
 
 /* Share extension error dialog text. */
-"Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "您的帐户无权将媒体文件上传到此站点。站点管理员可以更改这些权限。";
+"Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "您的账户无权将媒体文件上传到此站点。站点管理员可以更改这些权限。";
 
 /* Explaining to the user why the app needs access to the device media library. */
 "Your app is not authorized to access media library due to active restrictions such as parental controls. Please check your parental control settings in this device." = "因家长控制等活动限制，您的应用程序无权访问媒体库。请检查此设备的家长控制设置。";
@@ -8578,6 +8712,21 @@
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[评论]";
+
+/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d blogger_ likes this." = "_%1$d 位博主为此内容点赞。";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"_%1$d bloggers_ like this." = "_%1$d 位博主为此内容点赞。";
+
+/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d blogger_ like this." = "_您和 %1$d 位博主为此内容点赞。";
+
+/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
+"_You and %1$d bloggers_ like this." = "_您和 %1$d 位博主为此内容点赞。";
+
+/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
+"_You_ like this." = "_您_ 为此内容点赞。";
 
 /* Age between dates equaling one day. */
 "a day" = "一天";
@@ -8687,7 +8836,7 @@
 "wordpress, me, notification, notification settings, settings, comments, email, ping, follow, customize, customise" = "wordpress, me, notification, notification settings, settings, comments, email, ping, follow, customize, customise wordpress, 我, 通知, 通知设置, 设置, 评论, 电子邮件, ping, 关注, 自定义";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab. */
-"wordpress, me, settings, account, notification log out, logout, log in, login, help, support" = "wordpress, me, settings, account, notification log out, logout, log in, login, help, support wordpress, 我, 设置, 帐户, 通知, 退出, 登录, 帮助, 支持";
+"wordpress, me, settings, account, notification log out, logout, log in, login, help, support" = "wordpress, me, settings, account, notification log out, logout, log in, login, help, support wordpress, 我, 设置, 账户, 通知, 退出, 登录, 帮助, 支持";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab. */
 "wordpress, notifications, alerts, updates" = "wordpress, notifications, alerts, updates wordpress, 通知, 提醒, 更新";

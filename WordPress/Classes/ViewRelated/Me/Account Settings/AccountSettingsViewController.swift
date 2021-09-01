@@ -14,6 +14,7 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
 func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
+    viewController.handler.automaticallyDeselectCells = true
     return viewController
 }
 
@@ -23,7 +24,8 @@ private class AccountSettingsController: SettingsController {
     var immuTableRows: [ImmuTableRow.Type] {
         return [
             TextRow.self,
-            EditableTextRow.self
+            EditableTextRow.self,
+            DestructiveButtonRow.self
         ]
     }
 
@@ -41,6 +43,7 @@ private class AccountSettingsController: SettingsController {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
+    private let alertHelper = DestructiveAlertHelper()
 
     init(service: AccountSettingsService) {
         self.service = service
@@ -120,6 +123,11 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(changePassword(with: settings, service: service))
         )
 
+        let closeAccount = DestructiveButtonRow(
+            title: NSLocalizedString("Close Account", comment: "Close account action label"),
+            action: presenter.present(closeAccountAction),
+            accessibilityIdentifier: "closeAccountButtonRow")
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
@@ -128,10 +136,13 @@ private class AccountSettingsController: SettingsController {
                     password,
                     primarySite,
                     webAddress
+                ]),
+            ImmuTableSection(
+                rows: [
+                    closeAccount
                 ])
-            ])
+        ])
     }
-
 
     // MARK: - Actions
 
@@ -228,6 +239,81 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
+    private var closeAccountAction: (ImmuTableRow) -> UIAlertController {
+        return { [weak self] _ in
+            return self?.closeAccountAlert ?? UIAlertController()
+        }
+    }
+
+    private var closeAccountAlert: UIAlertController? {
+        guard let value = settings?.username else {
+            return nil
+        }
+
+        let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
+        let message = NSLocalizedString("\nTo confirm, please re-enter your username before closing.\n\n",
+                                        comment: "Message of Close Account confirmation alert")
+        let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
+                                                       comment: "Close Account confirmation action title")
+
+        return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+    }
+
+    private func closeAccount() {
+        let status = NSLocalizedString("Closing account…", comment: "Overlay message displayed while closing account")
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: status)
+
+        service.closeAccount { [weak self] in
+            switch $0 {
+            case .success:
+                let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
+                SVProgressHUD.showDismissibleSuccess(withStatus: status)
+                AccountHelper.logOutDefaultWordPressComAccount()
+            case .failure(let error):
+                SVProgressHUD.dismiss()
+                DDLogError("Error closing account: \(error.localizedDescription)")
+                self?.showCloseAccountErrorAlert()
+            }
+        }
+    }
+
+    private func showCloseAccountErrorAlert() {
+        let title = NSLocalizedString("Couldn’t close account automatically",
+                                      comment: "Error title displayed when unable to close user account.")
+        let message = NSLocalizedString("To close this account now, contact our support team.",
+                                        comment: "Error message displayed when unable to close user account.")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        let contactSupportTitle = NSLocalizedString("Contact Support",
+                                      comment: "Title for a button displayed when unable to close user account due to having atomic site.")
+        alert.addActionWithTitle(contactSupportTitle, style: .default, handler: contactSupportAction)
+        let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        alert.addCancelActionWithTitle(cancelAction)
+
+        alert.presentFromRootViewController()
+    }
+
+    private var contactSupportAction: ((UIAlertAction) -> Void) {
+        return { action in
+            if ZendeskUtils.zendeskEnabled {
+                guard let leafViewController = UIApplication.shared.leafViewController else {
+                    return
+                }
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) { [weak self] identityUpdated in
+                    if identityUpdated {
+                        self?.refreshModel()
+                    }
+                }
+            } else {
+                guard let url = Constants.forumsURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
+        }
+    }
+
     @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
         guard let error = notification.userInfo?[NSUnderlyingErrorKey] as? NSError,
             let errorMessage = error.userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String else {
@@ -266,5 +352,6 @@ private class AccountSettingsController: SettingsController {
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
+        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 }

@@ -247,7 +247,11 @@ platform :ios do
   desc 'Creates a new hotfix branch for the given version:x.y.z. The branch will be cut from the tag x.y of the previous release'
   lane :new_hotfix_release do |options|
     prev_ver = ios_hotfix_prechecks(options)
-    ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
+    ios_bump_version_hotfix(
+      previous_version: prev_ver,
+      version: options[:version],
+      skip_deliver: true
+    )
   end
 
   #####################################################################################
@@ -675,60 +679,6 @@ platform :ios do
     end
   end
 
-  #####################################################################################
-  # build_for_translation_review
-  # -----------------------------------------------------------------------------------
-  # This lane builds the app with pending translations for reviewers
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_for_translation_review version_name:1234
-  #
-  # Example:
-  # bundle exec fastlane build_for_translation_review version_name:1234
-  #####################################################################################
-  desc 'Builds and uploads for translation review'
-  lane :build_for_translation_review do |options|
-    ios_build_preflight unless options[:skip_prechecks]
-
-    puts "Building version: #{options[:version_name]}"
-
-    update_translations_script_path = File.join(PROJECT_ROOT_FOLDER, 'Scripts', 'update-translations.rb')
-    sh(update_translations_script_path, 'review', 'current')
-    sh(update_translations_script_path, 'review', 'waiting')
-    sh(update_translations_script_path, 'review', 'fuzzy')
-
-    ios_merge_translators_strings(strings_folder: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources'))
-
-    extract_framework_translations_script_path = File.join(PROJECT_ROOT_FOLDER, 'Scripts', 'extract-framework-translations.swift')
-    sh(extract_framework_translations_script_path)
-
-    gym(
-      clean: true,
-      workspace: WORKSPACE_PATH,
-      scheme: 'WordPress',
-      configuration: 'Debug',
-      derived_data_path: DERIVED_DATA_PATH,
-      skip_package_ipa: true,
-      skip_archive: true,
-      destination: 'generic/platform=iOS Simulator'
-    )
-
-    FileUtils.mkdir_p(File.join(PROJECT_ROOT_FOLDER, 'Artifacts'))
-
-    build_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products', 'Debug-iphonesimulator', 'WordPress.app')
-    output_path = File.join(PROJECT_ROOT_FOLDER, 'Artifacts', "WordPress-#{options[:version_name]}.zip")
-
-    # Appetize.io expects the `.app` bundle to be wrapped in a `.zip` file
-    zip(path: build_path, output_path: output_path)
-
-    # Upload the app to Appetize.io
-    appetize(
-      path: output_path,
-      api_token: ENV['APPET_TOKEN'],
-      public_key: 'u33365457th0bw8wga7x856a8r'
-    )
-  end
-
   desc 'Build for Testing'
   lane :build_for_testing do |options|
     run_tests(
@@ -900,6 +850,7 @@ platform :ios do
       scheme: 'WordPress',
       device: options[:device],
       deployment_target_version: options[:ios_version],
+      ensure_devices_found: true,
       test_without_building: true,
       xctestrun: test_plan_path,
       try_count: options[:try_count],

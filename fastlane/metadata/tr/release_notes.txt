@@ -1,5 +1,9 @@
-Şehirde yeni bir blok var! Gömme bloğu ile YouTube, TikTok, Instagram ve daha fazlası gibi favori hizmetlerinizden içerik gömebilirsiniz. Gelecek ek işlevler için bizi izlemeye devam edin.
+Gömme bloğu kullanıyor musunuz? Sitenize gömdüğünüz ortamlar için seçeneklerde "Küçük cihazlar için ölçeklendir" seçeneği göreceksiniz. İçeriğin ekrana sığması için açın, devre dışı bırakmak için kapatın.
 
-Blog hatırlatıcıları özelliğimizi beğendiniz mi? Önceden yalnızca site yöneticileri hatırlatıcıları yapılandırabilirdi, ancak şimdi bu özelliği sitenizdeki yazıları düzenleyebilen kişiler (editörler, yazarlar ve katkıda bulunanlar) için etkinleştirdik.
+Bloglama hatırlatıcılarını sevdiniz mi? Bildirimi alabileceğiniz zamanı belirleyebilmeniz için yeni bir özellik ekledik.
 
-Yorum denetlemede iyileştirmeler yaptık ve uygun kullanıcıların yorumları onaylamak/onaylamamak için sola kaydırabilmesini ve yorumları çöpe atabilmesini sağladık. Ayrıca, Tam site düzenleme temaları için renk ve arka plan özelleştirmesi gibi ayarları etkinleştiren global stiller için destek sağladık.
+Hesabınızı mı kapatmanız gerekiyor? (Umarız bizi hiç bırakmazsınız!) Eğer gerekliyse Hesap ayarları bölümünden bu işlemi gerçekleştirebilirsiniz.
+
+Web için coğrafi işaretleme artık desteklenmiyor, biz de yazı ayarları altından Konum seçeneğini kaldırdık.
+
+Başka geliştirmeler de yaptık, örneğin okuyucudaki kırpma sorununu giderdik, Ben ve Hakkında ekranlarından arkadaşlarınıza uygulamayı önerebilmeniz için özellik ekledik.

@@ -1,11 +1,8 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
 #import "FeaturedImageViewController.h"
-#import "LocationService.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
-#import "PostGeolocationCell.h"
-#import "PostGeolocationViewController.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "WPTableViewActivityCell.h"
@@ -42,7 +39,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowFeaturedLoading,
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
-    PostSettingsRowGeolocation,
     PostSettingsRowSlug,
     PostSettingsRowExcerpt
 };
@@ -50,15 +46,11 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 static CGFloat CellHeight = 44.0f;
 static CGFloat LoadingIndicatorHeight = 28.0f;
 
-static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
-
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPostCellIdentifier";
 
-
-static void *PostGeoLocationObserverContext = &PostGeoLocationObserverContext;
 
 @interface PostSettingsViewController () <UITextFieldDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
@@ -82,9 +74,6 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
 
-@property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
-@property (nonatomic, strong) WPTableViewCell *setGeoLocationCell;
-
 @property (nonatomic, strong) NoResultsViewController *noResultsView;
 @property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
 
@@ -94,7 +83,6 @@ FeaturedImageViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) BlogService *blogService;
 @property (nonatomic, strong, readonly) SharingService *sharingService;
-@property (nonatomic, strong, readonly) LocationService *locationService;
 
 #pragma mark - Properties: Reachability
 
@@ -110,7 +98,6 @@ FeaturedImageViewControllerDelegate>
 {
     [self.internetReachability stopNotifier];
     
-    [self removePostPropertiesObserver];
     [self removeMediaObserver];
 }
 
@@ -162,7 +149,6 @@ FeaturedImageViewControllerDelegate>
 
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
-    _locationService = [LocationService sharedService];
     
     [self setupPostDateFormatter];
 
@@ -304,35 +290,6 @@ FeaturedImageViewControllerDelegate>
     }];
 }
 
-#pragma mark - KVO
-
-- (void)addPostPropertiesObserver
-{
-    [self.post addObserver:self
-             forKeyPath:NSStringFromSelector(@selector(geolocation))
-                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:PostGeoLocationObserverContext];
-}
-
-- (void)removePostPropertiesObserver
-{
-    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(geolocation))];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    if (context == PostGeoLocationObserverContext && object == self.post) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [self.tableView reloadData];
-        }];
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }    
-}
-
 #pragma mark - Instance Methods
 
 - (void)setApost:(AbstractPost *)apost
@@ -340,11 +297,7 @@ FeaturedImageViewControllerDelegate>
     if ([apost isEqual:_apost]) {
         return;
     }
-    if (_apost) {
-        [self removePostPropertiesObserver];
-    }
     _apost = apost;
-    [self addPostPropertiesObserver];
 }
 
 - (Post *)post
@@ -411,7 +364,6 @@ FeaturedImageViewControllerDelegate>
                                   @(PostSettingsSectionFeaturedImage),
                                   stickyPostSection,
                                   @(PostSettingsSectionShare),
-                                  @(PostSettingsSectionGeolocation),
                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
     // Remove sticky post section for self-hosted non JetPack site
     // and non admin user
@@ -451,9 +403,6 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionShare) {
         return [self numberOfRowsForShareSection];
 
-    } else if (sec == PostSettingsSectionGeolocation) {
-        return 1;
-
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
 
@@ -483,9 +432,6 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
         return NSLocalizedString(@"Sharing", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
-    } else if (sec == PostSettingsSectionGeolocation) {
-        return NSLocalizedString(@"Location", @"Label for the geolocation feature (tagging posts by their physical location).");
-        
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
 
@@ -515,10 +461,6 @@ FeaturedImageViewControllerDelegate>
 {
     CGFloat width = CGRectGetWidth(self.tableView.frame);
     NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
-
-    if (sectionId == PostSettingsSectionGeolocation && self.post.geolocation != nil) {
-        return ceilf(width * LocationCellHeightToWidthAspectRatio);
-    }
 
     if (sectionId == PostSettingsSectionFeaturedImage) {
         if ([self isUploadingMedia]) {
@@ -558,8 +500,6 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare) {
         cell = [self configureShareCellForIndexPath:indexPath];
-    } else if (sec == PostSettingsSectionGeolocation) {
-        cell = [self configureGeolocationCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     }
@@ -597,8 +537,6 @@ FeaturedImageViewControllerDelegate>
         [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
         [self showEditShareMessageController];
-    } else if (cell.tag == PostSettingsRowGeolocation) {
-        [self showPostGeolocationSelector];
     } else if (cell.tag == PostSettingsRowSlug) {
         [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
@@ -906,54 +844,6 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (PostGeolocationCell *)postGeoLocationCell {
-    if (!_postGeoLocationCell) {
-        _postGeoLocationCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            _postGeoLocationCell.tag = PostSettingsRowGeolocation;
-    }
-    Coordinate *coordinate = self.post.geolocation;
-    NSString *address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
-    if (coordinate) {
-        CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-        if ([self.locationService hasAddressForLocation:postLocation]) {
-            address = self.locationService.lastGeocodedAddress;
-        } else {
-            address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
-            __weak __typeof__(self) weakSelf = self;
-            [self.locationService getAddressForLocation:postLocation
-                                                        completion:^(CLLocation *location, NSString *address, NSError *error) {
-                                                            [weakSelf.tableView reloadData];
-                                                        }];
-            
-        }
-    }
-    [_postGeoLocationCell setCoordinate:coordinate andAddress:address];
-    return _postGeoLocationCell;
-}
-
-- (WPTableViewCell *)setGeoLocationCell {
-    if (!_setGeoLocationCell) {
-        _setGeoLocationCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        _setGeoLocationCell.accessoryType = UITableViewCellAccessoryNone;
-        _setGeoLocationCell.textLabel.text = NSLocalizedString(@"Set Location", @"Label for cell that allow users to set the location of a post");
-        _setGeoLocationCell.tag = PostSettingsRowGeolocation;
-        _setGeoLocationCell.textLabel.textAlignment = NSTextAlignmentCenter;
-        [WPStyleGuide configureTableViewActionCell:_setGeoLocationCell];
-    }
-    return _setGeoLocationCell;
-}
-
-- (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath
-{
-    WPTableViewCell *cell;
-    if (self.post.geolocation == nil) {
-        return self.setGeoLocationCell;
-    } else {
-        return self.postGeoLocationCell;
-    }
-    return cell;
-}
-
 - (UITableViewCell *)configureMoreOptionsCellForIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
@@ -1206,14 +1096,6 @@ FeaturedImageViewControllerDelegate>
         [self.tableView reloadData];
     };
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showPostGeolocationSelector
-{
-    PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post locationService:self.locationService];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)showFeaturedImageSelector

@@ -1,5 +1,9 @@
-Säg hej till ett nytt block! Inbäddningsblocket låter dig bädda in innehåll från dina favorittjänster, såsom YouTube, TikTok, Instagram med flera. Och vi har fler funktioner planerade för framtiden.
+Använder du inbäddningsblocket? När du bäddar in media på din webbplats finns det nu en inställning för att anpassa storleken för mindre skärmar. Aktivera detta för att ändra storleken på ditt innehåll utifrån skärmbredden. Stäng av för att inaktivera detta.
 
-Älskar du bloggningspåminnelserna? Tidigare kunde bara webbplatsens administratör konfigurera påminnelserna, men nu har vi aktiverat funktionen för alla användare som har rätt att redigera inlägg på webbplatsen (redaktörer, författare och bidragsgivare).
+Drar du nytta av verktyget för bloggningspåminnelser? Nu har vi lagt till en möjlighet att välja vid vilket klockslag du vill bli påmind.
 
-Vi har förbättrat kommentarsmodereringen, och sett till att alla behöriga användare kan svepa åt vänster för att godkänna eller förkasta och kasta kommentarer. Dessutom har vi lagt till stöd för globala stilar, där vi möjliggör inställningar som anpassning av färger och bakgrund för teman som låter dig redigera hela webbplatsen.
+Behöver du avsluta/stänga ditt konto? (Vi hoppas förstås att du aldrig lämnar oss!) Nu har du möjlighet att göra det direkt i kontoinställningarna.
+
+Webben har inte kvar geotaggning av inlägg. Därför har vi tagit bort alternativet för plats under inläggsinställningarna.
+
+Vi har gjort fler förbättringar. Bland annat rättat till ett problem med bildbeskärning i läsaren och gjort det möjligt att rekommendera appen till dina vänner från skärmarna ”Jag” och ”Om”.

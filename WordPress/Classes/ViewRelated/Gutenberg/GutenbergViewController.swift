@@ -481,6 +481,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     func showEditorHelp() {
+        WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
         gutenberg.showEditorHelp()
     }
 
@@ -1127,14 +1128,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
         return [
-            .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
-            .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
-            .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
+            .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .contactInfoBlock: post.blog.supports(.contactInfo),
             .layoutGridBlock: post.blog.supports(.layoutGrid),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad(),
+            .mediaFilesCollectionBlock: post.blog.supports(.stories) && !UIDevice.isPad(),
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
