@@ -43,10 +43,16 @@ class CommentDetailViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch rows[indexPath.row] {
+        let row = rows[indexPath.row]
+        switch row {
         case .header:
             configureHeaderCell()
             return headerCell
+
+        case .text:
+            let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
+            configureTextCell(cell, with: row)
+            return cell
 
         default:
             return .init()
@@ -59,6 +65,9 @@ class CommentDetailViewController: UITableViewController {
         switch rows[indexPath.row] {
         case .header:
             navigateToPost()
+
+        case .text(_, _, _, let action):
+            action?()
 
         default:
             break
@@ -75,7 +84,11 @@ private extension CommentDetailViewController {
         case header
         case content
         case replyIndicator
-        case textWithDescriptor(descriptor: String, content: String, imageName: String?, action: (() -> Void)?)
+        case text(title: String, detail: String, image: UIImage? = nil, action: (() -> Void)? = nil)
+    }
+
+    struct Constants {
+        static let tableLeadingInset: CGFloat = 20.0
     }
 
     func configureNavigationBar() {
@@ -83,11 +96,23 @@ private extension CommentDetailViewController {
     }
 
     func configureTable() {
-        tableView.tableFooterView = UIView(frame: .zero)
+        // get rid of the separator line for the last cell.
+        tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+
+        // assign 20pt leading inset to the table view, as per the design.
+        // note that by default, the system assigns 16pt inset for .phone, and 20pt for .pad idioms.
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            tableView.directionalLayoutMargins.leading = Constants.tableLeadingInset
+        }
     }
 
     func configureRows() {
-        rows = [.header]
+        rows = [
+            .header,
+            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: .gridicon(.external), action: visitAuthorURL),
+            .text(title: .emailAddressLabelText, detail: comment.author_email),
+            .text(title: .ipAddressLabelText, detail: comment.author_ip)
+        ]
     }
 
     // MARK: Cell configuration
@@ -99,13 +124,38 @@ private extension CommentDetailViewController {
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
     }
 
+    func configureTextCell(_ cell: UITableViewCell, with row: RowType) {
+        guard case let .text(title, detail, image, _) = row else {
+            return
+        }
+
+        cell.tintColor = .primary
+
+        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        cell.textLabel?.textColor = .textSubtle
+        cell.textLabel?.text = title
+
+        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body)
+        cell.detailTextLabel?.textColor = .text
+        cell.detailTextLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
+
+        cell.accessoryView = {
+            guard let image = image else {
+                return nil
+            }
+            return UIImageView(image: image)
+        }()
+    }
+
     // MARK: Actions and navigations
 
     func navigateToPost() {
         guard let blog = comment.blog,
               let siteID = blog.dotComID,
               blog.supports(.wpComRESTAPI) else {
-            viewPostInWebView()
+            let postPermalinkURL = URL(string: comment.post?.permaLink ?? "")
+            openWebView(for: postPermalinkURL)
             return
         }
 
@@ -113,10 +163,9 @@ private extension CommentDetailViewController {
         navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
-    func viewPostInWebView() {
-        guard let post = comment.post,
-              let permalink = post.permaLink,
-              let url = URL(string: permalink) else {
+    func openWebView(for url: URL?) {
+        guard let url = url else {
+            DDLogError("\(Self.classNameWithoutNamespaces()): Attempted to open an invalid URL [\(url?.absoluteString ?? "")]")
             return
         }
 
@@ -161,12 +210,27 @@ private extension CommentDetailViewController {
                                      })
     }
 
+    func visitAuthorURL() {
+        guard let authorURL = comment.authorURL() else {
+            return
+        }
+
+        openWebView(for: authorURL)
+    }
+
 }
 
-// MARK: - Localization
+// MARK: - Strings
 
 private extension String {
+    // MARK: Constants
+    static let textCellIdentifier = "textCell"
+
+    // MARK: Localization
     static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
                                                             + "The title of the post will displayed below this string. "
                                                             + "Example: Comment on \n My First Post")
+    static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
+    static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
+    static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
 }
