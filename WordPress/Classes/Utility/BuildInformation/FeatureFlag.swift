@@ -14,6 +14,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedCommentsAndNotificationsList
     case recommendAppToOthers
     case newCommentEdit
+    case weeklyRoundup
+    case weeklyRoundupStaticNotification
     case newCommentDetail
     case domains
 
@@ -47,6 +49,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .recommendAppToOthers:
             return true
         case .newCommentEdit:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .weeklyRoundup:
+            return BuildConfiguration.current == .localDeveloper
+        case .weeklyRoundupStaticNotification:
+            // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
         case .newCommentDetail:
             return false
@@ -102,6 +109,10 @@ extension FeatureFlag {
             return "Recommend App to Others"
         case .newCommentEdit:
             return "New Comment Edit"
+        case .weeklyRoundup:
+            return "Weekly Roundup"
+        case .weeklyRoundupStaticNotification:
+            return "Weekly Roundup Static Notification"
         case .newCommentDetail:
             return "New Comment Detail"
         case .domains:
@@ -114,6 +125,10 @@ extension FeatureFlag {
         case .debugMenu:
             return false
         case .todayWidget:
+            return false
+        case .weeklyRoundup:
+            return false
+        case .weeklyRoundupStaticNotification:
             return false
         default:
             return true
