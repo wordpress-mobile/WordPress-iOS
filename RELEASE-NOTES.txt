@@ -1,8 +1,9 @@
 18.2
 -----
-[internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
+* [internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
 * [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
 * [*] Added pull-to-refresh to My Site.
+* [**] Site Comments: when editing a Comment, the author's name, email address, and web address can now be changed. [#17111]
 
 18.1
 -----
