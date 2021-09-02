@@ -266,9 +266,7 @@ extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
 extension EditCommentTableViewController: EditCommentMultiLineCellDelegate {
 
     func textViewHeightUpdated() {
-        tableView.beginUpdates()
-        tableView.scrollToRow(at: IndexPath(row: 0, section: TableSections.comment.rawValue), at: .bottom, animated: false)
-        tableView.endUpdates()
+        tableView.performBatchUpdates({})
     }
 
     func textUpdated(_ updatedText: String?) {
