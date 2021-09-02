@@ -52,13 +52,12 @@ private extension EditCommentMultiLineCell {
     }
 
     func adjustHeight() {
-        let originalCellHeight = frame.size.height
-        let textViewSize = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
-        let textViewHeight = ceilf(Float(max(textViewSize.height, textViewMinHeightConstraint.constant)))
-        let newCellHeight = CGFloat(textViewHeight) + textViewPadding
-        frame.size.height = newCellHeight
+        let originalHeight = textView.frame.size.height
+        textView.sizeToFit()
+        let textViewHeight = ceilf(Float(max(textView.frame.size.height, textViewMinHeightConstraint.constant)))
+        textView.frame.size.height = CGFloat(textViewHeight)
 
-        if newCellHeight != originalCellHeight {
+        if textViewHeight != Float(originalHeight) {
             delegate?.textViewHeightUpdated()
         }
     }
