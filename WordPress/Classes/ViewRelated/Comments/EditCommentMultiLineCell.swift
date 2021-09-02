@@ -11,8 +11,6 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewMinHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewTopConstraint: NSLayoutConstraint!
-    private var textViewPadding: CGFloat = 0
     weak var delegate: EditCommentMultiLineCellDelegate?
 
     // MARK: - View
@@ -20,7 +18,6 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureCell()
-        textViewPadding = textViewTopConstraint.constant * 2
     }
 
     func configure(text: String? = nil) {
