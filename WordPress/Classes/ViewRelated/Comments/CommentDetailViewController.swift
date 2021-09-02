@@ -12,6 +12,42 @@ class CommentDetailViewController: UITableViewController {
 
     private var headerCell = CommentHeaderTableViewCell()
 
+    private lazy var replyIndicatorCell: UITableViewCell = {
+        let cell = UITableViewCell()
+
+        // display the replied icon using attributed string instead of using the default image view.
+        // this is because the default image view is displayed beyond the separator line (within the layout margin area).
+        let iconAttachment = NSTextAttachment()
+        iconAttachment.image = Style.ReplyIndicator.iconImage
+
+        let attributedString = NSMutableAttributedString()
+        attributedString.append(.init(attachment: iconAttachment, attributes: Style.ReplyIndicator.textAttributes))
+        attributedString.append(.init(string: " " + .replyIndicatorLabelText, attributes: Style.ReplyIndicator.textAttributes))
+
+        // reverse the attributed strings in RTL direction.
+        if view.effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.baseWritingDirection = .rightToLeft
+            attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: .init(location: 0, length: attributedString.length))
+        }
+
+        cell.textLabel?.attributedText = attributedString
+        cell.textLabel?.numberOfLines = 0
+
+        // setup constraints for textLabel to match the spacing specified in the design.
+        if let textLabel = cell.textLabel {
+            textLabel.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                textLabel.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
+                textLabel.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor),
+                textLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: Constants.replyIndicatorVerticalSpacing),
+                textLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -Constants.replyIndicatorVerticalSpacing)
+            ])
+        }
+
+        return cell
+    }()
+
     // MARK: Initialization
 
     @objc required init(comment: Comment) {
@@ -42,6 +78,10 @@ class CommentDetailViewController: UITableViewController {
         return rows.count
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         switch row {
@@ -49,10 +89,11 @@ class CommentDetailViewController: UITableViewController {
             configureHeaderCell()
             return headerCell
 
+        case .replyIndicator:
+            return replyIndicatorCell
+
         case .text:
-            let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
-            configureTextCell(cell, with: row)
-            return cell
+            return configuredTextCell(for: row)
 
         default:
             return .init()
@@ -65,6 +106,10 @@ class CommentDetailViewController: UITableViewController {
         switch rows[indexPath.row] {
         case .header:
             navigateToPost()
+
+        case .replyIndicator:
+            // TODO: Navigate to the comment reply.
+            break
 
         case .text(_, _, _, let action):
             action?()
@@ -80,6 +125,8 @@ class CommentDetailViewController: UITableViewController {
 
 private extension CommentDetailViewController {
 
+    typealias Style = WPStyleGuide.CommentDetail
+
     enum RowType {
         case header
         case content
@@ -89,6 +136,7 @@ private extension CommentDetailViewController {
 
     struct Constants {
         static let tableLeadingInset: CGFloat = 20.0
+        static let replyIndicatorVerticalSpacing: CGFloat = 14.0
     }
 
     func configureNavigationBar() {
@@ -109,7 +157,8 @@ private extension CommentDetailViewController {
     func configureRows() {
         rows = [
             .header,
-            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: .gridicon(.external), action: visitAuthorURL),
+            .replyIndicator, // TODO: Conditionally add this when user has replied to the comment.
+            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage, action: visitAuthorURL),
             .text(title: .emailAddressLabelText, detail: comment.author_email),
             .text(title: .ipAddressLabelText, detail: comment.author_ip)
         ]
@@ -124,19 +173,21 @@ private extension CommentDetailViewController {
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
     }
 
-    func configureTextCell(_ cell: UITableViewCell, with row: RowType) {
+    func configuredTextCell(for row: RowType) -> UITableViewCell {
         guard case let .text(title, detail, image, _) = row else {
-            return
+            return .init()
         }
 
-        cell.tintColor = .primary
+        let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
 
-        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        cell.textLabel?.textColor = .textSubtle
+        cell.tintColor = Style.tintColor
+
+        cell.textLabel?.font = Style.secondaryTextFont
+        cell.textLabel?.textColor = Style.secondaryTextColor
         cell.textLabel?.text = title
 
-        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body)
-        cell.detailTextLabel?.textColor = .text
+        cell.detailTextLabel?.font = Style.textFont
+        cell.detailTextLabel?.textColor = Style.textColor
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
 
@@ -146,6 +197,8 @@ private extension CommentDetailViewController {
             }
             return UIImageView(image: image)
         }()
+
+        return cell
     }
 
     // MARK: Actions and navigations
@@ -224,12 +277,14 @@ private extension CommentDetailViewController {
 
 private extension String {
     // MARK: Constants
+    static let replyIndicatorCellIdentifier = "replyIndicatorCell"
     static let textCellIdentifier = "textCell"
 
     // MARK: Localization
     static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
                                                             + "The title of the post will displayed below this string. "
                                                             + "Example: Comment on \n My First Post")
+    static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
     static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
