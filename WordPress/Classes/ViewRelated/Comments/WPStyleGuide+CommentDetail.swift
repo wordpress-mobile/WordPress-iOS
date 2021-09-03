@@ -43,7 +43,7 @@ extension WPStyleGuide {
 
             static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .large)
             static let shareIconImageName = "square.and.arrow.up"
-            static let threeDotsIconImageName = "ellipsis.circle"
+            static let ellipsisIconImageName = "ellipsis.circle"
         }
 
         public struct ReplyIndicator {

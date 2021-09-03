@@ -11,7 +11,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images to display for the accessory button.
     enum AccessoryButtonType {
         case share
-        case threeDots
+        case ellipsis
     }
 
     // MARK: - Public Properties
@@ -170,8 +170,8 @@ private extension CommentContentTableViewCell {
         switch accessoryButtonType {
         case .share:
             return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
-        case .threeDots:
-            return .init(systemName: Style.threeDotsIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        case .ellipsis:
+            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
         }
     }
 
