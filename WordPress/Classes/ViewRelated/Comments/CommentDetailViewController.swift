@@ -93,6 +93,7 @@ class CommentDetailViewController: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
                 return .init()
             }
+            cell.configure(with: comment)
             return cell
 
         case .replyIndicator:

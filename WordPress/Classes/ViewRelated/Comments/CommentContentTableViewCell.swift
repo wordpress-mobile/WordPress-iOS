@@ -2,51 +2,13 @@ import UIKit
 
 class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
-    // determines the state of the like button.
-    enum LikeState {
-        case unliked
-        case liked
-    }
-
-    // all the available images to display for the accessory button.
+    // all the available images for the accessory button.
     enum AccessoryButtonType {
         case share
         case ellipsis
     }
 
     // MARK: - Public Properties
-
-    var displayName: String? = "" {
-        didSet {
-            nameLabel?.setText(displayName ?? "")
-        }
-    }
-
-    var displayDate: String? = "" {
-        didSet {
-            dateLabel?.setText(displayDate ?? "")
-        }
-    }
-
-    var accessoryButtonType: AccessoryButtonType = .share {
-        didSet {
-            accessoryButton.setImage(accessoryButtonImage, for: .normal)
-        }
-    }
-
-    var numberOfLikes: Int = 0 {
-        didSet {
-            updateLikeButton()
-        }
-    }
-
-    var likeButtonState: LikeState = .unliked {
-        didSet {
-            updateLikeButton()
-        }
-    }
-
-    // MARK: Button Tap Handlers
 
     var nameLabelTapAction: (() -> Void)? = nil
 
@@ -56,31 +18,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var likeButtonAction: (() -> Void)? = nil
 
-    // MARK: Component Visibility
-
-    // Hides the accessory button if the value is false.
-    var accessoryButtonEnabled: Bool = true {
+    /// Hide the accessory button image assignment through an enum, to standardize image configuration.
+    /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
+    var accessoryButtonType: AccessoryButtonType = .share {
         didSet {
-            accessoryButton?.isHidden = !accessoryButtonEnabled
-        }
-    }
-
-    var replyButtonEnabled: Bool = true {
-        didSet {
-            replyButton?.isHidden = !replyButtonEnabled
-        }
-    }
-
-    var likeButtonEnabled: Bool = true {
-        didSet {
-            likeButton?.isHidden = !likeButtonEnabled
-        }
-    }
-
-    // the Reply and Like buttons will be hidden if this is set to false.
-    var reactionBarEnabled: Bool = true {
-        didSet {
-            reactionBarView?.isHidden = !reactionBarEnabled
+            accessoryButton.setImage(accessoryButtonImage, for: .normal)
         }
     }
 
@@ -91,7 +33,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var accessoryButton: UIButton!
 
-    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet private weak var webView: WKWebView!
 
     @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
@@ -106,28 +48,21 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Public Methods
 
-    /// Configures the avatar image view with the provided URL.
-    /// If the URL does not contain any image, the default placeholder image will be displayed.
-    /// - Parameter url: The URL containing the image.
-    func configureImage(with url: URL?) {
-        if let someURL = url, let gravatar = Gravatar(someURL) {
-            avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: true)
-            return
+    func configure(with comment: Comment) {
+        nameLabel?.setText(comment.authorForDisplay())
+        dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
+
+        if let authorURL = comment.authorURL() {
+            configureImage(with: authorURL)
+        } else {
+            configureImageWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
 
-        // handle non-gravatar images
-        avatarImageView.downloadImage(from: url, placeholderImage: Style.placeholderImage)
-    }
+        updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
-    /// Configures the avatar image view from Gravatar based on provided email.
-    /// If the Gravatar image for the provided email doesn't exist, the default placeholder image will be displayed.
-    /// - Parameter gravatarEmail: The email to be used for querying the Gravatar image.
-    func configureImageWithGravatarEmail(_ email: String?) {
-        guard let someEmail = email else {
-            return
-        }
+        // TODO: Configure comment content
 
-        avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
+        // TODO: Configure component visibility
     }
 }
 
@@ -135,6 +70,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
 private extension CommentContentTableViewCell {
     typealias Style = WPStyleGuide.CommentDetail.Content
+
+    var accessoryButtonImage: UIImage? {
+        switch accessoryButtonType {
+        case .share:
+            return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        case .ellipsis:
+            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        }
+    }
 
     // assign base styles for all the cell components.
     func configureViews() {
@@ -163,19 +107,34 @@ private extension CommentContentTableViewCell {
         likeButton?.titleLabel?.font = Style.reactionButtonFont
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-        updateLikeButton()
+        updateLikeButton(liked: false, numberOfLikes: 0)
     }
 
-    var accessoryButtonImage: UIImage? {
-        switch accessoryButtonType {
-        case .share:
-            return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
-        case .ellipsis:
-            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+    /// Configures the avatar image view with the provided URL.
+    /// If the URL does not contain any image, the default placeholder image will be displayed.
+    /// - Parameter url: The URL containing the image.
+    func configureImage(with url: URL?) {
+        if let someURL = url, let gravatar = Gravatar(someURL) {
+            avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: true)
+            return
         }
+
+        // handle non-gravatar images
+        avatarImageView.downloadImage(from: url, placeholderImage: Style.placeholderImage)
     }
 
-    var likeButtonTitle: String {
+    /// Configures the avatar image view from Gravatar based on provided email.
+    /// If the Gravatar image for the provided email doesn't exist, the default placeholder image will be displayed.
+    /// - Parameter gravatarEmail: The email to be used for querying the Gravatar image.
+    func configureImageWithGravatarEmail(_ email: String?) {
+        guard let someEmail = email else {
+            return
+        }
+
+        avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
+    }
+
+    func likeButtonTitle(for numberOfLikes: Int) -> String {
         switch numberOfLikes {
         case .zero:
             return .noLikes
@@ -186,10 +145,10 @@ private extension CommentContentTableViewCell {
         }
     }
 
-    func updateLikeButton() {
-        likeButton.tintColor = likeButtonState == .unliked ? Style.buttonTintColor : Style.likedTintColor
-        likeButton.setImage(likeButtonState == .unliked ? Style.unlikedIconImage : Style.likedIconImage, for: .normal)
-        likeButton.setTitle(likeButtonTitle, for: .normal)
+    func updateLikeButton(liked: Bool, numberOfLikes: Int) {
+        likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
+        likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
+        likeButton.setTitle(likeButtonTitle(for: numberOfLikes), for: .normal)
     }
 
     @objc func nameLabelTapped() {
