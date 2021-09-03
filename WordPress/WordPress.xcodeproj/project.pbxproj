@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		096A92F526E29FFF00448C68 /* GenerateCredentials */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 096A92FA26E2A00000448C68 /* Build configuration list for PBXAggregateTarget "GenerateCredentials" */;
+			buildPhases = (
+				096A92FB26E2A05400448C68 /* Generate Secrets / Credentials */,
+			);
+			dependencies = (
+			);
+			name = GenerateCredentials;
+			productName = GenerateCredentials;
+		};
 		A2795807198819DE0031C6A3 /* OCLint */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = A279580C198819DE0031C6A3 /* Build configuration list for PBXAggregateTarget "OCLint" */;
@@ -4426,6 +4437,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		096A92FC26E2A0AE00448C68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 096A92F526E29FFF00448C68;
+			remoteInfo = GenerateCredentials;
+		};
+		096A92FE26E2A0C000448C68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 096A92F526E29FFF00448C68;
+			remoteInfo = GenerateCredentials;
+		};
 		3F526C5A2538CF2B0069706C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -14541,7 +14566,6 @@
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
 				E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */,
-				24AE9E53264B312000AC7F15 /* Apply Configuration Secrets */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
@@ -14555,6 +14579,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				096A92FD26E2A0AE00448C68 /* PBXTargetDependency */,
 				FFC3F6FC1B0DBF7200EFC359 /* PBXTargetDependency */,
 				93E5284519A7741A003A1A9C /* PBXTargetDependency */,
 				93E5284819A7741A003A1A9C /* PBXTargetDependency */,
@@ -14813,7 +14838,6 @@
 			buildConfigurationList = FABB264D2602FC2C00C8785C /* Build configuration list for PBXNativeTarget "Jetpack" */;
 			buildPhases = (
 				FABB1FA72602FC2C00C8785C /* [CP] Check Pods Manifest.lock */,
-				FABB1FA82602FC2C00C8785C /* Apply Configuration Secrets */,
 				FABB1FA92602FC2C00C8785C /* App Icons: Add Version For Internal Releases */,
 				FABB1FAA2602FC2C00C8785C /* Resources */,
 				FABB20C12602FC2C00C8785C /* Copy Alternate Internal Icons (if needed) */,
@@ -14827,6 +14851,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				096A92FF26E2A0C000448C68 /* PBXTargetDependency */,
 				FABB1F902602FC2C00C8785C /* PBXTargetDependency */,
 			);
 			name = Jetpack;
@@ -14889,6 +14914,9 @@
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
+					096A92F526E29FFF00448C68 = {
+						CreatedOnToolsVersion = 12.5;
+					};
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = PZYM8XX95Q;
 						LastSwiftMigration = 1000;
@@ -15092,6 +15120,7 @@
 				E16AB92914D978240047A2E5 /* WordPressTest */,
 				FF27168E1CAAC87A0006E2D4 /* WordPressUITests */,
 				8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */,
+				096A92F526E29FFF00448C68 /* GenerateCredentials */,
 				A2795807198819DE0031C6A3 /* OCLint */,
 				FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */,
 				FFA8E22A1F94E3DE0002170F /* SwiftLint */,
@@ -15832,6 +15861,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		096A92FB26E2A05400448C68 /* Generate Secrets / Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Secrets / Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/ApplyConfiguration.sh\n";
+			showEnvVarsInLog = 0;
+		};
 		0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -15874,27 +15924,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressStatsWidgets/Pods-WordPressStatsWidgets-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		24AE9E53264B312000AC7F15 /* Apply Configuration Secrets */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Apply Configuration Secrets";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/ApplyConfiguration.sh\n";
 			showEnvVarsInLog = 0;
 		};
 		2ACEBC2718E9AC320D2B2858 /* [CP] Copy Pods Resources */ = {
@@ -16509,25 +16538,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FABB1FA82602FC2C00C8785C /* Apply Configuration Secrets */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Apply Configuration Secrets";
-			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/ApplyConfiguration.sh\n";
 			showEnvVarsInLog = 0;
 		};
 		FABB1FA92602FC2C00C8785C /* App Icons: Add Version For Internal Releases */ = {
@@ -20521,6 +20531,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		096A92FD26E2A0AE00448C68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 096A92F526E29FFF00448C68 /* GenerateCredentials */;
+			targetProxy = 096A92FC26E2A0AE00448C68 /* PBXContainerItemProxy */;
+		};
+		096A92FF26E2A0C000448C68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 096A92F526E29FFF00448C68 /* GenerateCredentials */;
+			targetProxy = 096A92FE26E2A0C000448C68 /* PBXContainerItemProxy */;
+		};
 		3F526C5B2538CF2B0069706C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */;
@@ -20926,6 +20946,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		096A92F626E2A00000448C68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		096A92F726E2A00000448C68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		096A92F826E2A00000448C68 /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Internal";
+		};
+		096A92F926E2A00000448C68 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Alpha";
+		};
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75305C06D345590B757E3890 /* Pods-Apps-WordPress.debug.xcconfig */;
@@ -24645,6 +24697,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		096A92FA26E2A00000448C68 /* Build configuration list for PBXAggregateTarget "GenerateCredentials" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				096A92F626E2A00000448C68 /* Debug */,
+				096A92F726E2A00000448C68 /* Release */,
+				096A92F826E2A00000448C68 /* Release-Internal */,
+				096A92F926E2A00000448C68 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
