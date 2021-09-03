@@ -15865,7 +15865,7 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(PROJECT_ROOT)/Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
 			);
 			inputPaths = (
 			);
@@ -15877,8 +15877,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/GenerateCredentials.sh\n";
-			showEnvVarsInLog = 0;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
 		0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
