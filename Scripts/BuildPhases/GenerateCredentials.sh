@@ -112,7 +112,7 @@ fi
 
 COULD_NOT_FIND_SECRET_MSG="Could not find secrets file at ${SECRETS_DESTINATION_FILE}. This is likely due to the source secrets being missing from ${SECRETS_ROOT}"
 INTERNAL_CONTRIBUTOR_MSG="If you are an internal contributor, run \`bundle exec fastlane run configure_apply\` to update your secrets and try again"
-EXTERNAL_CONTRIBUTOR_MSG="If you are an external contributor, run `rake init:oss` to set up and use your own credentials"
+EXTERNAL_CONTRIBUTOR_MSG="If you are an external contributor, run \`bundle exec rake init:oss\` to set up and use your own credentials"
 
 case $CONFIGURATION in
   Release*)
