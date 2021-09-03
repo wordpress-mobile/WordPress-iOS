@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-29 11:34:11+0000 */
+/* Translation-Revision-Date: 2021-08-30 11:26:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPër ripohim, ju lutemi, para se të fshihet, rijepni adresën e sajtit tuaj.\n\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nQë ta ripohoni, ju lutemi, rijepni emrin tuaj të përdoruesit para mbylljes.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Figura “Lazy-load”";
@@ -303,19 +303,19 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> herë në javë";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> herë në javë, më %2$@";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Një herë<\/strong> në javë";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "<strong>Një herë<\/strong> në javë, më %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Dy herë<\/strong> në javë";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "<strong>Dy herë<\/strong> në javë, më %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +406,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "Rregullime Llogarie";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "Llogari e mbyllur";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Falënderime";
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Shtoni çfarëdo teme";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "Shtoni blloqe";
 
 /* No comment provided by engineer. */
 "Add button text" = "Shtoni tekst butoni";
@@ -700,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "An active internet connection is required to view the history" = "Që të shihni historikun, lypset një lidhje internet aktive";
 
 /* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
+"An error occured while closing account." = "Ndodhi një gabim teksa mbyllej llogaria.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Ndodhi një gabim në krijimin e Menusë.";
@@ -757,7 +757,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Mirëfilltësimi Apple dështoi.\nJu lutemi, sigurohuni se keni bërë hyrjen te llogaria juaj iCloud me një Apple ID që përdor mirëfilltësim dyfaktorësh.";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "Aplikon rregullimin";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Zbatoji";
@@ -1290,7 +1290,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "Ndryshoni, shtoni ose hiqni faqe të sajtit tuaj.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Ndryshimet te figura e zgjedhur s’do të kenë ndikim nga butonat Zhbëje\/Ribëje.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Po ndryshohet emri për në ekran";
@@ -1460,7 +1460,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "Mbylle";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "Mbylleni Llogarinë";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "Mbylle Komentimin";
@@ -1478,7 +1478,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "Mbylle skenën Unë";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "Po mbyllet llogaria…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kod";
@@ -1606,7 +1606,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "Ripohojeni";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "Ripohoni Mbylljen e Llogarinë";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Ripohoni Fshirje Sajti";
@@ -1987,7 +1987,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "Përshtatni Sajtin Tuaj";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Customize blocks";
+"Customize blocks" = "Përshtatni blloqe";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "Përshtateni mesazhin";
@@ -2678,7 +2678,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "Gabim gjatë instalimit të %@.";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "Gabim në ngarkim pëlqimesh";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Gabim në ngarkim shtojcash";
@@ -2741,7 +2741,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "Çdo ditë";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "Çdo ditë, më %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Kushdo";
@@ -3305,10 +3305,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "Si të krijohet një postim shkrimi";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "Si të përpunoni faqen tuaj";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "Si të përpunoni postimin tuaj";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Si do ta ndreqim?";
@@ -4156,7 +4156,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "Kaloje bllokun nga rreshti %1$s sipër te rreshti %2$s";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "Lëvizni blloqe";
 
 /* Option to move Insight down in the view. */
 "Move down" = "Ule poshtë";
@@ -4233,7 +4233,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Shkon te pjesa për përshtatje gradienti";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "Lëvizet për të përzgjedhur %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Ju shpie te fleta e mëparshme e lëndës";
@@ -4897,7 +4897,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "Periudhë";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "Mbylle Llogarinë Përgjithmonë";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Fshije Sajtin Përgjithmonë";
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "Përzgjidhni një ngjyrë";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "Përzgjidhni një ngjyrë më sipër";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Që të vazhdohet, përzgjidhni ndoca";
@@ -6028,7 +6028,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "Media e përzgjedhur s’gjendet.";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "U përzgjodh: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Përzgjedhja e një vendi tjetër menuje do të shkaktojë hedhjen tej të ndryshimeve që bëtë te menuja e tanishme. Jeni i sigurt se doni të vazhdohet?";
@@ -6142,7 +6142,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "Ndajeni Postimin Me të Tjerët";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "Jepjani WordPress-in një shoku";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Ndani me mjetin tuaj të analizave të dhëna rreth përdorimit tuaj të shërbimeve, teksa jeni i futur në llogarinë tuaj WordPress.com.";
@@ -6757,7 +6757,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Vetëm Tekst";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrollet për formatim teksti gjenden brenda panelit të vendosur mbi tastierën, kur përpunohet një bllok teksti";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7095,16 +7095,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "Ky sajt s’ka botuar gjë ende. Riprovoni më vonë.";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "Kjo llogari përdoruesi s’mund të mbyllet, nëse ka pagesa të prapambetura të pakryera.";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "Kjo llogari përdoruesi s’mund të mbyllet, teksa ka blerje aktive.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "Kjo llogari përdoruesi s’mund të mbyllet, teksa ka pajtime aktive.";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Kjo llogari përdoruesi s’u mbyll dot. Ju lutemi, lidhuni me ne, përmes skenës Unë > Ndihmë & Asistencë.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8319,7 +8319,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "Rregullime Aplikacioni WordPress";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "Aplikacione WordPress - Aplikacioni për çfarëdo ekrani";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
@@ -8600,7 +8600,7 @@ translators: Block name. %s: The localized block name */
 "You're all up to date!" = "Gjithçka e përditësuar!";
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
+"You're not authorized to close the account." = "S’jeni i autorizuar të mbyllni llogarinë.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Keni bërë ndryshime të paruajtura në këtë postim";
