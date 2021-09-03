@@ -10,8 +10,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: - Public Properties
 
-    var nameLabelTapAction: (() -> Void)? = nil
-
     var accessoryButtonAction: (() -> Void)? = nil
 
     var replyButtonAction: (() -> Void)? = nil
@@ -84,9 +82,6 @@ private extension CommentContentTableViewCell {
     func configureViews() {
         selectionStyle = .none
 
-        let tapGesture = UITapGestureRecognizer(target: nameLabel, action: #selector(nameLabelTapped))
-        nameLabel?.isUserInteractionEnabled = true
-        nameLabel?.addGestureRecognizer(tapGesture)
         nameLabel?.font = Style.nameFont
         nameLabel?.textColor = Style.nameTextColor
 
@@ -149,10 +144,6 @@ private extension CommentContentTableViewCell {
         likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
         likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
         likeButton.setTitle(likeButtonTitle(for: numberOfLikes), for: .normal)
-    }
-
-    @objc func nameLabelTapped() {
-        nameLabelTapAction?()
     }
 
     @objc func accessoryButtonTapped() {
