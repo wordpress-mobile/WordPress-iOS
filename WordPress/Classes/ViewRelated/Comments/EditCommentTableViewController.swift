@@ -85,11 +85,11 @@ class EditCommentTableViewController: UITableViewController {
 
         switch tableSection {
         case TableSections.name:
-            cell.configure(text: comment.author)
+            cell.configure(text: updatedName)
         case TableSections.webAddress:
-            cell.configure(text: comment.author_url, style: .url)
+            cell.configure(text: updatedWebAddress, style: .url)
         case TableSections.emailAddress:
-            cell.configure(text: comment.author_email, style: .email)
+            cell.configure(text: updatedEmailAddress, style: .email)
         default:
             DDLogError("Edit Comment: unsupported table section.")
             break
@@ -128,7 +128,7 @@ private extension EditCommentTableViewController {
     }
 
     func configureCommentContentCell() {
-        commentContentCell.configure(text: comment.contentForEdit())
+        commentContentCell.configure(text: updatedContent)
         commentContentCell.delegate = self
     }
 
