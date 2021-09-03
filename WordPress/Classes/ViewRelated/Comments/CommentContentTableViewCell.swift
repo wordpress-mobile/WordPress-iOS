@@ -18,7 +18,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var likeButtonAction: (() -> Void)? = nil
 
-    /// Hide the accessory button image assignment through an enum, to standardize image configuration.
+    /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
         didSet {
