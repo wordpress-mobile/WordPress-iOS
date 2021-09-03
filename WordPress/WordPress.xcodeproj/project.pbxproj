@@ -15879,7 +15879,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/ApplyConfiguration.sh\n";
+			shellScript = "export PROJECT_ROOT=$(dirname $SRCROOT)\n$PROJECT_ROOT/Scripts/BuildPhases/GenerateCredentials.sh\n";
 			showEnvVarsInLog = 0;
 		};
 		0AA1A8899C01FEF3599F6FCF /* [CP] Check Pods Manifest.lock */ = {
