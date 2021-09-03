@@ -77,7 +77,6 @@
                     </view>
                     <wkWebView contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Je0-5Q-ty6">
                         <rect key="frame" x="16" y="73" width="288" height="133"/>
-                        <color key="backgroundColor" red="0.36078431372549019" green="0.38823529411764707" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="250" constant="50" id="dGD-8Q-LSr"/>
                         </constraints>
