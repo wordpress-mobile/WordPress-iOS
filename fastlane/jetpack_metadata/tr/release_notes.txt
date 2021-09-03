@@ -1,0 +1,7 @@
+Gömülü blokunu kullanıyor musunuz? Sitenize gömdüğünüz medya için artık "Daha küçük cihazlar için yeniden boyutlandır" seçeneğini göreceksiniz. İçeriğinizi ekranınıza sığacak şekilde yeniden boyutlandırmak için açın; devre dışı bırakmak için kapatın.
+
+Blog Hatırlatıcıları aracını beğeniyor musunuz? Bildirim almak için belirli bir zaman seçmenize olanak tanıyan yeni bir özellik ekledik.
+
+Hesabınızı kapatmanız mı gerekiyor? (Umarız bizi asla bırakmazsınız!) Ancak gerekirse Hesap Ayarlarınızdan bunu yapabilirsiniz.
+
+Gönderilere coğrafi etiket ekleme işlevi artık web'de desteklenmediğinden Gönderi Ayarları altındaki Konum seçeneği kaldırılmıştır.
