@@ -4979,7 +4979,6 @@
 		24AD674E25FC262E0056102C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Sites.strings; sourceTree = "<group>"; };
 		24AD675025FC262F0056102C /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Sites.strings; sourceTree = "<group>"; };
 		24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagStore.swift; sourceTree = "<group>"; };
-		24AE9C262649ECF400AC7F15 /* secrets-manifest.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = "secrets-manifest.xcfilelist"; sourceTree = "<group>"; };
 		24AE9E66264B34E500AC7F15 /* Secrets-example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Secrets-example.swift"; sourceTree = "<group>"; };
 		24B1AE3024FEC79900B9F334 /* RemoteFeatureFlagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagTests.swift; sourceTree = "<group>"; };
 		24B54FAD2624F8350041B18E /* JetpackRelease-Internal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JetpackRelease-Internal.entitlements"; sourceTree = "<group>"; };
@@ -13692,7 +13691,6 @@
 			isa = PBXGroup;
 			children = (
 				24AE9E66264B34E500AC7F15 /* Secrets-example.swift */,
-				24AE9C262649ECF400AC7F15 /* secrets-manifest.xcfilelist */,
 			);
 			path = Credentials;
 			sourceTree = "<group>";
@@ -15867,7 +15865,7 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(SRCROOT)/Credentials/secrets-manifest.xcfilelist",
+				"$(PROJECT_ROOT)/Scripts/BuildPhases/GenerateCredentials.xcfilelist",
 			);
 			inputPaths = (
 			);
