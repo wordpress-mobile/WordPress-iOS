@@ -51,7 +51,7 @@ open class NotificationSettings {
     open func localizedDetails(_ preferenceKey: String) -> String? {
         return Keys.localizedDetailsMap[preferenceKey]
     }
-    
+
     static func isLocallyStored(_ preferenceKey: String) -> Bool {
         return Self.locallyStoredKeys.contains(preferenceKey)
     }

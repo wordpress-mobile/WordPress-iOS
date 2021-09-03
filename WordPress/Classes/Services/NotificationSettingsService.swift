@@ -51,41 +51,41 @@ open class NotificationSettingsService: LocalCoreDataService {
                     guard let blog = settings.blog,
                           let pushNotificationStream = settings.streams.first(where: { $0.kind == .Device }),
                           let preferences = pushNotificationStream.preferences else {
-                        
+
                         continue
                     }
-                    
+
                     let localSettings = self.loadLocalSettings(for: blog)
-                    
+
                     let updatedPreferences = preferences.merging(localSettings) { first, second in
                         second
                     }
-                    
+
                     pushNotificationStream.preferences = updatedPreferences
                 }
-                
+
                 success?(parsed)
             },
             failure: failure)
     }
-    
+
     private func userDefaultsKey(withNotificationSettingKey key: String, for blog: Blog) -> String {
         "\(key)-\(blog.objectID.uriRepresentation().absoluteString)"
     }
-    
+
     private func loadLocalSettings(for blog: Blog) -> [String: Bool] {
         var localSettings = [String: Bool]()
-        
+
         for key in NotificationSettings.locallyStoredKeys {
             let userDefaultsKey = userDefaultsKey(withNotificationSettingKey: key, for: blog)
             let value = (UserDefaults.standard.value(forKey: userDefaultsKey) as? Bool) ?? true
-            
+
             localSettings[key] = value
         }
-        
+
         return localSettings
     }
-    
+
     private func saveLocalSettings(_ settings: [String: Bool], blog: Blog) {
         for (key, value) in settings {
             if NotificationSettings.isLocallyStored(key) {
@@ -104,7 +104,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
     open func updateSettings(_ settings: NotificationSettings, stream: Stream, newValues: [String: Bool], success: (() -> ())?, failure: ((NSError?) -> Void)?) {
-        
+
         let remote = remoteFromSettings(newValues, channel: settings.channel, stream: stream)
         let pristine = stream.preferences
 
@@ -112,7 +112,7 @@ open class NotificationSettingsService: LocalCoreDataService {
         for (key, value) in newValues {
             stream.preferences?[key] = value
         }
-        
+
         if let preferences = stream.preferences,
            let blog = settings.blog {
             saveLocalSettings(preferences, blog: blog)
