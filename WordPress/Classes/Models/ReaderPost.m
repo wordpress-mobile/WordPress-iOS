@@ -513,7 +513,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // ReaderCard as the Core Data object. By "faking" this change we make sure Reader Discover
     // reflects a change on a post.
     // We can confidently set `topics` to NULL given a card represents a post OR a list of topics.
-    if (self.card.count > 0) {
+    if ([self respondsToSelector:@selector(card)] && self.card.count > 0) {
         self.card.allObjects[0].topics = NULL;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }
