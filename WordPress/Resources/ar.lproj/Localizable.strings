@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-19 20:51:24+0000 */
+/* Translation-Revision-Date: 2021-09-01 11:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nللتأكيد، يرجى إعادة إدخال عنوان موقعك قبل عملية حذفه.\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nللتأكيد، يرجى إعادة إدخال اسم المستخدم الخاص بك قبل الإغلاق.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "صور \"بطيئة التحميل\"";
@@ -309,13 +309,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "<strong>مرة<\/strong> في الأسبوع";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "<strong>مرة<\/strong> في الأسبوع في %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>مرتان<\/strong> في الأسبوع";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "<strong>مرتان<\/strong> في الأسبوع في %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +406,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "إعدادات الحساب";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "تم إغلاق الحساب";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "شكر وتقدير";
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "إضافة أي موضوع";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "إضافة مكوِّنات";
 
 /* No comment provided by engineer. */
 "Add button text" = "إضافة نصّ للزر";
@@ -700,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "An active internet connection is required to view the history" = "هناك حاجة إلى وجود اتصال نشط بالإنترنت لعرض السجلّ";
 
 /* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
+"An error occured while closing account." = "حدث خطأ في أثناء إغلاق الحساب.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "حدث خطأ أثناء إنشاء القائمة.";
@@ -757,7 +757,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "فشلت مصادقة Apple.\nيرجى التأكُّد من تسجيل الدخول إلى iCloud باستخدام معرِّف Apple الذي يستخدم مصادفة من عاملين.";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "يقوم بتطبيق الإعداد";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "تطبيق";
@@ -1290,7 +1290,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "تغيير أو إضافة أو إزالة صفحات موقعك.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "لن تتأثر التغييرات على الصورة البارزة عن طريق أزرار التراجع\/الإعادة.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "تغيير اسم العرض";
@@ -1460,7 +1460,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "إغلاق";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "إغلاق الحساب";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "إغلاق التعليق";
@@ -1478,7 +1478,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "إغلاق شاشة \"أنا\"";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "جارٍ إغلاق الحساب…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "رمز";
@@ -1606,7 +1606,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "تأكيد";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "تأكيد إغلاق الحساب";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "تأكيد حذف الموقع";
@@ -1987,7 +1987,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "تخصيص موقعك";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Customize blocks";
+"Customize blocks" = "تخصيص المكوِّنات";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "تخصيص الرسالة";
@@ -2678,7 +2678,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "خطأ في تثبيت %@.";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "خطأ في أثناء تحميل الإعجابات";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "حدث خطأ أثناء تحميل الإضافات";
@@ -2741,7 +2741,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "كل يوم";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "كل يوم في %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "الجميع";
@@ -3305,10 +3305,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "كيفية إنشاء مقالة قصة";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "كيفية تحرير صفحتك";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "كيفية تحرير مقالتك";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "كيف سنقوم بإصلاحه؟";
@@ -4156,7 +4156,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "نقل المكوِّن إلى أعلى من الصف %1$s إلى الصف %2$s";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "نقل المكوِّنات";
 
 /* Option to move Insight down in the view. */
 "Move down" = "تحريك للأسفل";
@@ -4233,7 +4233,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "التنقل لتخصيص التدرج";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "ينتقل لتحديد %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "التنقل إلى ورقة المحتوى السابقة ";
@@ -4571,7 +4571,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "إعدادات التنبيهات";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "وقت التنبيه";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4897,7 +4897,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "الفترة";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "إغلاق الحساب نهائيًا";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "حذف الموقع بشكل دائم";
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "تحديد لون";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "تحديد لون أعلاه";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "تحديد القليل للاستمرار";
@@ -6028,7 +6028,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "الوسائط المحددة غير متوفرة.";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "مُحدَّد: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "إن تحديد موقع قائمة مختلف سيتجاهل التغييرات التي قمت بإجرائها على القائمة الحالية. هل أنت متأكد من رغبتك في المتابعة؟";
@@ -6142,7 +6142,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "مشاركة المقالة";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "مشاركة ووردبريس مع صديق";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "شارك المعلومات مع أداة التحليلات لدينا حول استخدامك الخدمات أثناء تسجيل الدخول إلى حساب WordPress.com الخاص بك.";
@@ -6757,7 +6757,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "نص فقط";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "توجد عناصر التحكم في تنسيق النص ضمن شريط الأدوات الذي يوجد فوق لوحة المفاتيح في أثناء تحرير مكوِّن نص";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7095,16 +7095,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "لم ينشر هذا الموقع أي شيء بعد. حاول مرة أخرى لاحقًا.";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "يتعذر إغلاق حساب المستخدم هذا إذا كانت هناك عمليات رد مبالغ مدفوعة لم يتم حلها.";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "لا يمكن إغلاق حساب المستخدم هذا ومازالت عليه عمليات شراء نشطة.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "لا يمكن إغلاق حساب المستخدم هذا ومازالت عليه اشتراكات نشطة.";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "يتعذر إغلاق حساب المستخدم هذا. يرجى الاتصال بنا عن طريق الانتقال إلى صفحتي الرئيسية > شاشة المساعدة والدعم.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8319,7 +8319,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "إعدادات تطبيق ووردبريس";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "تطبيقات ووردبريس - تطبيقات لأي شاشة";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "مدونة ووردبريس";
@@ -8591,7 +8591,7 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "لن تتمكن من تغيير اسم المستخدم الخاص بك مرة أخرى.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "ستحصل على تذكير للتدوين <strong>مرة واحدة<\/strong> في الأسبوع يوم %1$@ في %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "ستحصل على تذكيرات للتدوين %1$@ من المرات في الأسبوع في %2$@.";
@@ -8600,7 +8600,7 @@ translators: Block name. %s: The localized block name */
 "You're all up to date!" = "تم تحديثك!";
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
+"You're not authorized to close the account." = "لست مخولاً لإغلاق الحساب.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "لقد أجريتَ تغييرات غير محفوظة على هذه المقالة";

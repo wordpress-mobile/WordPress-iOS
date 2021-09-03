@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-28 09:24:30+0000 */
+/* Translation-Revision-Date: 2021-09-02 07:37:31+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -4887,7 +4887,7 @@ translators: Block name. %s: The localized block name */
 /* Name for the status of a post pending review.
    Pending review
    Title of the Pending Review Badge */
-"Pending review" = "Oczekujące na przegląd";
+"Pending review" = "Oczekuje na przegląd";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature. */

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-20 14:29:19+0000 */
+/* Translation-Revision-Date: 2021-09-01 11:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nPer confermare, si prega di reinserire l'indirizzo del sito da rimuovere.\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nPer confermare, inserisci nuovamente il nome utente prima di chiudere.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Immagini a \"caricamento lento\"";
@@ -309,13 +309,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "<strong>Una volta<\/strong> alla settimana ";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "<strong>Una volta<\/strong> a settimana alle %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Due volte<\/strong> alla settimana";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "<strong>Due volte<\/strong> a settimana alle %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +406,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "Impostazioni account";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "Account chiuso";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Ringraziamenti";
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "Aggiungi qualsiasi argomento";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "Aggiungi blocchi";
 
 /* No comment provided by engineer. */
 "Add button text" = "Aggiungi il testo del pulsante";
@@ -700,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "An active internet connection is required to view the history" = "È necessario avere una connessione Internet attiva per visualizzare le cronologia";
 
 /* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
+"An error occured while closing account." = "Si è verificato un errore durante la chiusura dell'account.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "C'è stato un errore nella creazione del menu.";
@@ -757,7 +757,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autenticazione Apple fallita.\nAssicurati di essere loggato in iCloud con un Apple ID che usa l'autenticazione a due fattori.";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "Si applica alla configurazione";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Applica";
@@ -1290,7 +1290,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "Modifica, aggiungi o rimuovi le pagine del tuo sito.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Le modifiche all'immagine in evidenza non saranno influenzate dai pulsanti per annullare\/ripetere.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Modifica del nome visualizzato";
@@ -1460,7 +1460,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "Chiudi";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "Chiudi account";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "Commenti chiusi";
@@ -1478,7 +1478,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "Chiudi la schermata Io";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "Chiusura dell'account in corso...";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Codice";
@@ -1606,7 +1606,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "Conferma";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "Conferma account chiuso";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Conferma eliminazione sito";
@@ -1987,7 +1987,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "Personalizza il tuo sito";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Customize blocks";
+"Customize blocks" = "Personalizza i blocchi";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "Personalizza il messaggio";
@@ -2399,7 +2399,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "MODIFICA LINK";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Ogni blocco ha le proprie impostazioni. Per trovarle tocca il blocco. Verranno visualizzate le impostazioni nella barra degli strumenti nella parte inferiore dello schermo.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2678,7 +2678,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "Errore durante l'installazione di %@.";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "Errore durante il caricamento dei Mi piace";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Errore durante il caricamento dei plugin.";
@@ -2741,7 +2741,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "Ogni giorno";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "Ogni giorno alle %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "Tutti";
@@ -3305,10 +3305,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "Come creare un articolo della storia";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "Come modificare una pagina";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "Come modificare un articolo";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Come correggeremo il problema?";
@@ -4156,7 +4156,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "Sposta il blocco in alto dalla riga %1$s alla riga %2$s";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "Sposta i blocchi";
 
 /* Option to move Insight down in the view. */
 "Move down" = "Sposta sotto";
@@ -4233,7 +4233,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Naviga alla personalizzazione del gradiente";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "Sfoglia fino a selezionare %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Naviga al foglio dei contenuti precedente";
@@ -4571,7 +4571,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "Impostazioni notifiche";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "Orario di notifica";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4897,7 +4897,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "Periodo";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "Account chiuso in modo definitivo";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Elimina permanentemente il sito";
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "Seleziona un colore";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "Seleziona un colore sopra";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Selezionane alcuni per continuare";
@@ -6028,7 +6028,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "Il file multimediale selezionato non è disponibile.";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "Selezionato: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Selezionando una differente posizione di menu si perderanno le modifiche fatta al menu corrente. Desideri proseguire??";
@@ -6142,7 +6142,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "Condividi l'articolo";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "Condividi WordPress con un amico";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Condividi informazioni con il nostro strumento di analisi relativamente al tuo uso dei servizi mentre sei connesso con il tuo account WordPress.com.";
@@ -6757,7 +6757,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Solo testo";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "I controlli relativi alla formattazione del testo sono localizzati all'interno della barra degli strumenti posizionata sulla tastiera mentre modifichi un blocco di testo";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7095,16 +7095,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "Questo sito non ha ancora pubblicato nulla. Riprova più tardi.";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "Questo account utente non può essere chiuso se sono presenti revoche non risolte.";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "Questo account utente ha acquisti attivi e non può essere chiuso.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "Questo account utente ha abbonamenti attivi e non può essere chiuso.";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Impossibile chiudere questo account utente. Contattaci andando alla schermata Io > Aiuto e supporto.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8319,7 +8319,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "Impostazioni dell’app WordPress";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "App WordPress: app per qualsiasi schermata";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress blog";
@@ -8591,7 +8591,7 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "la modifica del nome utente non è reversibile.";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "Riceverai promemoria relativi al blog <strong>una volta<\/strong> alla settimana su %1$@ alle %2$@.";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "Riceverai promemoria relativi al blog %1$@ volte alla settimana di %2$@.";
@@ -8600,7 +8600,7 @@ translators: Block name. %s: The localized block name */
 "You're all up to date!" = "È tutto aggiornato!";
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
+"You're not authorized to close the account." = "Non sei autorizzato a chiudere l'account.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Hai apportato modifiche non salvate a questo articolo";
