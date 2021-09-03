@@ -10,6 +10,7 @@ class WeeklyRoundupDataProvider {
         case siteFetchingError(_ error: Error)
         case unknownErrorRetrievingStats(_ site: Blog)
         case errorRetrievingStats(_ blogID: Int, error: Error)
+        case filterWeeklyRoundupEnabledSitesError(_ error: NSError?)
     }
 
     private let context: NSManagedObjectContext
@@ -24,21 +25,27 @@ class WeeklyRoundupDataProvider {
     }
 
     func getTopSiteStats(completion: @escaping (Result<SiteStats?, Error>) -> Void) {
-        let sites: [Blog]
-
-        switch getSites() {
-        case .success(let retrievedSites):
-            guard retrievedSites.count > 0 else {
-                completion(.success(nil))
+        getSites() { [weak self] sitesResult in
+            guard let self = self else {
                 return
             }
 
-            sites = retrievedSites
-        case .failure(let error):
-            completion(.failure(error))
-            return
-        }
+            switch sitesResult {
+                case .success(let sites):
+                    guard sites.count > 0 else {
+                        completion(.success(nil))
+                        return
+                    }
 
+                    self.getTopSiteStats(from: sites, completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+                    return
+            }
+        }
+    }
+
+    func getTopSiteStats(from sites: [Blog], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         var endDateComponents = DateComponents()
         endDateComponents.weekday = 1
 
@@ -53,6 +60,7 @@ class WeeklyRoundupDataProvider {
         }
 
         var blogStats = [Blog: StatsSummaryData]()
+        var statsProcessed = 0
 
         for site in sites {
             guard let authToken = site.account?.authToken else {
@@ -69,6 +77,16 @@ class WeeklyRoundupDataProvider {
             let statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: dotComID, siteTimezone: site.timeZone)
 
             statsServiceRemote.getData(for: .week, endingOn: periodEndDate, limit: 1) { (timeStats: StatsSummaryTimeIntervalData?, error) in
+                defer {
+                    statsProcessed = statsProcessed + 1
+
+                    if statsProcessed == sites.count {
+                        let bestBlogStats = self.filterBest(5, from: blogStats)
+
+                        completion(.success(bestBlogStats))
+                    }
+                }
+
                 guard let timeStats = timeStats else {
                     guard let error = error else {
                         self.onError(DataRequestError.unknownErrorRetrievingStats(site))
@@ -87,10 +105,6 @@ class WeeklyRoundupDataProvider {
                 blogStats[site] = stats
             }
         }
-
-        let bestBlogStats = filterBest(5, from: blogStats)
-
-        completion(.success(bestBlogStats))
     }
 
     /// Filters the "best" count sites from the provided dictionary of sites and stats.  This method implicitly implements the
@@ -112,7 +126,55 @@ class WeeklyRoundupDataProvider {
     ///
     /// - Returns: the requested sites (could be an empty array if there's none) or an error if there is one.
     ///
-    private func getSites() -> Result<[Blog], Error> {
+    private func getSites(result: @escaping (Result<[Blog], Error>) -> Void) {
+
+        switch getAllSites() {
+        case .success(let sites):
+            filterCandidateSites(sites, result: result)
+        case .failure(let error):
+            result(.failure(error))
+        }
+    }
+
+    /// Filters the candidate sites for the Weekly Roundup notification
+    ///
+    private func filterCandidateSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
+        let administeredSites = sites.filter { site in
+            site.isAdmin
+        }
+
+        guard administeredSites.count > 0 else {
+            result(.success([]))
+            return
+        }
+
+        filterWeeklyRoundupEnabledSites(administeredSites, result: result)
+    }
+
+    /// Filters the sites that have the Weekly Roundup notification setting enabled.
+    ///
+    private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
+        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        noteService.getAllSettings { settings in
+            let weeklyRoundupEnabledSites = sites.filter { site in
+                guard let siteSettings = settings.first(where: { $0.blog == site }),
+                      let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
+                      let sitePreferences = pushNotificationsStream.preferences else {
+                    return false
+                }
+
+                return sitePreferences["weekly_roundup"] ?? true
+            }
+
+            result(.success(weeklyRoundupEnabledSites))
+        } failure: { (error: NSError?) in
+            let error = DataRequestError.filterWeeklyRoundupEnabledSitesError(error)
+            result(.failure(error))
+        }
+    }
+
+    private func getAllSites() -> Result<[Blog], Error> {
         let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
 
         request.sortDescriptors = [
@@ -127,15 +189,7 @@ class WeeklyRoundupDataProvider {
             return .failure(DataRequestError.siteFetchingError(error))
         }
 
-        guard let fetchedObjects = controller.fetchedObjects else {
-            return .success([])
-        }
-
-        let sites = fetchedObjects.filter { (site: Blog) in
-            site.isAdmin
-        }
-
-        return .success(sites)
+        return .success(controller.fetchedObjects ?? [])
     }
 }
 
