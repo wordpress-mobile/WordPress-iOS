@@ -47,6 +47,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic comments;
 @dynamic tags;
 @dynamic topic;
+@dynamic card;
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
@@ -503,6 +504,19 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return (NSDictionary *)jsonObj;
     }
     return nil;
+}
+
+- (void) didSave {
+    [super didSave];
+
+    // When saving a post, changes are not reflected in Reader Discover because of the usage of
+    // ReaderCard as the Core Data object. By "faking" this change we make sure Reader Discover
+    // reflects a change on a post.
+    // We can confidently set `topics` to NULL given a card represents a post OR a list of topics.
+    if (self.card.count > 0) {
+        self.card.allObjects[0].topics = NULL;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }
 }
 
 @end
