@@ -139,7 +139,15 @@ open class NotificationSettings {
     }
 
     // MARK: - Private Properties
-    fileprivate let blogPreferenceKeys      = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention, Keys.weeklyRoundup]
+    fileprivate let blogPreferenceKeys: [String] = {
+        var keys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
+
+        if Feature.enabled(.weeklyRoundup) {
+            keys.append(Keys.weeklyRoundup)
+        }
+
+        return keys
+    }()
     fileprivate let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
     fileprivate let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
     fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
