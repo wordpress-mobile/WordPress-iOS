@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-19 20:50:09+0000 */
+/* Translation-Revision-Date: 2021-09-02 03:35:34+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n確認のため、消去の前にサイトのアドレス (URL) を再入力してください。\n\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\n確認するには、閉鎖する前のユーザーアカウントをもう一度入力してください。\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "画像の「遅延読み込み」";
@@ -309,13 +309,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "週に<strong>1回<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "週に<strong>1回<\/strong>%@時";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "週に<strong>2回<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "週に<strong>2回<\/strong>%@時";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +406,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "アカウント設定";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "アカウントが閉鎖されました";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "謝辞";
@@ -515,7 +515,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "任意のトピックを追加";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "ブロックを追加";
 
 /* No comment provided by engineer. */
 "Add button text" = "ボタンのテキストを追加";
@@ -700,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "An active internet connection is required to view the history" = "履歴を表示するには有効なインターネット接続が必要です";
 
 /* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
+"An error occured while closing account." = "アカウントの閉鎖中にエラーが発生しました。";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "メニューを作成する際にエラーが発生しました。";
@@ -757,7 +757,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple の認証に失敗しました。\n二要素認証を使用している Apple ID で iCloud にログイン中かどうか確認してください。";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "設定を適用";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "適用";
@@ -1290,7 +1290,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "サイトのページを変更、追加、削除します。";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "アイキャッチ画像に対する変更は、「戻す」または「やり直す」ボタンを使用しても影響を受けません。";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "表示名を変更中";
@@ -1460,7 +1460,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "閉じる";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "アカウントを閉鎖";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "コメントを閉じる";
@@ -1478,7 +1478,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "Me 画面を閉じる";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "アカウントを閉鎖しています…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "ソースコード";
@@ -1606,7 +1606,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "確認";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "アカウントの閉鎖を確認";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "サイト削除を確認";
@@ -1987,7 +1987,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "自分のサイトをカスタマイズ";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Customize blocks";
+"Customize blocks" = "ブロックをカスタマイズ";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "メッセージをカスタマイズ";
@@ -2399,7 +2399,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "リンクを編集";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "各ブロックには独自の設定があります。 確認するには、ブロックをタップします。 画面下部にあるツールバーに設定が表示されます。";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2678,7 +2678,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "%@ のインストール中にエラーが発生しました。";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "「いいね」読み込みエラー";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "プラグイン読み込みエラー";
@@ -2741,7 +2741,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "毎日";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "毎日%@時";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "誰でも";
@@ -3305,10 +3305,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "ストーリー投稿の作り方";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "ページの編集方法";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "投稿の編集方法";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "修正方法";
@@ -4156,7 +4156,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "ブロックを行 %1$s から行 %2$s に上に移動します";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "ブロックを移動";
 
 /* Option to move Insight down in the view. */
 "Move down" = "下に移動";
@@ -4233,7 +4233,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "グラデーションのカスタマイズへ移動";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "移動して%sを選択";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "前のコンテンツシートへ移動";
@@ -4571,7 +4571,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "通知設定";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "通知時間";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4897,7 +4897,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "期間";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "アカウントを完全に閉鎖";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "サイトを完全に削除する";
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "色を選択";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "上記の色を選択";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "選択して続ける";
@@ -6028,7 +6028,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "選択したメディアがありません。";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "選択済み: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "別のメニューのロケーションを選択すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
@@ -6142,7 +6142,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "投稿をシェア";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "WordPress を友達と共有する";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "WordPress.com アカウントへのログイン中のサービス利用の情報を分析ツールと共有してください。";
@@ -6552,7 +6552,7 @@ translators: Block name. %s: The localized block name */
 "Strike Through" = "取り消し線";
 
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
-"Strikethrough" = "打ち消し";
+"Strikethrough" = "取り消し線";
 
 /* Status for Media object that is only has the mediaID locally. */
 "Stub" = "スタブ";
@@ -6757,7 +6757,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "テキストのみ";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "書式設定コントロールは、テキストブロックの編集中に表示されるキーボードの上に位置するツールバー内にあります";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7095,16 +7095,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "このサイトにはまだ何も投稿されていません。後でもう一度チェックしてみてください。";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "未解決のチャージバックがある場合、このユーザーアカウントを閉鎖できません。";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "有効になっている購入があるため、このユーザーアカウントを閉鎖できません。";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "有効になっているサブスクリプションがあるため、このユーザーアカウントを閉鎖できません。";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "このユーザーアカウントを閉鎖できませんでした。 「自分」>「ヘルプ & サポート」画面に移動して、ご連絡ください。";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8319,7 +8319,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "WordPress アプリ設定";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "WordPress アプリ - さまざまな画面で利用できるアプリ";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress ブログ";
@@ -8591,7 +8591,7 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "ユーザー名を元に戻すことはできません。";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "週に<strong>1回<\/strong>、%1$@曜日の%2$@時にブログ投稿のリマインダーを受け取ります。";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "週に%1$@回、%2$@にブログ投稿のリマインダーを受け取ります。";
@@ -8600,7 +8600,7 @@ translators: Block name. %s: The localized block name */
 "You're all up to date!" = "すべて最新版です。";
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
+"You're not authorized to close the account." = "アカウントを閉鎖する権限がありません。";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "この投稿に保存されていない変更が加えられました";

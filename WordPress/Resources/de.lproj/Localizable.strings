@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-23 08:40:40+0000 */
+/* Translation-Revision-Date: 2021-08-31 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nGib bitte die Adresse deiner Website vor dem Löschen zur Bestätigung nochmals ein.\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nBitte gib den Benutzernamen vor dem Schließen erneut an, um den Vorgang zu bestätigen.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Verzögertes Laden von Bildern";
@@ -309,13 +309,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "<strong>Einmal<\/strong> pro Woche";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "<strong>Einmal<\/strong> pro Woche um %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Zweimal<\/strong> pro Woche";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "<strong>Zweimal<\/strong> pro Woche um %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -700,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "An active internet connection is required to view the history" = "Eine aktive Internetverbindung wird benötigt, um den Verlauf anzusehen.";
 
 /* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
+"An error occured while closing account." = "Beim Verbinden des Kontos ist ein Fehler aufgetreten.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Beim Erstellen des Menus ist ein Fehler aufgetreten.";
@@ -757,7 +757,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple-Authentifizierung fehlgeschlagen.\nStelle sicher, dass du bei iCloud mit einer Apple-ID angemeldet bist, welche die zweistufige Authentifizierung unterstützt.";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "Wendet die Einstellungen an";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Übernehmen";
@@ -1290,7 +1290,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "Du kannst die Seiten deiner Website ändern, hinzufügen oder entfernen.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Änderungen am Beitragsbild sind nicht von den Buttons zum Rückgängigmachen\/Wiederholen betroffen.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Anzeigename wird geändert";
@@ -4233,7 +4233,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Navigiert zum Anpassen des Verlaufs";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "Navigiert zur Auswahl von %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Navigiert zum vorherigen Content Sheet";
@@ -4571,7 +4571,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "Einstellungen für Benachrichtigungen";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "Zeit für Benachrichtigungen";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4897,7 +4897,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "Zeitraum";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "Konto dauerhaft schließen";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Website endgültig löschen";
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "Wähle eine Farbe aus";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "Wähle oben eine Farbe aus";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Wähle ein paar aus, um fortzufahren";
@@ -6142,7 +6142,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "Beitrag teilen";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "Teile WordPress mit Freunden";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Teile Informationen über deine Nutzung von Diensten mit unserem Analysewerkzeug, während du in deinem WordPress.com-Konto angemeldet bist.";
@@ -6757,7 +6757,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Nur-Text";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Die Textformatierungskontrollen findest du beim Bearbeiten eines Textblocks in der Toolbar über der Tastatur.";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7095,16 +7095,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "Auf dieser Website wurde noch nichts veröffentlicht. Versuche es später nochmal. ";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "Dieses Benutzerkonto kann nicht geschlossen werden, solange noch ungelöste Rückbuchungen bestehen.";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "Dieses Benutzerkonto kann nicht geschlossen werden, solange es aktive Käufe hat.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "Dieses Benutzerkonto kann nicht geschlossen werden, solange es aktive Abonnements hat.";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Dieses Benutzerkonto konnte nicht geschlossen werden. Bitte kontaktiere uns über den Bildschirm Ich > Hilfe & Support.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8319,7 +8319,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "WordPress-App-Einstellungen";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "WordPress-Apps – Apps für jeden Bildschirm";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress-Blog";
@@ -8600,7 +8600,7 @@ translators: Block name. %s: The localized block name */
 "You're all up to date!" = "Du bist komplett auf dem neuesten Stand!";
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
+"You're not authorized to close the account." = "Du bist nicht autorisiert, dieses Konto zu schließen.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Du hast nicht gespeicherte Änderungen an diesem Beitrag vorgenommen";

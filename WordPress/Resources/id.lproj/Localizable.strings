@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-24 14:27:32+0000 */
+/* Translation-Revision-Date: 2021-08-31 13:54:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nUntuk konfirmasi, silakan masukkan kembali alamat situs Anda sebelum menghapus.\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\nUntuk mengonfirmasi, silakan masukkan lagi nama pengguna Anda sebelum menutup.\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Gambar \"Lazy-load\"";
@@ -309,13 +309,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "<strong>Satu kali<\/strong> seminggu";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "<strong>Satu kali<\/strong> seminggu pada %@";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "<strong>Dua kali<\/strong> seminggu";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "<strong>Dua kali<\/strong> seminggu pada %@";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +406,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "Pengaturan Akun";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "Akun ditutup";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "Pernyataan";
@@ -700,7 +700,7 @@ translators: Block name. %s: The localized block name */
 "An active internet connection is required to view the history" = "Diperlukan koneksi internet yang aktif untuk melihat riwayat";
 
 /* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
+"An error occured while closing account." = "Terjadi error saat menutup akun.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Kesalahan terjadi ketika membuat Menu.";
@@ -757,7 +757,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentikasi Apple gagal.\nPastikan Anda masuk ke iCloud dengan ID Apple yang menggunakan autentikasi dua faktor.";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "Menerapkan pengaturan";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Terapkan";
@@ -1290,7 +1290,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "Ubah, tambahkan, atau hapus halaman situs.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Perubahan pada gambar andalan tidak akan terpengaruh oleh tombol undo\/redo.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Mengganti nama tampilan";
@@ -1606,7 +1606,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "Konfirmasi";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "Konfirmasi Penutupan Akun";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Konfirmasi Penghapusan Situs";
@@ -3305,10 +3305,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "Cara membuat pos cerita";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "Cara menyunting halaman";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "Cara menyunting pos";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "Bagaimana cara memperbaikinya?";
@@ -4156,7 +4156,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "Pindahkan balok ke atas dari baris %1$s ke baris %2$s";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "Pindahkan blok";
 
 /* Option to move Insight down in the view. */
 "Move down" = "Geser bawah";
@@ -4233,7 +4233,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "Navigasikan untuk menyesuaikan gradasi";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "Navigasikan untuk memilih %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Navigasikan ke lembar konten sebelumnya";
@@ -4571,7 +4571,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "Pengaturan Pemberitahuan";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "Waktu pemberitahuan";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "Pilih warna";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "Pilih warna di atas";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "Pilih beberapa untuk melanjutkan";
@@ -6028,7 +6028,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "Media yang dipilih tidak tersedia.";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "Terpilih: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Memilih lokasi menu lain akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
@@ -6142,7 +6142,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "Bagikan Pos";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "Bagikan WordPress dengan teman";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Berbagi informasi dengan alat analitik kami tentang penggunaan layanan Anda saat sudah login ke akun WordPress.com Anda.";
@@ -6757,7 +6757,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Hanya Teks";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrol pemformatan teks terletak di dalam bilah peralatan yang ada di atas keyboard saat menyunting blok teks";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7095,16 +7095,16 @@ translators: Block name. %s: The localized block name */
 "This site has not posted anything yet. Try back later." = "Situs ini belum memposting sesuatu. Coba kembali lagi nanti.";
 
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
+"This user account cannot be closed if there are unresolved chargebacks." = "Akun pengguna ini tidak dapat ditutup jika ada proses penagihan balik yang belum terselesaikan.";
 
 /* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
+"This user account cannot be closed while it has active purchases." = "Akun pengguna berikut tidak dapat ditutup jika memiliki pembelian aktif.";
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
+"This user account cannot be closed while it has active subscriptions." = "Akun pengguna berikut tidak dapat ditutup jika memiliki langganan aktif.";
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
+"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Akun pengguna ini tidak dapat ditutup. Silakan hubungi kami dengan membuka layar Saya > Bantuan & Dukungan.";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8319,7 +8319,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "Pengaturan Aplikasi WordPress";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "Aplikasi WordPress - Aplikasi untuk semua layar";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
@@ -8600,7 +8600,7 @@ translators: Block name. %s: The localized block name */
 "You're all up to date!" = "Semua sudah diperbarui!";
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
+"You're not authorized to close the account." = "Anda tidak berwenang untuk menutup akun.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Anda telah membuat perubahan yang tidak tersimpan di pos ini";
