@@ -244,6 +244,22 @@ extension ShareModularViewController {
         reloadSitesIfNeeded()
     }
 
+    func showPostTypePicker() {
+        guard isPublishingPost == false else {
+            return
+        }
+
+        let typePicker = SharePostTypePickerViewController(postType: shareData.postType)
+        typePicker.onValueChanged = { [weak self] postType in
+            self?.tracks.trackExtensionPostTypeSelected(postType.rawValue)
+            self?.shareData.postType = postType
+            self?.refreshModulesTable()
+        }
+
+        tracks.trackExtensionPostTypeOpened()
+        navigationController?.pushViewController(typePicker, animated: true)
+    }
+
     func showTagsPicker() {
         guard let siteID = shareData.selectedSiteID, isPublishingPost == false else {
             return
@@ -298,6 +314,8 @@ extension ShareModularViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == modulesTableView {
             switch ModulesSection(rawValue: section)! {
+            case .type:
+                return 1
             case .categories:
                 return 1
             case .tags:
@@ -391,6 +409,12 @@ fileprivate extension ShareModularViewController {
     func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
         let moduleSection = ModulesSection.init(rawValue: indexPath.section) ?? .summary
         switch moduleSection {
+        case .type:
+            WPStyleGuide.Share.configureModuleCell(cell)
+            cell.textLabel?.text = NSLocalizedString("Type", comment: "Type menu item in share extension.")
+            cell.accessoryType = .disclosureIndicator
+            cell.accessibilityLabel = "Type"
+            cell.detailTextLabel?.text = shareData.postType.title
         case .categories:
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
@@ -446,6 +470,8 @@ fileprivate extension ShareModularViewController {
 
     func isModulesSectionEmpty(_ sectionIndex: Int) -> Bool {
         switch ModulesSection(rawValue: sectionIndex)! {
+        case .type:
+            return false
         case .categories:
             return false
         case .tags:
@@ -457,6 +483,13 @@ fileprivate extension ShareModularViewController {
 
     func selectedModulesTableRowAt(_ indexPath: IndexPath) {
         switch ModulesSection(rawValue: indexPath.section)! {
+        case .type:
+            modulesTableView.flashRowAtIndexPath(indexPath,
+                                                 scrollPosition: .none,
+                                                 flashLength: Constants.flashAnimationLength,
+                                                 completion: nil)
+            showPostTypePicker()
+            return
         case .categories:
             if shareData.categoryCountForSelectedSite > 1 {
                 modulesTableView.flashRowAtIndexPath(indexPath,
@@ -880,12 +913,15 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     enum ModulesSection: Int {
+        case type
         case categories
         case tags
         case summary
 
         func headerText() -> String {
             switch self {
+            case .type:
+                return String()
             case .categories:
                 return String()
             case .tags:
@@ -897,6 +933,8 @@ fileprivate extension ShareModularViewController {
 
         func footerText() -> String {
             switch self {
+            case .type:
+                return String()
             case .categories:
                 return String()
             case .tags:

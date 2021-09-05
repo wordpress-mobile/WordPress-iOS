@@ -43,6 +43,15 @@ extension Tracks {
         trackExtensionEvent(.categoriesSelected, properties: properties as [String: AnyObject]?)
     }
 
+    public func trackExtensionPostTypeOpened() {
+        trackExtensionEvent(.postTypeOpened)
+    }
+
+    public func trackExtensionPostTypeSelected(_ postType: String) {
+        let properties = ["post_type_tags": postType]
+        trackExtensionEvent(.postTypeSelected, properties: properties as [String: AnyObject]?)
+    }
+
     // MARK: - Private Helpers
 
     fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
@@ -60,5 +69,7 @@ extension Tracks {
         case error          = "wpios_share_extension_error"
         case categoriesOpened   = "wpios_share_extension_categories_opened"
         case categoriesSelected = "wpios_share_extension_categories_selected"
+        case postTypeOpened   = "wpios_share_extension_post_type_opened"
+        case postTypeSelected = "wpios_share_extension_post_type_selected"
     }
 }
