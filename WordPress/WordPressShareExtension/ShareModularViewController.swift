@@ -206,7 +206,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
         // Update the height constraint to match the number of modules * row height
         let modulesTableHeight = modulesTableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        modulesHeightConstraint.constant = (CGFloat(ModulesSection.count) * modulesTableHeight)
+
+        let visibleModuleSections = ModulesSection.allCases.filter { !isModulesSectionEmpty($0.rawValue) }.count
+        modulesHeightConstraint.constant = (CGFloat(visibleModuleSections) * modulesTableHeight)
     }
 }
 
@@ -304,7 +306,7 @@ extension ShareModularViewController {
 extension ShareModularViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == modulesTableView {
-            return ModulesSection.count
+            return ModulesSection.allCases.count
         } else {
             // Only 1 section in the sites table
             return 1
@@ -313,16 +315,7 @@ extension ShareModularViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == modulesTableView {
-            switch ModulesSection(rawValue: section)! {
-            case .type:
-                return 1
-            case .categories:
-                return 1
-            case .tags:
-                return 1
-            case .summary:
-                return 1
-            }
+            return isModulesSectionEmpty(section) ? 0 : 1
         } else {
             return rowCountForSites
         }
@@ -473,9 +466,9 @@ fileprivate extension ShareModularViewController {
         case .type:
             return false
         case .categories:
-            return false
+            return shareData.postType == .page
         case .tags:
-            return false
+            return shareData.postType == .page
         case .summary:
             return false
         }
@@ -531,6 +524,7 @@ fileprivate extension ShareModularViewController {
             self.updatePublishButtonStatus()
         }
         modulesTableView.reloadData()
+        view.setNeedsUpdateConstraints()
     }
 
     func clearCategoriesAndRefreshModulesTable() {
@@ -912,7 +906,7 @@ fileprivate extension ShareModularViewController {
 // MARK: - Table Sections
 
 fileprivate extension ShareModularViewController {
-    enum ModulesSection: Int {
+    enum ModulesSection: Int, CaseIterable {
         case type
         case categories
         case tags
@@ -943,12 +937,6 @@ fileprivate extension ShareModularViewController {
                 return String()
             }
         }
-
-        static let count: Int = {
-            var max: Int = 0
-            while let _ = ModulesSection(rawValue: max) { max += 1 }
-            return max
-        }()
     }
 }
 
