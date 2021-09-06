@@ -1,0 +1,7 @@
+¿Utilizas el bloque de incrustar? Ahora, cuando incrustes medios en tu sitio, verás una opción para "Cambiar el tamaño para dispositivos más pequeños". Actívala para cambiar el tamaño de tu contenido y que se ajuste a la pantalla; desactívala para no hacerlo.
+
+¿Te gusta la herramienta Recordatorios de blogueo? Hemos añadido una nueva función con la que podrás elegir una hora concreta para recibir una notificación.
+
+¿Necesitas cerrar tu cuenta? (¡Esperamos que nunca nos abandones!) Pero, si es necesario, ahora puedes hacerlo en los Ajustes de la cuenta.
+
+Ya no se pueden añadir etiquetas geográficas a las publicaciones en la web, por lo que hemos eliminado la opción de ubicación de los Ajustes de la entrada.

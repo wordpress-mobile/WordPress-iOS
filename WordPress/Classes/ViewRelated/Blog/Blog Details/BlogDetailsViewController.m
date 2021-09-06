@@ -332,6 +332,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
     [self.view addSubview:self.tableView];
     [self.view pinSubviewToAllEdges:self.tableView];
+    
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(pulledToRefresh) forControlEvents:UIControlEventValueChanged];
+    self.tableView.refreshControl = refreshControl;
 
     self.tableView.accessibilityIdentifier = @"Blog Details Table";
 
@@ -1986,17 +1990,41 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Domain Registration
 
-/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
-/// Used to update My Site after a successful domain registration.
 - (void)updateTableViewAndHeader
+{
+    [self updateTableViewAndHeader:^{}];
+}
+
+/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
+///
+- (void)updateTableViewAndHeader:(void(^)(void))onComplete
 {
     __weak __typeof(self) weakSelf = self;
     [self.blogService syncBlogAndAllMetadata:self.blog
-                           completionHandler:^{
-                               [weakSelf configureTableViewData];
-                               [weakSelf reloadTableViewPreservingSelection];
-                               [weakSelf.headerView setBlog:weakSelf.blog];
-                           }];
+                           completionHandler:
+     ^{
+        [weakSelf configureTableViewData];
+        [weakSelf reloadTableViewPreservingSelection];
+        [weakSelf.headerView setBlog:weakSelf.blog];
+        onComplete();
+    }];
+}
+
+#pragma mark - Pull To Refresh
+
+- (void)pulledToRefresh {
+    __weak __typeof(self) weakSelf = self;
+    
+    [self updateTableViewAndHeader: ^{
+        // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
+        // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
+        // down to refresh the site.
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            
+            [strongSelf.tableView.refreshControl endRefreshing];
+        });
+    }];
 }
 
 @end

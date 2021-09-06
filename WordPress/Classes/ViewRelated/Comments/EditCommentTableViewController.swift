@@ -5,33 +5,38 @@ class EditCommentTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    private var authorName: String?
-    private var commentContent: String?
-    private var authorWebAddress: String?
-    private var authorEmailAddress: String?
+    private let comment: Comment
+
+    private var updatedName: String?
+    private var updatedWebAddress: String?
+    private var updatedEmailAddress: String?
+    private var updatedContent: String?
+
+    private var isEmailValid = true
 
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
     // So save and use one instance of the cell.
     private let commentContentCell = EditCommentMultiLineCell.loadFromNib()
 
+    // A closure executed when the view is dismissed.
+    // Returns the Comment object and a Bool indicating if the Comment has been changed.
+    @objc var completion: ((Comment, Bool) -> Void)?
+
     // MARK: - Init
 
-    @objc convenience init(comment: Comment) {
-        self.init()
-        authorName = comment.author
-        commentContent = comment.contentForEdit()
-        authorWebAddress = comment.author_url
-        authorEmailAddress = comment.author_email
-        configureCommentContentCell()
+    convenience init(comment: Comment, completion: ((Comment, Bool) -> Void)? = nil) {
+        self.init(comment: comment)
+        self.completion = completion
     }
 
-    required convenience init() {
-        self.init(style: .insetGrouped)
-    }
-
-    override init(style: UITableView.Style) {
-        super.init(style: style)
+    @objc required init(comment: Comment) {
+        self.comment = comment
+        updatedName = comment.author
+        updatedWebAddress = comment.author_url
+        updatedEmailAddress = comment.author_email
+        updatedContent = comment.contentForEdit()
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -42,6 +47,7 @@ class EditCommentTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCommentContentCell()
         setupTableView()
         setupNavBar()
         addDismissKeyboardTapGesture()
@@ -79,16 +85,17 @@ class EditCommentTableViewController: UITableViewController {
 
         switch tableSection {
         case TableSections.name:
-            cell.configure(text: authorName)
+            cell.configure(text: updatedName)
         case TableSections.webAddress:
-            cell.configure(text: authorWebAddress, style: .url)
+            cell.configure(text: updatedWebAddress, style: .url)
         case TableSections.emailAddress:
-            cell.configure(text: authorEmailAddress, style: .email)
+            cell.configure(text: updatedEmailAddress, style: .email)
         default:
             DDLogError("Edit Comment: unsupported table section.")
             break
         }
 
+        cell.delegate = self
         return cell
     }
 
@@ -111,6 +118,8 @@ private extension EditCommentTableViewController {
     // MARK: - View config
 
     func setupTableView() {
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+
         tableView.register(EditCommentSingleLineCell.defaultNib,
                            forCellReuseIdentifier: EditCommentSingleLineCell.defaultReuseID)
 
@@ -119,7 +128,7 @@ private extension EditCommentTableViewController {
     }
 
     func configureCommentContentCell() {
-        commentContentCell.configure(text: commentContent)
+        commentContentCell.configure(text: updatedContent)
         commentContentCell.delegate = self
     }
 
@@ -127,6 +136,7 @@ private extension EditCommentTableViewController {
         title = NSLocalizedString("Edit Comment", comment: "View title when editing a comment.")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
+        updateDoneButton()
     }
 
     func addDismissKeyboardTapGesture() {
@@ -138,13 +148,16 @@ private extension EditCommentTableViewController {
     // MARK: - Nav bar button actions
 
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
-        // TODO: discard changes
-        dismiss(animated: true)
+        guard commentHasChanged() else {
+            finishWithoutUpdates()
+            return
+        }
+
+        showConfirmationAlert()
     }
 
     @objc func doneButtonTapped(sender: UIBarButtonItem) {
-        // TODO: save changes
-        dismiss(animated: true)
+        finishWithUpdates()
     }
 
     // MARK: - Tap gesture handling
@@ -153,9 +166,55 @@ private extension EditCommentTableViewController {
         view.endEditing(true)
     }
 
+    // MARK: - View dismissal handling
+
+    func finishWithUpdates() {
+        comment.author = updatedName ?? ""
+        comment.author_url = updatedWebAddress ?? ""
+        comment.author_email = updatedEmailAddress ?? ""
+        comment.content = updatedContent ?? ""
+        completion?(comment, true)
+        dismiss(animated: true)
+    }
+
+
+    func finishWithoutUpdates() {
+        completion?(comment, false)
+        dismiss(animated: true)
+    }
+
+    func showConfirmationAlert() {
+        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.")
+        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addCancelActionWithTitle(keepEditingTitle)
+
+        alertController.addDestructiveActionWithTitle(discardTitle) { [weak self] action in
+            self?.finishWithoutUpdates()
+        }
+
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // MARK: - Helpers
+
+    func updateDoneButton() {
+        navigationItem.rightBarButtonItem?.isEnabled = commentHasChanged() && isEmailValid
+    }
+
+    func commentHasChanged() -> Bool {
+        return comment.author != updatedName ||
+            comment.author_email != updatedEmailAddress ||
+            comment.author_url != updatedWebAddress ||
+            comment.contentForEdit() != updatedContent
+    }
+
     // MARK: - Table sections
 
-    private enum TableSections: Int, CaseIterable {
+    enum TableSections: Int, CaseIterable {
         // The case order dictates the table row order.
         case name
         case webAddress
@@ -178,12 +237,41 @@ private extension EditCommentTableViewController {
 
 }
 
+extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
+
+    func textUpdatedForCell(_ cell: EditCommentSingleLineCell) {
+        let updatedText = cell.textField.text?.trim()
+
+        switch cell.textFieldStyle {
+        case .text:
+            updatedName = updatedText
+        case .url:
+            updatedWebAddress = updatedText
+        case .email:
+            updatedEmailAddress = updatedText
+            isEmailValid = {
+                if updatedEmailAddress == nil || updatedEmailAddress?.isEmpty == true {
+                    return true
+                }
+                return cell.isValid
+            }()
+            cell.showInvalidState(!isEmailValid)
+        }
+
+        updateDoneButton()
+    }
+
+}
+
 extension EditCommentTableViewController: EditCommentMultiLineCellDelegate {
 
     func textViewHeightUpdated() {
-        tableView.beginUpdates()
-        tableView.scrollToRow(at: IndexPath(row: 0, section: TableSections.comment.rawValue), at: .bottom, animated: false)
-        tableView.endUpdates()
+        tableView.performBatchUpdates({})
+    }
+
+    func textUpdated(_ updatedText: String?) {
+        updatedContent = updatedText?.trim()
+        updateDoneButton()
     }
 
 }

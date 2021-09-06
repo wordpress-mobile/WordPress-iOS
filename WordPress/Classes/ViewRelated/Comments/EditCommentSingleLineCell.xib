@@ -16,12 +16,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="364" height="127"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2wP-Ee-7cF">
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2wP-Ee-7cF" userLabel="TextField">
                         <rect key="frame" x="16" y="11" width="332" height="105"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                         <connections>
-                            <outlet property="delegate" destination="LfA-no-L5x" id="ocs-Z3-8ze"/>
+                            <action selector="textFieldChanged:" destination="LfA-no-L5x" eventType="editingChanged" id="4Hk-W2-lj3"/>
+                            <outlet property="delegate" destination="LfA-no-L5x" id="J61-eD-vXs"/>
                         </connections>
                     </textField>
                 </subviews>
@@ -33,7 +34,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="textField" destination="2wP-Ee-7cF" id="jTB-O9-eh0"/>
+                <outlet property="textField" destination="2wP-Ee-7cF" id="SX1-jf-hu9"/>
             </connections>
             <point key="canvasLocation" x="-131.8840579710145" y="-23.772321428571427"/>
         </tableViewCell>

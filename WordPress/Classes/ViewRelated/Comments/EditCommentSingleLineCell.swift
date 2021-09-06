@@ -1,17 +1,26 @@
 import Foundation
 
+
+protocol EditCommentSingleLineCellDelegate: AnyObject {
+    func textUpdatedForCell(_ cell: EditCommentSingleLineCell)
+}
+
+// Used to determine TextField configuration options.
+enum TextFieldStyle {
+    case text
+    case url
+    case email
+}
+
+
 class EditCommentSingleLineCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties
 
     @IBOutlet weak var textField: UITextField!
-
-    // Used to determine TextField configuration options.
-    enum TextFieldStyle {
-        case text
-        case url
-        case email
-    }
+    weak var delegate: EditCommentSingleLineCellDelegate?
+    private(set) var textFieldStyle: TextFieldStyle = .text
+    private(set) var isValid: Bool = true
 
     // MARK: - View
 
@@ -21,8 +30,20 @@ class EditCommentSingleLineCell: UITableViewCell, NibReusable {
     }
 
     func configure(text: String? = nil, style: TextFieldStyle = .text) {
-        applyTextFieldStyle(style)
         textField.text = text
+        textFieldStyle = style
+        applyTextFieldStyle()
+    }
+
+    func showInvalidState(_ show: Bool = true) {
+        guard show else {
+            contentView.layer.borderColor = UIColor.clear.cgColor
+            return
+        }
+
+        contentView.layer.borderColor = UIColor.error.cgColor
+        contentView.layer.borderWidth = 1.0
+        contentView.layer.cornerRadius = 10
     }
 
 }
@@ -36,6 +57,10 @@ extension EditCommentSingleLineCell: UITextFieldDelegate {
         return true
     }
 
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        validateText(sender.text)
+    }
+
 }
 
 // MARK: - Private Extension
@@ -47,8 +72,8 @@ private extension EditCommentSingleLineCell {
         textField.textColor = .text
     }
 
-    func applyTextFieldStyle(_ style: TextFieldStyle) {
-        switch style {
+    func applyTextFieldStyle() {
+        switch textFieldStyle {
         case .text:
             textField.autocorrectionType = .yes
             textField.keyboardType = .default
@@ -60,6 +85,19 @@ private extension EditCommentSingleLineCell {
             textField.autocorrectionType = .no
             textField.keyboardType = .emailAddress
         }
+    }
+
+    func validateText(_ text: String?) {
+        isValid = {
+            switch textFieldStyle {
+            case .email:
+                return text?.isValidEmail() ?? false
+            default:
+                return true
+            }
+        }()
+
+        delegate?.textUpdatedForCell(self)
     }
 
 }

@@ -42,7 +42,6 @@
             <connections>
                 <outlet property="textView" destination="FkL-aB-20C" id="GOY-jR-qNE"/>
                 <outlet property="textViewMinHeightConstraint" destination="mme-Ba-30V" id="zh4-cE-ddl"/>
-                <outlet property="textViewTopConstraint" destination="mgJ-V6-WZA" id="b9P-BE-IiY"/>
             </connections>
             <point key="canvasLocation" x="-131.8840579710145" y="-16.071428571428569"/>
         </tableViewCell>
