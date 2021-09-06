@@ -1,6 +1,6 @@
 18.3
 -----
-
+* [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
 
 18.2
 -----
