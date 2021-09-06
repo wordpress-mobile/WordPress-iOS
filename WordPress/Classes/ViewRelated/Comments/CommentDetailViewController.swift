@@ -89,14 +89,18 @@ class CommentDetailViewController: UITableViewController {
             configureHeaderCell()
             return headerCell
 
+        case .content:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                return .init()
+            }
+            cell.configure(with: comment)
+            return cell
+
         case .replyIndicator:
             return replyIndicatorCell
 
         case .text:
             return configuredTextCell(for: row)
-
-        default:
-            return .init()
         }
     }
 
@@ -152,11 +156,14 @@ private extension CommentDetailViewController {
         if UIDevice.current.userInterfaceIdiom == .phone {
             tableView.directionalLayoutMargins.leading = Constants.tableLeadingInset
         }
+
+        tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
 
     func configureRows() {
         rows = [
             .header,
+            .content,
             .replyIndicator, // TODO: Conditionally add this when user has replied to the comment.
             .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage, action: visitAuthorURL),
             .text(title: .emailAddressLabelText, detail: comment.author_email),
