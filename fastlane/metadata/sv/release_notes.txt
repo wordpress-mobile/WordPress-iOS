@@ -1,9 +1,9 @@
-I version 18.0 har vi optimerat vilka bilder som används för teman, vilket resulterar i snabbare nedladdningar för dig och lägre förbrukning av din mobila datatrafik.
+Använder du inbäddningsblocket? När du bäddar in media på din webbplats finns det nu en inställning för att anpassa storleken för mindre skärmar. Aktivera detta för att ändra storleken på ditt innehåll utifrån skärmbredden. Stäng av för att inaktivera detta.
 
-Nu kan du ange eller ta bort utvald bild för ett inlägg via inställningarna för bildblocket. Om du skulle råka glömma det, finns det ny en ny banderoll ”utvald” som framhäver din aktuella markering.
+Drar du nytta av verktyget för bloggningspåminnelser? Nu har vi lagt till en möjlighet att välja vid vilket klockslag du vill bli påmind.
 
-På designsidan har nu kommentarer och aviseringar fått ett enhetligt utseende och layout. Och när du väljer domän eller design för din webbplats har nu rubrikerna förbättrats med avseende på tillgänglighet på enheter som använder stor textstorlek.
+Behöver du avsluta/stänga ditt konto? (Vi hoppas förstås att du aldrig lämnar oss!) Nu har du möjlighet att göra det direkt i kontoinställningarna.
 
-När vi informerar dig om att ett inlägg har publicerats med en notis inne i appen kommer från och med nu eventuella ampersander (och-tecken) i rubriken att visas just som en ampersand och inte som något HTML-trolleri.
+Webben har inte kvar geotaggning av inlägg. Därför har vi tagit bort alternativet för plats under inläggsinställningarna.
 
-Sist, men inte minst, har vi underlättat processen en aning när du återställer situationen efter att din autentiserings-token slutat att gälla.
+Vi har gjort fler förbättringar. Bland annat rättat till ett problem med bildbeskärning i läsaren och gjort det möjligt att rekommendera appen till dina vänner från skärmarna ”Jag” och ”Om”.

@@ -1,9 +1,7 @@
-I 18.0 har vi optimerat bilderna som används för teman, vilket ger dig snabbare nedladdningar och minskad påverkan på din mobildataplan.
+Använder du inbäddningsblocket? För mediafiler som du bäddar in på din webbplats kommer du nu att se alternativet "Ändra storlek för mindre enheter". Sätt reglaget till På för att aktivera alternativet och storleksanpassa ditt innehåll efter din skärm. Sätt reglaget till Av för att inaktivera alternativet. 
 
-Du kan nu ställa in eller ta bort en utvald bild för ett inlägg via bildblockets inställningar. Och för att hjälpa dig att komma ihåg finns det en ny "Utvald"-banner som framhäver ditt val.
+Gillar du verktyget Bloggningspåminnelser? Vi har lagt till en ny funktion som gör det möjligt att välja en specifik tid för att ta emot aviseringar.
 
-En annan ändring på designfronten är att kommentarer och aviseringar nu har fått ett enhetligt utseende och en enhetlig känsla. Och när det kommer till att välja en domän eller en design för din webbplats har rubrikerna förfinats för ökad tillgänglighet på enheter som är inställda på att använda större textstorlekar.
+Behöver du stänga ditt konto? (Vi hoppas att du aldrig lämnar oss!) Om det är nödvändigt har du nu dock möjlighet att göra det i dina kontoinställningar.
 
-När vi meddelar dig i appen om att du har publicerat ett inlägg kommer du nu att se att eventuella et-tecken i din rubrik visas till fullo, utan HTML.
-
-Sist men inte minst har vi åtgärdat ett fel som uppstod vid återställning från ogiltiga autentiseringstokens.
+Geotaggning av inlägg stöds inte längre på webben, så vi har tagit bort alternativet Plats under Inläggsinställningar.

@@ -1,9 +1,9 @@
-Na versão 18.0, nós otimizamos as imagens usadas para temas, resultando em downloads mais rápidos e impacto reduzido em seu plano de dados móveis.
+Você usa o bloco de código incorporado? Em mídias incorporadas, você verá agora a opção "Redimensionar para dispositivos menores". Ative para adaptar seu conteúdo quando o navegador for redimensionado.
 
-Agora você pode definir ou remover uma imagem destacada de um post nas configurações do bloco de imagem. E caso você esqueça, um novo banner "em destaque" evidencia sua seleção atual.
+Está gostando dos lembretes para publicação? Adicionamos uma opção que permite escolher um horário específico para ser notificado.
 
-Outra novidade no aspecto de design são os comentários e notificações, que agora têm uma aparência unificada. E quando se trata de escolher um domínio ou design para o seu site, os cabeçalhos foram aprimorados para oferecer acessibilidade em dispositivos configurados para usar tamanhos de texto maiores.
+Precisa encerrar sua conta? (Esperamos que você não nos deixe nunca!) Mas se for necessário, agora é possível através do menu Configurações da conta.
 
-Agora, quando enviarmos um aviso no aplicativo informando que você fez uma publicação, todos os "&" em seu título serão exibidos em sua forma completa e não HTML.
+A geolocalização de posts não está mais disponível na web, então removemos a opção correspondente das Configurações do post.
 
-Por último, mas não menos importante, corrigimos um problema na recuperação de tokens de autenticação invalidados.
+Também fizemos outras melhoras, incluindo uma correção para um problema de recorte no Leitor e a opção de recomendar o app através dos menus Eu e Sobre.

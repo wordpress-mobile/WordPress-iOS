@@ -1,9 +1,7 @@
-In 18.0 we’ve optimized the images used for Themes, bringing you faster downloads and reduced impact on your mobile data plan.
+Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.
 
-You can now set or remove a featured image for a post from the image block’s settings. And in case you forget, a new ‘featured’ banner highlights your current selection.
+Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.
 
-Also on the design front, comments and notifications now have a unified look and feel. And when it comes to choosing a domain or design for your site, headings have been refined for accessibility on devices set to use larger text sizes.
+Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.
 
-When we let you know you’ve published a post with an in-app notice, you’ll now see any ampersands in your title displayed in their full, non-HTML-entity glory.
-
-Last but not least, we’ve smoothed a bump in the road when recovering from invalidated authentication tokens.
+Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.

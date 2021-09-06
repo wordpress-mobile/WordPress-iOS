@@ -1,9 +1,7 @@
-Na versão 18.0, nós otimizamos as imagens usadas para temas, resultando em downloads mais rápidos e impacto reduzido em seu plano de dados móveis.
+Você utiliza o bloco de mídia incorporada? Nas mídias que você incorporou no site, agora tem a opção “Redimensionar para dispositivos menores”. Ative-a para que seu conteúdo caiba na tela ou desative-a para não redimensionar.
 
-Agora você pode definir ou remover uma imagem destacada de um post nas configurações do bloco de imagem. E caso você esqueça, um novo banner "em destaque" evidencia sua seleção atual.
+Está gostando da ferramenta Lembretes de publicação? Adicionamos uma funcionalidade que deixa você escolher um horário específico para ser notificado.
 
-Outra novidade no aspecto de design são os comentários e notificações, que agora têm uma aparência unificada. E quando se trata de escolher um domínio ou design para o seu site, os cabeçalhos foram aprimorados para oferecer acessibilidade em dispositivos configurados para usar tamanhos de texto maiores.
+Precisa excluir sua conta? Não nos abandone! Mas se for preciso, agora você pode excluí-la diretamente nas Configurações da conta.
 
-Agora, quando enviarmos um aviso no aplicativo informando que você fez uma publicação, todos os "&" em seu título serão exibidos em sua forma completa e não HTML.
-
-Por último, mas não menos importante, corrigimos um problema na recuperação de tokens de autenticação invalidados.
+As publicações com geotagging não têm mais suporte na web, por isso removemos a opção Localização de Configurações do post.

@@ -1,9 +1,9 @@
-Nella versione 18.0 abbiamo ottimizzati le immagini usate nei Temi, per garantirti download più rapidi e un impatto ridotto sul piano della tua rete dati.
+Utilizzi il blocco Incorporamenti? Per i file multimediali che incorpori nel tuo sito, visualizzerai ora un'opzione "Ridimensiona per dispositivi più piccoli". Attivala per ridimensionare i contenuti in modo che si adattino alla schermata; disattivala per disabilitarla.
 
-Ora puoi impostare o rimuovere l'immagine in evidenza per un post dalle impostazioni del blocco immagine. E in caso te ne dimenticassi, un nuovo banner in evidenza mostra la selezione corrente.
+Ti stai godendo lo strumento di Promemoria relativi al blog? Abbiamo aggiunto una nuova funzionalità che ti consente di scegliere un orario specifico per ricevere una notifica.
 
-Anche dal punto di vista del design, i commenti e le notifiche hanno un aspetto più coerente. Nell'ambito della scelta del dominio o del design del sito, le intestazioni sono state ottimizzate per migliorare l'accessibilità sui dispositivi con il testo di grandi dimensioni.
+Hai bisogno di chiudere il tuo account? (Speriamo non ci lascerai!) Se lo necessiti, ora hai la possibilità di farlo in Impostazioni account.
 
-Quando ti confermiamo la pubblicazione di un post tramite un avviso in-app, ora vedrai le e commerciali nel titolo visualizzate correttamente e non in formato HTML.
+Gli articoli di geotagging non sono più supportati sul web, quindi abbiamo rimosso l'opzione Posizione in Impostazioni articolo.
 
-Last but not least, abbiamo ottimizzato il ripristino da token di accesso invalidati.
+Abbiamo anche apportato altri miglioramenti, tra cui la correzione di un problema di ritaglio nel Reader, nonché la possibilità di consigliare l'app ai tuoi amici sulle schermate Io e Informazioni.

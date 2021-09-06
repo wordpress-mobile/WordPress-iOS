@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 132
+
+@momo-ozawa 2021-08-19
+
+- `Post`: deleted `geolocation` attribute
+- `Post`: deleted `latitudeID` attribute
+- `Post`: deleted `longitudeID` attribute
+
 ## WordPress 131
 
 @scoutharris 2021-08-04

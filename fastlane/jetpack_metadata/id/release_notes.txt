@@ -1,9 +1,7 @@
-Di versi 18.0 kami mengoptimalkan gambar yang digunakan sebagai Tema, memberikan fitur pengunduhan yang lebih cepat, dan mengurangi dampak pada paket data ponsel Anda.
+Apakah Anda menggunakan blok Tersemat? Untuk media yang Anda sematkan ke situs, Anda kini bisa melihat pilihan "Ubah ukuran untuk perangkat yang lebih kecil". Aktifkan pilihan tersebut untuk mengubah ukuran konten agar sesuai dengan layar; matikan toggle untuk menonaktifkan.
 
-Kini Anda dapat mengatur atau menghapus gambar unggulan untuk sebuah pos dari pengaturan blok gambar. Selain itu, sekadar mengingatkan, spanduk 'unggulan' baru akan menyoroti pilihan Anda saat ini.
+Menyukai alat Pengingat Blogging? Kami telah menambahkan fitur baru yang mengizinkan Anda memilih waktu khusus untuk menerima pemberitahuan.
 
-Bagian depan, komentar dan notifikasi kini juga memiliki tampilan dan nuansa yang menyatu. Saat memilih domain atau desain untuk situs Anda, kami telah menyempurnakan judul agar dapat memberikan aksesibilitas pada perangkat yang disetel menggunakan ukuran teks yang lebih besar.
+Perlu menutup akun? (Kami berharap Anda tidak meninggalkan kami!) Namun, jika diperlukan, Anda kini bisa menutup akun melalui Pengaturan Akun.
 
-Saat menerima pemberitahuan dari aplikasi bahwa Anda telah memublikasikan sebuah pos, kini Anda dapat melihat semua ampersand pada judul yang ditampilkan sepenuhnya dalam entitas non-HTML.
-
-Yang tak kalah penting, kami telah memperbaiki masalah saat memulihkan dari token autentikasi yang tidak valid.
+Pos dengan penandaan geografis tidak lagi didukung di web, jadi kami menghapus pilihan Lokasi pada Pengaturan Pos.

@@ -36,6 +36,7 @@ class BloggingRemindersTracker {
         case main
         case dayPicker = "day_picker"
         case enableNotifications = "enable_notifications"
+        case timePicker = "time_picker"
     }
 
     enum Screen: String {
@@ -56,6 +57,7 @@ class BloggingRemindersTracker {
         case daysOfWeek = "days_of_week_count"
         case source = "source"
         case screen = "screen"
+        case selectedTime = "selected_time"
     }
 
     /// The type of blog.
@@ -96,14 +98,16 @@ class BloggingRemindersTracker {
 
     }
 
-    func scheduled(_ schedule: BloggingRemindersScheduler.Schedule) {
+    func scheduled(_ schedule: BloggingRemindersScheduler.Schedule, time: Date) {
         let event: AnalyticsEvent
 
         switch schedule {
         case .none:
             event = self.event(.remindersCancelled, properties: [:])
         case .weekdays(let days):
-            event = self.event(.remindersScheduled, properties: [Property.daysOfWeek.rawValue: "\(days.count)"])
+            event = self.event(.remindersScheduled,
+                               properties: [Property.daysOfWeek.rawValue: "\(days.count)",
+                                            Property.selectedTime.rawValue: time.toLocal24HTime()])
         }
 
         track(event)
