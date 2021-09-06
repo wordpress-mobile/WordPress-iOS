@@ -34,8 +34,6 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
             return nil
         }
     }
-
-    static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
 }
 
 fileprivate extension StatsPeriodType {
@@ -54,6 +52,9 @@ fileprivate extension StatsPeriodType {
 
 class SiteStatsDashboardViewController: UIViewController {
 
+    static let lastSelectedStatsPeriodTypeKey = "LastSelectedStatsPeriodType"
+    static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
+
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
@@ -67,6 +68,7 @@ class SiteStatsDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFilterBar()
+        restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         view.accessibilityIdentifier = "stats-dashboard"
@@ -104,7 +106,6 @@ extension SiteStatsDashboardViewController: StatsForegroundObservable {
 private extension SiteStatsDashboardViewController {
 
     struct Constants {
-        static let userDefaultsKey = "LastSelectedStatsPeriodType"
         static let progressViewInitialProgress = Float(0.03)
         static let progressViewHideDelay = 1
         static let progressViewHideDuration = 0.15
@@ -147,11 +148,24 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
-        UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Constants.userDefaultsKey)
+        UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Self.lastSelectedStatsPeriodTypeKey)
     }
 
     func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
-        return StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
+        return StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Self.lastSelectedStatsPeriodTypeKey)) ?? .insights
+    }
+
+    func getLastSelectedDateFromUserDefaults() -> Date? {
+        UserDefaults.standard.object(forKey: Self.lastSelectedStatsDateKey) as? Date
+    }
+
+    func removeLastSelectedDateFromUserDefaults() {
+        UserDefaults.standard.removeObject(forKey: Self.lastSelectedStatsDateKey)
+    }
+
+    func restoreSelectedDateFromUserDefaults() {
+        periodTableViewController.selectedDate = getLastSelectedDateFromUserDefaults()
+        removeLastSelectedDateFromUserDefaults()
     }
 
     func restoreSelectedPeriodFromUserDefaults() {
@@ -178,7 +192,14 @@ private extension SiteStatsDashboardViewController {
                                                        animated: false)
             }
 
-            periodTableViewController.selectedDate = periodDate ?? StatsDataHelper.currentDateForSite()
+            if let newDate = periodDate {
+                periodTableViewController.selectedDate = newDate
+            }
+
+            if periodTableViewController.selectedDate == nil {
+                periodTableViewController.selectedDate = StatsDataHelper.currentDateForSite()
+            }
+
             let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
             periodTableViewController.selectedPeriod = selectedPeriod
         }

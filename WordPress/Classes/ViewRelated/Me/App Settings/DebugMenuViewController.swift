@@ -64,17 +64,25 @@ class DebugMenuViewController: UITableViewController {
         })
     }
 
-    // MARK: Quick Start
+    // MARK: Tools
 
     private var toolsRows: [ImmuTableRow] {
-        return [
+        var toolsRows = [
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
             }),
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
-            })
+            }),
         ]
+
+        if Feature.enabled(.weeklyRoundup) {
+            toolsRows.append(ButtonRow(title: "Weekly Roundup", action: { [weak self] _ in
+                self?.displayWeeklyRoundupDebugTools()
+            }))
+        }
+
+        return toolsRows
     }
 
     // MARK: Crash Logging
@@ -134,6 +142,13 @@ class DebugMenuViewController: UITableViewController {
 
     private func displayStoreSandboxSecretInserter() {
         let view = StoreSandboxSecretScreen(cookieJar: HTTPCookieStorage.shared)
+        let viewController = UIHostingController(rootView: view)
+
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func displayWeeklyRoundupDebugTools() {
+        let view = WeeklyRoundupDebugScreen()
         let viewController = UIHostingController(rootView: view)
 
         self.navigationController?.pushViewController(viewController, animated: true)
