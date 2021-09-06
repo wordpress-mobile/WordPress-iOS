@@ -505,16 +505,31 @@ fileprivate extension ShareModularViewController {
     }
 
     func summaryRowText() -> String {
-        if originatingExtension == .share {
-            return SummaryText.summaryPublishing
-        } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
-            return SummaryText.summaryDraftDefault
-        } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
-            return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
-                                             singular: SummaryText.summaryDraftSingular,
-                                             plural: SummaryText.summaryDraftPlural)
-        } else {
-            return String()
+        switch shareData.postType {
+        case .post:
+            if originatingExtension == .share {
+                return SummaryText.summaryPostPublishing
+            } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
+                return SummaryText.summaryDraftPostDefault
+            } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
+                return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
+                                                 singular: SummaryText.summaryDraftPostSingular,
+                                                 plural: SummaryText.summaryDraftPostPlural)
+            } else {
+                return String()
+            }
+        case .page:
+            if originatingExtension == .share {
+                return SummaryText.summaryPagePublishing
+            } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
+                return SummaryText.summaryDraftPageDefault
+            } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
+                return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
+                                                 singular: SummaryText.summaryDraftPageSingular,
+                                                 plural: SummaryText.summaryDraftPagePlural)
+            } else {
+                return String()
+            }
         }
     }
 
@@ -627,15 +642,16 @@ fileprivate extension ShareModularViewController {
 
     func showPublishingView() {
         let title: String = {
-            if self.originatingExtension == .share {
-                switch self.shareData.postType {
-                case .post:
-                    return StatusText.publishingPostTitle
-                case .page:
-                    return StatusText.publishingPageTitle
-                }
+            switch (shareData.postType, originatingExtension) {
+            case (.post, .share):
+                return StatusText.publishingPostTitle
+            case (.page, .share):
+                return StatusText.publishingPageTitle
+            case (.post, .saveToDraft):
+                return StatusText.savingPostTitle
+            case (.page, .saveToDraft):
+                return StatusText.savingPageTitle
             }
-            return StatusText.savingTitle
         }()
 
         updatePublishButtonStatus()
@@ -962,17 +978,22 @@ fileprivate extension ShareModularViewController {
     }
 
     struct SummaryText {
-        static let summaryPublishing    = NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
-        static let summaryDraftDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
-        static let summaryDraftSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
-        static let summaryDraftPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPostPublishing    = NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftPostDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryDraftPostSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
+        static let summaryDraftPostPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPagePublishing    = NSLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
+        static let summaryDraftPageDefault  = NSLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
+        static let summaryDraftPageSingular = NSLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
+        static let summaryDraftPagePlural   = NSLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
     }
 
     struct StatusText {
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
         static let publishingPostTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        static let savingPostTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
         static let publishingPageTitle = NSLocalizedString("Publishing page...", comment: "A short message that informs the user a page is being published to the server from the share extension.")
-        static let savingTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+        static let savingPageTitle = NSLocalizedString("Saving page…", comment: "A short message that informs the user a draft page is being saved to the server from the share extension.")
         static let cancellingTitle = NSLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
         static let noSitesTitle = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
     }
