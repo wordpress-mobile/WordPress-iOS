@@ -628,7 +628,12 @@ fileprivate extension ShareModularViewController {
     func showPublishingView() {
         let title: String = {
             if self.originatingExtension == .share {
-                return StatusText.publishingTitle
+                switch self.shareData.postType {
+                case .post:
+                    return StatusText.publishingPostTitle
+                case .page:
+                    return StatusText.publishingPageTitle
+                }
             }
             return StatusText.savingTitle
         }()
@@ -821,6 +826,7 @@ fileprivate extension ShareModularViewController {
                                          body: shareData.contentBody,
                                          tags: shareData.tags,
                                          categories: shareData.selectedCategoriesIDString,
+                                         type: shareData.postType,
                                          status: shareData.postStatus.rawValue,
                                          siteID: siteID,
                                          onComplete: {
@@ -852,6 +858,7 @@ fileprivate extension ShareModularViewController {
                                     body: shareData.contentBody,
                                     tags: shareData.tags,
                                     categories: shareData.selectedCategoriesIDString,
+                                    type: shareData.postType,
                                     status: shareData.postStatus.rawValue,
                                     siteID: siteID,
                                     localMediaFileURLs: localImageURLs,
@@ -963,7 +970,8 @@ fileprivate extension ShareModularViewController {
 
     struct StatusText {
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
-        static let publishingTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        static let publishingPostTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        static let publishingPageTitle = NSLocalizedString("Publishing page...", comment: "A short message that informs the user a page is being published to the server from the share extension.")
         static let savingTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
         static let cancellingTitle = NSLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
         static let noSitesTitle = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
