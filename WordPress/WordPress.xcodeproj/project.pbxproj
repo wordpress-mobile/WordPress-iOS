@@ -6724,6 +6724,7 @@
 		C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewViewController.swift; sourceTree = "<group>"; };
 		C9BDC428A69177C2CBF0C247 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C9D7DDBF2613B84500104E95 /* WordPress 119.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 119.xcdatamodel"; sourceTree = "<group>"; };
+		CB1FD8D926E605CF00EDAF06 /* Extensions 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Extensions 4.xcdatamodel"; sourceTree = "<group>"; };
 		CB48172926E0D93D008C2D9B /* SharePostTypePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePostTypePickerViewController.swift; sourceTree = "<group>"; };
 		CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPostSettings.swift; sourceTree = "<group>"; };
 		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -24916,11 +24917,12 @@
 		74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				CB1FD8D926E605CF00EDAF06 /* Extensions 4.xcdatamodel */,
 				745F7A69204460A10058BF3E /* Extensions 3.xcdatamodel */,
 				740C7DB420386E7C00FF0229 /* Extensions 2.xcdatamodel */,
 				74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */,
 			);
-			currentVersion = 745F7A69204460A10058BF3E /* Extensions 3.xcdatamodel */;
+			currentVersion = CB1FD8D926E605CF00EDAF06 /* Extensions 4.xcdatamodel */;
 			path = Extensions.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
