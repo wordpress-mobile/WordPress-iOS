@@ -1,0 +1,131 @@
+<html>
+<head>
+    <meta name="viewport" content="width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        :root {
+            /* informs WebKit that this template supports both appearance modes. */
+            color-scheme: light dark;
+
+            /* custom variables. */
+            --wordpress-blue-color: rgba(6, 117, 196, 1);
+            --mention-background-color: rgba(2, 103, 255, .1);
+            --monospace-font: ui-monospace, monospace;
+        }
+
+        /* overrides for dark color scheme. */
+        @media(prefers-color-scheme: dark) {
+            :root {
+                --wordpress-blue-color: rgba(57, 156, 227, 1);
+                --mention-background-color: rgba(2, 103, 255, .15);
+            }
+        }
+
+        /* disable WebKit text inflation algorithm to prevent text size increase on orientation change. */
+        html {
+            -webkit-text-size-adjust: none;
+        }
+
+        /* use Apple's standard style to match the native look. */
+        body {
+            font: -apple-system-body;
+            color: -apple-system-label;
+            background-color: -apple-system-background;
+        }
+
+        /* get rid of the container default margins and paddings. */
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* remove the bottom margin of ANY element that's placed last within the <body> tag. */
+        body :last-child {
+            margin-bottom: 0;
+        }
+
+        /* remove the default left/right margin for figures, as some elements (tables, images) are often embedded in <figure>. */
+        figure {
+            margin: 0
+        }
+
+        /** LINKS **/
+
+        a {
+            color: var(--wordpress-blue-color);
+        }
+
+        a.mention {
+            text-decoration: none;
+            background-color: var(--mention-background-color);
+            padding: 0 3px;
+            -webkit-border-radius: 3px;
+        }
+
+        /** IMAGES **/
+
+        .wp-block-image > img {
+            -webkit-border-radius: 3pt;
+            max-width: 100%;
+        }
+
+        /* set custom emoji images to be match current font size, and align it to the text baseline. */
+        img.emoji {
+            vertical-align: baseline;
+            max-width: 1rem;
+        }
+
+        /** BLOCKQUOTES **/
+
+        blockquote {
+            margin: auto 0;
+            padding: 10pt;
+            background-color: -apple-system-secondary-background;
+            -webkit-border-radius: 3pt;
+        }
+
+        blockquote > p:first-child {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        /** CODE SNIPPETS **/
+
+        code {
+            font-family: var(--monospace-font);
+            font-size: 0.85rem;
+            padding: 1px 3px;
+            -webkit-border-radius: 3px;
+            background-color: -apple-system-secondary-background;
+        }
+
+        /* TABLES */
+
+        table {
+            min-width: 100vw;
+            margin: auto 0;
+            padding: 0;
+            overflow-x: scroll;
+            border-collapse: collapse;
+        }
+
+        table, tr, td {
+            border: 1px solid -apple-system-separator;
+        }
+
+        td {
+            padding: 6pt;
+            vertical-align: top;
+        }
+
+        /* VIDEOS */
+
+        video {
+            width: 100vw;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    %@
+</body>
+</html>

@@ -43,7 +43,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     /// Cache the HTML template format. We only need read the template once.
     private static var htmlTemplateFormat: String? = {
-        guard let templatePath = Bundle.main.path(forResource: "richEmbedTemplate", ofType: "html"),
+        guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
               let templateString = try? String(contentsOfFile: templatePath) else {
             return nil
         }
@@ -145,6 +145,7 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
+        webView.navigationDelegate = self
         webView.scrollView.bounces = false
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.contentInset = .zero
