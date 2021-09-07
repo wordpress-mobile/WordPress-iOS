@@ -174,8 +174,8 @@ private extension CommentContentTableViewCell {
 
         webView.navigationDelegate = self
         webView.scrollView.bounces = false
-        webView.scrollView.isScrollEnabled = false
         webView.scrollView.contentInset = .zero
+        webView.scrollView.showsVerticalScrollIndicator = false
         webView.backgroundColor = .clear
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
 
