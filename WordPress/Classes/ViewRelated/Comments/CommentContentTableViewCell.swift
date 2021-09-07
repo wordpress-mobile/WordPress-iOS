@@ -32,6 +32,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var accessoryButton: UIButton!
 
     @IBOutlet private weak var webView: WKWebView!
+    @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
@@ -58,7 +59,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
-        // TODO: Configure comment content
+        // configure comment content
+        guard let templatePath = Bundle.main.path(forResource: "richEmbedTemplate", ofType: "html"),
+              let templateString = try? String(contentsOfFile: templatePath) else {
+            return
+        }
+
+        let htmlString = String(format: templateString, comment.content)
+        webView.loadHTMLString(htmlString, baseURL: nil)
 
         // TODO: Configure component visibility
     }
@@ -91,6 +99,11 @@ private extension CommentContentTableViewCell {
         accessoryButton?.tintColor = Style.buttonTintColor
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
+
+        webView.scrollView.bounces = false
+        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.contentInset = .zero
+        webView.backgroundColor = .clear
 
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont

@@ -154,6 +154,7 @@
                 <outlet property="reactionBarView" destination="ta5-Cz-flw" id="puY-Sa-fKk"/>
                 <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
                 <outlet property="webView" destination="Je0-5Q-ty6" id="YaD-wp-E6W"/>
+                <outlet property="webViewHeightConstraint" destination="dGD-8Q-LSr" id="rBk-4R-GCz"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="234.375"/>
         </tableViewCell>
