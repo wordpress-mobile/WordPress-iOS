@@ -400,7 +400,7 @@ extension ShareModularViewController: UITableViewDelegate {
 
 fileprivate extension ShareModularViewController {
     func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        let moduleSection = ModulesSection.init(rawValue: indexPath.section) ?? .summary
+        let moduleSection = ModulesSection(rawValue: indexPath.section) ?? .summary
         switch moduleSection {
         case .type:
             WPStyleGuide.Share.configureModuleCell(cell)
