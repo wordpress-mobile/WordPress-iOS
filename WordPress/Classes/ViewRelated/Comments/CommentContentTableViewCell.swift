@@ -149,8 +149,13 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         // TODO: Offload the decision making to the delegate.
-        // For now, all navigation requests will be rejected.
-        decisionHandler(.cancel)
+        // For now, all navigation requests will be rejected (except for loading local files).
+        switch navigationAction.navigationType {
+        case .other:
+            decisionHandler(.allow)
+        default:
+            decisionHandler(.cancel)
+        }
     }
 }
 
