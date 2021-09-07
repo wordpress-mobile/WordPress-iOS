@@ -63,8 +63,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
-        if let authorURL = comment.authorURL() {
-            configureImage(with: authorURL)
+        if let avatarURL = URL(string: comment.authorAvatarURL) {
+            configureImage(with: avatarURL)
         } else {
             configureImageWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
