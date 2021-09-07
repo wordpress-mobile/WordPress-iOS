@@ -12,6 +12,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var accessoryButtonAction: (() -> Void)? = nil
 
+    /// Callback called when the cell has finished loading and calculated the height of the HTML content. Passes the new content height to callback.
+    var onContentLoaded: ((CGFloat) -> Void)? = nil
+
     var replyButtonAction: (() -> Void)? = nil
 
     var likeButtonAction: (() -> Void)? = nil
@@ -45,9 +48,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         configureViews()
     }
 
+    override func prepareForReuse() {
+        onContentLoaded = nil
+    }
+
     // MARK: Public Methods
 
-    func configure(with comment: Comment) {
+    /// Configures the cell with a `Comment` object.
+    ///
+    /// - Parameters:
+    ///   - comment: The `Comment` object to display.
+    ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
+    func configure(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
@@ -65,10 +77,37 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             return
         }
 
+        self.onContentLoaded = onContentLoaded
+
         let htmlString = String(format: templateString, comment.content)
         webView.loadHTMLString(htmlString, baseURL: nil)
 
         // TODO: Configure component visibility
+    }
+}
+
+// MARK: - WKNavigationDelegate
+
+extension CommentContentTableViewCell: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // Wait until the HTML document finished loading.
+        // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
+        webView.evaluateJavaScript("document.readyState") { complete, _ in
+            guard complete != nil else {
+                return
+            }
+
+            // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
+            // However, `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
+            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
+                guard let height = height as? CGFloat else {
+                    return
+                }
+                // update the web view height obtained from the evaluated Javascript.
+                self.webViewHeightConstraint.constant = height
+                self.onContentLoaded?(height)
+            }
+        }
     }
 }
 
