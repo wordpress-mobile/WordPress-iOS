@@ -41,6 +41,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
+    /// Cache the HTML template format. We only need read the template once.
+    private static var htmlTemplateFormat: String? = {
+        guard let templatePath = Bundle.main.path(forResource: "richEmbedTemplate", ofType: "html"),
+              let templateString = try? String(contentsOfFile: templatePath) else {
+            return nil
+        }
+
+        return templateString
+    }()
+
     // MARK: Lifecycle
 
     override func awakeFromNib() {
@@ -72,15 +82,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
         // configure comment content
-        guard let templatePath = Bundle.main.path(forResource: "richEmbedTemplate", ofType: "html"),
-              let templateString = try? String(contentsOfFile: templatePath) else {
+        guard let templateFormat = Self.htmlTemplateFormat else {
             return
         }
-
         self.onContentLoaded = onContentLoaded
-
-        let htmlString = String(format: templateString, comment.content)
-        webView.loadHTMLString(htmlString, baseURL: nil)
+        webView.loadHTMLString(.init(format: templateFormat, comment.content), baseURL: nil)
 
         // TODO: Configure component visibility
     }
