@@ -690,7 +690,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             self.showAlertForReplacingFeaturedImage(mediaID: mediaID)
         }
 
-        if presentedViewController != nil {
+        if let viewController = presentedViewController, !viewController.isBeingDismissed {
             dismiss(animated: false, completion: presentAlert)
         } else {
             presentAlert()
