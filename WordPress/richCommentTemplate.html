@@ -43,6 +43,10 @@
             margin-bottom: 0;
         }
 
+        p {
+            word-wrap: break-word;
+        }
+
         /* remove the default left/right margin for figures, as some elements (tables, images) are often embedded in <figure>. */
         figure {
             margin: 0
@@ -62,10 +66,6 @@
         }
 
         /** IMAGES **/
-
-        .wp-block-image {
-            background-color: -apple-system-blue;
-        }
 
         .wp-block-image img {
             display: block;
@@ -133,7 +133,7 @@
             word-wrap: break-word;
         }
 
-        /* TABLES */
+        /** TABLES **/
 
         table {
             min-width: 100vw;
@@ -152,11 +152,23 @@
             vertical-align: top;
         }
 
-        /* VIDEOS */
+        /** VIDEOS **/
 
         video {
             width: 100vw;
             height: auto;
+        }
+
+        /** BLOCK OVERRIDES **/
+
+        /* override hardcoded background color to system default. */
+        .has-background {
+            background-color: -apple-system-background !important;
+        }
+
+        /* forcefully remove gaps from custom vertical spacers. */
+        .wp-block-spacer {
+            height: 0px !important;
         }
     </style>
 </head>
