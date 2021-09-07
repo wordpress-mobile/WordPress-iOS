@@ -407,6 +407,7 @@ fileprivate extension ShareModularViewController {
             cell.textLabel?.text = NSLocalizedString("Type", comment: "Type menu item in share extension.")
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Type"
+            cell.isUserInteractionEnabled = true
             cell.detailTextLabel?.text = shareData.postType.title
         case .categories:
             WPStyleGuide.Share.configureModuleCell(cell)
@@ -444,6 +445,7 @@ fileprivate extension ShareModularViewController {
             cell.textLabel?.text = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Tags"
+            cell.isUserInteractionEnabled = true
             if let tags = shareData.tags, !tags.isEmpty {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = .neutral(.shade70)
