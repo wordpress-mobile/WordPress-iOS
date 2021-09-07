@@ -74,7 +74,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - comment: The `Comment` object to display.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
-        print(">>>> CONFIGURE WITH COMMENT CALLED FOR CELL: \(self)")
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
@@ -99,9 +98,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
         let htmlString = String(format: templateFormat, sanitizedContent)
+        self.htmlContentCache = htmlString
 
         webView.loadHTMLString(htmlString, baseURL: nil)
-        self.htmlContentCache = htmlString
 
         // TODO: Configure component visibility
     }
@@ -131,7 +130,7 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
             }
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
-            // However, `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
+            // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
             webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
                 guard let height = height as? CGFloat else {
                     return
