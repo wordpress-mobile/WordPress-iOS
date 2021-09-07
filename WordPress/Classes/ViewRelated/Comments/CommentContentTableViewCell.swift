@@ -98,8 +98,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
         let htmlString = String(format: templateFormat, sanitizedContent)
-        self.htmlContentCache = htmlString
 
+        self.htmlContentCache = htmlString
         webView.loadHTMLString(htmlString, baseURL: nil)
 
         // TODO: Configure component visibility

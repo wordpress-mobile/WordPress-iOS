@@ -58,15 +58,20 @@
             text-decoration: none;
             background-color: var(--mention-background-color);
             padding: 0 3px;
-            -webkit-border-radius: 3px;
+            -webkit-border-radius: 3pt;
         }
 
         /** IMAGES **/
 
-        .wp-block-image > img {
+        .wp-block-image {
+            background-color: -apple-system-blue;
+        }
+
+        .wp-block-image img {
             display: block;
             margin: 0 auto; /* align center */
-            max-width: 100%;
+            width: auto;
+            max-width: 100vw;
             -webkit-border-radius: 3pt;
         }
 
@@ -104,7 +109,7 @@
         }
 
         blockquote cite::before {
-            content: "— "
+            content: "— ";
         }
 
         /** CODE SNIPPETS **/
@@ -118,11 +123,12 @@
         }
 
         code {
-            padding: 1px 3px;
+            padding: 0 3pt;
         }
 
         pre {
-            padding: 10pt 5pt 10pt;
+            padding: 10pt;
+            padding-right: 5pt;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
