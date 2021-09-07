@@ -51,6 +51,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         return templateString
     }()
 
+    /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
+    private static let resourceURL: URL? = {
+        Bundle.main.resourceURL
+    }()
+
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
 
@@ -100,7 +105,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         let htmlString = String(format: templateFormat, sanitizedContent)
 
         self.htmlContentCache = htmlString
-        webView.loadHTMLString(htmlString, baseURL: nil)
+        webView.loadHTMLString(htmlString, baseURL: Self.resourceURL)
 
         // TODO: Configure component visibility
     }

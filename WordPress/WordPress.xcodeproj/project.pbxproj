@@ -4352,6 +4352,8 @@
 		FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
 		FE23EB4226E7508D005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4126E7508D005A1698 /* richCommentTemplate.html */; };
 		FE23EB4326E7508D005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4126E7508D005A1698 /* richCommentTemplate.html */; };
+		FE23EB4526E7BD22005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4426E7BD22005A1698 /* richCommentStyle.css */; };
+		FE23EB4626E7BD22005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4426E7BD22005A1698 /* richCommentStyle.css */; };
 		FE39C135269C37C900EFB827 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
@@ -7544,6 +7546,7 @@
 		FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenter.swift; sourceTree = "<group>"; };
 		FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSource.swift; sourceTree = "<group>"; };
 		FE23EB4126E7508D005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = richCommentTemplate.html; sourceTree = "<group>"; };
+		FE23EB4426E7BD22005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = richCommentStyle.css; sourceTree = "<group>"; };
 		FE39C133269C37C900EFB827 /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
@@ -13209,6 +13212,7 @@
 				E61507E12220A0FE00213D33 /* richEmbedTemplate.html */,
 				E61507E32220A13B00213D33 /* richEmbedScript.js */,
 				FE23EB4126E7508D005A1698 /* richCommentTemplate.html */,
+				FE23EB4426E7BD22005A1698 /* richCommentStyle.css */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -15390,6 +15394,7 @@
 				1761F17526209AEE000815EF /* open-source-dark-icon-app-76x76@2x.png in Resources */,
 				1761F18A26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png in Resources */,
 				9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */,
+				FE23EB4526E7BD22005A1698 /* richCommentStyle.css in Resources */,
 				435B762A2297484200511813 /* ColorPalette.xcassets in Resources */,
 				FAB800C225AEE3D200D5D54A /* RestoreCompleteView.xib in Resources */,
 				1761F18526209AEE000815EF /* pride-icon-app-60x60@3x.png in Resources */,
@@ -15686,6 +15691,7 @@
 				9856A38A261FC206008D6354 /* UserProfileUserInfoCell.xib in Resources */,
 				FABB1FC72602FC2C00C8785C /* RegisterDomainDetailsFooterView.xib in Resources */,
 				FABB1FC82602FC2C00C8785C /* EpilogueSectionHeaderFooter.xib in Resources */,
+				FE23EB4626E7BD22005A1698 /* richCommentStyle.css in Resources */,
 				FABB1FC92602FC2C00C8785C /* reader.css in Resources */,
 				FABB1FCB2602FC2C00C8785C /* AlertView.xib in Resources */,
 				FABB1FCC2602FC2C00C8785C /* SiteStatsTableHeaderView.xib in Resources */,
