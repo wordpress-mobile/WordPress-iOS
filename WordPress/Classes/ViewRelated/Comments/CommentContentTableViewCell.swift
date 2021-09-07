@@ -85,8 +85,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         guard let templateFormat = Self.htmlTemplateFormat else {
             return
         }
+
         self.onContentLoaded = onContentLoaded
-        webView.loadHTMLString(.init(format: templateFormat, comment.content), baseURL: nil)
+
+        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
+        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
+        let sanitizedContent = comment.content
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
+
+        webView.loadHTMLString(.init(format: templateFormat, sanitizedContent), baseURL: nil)
 
         // TODO: Configure component visibility
     }
@@ -227,4 +235,7 @@ private extension String {
                                                         + "%1$d is a placeholder for the number of Likes.")
     static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
                                                 + "%1$d is a placeholder for the number of Likes.")
+
+    // pattern that detects empty HTML elements (including HTML comments within).
+    static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-z\\/:]+ -->)+<\\/[a-z]+>"
 }
