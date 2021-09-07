@@ -12,7 +12,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var accessoryButtonAction: (() -> Void)? = nil
 
-    /// Callback called when the cell has finished loading and calculated the height of the HTML content. Passes the new content height to callback.
+    /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     var onContentLoaded: ((CGFloat) -> Void)? = nil
 
     var replyButtonAction: (() -> Void)? = nil
