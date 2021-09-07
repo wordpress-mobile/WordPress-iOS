@@ -177,6 +177,7 @@ private extension CommentContentTableViewCell {
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.contentInset = .zero
         webView.backgroundColor = .clear
+        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
 
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
