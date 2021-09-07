@@ -64,8 +64,16 @@
         /** IMAGES **/
 
         .wp-block-image > img {
-            -webkit-border-radius: 3pt;
+            display: block;
+            margin: 0 auto; /* align center */
             max-width: 100%;
+            -webkit-border-radius: 3pt;
+        }
+
+        figcaption {
+            font: -apple-system-caption1;
+            color: -apple-system-secondary-label;
+            text-align: center;
         }
 
         /* set custom emoji images to be match current font size, and align it to the text baseline. */
@@ -77,6 +85,7 @@
         /** BLOCKQUOTES **/
 
         blockquote {
+            font-size: 1rem;
             margin: auto 0;
             padding: 10pt;
             background-color: -apple-system-secondary-background;
@@ -88,14 +97,34 @@
             padding-top: 0;
         }
 
+        blockquote cite {
+            display: block;
+            font: -apple-system-footnote;
+            text-align: right;
+        }
+
+        blockquote cite::before {
+            content: "— "
+        }
+
         /** CODE SNIPPETS **/
 
-        code {
+        code,
+        pre {
             font-family: var(--monospace-font);
             font-size: 0.85rem;
-            padding: 1px 3px;
-            -webkit-border-radius: 3px;
+            -webkit-border-radius: 3pt;
             background-color: -apple-system-secondary-background;
+        }
+
+        code {
+            padding: 1px 3px;
+        }
+
+        pre {
+            padding: 10pt 5pt 10pt;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         /* TABLES */

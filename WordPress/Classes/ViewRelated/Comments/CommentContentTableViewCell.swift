@@ -42,7 +42,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var likeButton: UIButton!
 
     /// Cache the HTML template format. We only need read the template once.
-    private static var htmlTemplateFormat: String? = {
+    private static let htmlTemplateFormat: String? = {
         guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
               let templateString = try? String(contentsOfFile: templatePath) else {
             return nil
@@ -50,6 +50,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         return templateString
     }()
+
+    /// Caches the HTML content, to be reused when the orientation changed.
+    private var htmlContentCache: String? = nil
 
     // MARK: Lifecycle
 
@@ -60,6 +63,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     override func prepareForReuse() {
         onContentLoaded = nil
+        htmlContentCache = nil
     }
 
     // MARK: Public Methods
@@ -70,6 +74,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - comment: The `Comment` object to display.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
+        print(">>>> CONFIGURE WITH COMMENT CALLED FOR CELL: \(self)")
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
@@ -93,10 +98,24 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         let sanitizedContent = comment.content
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
+        let htmlString = String(format: templateFormat, sanitizedContent)
 
-        webView.loadHTMLString(.init(format: templateFormat, sanitizedContent), baseURL: nil)
+        webView.loadHTMLString(htmlString, baseURL: nil)
+        self.htmlContentCache = htmlString
 
         // TODO: Configure component visibility
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // when screen orientation changed, reload the HTML content to ensure that the content height accounts for the new width.
+        guard let cachedContent = htmlContentCache,
+           traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
+            || traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {
+            return
+        }
+
+        webViewHeightConstraint.constant = 1
+        webView.loadHTMLString(cachedContent, baseURL: nil)
     }
 }
 
