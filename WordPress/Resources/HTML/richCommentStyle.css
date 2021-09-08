@@ -39,6 +39,11 @@ body :last-child {
     margin-bottom: 0;
 }
 
+/* remove the top margin of ANY element that's placed first within the <body> tag. */
+body :first-child {
+    margin-top: 0;
+}
+
 /*
  prevent ALL elements from exceeding viewport width.
  individual elements can override this style as needed since it _should_ have higher specificity.
@@ -81,6 +86,12 @@ p > img:not(.emoji) {
     margin: 0 auto; /* align center */
     width: auto;
     height: auto;
+}
+
+/* apply border radius to all image elements. */
+.wp-block-image img,
+p > img:not(.emoji),
+.tiled-gallery__item > img {
     -webkit-border-radius: 3pt;
 }
 
@@ -120,7 +131,7 @@ ul.blocks-gallery-grid {
 
 blockquote {
     font-size: 1rem;
-    margin: auto 0;
+    margin: 15pt 0;
     padding: 10pt;
     background-color: -apple-system-secondary-background;
     -webkit-border-radius: 3pt;

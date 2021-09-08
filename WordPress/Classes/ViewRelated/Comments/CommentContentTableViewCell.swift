@@ -242,7 +242,7 @@ private extension CommentContentTableViewCell {
         // cache the contents.
         commentContentCache = content
         htmlContentCache = htmlContent
-        
+
         return htmlContent
     }
 
