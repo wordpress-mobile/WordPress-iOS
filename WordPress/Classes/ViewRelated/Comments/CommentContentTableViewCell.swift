@@ -12,9 +12,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var accessoryButtonAction: (() -> Void)? = nil
 
-    /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
-    var onContentLoaded: ((CGFloat) -> Void)? = nil
-
     var replyButtonAction: (() -> Void)? = nil
 
     var likeButtonAction: (() -> Void)? = nil
@@ -40,6 +37,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
+
+    /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
+    private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
     /// Cache the HTML template format. We only need read the template once.
     private static let htmlTemplateFormat: String? = {
