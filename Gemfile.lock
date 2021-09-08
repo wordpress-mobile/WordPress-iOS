@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:wordpress-mobile/release-toolkit
-  revision: 964e732e2996730beb04953a6a0299437ed99c5e
-  branch: trunk
+  revision: 603e6f6a7ea9de03ffd7b8c1934efdc04eb98e2f
+  branch: develop
   specs:
     fastlane-plugin-wpmreleasetoolkit (1.4.0)
       activesupport (~> 5)
@@ -14,7 +14,7 @@ GIT
       octokit (~> 4.18)
       parallel (~> 1.14)
       progress_bar (~> 1.3)
-      rake (~> 12.3)
+      rake (>= 12.3, < 14.0)
       rake-compiler (~> 1.0)
 
 GEM
@@ -268,7 +268,7 @@ GEM
       options (~> 2.3.0)
     public_suffix (4.0.6)
     racc (1.5.2)
-    rake (12.3.3)
+    rake (13.0.6)
     rake-compiler (1.1.1)
       rake
     rchardet (1.8.0)
