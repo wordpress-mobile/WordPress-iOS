@@ -95,6 +95,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // configure comment content
         self.onContentLoaded = onContentLoaded
+        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
 
         // TODO: Configure component visibility
@@ -118,6 +119,10 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
                 guard let height = height as? CGFloat else {
                     return
                 }
+
+                // reset the webview to opaque again so the scroll indicator is visible.
+                webView.isOpaque = true
+
                 // update the web view height obtained from the evaluated Javascript.
                 self.webViewHeightConstraint.constant = height
                 self.onContentLoaded?(height)
@@ -167,10 +172,7 @@ private extension CommentContentTableViewCell {
 
         webView.navigationDelegate = self
         webView.scrollView.bounces = false
-        webView.scrollView.contentInset = .zero
         webView.scrollView.showsVerticalScrollIndicator = false
-        webView.backgroundColor = .clear
-        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
 
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
