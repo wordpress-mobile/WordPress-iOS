@@ -47,8 +47,8 @@ extension Tracks {
     }
 
     public func trackExtensionPostTypeSelected(_ postType: String) {
-        let properties = ["post_type_tags": postType]
         trackExtensionEvent(.postTypeSelected, properties: properties as [String: AnyObject]?)
+        let properties = ["post_type": postType]
     }
 
     // MARK: - Private Helpers
