@@ -843,20 +843,15 @@ fileprivate extension ShareModularViewController {
         let service = AppExtensionsService()
 
         prepareForPublishing()
-        service.saveAndUploadPost(title: shareData.title,
-                                         body: shareData.contentBody,
-                                         tags: shareData.tags,
-                                         categories: shareData.selectedCategoriesIDString,
-                                         type: shareData.postType,
-                                         status: shareData.postStatus.rawValue,
-                                         siteID: siteID,
-                                         onComplete: {
-                                            self.dismiss()
-        }, onFailure: {
-            let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
-            self.tracks.trackExtensionError(error)
-            self.showRetryAlert()
-        })
+        service.saveAndUploadPost(shareData: shareData,
+                                  siteID: siteID,
+                                  onComplete: {
+                                    self.dismiss()
+                                  }, onFailure: {
+                                    let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
+                                    self.tracks.trackExtensionError(error)
+                                    self.showRetryAlert()
+                                  })
     }
 
     func uploadPostAndMedia(siteID: Int, localImageURLs: [URL]) {
@@ -875,21 +870,16 @@ fileprivate extension ShareModularViewController {
         }
 
         prepareForPublishing()
-        service.uploadPostWithMedia(title: shareData.title,
-                                    body: shareData.contentBody,
-                                    tags: shareData.tags,
-                                    categories: shareData.selectedCategoriesIDString,
-                                    type: shareData.postType,
-                                    status: shareData.postStatus.rawValue,
-                                    siteID: siteID,
-                                    localMediaFileURLs: localImageURLs,
-                                    requestEnqueued: {
-                                        self.dismiss()
-        }, onFailure: {
-            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
-            self.tracks.trackExtensionError(error)
-            self.showRetryAlert()
-        })
+        service.saveAndUploadPostWithMedia(shareData: shareData,
+                                           siteID: siteID,
+                                           localMediaFileURLs: localImageURLs,
+                                           requestEnqueued: {
+                                            self.dismiss()
+                                           }, onFailure: {
+                                            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+                                            self.tracks.trackExtensionError(error)
+                                            self.showRetryAlert()
+                                           })
     }
 
     func showRetryAlert() {
