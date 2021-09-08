@@ -12,7 +12,7 @@
 @media(prefers-color-scheme: dark) {
     :root {
         --wordpress-blue-color: rgba(57, 156, 227, 1);
-        --mention-background-color: rgba(2, 103, 255, .15);
+        --mention-background-color: rgba(2, 103, 255, .2);
     }
 }
 
