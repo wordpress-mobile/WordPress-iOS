@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Make your WordPress site faster and safer.
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -38,15 +39,16 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.1-whats-new"
+msgctxt "v18.2-whats-new"
 msgid ""
-"Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.\n"
+"- Stay informed! You can now receive a weekly summary of the activity on your most popular sites.\n"
 "\n"
-"Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.\n"
+"- You have even more control of your site comments — when you edit them you can now also adjust the author’s name, email address, and web address.\n"
+"We have made a couple of handy tweaks to the Block editor. The Embed block now gives you a sneak preview when you add something from YouTube or Twitter (more providers to come). Also, when you go to insert a block and nothing is found, there is now a no results view.\n"
 "\n"
-"Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.\n"
+"- If you go to Post Settings > Post Format, you will find the “Standard” option still at the top, but the other options are now neatly alphabetized below. (Options will vary with themes!)\n"
 "\n"
-"Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.\n"
+"- And one more quick one: Refreshing your site is now super easy — just pull to refresh from the My Site screen!\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
