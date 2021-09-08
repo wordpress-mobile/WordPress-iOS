@@ -236,13 +236,13 @@ private extension CommentContentTableViewCell {
         // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
         // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
         let htmlContent = String(format: htmlTemplateFormat, content
-                                    .trimmingCharacters(in: .whitespacesAndNewlines)
-                                    .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression]))
+                                    .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
+                                    .trimmingCharacters(in: .whitespacesAndNewlines))
 
         // cache the contents.
         commentContentCache = content
         htmlContentCache = htmlContent
-
+        
         return htmlContent
     }
 
@@ -287,5 +287,5 @@ private extension String {
                                                 + "%1$d is a placeholder for the number of Likes.")
 
     // pattern that detects empty HTML elements (including HTML comments within).
-    static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-z\\/:]+ -->)+<\\/[a-z]+>"
+    static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 }
