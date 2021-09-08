@@ -56,6 +56,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         Bundle.main.resourceURL
     }()
 
+    /// Used to determine whether the cache is still valid or not.
+    private var commentContentCache: String? = nil
+
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
 
@@ -91,21 +94,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
         // configure comment content
-        guard let templateFormat = Self.htmlTemplateFormat else {
-            return
-        }
-
         self.onContentLoaded = onContentLoaded
-
-        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
-        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
-        let sanitizedContent = comment.content
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
-        let htmlString = String(format: templateFormat, sanitizedContent)
-
-        self.htmlContentCache = htmlString
-        webView.loadHTMLString(htmlString, baseURL: Self.resourceURL)
+        webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
 
         // TODO: Configure component visibility
     }
@@ -229,6 +219,41 @@ private extension CommentContentTableViewCell {
         }
 
         avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
+    }
+
+    /// Returns a formatted HTML string by loading the template for rich comment.
+    ///
+    /// The method will try to return cached content if possible, by detecting whether the content matches the previous content.
+    /// If it's different (e.g. due to edits), it will reprocess the HTML string.
+    ///
+    /// - Parameter content: The content value from the `Comment` object.
+    /// - Returns: Formatted HTML string to be displayed in the web view.
+    ///
+    func formattedHTMLString(for content: String) -> String {
+        // return the previous HTML string if the comment content is unchanged.
+        if let previousCommentContent = commentContentCache,
+           let previousHTMLString = htmlContentCache,
+           previousCommentContent == content {
+            return previousHTMLString
+        }
+
+        // otherwise: sanitize the content, cache it, and then return it.
+        guard let htmlTemplateFormat = Self.htmlTemplateFormat else {
+            DDLogError("\(Self.classNameWithoutNamespaces()): Failed to load HTML template format for comment content.")
+            return String()
+        }
+
+        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
+        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
+        let htmlContent = String(format: htmlTemplateFormat, content
+                                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                                    .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression]))
+
+        // cache the contents.
+        commentContentCache = content
+        htmlContentCache = htmlContent
+
+        return htmlContent
     }
 
     func likeButtonTitle(for numberOfLikes: Int) -> String {
