@@ -39,8 +39,20 @@ body :last-child {
     margin-bottom: 0;
 }
 
+/*
+ prevent ALL elements from exceeding viewport width.
+ individual elements can override this style as needed since it _should_ have higher specificity.
+*/
+* {
+    max-width: 100vw;
+}
+
 p {
     word-wrap: break-word;
+}
+
+div {
+    margin-bottom: 5pt;
 }
 
 /* remove the default left/right margin for figures, as some elements (tables, images) are often embedded in <figure>. */
@@ -63,11 +75,12 @@ a.mention {
 
 /** IMAGES **/
 
-.wp-block-image img {
+.wp-block-image img,
+p > img:not(.emoji) {
     display: block;
     margin: 0 auto; /* align center */
     width: auto;
-    max-width: 100vw;
+    height: auto;
     -webkit-border-radius: 3pt;
 }
 
@@ -87,7 +100,6 @@ ul.blocks-gallery-grid {
     list-style-type: none;
     margin: auto 0;
     padding: 0;
-    max-width: 100vw;
     display: flex;
     -webkit-flex-wrap: wrap;
     align-items: center;
@@ -153,10 +165,12 @@ pre {
 /** TABLES **/
 
 table {
+    /* allow tables to span outside the viewport, since it is scrollable. */
+    max-width: initial;
+    overflow-x: scroll;
     min-width: 100vw;
     margin: auto 0;
     padding: 0;
-    overflow-x: scroll;
     border-collapse: collapse;
 }
 
@@ -186,4 +200,12 @@ video {
 /* forcefully remove gaps from custom vertical spacers. */
 .wp-block-spacer {
     height: 0px !important;
+}
+
+/*
+ forcefully assign default text color.
+ some contents apply inline text color styling which may lead to low contrast.
+ */
+p, em, strong, b {
+    color: -apple-system-label !important;
 }
