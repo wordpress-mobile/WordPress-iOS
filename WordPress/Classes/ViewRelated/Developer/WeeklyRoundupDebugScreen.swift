@@ -13,10 +13,18 @@ struct BlueButton: ButtonStyle {
 
 struct WeeklyRoundupDebugScreen: View {
     @SwiftUI.Environment(\.presentationMode) var presentationMode
+    @State private var scheduledDate: Date? = nil
 
     var body: some View {
-        //NavigationView {
-            VStack(alignment: .center) {
+        VStack(alignment: .center) {
+            Group {
+                scheduleDetailsView()
+
+                Spacer()
+                    .frame(height: 16)
+            }
+
+            Group {
                 HStack {
                     Spacer()
 
@@ -76,18 +84,44 @@ struct WeeklyRoundupDebugScreen: View {
 
                 Spacer()
                     .frame(height: 16)
-
-                Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification.  It will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Spacer()
             }
-            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-        //}
+
+            Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification.  It will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
+                .fixedSize(horizontal: false, vertical: true)
+
+            Spacer()
+        }
+        .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
         .navigationBarTitle("Weekly Roundup", displayMode: .inline)
+        .onAppear {
+            self.updateBackgroundTaskDate()
+        }
+    }
+
+    func updateBackgroundTaskDate() {
+        WordPressAppDelegate.shared?.backgroundTasksCoordinator.getScheduledExecutionDate(taskIdentifier: WeeklyRoundupBackgroundTask.identifier, completion: { date in
+
+            self.scheduledDate = date
+        })
+    }
+
+    func scheduleDetailsView() -> some View {
+        if let scheduledDate = self.scheduledDate {
+            return AnyView(HStack {
+                Text("Earliest begin date:")
+                Spacer()
+                Text("\(scheduledDate.shortStringWithTime())")
+            })
+        } else {
+            return AnyView(HStack {
+                Text("Not scheduled.")
+            })
+        }
     }
 
     func scheduleImmediately() {
+        updateBackgroundTaskDate()
+
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
             if authorized {
                 typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
@@ -102,6 +136,8 @@ struct WeeklyRoundupDebugScreen: View {
     }
 
     func scheduleDelayed(taskRunDelay: TimeInterval, staticNotificationDelay: TimeInterval) {
+        updateBackgroundTaskDate()
+
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
             if authorized {
                 DispatchQueue.main.async {
