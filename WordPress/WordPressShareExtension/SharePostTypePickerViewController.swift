@@ -172,14 +172,14 @@ fileprivate extension SharePostTypePickerViewController {
 
 extension SharePostTypePickerViewController {
     @objc func cancelWasPressed() {
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @objc func selectWasPressed() {
         if originallySelectedPostType != selectedPostType {
             onValueChanged?(selectedPostType)
         }
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 

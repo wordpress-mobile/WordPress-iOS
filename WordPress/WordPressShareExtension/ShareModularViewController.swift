@@ -231,7 +231,7 @@ extension ShareModularViewController {
             editor.shareData = shareData
             editor.originatingExtension = originatingExtension
         }
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @objc func publishWasPressed() {
