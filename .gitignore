@@ -90,7 +90,7 @@ Artifacts
 WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
 WordPress/Resources/Icons-Internal
 
-# All encoded secrets should be stored under .configure-files
+# All encrypted secrets should be stored under .configure-files
 # Everything without a .enc extension is ignored
 .configure-files/*
 !.configure-files/*.enc
