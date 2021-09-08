@@ -99,18 +99,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // TODO: Configure component visibility
     }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        // when screen orientation changed, reload the HTML content to ensure that the content height accounts for the new width.
-        guard let cachedContent = htmlContentCache,
-           traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
-            || traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {
-            return
-        }
-
-        webViewHeightConstraint.constant = 1
-        webView.loadHTMLString(cachedContent, baseURL: nil)
-    }
 }
 
 // MARK: - WKNavigationDelegate
