@@ -1,6 +1,7 @@
 import Foundation
 import CoreTelephony
 import WordPressAuthenticator
+import WordPressKit
 
 import SupportSDK
 import ZendeskCoreSDK
@@ -115,13 +116,14 @@ extension NSNotification.Name {
             }
 
             self.sourceTag = sourceTag
-            WPAnalytics.track(.supportNewRequestViewed)
+            self.trackSourceEvent(.supportNewRequestViewed)
 
-            let newRequestConfig = self.createRequest()
-            let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
-            ZendeskUtils.showZendeskView(newRequestController)
+            self.createRequest() { requestConfig in
+                let newRequestController = RequestUi.buildRequestUi(with: [requestConfig])
+                ZendeskUtils.showZendeskView(newRequestController)
 
-            identityUpdated?(newIdentity)
+                identityUpdated?(newIdentity)
+            }
         }
     }
 
@@ -139,15 +141,15 @@ extension NSNotification.Name {
             }
 
             self.sourceTag = sourceTag
-            WPAnalytics.track(.supportTicketListViewed)
+            self.trackSourceEvent(.supportTicketListViewed)
 
             // Get custom request configuration so new tickets from this path have all the necessary information.
-            let newRequestConfig = self.createRequest()
+            self.createRequest() { requestConfig in
+                let requestListController = RequestUi.buildRequestList(with: [requestConfig])
+                ZendeskUtils.showZendeskView(requestListController)
 
-            let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
-            ZendeskUtils.showZendeskView(requestListController)
-
-            identityUpdated?(newIdentity)
+                identityUpdated?(newIdentity)
+            }
         }
     }
 
@@ -174,7 +176,9 @@ extension NSNotification.Name {
         }, failure: { error in })
     }
 
-    func createRequest(planService: PlanService? = nil) -> RequestUiConfiguration {
+    func createRequest(planServiceRemote: PlanServiceRemote? = nil,
+                       siteID: Int? = nil,
+                       completion: @escaping (RequestUiConfiguration) -> Void) {
 
         let requestConfig = RequestUiConfiguration()
 
@@ -191,16 +195,29 @@ extension NSNotification.Name {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: ZendeskUtils.getHighestPriorityPlan(planService: planService)))
-        requestConfig.customFields = ticketFields
 
-        // Set tags
-        requestConfig.tags = ZendeskUtils.getTags()
+        ZendeskUtils.getZendeskMetadata(planServiceRemote: planServiceRemote, siteID: siteID) { result in
+            var tags = ZendeskUtils.getTags()
+            switch result {
+            case .success(let metadata):
+                guard let metadata = metadata else {
+                    break
+                }
 
-        // Set the ticket subject
-        requestConfig.subject = Constants.ticketSubject
+                ticketFields.append(CustomField(fieldId: TicketFieldIDs.plan, value: metadata.plan))
+                ticketFields.append(CustomField(fieldId: TicketFieldIDs.addOns, value: metadata.jetpackAddons))
+                tags.append(contentsOf: metadata.jetpackAddons)
+            case .failure(let error):
+                DDLogError("Unable to fetch zendesk metadata - \(error.localizedDescription)")
+            }
+            requestConfig.customFields = ticketFields
+            // Set tags
+            requestConfig.tags = tags
 
-        return requestConfig
+            // Set the ticket subject
+            requestConfig.subject = Constants.ticketSubject
+            completion(requestConfig)
+        }
     }
 
     // MARK: - Device Registration
@@ -645,13 +662,21 @@ private extension ZendeskUtils {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         let allBlogs = blogService.blogsForAllAccounts()
+        var tags = [String]()
+
+        // Add sourceTag
+        if let sourceTagOrigin = ZendeskUtils.sharedInstance.sourceTag?.origin {
+            tags.append(sourceTagOrigin)
+        }
+
+        // Add platformTag
+        tags.append(Constants.platformTag)
 
         // If there are no sites, then the user has an empty WP account.
         guard allBlogs.count > 0 else {
-            return [Constants.wpComTag]
+            tags.append(Constants.wpComTag)
+            return tags
         }
-
-        var tags = [String]()
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
@@ -665,19 +690,17 @@ private extension ZendeskUtils {
             tags.append(Constants.wpComTag)
         }
 
-        // Add sourceTag
-        if let sourceTagOrigin = ZendeskUtils.sharedInstance.sourceTag?.origin {
-            tags.append(sourceTagOrigin)
-        }
 
-        // Add platformTag
-        tags.append(Constants.platformTag)
 
         // Add gutenbergIsDefault tag
         if let blog = blogService.lastUsedBlog() {
             if blog.isGutenbergEnabled {
                 tags.append(Constants.gutenbergIsDefault)
             }
+        }
+
+        if let currentSite = blogService.lastUsedOrFirstBlog(), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
+            tags.append(Constants.mobileSelfHosted)
         }
 
         return tags
@@ -710,6 +733,17 @@ private extension ZendeskUtils {
 
         return networkInformation.joined(separator: "\n")
     }
+
+    func trackSourceEvent(_ event: WPAnalyticsStat) {
+        guard let sourceTag = sourceTag else {
+            WPAnalytics.track(event)
+            return
+        }
+
+        let properties = ["source": sourceTag.origin ?? sourceTag.name]
+        WPAnalytics.track(event, withProperties: properties)
+    }
+
 
     // MARK: - Push Notification Helpers
 
@@ -932,7 +966,7 @@ private extension ZendeskUtils {
     // MARK: - Plans
 
     /// Retrieves the highest priority plan, if it exists
-    /// - Returns: the highest priority plan found, or an empty string if none was foundq
+    /// - Returns: the highest priority plan found, or an empty string if none was found
     static func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
 
         let availablePlans = getAvailablePlansWithPriority(planService: planService)
@@ -970,6 +1004,54 @@ private extension ZendeskUtils {
 
         }
         .sorted { $0.priority > $1.priority }
+    }
+
+    /// Retrieves up to date Zendesk metadata from the backend
+    /// - Parameters:
+    ///   - planServiceRemote: optional plan service remote. The default is used if none is passed
+    ///   - siteID: optional site id. The current is used if none is passed
+    ///   - completion: completion closure executed at the completion of the remote call
+    static func getZendeskMetadata(planServiceRemote: PlanServiceRemote? = nil,
+                                   siteID: Int? = nil,
+                                   completion: @escaping (Result<ZendeskMetadata?, Error>) -> Void) {
+
+        guard let service = planServiceRemote ?? defaultPlanServiceRemote,
+              let validSiteID = siteID ?? currentSiteID else {
+
+            // This is not considered an error condition, there's simply no ZendeskMetaData,
+            // most likely because the user is logged out.
+            completion(.success(nil))
+            return
+        }
+
+        service.getZendeskMetadata(siteID: validSiteID, completion: { result in
+            switch result {
+            case .success(let metadata):
+                completion(.success(metadata))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+
+    /// Provides the default PlanServiceRemote to `getZendeskMetadata`
+    private static var defaultPlanServiceRemote: PlanServiceRemote? {
+        guard let api = AccountService(managedObjectContext: ContextManager.shared.mainContext)
+                .defaultWordPressComAccount()?
+                .wordPressComRestApi else {
+            return nil
+        }
+        return PlanServiceRemote(wordPressComRestApi: api)
+    }
+
+    /// Provides the current site id to `getZendeskMetadata`, if it exists
+    private static var currentSiteID: Int? {
+        guard let siteID = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+                .lastUsedOrFirstBlog()?
+                .dotComID else {
+            return nil
+        }
+        return Int(truncating: siteID)
     }
 
     struct SupportPlan {
@@ -1016,6 +1098,7 @@ private extension ZendeskUtils {
         static let nameFieldCharacterLimit = 50
         static let sourcePlatform = AppConstants.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
+        static let mobileSelfHosted = "selected_site_self_hosted"
     }
 
     enum TicketFieldIDs {
@@ -1031,6 +1114,7 @@ private extension ZendeskUtils {
         static let currentSite: Int64 = 360000103103
         static let sourcePlatform: Int64 = 360009311651
         static let appLanguage: Int64 = 360008583691
+        static let addOns: Int64 = 360025010672
     }
 
     struct LocalizedText {

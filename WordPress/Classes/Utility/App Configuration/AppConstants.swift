@@ -2,6 +2,7 @@ import Foundation
 import WordPressAuthenticator
 
 @objc class AppConstants: NSObject {
+    static let itunesAppID = "335703880"
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
     static let productBlogURL = "https://blog.wordpress.com"
@@ -19,6 +20,13 @@ import WordPressAuthenticator
     static let pushNotificationAppId = "org.wordpress.appstore"
     #endif
     #endif
+}
+
+// MARK: - Tab bar order
+@objc enum WPTab: Int {
+    case mySites
+    case reader
+    case notifications
 }
 
 // MARK: - Localized Strings

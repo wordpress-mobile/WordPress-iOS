@@ -1,0 +1,9 @@
+¿Usas el bloque de incrustación? Para los medios que incrustas en tu sitio, ahora verás una opción para "Redimensionar para dispositivos más pequeños". Actívala para cambiar el tamaño de tu contenido para que se ajuste a tu pantalla; desactívala para que no se ajuste.
+
+¿Disfrutas de la herramienta de recordatorio de blogueo? Hemos añadido una nueva característica que te permite elegir una hora específica para recibir un aviso.
+
+¿Necesitas cerrar tu cuenta? (¡Esperamos que nunca nos dejes!) Pero si lo necesitas, ahora tienes la posibilidad de hacerlo en los ajustes de tu cuenta.
+
+El etiquetado geográfico de las entradas ya no es compatible en la web, así que hemos eliminado la opción de ubicación en los ajustes de las entradas.
+
+También hemos hecho otras mejoras, incluyendo una corrección de un problema de recorte en el lector, así como la posibilidad de recomendar la aplicación a tus amigos en las pantallas "Yo" y "Acerca de".

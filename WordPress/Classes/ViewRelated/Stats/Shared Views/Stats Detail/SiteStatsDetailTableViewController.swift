@@ -58,6 +58,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         clearExpandedRows()
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.register(SiteStatsTableHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
@@ -128,7 +129,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return 0
         }
 
-        return SiteStatsTableHeaderView.headerHeight()
+        return UITableView.automaticDimension
     }
 
 }

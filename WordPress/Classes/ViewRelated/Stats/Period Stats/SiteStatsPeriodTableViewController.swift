@@ -78,6 +78,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         tableView.register(SiteStatsTableHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         tableView.estimatedRowHeight = 500
+        tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -102,9 +103,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return SiteStatsTableHeaderView.headerHeight()
-    }
 }
 
 extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {

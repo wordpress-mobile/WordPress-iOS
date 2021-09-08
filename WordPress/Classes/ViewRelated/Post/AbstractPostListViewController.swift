@@ -897,7 +897,7 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Actions
 
-    @objc func publishPost(_ apost: AbstractPost) {
+    @objc func publishPost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
         let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
@@ -911,6 +911,7 @@ class AbstractPostListViewController: UIViewController,
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
             PostCoordinator.shared.publish(apost)
+            completion?()
         }
 
         present(alertController, animated: true)

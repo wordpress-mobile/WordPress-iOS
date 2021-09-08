@@ -41,10 +41,7 @@ final class WizardNavigation: GutenbergLightNavigationController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if FeatureFlag.siteCreationHomePagePicker.enabled {
-            return .default
-        }
-        return super.preferredStatusBarStyle
+        return .default
     }
 
     private func configureSteps() {

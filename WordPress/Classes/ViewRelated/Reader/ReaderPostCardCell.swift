@@ -3,7 +3,7 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-protocol ReaderTopicsChipsDelegate: class {
+protocol ReaderTopicsChipsDelegate: AnyObject {
     func didSelect(topic: String)
     func heightDidChange()
 }
@@ -381,7 +381,7 @@ private extension ReaderPostCardCell {
             configureArrowImage()
         }
 
-        blogNameLabel.text = contentProvider.blogNameForDisplay()
+        blogNameLabel.text = blogName()
         blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()
 
         let dateString: String = datePublished()
@@ -910,7 +910,7 @@ private extension ReaderPostCardCell {
     }
 
     func blogName() -> String {
-        return contentProvider?.blogNameForDisplay() ?? ""
+        return contentProvider?.blogNameForDisplay?() ?? ""
     }
 
     func postAuthor() -> String {

@@ -332,6 +332,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
     [self.view addSubview:self.tableView];
     [self.view pinSubviewToAllEdges:self.tableView];
+    
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(pulledToRefresh) forControlEvents:UIControlEventValueChanged];
+    self.tableView.refreshControl = refreshControl;
 
     self.tableView.accessibilityIdentifier = @"Blog Details Table";
 
@@ -347,7 +351,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
-    [self.tableView registerClass:[BloggingRemindersCell class] forCellReuseIdentifier:[BloggingRemindersCell reuseIdentifier]];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -429,10 +432,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.shouldScrollToViewSite == YES) {
         [self scrollToElement:QuickStartTourElementViewSite];
         self.shouldScrollToViewSite = NO;
-    }
-    if (![Feature enabled:FeatureFlagNewNavBarAppearance] &&
-        [AppConfiguration showsWhatIsNew]) {
-        [WPTabBarController.sharedInstance presentWhatIsNewOn:self];
     }
 }
 
@@ -664,27 +663,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-
-    BlogDetailsSection *currentSection = self.tableSections[section];
-
-    if (self.shouldShowBloggingRemindersCard && currentSection.category == BlogDetailsSectionCategoryReminders) {
-        return BlogDetailReminderSectionFooterHeight;
-    }
     return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = self.tableSections[sectionNum];
 
-    if (self.shouldShowBloggingRemindersCard && section.category == BlogDetailsSectionCategoryReminders && section.showQuickStartMenu == false) {
-        return BlogDetailReminderSectionHeaderHeight;
-    }
-
-    if (self.shouldShowBloggingRemindersCard && sectionNum == 1 && section.showQuickStartMenu == false) {
-        return BlogDetailReminderSectionHeaderHeight - BlogDetailReminderSectionFooterHeight;
-    }
-
-    if (section.showQuickStartMenu == true || (sectionNum == 0 && [Feature enabled:FeatureFlagNewNavBarAppearance])) {
+    if (section.showQuickStartMenu == true || sectionNum == 0) {
         return BlogDetailQuickStartSectionHeight;
     } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
         // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
@@ -762,9 +747,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagBloggingReminders]) {
-        [marr addObject:[self bloggingRemindersSectionViewModel]];
-    }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1002,6 +984,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                        }];
 
     [rows addObject:row];
+
+    if ([Feature enabled:FeatureFlagDomains]) {
+        BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
+                                                                identifier:BlogDetailsSettingsCellIdentifier
+                                                   accessibilityIdentifier:@"Domains Row"
+                                                                     image:[UIImage gridiconOfType:GridiconTypeDomains]
+                                                                  callback:^{
+                                                                    [weakSelf showDomains];
+                                                      }];
+        [rows addObject:domainsRow];
+    }
 
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryConfigure];
@@ -1404,10 +1397,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([cell isKindOfClass:[BloggingRemindersCell class]]) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;
@@ -1769,6 +1758,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
+- (void)showDomains
+{
+    /// - TODO: DOMAINS - Add tracking  here
+    UIViewController *controller = [self makeDomainsDashboardViewController];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    [self showDetailViewController:controller sender:self];
+}
+
 -(void)showJetpackSettings
 {
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
@@ -1989,6 +1986,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     return nil;
+}
+
+#pragma mark - Domain Registration
+
+- (void)updateTableViewAndHeader
+{
+    [self updateTableViewAndHeader:^{}];
+}
+
+/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
+///
+- (void)updateTableViewAndHeader:(void(^)(void))onComplete
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.blogService syncBlogAndAllMetadata:self.blog
+                           completionHandler:
+     ^{
+        [weakSelf configureTableViewData];
+        [weakSelf reloadTableViewPreservingSelection];
+        [weakSelf.headerView setBlog:weakSelf.blog];
+        onComplete();
+    }];
+}
+
+#pragma mark - Pull To Refresh
+
+- (void)pulledToRefresh {
+    __weak __typeof(self) weakSelf = self;
+    
+    [self updateTableViewAndHeader: ^{
+        // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
+        // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
+        // down to refresh the site.
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            
+            [strongSelf.tableView.refreshControl endRefreshing];
+        });
+    }];
 }
 
 @end

@@ -780,7 +780,7 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func publishedRowData() -> [StatsTotalRowData] {
-        return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
+        return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title.stringByDecodingXMLCharacters(),
                                                                                      data: "",
                                                                                      showDisclosure: true,
                                                                                      disclosureURL: $0.postURL,

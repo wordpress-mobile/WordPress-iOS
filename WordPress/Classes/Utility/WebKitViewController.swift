@@ -88,22 +88,21 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var widthConstraint: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
-    private var useLightStyle: Bool {
-        navigationController is LightNavigationController || FeatureFlag.newNavBarAppearance.enabled
-    }
-
     private var barButtonTintColor: UIColor {
-        useLightStyle ? .listIcon : UIColor(light: .white, dark: .neutral(.shade70))
+        .listIcon
     }
 
     private var navBarTitleColor: UIColor {
-        useLightStyle ? .text : UIColor(light: .white, dark: .neutral(.shade70))
+        .text
     }
 
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
     }
+
+    /// Precautionary variable that's in place to make sure the web view doesn't run into an endless loop of reloads if it encounters an error.
+    private var hasAttemptedAuthRecovery = false
 
     @objc init(configuration: WebViewControllerConfiguration) {
         let config = WKWebViewConfiguration()
@@ -243,7 +242,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         setupCloseButton()
         styleNavBar()
-        styleNavBarButtons()
     }
 
     private func setupRefreshButton() {
@@ -262,7 +260,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
 
         titleView.titleLabel.textColor = navBarTitleColor
-        titleView.subtitleLabel.textColor = useLightStyle ? .neutral(.shade30) : .neutral(.shade5)
+        titleView.subtitleLabel.textColor = .neutral(.shade30)
 
         if let title = customTitle {
             self.title = title
@@ -277,26 +275,13 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         }
         navigationBar.barStyle = .default
 
-        if !useLightStyle {
-            navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(.shade70)]
-        } else {
-            // Remove serif title bar formatting
-            navigationBar.standardAppearance.titleTextAttributes = [:]
-        }
+        // Remove serif title bar formatting
+        navigationBar.standardAppearance.titleTextAttributes = [:]
 
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
         navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
 
         fixBarButtonsColorForBoldText(on: navigationBar)
-    }
-
-    private func styleNavBarButtons() {
-        guard !useLightStyle else {
-            return
-        }
-
-        navigationItem.leftBarButtonItems?.forEach(styleBarButton)
-        navigationItem.rightBarButtonItems?.forEach(styleBarButton)
     }
 
     // MARK: ToolBar setup
@@ -510,6 +495,27 @@ extension WebKitViewController: WKNavigationDelegate {
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
 
         decisionHandler(policy)
+    }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        guard navigationResponse.isForMainFrame, let authenticator = authenticator, !hasAttemptedAuthRecovery else {
+            decisionHandler(.allow)
+            return
+        }
+
+        let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+        authenticator.decideActionFor(response: navigationResponse.response, cookieJar: cookieStore) { [unowned self] action in
+            switch action {
+            case .reload:
+                decisionHandler(.cancel)
+
+                /// We've cleared the stored cookies so let's try again.
+                self.hasAttemptedAuthRecovery = true
+                self.loadWebViewRequest()
+            case .allow:
+                decisionHandler(.allow)
+            }
+        }
     }
 }
 

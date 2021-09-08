@@ -7,4 +7,9 @@ extension Blog {
     /// such as Global Styles and Full Site Editing settings and capabilities. 
     ///
     @NSManaged public var blockEditorSettings: BlockEditorSettings?
+
+    @objc
+    func supportsBlockEditorSettings() -> Bool {
+        return hasRequiredWordPressVersion("5.8")
+    }
 }

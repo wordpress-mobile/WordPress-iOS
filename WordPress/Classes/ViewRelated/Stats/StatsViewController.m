@@ -13,9 +13,10 @@
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController () <UIViewControllerRestoration>
+@interface StatsViewController () <UIViewControllerRestoration, NoResultsViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
+@property (nonatomic, assign) BOOL isActivatingStatsModule;
 @property (nonatomic, strong) SiteStatsDashboardViewController *siteStatsDashboardVC;
 @property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
@@ -43,6 +44,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
     self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;
+    
+    self.noResultsViewController = [NoResultsViewController controller];
+    self.noResultsViewController.delegate = self;
 
     self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
@@ -99,6 +103,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
+        
+        // Prompt user to enable site stats if stats module is disabled
+        if (!self.isActivatingStatsModule && ![self.blog isStatsActive]) {
+            [self showStatsModuleDisabled];
+            return;
+        }
+        
         SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
         SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
         
@@ -106,6 +117,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         [self initializeStatsWidgetsIfNeeded];
         return;
     }
+
     [self refreshStatus];
 }
 
@@ -185,27 +197,33 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
-
-- (void)showNoResults
+- (void)showStatsModuleDisabled
 {
-    [self.noResultsViewController removeFromView];
+    [self instantiateNoResultsViewControllerIfNeeded];
+    [self.noResultsViewController configureForStatsModuleDisabled];
+    [self displayNoResults];
+}
 
-    NSString *title = NSLocalizedString(@"No Connection", @"Title for the error view when there's no connection");
-    NSString *subtitle = NSLocalizedString(@"An active internet connection is required to view stats",
-                                           @"Error message shown when trying to view Stats and there is no internet connection.");
+- (void)showEnablingSiteStats
+{
+    [self instantiateNoResultsViewControllerIfNeeded];
+    [self.noResultsViewController configureForActivatingStatsModule];
+    [self displayNoResults];
+}
 
-    self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
-                                                                attributedTitle:nil
-                                                                    buttonTitle:nil
-                                                                       subtitle:subtitle
-                                                             attributedSubtitle:nil
-                                                attributedSubtitleConfiguration:nil
-                                                                          image:nil
-                                                                  subtitleImage:nil
-                                                                  accessoryView:nil];
+- (void)instantiateNoResultsViewControllerIfNeeded
+{
+    if (!self.noResultsViewController) {
+        self.noResultsViewController = [NoResultsViewController controller];
+        self.noResultsViewController.delegate = self;
+    }
+}
 
+- (void)displayNoResults
+{
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.view.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
@@ -215,6 +233,27 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (reachability.isReachable) {
         [self initStats];
     }
+}
+
+#pragma mark - NoResultsViewControllerDelegate
+
+-(void)actionButtonPressed
+{
+    [self showEnablingSiteStats];
+        
+    self.isActivatingStatsModule = YES;
+    
+    __weak __typeof(self) weakSelf = self;
+
+    [self activateStatsModuleWithSuccess:^{
+        [weakSelf.noResultsViewController removeFromView];
+        [weakSelf initStats];
+        weakSelf.isActivatingStatsModule = NO;
+    } failure:^(NSError *error) {
+        DDLogError(@"Error activating stats module: %@", error);
+        [weakSelf showStatsModuleDisabled];
+        weakSelf.isActivatingStatsModule = NO;
+    }];
 }
 
 #pragma mark - Restoration

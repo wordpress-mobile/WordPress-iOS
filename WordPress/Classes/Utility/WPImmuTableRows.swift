@@ -12,22 +12,32 @@ struct NavigationItemRow: ImmuTableRow {
     let action: ImmuTableAction?
     let accessoryType: UITableViewCell.AccessoryType
     let accessibilityIdentifer: String?
+    let loading: Bool
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
         self.title = title
         self.detail = detail
         self.icon = icon
         self.accessoryType = accessoryType
         self.action = action
         self.accessibilityIdentifer = accessibilityIdentifier
+        self.loading = loading
     }
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = detail
-        cell.accessoryType = accessoryType
         cell.imageView?.image = icon
         cell.accessibilityIdentifier = accessibilityIdentifer
+
+        if loading {
+            let indicator: UIActivityIndicatorView
+            indicator = UIActivityIndicatorView(style: .medium)
+            indicator.startAnimating()
+            cell.accessoryView = indicator
+        } else {
+            cell.accessoryType = accessoryType
+        }
 
         WPStyleGuide.configureTableViewCell(cell)
     }
@@ -124,18 +134,31 @@ struct TextRow: ImmuTableRow {
 }
 
 struct CheckmarkRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+    static let cell = ImmuTableCell.class(WPTableViewCellSubtitle.self)
 
     let title: String
+    let subtitle: String?
     let checked: Bool
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = title
+        cell.accessibilityHint = subtitle
+
         cell.textLabel?.text = title
+        cell.detailTextLabel?.text = subtitle
         cell.selectionStyle = .none
         cell.accessoryType = (checked) ? .checkmark : .none
 
         WPStyleGuide.configureTableViewCell(cell)
+    }
+
+    init(title: String, subtitle: String? = nil, checked: Bool, action: ImmuTableAction?) {
+        self.title = title
+        self.subtitle = subtitle
+        self.checked = checked
+        self.action = action
     }
 
 }

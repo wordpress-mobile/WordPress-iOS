@@ -170,7 +170,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.createPost()
             }, source: Constants.source)
         ]
-        if Feature.enabled(.stories) && blog.supports(.stories) {
+        if blog.supports(.stories) {
             actions.insert(StoryAction(handler: { [weak self] in
                 guard let self = self else {
                     return
@@ -665,7 +665,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        publishPost(post)
+        publishPost(post) {
+
+            BloggingRemindersFlow.present(from: self,
+                                          for: post.blog,
+                                          source: .publishFlow,
+                                          alwaysShow: false)
+        }
     }
 
     func trash(_ post: AbstractPost) {

@@ -202,6 +202,10 @@ struct JetpackScanStatusViewModel {
             let isPreparing = (scan.current?.progress ?? 0) == 0
 
             viewState = isPreparing ? .preparingToScan : .scanning
+
+        case .unavailable:
+            viewState = .error
+
         default:
             viewState = .noThreats
         }

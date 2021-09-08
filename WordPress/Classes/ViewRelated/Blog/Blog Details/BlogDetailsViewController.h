@@ -146,7 +146,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;
 
-- (void)switchToBlog:(Blog *)blog;
+- (void)switchToBlog:(nonnull Blog *)blog;
 - (void)showInitialDetailsForBlog;
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
@@ -155,6 +155,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)refreshSiteIcon;
 - (void)toggleSpotlightForSiteTitle;
 - (void)toggleSpotlightOnHeaderView;
-- (void)uploadDroppedSiteIcon:(UIImage *)image onCompletion:(void(^)(void))completion;
-
+- (void)uploadDroppedSiteIcon:(nonnull UIImage *)image onCompletion:(nullable void(^)(void))completion;
+- (void)updateTableViewAndHeader;
 @end

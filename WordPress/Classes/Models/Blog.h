@@ -82,6 +82,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureStories,
     /// Does the blog support Jetpack contact info block?
     BlogFeatureContactInfo,
+    BlogFeatureBlockEditorSettings,
+    /// Does the blog support the Layout grid block?
+    BlogFeatureLayoutGrid,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -217,12 +220,12 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
-- (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
+- (BOOL)isStatsActive;
 - (BOOL)hasMappedDomain;
 
 /**
@@ -277,6 +280,10 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return YES if there is a credential
  */
 - (BOOL)isBasicAuthCredentialStored;
+
+/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
+/// @param requiredVersion The minimum version to check for
+- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion;
 
 @end
 

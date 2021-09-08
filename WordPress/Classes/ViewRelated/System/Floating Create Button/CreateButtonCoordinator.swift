@@ -22,7 +22,7 @@ import WordPressFlux
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
     private func notice(for blog: Blog) -> Notice {
-        let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
+        let showsStories = blog.supports(.stories)
         let title = showsStories ? NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
         let notice = Notice(title: title,
                             message: "",
@@ -116,7 +116,7 @@ import WordPressFlux
 
     private var currentTourElement: QuickStartTourElement?
 
-    @objc private func showCreateSheet() {
+    @objc func showCreateSheet() {
         didDismissTooltip = true
         hideNotice()
 
@@ -182,7 +182,7 @@ import WordPressFlux
     }
 
     @objc func showCreateButton(for blog: Blog) {
-        let showsStories = Feature.enabled(.stories) && blog.supports(.stories)
+        let showsStories = blog.supports(.stories)
         button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
         showCreateButton(notice: notice(for: blog))
     }

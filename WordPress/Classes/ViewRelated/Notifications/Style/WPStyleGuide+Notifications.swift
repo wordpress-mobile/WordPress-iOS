@@ -18,6 +18,9 @@ extension WPStyleGuide {
                      .foregroundColor: sectionHeaderTextColor]
         }
 
+        // ListTableViewCell
+        public static let unreadIndicatorColor = UIColor.primaryLight
+
         // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.textInverted

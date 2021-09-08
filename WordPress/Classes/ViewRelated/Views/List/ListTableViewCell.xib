@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ListTableViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="368" height="67"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="368" height="67"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oMd-3W-Kni" userLabel="Indicator View">
+                        <rect key="frame" x="6" y="27" width="8" height="8"/>
+                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="8" id="aYX-vx-L8K"/>
+                            <constraint firstAttribute="width" secondItem="oMd-3W-Kni" secondAttribute="height" multiplier="1:1" id="asG-Xa-pJ0"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="xzK-0R-8Uu" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="20" y="12" width="38" height="38"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="xzK-0R-8Uu" secondAttribute="height" multiplier="1:1" id="Ado-n8-iYw"/>
+                            <constraint firstAttribute="width" constant="38" id="pDd-vr-vBl"/>
+                        </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="lXc-gN-Ufo" userLabel="Label Stack View">
+                        <rect key="frame" x="68" y="10" width="280" height="31"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9EJ-O9-rUs" userLabel="Title Label">
+                                <rect key="frame" x="0.0" y="0.0" width="280" height="14.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ing-nT-4vc" userLabel="Snippet Label">
+                                <rect key="frame" x="0.0" y="16.5" width="280" height="14.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gTz-N3-00H" userLabel="Separator View" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="68" y="66" width="300" height="1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="XgS-gp-aCZ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="gTz-N3-00H" firstAttribute="leading" secondItem="lXc-gN-Ufo" secondAttribute="leading" id="46i-Jh-9Ow"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="lXc-gN-Ufo" secondAttribute="bottom" constant="10" id="7wb-hA-Swk"/>
+                    <constraint firstAttribute="trailing" secondItem="lXc-gN-Ufo" secondAttribute="trailing" constant="20" id="BFj-Ur-toO"/>
+                    <constraint firstItem="xzK-0R-8Uu" firstAttribute="leading" secondItem="oMd-3W-Kni" secondAttribute="trailing" constant="6" id="NYM-He-pS8"/>
+                    <constraint firstItem="lXc-gN-Ufo" firstAttribute="leading" secondItem="xzK-0R-8Uu" secondAttribute="trailing" constant="10" id="SRW-jO-i3w"/>
+                    <constraint firstItem="xzK-0R-8Uu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="eNp-7q-Ne0"/>
+                    <constraint firstItem="oMd-3W-Kni" firstAttribute="centerY" secondItem="xzK-0R-8Uu" secondAttribute="centerY" id="i4v-J7-Vvs"/>
+                    <constraint firstItem="gTz-N3-00H" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lXc-gN-Ufo" secondAttribute="bottom" constant="9" id="lS2-3l-Cto"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="xzK-0R-8Uu" secondAttribute="bottom" constant="10" id="mLE-4b-5S0"/>
+                    <constraint firstAttribute="bottom" secondItem="gTz-N3-00H" secondAttribute="bottom" id="uFx-57-lIV"/>
+                    <constraint firstAttribute="trailing" secondItem="gTz-N3-00H" secondAttribute="trailing" id="uWM-at-jrH"/>
+                    <constraint firstItem="lXc-gN-Ufo" firstAttribute="top" secondItem="xzK-0R-8Uu" secondAttribute="top" constant="-2" id="udT-s4-eh8"/>
+                    <constraint firstItem="oMd-3W-Kni" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="xjI-GL-V0e"/>
+                </constraints>
+            </tableViewCellContentView>
+            <inset key="separatorInset" minX="68" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="avatarView" destination="xzK-0R-8Uu" id="BKG-Gh-gh8"/>
+                <outlet property="indicatorView" destination="oMd-3W-Kni" id="aOs-1Z-LAy"/>
+                <outlet property="indicatorWidthConstraint" destination="aYX-vx-L8K" id="Rfp-Pc-hGA"/>
+                <outlet property="separatorLineView" destination="gTz-N3-00H" id="uDF-c9-wOb"/>
+                <outlet property="snippetLabel" destination="ing-nT-4vc" id="cNe-1x-VBK"/>
+                <outlet property="titleLabel" destination="9EJ-O9-rUs" id="NxI-LZ-cOz"/>
+            </connections>
+            <point key="canvasLocation" x="198.55072463768118" y="133.59375"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="gravatar" width="85" height="85"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

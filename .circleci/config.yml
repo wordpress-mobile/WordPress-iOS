@@ -7,12 +7,6 @@ orbs:
   slack: circleci/slack@3.4.2
 
 parameters:
-  translation_review_build:
-    type: boolean
-    default: false
-  translation_review_lang_id:
-    type: string
-    default: all-lang
   beta_build:
     type: boolean
     default: false
@@ -21,15 +15,15 @@ parameters:
     default: false
 
 xcode_version: &xcode_version
-  xcode-version: "12.1.0"
+  xcode-version: "12.5.0"
 
 iphone_test_device: &iphone_test_device
   device: iPhone 11
-  ios-version: "14.1"
+  ios-version: "14.4"
 
 ipad_test_device: &ipad_test_device
   device: iPad Air (4th generation)
-  ios-version: "14.1"
+  ios-version: "14.4"
 
 commands:
   fix-image:
@@ -50,6 +44,10 @@ commands:
 
             # Prevent fastlane from checking for updates, also removing the verbose fastlane changelog at the end of each invocation.
             echo "export FASTLANE_SKIP_UPDATE_CHECK=1" >> $BASH_ENV
+      - run:
+          name: Fix SSH setup to fetch Swift packages from GitHub
+          command: |
+            for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts || true
 
 jobs:
   Build Tests:
@@ -235,43 +233,6 @@ jobs:
           webhook: '${SLACK_BUILD_WEBHOOK}'
           failure_message: '${SLACK_FAILURE_MESSAGE}'
           success_message: '${SLACK_SUCCESS_MESSAGE}'
-  translation-review-build:
-    executor:
-      name: ios/default
-      <<: *xcode_version
-    environment:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-    steps:
-      - fix-image
-      - git/shallow-checkout
-      - ios/install-dependencies:
-            bundle-install: true
-            pod-install: true
-            cache-prefix: cache-prefix-{{ checksum ".circleci/cache-version" }}
-      - run:
-          name: Copy Secrets
-          command: bundle exec fastlane run configure_apply
-      - run:
-          name: Install other tools
-          command: |
-            brew update # Update homebrew to temporarily fix a bintray issue
-            brew install imagemagick
-            brew install ghostscript
-            curl -sL https://sentry.io/get-cli/ | bash
-      - run:
-          name: Build
-          command: |
-            orig_version=`cat config/Version.internal.xcconfig | grep VERSION_SHORT | cut -d'=' -f2`
-            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "config/Version.internal.xcconfig")s/=.*/="${orig_version}"-`date +"%Y%d%m"`-"${CIRCLE_BUILD_NUM}"/" "config/Version.internal.xcconfig"
-
-            VERSION_NAME="all-lang-build-${CIRCLE_BUILD_NUM}"
-            echo "export VERSION_NAME=$VERSION_NAME" >> $BASH_ENV
-
-            bundle exec fastlane build_for_translation_review version_name:$VERSION_NAME
-          no_output_timeout: 60m
-      - store_artifacts:
-          path: Artifacts
-          destination: Artifacts
   Jetpack Installable Build:
     executor:
       name: ios/default
@@ -333,7 +294,6 @@ workflows:
   wordpress_ios:
     when:
       and:
-        - not: << pipeline.parameters.translation_review_build >>
         - not: << pipeline.parameters.beta_build >>
         - not: << pipeline.parameters.release_build >>
     jobs:
@@ -388,7 +348,6 @@ workflows:
   Installable Build:
     when:
       and:
-        - not: << pipeline.parameters.translation_review_build >>
         - not: << pipeline.parameters.beta_build >>
         - not: << pipeline.parameters.release_build >>
     jobs:
@@ -418,10 +377,6 @@ workflows:
       or: [ << pipeline.parameters.beta_build >>, << pipeline.parameters.release_build >> ]
     jobs:
       - Release Build
-  Translation Review Build:
-    when: << pipeline.parameters.translation_review_build >>
-    jobs:
-      - translation-review-build
   Jetpack Nightly:
     triggers:
        - schedule:

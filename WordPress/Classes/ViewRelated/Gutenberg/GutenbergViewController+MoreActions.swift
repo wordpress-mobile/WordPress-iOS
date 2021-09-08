@@ -68,6 +68,13 @@ extension GutenbergViewController {
             ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
+        if canViewEditorOnboarding() {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.editorHelpTitle) { [weak self] _ in
+                self?.showEditorHelp()
+                ActionDispatcher.dispatch(NoticeAction.unlock)
+            }
+        }
+
         if #available(iOS 14.0, *),
             let button = navigationBarManager.moreBarButtonItem.customView {
             // Required to work around an issue present in iOS 14 beta 2
@@ -119,5 +126,6 @@ extension GutenbergViewController {
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
+        static let editorHelpTitle = NSLocalizedString("Help", comment: "Open editor help options")
     }
 }

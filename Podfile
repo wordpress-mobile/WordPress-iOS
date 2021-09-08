@@ -39,7 +39,7 @@ def aztec
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.12.1-beta'
+    pod 'WordPressUI', '~> 1.12.1'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    # pod 'WordPressKit', '~> 4.36.0-beta'
+    pod 'WordPressKit', '~> 4.41.0'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'trial/nikola_milicevic'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -130,8 +130,8 @@ def gutenberg_dependencies(options)
         'react-native-safe-area',
         'react-native-safe-area-context',
         'react-native-video',
+        'react-native-webview',
         'RNSVG',
-        'ReactNativeDarkMode',
         'react-native-slider',
         'BVLinearGradient',
         'react-native-get-random-values',
@@ -147,7 +147,7 @@ def gutenberg_dependencies(options)
         tag_or_commit = options[:tag] || options[:commit]
         podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
     end
-    
+
     # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
     pod 'FBReactNativeSpec', :podspec => "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
 
@@ -166,15 +166,19 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.56.0-alpha1'
+    gutenberg :tag => 'v1.61.0'
 
     ## Third party libraries
     ## =====================
     ##
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
+
+    app_center_version = '~> 4.1'
+    app_center_configurations = %w[Release-Internal Release-Alpha]
+    pod 'AppCenter', app_center_version, configurations: app_center_configurations
+    pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
+
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
@@ -195,7 +199,7 @@ abstract_target 'Apps' do
 
     # Production
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.5'
+    pod 'Automattic-Tracks-iOS', '~> 0.9.1'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
@@ -211,8 +215,7 @@ abstract_target 'Apps' do
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.38.0'
-    # While in PR
+    pod 'WordPressAuthenticator', '~> 1.42.0'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
@@ -362,7 +365,7 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.13'
+  pod 'WordPressMocks', '~> 0.0.14'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => 'task/jetpack-screenshots-dynamic-dates'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
@@ -472,6 +475,17 @@ post_install do |installer|
       target.build_configurations.each do |configuration|
         pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
         configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      end
+    end
+
+    # Flag Alpha builds for Tracks
+    # ============================
+    installer.pods_project.targets.each do |target|
+      next unless target.name == "Automattic-Tracks-iOS"
+      target.build_configurations.each do |config|
+        if config.name == "Release-Alpha" or config.name == "Release-Internal"
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1']
+        end
       end
     end
 end

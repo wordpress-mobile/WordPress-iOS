@@ -37,11 +37,7 @@ static NSInteger HideSearchMinSites = 3;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        return nil;
-    }
-
-    return [WPTabBarController sharedInstance].mySitesCoordinator.blogListViewController;
+    return nil;
 }
 
 - (instancetype)init
@@ -69,10 +65,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureDataSource
 {
     self.dataSource = [BlogListDataSource new];
-    
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        self.dataSource.shouldShowDisclosureIndicator = NO;
-    }
+    self.dataSource.shouldShowDisclosureIndicator = NO;
     
     __weak __typeof(self) weakSelf = self;
     self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
@@ -97,10 +90,10 @@ static NSInteger HideSearchMinSites = 3;
     self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                        target:self
                                                                        action:@selector(addSite)];
+    self.addSiteButton.accessibilityIdentifier = @"add-site-button";
 
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
-    }
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"cancel-button";
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
@@ -170,13 +163,12 @@ static NSInteger HideSearchMinSites = 3;
 
     self.visible = YES;
     [self.tableView reloadData];
-    [self updateEditButton];
+    [self updateBarButtons];
     [self updateSearchVisibility];
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
     [self syncBlogs];
-    [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
 }
 
@@ -209,21 +201,6 @@ static NSInteger HideSearchMinSites = 3;
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         [self updateCurrentBlogSelection];
     }];
-}
-
-
-- (void)updateEditButton
-{
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        [self updateBarButtons];
-        return;
-    }
-
-    if ([self shouldShowEditButton]){
-        self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    } else {
-        self.navigationItem.leftBarButtonItem = nil;
-    }
 }
 
 - (void)updateSearchVisibility
@@ -291,7 +268,6 @@ static NSInteger HideSearchMinSites = 3;
     // added a new site so we should auto-select it
     if (self.noResultsViewController.beingPresented && siteCount == 1) {
         [self.noResultsViewController removeFromView];
-        [self bypassBlogListViewController];
     }
 
     [self instantiateNoResultsViewControllerIfNeeded];
@@ -479,24 +455,6 @@ static NSInteger HideSearchMinSites = 3;
     [self.navigationController popToRootViewControllerAnimated:YES];
 
     [self showAddSiteAlertFrom:sourceView];
-}
-
-- (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
-{
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        // We should never bypass the list when we're using the new navigation bar
-        return false;
-    }
-
-    return self.dataSource.displayedBlogsCount == 1;
-}
-
-- (void)bypassBlogListViewController
-{
-    if ([self shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-        // We do a delay of 0.0 so that way this doesn't kick off until the next run loop.
-        [self performSelector:@selector(selectFirstSite) withObject:nil afterDelay:0.0];
-    }
 }
 
 - (void)selectFirstSite
@@ -818,38 +776,14 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        if (self.blogSelected != nil) {
-            self.blogSelected(self, selectedBlog);
-        } else {
-            // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
-            // the app running, but the user won't be able to switch sites.
-            DDLogError(@"There's no site-selection callback assigned to the site picker.");
-            [self dismissViewControllerAnimated:animated completion:nil];
-        }
-        
-        return;
+    if (self.blogSelected != nil) {
+        self.blogSelected(self, selectedBlog);
+    } else {
+        // The site picker without a site-selection callback makes no sense.  We'll dismiss the VC to keep
+        // the app running, but the user won't be able to switch sites.
+        DDLogError(@"There's no site-selection callback assigned to the site picker.");
+        [self dismissViewControllerAnimated:animated completion:nil];
     }
-    
-    if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
-        _selectedBlog = selectedBlog;
-        self.blogDetailsViewController = [self makeBlogDetailsViewController];
-        self.blogDetailsViewController.blog = selectedBlog;
-
-        if (![self splitViewControllerIsHorizontallyCompact]) {
-            WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-            [self showDetailViewController:[(UIViewController <WPSplitViewControllerDetailProvider> *)self.blogDetailsViewController initialDetailViewControllerForSplitView:splitViewController] sender:self];
-        }
-    }
-
-    /// Issue #7284:
-    /// Prevents pushing BlogDetailsViewController, if it was already in the hierarchy.
-    ///
-    if ([self.navigationController.viewControllers containsObject:self.blogDetailsViewController]) {
-        return;
-    }
-
-    [self.navigationController pushViewController:self.blogDetailsViewController animated:animated];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -959,21 +893,6 @@ static NSInteger HideSearchMinSites = 3;
     self.addSiteButton.enabled = enabled;
 }
 
-- (void)setAddSiteBarButtonItem
-{
-    if ([Feature enabled:FeatureFlagNewNavBarAppearance]) {
-        [self updateBarButtons];
-        return;
-    }
-
-    if (![self shouldShowAddSiteButton]) {
-        [self addMeButtonToNavigationBarWithEmail:[[self defaultWordPressComAccount] email] meScenePresenter:self.meScenePresenter];
-        return;
-    }
-
-    self.navigationItem.rightBarButtonItem = self.addSiteButton;
-}
-
 - (void)addSite
 {
     [self showAddSiteAlertFrom:self.addSiteButton];
@@ -1038,7 +957,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)dataChanged
 {
     [self.tableView reloadData];
-    [self updateEditButton];
+    [self updateBarButtons];
     [[WordPressAppDelegate shared] trackLogoutIfNeeded];
     [self maybeShowNUX];
     [self updateSearchVisibility];

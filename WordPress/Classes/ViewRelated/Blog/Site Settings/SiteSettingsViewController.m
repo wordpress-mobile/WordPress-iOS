@@ -94,6 +94,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
+
+@property (nonatomic, strong) NSArray<NSNumber *> *tableSections;
 @end
 
 @implementation SiteSettingsViewController
@@ -154,6 +156,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (NSArray *)tableSections
 {
+    if (_tableSections) {
+        return _tableSections;
+    }
+
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
 
     if ([Feature enabled:FeatureFlagHomepageSettings] && [self.blog supports:BlogFeatureHomepageSettings]) {
@@ -187,6 +193,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
 
+    _tableSections = sections;
     return sections;
 }
 
@@ -983,6 +990,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     [service syncSettingsForBlog:self.blog success:^{
         [weakSelf.refreshControl endRefreshing];
+        self.tableSections = nil; // force the tableSections to be repopulated.
         [weakSelf.tableView reloadData];
     } failure:^(NSError *error) {
         [weakSelf.refreshControl endRefreshing];

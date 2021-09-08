@@ -3,6 +3,7 @@ import Foundation
 struct PostEditorAnalyticsSession {
     private let sessionId = UUID().uuidString
     let postType: String
+    let blogID: NSNumber?
     let blogType: String
     let contentType: String
     var started = false
@@ -14,21 +15,22 @@ struct PostEditorAnalyticsSession {
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
+        blogID = post.blog.dotComID
         blogType = post.blog.analyticsType.rawValue
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = []) {
+    mutating func start(unsupportedBlocks: [String] = [], canViewEditorOnboarding: Bool = false, galleryWithImageBlocks: Bool? = nil) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks)
+        let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding, galleryWithImageBlocks: galleryWithImageBlocks)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String], canViewEditorOnboarding: Bool, galleryWithImageBlocks: Bool?) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -40,6 +42,15 @@ struct PostEditorAnalyticsSession {
             let blocksJSON = String(data: data, encoding: .utf8)
             properties[Property.unsupportedBlocks] = blocksJSON
         }
+
+        properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
+
+        if let galleryWithImageBlocks = galleryWithImageBlocks {
+            properties[Property.unstableGalleryWithImageBlocks] = "\(galleryWithImageBlocks)"
+        } else {
+            properties[Property.unstableGalleryWithImageBlocks] = "unknown"
+        }
+
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
@@ -61,9 +72,11 @@ struct PostEditorAnalyticsSession {
         }
     }
 
-    func end(outcome endOutcome: Outcome) {
+    func end(outcome endOutcome: Outcome, canViewEditorOnboarding: Bool = false) {
         let outcome = self.outcome ?? endOutcome
-        let properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
+        var properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
+
+        properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
@@ -71,6 +84,7 @@ struct PostEditorAnalyticsSession {
 
 private extension PostEditorAnalyticsSession {
     enum Property {
+        static let blogID = "blog_id"
         static let blogType = "blog_type"
         static let contentType = "content_type"
         static let editor = "editor"
@@ -81,6 +95,8 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
         static let template = "template"
         static let startupTime = "startup_time_ms"
+        static let canViewEditorOnboarding = "can_view_editor_onboarding"
+        static let unstableGalleryWithImageBlocks = "unstableGalleryWithImageBlocks"
     }
 
     var commonProperties: [String: String] {
@@ -88,6 +104,7 @@ private extension PostEditorAnalyticsSession {
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
             Property.postType: postType,
+            Property.blogID: blogID?.stringValue,
             Property.blogType: blogType,
             Property.sessionId: sessionId,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",

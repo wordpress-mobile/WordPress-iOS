@@ -9,9 +9,7 @@ class BloggingRemindersTracker {
     }
 
     private enum SharedPropertyName: String {
-        case blogID = "blog_id"
         case blogType = "blog_type"
-        case blogURL = "blog_url"
     }
 
     enum Event: String {
@@ -32,16 +30,13 @@ class BloggingRemindersTracker {
     enum FlowStartSource: String {
         case publishFlow = "publish_flow"
         case blogSettings = "blog_settings"
-
-        static let propertyName = "source"
     }
 
     enum FlowDismissSource: String {
         case main
         case dayPicker = "day_picker"
         case enableNotifications = "enable_notifications"
-
-        static let propertyName = "source"
+        case timePicker = "time_picker"
     }
 
     enum Screen: String {
@@ -49,16 +44,20 @@ class BloggingRemindersTracker {
         case dayPicker = "day_picker"
         case allSet = "all_set"
         case enableNotifications = "enable_notifications"
-
-        static let propertyName = "screen"
     }
 
     enum Button: String {
         case `continue`
         case dismiss
         case notificationSettings
+    }
 
-        static let propertyName = "button"
+    enum Property: String {
+        case button = "button"
+        case daysOfWeek = "days_of_week_count"
+        case source = "source"
+        case screen = "screen"
+        case selectedTime = "selected_time"
     }
 
     /// The type of blog.
@@ -79,8 +78,8 @@ class BloggingRemindersTracker {
 
     func buttonPressed(button: Button, screen: Screen) {
         let properties = [
-            Button.propertyName: button.rawValue,
-            Screen.propertyName: screen.rawValue,
+            Property.button.rawValue: button.rawValue,
+            Property.screen.rawValue: screen.rawValue,
         ]
 
         track(event(.buttonPressed, properties: properties))
@@ -91,16 +90,31 @@ class BloggingRemindersTracker {
     }
 
     func flowDismissed(source: FlowDismissSource) {
-        track(event(.flowDismissed, properties: [FlowDismissSource.propertyName: source.rawValue]))
+        track(event(.flowDismissed, properties: [Property.source.rawValue: source.rawValue]))
     }
 
     func flowStarted(source: FlowStartSource) {
-        track(event(.flowStart, properties: [FlowStartSource.propertyName: source.rawValue]))
+        track(event(.flowStart, properties: [Property.source.rawValue: source.rawValue]))
 
     }
 
+    func scheduled(_ schedule: BloggingRemindersScheduler.Schedule, time: Date) {
+        let event: AnalyticsEvent
+
+        switch schedule {
+        case .none:
+            event = self.event(.remindersCancelled, properties: [:])
+        case .weekdays(let days):
+            event = self.event(.remindersScheduled,
+                               properties: [Property.daysOfWeek.rawValue: "\(days.count)",
+                                            Property.selectedTime.rawValue: time.toLocal24HTime()])
+        }
+
+        track(event)
+    }
+
     func screenShown(_ screen: Screen) {
-        track(event(.screenShown, properties: [Screen.propertyName: screen.rawValue]))
+        track(event(.screenShown, properties: [Property.screen.rawValue: screen.rawValue]))
     }
 
     /// Private tracking method, which takes care of composing the tracking payload by adding the shared properties.

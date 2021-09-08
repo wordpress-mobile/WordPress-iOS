@@ -4,7 +4,6 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPError.h"
-#import "Comment.h"
 #import "Media.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
@@ -15,6 +14,8 @@
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
+
+@class Comment;
 
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
@@ -600,6 +601,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
+    [self unscheduleBloggingRemindersFor:blog];
+
     WPAccount *account = blog.account;
 
     [self.managedObjectContext deleteObject:blog];
@@ -661,6 +664,9 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     if ([toDelete count] > 0) {
         for (Blog *blog in account.blogs) {
             if ([toDelete containsObject:blog.dotComID]) {
+                [self unscheduleBloggingRemindersFor:blog];
+                // Consider switching this to a call to removeBlog in the future
+                // to consolidate behaviour @frosty
                 [self.managedObjectContext deleteObject:blog];
             }
         }
