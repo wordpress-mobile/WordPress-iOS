@@ -1,9 +1,8 @@
-* [internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
-* [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
-* [*] Added pull-to-refresh to My Site. [#17089]
-* [***] Weekly Roundup: users will receive a weekly notification that presents a summary of the activity on their most used sites [#17066, #17116]
-* [*] Added pull-to-refresh to My Site.
-* [**] Site Comments: when editing a Comment, the author's name, email address, and web address can now be changed. [#17111]
-* [**] Block editor: Enable embed preview for a list of providers (for now only YouTube and Twitter) [https://github.com/WordPress/gutenberg/pull/34446]
-* [***] Block editor: Add Inserter Block Search [https://github.com/WordPress/gutenberg/pull/33237]
+- Stay informed! You can now receive a weekly summary of the activity on your most popular sites.
 
+- You have even more control of your site comments — when you edit them you can now also adjust the author’s name, email address, and web address.
+We have made a couple of handy tweaks to the Block editor. The Embed block now gives you a sneak preview when you add something from YouTube or Twitter (more providers to come). Also, when you go to insert a block and nothing is found, there is now a no results view.
+
+- If you go to Post Settings > Post Format, you will find the “Standard” option still at the top, but the other options are now neatly alphabetized below. (Options will vary with themes!)
+
+- And one more quick one: Refreshing your site is now super easy — just pull to refresh from the My Site screen!
