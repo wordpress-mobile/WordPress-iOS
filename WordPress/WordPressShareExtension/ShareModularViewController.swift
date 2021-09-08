@@ -253,9 +253,10 @@ extension ShareModularViewController {
 
         let typePicker = SharePostTypePickerViewController(postType: shareData.postType)
         typePicker.onValueChanged = { [weak self] postType in
-            self?.tracks.trackExtensionPostTypeSelected(postType.rawValue)
-            self?.shareData.postType = postType
-            self?.refreshModulesTable()
+            guard let self = self else { return }
+            self.tracks.trackExtensionPostTypeSelected(postType.rawValue)
+            self.shareData.postType = postType
+            self.refreshModulesTable()
         }
 
         tracks.trackExtensionPostTypeOpened()
@@ -269,10 +270,11 @@ extension ShareModularViewController {
 
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
         tagsPicker.onValueChanged = { [weak self] tagString in
-            if self?.shareData.tags != tagString {
-                self?.tracks.trackExtensionTagsSelected(tagString)
-                self?.shareData.tags = tagString
-                self?.refreshModulesTable()
+            guard let self = self else { return }
+            if self.shareData.tags != tagString {
+                self.tracks.trackExtensionTagsSelected(tagString)
+                self.shareData.tags = tagString
+                self.refreshModulesTable()
             }
         }
 
@@ -291,10 +293,11 @@ extension ShareModularViewController {
         let categoryInfo = SiteCategories(siteID: siteID, allCategories: allSiteCategories, selectedCategories: shareData.userSelectedCategories, defaultCategoryID: shareData.defaultCategoryID)
         let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
         categoriesPicker.onValueChanged = { [weak self] categoryInfo in
-            self?.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
-            self?.shareData.userSelectedCategories = categoryInfo.selectedCategories
-            self?.tracks.trackExtensionCategoriesSelected(self?.shareData.selectedCategoriesNameString ?? "")
-            self?.refreshModulesTable()
+            guard let self = self else { return }
+            self.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
+            self.shareData.userSelectedCategories = categoryInfo.selectedCategories
+            self.tracks.trackExtensionCategoriesSelected(self.shareData.selectedCategoriesNameString)
+            self.refreshModulesTable()
         }
         tracks.trackExtensionCategoriesOpened()
         navigationController?.pushViewController(categoriesPicker, animated: true)
