@@ -118,23 +118,33 @@ class BackgroundTasksCoordinator {
     ///
     /// Ref: https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler
     ///
-    func scheduleTasks(completion: (Result<Void, Error>) -> Void) {
+    func scheduleTasks(completion: @escaping (Result<Void, Error>) -> Void) {
         var tasksAndErrors = [String: Error]()
 
-        scheduler.cancelAllTaskRequests()
+        scheduler.getPendingTaskRequests { [weak self] scheduledRequests in
+            guard let self = self else {
+                return
+            }
 
-        for task in registeredTasks {
-            schedule(task) { result in
-                if case .failure(let error) = result {
-                    tasksAndErrors[type(of: task).identifier] = error
+            let tasksToSchedule = self.registeredTasks.filter { task in
+                !scheduledRequests.contains { request in
+                    request.identifier == type(of: task).identifier
                 }
             }
-        }
 
-        if tasksAndErrors.isEmpty {
-            completion(.success(()))
-        } else {
-            completion(.failure(SchedulingError.schedulingFailed(tasksAndErrors: tasksAndErrors)))
+            for task in tasksToSchedule {
+                self.schedule(task) { result in
+                    if case .failure(let error) = result {
+                        tasksAndErrors[type(of: task).identifier] = error
+                    }
+                }
+            }
+
+            if tasksAndErrors.isEmpty {
+                completion(.success(()))
+            } else {
+                completion(.failure(SchedulingError.schedulingFailed(tasksAndErrors: tasksAndErrors)))
+            }
         }
     }
 
@@ -152,6 +162,19 @@ class BackgroundTasksCoordinator {
             try self.scheduler.submit(request)
         } catch {
             completion(.failure(SchedulingError.schedulingFailed(task: type(of: task).identifier, error: error)))
+        }
+    }
+
+    // MARK: - Querying Data
+
+    func getScheduledExecutionDate(taskIdentifier: String, completion: @escaping (Date?) -> Void) {
+        scheduler.getPendingTaskRequests { requests in
+            guard let weeklyRoundupRequest = requests.first(where: { $0.identifier == taskIdentifier }) else {
+                completion(nil)
+                return
+            }
+
+            return completion(weeklyRoundupRequest.earliestBeginDate)
         }
     }
 }
