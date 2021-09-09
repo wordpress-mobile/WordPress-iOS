@@ -1,5 +1,6 @@
 18.3
 -----
+* [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
 
 
 18.2
