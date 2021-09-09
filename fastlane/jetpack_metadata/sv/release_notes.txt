@@ -1,7 +1,0 @@
-Använder du inbäddningsblocket? För mediafiler som du bäddar in på din webbplats kommer du nu att se alternativet "Ändra storlek för mindre enheter". Sätt reglaget till På för att aktivera alternativet och storleksanpassa ditt innehåll efter din skärm. Sätt reglaget till Av för att inaktivera alternativet. 
-
-Gillar du verktyget Bloggningspåminnelser? Vi har lagt till en ny funktion som gör det möjligt att välja en specifik tid för att ta emot aviseringar.
-
-Behöver du stänga ditt konto? (Vi hoppas att du aldrig lämnar oss!) Om det är nödvändigt har du nu dock möjlighet att göra det i dina kontoinställningar.
-
-Geotaggning av inlägg stöds inte längre på webben, så vi har tagit bort alternativet Plats under Inläggsinställningar.

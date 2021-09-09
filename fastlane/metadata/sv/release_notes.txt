@@ -1,9 +1,0 @@
-Använder du inbäddningsblocket? När du bäddar in media på din webbplats finns det nu en inställning för att anpassa storleken för mindre skärmar. Aktivera detta för att ändra storleken på ditt innehåll utifrån skärmbredden. Stäng av för att inaktivera detta.
-
-Drar du nytta av verktyget för bloggningspåminnelser? Nu har vi lagt till en möjlighet att välja vid vilket klockslag du vill bli påmind.
-
-Behöver du avsluta/stänga ditt konto? (Vi hoppas förstås att du aldrig lämnar oss!) Nu har du möjlighet att göra det direkt i kontoinställningarna.
-
-Webben har inte kvar geotaggning av inlägg. Därför har vi tagit bort alternativet för plats under inläggsinställningarna.
-
-Vi har gjort fler förbättringar. Bland annat rättat till ett problem med bildbeskärning i läsaren och gjort det möjligt att rekommendera appen till dina vänner från skärmarna ”Jag” och ”Om”.

@@ -1,9 +1,0 @@
-Utilisez-vous le bloc de contenu embarqué ? Pour les médias que vous embarquez sur votre site, vous verrez désormais une option pour « Redimensionner pour les petits appareils ». Activez-la pour redimensionner votre contenu afin de l’adapter à l’écran ; désactivez-la pour annuler le redimensionnement.
-
-Vous appréciez les outils de rappel de blog ? Nous avons ajouté une nouvelle fonctionnalité qui vous permet de choisir une heure précise pour recevoir une notification.
-
-Besoin de clôturer votre compte ? (Nous espérons que vous ne nous quitterez jamais !) Mais si vous en avez besoin, vous avez désormais la possibilité de le faire dans les réglages de votre compte.
-
-La géolocalisation des articles n’est plus prise en charge sur le Web, nous avons donc supprimé l’option Emplacement dans Réglages d’article.
-
-Nous avons également apporté d’autres améliorations, notamment une correction d’un problème de rognage dans le Lecteur, ainsi que la possibilité de recommander l’application à vos amis sur les écrans Moi et À propos.
