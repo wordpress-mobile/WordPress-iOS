@@ -15,15 +15,17 @@ class CommentHeaderTableViewCell: UITableViewCell, Reusable {
 
     // MARK: Helpers
 
+    private typealias Style = WPStyleGuide.CommentDetail.Header
+
     private func configureStyle() {
         accessoryType = .disclosureIndicator
 
-        textLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
-        textLabel?.textColor = .textSubtle
+        textLabel?.font = Style.font
+        textLabel?.textColor = Style.textColor
         textLabel?.numberOfLines = 2
 
-        detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        detailTextLabel?.textColor = .text
+        detailTextLabel?.font = Style.detailFont
+        detailTextLabel?.textColor = Style.detailTextColor
         detailTextLabel?.numberOfLines = 1
     }
 

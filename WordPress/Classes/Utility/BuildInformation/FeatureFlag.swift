@@ -49,9 +49,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .recommendAppToOthers:
             return true
         case .newCommentEdit:
-            return false
+            return true
         case .weeklyRoundup:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false

@@ -19,6 +19,11 @@ open class NotificationSettings {
     ///
     public let blog: Blog?
 
+    /// The settings that are stored locally
+    ///
+    static let locallyStoredKeys: [String] = [
+        Keys.weeklyRoundup,
+    ]
 
 
     /// Designated Initializer
@@ -45,6 +50,10 @@ open class NotificationSettings {
     ///
     open func localizedDetails(_ preferenceKey: String) -> String? {
         return Keys.localizedDetailsMap[preferenceKey]
+    }
+
+    static func isLocallyStored(_ preferenceKey: String) -> Bool {
+        return Self.locallyStoredKeys.contains(preferenceKey)
     }
 
 
@@ -130,7 +139,15 @@ open class NotificationSettings {
     }
 
     // MARK: - Private Properties
-    fileprivate let blogPreferenceKeys      = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
+    fileprivate let blogPreferenceKeys: [String] = {
+        var keys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
+
+        if Feature.enabled(.weeklyRoundup) {
+            keys.append(Keys.weeklyRoundup)
+        }
+
+        return keys
+    }()
     fileprivate let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
     fileprivate let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
     fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
@@ -147,6 +164,7 @@ open class NotificationSettings {
         static let marketing        = "marketing"
         static let research         = "research"
         static let community        = "community"
+        static let weeklyRoundup    = "weekly_roundup"
 
         static let localizedDescriptionMap = [
             commentAdded: NSLocalizedString("Comments on my site",
@@ -168,7 +186,9 @@ open class NotificationSettings {
             research: NSLocalizedString("Research",
                                         comment: "Setting: WordPress.com Surveys"),
             community: NSLocalizedString("Community",
-                                         comment: "Setting: WordPress.com Community")
+                                         comment: "Setting: WordPress.com Community"),
+            weeklyRoundup: NSLocalizedString("Weekly Roundup",
+                                             comment: "Setting: indicates if the site reports its Weekly Roundup"),
         ]
 
         static let localizedDetailsMap = [

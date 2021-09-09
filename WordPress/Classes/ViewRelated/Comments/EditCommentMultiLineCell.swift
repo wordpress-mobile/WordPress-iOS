@@ -11,8 +11,6 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewMinHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewTopConstraint: NSLayoutConstraint!
-    private var textViewPadding: CGFloat = 0
     weak var delegate: EditCommentMultiLineCellDelegate?
 
     // MARK: - View
@@ -20,7 +18,6 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureCell()
-        textViewPadding = textViewTopConstraint.constant * 2
     }
 
     func configure(text: String? = nil) {
@@ -52,13 +49,12 @@ private extension EditCommentMultiLineCell {
     }
 
     func adjustHeight() {
-        let originalCellHeight = frame.size.height
-        let textViewSize = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
-        let textViewHeight = ceilf(Float(max(textViewSize.height, textViewMinHeightConstraint.constant)))
-        let newCellHeight = CGFloat(textViewHeight) + textViewPadding
-        frame.size.height = newCellHeight
+        let originalHeight = textView.frame.size.height
+        textView.sizeToFit()
+        let textViewHeight = ceilf(Float(max(textView.frame.size.height, textViewMinHeightConstraint.constant)))
+        textView.frame.size.height = CGFloat(textViewHeight)
 
-        if newCellHeight != originalCellHeight {
+        if textViewHeight != Float(originalHeight) {
             delegate?.textViewHeightUpdated()
         }
     }
