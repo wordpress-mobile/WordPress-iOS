@@ -254,7 +254,7 @@ private extension SiteStatsInsightsTableViewController {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
             insightsToShow = InsightType.defaultInsights
-            loadCustomizeCardSetting()
+            loadPinnedCards()
             return
         }
 
@@ -266,11 +266,7 @@ private extension SiteStatsInsightsTableViewController {
         let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
         insightsToShow = InsightType.typesForValues(insightTypesValues)
 
-        loadGrowAudienceCardSetting()
-
-        if !insightsToShow.contains(.growAudience) {
-            loadCustomizeCardSetting()
-        }
+        loadPinnedCards()
     }
 
     func writeInsightsToUserDefaults() {
@@ -287,6 +283,14 @@ private extension SiteStatsInsightsTableViewController {
         allSitesInsights.append(currentSiteInsights)
 
         UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
+    }
+
+    func loadPinnedCards() {
+        loadGrowAudienceCardSetting()
+
+        if !insightsToShow.contains(.growAudience) {
+            loadCustomizeCardSetting()
+        }
     }
 
     /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show.
