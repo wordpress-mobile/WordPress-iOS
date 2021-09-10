@@ -248,13 +248,15 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             matchingPolicy: .nextTime)
     }
 
-    func willSchedule(completion: @escaping (Result<Void, Error>) -> Void) {
+    func didSchedule(completion: @escaping (Result<Void, Error>) -> Void) {
         if Feature.enabled(.weeklyRoundupStaticNotification) {
             // We're scheduling a static notification in case the BG task won't run.
             // This will happen when the App has been explicitly killed by the user as of 2021/08/03,
             // as Apple doesn't let background tasks run in this scenario.
             notificationScheduler.scheduleStaticNotification(completion: completion)
         }
+
+        completion(.success(()))
     }
 
     func expirationHandler() {

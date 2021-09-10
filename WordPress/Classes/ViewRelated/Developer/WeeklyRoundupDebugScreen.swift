@@ -14,9 +14,21 @@ struct BlueButton: ButtonStyle {
 struct WeeklyRoundupDebugScreen: View {
     @SwiftUI.Environment(\.presentationMode) var presentationMode
     @State private var scheduledDate: Date? = nil
+    @State private var running: Bool = false
+    @State private var errorScheduling: Bool = false
 
     var body: some View {
         VStack(alignment: .center) {
+            if errorScheduling {
+                Group {
+                    Text("Error scheduling Weekly Roundup!")
+                        .foregroundColor(.red)
+                }
+
+                Spacer()
+                    .frame(height: 16)
+            }
+
             Group {
                 scheduleDetailsView()
 
@@ -99,13 +111,19 @@ struct WeeklyRoundupDebugScreen: View {
     }
 
     func updateBackgroundTaskDate() {
-        WordPressAppDelegate.shared?.backgroundTasksCoordinator.getScheduledExecutionDate(taskIdentifier: WeeklyRoundupBackgroundTask.identifier, completion: { date in
+        DispatchQueue.main.async {
+            WordPressAppDelegate.shared?.backgroundTasksCoordinator.getScheduledExecutionDate(taskIdentifier: WeeklyRoundupBackgroundTask.identifier, completion: { date in
 
-            self.scheduledDate = date
-        })
+                self.scheduledDate = date
+            })
+        }
     }
 
     func scheduleDetailsView() -> some View {
+        guard !running else {
+            return AnyView(Text("Running..."))
+        }
+
         if let scheduledDate = self.scheduledDate {
             return AnyView(HStack {
                 Text("Earliest begin date:")
@@ -120,17 +138,27 @@ struct WeeklyRoundupDebugScreen: View {
     }
 
     func scheduleImmediately() {
-        updateBackgroundTaskDate()
+        running = true
 
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
-            if authorized {
-                typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
+            guard authorized else {
+                self.running = false
+                return
+            }
 
-                let selector = Selector(("_simulateLaunchForTaskWithIdentifier:"))
-                let methodImp = BGTaskScheduler.shared.method(for: selector)
-                let method = unsafeBitCast(methodImp, to: LaunchTaskWithIdentifier.self)
+            typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
 
-                method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
+            let selector = Selector(("_simulateLaunchForTaskWithIdentifier:"))
+            let methodImp = BGTaskScheduler.shared.method(for: selector)
+            let method = unsafeBitCast(methodImp, to: LaunchTaskWithIdentifier.self)
+
+            method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
+
+            self.errorScheduling = false
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                self.updateBackgroundTaskDate()
+                self.running = false
             }
         }
     }
@@ -152,7 +180,15 @@ struct WeeklyRoundupDebugScreen: View {
                         runDateComponents: runDateComponents,
                         staticNotificationDateComponents: staticNotificationDateComponents)
 
-                    WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { _ in
+                    WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { result in
+                        switch result {
+                        case .success():
+                            errorScheduling = false
+                        case .failure( _ ):
+                            errorScheduling = true
+                        }
+
+                        self.updateBackgroundTaskDate()
                     }
                 }
             }
