@@ -394,7 +394,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func canMoveInsightUp(_ insight: InsightType) -> Bool {
-        let isShowingPinnedCard = insightsToShow.contains(.customize)
+        let isShowingPinnedCard = insightsToShow.contains(.customize) || insightsToShow.contains(.growAudience)
 
         let minIndex = isShowingPinnedCard ? 1 : 0
 
