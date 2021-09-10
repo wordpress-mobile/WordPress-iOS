@@ -61,6 +61,10 @@ class SiteStatsInsightsViewModel: Observable {
             }
 
             switch insightType {
+            case .growAudience:
+                tableRows.append(GrowAudienceRow(hintType: .bloggingReminders,
+                                                 allTimeViewsCount: 0,
+                                                 siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .customize:
                 tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .latestPostSummary:
