@@ -287,7 +287,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
            let lastValidDate = Calendar.current.nextDate(
             after: Date(),
             matching: runDateComponents,
-            matchingPolicy: .previousTimePreservingSmallerComponents),
+            matchingPolicy: .nextTime,
+            direction: .backward),
            lastValidDate > lastRunDate {
 
             return lastValidDate
