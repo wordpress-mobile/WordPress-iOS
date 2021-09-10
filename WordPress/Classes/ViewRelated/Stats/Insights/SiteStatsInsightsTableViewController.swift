@@ -265,8 +265,11 @@ private extension SiteStatsInsightsTableViewController {
         let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
         insightsToShow = InsightType.typesForValues(insightTypesValues)
 
-        // Add the 'customize' card if necessary.
-        loadCustomizeCardSetting()
+        loadGrowAudienceCardSetting()
+
+        if !insightsToShow.contains(.growAudience) {
+            loadCustomizeCardSetting()
+        }
     }
 
     func writeInsightsToUserDefaults() {
