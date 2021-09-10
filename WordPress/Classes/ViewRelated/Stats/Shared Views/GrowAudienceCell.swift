@@ -6,6 +6,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var viewCountDescriptionLabel: UILabel!
     @IBOutlet weak var tipLabel: UILabel!
     @IBOutlet weak var detailsLabel: UILabel!
+    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var actionButton: UIButton!
 
@@ -25,6 +26,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         viewCountDescriptionLabel.text = Strings.getViewsCountDescription(viewsCount: allTimeViewsCount)
         tipLabel.text = Strings.tipTitle
         detailsLabel.text = hintType.detailsTitle
+        iconView.image = hintType.image
         dismissButton.setTitle(Strings.dismissButtonTitle, for: .normal)
         actionButton.setTitle(hintType.actionButtonTitle, for: .normal)
         self.insightsDelegate = insightsDelegate
@@ -113,6 +115,13 @@ extension GrowAudienceCell {
             switch self {
             case .bloggingReminders:
                 return Strings.BloggingReminders.actionButtonTitle
+            }
+        }
+
+        var image: UIImage? {
+            switch self {
+            case .bloggingReminders:
+                return UIImage(named: "grow-audience-illustration-blogging-reminders")
             }
         }
     }

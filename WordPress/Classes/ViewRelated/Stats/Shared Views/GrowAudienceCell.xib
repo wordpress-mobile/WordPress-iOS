@@ -110,6 +110,7 @@
                 <outlet property="actionButton" destination="q6X-M6-Ps8" id="bO6-zs-oaP"/>
                 <outlet property="detailsLabel" destination="nEi-do-xcI" id="X6C-sG-uBf"/>
                 <outlet property="dismissButton" destination="lNb-HZ-SCd" id="CYt-Gq-e31"/>
+                <outlet property="iconView" destination="7lU-5c-MdA" id="jN1-KQ-zdR"/>
                 <outlet property="tipLabel" destination="pfa-NZ-hro" id="Ozz-Qt-iRe"/>
                 <outlet property="viewCountDescriptionLabel" destination="jRn-F4-sDs" id="b6r-JZ-UUI"/>
                 <outlet property="viewCountLabel" destination="51V-ZR-g2T" id="E3P-ol-JEo"/>
