@@ -182,9 +182,9 @@ struct WeeklyRoundupDebugScreen: View {
 
                     WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { result in
                         switch result {
-                        case .success():
+                        case .success:
                             errorScheduling = false
-                        case .failure( _ ):
+                        case .failure:
                             errorScheduling = true
                         }
 
