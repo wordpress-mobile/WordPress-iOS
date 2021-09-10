@@ -288,11 +288,6 @@ private extension SiteStatsInsightsTableViewController {
         addCustomizeCard()
     }
 
-    func loadCustomizeCardSetting() {
-        hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
-        addCustomizeCard()
-    }
-
     func writeCustomizeCardSetting() {
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
@@ -326,9 +321,12 @@ private extension SiteStatsInsightsTableViewController {
 
     // MARK: - Customize Card Management
 
+    func loadCustomizeCardSetting() {
+        loadPermanentlyDismissableInsight(.customize, using: userDefaultsHideCustomizeKey)
+    }
+
     func dismissCustomizeCard() {
-        hideCustomizeCard = true
-        removeCustomizeCard()
+        permanentlyDismissInsight(.customize, using: userDefaultsHideCustomizeKey)
     }
 
     func removeCustomizeCard() {
