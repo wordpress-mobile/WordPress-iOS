@@ -297,6 +297,33 @@ private extension SiteStatsInsightsTableViewController {
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
 
+    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show.
+    ///
+    /// - Parameters:
+    ///   - insight: An insight that can be permanently dismissed for all sites
+    ///   - userDefaultsHideInsightKey: The UserDefaults key that indicates whether or not the insight should be hidden
+    func loadPermanentlyDismissableInsight(_ insight: InsightType, using userDefaultsHideInsightKey: String) {
+
+        let shouldAddInsight =
+            !UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && !insightsToShow.contains(insight)
+
+        if shouldAddInsight {
+            insightsToShow.insert(insight, at: 0)
+        } else {
+            insightsToShow = insightsToShow.filter { $0 != insight }
+        }
+    }
+
+    /// Permanently dismisses an insight for all sites.
+    ///
+    /// - Parameters:
+    ///   - insight: An insight that can be permanently dismissed for all sites
+    ///   - userDefaultsHideInsightKey: The UserDefaults key that indicates whether or not the insight should be hidden
+    func permanentlyDismissInsight(_ insight: InsightType, using userDefaultsHideInsightKey: String) {
+        insightsToShow = insightsToShow.filter { $0 != insight }
+        UserDefaults.standard.set(true, forKey: userDefaultsHideInsightKey)
+    }
+
     // MARK: - Customize Card Management
 
     func dismissCustomizeCard() {
