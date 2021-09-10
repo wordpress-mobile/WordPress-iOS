@@ -80,6 +80,7 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
+    @objc optional func growAudienceDismissButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
     @objc optional func addInsightDismissed()
@@ -331,6 +332,10 @@ private extension SiteStatsInsightsTableViewController {
         loadPermanentlyDismissableInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
     }
 
+    func dismissGrowAudienceCard() {
+        permanentlyDismissInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
+    }
+
     // MARK: - Insights Management
 
     func showAddInsightView() {
@@ -511,6 +516,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func customizeTryButtonTapped() {
         showAddInsightView()
+    }
+
+    func growAudienceDismissButtonTapped() {
+        dismissGrowAudienceCard()
+        updateView()
     }
 
     func showAddInsight() {
