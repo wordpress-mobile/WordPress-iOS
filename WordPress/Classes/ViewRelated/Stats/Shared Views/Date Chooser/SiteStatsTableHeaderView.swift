@@ -57,6 +57,8 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         return -(expectedPeriodCount - 1)
     }
 
+    private var isRunningGhostAnimation: Bool = false
+
     // MARK: - View
 
     override func awakeFromNib() {
@@ -127,10 +129,14 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 
     func animateGhostLayers(_ animate: Bool) {
         if animate {
+            isRunningGhostAnimation = true
             startGhostAnimation(style: GhostCellStyle.muriel)
-            return
+        } else {
+            isRunningGhostAnimation = false
+            stopGhostAnimation()
         }
-        stopGhostAnimation()
+
+        updateButtonStates()
     }
 }
 
@@ -244,6 +250,12 @@ private extension SiteStatsTableHeaderView {
     }
 
     func updateButtonStates() {
+        guard !isRunningGhostAnimation else {
+            forwardButton.isEnabled = false
+            backButton.isEnabled = false
+            return
+        }
+
         guard let date = date, let period = period else {
             forwardButton.isEnabled = false
             backButton.isEnabled = false
