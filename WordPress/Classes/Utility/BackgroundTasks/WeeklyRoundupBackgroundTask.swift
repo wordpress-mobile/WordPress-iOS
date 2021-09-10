@@ -277,19 +277,29 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             direction: .backward) ?? Date()
     }
 
-    /// This method checks if we skipped a Weekly Roundup run, and if we did, it returns the date of the last skipped Weekly Roundup.
+    private func secondsInDays(_ numberOfDays: Int) -> Int {
+        numberOfDays * Self.secondsPerDay
+    }
+
+    /// This method checks if we skipped a Weekly Roundup run, and if we're within 2 days of that skipped Weekly Roundup run date.
+    /// If all is true, it returns the date of the last skipped Weekly Roundup.
     ///
-    /// - Returns: the date of the last skipped Weekly Roundup, or `nil` if we haven't skipped it (or if Weekly Roundup has never been run)..
+    /// If Weekly Roundup has never been run this will always return `nil` as we haven't skipped any date.
+    ///
+    /// - Returns: the date of the last skipped Weekly Roundup, or `nil` if the conditions aren't met.
     ///
     private func skippedWeeklyRoundupDate() -> Date? {
+        let today = Date()
+
         if let lastRunDate = store.getLastRunDate(),
-           Int(Date().timeIntervalSinceReferenceDate - lastRunDate.timeIntervalSinceReferenceDate) > 6 * Self.secondsPerDay,
+           Int(today.timeIntervalSinceReferenceDate - lastRunDate.timeIntervalSinceReferenceDate) > secondsInDays(6),
            let lastValidDate = Calendar.current.nextDate(
             after: Date(),
             matching: runDateComponents,
             matchingPolicy: .nextTime,
             direction: .backward),
-           lastValidDate > lastRunDate {
+           lastValidDate > lastRunDate,
+           Int(today.timeIntervalSinceReferenceDate - lastValidDate.timeIntervalSinceReferenceDate) <= secondsInDays(2) {
 
             return lastValidDate
         }
@@ -298,6 +308,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     }
 
     func nextRunDate() -> Date? {
+        // If we're within 2 days of a skipped Weekly Roundup date, we can show it.
         if let skippedRunDate = skippedWeeklyRoundupDate() {
             return skippedRunDate
         }
