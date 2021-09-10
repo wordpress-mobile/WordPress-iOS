@@ -9,9 +9,9 @@ protocol BackgroundTask {
     ///
     func nextRunDate() -> Date?
 
-    /// This method allows the task to perform extra processing before scheduling the BG Task.
+    /// This method allows the task to perform extra processing after scheduling the BG Task.
     ///
-    func willSchedule(completion: @escaping (Result<Void, Error>) -> Void)
+    func didSchedule(completion: @escaping (Result<Void, Error>) -> Void)
 
     // MARK: - Execution
 
@@ -156,10 +156,9 @@ class BackgroundTasksCoordinator {
         let request = BGAppRefreshTaskRequest(identifier: type(of: task).identifier)
         request.earliestBeginDate = nextDate
 
-        task.willSchedule(completion: completion)
-
         do {
             try self.scheduler.submit(request)
+            task.didSchedule(completion: completion)
         } catch {
             completion(.failure(SchedulingError.schedulingFailed(task: type(of: task).identifier, error: error)))
         }
