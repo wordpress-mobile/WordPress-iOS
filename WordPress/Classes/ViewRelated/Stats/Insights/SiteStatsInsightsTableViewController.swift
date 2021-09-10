@@ -193,6 +193,7 @@ private extension SiteStatsInsightsTableViewController {
                 TopTotalsInsightStatsRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
+                StatsGhostGrowAudienceImmutableRow.self,
                 StatsGhostChartImmutableRow.self,
                 StatsGhostTwoColumnImmutableRow.self,
                 StatsGhostTopImmutableRow.self,
