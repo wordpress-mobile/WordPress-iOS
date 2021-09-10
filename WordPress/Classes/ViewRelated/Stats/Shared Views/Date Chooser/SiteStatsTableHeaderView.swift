@@ -126,9 +126,6 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     }
 
     func animateGhostLayers(_ animate: Bool) {
-        forwardButton.isEnabled = !animate
-        backButton.isEnabled = !animate
-
         if animate {
             startGhostAnimation(style: GhostCellStyle.muriel)
             return
