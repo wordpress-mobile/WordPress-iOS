@@ -58,11 +58,11 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     // MARK: - IBAction
 
     @IBAction private func dismissButtonTapped(_ sender: UIButton) {
+        insightsDelegate?.growAudienceDismissButtonTapped?()
     }
 
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
     }
-
 
     // MARK: - Localization
 
