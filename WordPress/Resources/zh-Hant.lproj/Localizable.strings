@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-20 14:34:24+0000 */
+/* Translation-Revision-Date: 2021-09-01 09:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nTo confirm, please re-enter your site's address before deleting.\n\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\n為進行確認，請在關閉前重新輸入你的使用者名稱。\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "「延遲載入」圖片";
@@ -217,6 +217,9 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 區塊選項";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s block previews are coming soon" = "%s block previews are coming soon";
+
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s區塊，全新推出";
 
@@ -234,6 +237,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s 沒有 URL 集";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "%s previews not yet available";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 社交圖示";
@@ -309,13 +315,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "一週<strong>一次<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "每週<strong>一次<\/strong>在 %@ 收到通知";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "一週<strong>兩次<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "每週<strong>兩次<\/strong>在 %@ 收到通知";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +412,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "帳號設定";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "帳號已關閉";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "合作廠商";
@@ -515,7 +521,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "新增任何主題";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "新增區塊";
 
 /* No comment provided by engineer. */
 "Add button text" = "新增按鈕文字";
@@ -611,7 +617,8 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter. */
 "All" = "全部";
 
-/* Information about redeeming domain credit on site dashboard. */
+/* Footer of the free domain registration section for a paid plan.
+   Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "所有 WordPress.com 方案都包含一個自訂網域名稱。立即註冊你的免費進階網域。";
 
 /* An option in a list. Automatically approve all comments */
@@ -699,9 +706,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "需要有效的網際網路連線才能檢視歷史記錄";
 
-/* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
-
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "建立「選單」時發生錯誤。";
 
@@ -757,7 +761,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 驗證失敗。\n請確認你已透過 Apple ID 使用兩步驟驗證登入 iCloud。";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "套用此設定";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "套用";
@@ -1192,6 +1196,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1290,7 +1295,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "變更、新增或移除網站的頁面。";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "復原\/取消復原按鈕無法對特色圖片所做變更產生效用。";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "變更顯示名稱";
@@ -1460,7 +1465,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "關閉";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "關閉帳號";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "關閉留言功能";
@@ -1478,7 +1483,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "關閉「我」畫面";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "正在關閉帳號…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "程式碼";
@@ -1520,6 +1525,10 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "已將留言標記為垃圾訊息";
+
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+ My First Post */
+"Comment on" = "Comment on";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1606,7 +1615,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "確定";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "確認關閉帳號";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "確認刪除網站";
@@ -1692,7 +1701,8 @@ translators: Block name. %s: The localized block name */
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team. */
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "聯絡支援團隊";
 
 /* Button label for contacting support
@@ -1828,6 +1838,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "無法上傳特色圖片";
+
+/* Error title displayed when unable to close user account. */
+"Couldn’t close account automatically" = "Couldn’t close account automatically";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "正在計算媒體項目…";
@@ -1987,7 +2000,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "自訂你的網站";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Customize blocks";
+"Customize blocks" = "自訂區塊";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "自訂訊息";
@@ -2149,7 +2162,8 @@ translators: Block name. %s: The localized block name */
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "已停用";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "捨棄";
 
@@ -2242,7 +2256,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "網域擁有者必須在所有網域的公共資料庫中分享自己的聯絡資訊。基於隱私權保護，我們只會發佈自己的資訊而非你的資訊，並會將所有通訊內容私密轉寄給你。";
 
-/* Title for the Domains list */
+/* Noun. Title. Links to the Domains screen.
+   Title for the Domains list */
 "Domains" = "網域";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
@@ -2399,7 +2414,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "編輯連結";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每個區塊都有其各自的設定。 若要找到這些設定，請點選區塊。 區塊設定會顯示在畫面底部的工具列。";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2499,6 +2514,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "電子郵件地址";
 
 /* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
 "Email address" = "電子郵件地址";
@@ -2522,9 +2538,6 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "已傳送電子郵件！";
 
-/* No comment provided by engineer. */
-"Embed block previews are coming soon" = "內嵌區塊預覽功能即將推出";
-
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "內嵌字幕。 %s";
 
@@ -2536,9 +2549,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "嵌入媒體";
-
-/* No comment provided by engineer. */
-"Embed previews not yet available" = "內嵌預覽尚無法使用";
 
 /* Title for the Emoji section */
 "Emoji" = "表情圖示";
@@ -2628,8 +2638,7 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "輸入伺服器憑證";
 
-/* General error title
-   Generic error alert title
+/* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "錯誤";
@@ -2678,7 +2687,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "安裝 %@ 時發生錯誤。";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "載入按讚數時發生錯誤";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "載入外掛程式時發生錯誤";
@@ -2741,7 +2750,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "每天";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "每天 %@";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "所有人";
@@ -3305,10 +3314,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "如何建立限時動態文章";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "如何編輯頁面";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "如何編輯文章";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "如何修復？";
@@ -3318,6 +3327,9 @@ translators: Block name. %s: The localized block name */
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "攝影師 Cameron Karsten 的作品讓我深受啟發。 我下次會嘗試這些技巧";
+
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "IP address";
 
 /* Title of a button style */
 "Icon & Text" = "圖示與文字";
@@ -3627,7 +3639,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "加入討論：在關注的網誌文章上留言。";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "繼續編輯";
@@ -3731,6 +3744,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "已達限制。你可以在 1 分鐘後再試一次。如果在 1 分鐘不到之前重試，只會延長你必須等候繼續進行的時間。如果你覺得這是錯誤，請聯絡支援團隊。";
+
+/* No comment provided by engineer. */
+"Line Height" = "Line Height";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4156,7 +4172,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "將區塊從第 %1$s 列向上移至第 %2$s　列";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "移動區塊";
 
 /* Option to move Insight down in the view. */
 "Move down" = "向下移動";
@@ -4233,7 +4249,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "瀏覽至自訂漸層色彩";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "前往選取 %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "瀏覽至上一個內容表";
@@ -4273,6 +4289,9 @@ translators: Block name. %s: The localized block name */
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "新增文章";
+
+/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
+"New domain flow" = "New domain flow";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "新增項目";
@@ -4571,7 +4590,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "通知設定";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "通知時間";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4897,7 +4916,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "期間";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "永久關閉帳號";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "永久刪除網站";
@@ -5256,6 +5275,9 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "主網站";
 
+/* Header of the primary site section in the Domains dashboard. */
+"Primary Site Address" = "Primary Site Address";
+
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
@@ -5449,6 +5471,9 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "已重新連線";
 
+/* Header of the redirected domains section in the Domains Dashboard. */
+"Redirected Domains" = "Redirected Domains";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "訪客連結來源";
 
@@ -5459,11 +5484,15 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "重新整理";
 
-/* Action to redeem domain credit. */
+/* Action to redeem domain credit.
+   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
 "Register Domain" = "註冊網域";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "透過隱私權保護私密註冊";
+
+/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Register a free domain" = "Register a free domain";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -5977,7 +6006,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "選擇顏色";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "選擇上方的顏色";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "選取幾項以繼續操作";
@@ -6028,7 +6057,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "無法使用已選取的媒體。";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "已選取：%s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "若選擇其他選單位置，對目前選單所做的變更都會捨棄。確定要繼續？";
@@ -6142,7 +6171,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "分享文章";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "向朋友推薦 WordPress";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "在登入你的 WordPress.com 帳號時，請將你的服務使用情況相關資訊與我們的分析工具分享。";
@@ -6757,7 +6786,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "只顯示文字";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "編輯文字區塊時，文字格式控制項就在鍵盤上方的工具列中";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7094,18 +7123,6 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "此網站尚未發表任何文章。請稍後再返回重試。";
 
-/* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
-
-/* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
-
-/* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
-
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "使用者透過 Twitter 按鈕分享時，推文中將包含此內容。";
@@ -7176,6 +7193,9 @@ translators: Block name. %s: The localized block name */
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "在你的文章中新增相片或影片。";
+
+/* Error message displayed when unable to close user account. */
+"To close this account now, contact our support team." = "To close this account now, contact our support team.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "若要繼續，請輸入你的電子郵件地址和姓名。";
@@ -8189,8 +8209,14 @@ translators: Block name. %s: The localized block name */
 /* Example Reader feed title */
 "Web News" = "網路新聞";
 
+/* Describes the web address section in the comment detail screen. */
+"Web address" = "Web address";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "每週開始於";
+
+/* Setting: indicates if the site reports its Weekly Roundup */
+"Weekly Roundup" = "Weekly Roundup";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "週";
@@ -8232,11 +8258,11 @@ translators: Block name. %s: The localized block name */
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "我們會逐步說明建立及長久經營網站的基本事項";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "我們正努力為內嵌預覽提供支援。 在此期間，你可以預覽頁面內嵌內容。";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "我們正努力為內嵌預覽提供支援。 在此期間，你可以預覽文章內嵌內容。";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "我們已新增更多任務，協助你拓展讀者群。";
@@ -8319,7 +8345,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "WordPress 應用程式設定";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "WordPress 應用程式 - 適用任何螢幕";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress 網誌";
@@ -8544,6 +8570,7 @@ translators: Block name. %s: The localized block name */
 "You have no reminders set." = "你目前並未設定任何提醒。";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "您有新設定尚未儲存。";
 
@@ -8578,7 +8605,8 @@ translators: Block name. %s: The localized block name */
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n";
 
-/* Notification text - below a comment notification detail */
+/* Informs that the user has replied to this comment.
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "你已回覆此留言。";
 
 /* No comment provided by engineer. */
@@ -8591,16 +8619,13 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "一旦變更使用者名稱就無法復原。";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "你會每週收到<strong>一次<\/strong>通知，時間為 %1$@ 的 %2$@。";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "你每週會收到 %1$@ 次網誌提醒，分別在%2$@。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "全部都是最新版本！";
-
-/* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "這篇文章有未儲存的變更";
@@ -8655,6 +8680,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "我們會將你的文章、網頁與設定透過電子郵件傳送至 %@。";
+
+/* Footer of the primary site section in the Domains dashboard. */
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "還原的時間比平常更長，請在數分鐘後再返回查看。";

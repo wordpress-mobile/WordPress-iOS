@@ -68,6 +68,16 @@ class CommentDetailViewController: UITableViewController {
         configureRows()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // when an orientation change is triggered, recalculate the content cell's height.
+        guard let contentRowIndex = rows.firstIndex(where: { $0 == .content }) else {
+            return
+        }
+        tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
+    }
+
     // MARK: Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -89,14 +99,20 @@ class CommentDetailViewController: UITableViewController {
             configureHeaderCell()
             return headerCell
 
+        case .content:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                return .init()
+            }
+            cell.configure(with: comment) { _ in
+                self.tableView.performBatchUpdates({})
+            }
+            return cell
+
         case .replyIndicator:
             return replyIndicatorCell
 
         case .text:
             return configuredTextCell(for: row)
-
-        default:
-            return .init()
         }
     }
 
@@ -111,8 +127,8 @@ class CommentDetailViewController: UITableViewController {
             // TODO: Navigate to the comment reply.
             break
 
-        case .text(_, _, _, let action):
-            action?()
+        case .text(let title, _, _) where title == .webAddressLabelText:
+            visitAuthorURL()
 
         default:
             break
@@ -127,11 +143,11 @@ private extension CommentDetailViewController {
 
     typealias Style = WPStyleGuide.CommentDetail
 
-    enum RowType {
+    enum RowType: Equatable {
         case header
         case content
         case replyIndicator
-        case text(title: String, detail: String, image: UIImage? = nil, action: (() -> Void)? = nil)
+        case text(title: String, detail: String, image: UIImage? = nil)
     }
 
     struct Constants {
@@ -152,13 +168,16 @@ private extension CommentDetailViewController {
         if UIDevice.current.userInterfaceIdiom == .phone {
             tableView.directionalLayoutMargins.leading = Constants.tableLeadingInset
         }
+
+        tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
 
     func configureRows() {
         rows = [
             .header,
+            .content,
             .replyIndicator, // TODO: Conditionally add this when user has replied to the comment.
-            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage, action: visitAuthorURL),
+            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage),
             .text(title: .emailAddressLabelText, detail: comment.author_email),
             .text(title: .ipAddressLabelText, detail: comment.author_ip)
         ]
@@ -174,7 +193,7 @@ private extension CommentDetailViewController {
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
-        guard case let .text(title, detail, image, _) = row else {
+        guard case let .text(title, detail, image) = row else {
             return .init()
         }
 

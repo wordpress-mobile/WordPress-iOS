@@ -840,7 +840,7 @@ public protocol ThemePresenter: AnyObject {
         _ = themeService.installTheme(theme,
             for: blog,
             success: { [weak self] in
-                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: false)
+                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: !theme.isCurrentTheme())
             }, failure: nil)
     }
 
@@ -857,7 +857,7 @@ public protocol ThemePresenter: AnyObject {
         if let theme = theme, self.blog.supports(.customThemes) && !theme.custom {
             installThemeAndPresentCustomizer(theme)
         } else {
-            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
+            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: !(theme?.isCurrentTheme() ?? true))
         }
     }
 

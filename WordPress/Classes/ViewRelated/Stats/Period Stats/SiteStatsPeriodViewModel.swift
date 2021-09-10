@@ -11,6 +11,7 @@ class SiteStatsPeriodViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private let store: StatsPeriodStore
     private var selectedDate: Date
     private var lastRequestedDate: Date
@@ -49,8 +50,10 @@ class SiteStatsPeriodViewModel: Observable {
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
-         periodDelegate: SiteStatsPeriodDelegate) {
+         periodDelegate: SiteStatsPeriodDelegate,
+         referrerDelegate: SiteStatsReferrerDelegate) {
         self.periodDelegate = periodDelegate
+        self.referrerDelegate = referrerDelegate
         self.store = store
         self.selectedDate = selectedDate
         self.lastRequestedDate = Date()
@@ -440,7 +443,8 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
-                                                 siteStatsPeriodDelegate: periodDelegate))
+                                                 siteStatsPeriodDelegate: periodDelegate,
+                                                 siteStatsReferrerDelegate: referrerDelegate))
 
         return tableRows
     }
@@ -468,7 +472,8 @@ private extension SiteStatsPeriodViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }

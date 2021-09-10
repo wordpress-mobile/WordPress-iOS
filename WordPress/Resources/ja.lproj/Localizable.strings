@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-19 20:50:09+0000 */
+/* Translation-Revision-Date: 2021-09-09 03:19:31+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -10,7 +10,7 @@
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\n確認のため、消去の前にサイトのアドレス (URL) を再入力してください。\n\n";
 
 /* Message of Close Account confirmation alert */
-"\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
+"\nTo confirm, please re-enter your username before closing.\n\n" = "\n確認するには、閉鎖する前のユーザーアカウントをもう一度入力してください。\n\n";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "画像の「遅延読み込み」";
@@ -217,6 +217,9 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s ブロックオプション";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s block previews are coming soon" = "%s block previews are coming soon";
+
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "新たに追加された%sブロック";
 
@@ -234,6 +237,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "%s previews not yet available";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s ソーシャルアイコン";
@@ -309,13 +315,13 @@ translators: Block name. %s: The localized block name */
 "<strong>Once<\/strong> a week" = "週に<strong>1回<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
-"<strong>Once<\/strong> a week at %@" = "<strong>Once<\/strong> a week at %@";
+"<strong>Once<\/strong> a week at %@" = "週に<strong>1回<\/strong>%@時";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week" = "週に<strong>2回<\/strong>";
 
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
-"<strong>Twice<\/strong> a week at %@" = "<strong>Twice<\/strong> a week at %@";
+"<strong>Twice<\/strong> a week at %@" = "週に<strong>2回<\/strong>%@時";
 
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
@@ -406,7 +412,7 @@ translators: Block name. %s: The localized block name */
 "Account Settings" = "アカウント設定";
 
 /* Overlay message displayed when account successfully closed */
-"Account closed" = "Account closed";
+"Account closed" = "アカウントが閉鎖されました";
 
 /* Displays the list of third-party libraries we use */
 "Acknowledgements" = "謝辞";
@@ -515,7 +521,7 @@ translators: Block name. %s: The localized block name */
 "Add any topic" = "任意のトピックを追加";
 
 /* No comment provided by engineer. */
-"Add blocks" = "Add blocks";
+"Add blocks" = "ブロックを追加";
 
 /* No comment provided by engineer. */
 "Add button text" = "ボタンのテキストを追加";
@@ -611,7 +617,8 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter. */
 "All" = "すべて";
 
-/* Information about redeeming domain credit on site dashboard. */
+/* Footer of the free domain registration section for a paid plan.
+   Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "WordPress.com のすべてのプランにはカスタムドメイン名があります。無料プレミアムドメインを登録してください。";
 
 /* An option in a list. Automatically approve all comments */
@@ -699,9 +706,6 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "履歴を表示するには有効なインターネット接続が必要です";
 
-/* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "An error occured while closing account.";
-
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "メニューを作成する際にエラーが発生しました。";
 
@@ -757,7 +761,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple の認証に失敗しました。\n二要素認証を使用している Apple ID で iCloud にログイン中かどうか確認してください。";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "設定を適用";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "適用";
@@ -1192,6 +1196,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1290,7 +1295,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "サイトのページを変更、追加、削除します。";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "アイキャッチ画像に対する変更は、「戻す」または「やり直す」ボタンを使用しても影響を受けません。";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "表示名を変更中";
@@ -1460,7 +1465,7 @@ translators: Block name. %s: The localized block name */
 "Close" = "閉じる";
 
 /* Close account action label */
-"Close Account" = "Close Account";
+"Close Account" = "アカウントを閉鎖";
 
 /* Settings: Close comments after X period */
 "Close Commenting" = "コメントを閉じる";
@@ -1478,7 +1483,7 @@ translators: Block name. %s: The localized block name */
 "Close the Me screen" = "Me 画面を閉じる";
 
 /* Overlay message displayed while closing account */
-"Closing account…" = "Closing account…";
+"Closing account…" = "アカウントを閉鎖しています…";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "ソースコード";
@@ -1520,6 +1525,10 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "コメントはスパムとしてマークされました";
+
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+ My First Post */
+"Comment on" = "Comment on";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1606,7 +1615,7 @@ translators: Block name. %s: The localized block name */
 "Confirm" = "確認";
 
 /* Close Account alert title */
-"Confirm Close Account" = "Confirm Close Account";
+"Confirm Close Account" = "アカウントの閉鎖を確認";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "サイト削除を確認";
@@ -1692,7 +1701,8 @@ translators: Block name. %s: The localized block name */
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team. */
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "サポートに問い合わせる";
 
 /* Button label for contacting support
@@ -1828,6 +1838,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "アイキャッチ画像をアップロードできませんでした";
+
+/* Error title displayed when unable to close user account. */
+"Couldn’t close account automatically" = "Couldn’t close account automatically";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "メディア項目を数えています…";
@@ -1987,7 +2000,7 @@ translators: Block name. %s: The localized block name */
 "Customize Your Site" = "自分のサイトをカスタマイズ";
 
 /* No comment provided by engineer. */
-"Customize blocks" = "Customize blocks";
+"Customize blocks" = "ブロックをカスタマイズ";
 
 /* Title for the edition of the share message. */
 "Customize the message" = "メッセージをカスタマイズ";
@@ -2149,7 +2162,8 @@ translators: Block name. %s: The localized block name */
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "無効";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "保存しない";
 
@@ -2242,7 +2256,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "ドメイン所有者は、すべてのドメインのパブリックデータベースで連絡先情報を共有する必要があります。プライバシー保護では、お客様に関する情報の代わりに弊社に関する情報を公開し、お客様にはプライベートにコミュニケーションを転送します。";
 
-/* Title for the Domains list */
+/* Noun. Title. Links to the Domains screen.
+   Title for the Domains list */
 "Domains" = "ドメイン";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
@@ -2399,7 +2414,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "リンクを編集";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "各ブロックには独自の設定があります。 確認するには、ブロックをタップします。 画面下部にあるツールバーに設定が表示されます。";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2499,6 +2514,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "メールアドレス";
 
 /* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
 "Email address" = "メールアドレス";
@@ -2522,9 +2538,6 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "メールを送信しました。";
 
-/* No comment provided by engineer. */
-"Embed block previews are coming soon" = "埋め込みブロックのプレビューはまもなく公開予定です";
-
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "画像キャプション。%s";
 
@@ -2536,9 +2549,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "メディアを埋め込み";
-
-/* No comment provided by engineer. */
-"Embed previews not yet available" = "埋め込みプレビューはまだ使用できません";
 
 /* Title for the Emoji section */
 "Emoji" = "絵文字";
@@ -2628,8 +2638,7 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "サーバーの認証情報を入力";
 
-/* General error title
-   Generic error alert title
+/* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "エラー";
@@ -2678,7 +2687,7 @@ translators: Block name. %s: The localized block name */
 "Error installing %@." = "%@ のインストール中にエラーが発生しました。";
 
 /* Text displayed when there is a failure loading notification likes. */
-"Error loading likes" = "Error loading likes";
+"Error loading likes" = "「いいね」読み込みエラー";
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "プラグイン読み込みエラー";
@@ -2741,7 +2750,7 @@ translators: Block name. %s: The localized block name */
 "Every day" = "毎日";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day at %@" = "Every day at %@";
+"Every day at %@" = "毎日%@時";
 
 /* Label for the post author filter. This filter shows posts for all users on the blog. */
 "Everyone" = "誰でも";
@@ -3305,10 +3314,10 @@ translators: Block name. %s: The localized block name */
 "How to create a story post" = "ストーリー投稿の作り方";
 
 /* No comment provided by engineer. */
-"How to edit your page" = "How to edit your page";
+"How to edit your page" = "ページの編集方法";
 
 /* No comment provided by engineer. */
-"How to edit your post" = "How to edit your post";
+"How to edit your post" = "投稿の編集方法";
 
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "修正方法";
@@ -3318,6 +3327,9 @@ translators: Block name. %s: The localized block name */
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "写真家の Cameron Karsten 氏の作品にはとても感銘を受けました。 この技術を今度試すつもりです";
+
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "IP address";
 
 /* Title of a button style */
 "Icon & Text" = "アイコンとテキスト";
@@ -3627,7 +3639,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "フォロー中のブログの記事にコメントを書き、ディスカッションに参加してみましょう。";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "編集を継続";
@@ -3731,6 +3744,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "ログイン試行の上限に達しました。1分後にもう一度お試しいただけます。それ以前にログインしようとした場合、制限解除までの時間がさらに延長されます。エラーだと思われる場合はサポートにご連絡ください。";
+
+/* No comment provided by engineer. */
+"Line Height" = "Line Height";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4156,7 +4172,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "ブロックを行 %1$s から行 %2$s に上に移動します";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "ブロックを移動";
 
 /* Option to move Insight down in the view. */
 "Move down" = "下に移動";
@@ -4233,7 +4249,7 @@ translators: Block name. %s: The localized block name */
 "Navigates to customize the gradient" = "グラデーションのカスタマイズへ移動";
 
 /* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "移動して%sを選択";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "前のコンテンツシートへ移動";
@@ -4273,6 +4289,9 @@ translators: Block name. %s: The localized block name */
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "新規投稿";
+
+/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
+"New domain flow" = "New domain flow";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "新規項目";
@@ -4571,7 +4590,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "通知設定";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Notification time";
+"Notification time" = "通知時間";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4897,7 +4916,7 @@ translators: Block name. %s: The localized block name */
 "Period" = "期間";
 
 /* Close Account confirmation action title */
-"Permanently Close Account" = "Permanently Close Account";
+"Permanently Close Account" = "アカウントを完全に閉鎖";
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "サイトを完全に削除する";
@@ -5256,6 +5275,9 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "主要サイト";
 
+/* Header of the primary site section in the Domains dashboard. */
+"Primary Site Address" = "Primary Site Address";
+
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
@@ -5449,6 +5471,9 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "再連携完了";
 
+/* Header of the redirected domains section in the Domains Dashboard. */
+"Redirected Domains" = "Redirected Domains";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "リファラ";
 
@@ -5459,11 +5484,15 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "更新";
 
-/* Action to redeem domain credit. */
+/* Action to redeem domain credit.
+   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
 "Register Domain" = "ドメインを登録";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "プライバシー保護付きで非公開として登録";
+
+/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Register a free domain" = "Register a free domain";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -5977,7 +6006,7 @@ translators: Block name. %s: The localized block name */
 "Select a color" = "色を選択";
 
 /* No comment provided by engineer. */
-"Select a color above" = "Select a color above";
+"Select a color above" = "上記の色を選択";
 
 /* Reader select interests next button disabled title text */
 "Select a few to continue" = "選択して続ける";
@@ -6028,7 +6057,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "選択したメディアがありません。";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "選択済み: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "別のメニューのロケーションを選択すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
@@ -6142,7 +6171,7 @@ translators: Block name. %s: The localized block name */
 "Share Post" = "投稿をシェア";
 
 /* Label for a button that recommends the app to others */
-"Share WordPress with a friend" = "Share WordPress with a friend";
+"Share WordPress with a friend" = "WordPress を友達と共有する";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "WordPress.com アカウントへのログイン中のサービス利用の情報を分析ツールと共有してください。";
@@ -6552,7 +6581,7 @@ translators: Block name. %s: The localized block name */
 "Strike Through" = "取り消し線";
 
 /* Discoverability title for strikethrough formatting keyboard shortcut. */
-"Strikethrough" = "打ち消し";
+"Strikethrough" = "打ち消し線";
 
 /* Status for Media object that is only has the mediaID locally. */
 "Stub" = "スタブ";
@@ -6757,7 +6786,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "テキストのみ";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "書式設定コントロールは、テキストブロックの編集中に表示されるキーボードの上に位置するツールバー内にあります";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7094,18 +7123,6 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "このサイトにはまだ何も投稿されていません。後でもう一度チェックしてみてください。";
 
-/* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
-
-/* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "This user account cannot be closed while it has active purchases.";
-
-/* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "This user account cannot be closed while it has active subscriptions.";
-
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "This user account could not be closed. Please contact us by going to Me > Help & Support screen.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "これは、Twitter ボタンを使って読者がシェアするときのツイートに含まれます。";
@@ -7176,6 +7193,9 @@ translators: Block name. %s: The localized block name */
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "投稿に写真または動画を追加する。";
+
+/* Error message displayed when unable to close user account. */
+"To close this account now, contact our support team." = "To close this account now, contact our support team.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "続行するには、メールアドレスと名前を入力してください。";
@@ -8189,8 +8209,14 @@ translators: Block name. %s: The localized block name */
 /* Example Reader feed title */
 "Web News" = "ウェブニュース";
 
+/* Describes the web address section in the comment detail screen. */
+"Web address" = "Web address";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "週の最初の曜日";
+
+/* Setting: indicates if the site reports its Weekly Roundup */
+"Weekly Roundup" = "Weekly Roundup";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "週";
@@ -8232,11 +8258,11 @@ translators: Block name. %s: The localized block name */
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "サイトの構築と訪問者を増やす方法の基本について紹介します";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "埋め込みプレビューのサポートの追加に取り組んでいます。 それまでの間、固定ページで埋め込まれたコンテンツをプレビューできます。";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "埋め込みプレビューのサポートの追加に取り組んでいます。 それまでの間、ブログ投稿で埋め込まれたコンテンツをプレビューできます。";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "訪問者を増やすためのタスクをさらに追加しました。";
@@ -8319,7 +8345,7 @@ translators: Block name. %s: The localized block name */
 "WordPress App Settings" = "WordPress アプリ設定";
 
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
-"WordPress Apps - Apps for any screen" = "WordPress Apps - Apps for any screen";
+"WordPress Apps - Apps for any screen" = "WordPress アプリ - さまざまな画面で利用できるアプリ";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress ブログ";
@@ -8544,6 +8570,7 @@ translators: Block name. %s: The localized block name */
 "You have no reminders set." = "リマインダーが設定されていません。";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "保存していない変更点があります。";
 
@@ -8578,7 +8605,8 @@ translators: Block name. %s: The localized block name */
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "最近この投稿に変更を加えましたが、それを保存していません。読み込むバージョンを選択してください。\n\nこの端末から\n%1$@に保存\n\n別の端末から\n%2$@に保存\n";
 
-/* Notification text - below a comment notification detail */
+/* Informs that the user has replied to this comment.
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "このコメントに返信しました。";
 
 /* No comment provided by engineer. */
@@ -8591,16 +8619,13 @@ translators: Block name. %s: The localized block name */
 "You will not be able to change your username back." = "ユーザー名を元に戻すことはできません。";
 
 /* Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'. */
-"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@.";
+"You'll get a reminder to blog <strong>once<\/strong> a week on %@ at %@." = "週に<strong>1回<\/strong>、%1$@曜日の%2$@時にブログ投稿のリマインダーを受け取ります。";
 
 /* Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday. */
 "You'll get reminders to blog %@ times a week on %@." = "週に%1$@回、%2$@にブログ投稿のリマインダーを受け取ります。";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "すべて最新版です。";
-
-/* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "You're not authorized to close the account.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "この投稿に保存されていない変更が加えられました";
@@ -8655,6 +8680,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "投稿、ページ、および設定は %@ にメールで送信されます。";
+
+/* Footer of the primary site section in the Domains dashboard. */
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "復元に通常よりも時間がかかっています。数分後にもう一度ご確認ください。";
