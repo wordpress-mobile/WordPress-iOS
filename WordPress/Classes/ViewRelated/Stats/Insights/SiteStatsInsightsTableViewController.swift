@@ -100,6 +100,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
 
+    // Store 'grow audience' separately as it is not per site.
+    private let userDefaultsHideGrowAudienceKey = "StatsInsightsHideGrowAudienceCard"
+
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
     // A single site's dictionary contains the InsightType values for that site.
@@ -317,6 +320,12 @@ private extension SiteStatsInsightsTableViewController {
 
     func dismissCustomizeCard() {
         permanentlyDismissInsight(.customize, using: userDefaultsHideCustomizeKey)
+    }
+
+    // MARK: - Grow Audience Card Management
+
+    func loadGrowAudienceCardSetting() {
+        loadPermanentlyDismissableInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
     }
 
     // MARK: - Insights Management
