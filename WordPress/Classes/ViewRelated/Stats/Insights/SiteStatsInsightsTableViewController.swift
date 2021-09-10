@@ -2,6 +2,7 @@ import UIKit
 import WordPressFlux
 
 enum InsightType: Int {
+    case growAudience
     case customize
     case latestPostSummary
     case allTimeStats
