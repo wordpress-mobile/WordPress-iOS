@@ -1,7 +1,0 @@
-Gebruik je het Insluitblok? Voor media die je insluit op je site bestaat nu de optie om de grootte ervan 'Aan te passen voor kleinere apparaten.' Schakel deze optie in om je content aan te passen aan je scherm; schakel uit om deze optie niet te gebruiken.
-
-Bevalt de tool voor Blog-herinneringen? We hebben een nieuwe functie toegevoegd waarmee je op een specifieke tijd een melding ontvangen.
-
-Wil je je account verwijderen? (We hopen dat het nooit zover komt!) Indien het toch nodig is, kan dit via je Accountinstellingen.
-
-Het geotaggen van berichten wordt niet langer ondersteund op het web, dus hebben we Locatie-optie onder Berichtinstellingen verwijderd.

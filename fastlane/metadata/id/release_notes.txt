@@ -1,9 +1,0 @@
-Apakah Anda menggunakan blok Tersemat? Untuk media yang Anda sematkan ke situs, Anda kini bisa melihat pilihan "Ubah ukuran untuk perangkat yang lebih kecil". Aktifkan pilihan tersebut untuk mengubah ukuran konten agar sesuai dengan layar; matikan toggle untuk menonaktifkan.
-
-Menyukai alat Pengingat Blogging? Kami telah menambahkan fitur baru yang mengizinkan Anda memilih waktu khusus untuk menerima pemberitahuan.
-
-Perlu menutup akun? (Kami berharap Anda tidak meninggalkan kami!) Namun, jika diperlukan, Anda kini bisa menutup akun melalui Pengaturan Akun.
-
-Pos dengan penandaan geografis tidak lagi didukung di web, jadi kami menghapus pilihan Lokasi pada Pengaturan Pos.
-
-Kami juga melakukan peningkatan lainnya, termasuk memperbaiki masalah pemangkasan di Pembaca, serta kemampuan merekomendasikan aplikasi ini ke teman-teman Anda pada layar Saya dan Tentang.
