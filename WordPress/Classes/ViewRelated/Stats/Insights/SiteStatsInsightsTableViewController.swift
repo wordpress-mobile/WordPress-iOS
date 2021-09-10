@@ -98,7 +98,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
-    private var hideCustomizeCard = false
 
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
@@ -266,14 +265,9 @@ private extension SiteStatsInsightsTableViewController {
 
     func writeInsightsToUserDefaults() {
 
-        writeCustomizeCardSetting()
-
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
             return
         }
-
-        // Remove 'customize' from array since it is not per site.
-        removeCustomizeCard()
 
         let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
         let currentSiteInsights = [siteID: insightTypesValues]
@@ -283,13 +277,6 @@ private extension SiteStatsInsightsTableViewController {
         allSitesInsights.append(currentSiteInsights)
 
         UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
-
-        // Add back 'customize'.
-        addCustomizeCard()
-    }
-
-    func writeCustomizeCardSetting() {
-        UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
 
     /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show.
@@ -327,17 +314,6 @@ private extension SiteStatsInsightsTableViewController {
 
     func dismissCustomizeCard() {
         permanentlyDismissInsight(.customize, using: userDefaultsHideCustomizeKey)
-    }
-
-    func removeCustomizeCard() {
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-    }
-
-    func addCustomizeCard() {
-        if !hideCustomizeCard && !insightsToShow.contains(.customize) {
-            // Insert customize at the beginning of the array so it is displayed first.
-            insightsToShow.insert(.customize, at: 0)
-        }
     }
 
     // MARK: - Insights Management
