@@ -12,7 +12,7 @@ final class TimeZoneSearchBar: UIView {
 
     /// Callback called when the button is tapped
     var tapped: (() -> Void)?
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -24,7 +24,7 @@ final class TimeZoneSearchBar: UIView {
     }
 
     // MARK: - Convenience Initializers
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
