@@ -18,6 +18,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case weeklyRoundupStaticNotification
     case newCommentDetail
     case domains
+    case timeZoneSuggester
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -58,6 +59,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newCommentDetail:
             return false
         case .domains:
+            return BuildConfiguration.current == .localDeveloper
+        case .timeZoneSuggester:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -117,6 +120,8 @@ extension FeatureFlag {
             return "New Comment Detail"
         case .domains:
             return "Domain Purchases"
+        case .timeZoneSuggester:
+            return "TimeZone Suggester"
         }
     }
 
