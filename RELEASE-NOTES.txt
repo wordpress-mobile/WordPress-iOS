@@ -1,6 +1,6 @@
 18.3
 -----
-
+* [*] Fixed a bug on Reader that prevented Saved posts to be removed
 
 18.2
 -----
