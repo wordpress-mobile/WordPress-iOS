@@ -234,11 +234,17 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     /// Just a convenience method to know then this task is run, what run date to use as "current".
     ///
     private func currentRunPeriodEndDate() -> Date {
-        Calendar.current.nextDate(
+        let runDate = Calendar.current.nextDate(
             after: Date(),
             matching: runDateComponents,
             matchingPolicy: .nextTime,
             direction: .backward) ?? Date()
+
+        // The run date is when the task is scheduled to run, but the period end date is actually
+        // the previous day at 24:59:59.
+        let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval.init(-1))
+
+        return periodEndDate
     }
 
     func nextRunDate() -> Date? {
