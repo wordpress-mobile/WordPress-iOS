@@ -239,20 +239,61 @@ class MediaItemViewController: UITableViewController {
     // MARK: - Actions
 
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
-        if let remoteURLStr = media.remoteURL, let url = URL(string: remoteURLStr) {
-            let activityController = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                activityController.modalPresentationStyle = .popover
-                activityController.popoverPresentationController?.barButtonItem = sender
-                activityController.completionWithItemsHandler = { [weak self] _, completed, _, _ in
-                    if completed {
-                        WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
+        switch media.mediaType {
+        case .image:
+            media.image(with: .zero) { [weak self] image, error in
+                guard let image = image else {
+                    if let error = error {
+                        DDLogError("Error when attempting to share image: \(error)")
                     }
+                    return
                 }
-                present(activityController, animated: true)
-        } else {
-            let alertController = UIAlertController(title: nil, message: NSLocalizedString("Unable to get URL for media item.", comment: "Error message displayed when we were unable to copy the URL for an item in the user's media library."), preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to share media."))
-            present(alertController, animated: true)
+                
+                self?.share(media: image, sender: sender)
+            }
+        case .audio, .video:
+            media.videoAsset() { [weak self] video, error in
+                guard let video = video,
+                      let exportSession = AVAssetExportSession(asset: video, presetName: AVAssetExportPresetPassthrough) else {
+                    
+                    if let error = error {
+                        DDLogError("Error when attempting to share video: \(error)")
+                    }
+                    return
+                }
+                
+                let exporter = MediaVideoExporter(session: exportSession, filename: "sharedVideo")
+                
+                exporter.export { mediaExport in
+                    self?.share([mediaExport.url], sender: sender)
+                } onError: { error in
+                    DDLogError("Error when attempting to share video: \(error)")
+                }
+
+                
+                /*
+                guard let video = video,
+                      let exportSession = AVAssetExportSession(asset: video, presetName: AVAssetExportPresetPassthrough) else {
+                    
+                    if let error = error {
+                        DDLogError("Error when attempting to share video: \(error)")
+                    }
+                    return
+                }
+                
+                exportSession.outputURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("videoExport-UUID().uuidString").appendingPathExtension(for: .)
+                
+                exportSession.exportAsynchronously {
+                    exportSession.
+                }
+                
+                video.expor
+                
+                self?.share(media: video, sender: sender)
+ */
+            }
+        default:
+            break
         }
     }
 
@@ -369,6 +410,54 @@ class MediaItemViewController: UITableViewController {
         controller.onValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    // MARK: - Sharing Logic
+    
+    private func mediaURL() -> URL? {
+        guard let remoteURL = media.remoteURL,
+           let url = URL(string: remoteURL) else {
+            return nil
+        }
+        
+        return url
+    }
+    /*
+    private func share(_ image: UIImage, sender: UIBarButtonItem) {
+        var activityItems: [Any] = [image]
+        
+        if let mediaURL = self.mediaURL() {
+            activityItems += [mediaURL]
+        }
+        
+        share(activityItems, sender: sender)
+    }
+    
+    private func share(_ video: AVAsset, sender: UIBarButtonItem) {
+
+    }*/
+    
+    private func share(media: Any, sender: UIBarButtonItem) {
+        var activityItems: [Any] = [media]
+        /*
+        if let mediaURL = self.mediaURL() {
+            activityItems += [mediaURL]
+        }*/
+        
+        share(activityItems, sender: sender)
+    }
+    
+    private func share(_ activityItems: [Any], sender: UIBarButtonItem) {
+        let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        activityController.modalPresentationStyle = .popover
+        activityController.popoverPresentationController?.barButtonItem = sender
+        activityController.completionWithItemsHandler = { [weak self] _, completed, _, _ in
+            if completed {
+                WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
+            }
+        }
+        
+        present(activityController, animated: true)
     }
 }
 
