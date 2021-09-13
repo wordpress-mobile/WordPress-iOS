@@ -3,7 +3,7 @@ import Nimble
 @testable import WordPress
 
 class BlockEditorSettingsServiceTests: XCTestCase {
-    let expectationTimeout = TimeInterval(1)
+    let expectationTimeout = TimeInterval(2)
     private let twentytwentyResponseFilename = "get_wp_v2_themes_twentytwenty"
     private let twentytwentyoneResponseFilename = "get_wp_v2_themes_twentytwentyone"
     private let blockSettingsNOTThemeJSONResponseFilename = "wp-block-editor-v1-settings-success-NotThemeJSON"
@@ -27,6 +27,14 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
     }
 
+    override func tearDown() {
+        contextManager = nil
+        context = nil
+        mockRemoteApi = nil
+        blog = nil
+        service = nil
+    }
+
     // MARK: Editor `theme_supports` support
     func testThemeSupportsNewTheme() {
         blog = BlogBuilder(context)
@@ -36,7 +44,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -47,8 +57,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateThemeResponse()
@@ -67,7 +75,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
 
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -78,8 +88,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateThemeResponse()
@@ -97,6 +105,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         setData(withFilename: twentytwentyoneResponseFilename)
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { result in
@@ -109,7 +118,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateThemeResponse()
@@ -128,7 +136,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     // MARK: Editor Global Styles support
     func testFetchBlockEditorSettingsNotThemeJSON() {
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -139,8 +149,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateBlockEditorSettingsResponse(isGlobalStyles: false)
@@ -149,7 +157,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
 
     func testFetchBlockEditorSettingsThemeJSON() {
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -160,8 +170,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateBlockEditorSettingsResponse()
@@ -173,7 +181,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
 
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -184,8 +194,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateBlockEditorSettingsResponse()
@@ -199,7 +207,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
 
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -210,8 +220,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateBlockEditorSettingsResponse()
@@ -225,7 +233,9 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
 
         let mockedResponse = mockedData(withFilename: blockSettingsThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { result in
             switch result {
             case .success(let settings):
@@ -236,8 +246,6 @@ class BlockEditorSettingsServiceTests: XCTestCase {
             }
             waitExpectation.fulfill()
         }
-
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
 
         waitForExpectations(timeout: expectationTimeout)
         validateBlockEditorSettingsResponse()
@@ -292,11 +300,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
 
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
         waitForExpectations(timeout: expectationTimeout)
 
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
@@ -313,11 +322,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
         service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
 
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
+        mockRemoteApi.successResponse = mockedResponse
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
+
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
-        mockRemoteApi.successBlockPassedIn!(mockedResponse, HTTPURLResponse())
         waitForExpectations(timeout: expectationTimeout)
 
         XCTAssertTrue(self.mockRemoteApi.getMethodCalled)
