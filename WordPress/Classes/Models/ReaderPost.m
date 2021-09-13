@@ -509,10 +509,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (void) didSave {
     [super didSave];
 
-    // When saving a post, changes are not reflected in Reader Discover because of the usage of
-    // ReaderCard as the Core Data object. By "faking" this change we make sure Reader Discover
-    // reflects a change on a post.
-    // We can confidently set `topics` to NULL given a card represents a post OR a list of topics.
+    // A ReaderCard can have either a post, or a list of topics, but not both.
+    // Since this card has a post, we can confidently set `topics` to NULL.
     if ([self respondsToSelector:@selector(card)] && self.card.count > 0) {
         self.card.allObjects[0].topics = NULL;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
