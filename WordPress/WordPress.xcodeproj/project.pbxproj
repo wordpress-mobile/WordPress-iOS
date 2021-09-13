@@ -1324,6 +1324,8 @@
 		8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */; };
 		8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */; };
 		8B3DECAB2388506400A459C2 /* SentryStartupEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */; };
+		8B49554526EFB99300187F81 /* WordPress-132-133.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8B49554426EFB99300187F81 /* WordPress-132-133.xcmappingmodel */; };
+		8B49554626EFB99300187F81 /* WordPress-132-133.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8B49554426EFB99300187F81 /* WordPress-132-133.xcmappingmodel */; };
 		8B51844525893F140085488D /* FilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B51844425893F140085488D /* FilterBarView.swift */; };
 		8B55F9B82614D819007D618E /* UnifiedPrologueEditorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F851414260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift */; };
 		8B55F9CA2614D8BC007D618E /* RoundRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8513DE260D091500A4B938 /* RoundRectangleView.swift */; };
@@ -6048,6 +6050,7 @@
 		8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupListViewController.swift; sourceTree = "<group>"; };
 		8B3626F825A665E500D7CCE3 /* UIApplication+mainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+mainWindow.swift"; sourceTree = "<group>"; };
 		8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryStartupEvent.swift; sourceTree = "<group>"; };
+		8B49554426EFB99300187F81 /* WordPress-132-133.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-132-133.xcmappingmodel"; sourceTree = "<group>"; };
 		8B51844425893F140085488D /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
 		8B64B4B1247EC3A2009A1229 /* reader.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = reader.css; sourceTree = "<group>"; };
 		8B69F0E3255C2C3F006B1CEF /* ActivityListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListViewModelTests.swift; sourceTree = "<group>"; };
@@ -13692,6 +13695,7 @@
 				E10520571F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel */,
 				E192E78B22EF453C008D725D /* WordPress-87-88.xcmappingmodel */,
 				57CCB3802358ED07003ECD0C /* WordPress-91-92.xcmappingmodel */,
+				8B49554426EFB99300187F81 /* WordPress-132-133.xcmappingmodel */,
 			);
 			path = Migrations;
 			sourceTree = "<group>";
@@ -17351,6 +17355,7 @@
 				8BC12F7523201917004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift in Sources */,
 				B0B68A9D252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift in Sources */,
 				405BFB21223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataProperties.swift in Sources */,
+				8B49554526EFB99300187F81 /* WordPress-132-133.xcmappingmodel in Sources */,
 				D8212CC720AA85C1008E8AE8 /* ReaderHeaderAction.swift in Sources */,
 				405B53FB1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift in Sources */,
 				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
@@ -20254,6 +20259,7 @@
 				C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */,
 				FABB25062602FC2C00C8785C /* ReaderTagsTableViewModel.swift in Sources */,
 				FABB25072602FC2C00C8785C /* SiteAssemblyService.swift in Sources */,
+				8B49554626EFB99300187F81 /* WordPress-132-133.xcmappingmodel in Sources */,
 				FABB25082602FC2C00C8785C /* ManagedPerson.swift in Sources */,
 				FABB25092602FC2C00C8785C /* ChosenValueRow.swift in Sources */,
 				98EC6B7A26D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */,
