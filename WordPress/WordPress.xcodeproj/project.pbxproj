@@ -496,6 +496,8 @@
 		3F62C17126EF539D001F34DD /* ContactUs.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F62C16126EF539D001F34DD /* ContactUs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3F62C17426EF539D001F34DD /* ContactUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F62C15F26EF539D001F34DD /* ContactUs.framework */; };
 		3F62C17526EF539D001F34DD /* ContactUs.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F62C15F26EF539D001F34DD /* ContactUs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F62C18226EF5A9C001F34DD /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62C18126EF5A9C001F34DD /* Node.swift */; };
+		3F62C18426EF5C34001F34DD /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62C18326EF5C34001F34DD /* Question.swift */; };
 		3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */; };
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
 		3F685B6A26D431FA001C6808 /* DomainSuggestionViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */; };
@@ -5208,6 +5210,8 @@
 		3F62C16726EF539D001F34DD /* ContactUsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactUsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F62C16E26EF539D001F34DD /* ContactUsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsTests.swift; sourceTree = "<group>"; };
 		3F62C17026EF539D001F34DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F62C18126EF5A9C001F34DD /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		3F62C18326EF5C34001F34DD /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetEntry.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
@@ -9381,6 +9385,8 @@
 			children = (
 				3F62C16126EF539D001F34DD /* ContactUs.h */,
 				3F62C16226EF539D001F34DD /* Info.plist */,
+				3F62C18126EF5A9C001F34DD /* Node.swift */,
+				3F62C18326EF5C34001F34DD /* Question.swift */,
 			);
 			path = ContactUs;
 			sourceTree = "<group>";
@@ -15185,6 +15191,7 @@
 					};
 					3F62C15E26EF539D001F34DD = {
 						CreatedOnToolsVersion = 12.5.1;
+						LastSwiftMigration = 1250;
 					};
 					3F62C16626EF539D001F34DD = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -18559,6 +18566,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F62C18226EF5A9C001F34DD /* Node.swift in Sources */,
+				3F62C18426EF5C34001F34DD /* Question.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -21666,6 +21675,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -21719,6 +21729,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -21766,6 +21777,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -21813,6 +21825,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
