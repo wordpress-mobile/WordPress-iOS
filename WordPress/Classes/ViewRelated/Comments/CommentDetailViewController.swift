@@ -173,14 +173,26 @@ private extension CommentDetailViewController {
     }
 
     func configureRows() {
-        rows = [
-            .header,
-            .content,
-            .replyIndicator, // TODO: Conditionally add this when user has replied to the comment.
-            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage),
-            .text(title: .emailAddressLabelText, detail: comment.author_email),
-            .text(title: .ipAddressLabelText, detail: comment.author_ip)
-        ]
+        // Header and content cells should always be visible, regardless of user roles.
+        var rows: [RowType] = [.header, .content]
+
+        // TODO: Detect if the comment has been replied.
+        rows.append(.replyIndicator)
+
+        // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
+        if comment.authorURL() != nil {
+            rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
+        }
+
+        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when `canModerate` is true.
+        if comment.canModerate {
+            rows.append(contentsOf: [
+                .text(title: .emailAddressLabelText, detail: comment.author_email),
+                .text(title: .ipAddressLabelText, detail: comment.author_ip)
+            ])
+        }
+
+        self.rows = rows
     }
 
     // MARK: Cell configuration

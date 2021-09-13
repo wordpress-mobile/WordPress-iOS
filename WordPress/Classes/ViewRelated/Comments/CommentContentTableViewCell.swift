@@ -33,10 +33,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var webViewBottomConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
+
+    // MARK: Private Properties
 
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
@@ -61,6 +64,28 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
+
+    // MARK: Visibility Control
+
+    /// Controls the visibility of the reaction bar view. Setting this to false disables Reply and Likes functionality.
+    private var isReactionEnabled: Bool = false {
+        didSet {
+            reactionBarView.isHidden = !isReactionEnabled
+            webViewBottomConstraint.isActive = !isReactionEnabled
+        }
+    }
+
+    private var isCommentLikesEnabled: Bool = false {
+        didSet {
+            likeButton.isHidden = !isCommentLikesEnabled
+        }
+    }
+
+    private var isAccessoryButtonEnabled: Bool = false {
+        didSet {
+            accessoryButton.isHidden = !isAccessoryButtonEnabled
+        }
+    }
 
     // MARK: Lifecycle
 
@@ -93,12 +118,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
-        // configure comment content
+        // Configure feature availability.
+        isReactionEnabled = !comment.isReadOnly()
+        isCommentLikesEnabled = comment.blog?.supports(.commentLikes) ?? false
+        isAccessoryButtonEnabled = comment.isApproved()
+
+        // Configure comment content.
         self.onContentLoaded = onContentLoaded
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
-
-        // TODO: Configure component visibility
     }
 }
 
@@ -288,4 +316,16 @@ private extension String {
 
     // pattern that detects empty HTML elements (including HTML comments within).
     static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
+}
+
+// MARK: Comment Helper
+
+private extension Comment {
+    var isFromDotComOrAtomicSite: Bool {
+        guard let blog = blog else {
+            return false
+        }
+
+        return blog.isHostedAtWPcom || blog.isAtomic()
+    }
 }
