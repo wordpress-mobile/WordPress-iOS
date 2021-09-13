@@ -317,15 +317,3 @@ private extension String {
     // pattern that detects empty HTML elements (including HTML comments within).
     static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 }
-
-// MARK: Comment Helper
-
-private extension Comment {
-    var isFromDotComOrAtomicSite: Bool {
-        guard let blog = blog else {
-            return false
-        }
-
-        return blog.isHostedAtWPcom || blog.isAtomic()
-    }
-}
