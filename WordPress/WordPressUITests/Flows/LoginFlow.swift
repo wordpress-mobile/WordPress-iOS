@@ -4,8 +4,8 @@ import XCTest
 class LoginFlow {
 
     @discardableResult
-    static func login(email: String, password: String) -> MySiteScreen {
-        logoutIfNeeded()
+    static func login(email: String, password: String) throws -> MySiteScreen {
+        try logoutIfNeeded()
 
         return PrologueScreen().selectContinue()
             .proceedWith(email: email)
@@ -16,8 +16,8 @@ class LoginFlow {
 
     // Login with self-hosted site via Site Address.
     @discardableResult
-    static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
-        logoutIfNeeded()
+    static func login(siteUrl: String, username: String, password: String) throws -> MySiteScreen {
+        try logoutIfNeeded()
 
         return PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: siteUrl)
@@ -37,8 +37,8 @@ class LoginFlow {
 
     // Login with WP site via Site Address.
     @discardableResult
-    static func login(siteUrl: String, email: String, password: String) -> MySiteScreen {
-        logoutIfNeeded()
+    static func login(siteUrl: String, email: String, password: String) throws -> MySiteScreen {
+        try logoutIfNeeded()
 
         return PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
@@ -49,26 +49,26 @@ class LoginFlow {
     }
 
     // Login with self-hosted site via Site Address.
-    static func loginIfNeeded(siteUrl: String, username: String, password: String) -> TabNavComponent {
+    static func loginIfNeeded(siteUrl: String, username: String, password: String) throws -> TabNavComponent {
         guard TabNavComponent.isLoaded() else {
-            return login(siteUrl: siteUrl, username: username, password: password).tabBar
+            return try login(siteUrl: siteUrl, username: username, password: password).tabBar
         }
         return TabNavComponent()
     }
 
     // Login with WP site via Site Address.
-    static func loginIfNeeded(siteUrl: String, email: String, password: String) -> TabNavComponent {
+    static func loginIfNeeded(siteUrl: String, email: String, password: String) throws -> TabNavComponent {
         guard TabNavComponent.isLoaded() else {
-            return login(siteUrl: siteUrl, email: email, password: password).tabBar
+            return try login(siteUrl: siteUrl, email: email, password: password).tabBar
         }
         return TabNavComponent()
     }
 
-    static func logoutIfNeeded() {
-        XCTContext.runActivity(named: "Log out of app if currently logged in") { (activity) in
+    static func logoutIfNeeded() throws {
+        try XCTContext.runActivity(named: "Log out of app if currently logged in") { (activity) in
             if TabNavComponent.isLoaded() {
                 Logger.log(message: "Logging out...", event: .i)
-                let meScreen = TabNavComponent().gotoMeScreen()
+                let meScreen = try TabNavComponent().gotoMeScreen()
                 if meScreen.isLoggedInToWpcom() {
                     _ = meScreen.logoutToPrologue()
                 } else {
@@ -82,7 +82,7 @@ class LoginFlow {
             if !PrologueScreen.isLoaded() {
                 while PasswordScreen.isLoaded() || GetStartedScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() || LoginCheckMagicLinkScreen.isLoaded() {
                     if GetStartedScreen.isLoaded() && GetStartedScreen.isEmailEntered() {
-                        GetStartedScreen().emailTextField.clearTextIfNeeded()
+                        GetStartedScreen().emailTextField.clearText()
                     }
                     navBackButton.tap()
                 }

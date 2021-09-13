@@ -7,6 +7,9 @@ protocol JetpackScanView {
     func showNoConnectionError()
     func showGenericError()
     func showScanStartError()
+    func showMultisiteNotSupportedError()
+
+    func toggleHistoryButton(_ isEnabled: Bool)
 
     func presentAlert(_ alert: UIAlertController)
     func presentNotice(with title: String, message: String?)
@@ -250,8 +253,15 @@ class JetpackScanCoordinator {
     // MARK: - Private: Network Handlers
     private func refreshDidSucceed(with scanObj: JetpackScan) {
         scan = scanObj
-        view.render()
 
+        switch (scanObj.state, scanObj.reason) {
+        case (.unavailable, JetpackScan.Reason.multiSiteNotSupported):
+            view.showMultisiteNotSupportedError()
+        default:
+            view.render()
+        }
+
+        view.toggleHistoryButton(scan?.isEnabled ?? false)
 
         togglePolling()
     }
@@ -377,6 +387,12 @@ extension JetpackScan {
 
     var fixableThreats: [JetpackScanThreat]? {
         return threats?.filter { $0.fixable != nil }
+    }
+}
+
+extension JetpackScan {
+    struct Reason {
+        static let multiSiteNotSupported = "multisite_not_supported"
     }
 }
 

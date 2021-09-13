@@ -62,9 +62,6 @@ WordPress/Derived Sources/
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
 
-# Bundler
-.bundle
-
 # Dependencies
 vendor
 
@@ -93,10 +90,14 @@ Artifacts
 WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
 WordPress/Resources/Icons-Internal
 
-# All secrets should be stored under .configure-files
+# All encrypted secrets should be stored under .configure-files
 # Everything without a .enc extension is ignored
 .configure-files/*
 !.configure-files/*.enc
+
+# A file external contributors can have locally to provide their own credentials.
+# This file is created during the `rake init:oss` task, based on the Secrets-example.swift file.
+WordPress/Credentials/Secrets.swift
 
 # Ignoring old locations to be sure they aren't commited accidentally
 WordPress/Credentials/wpcom_app_credentials

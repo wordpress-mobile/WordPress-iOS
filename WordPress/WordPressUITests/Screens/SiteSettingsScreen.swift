@@ -34,7 +34,7 @@ class SiteSettingsScreen: BaseScreen {
     }
 
     func goBackToMySite() -> MySiteScreen {
-        if isIPhone {
+        if XCUIDevice.isPhone {
             navBackButton.tap()
         }
         return MySiteScreen()

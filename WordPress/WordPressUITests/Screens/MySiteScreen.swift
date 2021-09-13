@@ -15,9 +15,9 @@ private struct ElementStringIDs {
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
-    static let addNewSiteButton = "Add new site Button"
 }
 
+/// The home-base screen for an individual site. Used in many of our UI tests.
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
     let navBar: XCUIElement
@@ -69,7 +69,7 @@ class MySiteScreen: BaseScreen {
 
     func removeSelfHostedSite() {
         removeSiteButton.tap()
-        if isIpad {
+        if XCUIDevice.isPad {
             removeSiteAlert.tap()
         } else {
             removeSiteSheet.tap()
@@ -94,7 +94,7 @@ class MySiteScreen: BaseScreen {
     func gotoPostsScreen() -> PostsScreen {
 
         // A hack for iPad, because sometimes tapping "posts" doesn't load it the first time
-        if isIpad {
+        if XCUIDevice.isPad {
             mediaButton.tap()
         }
 

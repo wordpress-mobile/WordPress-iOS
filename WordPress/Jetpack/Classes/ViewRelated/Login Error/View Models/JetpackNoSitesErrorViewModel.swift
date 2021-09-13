@@ -2,6 +2,7 @@ import Foundation
 
 struct JetpackNoSitesErrorViewModel: JetpackErrorViewModel {
     let image: UIImage? = UIImage(named: "jetpack-empty-state-illustration")
+    var title: String? = Constants.title
     var description: FormattedStringProvider = FormattedStringProvider(string: Constants.description)
     var primaryButtonTitle: String? = Constants.primaryButtonTitle
     var secondaryButtonTitle: String? = Constants.secondaryButtonTitle
@@ -22,6 +23,9 @@ struct JetpackNoSitesErrorViewModel: JetpackErrorViewModel {
     }
 
     private struct Constants {
+        static let title = NSLocalizedString("No Jetpack sites found",
+                                            comment: "Title when users have no Jetpack sites.")
+
         static let description = NSLocalizedString("If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account.",
                                                    comment: "Message explaining that they will need to install Jetpack on one of their sites.")
 

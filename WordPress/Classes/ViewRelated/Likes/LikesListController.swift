@@ -16,7 +16,7 @@ import WordPressKit
     func didSelectUser(_ user: LikeUser, at indexPath: IndexPath)
 
     /// Ask the delegate to show an error view when fetching fails or there is no connection.
-    func showErrorView()
+    func showErrorView(title: String, subtitle: String?)
 
     /// Send likes count to delegate.
     @objc optional func updatedTotalLikes(_ totalLikes: Int)
@@ -39,6 +39,9 @@ class LikesListController: NSObject {
     private var totalLikesFetched = 0
     private var lastFetchedDate: String?
     private var excludeUserIDs: [NSNumber]?
+
+    private let errorTitle = NSLocalizedString("Error loading likes",
+                                               comment: "Text displayed when there is a failure loading notification likes.")
 
     private var hasMoreLikes: Bool {
         return totalLikesFetched < totalLikes
@@ -80,10 +83,6 @@ class LikesListController: NSObject {
 
     private var numberOfSections: Int {
         return showingNotificationLikes ? 2 : 1
-    }
-
-    private var analyticsProperties: [String: Any] {
-        return showingNotificationLikes ? ["source": "notifications"] : ["source": "reader"]
     }
 
     // MARK: Init
@@ -167,13 +166,13 @@ class LikesListController: NSObject {
             isLoadingContent = false
 
             if likingUsers.isEmpty {
-                delegate?.showErrorView()
+                delegate?.showErrorView(title: errorTitle, subtitle: nil)
             }
 
             return
         }
 
-        fetchLikes(success: { [weak self] users, totalLikes in
+        fetchLikes(success: { [weak self] users, totalLikes, likesPerPage in
             guard let self = self else {
                 return
             }
@@ -182,21 +181,48 @@ class LikesListController: NSObject {
                 self.delegate?.updatedTotalLikes?(totalLikes)
             }
 
-            if !self.isFirstLoad && !users.isEmpty {
-                WPAnalytics.track(.likeListFetchedMore, properties: self.analyticsProperties)
-            }
-
             self.likingUsers = users
             self.totalLikes = totalLikes
             self.totalLikesFetched = users.count
             self.lastFetchedDate = users.last?.dateLikedString
+
+            if !self.isFirstLoad && !users.isEmpty {
+                self.trackFetched(likesPerPage: likesPerPage)
+            }
+
             self.isFirstLoad = false
             self.isLoadingContent = false
             self.trackUsersToExclude()
-        }, failure: { [weak self] _ in
-            self?.isLoadingContent = false
-            self?.delegate?.showErrorView()
+        }, failure: { [weak self] error in
+            guard let self = self else {
+                return
+            }
+
+            let errorMessage: String? = {
+                // Get error message from API response if provided.
+                if let error = error,
+                   let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
+                   !message.isEmpty {
+                    return message
+                }
+                return nil
+            }()
+
+            self.isLoadingContent = false
+            self.delegate?.showErrorView(title: self.errorTitle, subtitle: errorMessage)
         })
+    }
+
+    private func trackFetched(likesPerPage: Int) {
+        var properties: [String: Any] = [:]
+        properties["source"] = showingNotificationLikes ? "notifications" : "reader"
+        properties["per_page"] = likesPerPage
+
+        if likesPerPage > 0 {
+            properties["page"] = Int(ceil(Double(likingUsers.count) / Double(likesPerPage)))
+        }
+
+        WPAnalytics.track(.likeListFetchedMore, properties: properties)
     }
 
     /// Fetch Likes from Core Data depending on the notification's content type.
@@ -213,7 +239,7 @@ class LikesListController: NSObject {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch is successful.
     ///   - failure: Closure to be called when the fetch failed.
-    private func fetchLikes(success: @escaping ([LikeUser], Int) -> Void, failure: @escaping (Error?) -> Void) {
+    private func fetchLikes(success: @escaping ([LikeUser], Int, Int) -> Void, failure: @escaping (Error?) -> Void) {
 
         var beforeStr = lastFetchedDate
 

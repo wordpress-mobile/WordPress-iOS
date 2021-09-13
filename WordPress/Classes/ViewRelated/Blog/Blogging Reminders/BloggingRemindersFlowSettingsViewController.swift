@@ -15,14 +15,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Images.calendarImageName))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemRed
         return imageView
     }()
 
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
@@ -34,7 +34,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    let promptLabel: UILabel = {
+    private let promptLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
@@ -48,14 +48,14 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    let button: UIButton = {
+    private let button: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)
         return button
     }()
 
-    let daysOuterStackView: UIStackView = {
+    private let daysOuterStackView: UIStackView = {
         let daysOuterStack = UIStackView()
         daysOuterStack.axis = .vertical
         daysOuterStack.alignment = .center
@@ -64,64 +64,141 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return daysOuterStack
     }()
 
-    let daysTopInnerStackView: UIStackView = {
+    private let daysTopInnerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = Metrics.innerStackSpacing
         return stackView
     }()
 
-    let daysBottomInnerStackView: UIStackView = {
+    private let daysBottomInnerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = Metrics.innerStackSpacing
         return stackView
     }()
 
-    lazy var bottomTipPanel: UIView = {
+    private lazy var frequencyLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 2
+        label.textAlignment = .center
+
+        return label
+    }()
+
+    private lazy var frequencyView: UIView = {
         let view = UIView()
-        view.backgroundColor = .quaternaryBackground
-        view.layer.cornerRadius = Metrics.tipPanelCornerRadius
-
-        self.populateTipPanel(view)
-
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .basicBackground
+        view.addSubview(frequencyLabel)
         return view
     }()
 
-    func populateTipPanel(_ panel: UIView) {
-        let innerStack = UIStackView()
-        innerStack.spacing = Metrics.tipPanelHorizontalStackSpacing
-        innerStack.translatesAutoresizingMaskIntoConstraints = false
-        innerStack.axis = .horizontal
-        innerStack.alignment = .top
-        panel.addSubview(innerStack)
-        panel.pinSubviewToAllEdges(innerStack, insets: Metrics.tipPanelMargins)
+    private lazy var topDivider: UIView = {
+        makeDivider()
+    }()
 
+    private lazy var bottomDivider: UIView = {
+        makeDivider()
+    }()
+
+    private lazy var timeSelectionButton: TimeSelectionButton = {
+        let button = TimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
+        button.isUserInteractionEnabled = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
+        return button
+    }()
+
+    @objc private func navigateToTimePicker() {
+        pushTimeSelectionViewController()
+    }
+
+    private lazy var timeSelectionView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .basicBackground
+        view.addSubview(timeSelectionStackView)
+        return view
+    }()
+
+    private lazy var timeSelectionStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.addArrangedSubviews([topDivider, timeSelectionButton, bottomDivider])
+        return stackView
+    }()
+
+    private lazy var trophy: UIView = {
         let trophy = UIImageView(image: .gridicon(.trophy, size: Metrics.tipsTrophyImageSize))
+        trophy.translatesAutoresizingMaskIntoConstraints = false
         trophy.tintColor = .secondaryLabel
+        return trophy
+    }()
 
-        let rightStack = UIStackView()
-        rightStack.spacing = Metrics.tipPanelVerticalStackSpacing
-        rightStack.axis = .vertical
-        rightStack.alignment = .leading
-
-        innerStack.addArrangedSubviews([trophy, rightStack])
-
+    private lazy var tipLabel: UILabel = {
         let tipLabel = UILabel()
+        tipLabel.translatesAutoresizingMaskIntoConstraints = false
         tipLabel.adjustsFontForContentSizeCategory = true
         tipLabel.textColor = .secondaryLabel
         tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
         tipLabel.text = TextContent.tipPanelTitle
+        return tipLabel
+    }()
 
+    private lazy var tipDescriptionLabel: UILabel = {
         let tipDescriptionLabel = UILabel()
+        tipDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         tipDescriptionLabel.adjustsFontForContentSizeCategory = true
         tipDescriptionLabel.textColor = .secondaryLabel
         tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         tipDescriptionLabel.text = TextContent.tipPanelDescription
         tipDescriptionLabel.numberOfLines = 0
+        return tipDescriptionLabel
+    }()
 
-        rightStack.addArrangedSubviews([tipLabel, tipDescriptionLabel])
-    }
+    private lazy var bottomTipPanel: UIView = {
+        let view = UIView()
+        view.backgroundColor = .quaternaryBackground
+        view.layer.cornerRadius = Metrics.tipPanelCornerRadius
+        view.addSubview(tipStackView)
+
+        return view
+    }()
+
+    private lazy var tipStackView: UIStackView = {
+        let tipStackView = UIStackView(arrangedSubviews: [trophy, tipLabelsStackView])
+        tipStackView.spacing = Metrics.tipPanelHorizontalStackSpacing
+        tipStackView.translatesAutoresizingMaskIntoConstraints = false
+        tipStackView.axis = .horizontal
+        tipStackView.alignment = .top
+        return tipStackView
+    }()
+
+    private lazy var tipLabelsStackView: UIStackView = {
+        let tipLabelsStackView = UIStackView(arrangedSubviews: [tipLabel, tipDescriptionLabel])
+        tipLabelsStackView.translatesAutoresizingMaskIntoConstraints = false
+        tipLabelsStackView.axis = .vertical
+        tipLabelsStackView.alignment = .leading
+        tipLabelsStackView.addArrangedSubviews([tipLabel, tipDescriptionLabel])
+        return tipLabelsStackView
+    }()
+
+    private lazy var timeSelectionToTipSpacer: UIView = {
+        makeSpacer()
+    }()
+
+    private lazy var tipToConfirmationButtonSpacer: UIView = {
+        makeSpacer()
+    }()
+
+    private lazy var confirmationButtonBottomSpacer: UIView = {
+        makeSpacer()
+    }()
 
     private let dismissButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -136,6 +213,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let calendar: Calendar
     private let scheduler: BloggingRemindersScheduler
+    private let scheduleFormatter = BloggingRemindersScheduleFormatter()
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
             refreshNextButton()
@@ -150,6 +228,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
+    private var scheduledTime: Date
 
     init(
         for blog: Blog,
@@ -176,6 +255,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         weekdays = previousWeekdays
 
+        scheduledTime = scheduler.scheduledTime(for: blog)
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -198,12 +279,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         configureConstraints()
         populateCalendarDays()
         refreshNextButton()
+        refreshFrequencyLabel()
+
+        showFullUI(shouldShowFullUI)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         tracker.screenShown(.dayPicker)
 
         super.viewDidAppear(animated)
+        calculatePreferredContentSize()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -224,58 +309,226 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
+        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
     }
 
-    private func calculatePreferredContentSize() {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        showFullUI(shouldShowFullUI)
+        calculatePreferredContentSize()
+    }
+
+    // MARK: - Actions
+
+    @objc private func notifyMeButtonTapped() {
+        tracker.buttonPressed(button: .continue, screen: .dayPicker)
+
+        scheduleReminders()
+    }
+
+    /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
+    ///
+    /// - Parameters:
+    ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
+    ///         When `false`, the VC won't be shown.  This is useful because this method
+    ///         can also be called when the refrenced VC is already on-screen.
+    ///
+    private func scheduleReminders(showPushPrompt: Bool = true) {
+        let schedule: BloggingRemindersScheduler.Schedule
+
+        if weekdays.count > 0 {
+            schedule = .weekdays(weekdays)
+        } else {
+            schedule = .none
+        }
+
+        scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+
+            switch result {
+            case .success:
+                self.tracker.scheduled(schedule, time: self.scheduledTime)
+
+                DispatchQueue.main.async { [weak self] in
+                    self?.pushCompletionViewController()
+                }
+            case .failure(let error):
+                switch error {
+                case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
+                    DispatchQueue.main.async { [weak self] in
+                        self?.pushPushPromptViewController()
+                    }
+                default:
+                    // The scheduler should normally not fail unless it's because of having no push permissions.
+                    // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
+                    DDLogError("Error scheduling blogging reminders: \(error)")
+                    break
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Navigation
+private extension BloggingRemindersFlowSettingsViewController {
+
+    func pushTimeSelectionViewController() {
+        let viewController = TimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog),
+                                                         tracker: tracker) { [weak self] date in
+            self?.scheduledTime = date
+            self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
+            self?.refreshNextButton()
+            self?.refreshFrequencyLabel()
+        }
+        viewController.preferredWidth = self.view.frame.width
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func pushCompletionViewController() {
+        let viewController = BloggingRemindersFlowCompletionViewController(blog: blog, tracker: tracker, calendar: calendar)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func pushPushPromptViewController() {
+        let viewController = BloggingRemindersPushPromptViewController(tracker: tracker) { [weak self] in
+            self?.scheduleReminders(showPushPrompt: false)
+        }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - Private Helpers
+private extension BloggingRemindersFlowSettingsViewController {
+
+    /// creates an instance of a UIView with a grey background, intended to be used as a divider
+    func makeDivider() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.divider
+        return view
+    }
+
+    /// instantiates a UIView with transparent background, intented to be used as a spacer in a UIStackView
+    func makeSpacer() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }
+
+    /// Determines if the calendar image and the tip should be displayed, depending on the screen vertical size
+    var shouldShowFullUI: Bool {
+        (WPDeviceIdentification.isiPhone() && UIScreen.main.bounds.height >= Metrics.minimumHeightForFullUI) ||
+            (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait)
+    }
+
+    /// Hides/shows the optional UI Elements (dismiss button, calendar icon, tip)
+    /// - Parameter isVisible: true if we need to show the elements (Full UI), false otherwise
+    func showFullUI(_ isVisible: Bool) {
+        bottomTipPanel.isHidden = !isVisible
+        imageView.isHidden = !isVisible
+        dismissButton.isHidden = !isVisible
+    }
+
+    /// Updates the title of the cconfirmation button depending on the action (new schedule or updated schedule)
+    func refreshNextButton() {
+        if previousWeekdays.isEmpty {
+            button.setTitle(TextContent.nextButtonTitle, for: .normal)
+            button.isEnabled = !weekdays.isEmpty
+        } else if (weekdays == previousWeekdays) && (scheduledTime == scheduler.scheduledTime(for: blog)) {
+            button.setTitle(TextContent.nextButtonTitle, for: .normal)
+            button.isEnabled = true
+        } else {
+            button.setTitle(TextContent.updateButtonTitle, for: .normal)
+            button.isEnabled = true
+        }
+    }
+
+    /// Updates the label that contains the number of scheduled days as users change them
+    func refreshFrequencyLabel() {
+        guard weekdays.count > 0 else {
+            frequencyLabel.isHidden = true
+            timeSelectionStackView.isHidden = true
+            return
+        }
+
+        frequencyLabel.isHidden = false
+        timeSelectionStackView.isHidden = false
+
+        let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
+            .foregroundColor: UIColor.text,
+        ]
+
+        let frequencyDescription = scheduleFormatter.shortScheduleDescription(for: .weekdays(weekdays))
+        let attributedText = NSMutableAttributedString(attributedString: frequencyDescription)
+        attributedText.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedText.length))
+
+        frequencyLabel.attributedText = attributedText
+        frequencyLabel.sizeToFit()
+    }
+
+    func calculatePreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
-    // MARK: - View Configuration
-
-    private func configureStackView() {
+    func configureStackView() {
         view.addSubview(stackView)
-
-        // Used to expand the stackview vertically
-        let fillerView = UIView()
-        fillerView.translatesAutoresizingMaskIntoConstraints = false
-        fillerView.setContentHuggingPriority(.defaultLow, for: .vertical)
-        fillerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 0.0).isActive = true
-
-        let bottomPadding = UIView()
 
         stackView.addArrangedSubviews([
             imageView,
             titleLabel,
             promptLabel,
             daysOuterStackView,
-            fillerView,
+            frequencyView,
+            timeSelectionView,
+            timeSelectionToTipSpacer,
             bottomTipPanel,
-            bottomPadding,
+            tipToConfirmationButtonSpacer,
             button,
-            UIView()
+            confirmationButtonBottomSpacer
         ])
 
         stackView.setCustomSpacing(Metrics.afterTitleLabelSpacing, after: titleLabel)
         stackView.setCustomSpacing(Metrics.afterPromptLabelSpacing, after: promptLabel)
     }
 
-    private func configureConstraints() {
+    func configureConstraints() {
+        frequencyView.pinSubviewToAllEdges(frequencyLabel)
+        timeSelectionView.pinSubviewToAllEdges(timeSelectionStackView)
+        bottomTipPanel.pinSubviewToAllEdges(tipStackView, insets: Metrics.tipPanelMargins)
+
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        tipDescriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        timeSelectionView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
+            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: WPDeviceIdentification.isiPad() ? .zero : -Metrics.edgeMargins.bottom),
 
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonHeight),
+            button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right)
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right),
+            topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
+            timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
+            timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
+            tipLabel.heightAnchor.constraint(equalTo: trophy.heightAnchor),
+            timeSelectionToTipSpacer.heightAnchor.constraint(equalTo: tipToConfirmationButtonSpacer.heightAnchor),
+            timeSelectionToTipSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            tipToConfirmationButtonSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
     }
 
@@ -313,6 +566,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                     weekday == button.weekday
                 }
             }
+
+            self.refreshFrequencyLabel()
         }
 
         button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -321,7 +576,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return button
     }
 
-    private func populateCalendarDays() {
+    /// Adds the calendar days to the UI according to the device locale
+    func populateCalendarDays() {
         daysOuterStackView.addArrangedSubviews([daysTopInnerStackView, daysBottomInnerStackView])
 
         let topRow = 0 ..< Metrics.topRowDayCount
@@ -329,87 +585,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
         daysTopInnerStackView.addArrangedSubviews(topRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
         daysBottomInnerStackView.addArrangedSubviews(bottomRow.compactMap({ createCalendarDayToggleButton(localizedWeekdayDayIndex: $0) }))
-    }
-
-    private func refreshNextButton() {
-        if previousWeekdays.isEmpty {
-            button.setTitle(TextContent.nextButtonTitle, for: .normal)
-            button.isEnabled = !weekdays.isEmpty
-        } else if weekdays == previousWeekdays {
-            button.setTitle(TextContent.nextButtonTitle, for: .normal)
-            button.isEnabled = true
-        } else {
-            button.setTitle(TextContent.updateButtonTitle, for: .normal)
-            button.isEnabled = true
-        }
-    }
-
-    // MARK: - Actions
-
-    @objc private func notifyMeButtonTapped() {
-        tracker.buttonPressed(button: .continue, screen: .dayPicker)
-
-        scheduleReminders()
-    }
-
-    /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
-    ///
-    /// - Parameters:
-    ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
-    ///         When `false`, the VC won't be shown.  This is useful because this method
-    ///         can also be called when the refrenced VC is already on-screen.
-    ///
-    private func scheduleReminders(showPushPrompt: Bool = true) {
-        let schedule: BloggingRemindersScheduler.Schedule
-
-        if weekdays.count > 0 {
-            schedule = .weekdays(weekdays)
-        } else {
-            schedule = .none
-        }
-
-        scheduler.schedule(schedule, for: blog) { [weak self] result in
-            guard let self = self else {
-                return
-            }
-
-            switch result {
-            case .success:
-                self.tracker.scheduled(schedule)
-
-                DispatchQueue.main.async { [weak self] in
-                    self?.presentCompletionViewController()
-                }
-            case .failure(let error):
-                switch error {
-                case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
-                    DispatchQueue.main.async { [weak self] in
-                        self?.presentPushPromptViewController()
-                    }
-                default:
-                    // The scheduler should normally not fail unless it's because of having no push permissions.
-                    // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
-                    DDLogError("Error scheduling blogging reminders: \(error)")
-                    break
-                }
-            }
-        }
-    }
-
-
-
-    // MARK: - Completion Paths
-
-    private func presentCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(blog: blog, tracker: tracker, calendar: calendar)
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    private func presentPushPromptViewController() {
-        let viewController = BloggingRemindersPushPromptViewController(tracker: tracker) { [weak self] in
-            self?.scheduleReminders(showPushPrompt: false)
-        }
-        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -433,6 +608,7 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
     }
 }
 
+// MARK: - Constants
 private enum TextContent {
     static let settingsPrompt = NSLocalizedString("Select the days you want to blog on",
                                                   comment: "Prompt shown on the Blogging Reminders Settings screen.")
@@ -467,6 +643,11 @@ private enum Metrics {
     static let buttonHeight: CGFloat = 44.0
     static let tipPanelCornerRadius: CGFloat = 12.0
     static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
+    static let tipDescriptionHeight: CGFloat = 34.0
+    static let frequencyLabelHeight: CGFloat = 30
 
     static let topRowDayCount = 4
+
+    // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon and tip.
+    static let minimumHeightForFullUI: CGFloat = 812
 }

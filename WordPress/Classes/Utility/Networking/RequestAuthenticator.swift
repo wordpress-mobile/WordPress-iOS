@@ -21,6 +21,11 @@ class RequestAuthenticator: NSObject {
         case privateAtomic(blogID: Int)
     }
 
+    enum WPNavigationActionType {
+        case reload
+        case allow
+    }
+
     enum Credentials {
         case dotCom(username: String, authToken: String, authenticationType: DotComAuthenticationType)
         case siteLogin(loginURL: URL, username: String, password: String)
@@ -314,5 +319,46 @@ extension RequestAuthenticator {
         components?.queryItems = nil
 
         return components?.url == RequestAuthenticator.wordPressComLoginUrl
+    }
+}
+
+/// MARK: Navigation Validator
+extension RequestAuthenticator {
+    /// Validates that the navigation worked as expected then provides a recommendation on if the screen should reload or not.
+    func decideActionFor(response: URLResponse, cookieJar: CookieJar, completion: @escaping (WPNavigationActionType) -> Void) {
+        switch self.credentials {
+        case .dotCom(let username, _, let authenticationType):
+            decideActionForWPCom(response: response, cookieJar: cookieJar, username: username, authenticationType: authenticationType, completion: completion)
+        case .siteLogin:
+            completion(.allow)
+        }
+    }
+
+    private func decideActionForWPCom(response: URLResponse, cookieJar: CookieJar, username: String, authenticationType: DotComAuthenticationType, completion: @escaping (WPNavigationActionType) -> Void) {
+
+        guard didEncouterRecoverableChallenge(response) else {
+            completion(.allow)
+            return
+        }
+
+        cookieJar.removeWordPressComCookies {
+            completion(.reload)
+        }
+    }
+
+    private func didEncouterRecoverableChallenge(_ response: URLResponse) -> Bool {
+        guard let url = response.url?.absoluteString else {
+            return false
+        }
+
+        if url.contains("r-login.wordpress.com") || url.contains("wordpress.com/log-in?") {
+            return true
+        }
+
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+            return false
+        }
+
+        return 400 <= statusCode && statusCode < 500
     }
 }

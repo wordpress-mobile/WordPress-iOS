@@ -2,8 +2,8 @@
 final class ReaderFollowAction {
     func execute(with post: ReaderPost,
                  context: NSManagedObjectContext,
-                 completion: (() -> Void)? = nil,
-                 failure: ((Error?) -> Void)? = nil) {
+                 completion: ((Bool) -> Void)? = nil,
+                 failure: ((Bool, Error?) -> Void)? = nil) {
 
         if post.isFollowing {
             ReaderSubscribingNotificationAction().execute(for: post.siteID, context: context, subscribe: false)

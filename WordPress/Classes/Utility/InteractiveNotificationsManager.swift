@@ -14,6 +14,10 @@ final class InteractiveNotificationsManager: NSObject {
     ///
     @objc static let shared = InteractiveNotificationsManager()
 
+    /// The analytics event tracker.
+    ///
+    private let eventTracker = NotificationEventTracker()
+
     /// Returns the Core Data main context.
     ///
     @objc var context: NSManagedObjectContext {
@@ -193,16 +197,60 @@ final class InteractiveNotificationsManager: NSObject {
                     return true
                 }
             case .bloggingReminderWeekly:
+                // This event should actually be tracked for all notification types, but in order to implement
+                // the tracking this correctly we'll have to review the other notification_type values to match Android.
+                // https://github.com/wordpress-mobile/WordPress-Android/blob/e3b65c4b1adc0fbc102e640750990d7655d89185/WordPress/src/main/java/org/wordpress/android/push/NotificationType.kt
+                //
+                // Since this task is non-trivial and beyond the scope of my current work, I'll only track this
+                // specific notification type for now in a way that matches Android, but using a mechanism that
+                // is extensible to track other notification types in the future.
+                eventTracker.notificationTapped(type: .bloggingReminders)
+
                 if identifier == UNNotificationDefaultActionIdentifier {
                     let targetBlog: Blog? = blog(from: threadId)
 
                     WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
+                }
+            case .weeklyRoundup:
+                let targetBlog = blog(from: userInfo)
+                let siteId = targetBlog?.dotComID?.intValue
+
+                eventTracker.notificationTapped(type: .weeklyRoundup, siteId: siteId)
+
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    guard let targetBlog = targetBlog else {
+                        DDLogError("Could not obtain the blog from the Weekly Notification thread ID.")
+                        break
+                    }
+
+                    let targetDate = date(from: userInfo)
+
+                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showStats(
+                        for: targetBlog,
+                        timePeriod: .weeks,
+                        date: targetDate)
                 }
             default: break
             }
         }
 
         return true
+    }
+}
+
+// MARK: - Notifications: Retrieving Stored Data
+
+extension InteractiveNotificationsManager {
+
+    static let blogIDKey = "blogID"
+    static let dateKey = "date"
+
+    private func blog(from userInfo: NSDictionary) -> Blog? {
+        if let blogID = userInfo[Self.blogIDKey] as? Int {
+            return try? Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext)
+        }
+
+        return nil
     }
 
     private func blog(from threadId: String?) -> Blog? {
@@ -212,6 +260,12 @@ final class InteractiveNotificationsManager: NSObject {
         }
 
         return nil
+    }
+
+    /// Retrieves a date from the userInfo dictionary using a generic "date" key.  This was made generic on purpose.
+    ///
+    private func date(from userInfo: NSDictionary) -> Date? {
+        userInfo[Self.dateKey] as? Date
     }
 }
 
@@ -320,6 +374,7 @@ extension InteractiveNotificationsManager {
         case shareUploadFailure     = "share-upload-failure"
         case login                  = "push_auth"
         case bloggingReminderWeekly = "blogging-reminder-weekly"
+        case weeklyRoundup          = "weekly-roundup"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -347,6 +402,8 @@ extension InteractiveNotificationsManager {
                 return [.approveLogin, .denyLogin]
             case .bloggingReminderWeekly:
                 return []
+            case .weeklyRoundup:
+                return []
             }
         }
 
@@ -367,7 +424,7 @@ extension InteractiveNotificationsManager {
         }
 
         static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup]
     }
 
 
@@ -497,7 +554,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         }
 
         // If it's a blogging reminder notification, display it in-app
-        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue {
+        if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue
+            || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue {
+
             if #available(iOS 14.0, *) {
                 completionHandler([.banner, .list, .sound])
             } else {

@@ -17,6 +17,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    let backgroundTasksCoordinator = BackgroundTasksCoordinator(tasks: [
+        WeeklyRoundupBackgroundTask()
+    ], eventHandler: WordPressBackgroundTaskEventHandler())
+
     @objc
     lazy var windowManager: WindowManager = {
         guard let window = window else {
@@ -293,6 +297,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
+        AccountService.loadDefaultAccountCookies()
+
         windowManager.showUI()
         setupNoticePresenter()
     }
@@ -319,6 +325,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupBackgroundRefresh(_ application: UIApplication) {
+        backgroundTasksCoordinator.scheduleTasks { result in
+            if case .failure(let error) = result {
+                DDLogError("Error scheduling background tasks: \(error)")
+            }
+        }
+
         application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
@@ -710,6 +722,7 @@ extension WordPressAppDelegate {
             setupShareExtensionToken()
             configureNotificationExtension()
             startObservingAppleIDCredentialRevoked()
+            AccountService.loadDefaultAccountCookies()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()

@@ -194,7 +194,7 @@ extension SiteSettingsViewController {
             rows.append(.timezone)
         }
 
-        if Feature.enabled(.bloggingReminders) {
+        if Feature.enabled(.bloggingReminders) && blog.isUserCapableOf(.EditPosts) {
             rows.append(.bloggingReminders)
         }
 
@@ -232,27 +232,16 @@ extension SiteSettingsViewController {
 
     @objc
     func tableView(_ tableView: UITableView, didSelectInGeneralSettingsAt indexPath: IndexPath) {
-        guard blog.isAdmin else {
-            // For context about these lines of code, this was the result of a migration from ObjC to Swift.
-            // It's not entirely clear to me why we are showing these options to a non admin, and then bailing
-            // out when the user selects these options.  I'm pretty sure we need to review this, but it's beyond
-            // the scope of my current work, and I don't want to go down the rabbit hole.  For these reasons I'm
-            // maintaining the original logic in my migration.
-            //
-            // - diegoreymendez
-            return
-        }
-
         switch generalSettingsRows[indexPath.row] {
-        case .title:
+        case .title where blog.isAdmin:
             showEditSiteTitleController(indexPath: indexPath)
-        case .tagline:
+        case .tagline where blog.isAdmin:
             showEditSiteTaglineController(indexPath: indexPath)
-        case .privacy:
+        case .privacy where blog.isAdmin:
             showPrivacySelector()
-        case .language:
+        case .language where blog.isAdmin:
             showLanguageSelector(for: blog)
-        case .timezone:
+        case .timezone where blog.isAdmin:
             showTimezoneSelector()
         case .bloggingReminders:
             presentBloggingRemindersFlow(indexPath: indexPath)
@@ -324,6 +313,8 @@ extension SiteSettingsViewController {
     private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
         cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
+        cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
+        cell.detailTextLabel?.minimumScaleFactor = 0.5
         cell.accessoryType = .none
         cell.textValue = schedule(for: blog)
     }
@@ -335,8 +326,8 @@ extension SiteSettingsViewController {
             return ""
         }
 
-        let formatter = BloggingRemindersScheduleFormatter(schedule: scheduler.schedule(for: blog))
-        return formatter.shortIntervalDescription.string
+        let formatter = BloggingRemindersScheduleFormatter()
+        return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
     }
 
     // MARK: - Handling General Setting Cell Taps

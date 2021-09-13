@@ -36,6 +36,7 @@ class BloggingRemindersTracker {
         case main
         case dayPicker = "day_picker"
         case enableNotifications = "enable_notifications"
+        case timePicker = "time_picker"
     }
 
     enum Screen: String {
@@ -54,8 +55,9 @@ class BloggingRemindersTracker {
     enum Property: String {
         case button = "button"
         case daysOfWeek = "days_of_week_count"
-        case flowDismissSource, flowStartSource = "source"
+        case source = "source"
         case screen = "screen"
+        case selectedTime = "selected_time"
     }
 
     /// The type of blog.
@@ -88,22 +90,24 @@ class BloggingRemindersTracker {
     }
 
     func flowDismissed(source: FlowDismissSource) {
-        track(event(.flowDismissed, properties: [Property.flowDismissSource.rawValue: source.rawValue]))
+        track(event(.flowDismissed, properties: [Property.source.rawValue: source.rawValue]))
     }
 
     func flowStarted(source: FlowStartSource) {
-        track(event(.flowStart, properties: [Property.flowStartSource.rawValue: source.rawValue]))
+        track(event(.flowStart, properties: [Property.source.rawValue: source.rawValue]))
 
     }
 
-    func scheduled(_ schedule: BloggingRemindersScheduler.Schedule) {
+    func scheduled(_ schedule: BloggingRemindersScheduler.Schedule, time: Date) {
         let event: AnalyticsEvent
 
         switch schedule {
         case .none:
             event = self.event(.remindersCancelled, properties: [:])
         case .weekdays(let days):
-            event = self.event(.remindersScheduled, properties: [Property.daysOfWeek.rawValue: "\(days.count)"])
+            event = self.event(.remindersScheduled,
+                               properties: [Property.daysOfWeek.rawValue: "\(days.count)",
+                                            Property.selectedTime.rawValue: time.toLocal24HTime()])
         }
 
         track(event)

@@ -1,5 +1,6 @@
 import UITestsFoundation
 import XCTest
+import XCUITestHelpers
 
 private struct ElementStringIDs {
     static let navBar = "WordPressAuthenticator.LoginSelfHostedView"
@@ -41,7 +42,7 @@ class LoginUsernamePasswordScreen: BaseScreen {
         // Workaround to enter password in languages where typing doesn't work
         // Pasting is not reliable enough to use all the time so we only use it where it's necessary
         if ["ru", "th"].contains(Locale.current.languageCode) {
-            passwordTextField.pasteText(password)
+            passwordTextField.paste(text: password)
         } else {
             passwordTextField.typeText(password)
         }

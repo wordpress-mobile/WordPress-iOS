@@ -45,6 +45,8 @@ import Foundation
     case gutenbergUnsupportedBlockWebViewShown
     case gutenbergUnsupportedBlockWebViewClosed
     case gutenbergSuggestionSessionFinished
+    case gutenbergEditorSettingsFetched
+    case gutenbergEditorHelpShown
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -176,6 +178,10 @@ import Foundation
     // When Likes list is scrolled
     case likeListFetchedMore
 
+    // Recommend app to others
+    case recommendAppEngaged
+    case recommendAppContentFetchFailed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -246,6 +252,10 @@ import Foundation
             return "gutenberg_unsupported_block_webview_closed"
         case .gutenbergSuggestionSessionFinished:
             return "suggestion_session_finished"
+        case .gutenbergEditorSettingsFetched:
+            return "editor_settings_fetched"
+        case .gutenbergEditorHelpShown:
+            return "editor_help_shown"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -478,6 +488,14 @@ import Foundation
         // When Likes list is scrolled
         case .likeListFetchedMore:
             return "like_list_fetched_more"
+
+        // When the recommend app button is tapped
+        case .recommendAppEngaged:
+            return "recommend_app_engaged"
+
+        // When the content fetching for the recommend app failed
+        case .recommendAppContentFetchFailed:
+            return "recommend_app_content_fetch_failed"
         }
     }
 

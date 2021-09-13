@@ -42,7 +42,6 @@ class ImageDownloader {
     @discardableResult
     func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         var request = URLRequest(url: url)
-        request.httpShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
         return downloadImage(for: request, completion: completion)

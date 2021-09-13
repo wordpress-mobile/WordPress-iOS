@@ -124,6 +124,15 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     return [defaultAccount isEqual:self];
 }
 
+- (BOOL)hasAtomicSite {
+    for (Blog *blog in self.blogs) {
+        if ([blog isAtomic]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark - Static methods
 
 + (NSString *)tokenForUsername:(NSString *)username

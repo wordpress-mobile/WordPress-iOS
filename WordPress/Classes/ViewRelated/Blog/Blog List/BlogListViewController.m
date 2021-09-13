@@ -90,8 +90,10 @@ static NSInteger HideSearchMinSites = 3;
     self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                        target:self
                                                                        action:@selector(addSite)];
+    self.addSiteButton.accessibilityIdentifier = @"add-site-button";
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"cancel-button";
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }

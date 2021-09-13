@@ -80,7 +80,7 @@ class BlockEditorScreen: BaseScreen {
         XCTContext.runActivity(named: "Close the block editor") { (activity) in
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
                 if actionSheet.exists {
-                    if isIpad {
+                    if XCUIDevice.isPad {
                         app.otherElements["PopoverDismissRegion"].tap()
                     } else {
                         keepEditingButton.tap()
@@ -89,7 +89,7 @@ class BlockEditorScreen: BaseScreen {
             }
 
             // Wait for close button to be hittable (i.e. React "Loading from pre-bundled file" message is gone)
-            editorCloseButton.waitForHittability(timeout: 3)
+            editorCloseButton.waitForIsHittable(timeout: 3)
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in

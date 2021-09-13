@@ -1312,11 +1312,7 @@
     context.persistentStoreCoordinator = psc;
     XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
 
-    // Post has a Geolocation transformer
     Blog *blog1 = (Blog *)[self insertDummyBlogInContext:context blogID:@123];
-    Post *post1 = (Post *)[self insertDummyPostInContext:context blog:blog1];
-    Coordinate *coordinate1 = [[Coordinate alloc] initWithCoordinate:CLLocationCoordinate2DMake(37.784316, -122.397402)];
-    post1.geolocation = coordinate1;
 
     // BlogSettings uses Set transformers
     BlogSettings *settings1 = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:[BlogSettings entityName] inManagedObjectContext:context];
@@ -1365,12 +1361,6 @@
     Blog *fetchedBlog1 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[@123]].firstObject;
     XCTAssertNotNil(fetchedBlog1);
     XCTAssertTrue([fetchedBlog1.settings.commentsModerationKeys isEqualToSet:settings1.commentsModerationKeys]);
-
-    NSSet<Post *> *blog1Posts = [fetchedBlog1 valueForKey:@"posts"];
-    Post *fetchedPost1 = [blog1Posts anyObject];
-    Coordinate *fetchedCoordinate1 = fetchedPost1.geolocation;
-    XCTAssertEqual(fetchedCoordinate1.coordinate.latitude, coordinate1.coordinate.latitude);
-    XCTAssertEqual(fetchedCoordinate1.coordinate.longitude, coordinate1.coordinate.longitude);
 }
 
 #pragma mark - Private Helpers

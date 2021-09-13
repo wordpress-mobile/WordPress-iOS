@@ -1,7 +1,56 @@
+18.3
+-----
+
+
+18.2
+-----
+* [internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
+* [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
+* [*] Fixed wording of theme customization screen's menu bar by using "Activate" on inactive themes. [#17060]
+* [*] Added pull-to-refresh to My Site. [#17089]
+* [***] Weekly Roundup: users will receive a weekly notification that presents a summary of the activity on their most used sites [#17066, #17116]
+* [**] Site Comments: when editing a Comment, the author's name, email address, and web address can now be changed. [#17111]
+* [**] Block editor: Enable embed preview for a list of providers (for now only YouTube and Twitter) [https://github.com/WordPress/gutenberg/pull/34446]
+* [***] Block editor: Add Inserter Block Search [https://github.com/WordPress/gutenberg/pull/33237]
+
+18.1
+-----
+* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
+* [*] Posts Settings: Removed deprecated Location feature. [#17052]
+* [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
+* [**] Block editor: Embed block: Add "Resize for smaller devices" setting. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3753]
+* [**] Account Settings: added the ability to close user account.
+* [*] Users can now share WordPress app with friends. Accessible from Me and About screen. [#16995]
+
+18.0
+-----
+* [*] Fixed a bug that would make it impossible to scroll the plugins the first time the plugin section was opened.
+* [*] Resolved an issue where authentication tokens weren't be regenerated when disabled on the server. [#16920]
+* [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
+* [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
+* [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969, #16980]
+* [internal] Updated GoogleSignIn to 6.0.1 through WordPressAuthenticator. Should be no visible changes, but could cause regression in Google sign in flow. [#16974]
+* [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969]
+* [*] Posts: Ampersands are correctly decoded in publishing notices instead of showing as HTML entites. [#16972]
+* [***] Adjusted the image size of Theme Images for more optimal download speeds. [#16914]
+* [*] Comments and Notifications list are now displayed with a unified design. [#16985]
+* [*] Block editor: Add a "featured" banner and ability to set or remove an image as featured. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3449]
+
+17.9
+-----
+* [internal] Redirect Terms and service to open the page in an external web view [#16907]
+* [internal] Converted Comment model methods to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908, #16913]
+* [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
+* [***] Block editor: New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
+
 17.8
 -----
 * [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
 * [*] [Jetpack-only] Fix bugs when tapping to notifications
+* [*] Fixed some refresh issues with the site follow buttons in the reader. [#16819]
+* [*] Block editor: Update loading and failed screens for web version of the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3573]
+* [*] Block editor: Handle floating keyboard case - Fix issue with the block selector on iPad. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3687]
+* [**] Block editor: Added color/background customization for text blocks. [https://github.com/WordPress/gutenberg/pull/33250]
 
 17.7
 -----
@@ -12,6 +61,7 @@
 * [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
 * [*] Block editor: Tweaks to the badge component's styling, including change of background color and reduced padding. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3642]
 * [***] Block editor: New block Layout grid. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3513]
+* [*] Fixed an issue where the SignUp flow could not be dismissed sometimes. [#16824]
 
 17.6
 -----

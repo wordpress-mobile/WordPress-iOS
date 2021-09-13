@@ -10,7 +10,6 @@ extension Blog {
 
     @objc
     func supportsBlockEditorSettings() -> Bool {
-        guard FeatureFlag.globalStyleSettings.enabled else { return false }
         return hasRequiredWordPressVersion("5.8")
     }
 }
