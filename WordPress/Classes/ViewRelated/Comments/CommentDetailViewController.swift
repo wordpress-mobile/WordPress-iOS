@@ -195,6 +195,13 @@ private extension CommentDetailViewController {
         self.rows = rows
     }
 
+    /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
+    /// Use this method instead of directly calling the `reloadData` on the table view property.
+    func refreshData() {
+        configureRows()
+        tableView.reloadData()
+    }
+
     // MARK: Cell configuration
 
     func configureHeaderCell() {
@@ -266,7 +273,7 @@ private extension CommentDetailViewController {
             }
 
             self?.comment = comment
-            self?.tableView.reloadData()
+            self?.refreshData()
             self?.updateComment()
         })
 
@@ -285,7 +292,7 @@ private extension CommentDetailViewController {
         commentService.uploadComment(comment,
                                      success: { [weak self] in
                                         // The comment might have changed its approval status
-                                        self?.tableView.reloadData()
+                                        self?.refreshData()
                                      },
                                      failure: { [weak self] error in
                                         let message = NSLocalizedString("There has been an unexpected error while editing your comment",
