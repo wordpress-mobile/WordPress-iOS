@@ -51,7 +51,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic, strong) ReaderAbstractTopic *topic;
-@property (nonatomic, strong) NSSet<ReaderCard *> *card;
+@property (nonatomic, strong) ReaderCard *card;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;

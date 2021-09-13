@@ -511,8 +511,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     // A ReaderCard can have either a post, or a list of topics, but not both.
     // Since this card has a post, we can confidently set `topics` to NULL.
-    if ([self respondsToSelector:@selector(card)] && self.card.count > 0) {
-        self.card.allObjects[0].topics = NULL;
+    if ([self respondsToSelector:@selector(card)] && self.card) {
+        self.card.topics = NULL;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }
 }

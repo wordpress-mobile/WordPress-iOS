@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 133
+
+@leandrowalonso 2021-09-13
+
+- `ReaderPost`: change `card` to "To One" relationship
+
 ## WordPress 132
 
 @momo-ozawa 2021-08-19
@@ -56,7 +62,7 @@ data model as well as any custom migrations.
 - `BlockEditorSettings`: added the attribute
     - `rawStyles` (optional, no default, `String`)
     - `rawFeatures` (optional, no default, `String`)
-    
+
 - `BlockEditorSettingElement`: added the attribute
     - `order` (required, 0, `Int`)
 
