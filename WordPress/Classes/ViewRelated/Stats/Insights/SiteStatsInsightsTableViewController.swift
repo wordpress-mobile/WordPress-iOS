@@ -98,7 +98,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
-    private var hideCustomizeCard = false
 
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
@@ -266,14 +265,9 @@ private extension SiteStatsInsightsTableViewController {
 
     func writeInsightsToUserDefaults() {
 
-        writeCustomizeCardSetting()
-
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
             return
         }
-
-        // Remove 'customize' from array since it is not per site.
-        removeCustomizeCard()
 
         let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
         let currentSiteInsights = [siteID: insightTypesValues]
@@ -283,36 +277,43 @@ private extension SiteStatsInsightsTableViewController {
         allSitesInsights.append(currentSiteInsights)
 
         UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
-
-        // Add back 'customize'.
-        addCustomizeCard()
     }
 
-    func loadCustomizeCardSetting() {
-        hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
-        addCustomizeCard()
+    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show.
+    ///
+    /// - Parameters:
+    ///   - insight: An insight that can be permanently dismissed for all sites
+    ///   - userDefaultsHideInsightKey: The UserDefaults key that indicates whether or not the insight should be hidden
+    func loadPermanentlyDismissableInsight(_ insight: InsightType, using userDefaultsHideInsightKey: String) {
+
+        let shouldAddInsight =
+            !UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && !insightsToShow.contains(insight)
+
+        if shouldAddInsight {
+            insightsToShow.insert(insight, at: 0)
+        } else {
+            insightsToShow = insightsToShow.filter { $0 != insight }
+        }
     }
 
-    func writeCustomizeCardSetting() {
-        UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
+    /// Permanently dismisses an insight for all sites.
+    ///
+    /// - Parameters:
+    ///   - insight: An insight that can be permanently dismissed for all sites
+    ///   - userDefaultsHideInsightKey: The UserDefaults key that indicates whether or not the insight should be hidden
+    func permanentlyDismissInsight(_ insight: InsightType, using userDefaultsHideInsightKey: String) {
+        insightsToShow = insightsToShow.filter { $0 != insight }
+        UserDefaults.standard.set(true, forKey: userDefaultsHideInsightKey)
     }
 
     // MARK: - Customize Card Management
 
+    func loadCustomizeCardSetting() {
+        loadPermanentlyDismissableInsight(.customize, using: userDefaultsHideCustomizeKey)
+    }
+
     func dismissCustomizeCard() {
-        hideCustomizeCard = true
-        removeCustomizeCard()
-    }
-
-    func removeCustomizeCard() {
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-    }
-
-    func addCustomizeCard() {
-        if !hideCustomizeCard && !insightsToShow.contains(.customize) {
-            // Insert customize at the beginning of the array so it is displayed first.
-            insightsToShow.insert(.customize, at: 0)
-        }
+        permanentlyDismissInsight(.customize, using: userDefaultsHideCustomizeKey)
     }
 
     // MARK: - Insights Management
@@ -369,7 +370,9 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func canMoveInsightUp(_ insight: InsightType) -> Bool {
-        let minIndex = hideCustomizeCard ? 0 : 1
+        let isShowingPinnedCard = insightsToShow.contains(.customize)
+
+        let minIndex = isShowingPinnedCard ? 1 : 0
 
         guard let currentIndex = indexOfInsight(insight),
             (currentIndex - 1) >= minIndex else {
