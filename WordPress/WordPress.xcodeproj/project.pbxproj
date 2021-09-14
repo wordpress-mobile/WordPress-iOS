@@ -557,6 +557,12 @@
 		3FA6A1C926F072210029628A /* ContactUsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1C126F072210029628A /* ContactUsProvider.swift */; };
 		3FA6A1CB26F072210029628A /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1C326F072210029628A /* Node.swift */; };
 		3FA6A1CE26F072360029628A /* ContactUsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1C526F072210029628A /* ContactUsProviderTests.swift */; };
+		3FA6A1D626F072AF0029628A /* ContactUsDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1D526F072AF0029628A /* ContactUsDemoApp.swift */; };
+		3FA6A1D826F072AF0029628A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1D726F072AF0029628A /* ContentView.swift */; };
+		3FA6A1DA26F072B10029628A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA6A1D926F072B10029628A /* Assets.xcassets */; };
+		3FA6A1DD26F072B10029628A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA6A1DC26F072B10029628A /* Preview Assets.xcassets */; };
+		3FA6A1E426F073080029628A /* ContactUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F62C15F26EF539D001F34DD /* ContactUs.framework */; };
+		3FA6A1E526F073080029628A /* ContactUs.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F62C15F26EF539D001F34DD /* ContactUs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */; };
 		3FAF9CC226D01CFE00268EA2 /* DomainsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */; };
 		3FAF9CC326D02FC500268EA2 /* DomainsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */; };
@@ -4527,6 +4533,13 @@
 			remoteGlobalIDString = 3F62C15E26EF539D001F34DD;
 			remoteInfo = ContactUs;
 		};
+		3FA6A1E626F073080029628A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F62C15E26EF539D001F34DD;
+			remoteInfo = ContactUs;
+		};
 		733F360E2126197800988727 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4642,6 +4655,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3F62C17526EF539D001F34DD /* ContactUs.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA6A1E826F073080029628A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3FA6A1E526F073080029628A /* ContactUs.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5288,6 +5312,12 @@
 		3FA6A1C326F072210029628A /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		3FA6A1C526F072210029628A /* ContactUsProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsProviderTests.swift; sourceTree = "<group>"; };
 		3FA6A1C626F072210029628A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3FA6A1D326F072AF0029628A /* ContactUsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactUsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA6A1D526F072AF0029628A /* ContactUsDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsDemoApp.swift; sourceTree = "<group>"; };
+		3FA6A1D726F072AF0029628A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3FA6A1D926F072B10029628A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3FA6A1DC26F072B10029628A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3FA6A1DE26F072B10029628A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FAA18CB25797B85002B1911 /* UnconfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfiguredView.swift; sourceTree = "<group>"; };
 		3FAF9CC126D01CFE00268EA2 /* DomainsDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardView.swift; sourceTree = "<group>"; };
 		3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainSuggestionViewControllerWrapper.swift; sourceTree = "<group>"; };
@@ -7843,6 +7873,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FA6A1D026F072AF0029628A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FA6A1E426F073080029628A /* ContactUs.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		733F36002126197800988727 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -8568,6 +8606,7 @@
 				3FA640572670CCD40064401E /* UITestsFoundation.framework */,
 				3F62C15F26EF539D001F34DD /* ContactUs.framework */,
 				3F62C16726EF539D001F34DD /* ContactUsTests.xctest */,
+				3FA6A1D326F072AF0029628A /* ContactUsDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -9384,6 +9423,7 @@
 		3F62C16026EF539D001F34DD /* ContactUs */ = {
 			isa = PBXGroup;
 			children = (
+				3FA6A1D426F072AF0029628A /* DemoApp */,
 				3FA6A1BE26F072210029628A /* Sources */,
 				3FA6A1C426F072210029628A /* Tests */,
 			);
@@ -9515,6 +9555,26 @@
 				3FA6A1C626F072210029628A /* Info.plist */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		3FA6A1D426F072AF0029628A /* DemoApp */ = {
+			isa = PBXGroup;
+			children = (
+				3FA6A1D526F072AF0029628A /* ContactUsDemoApp.swift */,
+				3FA6A1D726F072AF0029628A /* ContentView.swift */,
+				3FA6A1D926F072B10029628A /* Assets.xcassets */,
+				3FA6A1DE26F072B10029628A /* Info.plist */,
+				3FA6A1DB26F072B10029628A /* Preview Content */,
+			);
+			path = DemoApp;
+			sourceTree = "<group>";
+		};
+		3FA6A1DB26F072B10029628A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3FA6A1DC26F072B10029628A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		3FAF9CC026D01C2500268EA2 /* Domains list */ = {
@@ -14899,6 +14959,25 @@
 			productReference = 3FA640572670CCD40064401E /* UITestsFoundation.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		3FA6A1D226F072AF0029628A /* ContactUsDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FA6A1DF26F072B10029628A /* Build configuration list for PBXNativeTarget "ContactUsDemo" */;
+			buildPhases = (
+				3FA6A1CF26F072AF0029628A /* Sources */,
+				3FA6A1D026F072AF0029628A /* Frameworks */,
+				3FA6A1D126F072AF0029628A /* Resources */,
+				3FA6A1E826F073080029628A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3FA6A1E726F073080029628A /* PBXTargetDependency */,
+			);
+			name = ContactUsDemo;
+			productName = ContactUsDemo;
+			productReference = 3FA6A1D326F072AF0029628A /* ContactUsDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		733F36022126197800988727 /* WordPressNotificationContentExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 733F36152126197800988727 /* Build configuration list for PBXNativeTarget "WordPressNotificationContentExtension" */;
@@ -15211,6 +15290,9 @@
 						CreatedOnToolsVersion = 12.5;
 						LastSwiftMigration = 1250;
 					};
+					3FA6A1D226F072AF0029628A = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
 					733F36022126197800988727 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1000;
@@ -15394,6 +15476,7 @@
 				3FA640562670CCD40064401E /* UITestsFoundation */,
 				3F62C15E26EF539D001F34DD /* ContactUs */,
 				3F62C16626EF539D001F34DD /* ContactUsTests */,
+				3FA6A1D226F072AF0029628A /* ContactUsDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -15716,6 +15799,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FA6A1D126F072AF0029628A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FA6A1DD26F072B10029628A /* Preview Assets.xcassets in Resources */,
+				3FA6A1DA26F072B10029628A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -18605,6 +18697,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FA6A1CF26F072AF0029628A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FA6A1D826F072AF0029628A /* ContentView.swift in Sources */,
+				3FA6A1D626F072AF0029628A /* ContactUsDemoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		733F35FF2126197800988727 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -20903,6 +21004,11 @@
 			target = 3F62C15E26EF539D001F34DD /* ContactUs */;
 			targetProxy = 3F62C17226EF539D001F34DD /* PBXContainerItemProxy */;
 		};
+		3FA6A1E726F073080029628A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F62C15E26EF539D001F34DD /* ContactUs */;
+			targetProxy = 3FA6A1E626F073080029628A /* PBXContainerItemProxy */;
+		};
 		733F360F2126197800988727 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 733F36022126197800988727 /* WordPressNotificationContentExtension */;
@@ -22227,6 +22333,172 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Alpha";
+		};
+		3FA6A1E026F072B10029628A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_ASSET_PATHS = "\"ContactUs/DemoApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ContactUs/DemoApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.ContactUsDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3FA6A1E126F072B10029628A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"ContactUs/DemoApp/Preview Content\"";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ContactUs/DemoApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.ContactUsDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3FA6A1E226F072B10029628A /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"ContactUs/DemoApp/Preview Content\"";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ContactUs/DemoApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.ContactUsDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release-Internal";
+		};
+		3FA6A1E326F072B10029628A /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"ContactUs/DemoApp/Preview Content\"";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ContactUs/DemoApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.ContactUsDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Release-Alpha";
 		};
@@ -25468,6 +25740,17 @@
 				3FA6405D2670CCD40064401E /* Release */,
 				3FA6405E2670CCD40064401E /* Release-Internal */,
 				3FA6405F2670CCD40064401E /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FA6A1DF26F072B10029628A /* Build configuration list for PBXNativeTarget "ContactUsDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FA6A1E026F072B10029628A /* Debug */,
+				3FA6A1E126F072B10029628A /* Release */,
+				3FA6A1E226F072B10029628A /* Release-Internal */,
+				3FA6A1E326F072B10029628A /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
