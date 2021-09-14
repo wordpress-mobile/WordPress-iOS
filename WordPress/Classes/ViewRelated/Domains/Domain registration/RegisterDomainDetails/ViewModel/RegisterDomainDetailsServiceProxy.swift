@@ -33,7 +33,7 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
     func createPersistentDomainShoppingCart(siteID: Int,
                                             domainSuggestion: DomainSuggestion,
                                             privacyProtectionEnabled: Bool,
-                                            success: @escaping (CartResponse) -> Void,
+                                            success: @escaping (CartResponseProtocol) -> Void,
                                             failure: @escaping (Error) -> Void)
 
     func redeemCartUsingCredits(cart: CartResponseProtocol,
@@ -112,7 +112,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
     func createPersistentDomainShoppingCart(siteID: Int,
                                             domainSuggestion: DomainSuggestion,
                                             privacyProtectionEnabled: Bool,
-                                            success: @escaping (CartResponse) -> Void,
+                                            success: @escaping (CartResponseProtocol) -> Void,
                                             failure: @escaping (Error) -> Void) {
 
         transactionsServiceRemote.createPersistentDomainShoppingCart(siteID: siteID,
