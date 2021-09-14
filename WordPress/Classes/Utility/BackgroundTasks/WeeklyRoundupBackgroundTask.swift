@@ -19,6 +19,10 @@ class WeeklyRoundupDataProvider {
     ///
     private let onError: (Error) -> Void
 
+    /// Debug settings configured through the App's debug menu.
+    ///
+    private let debugSettings = WeeklyRoundupDebugScreen.Settings()
+
     init(context: NSManagedObjectContext, onError: @escaping (Error) -> Void) {
         self.context = context
         self.onError = onError
@@ -140,7 +144,7 @@ class WeeklyRoundupDataProvider {
     ///
     private func filterCandidateSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
         let administeredSites = sites.filter { site in
-            site.isAdmin
+            site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
         }
 
         guard administeredSites.count > 0 else {
