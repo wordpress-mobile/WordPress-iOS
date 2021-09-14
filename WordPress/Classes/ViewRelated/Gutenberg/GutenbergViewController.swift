@@ -1014,6 +1014,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
         gutenbergSettings.blockTypeImpressions = impressions
     }
+
+    func gutenbergDidRequestCustomerSupportOptionsShow() {
+        // TODO
+    }
 }
 
 // MARK: - Suggestions implementation
