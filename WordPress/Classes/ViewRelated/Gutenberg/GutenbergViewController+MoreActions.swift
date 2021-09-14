@@ -126,6 +126,6 @@ extension GutenbergViewController {
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
-        static let editorHelpTitle = NSLocalizedString("Help", comment: "Open editor help options")
+        static let editorHelpTitle = NSLocalizedString("Help & Support", comment: "Open editor help options")
     }
 }
