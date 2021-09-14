@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-01 11:54:09+0000 */
+/* Translation-Revision-Date: 2021-09-09 17:36:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -309,7 +309,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> volte a settimana";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> volte a settimana alle %2$@";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Una volta<\/strong> alla settimana ";
@@ -5492,7 +5492,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "Registra privatamente con protezione della privacy";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "Registra un dominio gratuito";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7195,7 +7195,7 @@ translators: Block name. %s: The localized block name */
 "To add photos or videos to your posts." = "Per aggiungere foto o video ai tuoi articoli.";
 
 /* Error message displayed when unable to close user account. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+"To close this account now, contact our support team." = "Per chiudere questo account ora, contatta il team di supporto.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Per continuare, inserisci indirizzo email e nome.";
@@ -8210,13 +8210,13 @@ translators: Block name. %s: The localized block name */
 "Web News" = "News del web";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "Indirizzo web";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "La settimana inizia il";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "Resoconto settimanale";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Settimane";
@@ -8682,7 +8682,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "I tuoi articoli, pagine e impostazioni ti saranno inviati via email a %@.";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Il tuo dominio principale è l'indirizzo visualizzato nel browser dagli utenti che visitano il tuo sito.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Il ripristino sta impiegando più tempo del solito, controlla di nuovo tra pochi minuti.";
