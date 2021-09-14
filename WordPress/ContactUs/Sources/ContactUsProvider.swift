@@ -1,8 +1,10 @@
 import Combine
 
-class ContactUsProvider {
+public class ContactUsProvider {
 
-    func loadDecisionTree() -> AnyPublisher<[Question], Error> {
+    public init() {}
+
+    public func loadDecisionTree() -> AnyPublisher<[Question], Error> {
         return Result.success(decisionTree).publisher.eraseToAnyPublisher()
     }
 }

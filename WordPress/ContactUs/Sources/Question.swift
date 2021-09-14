@@ -1,4 +1,4 @@
-struct Question {
-    let message: String
-    let next: ContactUsNode
+public struct Question {
+    public let message: String
+    public let next: ContactUsNode
 }
