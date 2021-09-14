@@ -11,6 +11,10 @@ private let baseURL = "https://apps.wordpress.com/mobile-app-support"
 
 let decisionTree: [Question] = [
     Question(
+        message: "How do I create a site?",
+        next: .url(url: URL(string: "\(baseURL)/getting-started/#no-account")!)
+    ),
+    Question(
         message: "How do I connect a site?",
         next: .page(
             questions: [
@@ -20,5 +24,13 @@ let decisionTree: [Question] = [
                 )
             ]
         )
-    )
+    ),
+    Question(
+        message: "How do I create a new post?",
+        next: .url(url: URL(string: "\(baseURL)/getting-started/#create-post")!)
+    ),
+    Question(
+        message: "How do I create a new page?",
+        next: .url(url: URL(string: "\(baseURL)/getting-started/#create-page")!)
+    ),
 ]
