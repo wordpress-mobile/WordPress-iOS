@@ -900,7 +900,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                             }];
     [rows addObject:mediaRow];
 
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
                                              accessibilityIdentifier:@"Site Pages Row"
                                                     image:[UIImage gridiconOfType:GridiconTypePages]
                                                  callback:^{
