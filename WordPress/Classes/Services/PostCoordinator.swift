@@ -143,7 +143,7 @@ class PostCoordinator: NSObject {
                     self.updateReferences(to: media, in: post)
                 }
             }
-            
+
             let uuid = observeMedia(for: post, completion: completion)
             trackObserver(receipt: uuid, for: post)
 
