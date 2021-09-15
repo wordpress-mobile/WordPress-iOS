@@ -502,16 +502,16 @@ class ReaderDetailCoordinator {
         // These flags needed to display the `Follow conversation by email` option.
         // So if we can call controllerWithPostID, do so. Otherwise, fallback to controllerWithPostURL.
         // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17158
-        
+
         let readerDetail: ReaderDetailViewController = {
             if let post = post,
                selectedUrlIsCrossPost(url) {
                 return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
             }
-            
+
             return ReaderDetailViewController.controllerWithPostURL(url)
         }()
-        
+
         viewController?.navigationController?.pushViewController(readerDetail, animated: true)
     }
 
