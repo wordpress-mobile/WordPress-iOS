@@ -1,6 +1,6 @@
 import UIKit
 
-final class TimeZoneSearchHeaderView: UIView {
+class TimeZoneSearchHeaderView: UIView {
 
     @IBOutlet private weak var searchWrapperView: SearchWrapperView!
 
@@ -17,32 +17,24 @@ final class TimeZoneSearchHeaderView: UIView {
         super.init(coder: aDecoder)
     }
 
-    class func makeFromNib() -> TimeZoneSearchHeaderView {
-        return Bundle.main.loadNibNamed(Constants.nibIdentifier,
+    class func makeFromNib(searchBar: UISearchBar, timezone: String) -> TimeZoneSearchHeaderView {
+        let view = Bundle.main.loadNibNamed(Constants.nibIdentifier,
                                         owner: self,
                                         options: nil)?.first as! TimeZoneSearchHeaderView
-    }
 
-    // MARK: - Convenience Initializers
+        view.searchWrapperView.addSubview(searchBar)
+        view.searchWrapperViewHeightConstraint.constant = searchBar.frame.height
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+        view.suggestionLabel.text = Localization.suggestion
 
-        suggestionLabel.text = Localization.suggestion
-        suggestionButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        view.suggestionButton.setTitle(timezone, for: .normal)
+        view.suggestionButton.addTarget(view, action: #selector(buttonTapped), for: .touchUpInside)
+
+        return view
     }
 
     @objc private func buttonTapped() {
         tapped?()
-    }
-
-    func configureSearchWrapperView(searchBar: UISearchBar) {
-        searchWrapperView.addSubview(searchBar)
-        searchWrapperViewHeightConstraint.constant = searchBar.frame.height
-    }
-
-    func configureDefaultTimeZone(timezone: String) {
-        suggestionButton.setTitle(timezone, for: .normal)
     }
 }
 

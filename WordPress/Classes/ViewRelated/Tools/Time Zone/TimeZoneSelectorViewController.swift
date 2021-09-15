@@ -188,13 +188,10 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     private func configureTableHeaderView() {
         if FeatureFlag.timeZoneSuggester.enabled {
-            let headerView = TimeZoneSearchHeaderView.makeFromNib()
-            headerView.configureSearchWrapperView(searchBar: searchController.searchBar)
-
             let timeZoneIdentifier = TimeZone.current.identifier
-            headerView.configureDefaultTimeZone(timezone: timeZoneIdentifier)
+            let headerView = TimeZoneSearchHeaderView.makeFromNib(searchBar: searchController.searchBar,
+                                                                  timezone: timeZoneIdentifier)
             headerView.tapped = { [weak self] in
-
                 // check if currentTimeZoneIdentifier has a WPTimeZone instance
                 if let selectedTimezone = self?.viewModel.getTimeZoneForIdentifier(timeZoneIdentifier) {
                     self?.viewModel.selectedValue = timeZoneIdentifier
