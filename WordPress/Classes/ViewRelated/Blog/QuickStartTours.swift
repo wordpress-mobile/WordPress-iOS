@@ -253,7 +253,7 @@ struct QuickStartReviewPagesTour: QuickStartTour {
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString("Site Pages", comment: "The item to select during a guided tour.")
+        let descriptionTarget = NSLocalizedString("Pages", comment: "The item to select during a guided tour.")
         return [(element: .pages, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: .gridicon(.pages)))]
     }()
 
@@ -272,7 +272,7 @@ struct QuickStartEditHomepageTour: QuickStartTour {
 
     var waypoints: [WayPoint] = {
         let descriptionBase = NSLocalizedString("Select %@ to see your page list.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
-        let descriptionTarget = NSLocalizedString("Site Pages", comment: "The item to select during a guided tour.")
+        let descriptionTarget = NSLocalizedString("Pages", comment: "The item to select during a guided tour.")
         let descriptionHomepage = NSLocalizedString("Select %@ to edit your Homepage.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to select.")
         let homepageTarget = NSLocalizedString("Homepage", comment: "The item to select during a guided tour.")
         return [
