@@ -1,9 +1,0 @@
-Você usa o bloco de código incorporado? Em mídias incorporadas, você verá agora a opção "Redimensionar para dispositivos menores". Ative para adaptar seu conteúdo quando o navegador for redimensionado.
-
-Está gostando dos lembretes para publicação? Adicionamos uma opção que permite escolher um horário específico para ser notificado.
-
-Precisa encerrar sua conta? (Esperamos que você não nos deixe nunca!) Mas se for necessário, agora é possível através do menu Configurações da conta.
-
-A geolocalização de posts não está mais disponível na web, então removemos a opção correspondente das Configurações do post.
-
-Também fizemos outras melhoras, incluindo uma correção para um problema de recorte no Leitor e a opção de recomendar o app através dos menus Eu e Sobre.

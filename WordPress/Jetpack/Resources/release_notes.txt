@@ -1,7 +1,8 @@
-Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.
+- Stay informed! You can now receive a weekly summary of the activity on your most popular sites.
 
-Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.
+- You have even more control of your site comments — when you edit them you can now also adjust the author’s name, email address, and web address.
+We have made a couple of handy tweaks to the Block editor. The Embed block now gives you a sneak preview when you add something from YouTube or Twitter (more providers to come). Also, when you go to insert a block and nothing is found, there is now a no results view.
 
-Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.
+- If you go to Post Settings > Post Format, you will find the “Standard” option still at the top, but the other options are now neatly alphabetized below. (Options will vary with themes!)
 
-Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.
+- And one more quick one: Refreshing your site is now super easy — just pull to refresh from the My Site screen!

@@ -217,6 +217,9 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 블록 옵션";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s block previews are coming soon" = "%s block previews are coming soon";
+
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "새로 사용 가능한 %s 블록";
 
@@ -234,6 +237,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s에 설정된 URL 없음";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "%s previews not yet available";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 소셜 아이콘";
@@ -611,7 +617,8 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter. */
 "All" = "모든";
 
-/* Information about redeeming domain credit on site dashboard. */
+/* Footer of the free domain registration section for a paid plan.
+   Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "모든 워드프레스닷컴 요금제에는 사용자 정의 도메인 네임이 포함됩니다. 지금 무료 프리미엄 도메인을 등록하세요.";
 
 /* An option in a list. Automatically approve all comments */
@@ -698,9 +705,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "기록을 보려면 인터넷에 연결되어야 합니다.";
-
-/* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "계정을 종료하는 동안 오류가 발생했습니다.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "메뉴를 만드는 중에 오류가 발생했습니다.";
@@ -1192,6 +1196,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1521,6 +1526,10 @@ translators: Block name. %s: The localized block name */
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "댓글이 스팸으로 표시되었습니다.";
 
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+ My First Post */
+"Comment on" = "Comment on";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1692,7 +1701,8 @@ translators: Block name. %s: The localized block name */
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team. */
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "지원팀에 문의";
 
 /* Button label for contacting support
@@ -1828,6 +1838,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "특성 이미지를 업로드 할 수 없습니다";
+
+/* Error title displayed when unable to close user account. */
+"Couldn’t close account automatically" = "Couldn’t close account automatically";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "미디어 아이템 계산 중...";
@@ -2149,7 +2162,8 @@ translators: Block name. %s: The localized block name */
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "비활성화";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "무시하기";
 
@@ -2242,7 +2256,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "도메인 소유자는 모든 도메인의 공개 데이터베이스에 있는 연락처 정보를 공유해야 합니다. 개인정보 보호에 따라 회원님의 정보가 아닌 당사의 정보를 공개하며, 회원님이 받을 커뮤니케이션은 비공개적으로 전달합니다.";
 
-/* Title for the Domains list */
+/* Noun. Title. Links to the Domains screen.
+   Title for the Domains list */
 "Domains" = "도메인";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
@@ -2499,6 +2514,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "이메일 주소";
 
 /* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
 "Email address" = "이메일 주소";
@@ -2522,9 +2538,6 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "이메일이 전송되었습니다.";
 
-/* No comment provided by engineer. */
-"Embed block previews are coming soon" = "임베드 블록 미리보기는 곧 공개 예정";
-
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "캡션을 임베드합니다. %s";
 
@@ -2536,9 +2549,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "미디어 임베드";
-
-/* No comment provided by engineer. */
-"Embed previews not yet available" = "임베드 미리보기는 아직 사용할 수 없음";
 
 /* Title for the Emoji section */
 "Emoji" = "이모티콘";
@@ -2628,8 +2638,7 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "서버 자격 증명을 입력하세요.";
 
-/* General error title
-   Generic error alert title
+/* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "에러";
@@ -3319,6 +3328,9 @@ translators: Block name. %s: The localized block name */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "저는 사진 작가 Cameron Karsten의 작업에서 많은 영감을 받았습니다. 다음 작업에서 이러한 기법을 시도해볼 생각합니다.";
 
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "IP address";
+
 /* Title of a button style */
 "Icon & Text" = "아이콘 및 텍스트";
 
@@ -3627,7 +3639,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "대화 참여: 팔로우하는 블로그의 글에 댓글을 달아보세요.";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "계속 편집하기";
@@ -3731,6 +3744,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "한계에 이르렀습니다. 1분 후에 다시 할 수 있습니다. 제한이 해제 되기까지 기다리는 시간을 증가시키기 전에 다시 해보세요. 이것이 에러라면 지원 센터에 연락하세요. ";
+
+/* No comment provided by engineer. */
+"Line Height" = "Line Height";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4273,6 +4289,9 @@ translators: Block name. %s: The localized block name */
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "새 글";
+
+/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
+"New domain flow" = "New domain flow";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "새 항목";
@@ -5256,6 +5275,9 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "기본 사이트";
 
+/* Header of the primary site section in the Domains dashboard. */
+"Primary Site Address" = "Primary Site Address";
+
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
@@ -5449,6 +5471,9 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "다시 연결됨";
 
+/* Header of the redirected domains section in the Domains Dashboard. */
+"Redirected Domains" = "Redirected Domains";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "참조자";
 
@@ -5459,11 +5484,15 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "새로 고침";
 
-/* Action to redeem domain credit. */
+/* Action to redeem domain credit.
+   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
 "Register Domain" = "도메인 등록";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "개인정보 보호를 통해 비공개로 등록";
+
+/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Register a free domain" = "Register a free domain";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7094,18 +7123,6 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "이 사이트에 게시된 글이 아직 없습니다. 나중에 다시 시도하세요.";
 
-/* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "해결되지 않는 결제 승인 거부가 있는 경우 이 계정을 종료할 수 없습니다.";
-
-/* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "활성 구매가 있는 동안에는 이 사용자 계정을 종료할 수 없습니다.";
-
-/* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "활성 구독이 있는 동안에는 이 사용자 계정을 종료할 수 없습니다.";
-
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "이 사용자 계정은 종료할 수 없습니다. 나 > 도움말 및 지원으로 이동하여 문의해 주세요.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "이것은 사람들이 Twitter 버튼 사용을 공유할 때 트윗에 포함됩니다.";
@@ -7176,6 +7193,9 @@ translators: Block name. %s: The localized block name */
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "글에 사진이나 비디오를 추가";
+
+/* Error message displayed when unable to close user account. */
+"To close this account now, contact our support team." = "To close this account now, contact our support team.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "계속하려면 이메일 주소와 이름을 입력하세요.";
@@ -8189,8 +8209,14 @@ translators: Block name. %s: The localized block name */
 /* Example Reader feed title */
 "Web News" = "웹 뉴스";
 
+/* Describes the web address section in the comment detail screen. */
+"Web address" = "Web address";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "시작 요일";
+
+/* Setting: indicates if the site reports its Weekly Roundup */
+"Weekly Roundup" = "Weekly Roundup";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "주";
@@ -8232,11 +8258,11 @@ translators: Block name. %s: The localized block name */
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "사이트 빌드 및 성장에 대한 기본 사항을 안내해 드립니다.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "임베드 미리보기에 대한 지원을 추가하려고 노력하고 있습니다. 그동안에는 페이지에 임베드된 콘텐츠를 미리 볼 수 있습니다.";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "임베드 미리보기에 대한 지원을 추가하려고 노력하고 있습니다. 그동안에는 글에 임베드된 콘텐츠를 미리 볼 수 있습니다.";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "방문자 수를 늘리는 데 도움이 되는 작업이 추가되었습니다.";
@@ -8544,6 +8570,7 @@ translators: Block name. %s: The localized block name */
 "You have no reminders set." = "설정된 알림이 없습니다.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "저장되지 않은 변경이 있습니다.";
 
@@ -8578,7 +8605,8 @@ translators: Block name. %s: The localized block name */
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "You recently made changes to this post but didn't save them. Choose a version to load:\n\n이 장치에서\n다음으로 저장됨 %1$@\n\n다른 장치에서\n다음으로 저장됨 %2$@\n";
 
-/* Notification text - below a comment notification detail */
+/* Informs that the user has replied to this comment.
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "이 댓글에 답하였습니다.";
 
 /* No comment provided by engineer. */
@@ -8598,9 +8626,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "항상 최신 상태를 유지하세요!";
-
-/* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "계정을 종료할 권한이 없습니다.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "이 글에 저장되지 않은 변경 사항이 있습니다.";
@@ -8655,6 +8680,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "글, 페이지 및 설정이 %@(으)로 메일로 전송됩니다.";
+
+/* Footer of the primary site section in the Domains dashboard. */
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "복원은 평소보다 오래 걸립니다. 잠시 후에 다시 확인하세요.";

@@ -96,7 +96,7 @@ private extension PostEditorAnalyticsSession {
         static let template = "template"
         static let startupTime = "startup_time_ms"
         static let canViewEditorOnboarding = "can_view_editor_onboarding"
-        static let unstableGalleryWithImageBlocks = "unstableGalleryWithImageBlocks"
+        static let unstableGalleryWithImageBlocks = "unstable_gallery_with_image_blocks"
     }
 
     var commonProperties: [String: String] {
