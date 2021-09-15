@@ -1,6 +1,6 @@
 import UIKit
 
-final class TimeZoneSearchBar: UIView {
+final class TimeZoneSearchHeaderView: UIView {
 
     @IBOutlet private weak var searchWrapperView: SearchWrapperView!
 
@@ -17,10 +17,10 @@ final class TimeZoneSearchBar: UIView {
         super.init(coder: aDecoder)
     }
 
-    class func makeFromNib() -> TimeZoneSearchBar {
+    class func makeFromNib() -> TimeZoneSearchHeaderView {
         return Bundle.main.loadNibNamed(Constants.nibIdentifier,
                                         owner: self,
-                                        options: nil)?.first as! TimeZoneSearchBar
+                                        options: nil)?.first as! TimeZoneSearchHeaderView
     }
 
     // MARK: - Convenience Initializers
@@ -49,10 +49,10 @@ final class TimeZoneSearchBar: UIView {
 
 // MARK: - Constants
 
-private extension TimeZoneSearchBar {
+private extension TimeZoneSearchHeaderView {
 
     enum Constants {
-        static let nibIdentifier = "TimeZoneSearchBar"
+        static let nibIdentifier = "TimeZoneSearchHeaderView"
     }
 
     enum Localization {

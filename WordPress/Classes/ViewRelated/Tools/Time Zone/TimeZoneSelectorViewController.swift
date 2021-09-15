@@ -188,7 +188,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     private func configureTableHeaderView() {
         if FeatureFlag.timeZoneSuggester.enabled {
-            let headerView = TimeZoneSearchBar.makeFromNib()
+            let headerView = TimeZoneSearchHeaderView.makeFromNib()
             headerView.configureSearchWrapperView(searchBar: searchController.searchBar)
 
             let timeZoneIdentifier = TimeZone.current.identifier
