@@ -47,6 +47,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic comments;
 @dynamic tags;
 @dynamic topic;
+@dynamic card;
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
@@ -503,6 +504,17 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return (NSDictionary *)jsonObj;
     }
     return nil;
+}
+
+- (void) didSave {
+    [super didSave];
+
+    // A ReaderCard can have either a post, or a list of topics, but not both.
+    // Since this card has a post, we can confidently set `topics` to NULL.
+    if ([self respondsToSelector:@selector(card)] && self.card.count > 0) {
+        self.card.allObjects[0].topics = NULL;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }
 }
 
 @end
