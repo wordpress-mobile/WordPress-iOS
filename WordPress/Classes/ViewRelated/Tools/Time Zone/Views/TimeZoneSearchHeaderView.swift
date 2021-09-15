@@ -1,6 +1,6 @@
 import UIKit
 
-class TimeZoneSearchHeaderView: UIView {
+final class TimeZoneSearchHeaderView: UIView {
 
     @IBOutlet private weak var searchWrapperView: SearchWrapperView!
 
@@ -17,10 +17,13 @@ class TimeZoneSearchHeaderView: UIView {
         super.init(coder: aDecoder)
     }
 
-    class func makeFromNib(searchBar: UISearchBar, timezone: String) -> TimeZoneSearchHeaderView {
-        let view = Bundle.main.loadNibNamed(Constants.nibIdentifier,
+    class func makeFromNib(searchBar: UISearchBar, timezone: String) -> TimeZoneSearchHeaderView? {
+        guard let view = Bundle.main.loadNibNamed(Constants.nibIdentifier,
                                         owner: self,
-                                        options: nil)?.first as! TimeZoneSearchHeaderView
+                                        options: nil)?.first as? TimeZoneSearchHeaderView else {
+            assertionFailure("Failed to load view from nib named \(Constants.nibIdentifier)")
+            return nil
+        }
 
         view.searchWrapperView.addSubview(searchBar)
         view.searchWrapperViewHeightConstraint.constant = searchBar.frame.height
