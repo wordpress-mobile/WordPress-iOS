@@ -8,7 +8,8 @@ import SwiftUI
 public struct DecisionTreeView: View {
 
     private let tree: DecisionTree
-    @State private var alertPresented = false
+
+    @State private var webViewSheetPresented = false
 
     public init(tree: DecisionTree) {
         self.tree = tree
