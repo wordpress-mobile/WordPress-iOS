@@ -14,60 +14,64 @@ public struct WebView: View {
     public var body: some View {
         VStack {
             _WebView(url: url)
-            VStack {
+            VStack(spacing: 4) {
                 Text("Can't find what you're looking for?").italic()
                 Button {
                     self.alertPresented.toggle()
                 } label: {
                     Text("Contact Support")
                 }
-                .alert(isPresented: $alertPresented, content: {
+                .alert(isPresented: $alertPresented) {
                     Alert(
                         title: Text("TODO"),
                         message: Text("This should load the Zendesk flow"),
                         dismissButton: .default(Text("Dismiss"))
                     )
-                })
+                }
             }
         }
     }
 }
 
+// Credits https://gist.github.com/joshbetz/2ff5922203240d4685d5bdb5ada79105
+
 struct _WebView: UIViewRepresentable {
-    let url: URL
-    let navigationHelper = WebViewHelper()
 
-    func makeUIView(context: UIViewRepresentableContext<Self>) -> WKWebView {
-        let webview = WKWebView()
-        webview.navigationDelegate = navigationHelper
+    private let request: URLRequest
 
-        let request = URLRequest(url: self.url, cachePolicy: .returnCacheDataElseLoad)
-        webview.load(request)
-
-        return webview
+    init(url: URL) {
+        request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
     }
 
-    func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<Self>) {
-        let request = URLRequest(url: self.url, cachePolicy: .returnCacheDataElseLoad)
-        webview.load(request)
+    private let navigationDelegate = WebViewDelegate()
+    private let webView = WKWebView()
+
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> WKWebView {
+        webView.navigationDelegate = navigationDelegate
+        // No need to initiate a request, it will be done when `updateUIView(_:, context:)` runs
+        return webView
+    }
+
+    func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<Self>) {
+        webView.load(request)
     }
 }
 
-class WebViewHelper: NSObject, WKNavigationDelegate {
+class WebViewDelegate: NSObject, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("webview didFinishNavigation")
+        debugPrint("webview didFinishNavigation")
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        print("didStartProvisionalNavigation")
+        debugPrint("didStartProvisionalNavigation")
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        print("webviewDidCommit")
+        debugPrint("webviewDidCommit")
     }
 
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        print("didReceiveAuthenticationChallenge")
+        debugPrint("didReceiveAuthenticationChallenge")
         completionHandler(.performDefaultHandling, nil)
     }
 }
