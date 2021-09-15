@@ -588,6 +588,10 @@
 		3FD272E024CF8F270021F0C8 /* UIColor+Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD272DF24CF8F270021F0C8 /* UIColor+Notice.swift */; };
 		3FD675D925C87A15009AB3C1 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; };
 		3FD675EA25C87A25009AB3C1 /* WordPressHomeWidgetToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */; };
+		3FD6820326F1B657007DDE68 /* Question+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820226F1B657007DDE68 /* Question+SwiftUI.swift */; };
+		3FD6820526F1B6B6007DDE68 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820426F1B6B6007DDE68 /* WebView.swift */; };
+		3FD6820726F1B7B0007DDE68 /* DecisionTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820626F1B7B0007DDE68 /* DecisionTreeView.swift */; };
+		3FD6820926F1B88A007DDE68 /* DecisionTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820826F1B88A007DDE68 /* DecisionTree.swift */; };
 		3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */; };
 		3FE20C1525CF165700A15525 /* GroupedViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C1425CF165700A15525 /* GroupedViewData.swift */; };
 		3FE20C3725CF211F00A15525 /* ListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C3625CF211F00A15525 /* ListViewData.swift */; };
@@ -5332,6 +5336,10 @@
 		3FCF66FA25CAF8E00047F337 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		3FD0316E24201E08005C0993 /* GravatarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarButtonView.swift; sourceTree = "<group>"; };
 		3FD272DF24CF8F270021F0C8 /* UIColor+Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Notice.swift"; sourceTree = "<group>"; };
+		3FD6820226F1B657007DDE68 /* Question+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Question+SwiftUI.swift"; sourceTree = "<group>"; };
+		3FD6820426F1B6B6007DDE68 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		3FD6820626F1B7B0007DDE68 /* DecisionTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionTreeView.swift; sourceTree = "<group>"; };
+		3FD6820826F1B88A007DDE68 /* DecisionTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionTree.swift; sourceTree = "<group>"; };
 		3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataIterativeMigrator.swift; sourceTree = "<group>"; };
 		3FE20C1425CF165700A15525 /* GroupedViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedViewData.swift; sourceTree = "<group>"; };
 		3FE20C3625CF211F00A15525 /* ListViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewData.swift; sourceTree = "<group>"; };
@@ -9539,11 +9547,15 @@
 		3FA6A1BE26F072210029628A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				3FA6A1BF26F072210029628A /* Question.swift */,
 				3FA6A1C026F072210029628A /* ContactUs.h */,
 				3FA6A1C126F072210029628A /* ContactUsProvider.swift */,
+				3FD6820826F1B88A007DDE68 /* DecisionTree.swift */,
+				3FD6820626F1B7B0007DDE68 /* DecisionTreeView.swift */,
 				3FA6A1C226F072210029628A /* Info.plist */,
 				3FA6A1C326F072210029628A /* Node.swift */,
+				3FA6A1BF26F072210029628A /* Question.swift */,
+				3FD6820226F1B657007DDE68 /* Question+SwiftUI.swift */,
+				3FD6820426F1B6B6007DDE68 /* WebView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -18670,8 +18682,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA6A1CB26F072210029628A /* Node.swift in Sources */,
+				3FD6820526F1B6B6007DDE68 /* WebView.swift in Sources */,
+				3FD6820726F1B7B0007DDE68 /* DecisionTreeView.swift in Sources */,
 				3FA6A1C726F072210029628A /* Question.swift in Sources */,
 				3FA6A1C926F072210029628A /* ContactUsProvider.swift in Sources */,
+				3FD6820326F1B657007DDE68 /* Question+SwiftUI.swift in Sources */,
+				3FD6820926F1B88A007DDE68 /* DecisionTree.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
