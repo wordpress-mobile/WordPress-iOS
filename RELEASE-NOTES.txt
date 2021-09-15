@@ -2,6 +2,7 @@
 -----
 * [*] Fixed a bug on Reader that prevented Saved posts to be removed
 * [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
+* [*] Fixed an issue where images point to local URLs in the editor when saving a post with ongoing uploads. [#17157]
 
 18.2
 -----
