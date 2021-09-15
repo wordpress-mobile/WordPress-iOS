@@ -137,6 +137,13 @@ class PostCoordinator: NSObject {
                 return
             }
 
+            // Ensure that all synced media references are up to date
+            post.media.forEach { media in
+                if media.remoteStatus == .sync {
+                    self.updateReferences(to: media, in: post)
+                }
+            }
+            
             let uuid = observeMedia(for: post, completion: completion)
             trackObserver(receipt: uuid, for: post)
 
