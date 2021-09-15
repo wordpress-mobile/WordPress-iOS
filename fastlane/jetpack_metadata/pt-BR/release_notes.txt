@@ -1,7 +1,0 @@
-Você utiliza o bloco de mídia incorporada? Nas mídias que você incorporou no site, agora tem a opção “Redimensionar para dispositivos menores”. Ative-a para que seu conteúdo caiba na tela ou desative-a para não redimensionar.
-
-Está gostando da ferramenta Lembretes de publicação? Adicionamos uma funcionalidade que deixa você escolher um horário específico para ser notificado.
-
-Precisa excluir sua conta? Não nos abandone! Mas se for preciso, agora você pode excluí-la diretamente nas Configurações da conta.
-
-As publicações com geotagging não têm mais suporte na web, por isso removemos a opção Localização de Configurações do post.

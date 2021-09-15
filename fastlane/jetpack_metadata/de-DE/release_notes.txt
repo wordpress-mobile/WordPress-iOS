@@ -1,7 +1,0 @@
-Verwendest du den Embed-Block? Für Medien, die du auf deiner Website verwendest, hast du jetzt die Option, sie für kleinere Geräte anzupassen. Schalte den Toggle ein, um die Größe deiner Inhalte für verschiedene Bildschirme anzupassen. Schalte ihn aus, um die Funktion zu deaktivieren.
-
-Findest du das Tool für die Erinnerungen zum Bloggen gut? Wir haben eine neue Funktion hinzugefügt, mit der du bestimmte Zeitpunkte für eine Benachrichtigung auswählen kannst.
-
-Du möchtest dein Konto schließen? (Wir hoffen natürlich, dass du uns niemals verlässt!) Doch wenn du dein Konto schließen musst, kannst du dies jetzt in deinen Kontoeinstellungen vornehmen.
-
-Geotagging in Beiträgen wird im Web nicht mehr unterstützt, daher haben wir die Standortoption in den Beitragseinstellungen entfernt.

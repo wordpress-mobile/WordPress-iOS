@@ -1,7 +1,0 @@
-Utilizzi il blocco Incorporamenti? Per i file multimediali che incorpori nel tuo sito, visualizzerai ora un'opzione "Ridimensiona per dispositivi più piccoli". Attivala per ridimensionare i contenuti in modo che si adattino alla schermata; disattivala per disabilitarla.
-
-Ti stai godendo lo strumento di Promemoria relativi al blog? Abbiamo aggiunto una nuova funzionalità che ti consente di scegliere un orario specifico per ricevere una notifica.
-
-Hai bisogno di chiudere il tuo account? (Speriamo non ci lascerai!) Se lo necessiti, ora hai la possibilità di farlo in Impostazioni account.
-
-Gli articoli di geotagging non sono più supportati sul web, quindi abbiamo rimosso l'opzione Posizione in Impostazioni articolo.

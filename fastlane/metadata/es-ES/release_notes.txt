@@ -1,9 +1,8 @@
-¿Usas el bloque de incrustación? Para los medios que incrustas en tu sitio, ahora verás una opción para «Redimensionar para dispositivos más pequeños». Actívala para cambiar el tamaño de tu contenido para que se ajuste a tu pantalla; desactívala para que no se ajuste.
+- ¡Mantente informado! Ahora puedes recibir un resumen semanal de la actividad en tus sitios más populares.
 
-¿Disfrutas de la herramienta de recordatorio de blogueo? Hemos añadido una nueva característica que te permite elegir una hora específica para recibir un aviso.
+- Tienes aún más control sobre los comentarios de tu sitio — cuando los editas, ahora también puedes ajustar el nombre, la dirección de correo electrónico y la dirección web del autor.
+Hemos hecho un par de prácticos retoques en el editor de bloques. El bloque de incrustación ahora te da una vista previa cuando añades algo de YouTube o Twitter (habrá más proveedores). Además, cuando vas a insertar un bloque y no se encuentra nada, ahora hay una vista sin resultados.
 
-¿Necesitas cerrar tu cuenta? (¡Esperamos que nunca nos dejes!) Pero si lo necesitas, ahora tienes la posibilidad de hacerlo en los ajustes de tu cuenta.
+- Si vas a «Ajustes de la entrada > Formato de la entrada», aún encontrarás la opción «Estándar» en la parte superior, pero las otras opciones ahora están ordenadas alfabéticamente debajo. (¡Las opciones variarán con los temas!)
 
-El etiquetado geográfico de las entradas ya no es compatible en la web, así que hemos eliminado la opción de ubicación en los ajustes de las entradas.
-
-También hemos hecho otras mejoras, incluyendo una corrección de un problema de recorte en el lector, así como la posibilidad de recomendar la aplicación a tus amigos en las pantallas «Yo» y «Acerca de».
+- Y algo rápido: Ahora, actualizar tu sitio es superfácil — ¡solo tienes que pulsar para actualizar desde la pantalla «Mi sitio»!
