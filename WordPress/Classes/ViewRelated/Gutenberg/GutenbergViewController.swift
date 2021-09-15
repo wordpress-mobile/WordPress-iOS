@@ -1016,7 +1016,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestCustomerSupportOptionsShow() {
-        // TODO
+        // TODO: do we need to add a sourceTag?
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController)
     }
 }
 
