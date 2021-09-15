@@ -6,7 +6,7 @@ protocol CartResponseProtocol {}
 extension CartResponse: CartResponseProtocol {}
 
 /// A proxy for being able to use dependency injection for RegisterDomainDetailsViewModel
-/// especially for unittest mocking purposes
+/// especially for unittest mocking purposes.
 protocol RegisterDomainDetailsServiceProxyProtocol {
 
     func validateDomainContactInformation(contactInformation: [String: String],
