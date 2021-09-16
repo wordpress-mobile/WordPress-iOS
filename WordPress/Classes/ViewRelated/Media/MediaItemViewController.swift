@@ -248,29 +248,29 @@ class MediaItemViewController: UITableViewController {
                     }
                     return
                 }
-                
+
                 self?.share(media: image, sender: sender)
             }
         case .audio, .video:
             media.videoAsset() { [weak self] video, error in
                 guard let video = video,
                       let exportSession = AVAssetExportSession(asset: video, presetName: AVAssetExportPresetPassthrough) else {
-                    
+
                     if let error = error {
                         DDLogError("Error when attempting to share video: \(error)")
                     }
                     return
                 }
-                
+
                 let exporter = MediaVideoExporter(session: exportSession, filename: "sharedVideo")
-                
+
                 exporter.export { mediaExport in
                     self?.share([mediaExport.url], sender: sender)
                 } onError: { error in
                     DDLogError("Error when attempting to share video: \(error)")
                 }
 
-                
+
                 /*
                 guard let video = video,
                       let exportSession = AVAssetExportSession(asset: video, presetName: AVAssetExportPresetPassthrough) else {
@@ -411,15 +411,15 @@ class MediaItemViewController: UITableViewController {
 
         navigationController?.pushViewController(controller, animated: true)
     }
-    
+
     // MARK: - Sharing Logic
-    
+
     private func mediaURL() -> URL? {
         guard let remoteURL = media.remoteURL,
            let url = URL(string: remoteURL) else {
             return nil
         }
-        
+
         return url
     }
     /*
@@ -436,17 +436,17 @@ class MediaItemViewController: UITableViewController {
     private func share(_ video: AVAsset, sender: UIBarButtonItem) {
 
     }*/
-    
+
     private func share(media: Any, sender: UIBarButtonItem) {
         var activityItems: [Any] = [media]
         /*
         if let mediaURL = self.mediaURL() {
             activityItems += [mediaURL]
         }*/
-        
+
         share(activityItems, sender: sender)
     }
-    
+
     private func share(_ activityItems: [Any], sender: UIBarButtonItem) {
         let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityController.modalPresentationStyle = .popover
@@ -456,7 +456,7 @@ class MediaItemViewController: UITableViewController {
                 WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
             }
         }
-        
+
         present(activityController, animated: true)
     }
 }
