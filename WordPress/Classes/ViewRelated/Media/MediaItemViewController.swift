@@ -403,27 +403,9 @@ class MediaItemViewController: UITableViewController {
 
         return url
     }
-    /*
-    private func share(_ image: UIImage, sender: UIBarButtonItem) {
-        var activityItems: [Any] = [image]
-        
-        if let mediaURL = self.mediaURL() {
-            activityItems += [mediaURL]
-        }
-        
-        share(activityItems, sender: sender)
-    }
-    
-    private func share(_ video: AVAsset, sender: UIBarButtonItem) {
-
-    }*/
 
     private func share(media: Any, sender: UIBarButtonItem) {
         var activityItems: [Any] = [media]
-        /*
-        if let mediaURL = self.mediaURL() {
-            activityItems += [mediaURL]
-        }*/
 
         share(activityItems, sender: sender)
     }
