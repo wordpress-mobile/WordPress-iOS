@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-09 03:19:31+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:33:29+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -218,7 +218,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s ブロックオプション";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s block previews are coming soon";
+"%s block previews are coming soon" = "%sブロックのプレビューはまもなく公開予定です";
 
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "新たに追加された%sブロック";
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "%sプレビューはまだご利用いただけません";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s ソーシャルアイコン";
@@ -1528,7 +1528,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "コメントする";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1840,7 +1840,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't upload the featured image" = "アイキャッチ画像をアップロードできませんでした";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "アカウントを自動的にクローズできませんでした";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "メディア項目を数えています…";
@@ -3329,7 +3329,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "写真家の Cameron Karsten 氏の作品にはとても感銘を受けました。 この技術を今度試すつもりです";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "IP アドレス";
 
 /* Title of a button style */
 "Icon & Text" = "アイコンとテキスト";
@@ -3746,7 +3746,7 @@ translators: Block name. %s: The localized block name */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "ログイン試行の上限に達しました。1分後にもう一度お試しいただけます。それ以前にログインしようとした場合、制限解除までの時間がさらに延長されます。エラーだと思われる場合はサポートにご連絡ください。";
 
 /* No comment provided by engineer. */
-"Line Height" = "Line Height";
+"Line Height" = "行の高さ";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4291,7 +4291,7 @@ translators: Block name. %s: The localized block name */
 "New Post" = "新規投稿";
 
 /* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
+"New domain flow" = "新規ドメインのフロー";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "新規項目";
@@ -5276,7 +5276,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "主要サイト";
 
 /* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Primary Site Address";
+"Primary Site Address" = "主要サイトのアドレス";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5472,7 +5472,7 @@ translators: Block name. %s: The localized block name */
 "Reconnected" = "再連携完了";
 
 /* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Redirected Domains";
+"Redirected Domains" = "転送されたドメイン";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "リファラ";
@@ -5492,7 +5492,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "プライバシー保護付きで非公開として登録";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "無料ドメインを登録する";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7195,7 +7195,7 @@ translators: Block name. %s: The localized block name */
 "To add photos or videos to your posts." = "投稿に写真または動画を追加する。";
 
 /* Error message displayed when unable to close user account. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+"To close this account now, contact our support team." = "このアカウントをすぐにクローズする場合、弊社のサポートチームに連絡してください。";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "続行するには、メールアドレスと名前を入力してください。";
@@ -8210,13 +8210,13 @@ translators: Block name. %s: The localized block name */
 "Web News" = "ウェブニュース";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "ウェブアドレス";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "週の最初の曜日";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "1週間のまとめ";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "週";
@@ -8259,10 +8259,10 @@ translators: Block name. %s: The localized block name */
 "We’ll walk you through the basics of building and growing your site" = "サイトの構築と訪問者を増やす方法の基本について紹介します";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "%sプレビューのサポートの追加に取り組んでいます。 それまでの間、固定ページで埋め込まれたコンテンツをプレビューできます。";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "%sプレビューのサポートの追加に取り組んでいます。 それまでの間、ブログ投稿で埋め込まれたコンテンツをプレビューできます。";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "訪問者を増やすためのタスクをさらに追加しました。";
@@ -8682,7 +8682,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "投稿、ページ、および設定は %@ にメールで送信されます。";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "主要サイトのアドレスとは訪問者がサイトにアクセスした際にアドレスバーに表示されるアドレスのことです。";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "復元に通常よりも時間がかかっています。数分後にもう一度ご確認ください。";
