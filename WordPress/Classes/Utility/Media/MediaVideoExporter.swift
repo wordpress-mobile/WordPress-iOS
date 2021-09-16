@@ -5,20 +5,6 @@ import MobileCoreServices
 ///
 class MediaVideoExporter: MediaExporter {
 
-    class ResourceLoader: NSObject, AVAssetResourceLoaderDelegate {
-        func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForResponseTo authenticationChallenge: URLAuthenticationChallenge) -> Bool {
-            print("Challenged!")
-            return false
-        }
-
-        func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
-            print("Challenged!")
-            return false
-        }
-    }
-
-    let resourceLoader = ResourceLoader()
-
     var mediaDirectoryType: MediaDirectory = .uploads
 
     /// Export options.
@@ -142,8 +128,6 @@ class MediaVideoExporter: MediaExporter {
         session.outputURL = mediaURL
         session.outputFileType = AVFileType(rawValue: outputType)
         session.shouldOptimizeForNetworkUse = true
-
-        (session.asset as? AVURLAsset)?.resourceLoader.setDelegate(resourceLoader, queue: .main)
 
         // Configure metadata filter for sharing, if we need to remove location data.
         if options.stripsGeoLocationIfNeeded {
