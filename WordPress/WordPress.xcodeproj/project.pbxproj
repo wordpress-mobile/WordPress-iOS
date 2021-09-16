@@ -557,8 +557,6 @@
 		3FA6A1C926F072210029628A /* ContactUsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1C126F072210029628A /* ContactUsProvider.swift */; };
 		3FA6A1CB26F072210029628A /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1C326F072210029628A /* Node.swift */; };
 		3FA6A1CE26F072360029628A /* ContactUsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1C526F072210029628A /* ContactUsProviderTests.swift */; };
-		3FA6A1D626F072AF0029628A /* ContactUsDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1D526F072AF0029628A /* ContactUsDemoApp.swift */; };
-		3FA6A1D826F072AF0029628A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA6A1D726F072AF0029628A /* ContentView.swift */; };
 		3FA6A1DA26F072B10029628A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA6A1D926F072B10029628A /* Assets.xcassets */; };
 		3FA6A1DD26F072B10029628A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FA6A1DC26F072B10029628A /* Preview Assets.xcassets */; };
 		3FA6A1E426F073080029628A /* ContactUs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F62C15F26EF539D001F34DD /* ContactUs.framework */; };
@@ -594,6 +592,10 @@
 		3FD6820926F1B88A007DDE68 /* DecisionTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820826F1B88A007DDE68 /* DecisionTree.swift */; };
 		3FD6820B26F1BEEF007DDE68 /* ContactSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820A26F1BEEF007DDE68 /* ContactSupportView.swift */; };
 		3FD6820D26F1BF82007DDE68 /* ContactSupportFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820C26F1BF82007DDE68 /* ContactSupportFlowView.swift */; };
+		3FD6820F26F1C86C007DDE68 /* ContactSupportFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6820E26F1C86C007DDE68 /* ContactSupportFlowController.swift */; };
+		3FD6821426F1CA92007DDE68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6821026F1CA52007DDE68 /* AppDelegate.swift */; };
+		3FD6821526F1CA92007DDE68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6821226F1CA6F007DDE68 /* SceneDelegate.swift */; };
+		3FD6821826F2DD4E007DDE68 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD6821626F2DD12007DDE68 /* DemoViewController.swift */; };
 		3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */; };
 		3FE20C1525CF165700A15525 /* GroupedViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C1425CF165700A15525 /* GroupedViewData.swift */; };
 		3FE20C3725CF211F00A15525 /* ListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C3625CF211F00A15525 /* ListViewData.swift */; };
@@ -5319,8 +5321,6 @@
 		3FA6A1C526F072210029628A /* ContactUsProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsProviderTests.swift; sourceTree = "<group>"; };
 		3FA6A1C626F072210029628A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FA6A1D326F072AF0029628A /* ContactUsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactUsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3FA6A1D526F072AF0029628A /* ContactUsDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsDemoApp.swift; sourceTree = "<group>"; };
-		3FA6A1D726F072AF0029628A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3FA6A1D926F072B10029628A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3FA6A1DC26F072B10029628A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3FA6A1DE26F072B10029628A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5344,6 +5344,10 @@
 		3FD6820826F1B88A007DDE68 /* DecisionTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionTree.swift; sourceTree = "<group>"; };
 		3FD6820A26F1BEEF007DDE68 /* ContactSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSupportView.swift; sourceTree = "<group>"; };
 		3FD6820C26F1BF82007DDE68 /* ContactSupportFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSupportFlowView.swift; sourceTree = "<group>"; };
+		3FD6820E26F1C86C007DDE68 /* ContactSupportFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSupportFlowController.swift; sourceTree = "<group>"; };
+		3FD6821026F1CA52007DDE68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3FD6821226F1CA6F007DDE68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		3FD6821626F2DD12007DDE68 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataIterativeMigrator.swift; sourceTree = "<group>"; };
 		3FE20C1425CF165700A15525 /* GroupedViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedViewData.swift; sourceTree = "<group>"; };
 		3FE20C3625CF211F00A15525 /* ListViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewData.swift; sourceTree = "<group>"; };
@@ -9551,6 +9555,8 @@
 		3FA6A1BE26F072210029628A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3FD6820E26F1C86C007DDE68 /* ContactSupportFlowController.swift */,
+				3FD6820C26F1BF82007DDE68 /* ContactSupportFlowView.swift */,
 				3FD6820A26F1BEEF007DDE68 /* ContactSupportView.swift */,
 				3FA6A1C026F072210029628A /* ContactUs.h */,
 				3FA6A1C126F072210029628A /* ContactUsProvider.swift */,
@@ -9561,7 +9567,6 @@
 				3FA6A1BF26F072210029628A /* Question.swift */,
 				3FD6820226F1B657007DDE68 /* Question+SwiftUI.swift */,
 				3FD6820426F1B6B6007DDE68 /* WebView.swift */,
-				3FD6820C26F1BF82007DDE68 /* ContactSupportFlowView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -9578,11 +9583,12 @@
 		3FA6A1D426F072AF0029628A /* DemoApp */ = {
 			isa = PBXGroup;
 			children = (
-				3FA6A1D526F072AF0029628A /* ContactUsDemoApp.swift */,
-				3FA6A1D726F072AF0029628A /* ContentView.swift */,
+				3FD6821026F1CA52007DDE68 /* AppDelegate.swift */,
 				3FA6A1D926F072B10029628A /* Assets.xcassets */,
+				3FD6821626F2DD12007DDE68 /* DemoViewController.swift */,
 				3FA6A1DE26F072B10029628A /* Info.plist */,
 				3FA6A1DB26F072B10029628A /* Preview Content */,
+				3FD6821226F1CA6F007DDE68 /* SceneDelegate.swift */,
 			);
 			path = DemoApp;
 			sourceTree = "<group>";
@@ -18695,6 +18701,7 @@
 				3FA6A1C926F072210029628A /* ContactUsProvider.swift in Sources */,
 				3FD6820326F1B657007DDE68 /* Question+SwiftUI.swift in Sources */,
 				3FD6820926F1B88A007DDE68 /* DecisionTree.swift in Sources */,
+				3FD6820F26F1C86C007DDE68 /* ContactSupportFlowController.swift in Sources */,
 				3FD6820B26F1BEEF007DDE68 /* ContactSupportView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -18725,8 +18732,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FA6A1D826F072AF0029628A /* ContentView.swift in Sources */,
-				3FA6A1D626F072AF0029628A /* ContactUsDemoApp.swift in Sources */,
+				3FD6821826F2DD4E007DDE68 /* DemoViewController.swift in Sources */,
+				3FD6821426F1CA92007DDE68 /* AppDelegate.swift in Sources */,
+				3FD6821526F1CA92007DDE68 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
