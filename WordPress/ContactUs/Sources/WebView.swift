@@ -8,6 +8,7 @@ import WebKit
 struct WebView: UIViewRepresentable {
 
     private let request: URLRequest
+    @EnvironmentObject var eventLogger: EventLogger
 
     init(url: URL) {
         request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
@@ -24,6 +25,9 @@ struct WebView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<Self>) {
         webView.load(request)
+
+        guard let url = request.url else { return } // `.url` should always be available
+        eventLogger.logHelpPageLoaded(with: url)
     }
 }
 
