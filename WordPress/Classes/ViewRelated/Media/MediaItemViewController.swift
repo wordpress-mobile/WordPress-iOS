@@ -405,9 +405,7 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func share(media: Any, sender: UIBarButtonItem) {
-        var activityItems: [Any] = [media]
-
-        share(activityItems, sender: sender)
+        share([media], sender: sender)
     }
 
     private func share(_ activityItems: [Any], sender: UIBarButtonItem) {
