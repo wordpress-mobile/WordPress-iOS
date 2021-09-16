@@ -98,6 +98,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.authorDisplayName = remotePost.authorDisplayName;
     post.authorEmail = remotePost.authorEmail;
     post.authorURL = remotePost.authorURL;
+    post.organizationID = remotePost.organizationID;
     post.siteIconURL = remotePost.siteIconURL;
     post.blogName = remotePost.blogName;
     post.blogDescription = remotePost.blogDescription;

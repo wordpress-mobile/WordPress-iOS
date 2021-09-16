@@ -1,0 +1,8 @@
+- Blijf op de hoogte! Je kunt nu een wekelijks overzicht van de activiteit op je meest populaire sites ontvangen.
+
+- Je hebt nog meer controle over de opmerkingen op je site: als je opmerkingen bewerkt, kun je nu ook de naam, het e-mailadres en het webadres van de auteur aanpassen.
+We hebben enkele kleine maar nuttige aanpassingen aangebracht aan de blokeditor. Het insluitblok toont nu een voorbeeldweergave wanneer je iets van YouTube of Twitter toevoegt (in de toekomst meer platformen). Waneer je een blok toevoegt, maar er niets wordt gevonden, is er nu een weergave voor geen resultaten.
+
+- Als je naar Berichtinstellingen > Berichtindeling gaat, tref je de optie 'Standaard' nog steeds bovenaan aan, maar de andere opties staan nu netjes op alfabetische volgorde daaronder. (Opties verschillen per thema!)
+
+- En nog een laatste kleine aanpassing: Het is nu ontzettend gemakkelijk om je site te vernieuwen: veeg simpelweg omlaag op het scherm Mijn site om te vernieuwen!
