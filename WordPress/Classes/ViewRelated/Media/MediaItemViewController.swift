@@ -1,4 +1,5 @@
 import AVKit
+import Combine
 import UIKit
 import Gridicons
 import SVProgressHUD
@@ -7,6 +8,13 @@ import WordPressShared
 /// Displays an image preview and metadata for a single Media asset.
 ///
 class MediaItemViewController: UITableViewController {
+
+    class DownloadDelegate: NSObject, AVAssetDownloadDelegate {
+
+    }
+
+    let delegate = DownloadDelegate()
+
     @objc let media: Media
 
     fileprivate var viewModel: ImmuTable!
@@ -238,6 +246,8 @@ class MediaItemViewController: UITableViewController {
 
     // MARK: - Actions
 
+    private var shareVideoCancellable: AnyCancellable? = nil
+
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
         switch media.mediaType {
         case .image:
@@ -252,45 +262,16 @@ class MediaItemViewController: UITableViewController {
                 self?.share(media: image, sender: sender)
             }
         case .audio, .video:
-            media.videoAsset() { [weak self] video, error in
-                guard let video = video,
-                      let exportSession = AVAssetExportSession(asset: video, presetName: AVAssetExportPresetPassthrough) else {
-
-                    if let error = error {
-                        DDLogError("Error when attempting to share video: \(error)")
-                    }
-                    return
-                }
-
-                let exporter = MediaVideoExporter(session: exportSession, filename: "sharedVideo")
-
-                exporter.export { mediaExport in
-                    self?.share([mediaExport.url], sender: sender)
-                } onError: { error in
+            shareVideoCancellable = media.videoURLPublisher(skipTransformCheck: true).sink { [weak self] completion in
+                if case .failure(let error) = completion {
                     DDLogError("Error when attempting to share video: \(error)")
                 }
 
-
-                /*
-                guard let video = video,
-                      let exportSession = AVAssetExportSession(asset: video, presetName: AVAssetExportPresetPassthrough) else {
-                    
-                    if let error = error {
-                        DDLogError("Error when attempting to share video: \(error)")
-                    }
-                    return
+                self?.shareVideoCancellable = nil
+            } receiveValue: { [weak self] url in
+                DispatchQueue.main.async { [weak self] in
+                    self?.share(media: url, sender: sender)
                 }
-                
-                exportSession.outputURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("videoExport-UUID().uuidString").appendingPathExtension(for: .)
-                
-                exportSession.exportAsynchronously {
-                    exportSession.
-                }
-                
-                video.expor
-                
-                self?.share(media: video, sender: sender)
- */
             }
         default:
             break
