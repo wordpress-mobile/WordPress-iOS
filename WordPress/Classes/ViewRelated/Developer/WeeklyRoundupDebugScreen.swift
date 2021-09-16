@@ -47,7 +47,7 @@ struct WeeklyRoundupDebugScreen: View {
                 Spacer()
                     .frame(height: 16)
             }
-            
+
             Group {
                 Toggle("Include A8c P2s", isOn: Binding(get: {
                     settings.isEnabledForA8cP2s
@@ -55,7 +55,7 @@ struct WeeklyRoundupDebugScreen: View {
                     settings.isEnabledForA8cP2s = isOn
                 }))
                 .padding()
-                
+
 
                 Spacer()
                     .frame(height: 16)
@@ -129,7 +129,7 @@ struct WeeklyRoundupDebugScreen: View {
                 Spacer()
                     .frame(height: settings.spacerHeight)
             }
-            
+
             Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification.  It will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(settings.defaultPadding)
