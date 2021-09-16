@@ -1015,9 +1015,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         gutenbergSettings.blockTypeImpressions = impressions
     }
 
-    func gutenbergDidRequestCustomerSupportOptionsShow() {
-        // TODO: do we need to add a sourceTag?
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController)
+    func gutenbergDidRequestContactCustomerSupport() {
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .gutenbergHelp )
+    }
+
+    func gutenbergDidRequestGotoMyCustomerSupportTickets() {
+        ZendeskUtils.sharedInstance.showTicketListIfPossible(from: self.topmostPresentedViewController, with: .gutenbergHelp)
     }
 }
 
