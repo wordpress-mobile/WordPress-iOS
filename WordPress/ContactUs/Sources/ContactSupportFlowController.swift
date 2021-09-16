@@ -3,14 +3,16 @@ import UIKit
 
 public class ContactSupportFlowController {
 
-    private let onSupportRequested: () -> Void
+    private let externalSupportPresenter: ExternalSupportConversationPresenter
     private let onHelpPageLoaded: (URL) -> Void
 
     public init(
         onSupportRequested: @escaping () -> Void,
         onHelpPageLoaded: @escaping (URL) -> Void
     ) {
-        self.onSupportRequested = onSupportRequested
+        externalSupportPresenter = ExternalSupportConversationPresenter(
+            onStartSupportRequest: onSupportRequested
+        )
         self.onHelpPageLoaded = onHelpPageLoaded
     }
 
@@ -20,9 +22,25 @@ public class ContactSupportFlowController {
         completion: (() -> Void)? = .none
     ) {
         viewController.present(
-            UIHostingController(rootView: ContactSupportFlowView()),
+            UIHostingController(
+                rootView: ContactSupportFlowView()
+                    .environmentObject(externalSupportPresenter)
+            ),
             animated: animated,
             completion: completion
         )
+    }
+}
+
+class ExternalSupportConversationPresenter: ObservableObject {
+
+    private let onStartSupportRequest: () -> Void
+
+    init(onStartSupportRequest: @escaping () -> Void) {
+        self.onStartSupportRequest = onStartSupportRequest
+    }
+
+    func startExternalSupportConversation() {
+        onStartSupportRequest()
     }
 }

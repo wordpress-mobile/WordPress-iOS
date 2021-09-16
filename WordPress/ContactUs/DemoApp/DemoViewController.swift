@@ -4,8 +4,8 @@ import UIKit
 class DemoViewController: UIViewController {
 
     let controller = ContactSupportFlowController(
-        onSupportRequested: {},
-        onHelpPageLoaded: { _ in }
+        onSupportRequested: { print("onSupportRequested")},
+        onHelpPageLoaded: { url in print("onHelpPageLoaded at \(url)") }
     )
 
     @objc func contactSupport(_ sender: UIControl) {
