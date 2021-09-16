@@ -5,8 +5,8 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    let contactSupportSelfServiceController = ContactSupportFlowController(
-        onSupportRequested: {},
+    lazy var contactSupportSelfServiceController = ContactSupportFlowController(
+        onSupportRequested: { [weak self] in self?.presentZendeskOrLoadForums() },
         onHelpPageLoaded: { _ in }
     )
 
@@ -193,11 +193,9 @@ private extension SupportTableViewController {
     }
 
     private func startContactUsFlow() {
+        // If Zendesk is not enabled, bail out and load the forums webpage instead.
         guard ZendeskUtils.zendeskEnabled else {
-            guard let url = Constants.forumsURL else {
-                return
-            }
-            UIApplication.shared.open(url)
+            loadForums()
             return
         }
 
@@ -210,15 +208,44 @@ private extension SupportTableViewController {
         if selfServiceFlowAvailable {
             contactSupportSelfServiceController.present(from: controllerToShowFrom)
         } else {
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(
-                from: controllerToShowFrom,
-                with: sourceTag
-            ) { [weak self] identityUpdated in
+            presentZendesk(from: controllerToShowFrom)
+        }
+    }
+
+    private func presentZendeskOrLoadForums() {
+        // If Zendesk is not enabled, bail out and load the forums webpage instead.
+        guard ZendeskUtils.zendeskEnabled, let presenter = controllerToShowFrom() else {
+            return loadForums()
+        }
+
+        if presenter.presentedViewController != nil {
+            // First dismiss whatever's on screen, then handover to Zendesk. This is to avoid
+            // failures due to the Zendesk SDK trying to present from a view controller that
+            // is already presenting something.
+            presenter.dismiss(animated: true) { [weak self] in
+                self?.presentZendesk(from: presenter)
+            }
+        } else {
+            presentZendesk(from: presenter)
+        }
+    }
+
+    private func presentZendesk(from presenterViewController: UIViewController) {
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(
+            from: presenterViewController,
+            with: sourceTag,
+            identityUpdated: { [weak self] identityUpdated in
                 if identityUpdated {
                     self?.reloadViewModel()
                 }
             }
-        }
+        )
+    }
+
+    private func loadForums() {
+        guard let url = Constants.forumsURL else { return }
+
+        UIApplication.shared.open(url)
     }
 
     func myTicketsSelected() -> ImmuTableAction {
