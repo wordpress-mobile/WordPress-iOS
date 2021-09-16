@@ -1,0 +1,8 @@
+- ¡No te pierdas nada! Ahora puedes recibir un resumen semanal de la actividad de tus sitios más populares.
+
+- Ahora tienes aún más control de los comentarios de tu sitio: al editarlos, también puedes cambiar el nombre del autor, la dirección de correo electrónico y la dirección web.
+Hemos realizado un par de mejoras al Editor de bloques. Ahora el bloque de incrustar te muestra una vista previa cuando añades contenido de YouTube o de Twitter (próximamente se añadirán más proveedores). Además, cuando quieres insertar un bloque pero no se encuentra nada, ahora aparece una vista sin resultados.
+
+- Si vas a Ajustes de la entrada > Formato de entrada, verás que la opción "Estándar" sigue en cabeza, pero que el resto de opciones ahora se enumeran debajo por orden alfabético. (¡Las opciones pueden variar según los temas!)
+
+- Y otra mejora rápida: ahora es muy fácil refrescar tu sitio, ¡solo tienes que refrescar la página desde Mi sitio!

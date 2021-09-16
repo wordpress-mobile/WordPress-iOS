@@ -31,20 +31,44 @@ struct WeeklyRoundupDebugScreen: View {
     }
 
     @SwiftUI.Environment(\.presentationMode) var presentationMode
+    @State private var scheduledDate: Date? = nil
+    @State private var running: Bool = false
+    @State private var errorScheduling: Bool = false
     private let settings = Settings()
 
     var body: some View {
-        Group {
-            Toggle("Include A8c P2s", isOn: Binding(get: {
-                settings.isEnabledForA8cP2s
-            }, set: { isOn in
-                settings.isEnabledForA8cP2s = isOn
-            }))
-            .padding()
-        }
+        VStack(alignment: .center) {
+            if errorScheduling {
+                Group {
+                    Text("Error scheduling Weekly Roundup!")
+                        .foregroundColor(.red)
+                }
 
-        Group {
-            VStack(alignment: .center) {
+                Spacer()
+                    .frame(height: 16)
+            }
+            
+            Group {
+                Toggle("Include A8c P2s", isOn: Binding(get: {
+                    settings.isEnabledForA8cP2s
+                }, set: { isOn in
+                    settings.isEnabledForA8cP2s = isOn
+                }))
+                .padding()
+                
+
+                Spacer()
+                    .frame(height: 16)
+            }
+
+            Group {
+                scheduleDetailsView()
+
+                Spacer()
+                    .frame(height: 16)
+            }
+
+            Group {
                 HStack {
                     Spacer()
 
@@ -105,32 +129,75 @@ struct WeeklyRoundupDebugScreen: View {
                 Spacer()
                     .frame(height: settings.spacerHeight)
             }
-        }
-
-        Group {
+            
             Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification.  It will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(settings.defaultPadding)
 
             Spacer()
         }
         .navigationBarTitle("Weekly Roundup", displayMode: .inline)
+        .onAppear {
+            self.updateBackgroundTaskDate()
+        }
+    }
+
+    func updateBackgroundTaskDate() {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.shared?.backgroundTasksCoordinator.getScheduledExecutionDate(taskIdentifier: WeeklyRoundupBackgroundTask.identifier, completion: { date in
+
+                self.scheduledDate = date
+            })
+        }
+    }
+
+    func scheduleDetailsView() -> some View {
+        guard !running else {
+            return AnyView(Text("Running..."))
+        }
+
+        if let scheduledDate = self.scheduledDate {
+            return AnyView(HStack {
+                Text("Earliest begin date:")
+                Spacer()
+                Text("\(scheduledDate.shortStringWithTime())")
+            })
+        } else {
+            return AnyView(HStack {
+                Text("Not scheduled.")
+            })
+        }
     }
 
     func scheduleImmediately() {
+        running = true
+
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
-            if authorized {
-                typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
+            guard authorized else {
+                self.running = false
+                return
+            }
 
-                let selector = Selector(("_simulateLaunchForTaskWithIdentifier:"))
-                let methodImp = BGTaskScheduler.shared.method(for: selector)
-                let method = unsafeBitCast(methodImp, to: LaunchTaskWithIdentifier.self)
+            typealias LaunchTaskWithIdentifier = @convention(c) (NSObject, Selector, NSString) -> Void
 
-                method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
+            let selector = Selector(("_simulateLaunchForTaskWithIdentifier:"))
+            let methodImp = BGTaskScheduler.shared.method(for: selector)
+            let method = unsafeBitCast(methodImp, to: LaunchTaskWithIdentifier.self)
+
+            method(BGTaskScheduler.shared, selector, WeeklyRoundupBackgroundTask.identifier as NSString)
+
+            self.errorScheduling = false
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                self.updateBackgroundTaskDate()
+                self.running = false
             }
         }
     }
 
     func scheduleDelayed(taskRunDelay: TimeInterval, staticNotificationDelay: TimeInterval) {
+        updateBackgroundTaskDate()
+
         InteractiveNotificationsManager.shared.requestAuthorization { authorized in
             if authorized {
                 DispatchQueue.main.async {
@@ -145,7 +212,15 @@ struct WeeklyRoundupDebugScreen: View {
                         runDateComponents: runDateComponents,
                         staticNotificationDateComponents: staticNotificationDateComponents)
 
-                    WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { _ in
+                    WordPressAppDelegate.shared?.backgroundTasksCoordinator.schedule(backgroundTask) { result in
+                        switch result {
+                        case .success:
+                            errorScheduling = false
+                        case .failure:
+                            errorScheduling = true
+                        }
+
+                        self.updateBackgroundTaskDate()
                     }
                 }
             }

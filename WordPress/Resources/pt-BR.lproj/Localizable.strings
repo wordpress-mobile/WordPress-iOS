@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-03 00:38:16+0000 */
+/* Translation-Revision-Date: 2021-09-09 21:06:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -5478,7 +5478,7 @@ translators: Block name. %s: The localized block name */
 "Referrer" = "Referência";
 
 /* Period Stats 'Referrers' header */
-"Referrers" = "Referers";
+"Referrers" = "Referências";
 
 /* Button label to refres a web page
    The loading view button title displayed when an error occurred */
