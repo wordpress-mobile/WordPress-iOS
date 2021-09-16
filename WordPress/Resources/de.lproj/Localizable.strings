@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-11 20:53:22+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:44:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -218,7 +218,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s Blockoptionen";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s block previews are coming soon";
+"%s block previews are coming soon" = "%s-Block-Vorschauen demnächst verfügbar";
 
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s Block, neu verfügbar";
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "Für %s wurde keine URL festgelegt";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "%s-Vorschauen noch nicht verfügbar";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Social-Media-Symbol für %s";
@@ -1840,7 +1840,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't upload the featured image" = "Das Beitragsbild konnte nicht hochgeladen werden";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "Konto konnte nicht automatisch geschlossen werden";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Medien werden gezählt ...";
@@ -4291,7 +4291,7 @@ translators: Block name. %s: The localized block name */
 "New Post" = "Neuer Artikel";
 
 /* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
+"New domain flow" = "Neuer Domain-Ablauf";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Neuer Menupunkt";
@@ -5492,7 +5492,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "Privat mit Datenschutz registrieren";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "Eine kostenlose Domain registrieren";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -8259,10 +8259,10 @@ translators: Block name. %s: The localized block name */
 "We’ll walk you through the basics of building and growing your site" = "Wir führen dich durch die Grundlagen des Aufbaus und der Erweiterung deiner Website";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Wir arbeiten daran, Unterstützung für %s-Vorschauen hinzuzufügen. In der Zwischenzeit kannst du den eingebetteten Inhalt auf deiner Seite als Vorschau sehen.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Wir arbeiten daran, Unterstützung für %s-Vorschauen hinzuzufügen. In der Zwischenzeit kannst du den eingebetteten Inhalt auf deinem Beitrag als Vorschau sehen.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Wir haben weitere Aufgaben hinzugefügt, um dir zu helfen, dein Publikum zu vergrößern.";
