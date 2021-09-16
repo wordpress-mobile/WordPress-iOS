@@ -35,7 +35,7 @@ class SiteStatsPeriodViewModel: Observable {
                     return
                 }
 
-                currentEntryIndex = mostRecentChartData.summaryData.lastIndex(where: { $0.periodStartDate < selectedDate })
+                currentEntryIndex = mostRecentChartData.summaryData.lastIndex(where: { $0.periodStartDate <= selectedDate })
                     ?? max(mostRecentChartData.summaryData.count - 1, 0)
             }
         }
@@ -345,7 +345,7 @@ private extension SiteStatsPeriodViewModel {
             barChartStyling.append(contentsOf: chart.barChartStyling)
 
             indexToHighlight = chartData.summaryData.lastIndex(where: {
-                $0.periodStartDate.normalizedDate() < selectedDate.normalizedDate()
+                $0.periodStartDate.normalizedDate() <= selectedDate.normalizedDate()
             })
         }
 

@@ -134,7 +134,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         super.updateAndPerformFetchRequest()
 
-        title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
+        title = NSLocalizedString("Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
 

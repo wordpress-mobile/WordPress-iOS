@@ -1,0 +1,8 @@
+- Tetap tahu kabar terbaru. Anda sekarang dapat menerima ringkasan mingguan terkait aktivitas di situs Anda yang paling populer.
+
+- Komentar situs makin bisa diatur — saat mengedit komentar, Anda juga bisa menyesuaikan nama, alamat email, dan alamat web penulis.
+Kami melakukan beberapa penyesuaian bermanfaat untuk editor Blok. Blok Sematan sekarang dilengkapi pratinjau singkat untuk konten yang ditambahkan dari YouTube atau Twitter (penyedia lainnya akan hadir). Selain itu, sekarang saat blok dimasukkan dan tidak ada konten yang ditemukan, tampilan tidak ada hasil akan muncul.
+
+- Untuk opsi dalam Pengaturan Pos > Format Pos, "Standar" akan tetap menjadi opsi teratas, tetapi opsi lain kini akan ditampilkan urut sesuai abjad di bawahnya. (Opsi akan berbeda-beda tergantung tema!)
+
+- Dan satu lagi: Memuat ulang situs Anda kini sangat mudah — cukup tarik untuk memuat ulang dari layar Situs Saya!

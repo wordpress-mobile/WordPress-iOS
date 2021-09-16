@@ -725,6 +725,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     blog.url = remoteBlog.url;
     blog.dotComID = remoteBlog.blogID;
+    blog.organizationID = remoteBlog.organizationID;
     blog.isHostedAtWPcom = !remoteBlog.jetpack;
     blog.icon = remoteBlog.icon;
     blog.capabilities = remoteBlog.capabilities;

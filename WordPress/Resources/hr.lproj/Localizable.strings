@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-15 14:11:36+0000 */
+/* Translation-Revision-Date: 2021-09-15 09:48:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: hr */
@@ -38,11 +38,11 @@
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Like" = "%1$d Like";
+"%1$d Like" = "%1$d sviđanje";
 
 /* Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
-"%1$d Likes" = "%1$d Likes";
+"%1$d Likes" = "%1$d sviđanja";
 
 /* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d of %2$d completed";
@@ -233,10 +233,10 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "%s converted to regular blocks";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has URL set" = "%s has URL set";
+"%s has URL set" = "%s ima postavljen URL";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"%s has no URL set" = "%s has no URL set";
+"%s has no URL set" = "%s nema postavljen URL";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s previews not yet available";
@@ -375,7 +375,7 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "ADD IMAGE OR VIDEO";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "ADD LINK";
+"ADD LINK" = "Dodaj poveznicu";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "ADD VIDEO";
@@ -527,7 +527,7 @@ translators: Block name. %s: The localized block name */
 "Add button text" = "Add button text";
 
 /* No comment provided by engineer. */
-"Add image or video" = "Add image or video";
+"Add image or video" = "Dodaj sliku ili video";
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Add image, or avatar, to represent this new account.";
@@ -539,7 +539,7 @@ translators: Block name. %s: The localized block name */
 "Add link text" = "Add link text";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
-"Add link to %s" = "Add link to %s";
+"Add link to %s" = "Dodaj poveznicu na %s";
 
 /* No comment provided by engineer. */
 "Add menu item above" = "Add menu item above";
@@ -631,7 +631,7 @@ translators: Block name. %s: The localized block name */
 "All of your selected items are now restored back to %1$@." = "All of your selected items are now restored back to %1$@.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
-"All set!" = "All set!";
+"All set!" = "Sve je spremno!";
 
 /* Title of the congratulation screen that appears when all the tasks are completed */
 "All tasks complete" = "All tasks complete";
@@ -800,13 +800,13 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to mark this comment as Spam?" = "Are you sure you want to mark this comment as Spam?";
 
 /* Message asking for confirmation before marking a comment as trash */
-"Are you sure you want to mark this comment as Trash?" = "Are you sure you want to mark this comment as Trash?";
+"Are you sure you want to mark this comment as Trash?" = "Jeste li sigurni da želite označiti ovaj komentar kao Smeće?";
 
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "Are you sure you want to permanently delete these items?" = "Are you sure you want to permanently delete these items?";
 
 /* Message asking for confirmation on comment deletion */
-"Are you sure you want to permanently delete this comment?" = "Are you sure you want to permanently delete this comment?";
+"Are you sure you want to permanently delete this comment?" = "Jeste li sigurni da želite obrisati ovaj komentar?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Are you sure you want to permanently delete this item?";
@@ -951,7 +951,7 @@ translators: Block name. %s: The localized block name */
 "Back" = "Nazad";
 
 /* Title for the Background Color section */
-"Background Color" = "Background Color";
+"Background Color" = "Boja pozadine";
 
 /* Title of the cell displaying status of a backup in progress */
 "Backing up site" = "Backing up site";
@@ -1108,7 +1108,7 @@ translators: Block name. %s: The localized block name */
 "Button Style" = "Button Style";
 
 /* No comment provided by engineer. */
-"Button position" = "Button position";
+"Button position" = "Položaj gumba";
 
 /* Label for the post author in the post detail. */
 "By " = "By ";
@@ -1345,7 +1345,7 @@ translators: Block name. %s: The localized block name */
 "Choose Homepage" = "Choose Homepage";
 
 /* Button allowing the user to choose an image from their device to use as their site icon */
-"Choose Image From My Device" = "Choose Image From My Device";
+"Choose Image From My Device" = "Odaberi sliku s mog uređaja";
 
 /* Title for settings section which allows user to select their home page and posts page */
 "Choose Pages" = "Choose Pages";
@@ -1917,7 +1917,7 @@ translators: Block name. %s: The localized block name */
 "Create a post, page, or story" = "Create a post, page, or story";
 
 /* Title for the Site Icon Picker */
-"Create a site icon" = "Create a site icon";
+"Create a site icon" = "Stvori ikonu vašeg web mjesta";
 
 /* Label that describes the download backup action */
 "Create downloadable backup" = "Create downloadable backup";
@@ -2294,7 +2294,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to add a block" = "Double tap to add a block";
 
 /* No comment provided by engineer. */
-"Double tap to add a link." = "Double tap to add a link.";
+"Double tap to add a link." = "Dodirnite dva puta da biste dodali poveznicu.";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Double tap to dismiss";
@@ -2551,7 +2551,7 @@ translators: Block name. %s: The localized block name */
 "Embed media" = "Embed media";
 
 /* Title for the Emoji section */
-"Emoji" = "Emoji";
+"Emoji" = "Emotikoni";
 
 /* Accessibility value presented in the signup epilogue for an empty value.
    Label for size of media when the cache is empty. */
@@ -2656,7 +2656,7 @@ translators: Block name. %s: The localized block name */
 "Error activating %@." = "Error activating %@.";
 
 /* Message shown when approving a Comment fails. */
-"Error approving comment" = "Error approving comment";
+"Error approving comment" = "Pogreška pri priznavanju komentara";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2666,7 +2666,7 @@ translators: Block name. %s: The localized block name */
 "Error deactivating %@." = "Error deactivating %@.";
 
 /* Message shown when deleting a Comment fails. */
-"Error deleting comment" = "Error deleting comment";
+"Error deleting comment" = "Pogreška pri brisanju komentara";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Error disabling autoupdates for %@.";
@@ -3111,7 +3111,7 @@ translators: Block name. %s: The localized block name */
 "Get your site up and running" = "Get your site up and running";
 
 /* Example post title used in the login prologue screens. */
-"Getting Inspired" = "Getting Inspired";
+"Getting Inspired" = "Inspiriran";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Getting account information";
@@ -3326,7 +3326,7 @@ translators: Block name. %s: The localized block name */
 "I Like It" = "I Like It";
 
 /* Example post content used in the login prologue screens. */
-"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next";
+"I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Inspiriran sam radovima fotografa Camerona Karstena. Pokušavat ću primjenjivati te tehnike na svoje sljedeće";
 
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP address";
@@ -3344,7 +3344,7 @@ translators: Block name. %s: The localized block name */
 "If removed, this follower will stop receiving notifications about this site, unless they re-follow." = "If removed, this follower will stop receiving notifications about this site, unless they re-follow.";
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
-"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account.";
+"If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Ako već imate sjedište, trebat ćete instalirati besplatni Jetpack priključak te ga povezati s vašim WordPress računom.";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_.";
@@ -3392,7 +3392,7 @@ translators: Block name. %s: The localized block name */
 "Image caption. %s" = "Image caption. %s";
 
 /* No comment provided by engineer. */
-"Image settings" = "Image settings";
+"Image settings" = "Postavke za slike";
 
 /* Hint for image title on image settings. */
 "Image title" = "Image title";
@@ -3471,7 +3471,7 @@ translators: Block name. %s: The localized block name */
 "Insert selected" = "Insert selected";
 
 /* No comment provided by engineer. */
-"Inside" = "Inside";
+"Inside" = "Unutar";
 
 /* Title of Insights stats filter. */
 "Insights" = "Insights";
@@ -3522,7 +3522,7 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "Invalid URL, please check if you wrote a valid site address.";
 
 /* No comment provided by engineer. */
-"Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
+"Invalid URL. Audio file not found." = "Neispravan URL. Audio datoteka nije pronađena.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
@@ -3913,7 +3913,7 @@ translators: Block name. %s: The localized block name */
 "Log in with your WordPress.com username and password." = "Log in with your WordPress.com username and password.";
 
 /* LogOut confirmation text, whenever there are no local changes */
-"Log out of Jetpack?" = "Log out of Jetpack?";
+"Log out of Jetpack?" = "Jeste li sigurni da se želite odjaviti s Jetpacka?";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Log out of WordPress?";
@@ -4065,7 +4065,7 @@ translators: Block name. %s: The localized block name */
 "Medium" = "Srednje";
 
 /* No comment provided by engineer. */
-"Mention" = "Mention";
+"Mention" = "Spominjanje";
 
 /* The default text used for filling the name of a menu when creating it. */
 "Menu" = "Menu";
@@ -4097,7 +4097,7 @@ translators: Block name. %s: The localized block name */
 "Microsoft Outlook" = "Microsoft Outlook";
 
 /* No comment provided by engineer. */
-"Minimum height" = "Minimum height";
+"Minimum height" = "Najmanja visina";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Miscellaneous vulnerability";
@@ -4203,7 +4203,7 @@ translators: Block name. %s: The localized block name */
 "Moves the comment to the Trash." = "Moves the comment to the Trash.";
 
 /* Example post title used in the login prologue screens. */
-"Museums to See In London" = "Museums to See In London";
+"Museums to See In London" = "Muzeji za posjetiti u Londonu";
 
 /* An example tag used in the login prologue screens. */
 "Music" = "Music";
@@ -4229,7 +4229,7 @@ translators: Block name. %s: The localized block name */
 "My Tickets" = "My Tickets";
 
 /* Example post title used in the login prologue screens. */
-"My Top Ten Cafes" = "My Top Ten Cafes";
+"My Top Ten Cafes" = "Mojih top 10 kafića";
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
@@ -4798,7 +4798,7 @@ translators: Block name. %s: The localized block name */
 "Other Sites" = "Other Sites";
 
 /* No comment provided by engineer. */
-"Outside" = "Outside";
+"Outside" = "Izvana";
 
 /* Used to indicate a setting is overridden in debug builds of the app */
 "Overridden" = "Overridden";
@@ -5906,7 +5906,7 @@ translators: Block name. %s: The localized block name */
 "Search block label. Current text is" = "Search block label. Current text is";
 
 /* No comment provided by engineer. */
-"Search blocks" = "Search blocks";
+"Search blocks" = "Pretraži blokove";
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Search button. Current button text is";
@@ -5948,7 +5948,7 @@ translators: Block name. %s: The localized block name */
 "See All" = "See All";
 
 /* Action button linking to instructions for installing Jetpack.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"See Instructions" = "See Instructions";
+"See Instructions" = "Pogledajte upute";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -6303,7 +6303,7 @@ translators: Block name. %s: The localized block name */
 "Siri Reset Prompt" = "Siri Reset Prompt";
 
 /* Header for a single site, shown in Notification user profile. */
-"Site" = "Site";
+"Site" = "Sjedište";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Site Icon";
@@ -6720,7 +6720,7 @@ translators: Block name. %s: The localized block name */
 "Tap here to show help" = "Tap here to show help";
 
 /* No comment provided by engineer. */
-"Tap to add content" = "Tap to add content";
+"Tap to add content" = "Dodirnite da biste dodali sadržaj";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tap to cancel uploading.";
@@ -6847,7 +6847,7 @@ translators: Block name. %s: The localized block name */
 "The WordPress for Android App Gets a Big Facelift" = "The WordPress for Android App Gets a Big Facelift";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
-"The World's Best Fans" = "The World's Best Fans";
+"The World's Best Fans" = "Najbolji navijači na svijetu";
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "The app can't recognize the server response. Please, check the configuration of your site.";
@@ -6856,7 +6856,7 @@ translators: Block name. %s: The localized block name */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?";
 
 /* Message informing the user that posts page cannot be edited */
-"The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+"The content of your latest posts page is automatically generated and cannot be edited." = "Sadržaj najnovijih objava je automatski stvoren te se ne može uređivati.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "The file %1$@ contains a malicious code pattern";
@@ -7173,7 +7173,7 @@ translators: Block name. %s: The localized block name */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Time to finish setting up your site! Our checklist walks you through the next steps.";
 
 /* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
+"Tip" = "Savjet";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
@@ -7336,7 +7336,7 @@ translators: Block name. %s: The localized block name */
 "Try Again" = "Pokušajte ponovno";
 
 /* Action button that will restart the login flow.Presented when logging in with a site address that does not have a valid Jetpack installation */
-"Try With Another Account" = "Try With Another Account";
+"Try With Another Account" = "Pokušajte s drugim računom";
 
 /* Text displayed in the view when there aren't any backups to display for a given filter. */
 "Try adjusting your date range filter" = "Try adjusting your date range filter";
@@ -7392,7 +7392,7 @@ translators: Block name. %s: The localized block name */
 "Twitter Username" = "Twitter Username";
 
 /* No comment provided by engineer. */
-"Type a URL" = "Type a URL";
+"Type a URL" = "Unesite URL";
 
 /* Placeholder text for domain search during site creation. */
 "Type a keyword for more ideas" = "Type a keyword for more ideas";
@@ -7640,7 +7640,7 @@ translators: Block name. %s: The localized block name */
 "Unread" = "Unread";
 
 /* Title of unreplied Comments filter. */
-"Unreplied" = "Unreplied";
+"Unreplied" = "Neodgovoreno";
 
 /* Menus alert title for alerting the user to unsaved changes. */
 "Unsaved Changes" = "Unsaved Changes";
@@ -7679,7 +7679,7 @@ translators: Block name. %s: The localized block name */
 "Update Profile Photo" = "Update Profile Photo";
 
 /* Title for sheet displayed allowing user to update their site icon */
-"Update Site Icon" = "Update Site Icon";
+"Update Site Icon" = "Ažurirajte ikonu web mjesta";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Updates the bar chart to show comments.";
@@ -8106,7 +8106,7 @@ translators: Block name. %s: The localized block name */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "We use other tracking tools, including some from third parties. Read about these and how to control them.";
 
 /* Message explaining that WordPress was not detected. */
-"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version.";
+"We were not able to detect a WordPress site at the address you entered. Please make sure WordPress is installed and that you are running the latest available version." = "Nismo bili u mogućnosti pronaći WordPress sjedište na adresi koju ste unijeli. Provjerite da je WordPress instaliran i da koristite najnoviju verziju.";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "We were unable to send you an email at this time. Please try again later.";
@@ -8207,7 +8207,7 @@ translators: Block name. %s: The localized block name */
 "Web Display Settings" = "Web Display Settings";
 
 /* Example Reader feed title */
-"Web News" = "Web News";
+"Web News" = "Web novosti";
 
 /* Describes the web address section in the comment detail screen. */
 "Web address" = "Web address";
@@ -8283,7 +8283,7 @@ translators: Block name. %s: The localized block name */
 "What is a block?" = "What is a block?";
 
 /* No comment provided by engineer. */
-"What is alt text?" = "What is alt text?";
+"What is alt text?" = "Što je alternativni tekst?";
 
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "What was the problem?";
@@ -8332,7 +8332,7 @@ translators: Block name. %s: The localized block name */
 "Widgets" = "Widgets";
 
 /* No comment provided by engineer. */
-"Width Settings" = "Width Settings";
+"Width Settings" = "Postavke širine";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Will not be publicly displayed.";
@@ -8519,10 +8519,10 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
-"You can update this any time via My Site > Site Settings" = "You can update this any time via My Site > Site Settings";
+"You can update this any time via My Site > Site Settings" = "Ovo možete ažurirati bilo kada preko Moje sjedište > Postavke sjedišta";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "Ovo možete ažurirati bilo kada";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider.";
@@ -8599,7 +8599,7 @@ translators: Block name. %s: The localized block name */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
-"You received *50 likes* on your site today" = "You received *50 likes* on your site today";
+"You received *50 likes* on your site today" = "Dobili ste *50 sviđanja* na vašem sjedištu danas";
 
 /* Message displayed in popup when user has the option to load unsaved changes. 
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
@@ -8700,7 +8700,7 @@ translators: Block name. %s: The localized block name */
 "Your site has been succesfully restored" = "Your site has been succesfully restored";
 
 /* Subtitle for the Site Icon Picker */
-"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
+"Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Ikona vašeg web mjesta se pojavljuje na karticama web preglednika, pretpregledima web stranica na društvenim mrežama i na WordPress.com čitaču. ";
 
 /* Title of a message displayed when user starts a restore operation */
 "Your site is being restored" = "Your site is being restored";
@@ -8772,7 +8772,7 @@ translators: Block name. %s: The localized block name */
 "audio" = "audio";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
-"audio file" = "audio file";
+"audio file" = "Zvučna datoteka";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "by %@";
@@ -8879,7 +8879,7 @@ translators: Block name. %s: The localized block name */
 "your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "your new domain %@ is being set up. Your site is doing somersaults in excitement!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
-"your site" = "your site";
+"your site" = "vaše sjedište";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Log in with Google.";
