@@ -496,10 +496,11 @@ class ReaderDetailCoordinator {
     ///
     private func presentReaderDetail(_ url: URL) {
 
-        // If the user tapped the link to the original post, use the original post's info to display reader detail.
+        // In cross post Notifications, if the user tapped the link to the original post in the Notification body,
+        // use the original post's info to display reader detail.
         // The API endpoint used by controllerWithPostID returns subscription flags for the post.
-        // The API endpoint used by controllerWithPostURL does return this information.
-        // These flags needed to display the `Follow conversation by email` option.
+        // The API endpoint used by controllerWithPostURL does not return this information.
+        // These flags are needed to display the `Follow conversation by email` option.
         // So if we can call controllerWithPostID, do so. Otherwise, fallback to controllerWithPostURL.
         // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17158
 
