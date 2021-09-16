@@ -17,7 +17,7 @@ public class ContactSupportFlowController {
     public func present(
         from viewController: UIViewController,
         animated: Bool = true,
-        completion: (() -> Void)?
+        completion: (() -> Void)? = .none
     ) {
         viewController.present(
             UIHostingController(rootView: ContactSupportFlowView()),
