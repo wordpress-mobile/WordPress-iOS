@@ -1,9 +1,14 @@
-import UIKit
+import ContactUs
 import WordPressAuthenticator
 
 class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
+
+    let contactSupportSelfServiceController = ContactSupportFlowController(
+        onSupportRequested: {},
+        onHelpPageLoaded: { _ in }
+    )
 
     var sourceTag: WordPressSupportSourceTag?
 
@@ -183,20 +188,35 @@ private extension SupportTableViewController {
     func contactUsSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.zendeskEnabled {
-                guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                    return
+            self.startContactUsFlow()
+        }
+    }
+
+    private func startContactUsFlow() {
+        guard ZendeskUtils.zendeskEnabled else {
+            guard let url = Constants.forumsURL else {
+                return
+            }
+            UIApplication.shared.open(url)
+            return
+        }
+
+        guard let controllerToShowFrom = controllerToShowFrom() else {
+            return
+        }
+
+        let selfServiceFlowAvailable = true
+
+        if selfServiceFlowAvailable {
+            contactSupportSelfServiceController.present(from: controllerToShowFrom)
+        } else {
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(
+                from: controllerToShowFrom,
+                with: sourceTag
+            ) { [weak self] identityUpdated in
+                if identityUpdated {
+                    self?.reloadViewModel()
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
-                    if identityUpdated {
-                        reloadViewModel()
-                    }
-                }
-            } else {
-                guard let url = Constants.forumsURL else {
-                    return
-                }
-                UIApplication.shared.open(url)
             }
         }
     }
