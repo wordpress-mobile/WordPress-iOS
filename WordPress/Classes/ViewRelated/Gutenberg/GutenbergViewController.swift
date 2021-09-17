@@ -1016,7 +1016,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestContactCustomerSupport() {
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .gutenbergHelp )
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
     }
 
     func gutenbergDidRequestGotoCustomerSupportOptions() {
