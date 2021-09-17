@@ -4,7 +4,7 @@
 * [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
 * [*] Updated the wording for the "Posts" and "Pages" entries in My Site screen [https://github.com/wordpress-mobile/WordPress-iOS/pull/17156]
 * [*] Fixed an issue that caused `Follow conversation by email` to not appear on some post's comments. [#17159]
-* [**] Block editor: Users can now contact support and access support tickets from the block editor's Help & Support screen. [#17175] 
+* [**] Block editor: Users can now contact support and access all support options from the block editor's Help & Support screen. [#17175] 
 
 18.2
 -----
