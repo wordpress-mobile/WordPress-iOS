@@ -1019,8 +1019,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .gutenbergHelp )
     }
 
-    func gutenbergDidRequestGotoMyCustomerSupportTickets() {
-        ZendeskUtils.sharedInstance.showTicketListIfPossible(from: self.topmostPresentedViewController, with: .gutenbergHelp)
+    func gutenbergDidRequestGotoCustomerSupportOptions() {
+        let controller = SupportTableViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        self.topmostPresentedViewController.present(navController, animated: true)
     }
 }
 
