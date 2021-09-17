@@ -167,11 +167,6 @@ import WordPressFlux
     var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
-        willSet {
-            if contentType == .saved {
-                postCellActions?.clearRemovedPosts()
-            }
-        }
         didSet {
             if contentType == .saved {
                 updateContent(synchronize: false)
@@ -366,6 +361,10 @@ import WordPressFlux
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        if contentType == .saved {
+            postCellActions?.clearRemovedPosts()
+        }
 
         dismissNoNetworkAlert()
 

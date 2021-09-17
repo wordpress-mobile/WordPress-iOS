@@ -10,6 +10,9 @@ import WordPressFlux
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
+protocol SiteStatsReferrerDelegate: AnyObject {
+    func showReferrerDetails(_ data: StatsTotalRowData)
+}
 
 class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
@@ -78,6 +81,17 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isMovingToParent {
+            guard let date = selectedDate, let period = selectedPeriod else {
+                return
+            }
+            addViewModelListeners()
+            viewModel?.refreshPeriodOverviewData(withDate: date, forPeriod: period, resetOverviewCache: false)
+        }
+    }
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
             return nil
@@ -115,7 +129,8 @@ private extension SiteStatsPeriodTableViewController {
         viewModel = SiteStatsPeriodViewModel(store: store,
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
-                                             periodDelegate: self)
+                                             periodDelegate: self,
+                                             referrerDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
@@ -194,7 +209,6 @@ private extension SiteStatsPeriodTableViewController {
     func viewIsVisible() -> Bool {
         return isViewLoaded && view.window != nil
     }
-
 }
 
 // MARK: - NoResultsViewHost
@@ -285,7 +299,14 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
+}
 
+// MARK: - SiteStatsReferrerDelegate
+
+extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        show(ReferrerDetailsTableViewController(data: data), sender: nil)
+    }
 }
 
 // MARK: - SiteStatsTableHeaderDelegate Methods

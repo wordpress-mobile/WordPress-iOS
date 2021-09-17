@@ -45,6 +45,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;
+@dynamic organizationID;
 @dynamic hasOlderPosts;
 @dynamic hasOlderPages;
 @dynamic hasDomainCredit;
@@ -120,6 +121,16 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (NSNumber *)organizationID {
+    NSNumber *organizationID = [self primitiveValueForKey:@"organizationID"];
+    
+    if (organizationID == nil) {
+        return @0;
+    } else {
+        return organizationID;
+    }
+}
 
 - (BOOL)isAtomic
 {
