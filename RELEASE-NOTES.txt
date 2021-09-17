@@ -4,6 +4,7 @@
 * [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
 * [*] Updated the wording for the "Posts" and "Pages" entries in My Site screen [https://github.com/wordpress-mobile/WordPress-iOS/pull/17156]
 * [**] Fixed a bug that prevented sharing images and videos out of your site's media library. [#17164]
+* [*] Fixed an issue that caused `Follow conversation by email` to not appear on some post's comments. [#17159]
 
 18.2
 -----
