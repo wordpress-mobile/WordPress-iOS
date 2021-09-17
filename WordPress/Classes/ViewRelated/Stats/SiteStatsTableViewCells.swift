@@ -318,6 +318,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -329,7 +330,8 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate,
+                       siteStatsReferrerDelegate: siteStatsReferrerDelegate)
     }
 }
 
@@ -513,6 +515,7 @@ struct DetailExpandableRow: ImmuTableRow {
 
     let rowData: StatsTotalRowData
     weak var detailsDelegate: SiteStatsDetailsDelegate?
+    weak var referrerDelegate: SiteStatsReferrerDelegate?
     let hideIndentedSeparator: Bool
     let hideFullSeparator: Bool
     let expanded: Bool
@@ -526,6 +529,7 @@ struct DetailExpandableRow: ImmuTableRow {
 
         cell.configure(rowData: rowData,
                        detailsDelegate: detailsDelegate,
+                       referrerDelegate: referrerDelegate,
                        hideIndentedSeparator: hideIndentedSeparator,
                        hideFullSeparator: hideFullSeparator,
                        expanded: expanded)

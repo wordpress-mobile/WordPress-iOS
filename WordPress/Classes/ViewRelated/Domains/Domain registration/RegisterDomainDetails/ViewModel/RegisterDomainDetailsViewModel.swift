@@ -194,10 +194,10 @@ class RegisterDomainDetailsViewModel {
             // We'll manage.
 
             // First step is to create a cart.
-            strongSelf.registerDomainDetailsService.createShoppingCart(siteID: strongSelf.site.siteID,
-                                                                       domainSuggestion: strongSelf.domain,
-                                                                       privacyProtectionEnabled: privacyEnabled,
-                                                                       success: { cart in
+            strongSelf.registerDomainDetailsService.createTemporaryDomainShoppingCart(siteID: strongSelf.site.siteID,
+                                                                                      domainSuggestion: strongSelf.domain,
+                                                                                      privacyProtectionEnabled: privacyEnabled,
+                                                                                      success: { cart in
 
 
                     // And now that we have a cart — time to redeem it.
