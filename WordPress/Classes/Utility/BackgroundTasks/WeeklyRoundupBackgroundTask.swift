@@ -3,6 +3,9 @@ import Foundation
 /// The main data provider for Weekly Roundup information.
 ///
 class WeeklyRoundupDataProvider {
+
+    // MARK: - Definitions
+
     typealias SiteStats = [Blog: StatsSummaryData]
 
     enum DataRequestError: Error {
@@ -13,11 +16,17 @@ class WeeklyRoundupDataProvider {
         case filterWeeklyRoundupEnabledSitesError(_ error: NSError?)
     }
 
+    // MARK: - Misc Properties
+
     private let context: NSManagedObjectContext
 
     /// Method to report errors that won't interrupt the execution.
     ///
     private let onError: (Error) -> Void
+
+    /// Debug settings configured through the App's debug menu.
+    ///
+    private let debugSettings = WeeklyRoundupDebugScreen.Settings()
 
     init(context: NSManagedObjectContext, onError: @escaping (Error) -> Void) {
         self.context = context
@@ -140,7 +149,7 @@ class WeeklyRoundupDataProvider {
     ///
     private func filterCandidateSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
         let administeredSites = sites.filter { site in
-            site.isAdmin
+            site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
         }
 
         guard administeredSites.count > 0 else {
@@ -194,7 +203,36 @@ class WeeklyRoundupDataProvider {
 }
 
 class WeeklyRoundupBackgroundTask: BackgroundTask {
+
+    // MARK: - Store
+
+    class Store {
+
+        private let userDefaults: UserDefaults
+
+        init(userDefaults: UserDefaults = .standard) {
+            self.userDefaults = userDefaults
+        }
+
+        // Mark - User Defaults Storage
+
+        private let lastRunDateKey = "weeklyRoundup.lastExecutionDate"
+
+        func getLastRunDate() -> Date? {
+            UserDefaults.standard.object(forKey: lastRunDateKey) as? Date
+        }
+
+        func setLastRunDate(_ date: Date) {
+            UserDefaults.standard.set(date, forKey: lastRunDateKey)
+        }
+    }
+
+    // MARK: - Misc Properties
+
     static let identifier = "org.wordpress.bgtask.weeklyroundup"
+    static private let secondsPerDay = 24 * 60 * 60
+
+    private let store: Store
 
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -213,10 +251,12 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
         runDateComponents: DateComponents? = nil,
-        staticNotificationDateComponents: DateComponents? = nil) {
+        staticNotificationDateComponents: DateComponents? = nil,
+        store: Store = Store()) {
 
         self.eventTracker = eventTracker
         notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
+        self.store = store
 
         self.runDateComponents = runDateComponents ?? {
             var dateComponents = DateComponents()
@@ -234,27 +274,70 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     /// Just a convenience method to know then this task is run, what run date to use as "current".
     ///
     private func currentRunPeriodEndDate() -> Date {
-        Calendar.current.nextDate(
+        let runDate = Calendar.current.nextDate(
             after: Date(),
             matching: runDateComponents,
             matchingPolicy: .nextTime,
             direction: .backward) ?? Date()
+
+        // The run date is when the task is scheduled to run, but the period end date is actually
+        // the previous day at 24:59:59.
+        let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval.init(-1))
+
+        return periodEndDate
+    }
+
+    private func secondsInDays(_ numberOfDays: Int) -> Int {
+        numberOfDays * Self.secondsPerDay
+    }
+
+    /// This method checks if we skipped a Weekly Roundup run, and if we're within 2 days of that skipped Weekly Roundup run date.
+    /// If all is true, it returns the date of the last skipped Weekly Roundup.
+    ///
+    /// If Weekly Roundup has never been run this will always return `nil` as we haven't skipped any date.
+    ///
+    /// - Returns: the date of the last skipped Weekly Roundup, or `nil` if the conditions aren't met.
+    ///
+    private func skippedWeeklyRoundupDate() -> Date? {
+        let today = Date()
+
+        if let lastRunDate = store.getLastRunDate(),
+           Int(today.timeIntervalSinceReferenceDate - lastRunDate.timeIntervalSinceReferenceDate) > secondsInDays(6),
+           let lastValidDate = Calendar.current.nextDate(
+            after: Date(),
+            matching: runDateComponents,
+            matchingPolicy: .nextTime,
+            direction: .backward),
+           lastValidDate > lastRunDate,
+           Int(today.timeIntervalSinceReferenceDate - lastValidDate.timeIntervalSinceReferenceDate) <= secondsInDays(2) {
+
+            return lastValidDate
+        }
+
+        return nil
     }
 
     func nextRunDate() -> Date? {
-        Calendar.current.nextDate(
+        // If we're within 2 days of a skipped Weekly Roundup date, we can show it.
+        if let skippedRunDate = skippedWeeklyRoundupDate() {
+            return skippedRunDate
+        }
+
+        return Calendar.current.nextDate(
             after: Date(),
             matching: runDateComponents,
             matchingPolicy: .nextTime)
     }
 
-    func willSchedule(completion: @escaping (Result<Void, Error>) -> Void) {
+    func didSchedule(completion: @escaping (Result<Void, Error>) -> Void) {
         if Feature.enabled(.weeklyRoundupStaticNotification) {
             // We're scheduling a static notification in case the BG task won't run.
             // This will happen when the App has been explicitly killed by the user as of 2021/08/03,
             // as Apple doesn't let background tasks run in this scenario.
             notificationScheduler.scheduleStaticNotification(completion: completion)
         }
+
+        completion(.success(()))
     }
 
     func expirationHandler() {
@@ -361,6 +444,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         let completionOperation = BlockOperation {}
 
         completionOperation.completionBlock = {
+            self.store.setLastRunDate(Date())
             completion(completionOperation.isCancelled)
         }
 

@@ -1,7 +1,6 @@
 import SVProgressHUD
 import WordPressAuthenticator
 
-
 class SignupUsernameTableViewController: UITableViewController, SearchTableViewCellDelegate {
     open var currentUsername: String?
     open var displayName: String?
@@ -188,6 +187,7 @@ extension SignupUsernameTableViewController {
         cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         cell.delegate = self
         cell.selectionStyle = .none
+        cell.textField.leftViewImage = UIImage(named: "icon-post-search-highlight")
 
         return cell
     }
@@ -223,7 +223,7 @@ extension SignupUsernameTableViewController {
             let api = account.wordPressComRestApi else {
                 return
         }
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
+        showLoader()
 
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
@@ -231,9 +231,25 @@ extension SignupUsernameTableViewController {
                 WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false
-            SVProgressHUD.dismiss()
+            self?.hideLoader()
             addSuggestions(newSuggestions)
         }
+    }
+}
+
+// MARK: - Loader
+
+extension SignupUsernameTableViewController {
+    func showLoader() {
+        searchCell?.showLoader()
+    }
+
+    func hideLoader() {
+        searchCell?.hideLoader()
+    }
+
+    private var searchCell: SearchTableViewCell? {
+        tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
     }
 }
 

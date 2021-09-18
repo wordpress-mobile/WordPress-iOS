@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-31 13:54:49+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:37:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -218,7 +218,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "Options du bloc %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s block previews are coming soon";
+"%s block previews are coming soon" = "Les aperçus du bloc %s seront bientôt disponibles";
 
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "Bloc %s, nouvellement disponible";
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s n’a pas d’URL définie";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "Les aperçus %s ne sont pas encore disponibles";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Icône de réseau social %s";
@@ -1528,7 +1528,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "Commentaire sur";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1840,7 +1840,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't upload the featured image" = "Impossible de téléverser l’image à la une";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "Fermeture automatique du compte impossible";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Nombre d'éléments multimédias...";
@@ -3329,7 +3329,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Le travail du photographe Cameron Karsten m’inspire tellement. Je vais essayer ces techniques lors de mon prochain";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "Adresse IP";
 
 /* Title of a button style */
 "Icon & Text" = "Icône et texte";
@@ -3746,7 +3746,7 @@ translators: Block name. %s: The localized block name */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite atteinte. Vous pouvez ressayer dans 1 minute. Avant cela, un nouvelle tentative ne fera qu'augmenter l'attente avant que l'interdiction soit levée. Si vous pensez qu'il s'agît d'une erreur, contactez le support.";
 
 /* No comment provided by engineer. */
-"Line Height" = "Line Height";
+"Line Height" = "hauteur de ligne";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4291,7 +4291,7 @@ translators: Block name. %s: The localized block name */
 "New Post" = "Nouvel article";
 
 /* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
+"New domain flow" = "Nouveau flux de domaine";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nouvel élément";
@@ -5276,7 +5276,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Site principal";
 
 /* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Primary Site Address";
+"Primary Site Address" = "Adresse du site principal";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5472,7 +5472,7 @@ translators: Block name. %s: The localized block name */
 "Reconnected" = "Reconnecté";
 
 /* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Redirected Domains";
+"Redirected Domains" = "Domaines redirigés";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Référant";
@@ -5492,7 +5492,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "S’inscrire en privé avec protection de la la vie privée";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "Enregistrer un domaine gratuit";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7195,7 +7195,7 @@ translators: Block name. %s: The localized block name */
 "To add photos or videos to your posts." = "Pour ajouter des photos ou des vidéos à vos articles.";
 
 /* Error message displayed when unable to close user account. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+"To close this account now, contact our support team." = "Pour fermer ce compte maintenant, contactez notre équipe d’assistance.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Pour continuer, veuillez saisir votre adresse e-mail et votre nom.";
@@ -8210,13 +8210,13 @@ translators: Block name. %s: The localized block name */
 "Web News" = "Infos du web";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "Adresse web";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "La semaine commence le";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "Résumé hebdomadaire";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Semaines";
@@ -8259,10 +8259,10 @@ translators: Block name. %s: The localized block name */
 "We’ll walk you through the basics of building and growing your site" = "Nous allons vous présenter les bases de la construction et de la croissance de votre site.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Nous travaillons dur pour ajouter de la prise en charge des aperçus %s. En attendant, vous pouvez prévisualiser le contenu embarqué sur la page.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Nous travaillons dur pour ajouter de la prise en charge des aperçus %s. En attendant, vous pouvez prévisualiser le contenu embarqué sur l'article de blog.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Nous avons ajouté d’avantage de tâches pour vous aider à agrandir votre audience.";
@@ -8682,7 +8682,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vos articles, pages et réglages vous seront envoyés par e-mail à %@.";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "L’adresse de votre site principal est celle qui s’affichera dans la barre d’adresse des visiteurs qui consultent votre site Web.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Votre restauration prend plus de temps qu’à l’habitude, veuillez vérifiez dans quelques minutes.";

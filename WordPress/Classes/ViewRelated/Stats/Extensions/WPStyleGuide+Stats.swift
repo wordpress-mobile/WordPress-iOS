@@ -73,6 +73,10 @@ extension WPStyleGuide {
             label.font = subTitleFont
         }
 
+        static func configureLabelAsLink(_ label: UILabel) {
+            label.textColor = actionTextColor
+        }
+
         static func configureLabelItemDetail(_ label: UILabel) {
             label.textColor = itemDetailTextColor
         }
@@ -260,6 +264,13 @@ extension WPStyleGuide {
             let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
             let columnWidth = trunc(width / numberOfColumns)
             return columnWidth
+        }
+
+        // MARK: - Referrer Details
+        struct ReferrerDetails {
+            static let standardCellSpacing: CGFloat = 16
+            static let headerCellVerticalPadding: CGFloat = 7
+            static let standardCellVerticalPadding: CGFloat = 11
         }
     }
 
