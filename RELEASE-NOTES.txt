@@ -1,12 +1,11 @@
 18.4
 -----
-
+* [*] Fixed an issue where images point to local URLs in the editor when saving a post with ongoing uploads. [#17157]
 
 18.3
 -----
 * [*] Fixed a bug on Reader that prevented Saved posts to be removed
 * [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
-* [*] Fixed an issue where images point to local URLs in the editor when saving a post with ongoing uploads. [#17157]
 * [*] Updated the wording for the "Posts" and "Pages" entries in My Site screen [https://github.com/wordpress-mobile/WordPress-iOS/pull/17156]
 * [*] Fixed an issue that caused `Follow conversation by email` to not appear on some post's comments. [#17159]
 * [**] Block editor: Embed block: Enable WordPress embed preview [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3853]
