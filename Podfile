@@ -166,7 +166,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.61.1'
+    gutenberg :tag => 'v1.62.0'
 
     ## Third party libraries
     ## =====================
@@ -365,9 +365,9 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.14'
+  pod 'WordPressMocks', '~> 0.0.15'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => 'task/jetpack-screenshots-dynamic-dates'
+  # pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'add-organization-id-to-me-sites'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
