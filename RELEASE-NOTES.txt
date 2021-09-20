@@ -1,3 +1,7 @@
+18.4
+-----
+
+
 18.3
 -----
 * [*] Fixed a bug on Reader that prevented Saved posts to be removed
