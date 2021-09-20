@@ -42,7 +42,7 @@ def wordpress_ui
     #pod 'WordPressUI', '~> 1.12.1'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '513c971d3265e629f7fb923f11d365968e4a3cbe'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => 'fd409ce81111e9870022a18d8c384b51ebe58798'
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
