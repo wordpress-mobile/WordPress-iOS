@@ -79,7 +79,7 @@ class EditCommentTableViewController: UITableViewController {
         }
 
         // All other cells
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EditCommentSingleLineCell.defaultReuseID) as? EditCommentSingleLineCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: InlineEditableSingleLineCell.defaultReuseID) as? InlineEditableSingleLineCell else {
             return UITableViewCell()
         }
 
@@ -120,8 +120,8 @@ private extension EditCommentTableViewController {
     func setupTableView() {
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
-        tableView.register(EditCommentSingleLineCell.defaultNib,
-                           forCellReuseIdentifier: EditCommentSingleLineCell.defaultReuseID)
+        tableView.register(InlineEditableSingleLineCell.defaultNib,
+                           forCellReuseIdentifier: InlineEditableSingleLineCell.defaultReuseID)
 
         tableView.register(InlineEditableMultiLineCell.defaultNib,
                            forCellReuseIdentifier: InlineEditableMultiLineCell.defaultReuseID)
@@ -237,9 +237,9 @@ private extension EditCommentTableViewController {
 
 }
 
-extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
+extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
 
-    func textUpdatedForCell(_ cell: EditCommentSingleLineCell) {
+    func textUpdatedForCell(_ cell: InlineEditableSingleLineCell) {
         let updatedText = cell.textField.text?.trim()
 
         switch cell.textFieldStyle {
