@@ -23,7 +23,6 @@ struct DomainsDashboardView: View {
 
                 // register a free domain
                 Section(header: Text(TextContent.redirectedDomainsSectionHeader)) {
-                    /// - TODO: - DOMAINS - Add the action that will start the new domain registration flow here
                     NavigationLink(destination: DomainSuggestionViewControllerWrapper(blog: blog, domainType: .siteRedirect)) {
                         /// - TODO: - DOMAINS - adjust the title depending on wether there is already a redirected domain or not
                         Text(TextContent.firstRedirectedDomainLabel)
@@ -36,7 +35,6 @@ struct DomainsDashboardView: View {
                     makeSectionPadding()
 
                     Section(footer: Text(TextContent.paidPlanDomainSectionFooter)) {
-                        /// - TODO: DOMAINS - We keep both options at the moment, for testing purposes. We will need to remove the one that we choose not to use.
                         NavigationLink(destination: DomainSuggestionViewControllerWrapper(blog: blog, domainType: .registered)) {
                             Text(TextContent.paidPlanRegistrationLabelNavigation)
                         }
