@@ -1,6 +1,6 @@
 18.4
 -----
-
+* [*] Fixed an issue where images point to local URLs in the editor when saving a post with ongoing uploads. [#17157]
 
 18.3
 -----
