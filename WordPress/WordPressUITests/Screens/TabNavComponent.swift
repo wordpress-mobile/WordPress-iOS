@@ -31,7 +31,7 @@ class TabNavComponent: BaseScreen {
     func gotoAztecEditorScreen() -> AztecEditorScreen {
         let mySiteScreen = gotoMySiteScreen()
         let actionSheet = mySiteScreen.gotoCreateSheet()
-        actionSheet.gotoBlogPost()
+        actionSheet.goToBlogPost()
 
         return AztecEditorScreen(mode: .rich)
     }
@@ -39,7 +39,7 @@ class TabNavComponent: BaseScreen {
     func gotoBlockEditorScreen() -> BlockEditorScreen {
         let mySite = gotoMySiteScreen()
         let actionSheet = mySite.gotoCreateSheet()
-        actionSheet.gotoBlogPost()
+        actionSheet.goToBlogPost()
 
         return BlockEditorScreen()
     }

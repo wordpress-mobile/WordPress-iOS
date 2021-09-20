@@ -1,7 +1,6 @@
-import UITestsFoundation
 import XCTest
 
-class ActionSheetComponent: BaseScreen {
+public class ActionSheetComponent: BaseScreen {
     let blogPostButton: XCUIElement
     let sitePageButton: XCUIElement
 
@@ -10,14 +9,14 @@ class ActionSheetComponent: BaseScreen {
         static let sitePageButton = "sitePageButton"
     }
 
-    init() {
+    public init() {
         blogPostButton = XCUIApplication().buttons[ElementIDs.blogPostButton]
         sitePageButton = XCUIApplication().buttons[ElementIDs.sitePageButton]
 
         super.init(element: blogPostButton)
     }
 
-    func gotoBlogPost() {
+    public func goToBlogPost() {
         XCTAssert(blogPostButton.waitForExistence(timeout: 3))
         XCTAssert(blogPostButton.waitForIsHittable(timeout: 3))
 
