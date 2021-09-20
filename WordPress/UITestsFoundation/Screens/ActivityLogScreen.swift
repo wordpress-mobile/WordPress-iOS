@@ -1,9 +1,8 @@
-import UITestsFoundation
 import XCTest
 
-class ActivityLogScreen: BaseScreen {
+public class ActivityLogScreen: BaseScreen {
 
-    init() {
+    public init() {
         super.init(element: XCUIApplication().otherElements.firstMatch)
     }
 }
