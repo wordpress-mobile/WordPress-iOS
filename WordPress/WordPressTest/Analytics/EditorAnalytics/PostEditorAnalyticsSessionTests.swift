@@ -122,19 +122,56 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         let trackedUnsupportedBlocks: [String]? = tracked?.value(for: "unsupported_blocks")
         XCTAssertNil(trackedUnsupportedBlocks)
     }
+
+    func testTrackBlogIdOnStart() {
+        startSession(editor: .gutenberg, blogID: 123)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let tracked = TestAnalyticsTracker.tracked.first
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
+        XCTAssertEqual(tracked?.value(for: "blog_id"), "123")
+    }
+
+    func testTrackBlogIdOnSwitch() {
+        var session = startSession(editor: .gutenberg, blogID: 456)
+        session.switch(editor: .gutenberg)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 2)
+
+        let tracked = TestAnalyticsTracker.tracked.last
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionSwitchEditor)
+        XCTAssertEqual(tracked?.value(for: "blog_id"), "456")
+    }
+
+    func testTrackBlogIdOnEnd() {
+        let session = startSession(editor: .gutenberg, blogID: 789)
+        session.end(outcome: .publish)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 2)
+
+        let tracked = TestAnalyticsTracker.tracked.last
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionEnd)
+        XCTAssertEqual(tracked?.value(for: "blog_id"), "789")
+    }
 }
 
 extension PostEditorAnalyticsSessionTests {
-    func createPost(title: String? = nil, body: String? = nil) -> AbstractPost {
+    func createPost(title: String? = nil, body: String? = nil, blogID: NSNumber? = nil) -> AbstractPost {
         let post = AbstractPost(context: context)
         post.postTitle = title
         post.content = body
+        post.blog = Blog(context: context)
+        post.blog.dotComID = blogID
         return post
     }
 
     @discardableResult
-    func startSession(editor: PostEditorAnalyticsSession.Editor, postTitle: String? = nil, postContent: String? = nil, unsupportedBlocks: [String] = []) -> PostEditorAnalyticsSession {
-        let post = createPost(title: postTitle, body: postContent)
+    func startSession(editor: PostEditorAnalyticsSession.Editor, postTitle: String? = nil, postContent: String? = nil, unsupportedBlocks: [String] = [], blogID: NSNumber? = nil) -> PostEditorAnalyticsSession {
+        let post = createPost(title: postTitle, body: postContent, blogID: blogID)
         var session = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
         session.start(unsupportedBlocks: unsupportedBlocks)
         return session

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-31 13:54:49+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:37:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -217,6 +217,9 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Options du bloc %s";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s block previews are coming soon" = "Les aperçus du bloc %s seront bientôt disponibles";
+
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "Bloc %s, nouvellement disponible";
 
@@ -234,6 +237,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s n’a pas d’URL définie";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "Les aperçus %s ne sont pas encore disponibles";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Icône de réseau social %s";
@@ -611,7 +617,8 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter. */
 "All" = "Toutes";
 
-/* Information about redeeming domain credit on site dashboard. */
+/* Footer of the free domain registration section for a paid plan.
+   Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Tous les plans WordPress.com inclus un nom de domaine personnalisé. Enregistrer votre domaine Premium gratuit dès maintenant.";
 
 /* An option in a list. Automatically approve all comments */
@@ -698,9 +705,6 @@ translators: Block name. %s: The localized block name */
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Une connexion Internet active est nécessaire pour afficher l’historique";
-
-/* Default error message displayed when unable to close user account. */
-"An error occured while closing account." = "Une erreur est survenue lors de la clôture du compte.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Un erreur est survenue lors de la création du menu.";
@@ -1192,6 +1196,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1521,6 +1526,10 @@ translators: Block name. %s: The localized block name */
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Le commentaire a été marqué comme indésirable.";
 
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+ My First Post */
+"Comment on" = "Commentaire sur";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1692,7 +1701,8 @@ translators: Block name. %s: The localized block name */
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team. */
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contacter le support";
 
 /* Button label for contacting support
@@ -1828,6 +1838,9 @@ translators: Block name. %s: The localized block name */
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Impossible de téléverser l’image à la une";
+
+/* Error title displayed when unable to close user account. */
+"Couldn’t close account automatically" = "Fermeture automatique du compte impossible";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Nombre d'éléments multimédias...";
@@ -2149,7 +2162,8 @@ translators: Block name. %s: The localized block name */
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Désactivé";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Jeter";
 
@@ -2242,7 +2256,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Les propriétaires de domaines sont tenus de partager leurs informations de contact dans une base de données publique de domaines. Grâce à la fonction de protection de la vie privée, nous publions nos propres informations à la place des vôtres et vous transmettons les communications en privé.";
 
-/* Title for the Domains list */
+/* Noun. Title. Links to the Domains screen.
+   Title for the Domains list */
 "Domains" = "Domaines";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
@@ -2499,6 +2514,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "Adresse de messagerie";
 
 /* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
 "Email address" = "Adresse de contact";
@@ -2522,9 +2538,6 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail envoyé !";
 
-/* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Les prévisualisations de bloc embarqués seront prochainement disponibles";
-
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Légende intégrée. %s";
 
@@ -2536,9 +2549,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Média embarqué";
-
-/* No comment provided by engineer. */
-"Embed previews not yet available" = "Aperçus embarqués pas encore disponibles";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2628,8 +2638,7 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Entrez vos identifiants de connexion du serveur";
 
-/* General error title
-   Generic error alert title
+/* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Erreur";
@@ -3319,6 +3328,9 @@ translators: Block name. %s: The localized block name */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Le travail du photographe Cameron Karsten m’inspire tellement. Je vais essayer ces techniques lors de mon prochain";
 
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "Adresse IP";
+
 /* Title of a button style */
 "Icon & Text" = "Icône et texte";
 
@@ -3627,7 +3639,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Rejoindre une conversation : commentez sur les articles des blogs auxquels vous êtes abonnés.";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Continuer d'écrire";
@@ -3731,6 +3744,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite atteinte. Vous pouvez ressayer dans 1 minute. Avant cela, un nouvelle tentative ne fera qu'augmenter l'attente avant que l'interdiction soit levée. Si vous pensez qu'il s'agît d'une erreur, contactez le support.";
+
+/* No comment provided by engineer. */
+"Line Height" = "hauteur de ligne";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4273,6 +4289,9 @@ translators: Block name. %s: The localized block name */
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nouvel article";
+
+/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
+"New domain flow" = "Nouveau flux de domaine";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nouvel élément";
@@ -5256,6 +5275,9 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "Site principal";
 
+/* Header of the primary site section in the Domains dashboard. */
+"Primary Site Address" = "Adresse du site principal";
+
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
@@ -5449,6 +5471,9 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Reconnecté";
 
+/* Header of the redirected domains section in the Domains Dashboard. */
+"Redirected Domains" = "Domaines redirigés";
+
 /* Label for link title in Referrers stat. */
 "Referrer" = "Référant";
 
@@ -5459,11 +5484,15 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "Actualiser";
 
-/* Action to redeem domain credit. */
+/* Action to redeem domain credit.
+   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
 "Register Domain" = "Enregistrer le domaine";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "S’inscrire en privé avec protection de la la vie privée";
+
+/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Register a free domain" = "Enregistrer un domaine gratuit";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7094,18 +7123,6 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Ce site n'a rien de publié pour le moment. Veuillez réessayer plus tard.";
 
-/* Error message displayed when unable to close user account due to unresolved chargebacks. */
-"This user account cannot be closed if there are unresolved chargebacks." = "Ce compte utilisateur ne peut pas être clôturé s’il y a des contestations de paiement non résolues.";
-
-/* Error message displayed when unable to close user account due to having active purchases. */
-"This user account cannot be closed while it has active purchases." = "Impossible de clôturer ce compte utilisateur tant qu’il bénéficie d’achats activés.";
-
-/* Error message displayed when unable to close user account due to having active subscriptions. */
-"This user account cannot be closed while it has active subscriptions." = "Impossible de clôturer ce compte utilisateur tant qu’il bénéficie d’abonnements en cours.";
-
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Ce compte utilisateur n’a pas pu être clôturé. Veuillez nous contacter en accédant à l’écran Moi > Aide et assistance.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Cela sera inclus dans les tweets quand les visiteurs feront un partage avec le bouton Twitter.";
@@ -7176,6 +7193,9 @@ translators: Block name. %s: The localized block name */
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Pour ajouter des photos ou des vidéos à vos articles.";
+
+/* Error message displayed when unable to close user account. */
+"To close this account now, contact our support team." = "Pour fermer ce compte maintenant, contactez notre équipe d’assistance.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Pour continuer, veuillez saisir votre adresse e-mail et votre nom.";
@@ -8189,8 +8209,14 @@ translators: Block name. %s: The localized block name */
 /* Example Reader feed title */
 "Web News" = "Infos du web";
 
+/* Describes the web address section in the comment detail screen. */
+"Web address" = "Adresse web";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "La semaine commence le";
+
+/* Setting: indicates if the site reports its Weekly Roundup */
+"Weekly Roundup" = "Résumé hebdomadaire";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Semaines";
@@ -8232,11 +8258,11 @@ translators: Block name. %s: The localized block name */
 /* Body text of alert asking if users want to try out the quick start checklist. */
 "We’ll walk you through the basics of building and growing your site" = "Nous allons vous présenter les bases de la construction et de la croissance de votre site.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Nous mettons tout en œuvre pour proposer plus d'assistance pour les aperçus embarqués. En attendant, vous pouvez prévisualiser le contenu embarqué sur la page.";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Nous travaillons dur pour ajouter de la prise en charge des aperçus %s. En attendant, vous pouvez prévisualiser le contenu embarqué sur la page.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Nous mettons tout en œuvre pour proposer plus d'assistance pour les aperçus embarqués. En attendant, vous pouvez prévisualiser le contenu embarqué sur l'article de blog.";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Nous travaillons dur pour ajouter de la prise en charge des aperçus %s. En attendant, vous pouvez prévisualiser le contenu embarqué sur l'article de blog.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Nous avons ajouté d’avantage de tâches pour vous aider à agrandir votre audience.";
@@ -8544,6 +8570,7 @@ translators: Block name. %s: The localized block name */
 "You have no reminders set." = "Vous n’avez aucun rappel défini.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Des modifications n'ont pas été enregistrées.";
 
@@ -8578,7 +8605,8 @@ translators: Block name. %s: The localized block name */
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Vous avez récemment apporté des modifications à cet article mais vous ne les avez pas enregistrées. Choisissez une version à charger :\n\nDepuis cet appareil\nEnregistrée le %1$@\n\nDepuis un autre appareil\nEnregistrée le %2$@\n";
 
-/* Notification text - below a comment notification detail */
+/* Informs that the user has replied to this comment.
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Vous avez répondu à ce commentaire.";
 
 /* No comment provided by engineer. */
@@ -8598,9 +8626,6 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Vous êtes à jour !";
-
-/* Error message displayed when unable to close user account due to being unauthorized. */
-"You're not authorized to close the account." = "Nous n’êtes pas autorisé à clôturer le compte.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Vous avez apporté des modifications non enregistrées à cet article.";
@@ -8655,6 +8680,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vos articles, pages et réglages vous seront envoyés par e-mail à %@.";
+
+/* Footer of the primary site section in the Domains dashboard. */
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "L’adresse de votre site principal est celle qui s’affichera dans la barre d’adresse des visiteurs qui consultent votre site Web.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Votre restauration prend plus de temps qu’à l’habitude, veuillez vérifiez dans quelques minutes.";

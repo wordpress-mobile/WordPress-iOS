@@ -1,9 +1,8 @@
-Utilisez-vous le bloc de contenu embarqué ? Pour les médias que vous embarquez sur votre site, vous verrez désormais une option pour « Redimensionner pour les petits appareils ». Activez-la pour redimensionner votre contenu afin de l’adapter à l’écran ; désactivez-la pour annuler le redimensionnement.
+- Restez au courant ! Vous pouvez désormais recevoir un récapitulatif hebdomadaire des activités sur vos sites les plus populaires.
 
-Vous appréciez les outils de rappel de blog ? Nous avons ajouté une nouvelle fonctionnalité qui vous permet de choisir une heure précise pour recevoir une notification.
+- Vous contrôlez davantage les commentaires sur vos sites : lorsque vous les modifiez, vous pouvez désormais également changer le nom de l’auteur, l’adresse e-mail et l’adresse Web.
+Nous avons apporté quelques modifications pratiques à l’éditeur de blocs. Le bloc de contenu embarqué vous donne désormais un premier aperçu lorsque vous effectuez un ajout depuis YouTube ou Twitter (plus de fournisseurs prochainement). De plus, lorsque vous essayez d’insérer un bloc introuvable, un message indique qu’aucun résultat n’est disponible.
 
-Besoin de clôturer votre compte ? (Nous espérons que vous ne nous quitterez jamais !) Mais si vous en avez besoin, vous avez désormais la possibilité de le faire dans les réglages de votre compte.
+- Si vous accédez à Paramètres d’article > Format d’article, vous verrez que l’option « Standard » apparaît toujours dans la partie supérieure, mais que les autres options s’affichent désormais clairement par ordre alphabétique en dessous. (Les options varient en fonction des thèmes !)
 
-La géolocalisation des articles n’est plus prise en charge sur le Web, nous avons donc supprimé l’option Emplacement dans Réglages d’article.
-
-Nous avons également apporté d’autres améliorations, notamment une correction d’un problème de rognage dans le Lecteur, ainsi que la possibilité de recommander l’application à vos amis sur les écrans Moi et À propos.
+- Et enfin : vous pouvez désormais actualiser votre site très facilement en faisant simplement glisser vers le bas à partir de l’écran Mon site !

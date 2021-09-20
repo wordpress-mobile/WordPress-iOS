@@ -122,10 +122,15 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .stats)
     }
 
-    func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
+    func showStats(for blog: Blog, timePeriod: StatsPeriodType, date: Date? = nil) {
         showBlogDetails(for: blog)
 
-        UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+        if let date = date {
+            UserDefaults.standard.set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
+        }
+
+        UserDefaults.standard.set(timePeriod.rawValue, forKey: SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey)
+
         mySiteViewController.showDetailView(for: .stats)
     }
 

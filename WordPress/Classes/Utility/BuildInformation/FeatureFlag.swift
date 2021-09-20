@@ -14,6 +14,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case unifiedCommentsAndNotificationsList
     case recommendAppToOthers
     case newCommentEdit
+    case weeklyRoundup
+    case weeklyRoundupStaticNotification
+    case newCommentDetail
+    case domains
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -45,7 +49,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .recommendAppToOthers:
             return true
         case .newCommentEdit:
+            return true
+        case .weeklyRoundup:
+            return true
+        case .weeklyRoundupStaticNotification:
+            // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
+        case .newCommentDetail:
+            return false
+        case .domains:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -96,6 +109,14 @@ extension FeatureFlag {
             return "Recommend App to Others"
         case .newCommentEdit:
             return "New Comment Edit"
+        case .weeklyRoundup:
+            return "Weekly Roundup"
+        case .weeklyRoundupStaticNotification:
+            return "Weekly Roundup Static Notification"
+        case .newCommentDetail:
+            return "New Comment Detail"
+        case .domains:
+            return "Domain Purchases"
         }
     }
 
@@ -104,6 +125,10 @@ extension FeatureFlag {
         case .debugMenu:
             return false
         case .todayWidget:
+            return false
+        case .weeklyRoundup:
+            return false
+        case .weeklyRoundupStaticNotification:
             return false
         default:
             return true

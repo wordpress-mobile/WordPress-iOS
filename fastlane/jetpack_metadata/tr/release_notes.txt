@@ -1,7 +1,8 @@
-Gömülü blokunu kullanıyor musunuz? Sitenize gömdüğünüz medya için artık "Daha küçük cihazlar için yeniden boyutlandır" seçeneğini göreceksiniz. İçeriğinizi ekranınıza sığacak şekilde yeniden boyutlandırmak için açın; devre dışı bırakmak için kapatın.
+- Her şeyden haberdar olun! Artık en popüler sitelerinizdeki etkinliklerin haftalık özetini alabilirsiniz.
 
-Blog Hatırlatıcıları aracını beğeniyor musunuz? Bildirim almak için belirli bir zaman seçmenize olanak tanıyan yeni bir özellik ekledik.
+- Site yorumlarınız üzerinde daha da fazla kontrole sahipsiniz. Onları düzenlerken artık yazarın adını, e-posta adresini ve web adresini de ayarlayabilirsiniz.
+Blok düzenleyicide kolaylık sağlayan birkaç değişiklik yaptık. Gömülü blok artık YouTube veya Twitter'dan bir şey eklediğinizde size bir önizleme görüntüler (yakında daha fazla sağlayıcı sunulacaktır). Ayrıca, bir blok eklemeye gittiğinizde hiçbir şey bulamazsanız, artık sonuçlar görünümü görüntülenmez.
 
-Hesabınızı kapatmanız mı gerekiyor? (Umarız bizi asla bırakmazsınız!) Ancak gerekirse Hesap Ayarlarınızdan bunu yapabilirsiniz.
+- Gönderi Ayarları > Gönderi Biçimi'ne giderseniz, "Standart" seçeneğini yine en üstte bulacaksınız, ancak diğer seçenekler artık aşağıda düzgün bir şekilde alfabetik olarak sıralanır. (Seçenekler temalara göre değişecektir.)
 
-Gönderilere coğrafi etiket ekleme işlevi artık web'de desteklenmediğinden Gönderi Ayarları altındaki Konum seçeneği kaldırılmıştır.
+- Ve bir tane daha: Sitenizi yenilemek artık çok kolay. Sitem ekranından yenilemek için çekmeniz yeterli

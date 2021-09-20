@@ -263,13 +263,20 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     if (indexPath.row >= sectionInfo.numberOfObjects) {
         return;
     }
-    
-    // At last, push the details
-    Comment *comment            = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    CommentViewController *vc   = [CommentViewController new];
-    vc.comment                  = comment;
 
-    [self.navigationController pushViewController:vc animated:YES];
+    // At last, push the details
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    UIViewController *detailViewController;
+
+    if ([Feature enabled:FeatureFlagNewCommentDetail]) {
+        detailViewController = [[CommentDetailViewController alloc] initWithComment:comment];
+    } else {
+        CommentViewController *vc   = [CommentViewController new];
+        vc.comment                  = comment;
+        detailViewController        = vc;
+    }
+
+    [self.navigationController pushViewController:detailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 

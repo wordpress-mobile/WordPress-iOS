@@ -1,7 +1,8 @@
-Använder du inbäddningsblocket? För mediafiler som du bäddar in på din webbplats kommer du nu att se alternativet "Ändra storlek för mindre enheter". Sätt reglaget till På för att aktivera alternativet och storleksanpassa ditt innehåll efter din skärm. Sätt reglaget till Av för att inaktivera alternativet. 
+- Håll dig uppdaterad! Du kan nu få en veckovis sammanfattning av aktiviteten på dina mest populära webbplatser.
 
-Gillar du verktyget Bloggningspåminnelser? Vi har lagt till en ny funktion som gör det möjligt att välja en specifik tid för att ta emot aviseringar.
+- Du har ännu mer kontroll över dina webbplatskommentarer – när du redigerar dem kan du nu även justera författarens namn, e-postadress och webbadress.
+Vi har gjort ett par praktiska ändringar i blockredigeraren. Inbäddningsblocket ger dig nu en förhandsvisning när du lägger till något från YouTube eller Twitter (fler leverantörer kommer). Dessutom visas nu en vy utan resultat när du ska infoga ett block och ingenting hittas.
 
-Behöver du stänga ditt konto? (Vi hoppas att du aldrig lämnar oss!) Om det är nödvändigt har du nu dock möjlighet att göra det i dina kontoinställningar.
+- Om du går till Inläggsinställningar > Inläggsformat kan du se att alternativet "Standard" fortfarande visas högst upp, men att de andra alternativen nu visas i alfabetisk ordning nedanför.  (Alternativen varierar beroende på tema!)
 
-Geotaggning av inlägg stöds inte längre på webben, så vi har tagit bort alternativet Plats under Inläggsinställningar.
+- Och en sak till: Det är nu superenkelt att uppdatera din webbplats – det är bara att uppdatera på skärmen Min webbplats!

@@ -1,9 +1,8 @@
-Apakah Anda menggunakan blok Tersemat? Untuk media yang Anda sematkan ke situs, Anda kini bisa melihat pilihan "Ubah ukuran untuk perangkat yang lebih kecil". Aktifkan pilihan tersebut untuk mengubah ukuran konten agar sesuai dengan layar; matikan toggle untuk menonaktifkan.
+- Tetap tahu kabar terbaru. Anda sekarang dapat menerima ringkasan mingguan terkait aktivitas di situs Anda yang paling populer.
 
-Menyukai alat Pengingat Blogging? Kami telah menambahkan fitur baru yang mengizinkan Anda memilih waktu khusus untuk menerima pemberitahuan.
+- Komentar situs makin bisa diatur — saat mengedit komentar, Anda juga bisa menyesuaikan nama, alamat email, dan alamat web penulis.
+Kami melakukan beberapa penyesuaian bermanfaat untuk editor Blok. Blok Sematan sekarang dilengkapi pratinjau singkat untuk konten yang ditambahkan dari YouTube atau Twitter (penyedia lainnya akan hadir). Selain itu, sekarang saat blok dimasukkan dan tidak ada konten yang ditemukan, tampilan tidak ada hasil akan muncul.
 
-Perlu menutup akun? (Kami berharap Anda tidak meninggalkan kami!) Namun, jika diperlukan, Anda kini bisa menutup akun melalui Pengaturan Akun.
+- Untuk opsi dalam Pengaturan Pos > Format Pos, "Standar" akan tetap menjadi opsi teratas, tetapi opsi lain kini akan ditampilkan urut sesuai abjad di bawahnya. (Opsi akan berbeda-beda tergantung tema!)
 
-Pos dengan penandaan geografis tidak lagi didukung di web, jadi kami menghapus pilihan Lokasi pada Pengaturan Pos.
-
-Kami juga melakukan peningkatan lainnya, termasuk memperbaiki masalah pemangkasan di Pembaca, serta kemampuan merekomendasikan aplikasi ini ke teman-teman Anda pada layar Saya dan Tentang.
+- Dan satu lagi: Memuat ulang situs Anda kini sangat mudah — cukup tarik untuk memuat ulang dari layar Situs Saya!

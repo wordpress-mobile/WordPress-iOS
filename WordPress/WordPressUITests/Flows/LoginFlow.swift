@@ -82,7 +82,7 @@ class LoginFlow {
             if !PrologueScreen.isLoaded() {
                 while PasswordScreen.isLoaded() || GetStartedScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() || LoginCheckMagicLinkScreen.isLoaded() {
                     if GetStartedScreen.isLoaded() && GetStartedScreen.isEmailEntered() {
-                        GetStartedScreen().emailTextField.clearTextIfNeeded()
+                        GetStartedScreen().emailTextField.clearText()
                     }
                     navBackButton.tap()
                 }

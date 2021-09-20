@@ -69,7 +69,7 @@ class MySiteScreen: BaseScreen {
 
     func removeSelfHostedSite() {
         removeSiteButton.tap()
-        if isIpad {
+        if XCUIDevice.isPad {
             removeSiteAlert.tap()
         } else {
             removeSiteSheet.tap()
@@ -94,7 +94,7 @@ class MySiteScreen: BaseScreen {
     func gotoPostsScreen() -> PostsScreen {
 
         // A hack for iPad, because sometimes tapping "posts" doesn't load it the first time
-        if isIpad {
+        if XCUIDevice.isPad {
             mediaButton.tap()
         }
 

@@ -23,7 +23,7 @@ class JetpackBackupScreen: BaseScreen {
         ellipsisButton.tap()
 
         XCTAssert(downloadBackupButton.waitForExistence(timeout: 3))
-        XCTAssert(downloadBackupButton.waitForHittability(timeout: 3))
+        XCTAssert(downloadBackupButton.waitForIsHittable(timeout: 3))
 
         XCTAssert(downloadBackupButton.isHittable)
 

@@ -1,7 +1,8 @@
-Utilizzi il blocco Incorporamenti? Per i file multimediali che incorpori nel tuo sito, visualizzerai ora un'opzione "Ridimensiona per dispositivi più piccoli". Attivala per ridimensionare i contenuti in modo che si adattino alla schermata; disattivala per disabilitarla.
+- Rimani aggiornato. Ora puoi ricevere un riepilogo settimanale dell'attività sui siti più popolari.
 
-Ti stai godendo lo strumento di Promemoria relativi al blog? Abbiamo aggiunto una nuova funzionalità che ti consente di scegliere un orario specifico per ricevere una notifica.
+- Hai ancora più controllo sui commenti del sito: quando li modifichi ora puoi anche regolare il nome dell'autore, l'indirizzo e-mail e quello del sito.
+Abbiamo apportato un paio di utili miglioramenti all'editor a blocchi. Il blocco Incorporamenti ora ti offre un assaggio di anteprima quando aggiungi qualcosa da YouTube o Twitter (sono in arrivo altri fornitori). Inoltre, quando vai a inserire un blocco e non trovi nulla, ora viene mostrata una visualizzazione "nessun risultato".
 
-Hai bisogno di chiudere il tuo account? (Speriamo non ci lascerai!) Se lo necessiti, ora hai la possibilità di farlo in Impostazioni account.
+- Se vai su Impostazioni dell'articolo > Formato articolo, troverai l'opzione "Standard" ancora nella parte superiore, ma le altre opzioni sono in ordine alfabetico a seguire. (Le opzioni possono variare in base ai temi.)
 
-Gli articoli di geotagging non sono più supportati sul web, quindi abbiamo rimosso l'opzione Posizione in Impostazioni articolo.
+- E ancora più velocità: aggiornare il tuo sito ora è semplicissimo. Basta scorrere con il dito per aggiornare la schermata Il mio sito.

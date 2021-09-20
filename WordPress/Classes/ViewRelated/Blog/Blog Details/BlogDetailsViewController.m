@@ -332,6 +332,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
     [self.view addSubview:self.tableView];
     [self.view pinSubviewToAllEdges:self.tableView];
+    
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(pulledToRefresh) forControlEvents:UIControlEventValueChanged];
+    self.tableView.refreshControl = refreshControl;
 
     self.tableView.accessibilityIdentifier = @"Blog Details Table";
 
@@ -980,6 +984,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                        }];
 
     [rows addObject:row];
+
+    if ([Feature enabled:FeatureFlagDomains]) {
+        BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
+                                                                identifier:BlogDetailsSettingsCellIdentifier
+                                                   accessibilityIdentifier:@"Domains Row"
+                                                                     image:[UIImage gridiconOfType:GridiconTypeDomains]
+                                                                  callback:^{
+                                                                    [weakSelf showDomains];
+                                                      }];
+        [rows addObject:domainsRow];
+    }
 
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryConfigure];
@@ -1743,6 +1758,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
+- (void)showDomains
+{
+    /// - TODO: DOMAINS - Add tracking  here
+    UIViewController *controller = [self makeDomainsDashboardViewController];
+    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    [self showDetailViewController:controller sender:self];
+}
+
 -(void)showJetpackSettings
 {
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
@@ -1967,17 +1990,41 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Domain Registration
 
-/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
-/// Used to update My Site after a successful domain registration.
 - (void)updateTableViewAndHeader
+{
+    [self updateTableViewAndHeader:^{}];
+}
+
+/// This method syncs the blog and its metadata, then reloads the table view and updates the header with the synced blog.
+///
+- (void)updateTableViewAndHeader:(void(^)(void))onComplete
 {
     __weak __typeof(self) weakSelf = self;
     [self.blogService syncBlogAndAllMetadata:self.blog
-                           completionHandler:^{
-                               [weakSelf configureTableViewData];
-                               [weakSelf reloadTableViewPreservingSelection];
-                               [weakSelf.headerView setBlog:weakSelf.blog];
-                           }];
+                           completionHandler:
+     ^{
+        [weakSelf configureTableViewData];
+        [weakSelf reloadTableViewPreservingSelection];
+        [weakSelf.headerView setBlog:weakSelf.blog];
+        onComplete();
+    }];
+}
+
+#pragma mark - Pull To Refresh
+
+- (void)pulledToRefresh {
+    __weak __typeof(self) weakSelf = self;
+    
+    [self updateTableViewAndHeader: ^{
+        // WORKAROUND: if we don't dispatch this asynchronously, the refresh end animation is clunky.
+        // To recognize if we can remove this, simply remove the dispatch_async call and test pulling
+        // down to refresh the site.
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            
+            [strongSelf.tableView.refreshControl endRefreshing];
+        });
+    }];
 }
 
 @end

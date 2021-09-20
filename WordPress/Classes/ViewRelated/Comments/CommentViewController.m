@@ -658,6 +658,15 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     if ([Feature enabled:FeatureFlagNewCommentEdit]) {
         EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
+        
+        __typeof(self) __weak weakSelf = self;
+        editViewController.completion = ^(Comment *comment, BOOL commentChanged) {
+            if (commentChanged) {
+                weakSelf.comment = comment;
+                [weakSelf updateComment];
+            }
+        };
+
         navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
     } else {
@@ -668,7 +677,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
             [self dismissViewControllerAnimated:YES completion:^{
                 if (hasNewContent) {
-                    [weakSelf updateCommentForNewContent:newContent];
+                    weakSelf.comment.content = newContent;
+                    [weakSelf updateComment];
                 }
             }];
         };
@@ -685,10 +695,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [CommentAnalytics trackCommentEditorOpenedWithComment:[self comment]];
 }
 
-- (void)updateCommentForNewContent:(NSString *)content
+- (void)updateComment
 {
-    // Set the new Content Data
-    self.comment.content = content;
     [self reloadData];
 
     // Regardless of success or failure track the user's intent to save a change.

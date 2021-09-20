@@ -1,7 +1,8 @@
-Você utiliza o bloco de mídia incorporada? Nas mídias que você incorporou no site, agora tem a opção “Redimensionar para dispositivos menores”. Ative-a para que seu conteúdo caiba na tela ou desative-a para não redimensionar.
+- Fique por dentro! Agora você pode receber um resumo semanal das atividades dos seus sites mais populares.
 
-Está gostando da ferramenta Lembretes de publicação? Adicionamos uma funcionalidade que deixa você escolher um horário específico para ser notificado.
+- Tenha ainda mais controle sobre os comentários no seu site: ao editá-los, agora você também pode ajustar o nome do autor, endereço de e-mail e endereço na Web.
+Fizemos alguns ajustes práticos no editor de blocos. O bloco de mídia incorporada agora fornece uma prévia quando você adiciona mídia do YouTube ou Twitter (em breve mais provedores). Além disso, quando você quer inserir um bloco e não encontra nada, agora aparece uma visualização "Nenhum resultado".
 
-Precisa excluir sua conta? Não nos abandone! Mas se for preciso, agora você pode excluí-la diretamente nas Configurações da conta.
+- Se você acessar Configurações do post > Formato do post, ainda verá a opção "Padrão" na parte superior da tela, mas as outras opções agora são exibidas em ordem alfabética abaixo. (As opções variam conforme o tema!)
 
-As publicações com geotagging não têm mais suporte na web, por isso removemos a opção Localização de Configurações do post.
+- Só mais uma coisinha: agora é muito simples atualizar seu site! Basta arrastrar para baixo na tela Meu site.

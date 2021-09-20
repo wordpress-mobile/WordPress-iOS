@@ -1,7 +1,8 @@
-Gebruik je het Insluitblok? Voor media die je insluit op je site bestaat nu de optie om de grootte ervan 'Aan te passen voor kleinere apparaten.' Schakel deze optie in om je content aan te passen aan je scherm; schakel uit om deze optie niet te gebruiken.
+- Blijf op de hoogte! Je kunt nu een wekelijks overzicht van de activiteit op je meest populaire sites ontvangen.
 
-Bevalt de tool voor Blog-herinneringen? We hebben een nieuwe functie toegevoegd waarmee je op een specifieke tijd een melding ontvangen.
+- Je hebt nog meer controle over de opmerkingen op je site: als je opmerkingen bewerkt, kun je nu ook de naam, het e-mailadres en het webadres van de auteur aanpassen.
+We hebben enkele kleine maar nuttige aanpassingen aangebracht aan de blokeditor. Het insluitblok toont nu een voorbeeldweergave wanneer je iets van YouTube of Twitter toevoegt (in de toekomst meer platformen). Waneer je een blok toevoegt, maar er niets wordt gevonden, is er nu een weergave voor geen resultaten.
 
-Wil je je account verwijderen? (We hopen dat het nooit zover komt!) Indien het toch nodig is, kan dit via je Accountinstellingen.
+- Als je naar Berichtinstellingen > Berichtindeling gaat, tref je de optie 'Standaard' nog steeds bovenaan aan, maar de andere opties staan nu netjes op alfabetische volgorde daaronder. (Opties verschillen per thema!)
 
-Het geotaggen van berichten wordt niet langer ondersteund op het web, dus hebben we Locatie-optie onder Berichtinstellingen verwijderd.
+- En nog een laatste kleine aanpassing: Het is nu ontzettend gemakkelijk om je site te vernieuwen: veeg simpelweg omlaag op het scherm Mijn site om te vernieuwen!
