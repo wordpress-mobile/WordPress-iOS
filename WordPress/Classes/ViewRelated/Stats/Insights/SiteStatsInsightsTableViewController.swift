@@ -293,7 +293,7 @@ private extension SiteStatsInsightsTableViewController {
         }
     }
 
-    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show.
+    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show as needed.
     ///
     /// - Parameters:
     ///   - insight: An insight that can be permanently dismissed for all sites
@@ -303,9 +303,14 @@ private extension SiteStatsInsightsTableViewController {
         let shouldAddInsight =
             !UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && !insightsToShow.contains(insight)
 
+        /// Note that this flag isn't an inversion of the shouldAddInsight flag.
+        let shouldRemoveInsight =
+            UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && insightsToShow.contains(insight)
+
+        /// Add or remove the insight as needed. If it's already showing and hasn't been dismissed, do nothing.
         if shouldAddInsight {
             insightsToShow.insert(insight, at: 0)
-        } else {
+        } else if shouldRemoveInsight {
             insightsToShow = insightsToShow.filter { $0 != insight }
         }
     }
