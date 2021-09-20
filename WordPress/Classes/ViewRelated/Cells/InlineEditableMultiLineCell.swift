@@ -1,17 +1,23 @@
 import Foundation
 
-protocol EditCommentMultiLineCellDelegate: AnyObject {
+// UITableViewCell that displays an editable UITextView to allow text to be modified inline.
+// The cell height resizes as the text is modified.
+// The delegate is notified when:
+// - The height is updated.
+// - The text is updated.
+
+protocol InlineEditableMultiLineCellDelegate: AnyObject {
     func textViewHeightUpdated()
     func textUpdated(_ updatedText: String?)
 }
 
-class EditCommentMultiLineCell: UITableViewCell, NibReusable {
+class InlineEditableMultiLineCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewMinHeightConstraint: NSLayoutConstraint!
-    weak var delegate: EditCommentMultiLineCellDelegate?
+    weak var delegate: InlineEditableMultiLineCellDelegate?
 
     // MARK: - View
 
@@ -29,7 +35,7 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
 
 // MARK: - UITextViewDelegate
 
-extension EditCommentMultiLineCell: UITextViewDelegate {
+extension InlineEditableMultiLineCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
         delegate?.textUpdated(textView.text)
@@ -40,7 +46,7 @@ extension EditCommentMultiLineCell: UITextViewDelegate {
 
 // MARK: - Private Extension
 
-private extension EditCommentMultiLineCell {
+private extension InlineEditableMultiLineCell {
 
     func configureCell() {
         textView.font = .preferredFont(forTextStyle: .body)
