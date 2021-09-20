@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-09 17:36:41+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:35:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -218,7 +218,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s opzioni blocco";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s block previews are coming soon";
+"%s block previews are coming soon" = "Le anteprime dei blocchi di %s sono presto disponibili";
 
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "Blocco %s, da poco disponibile";
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s non ha un URL impostato";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "Le anteprime di %s non sono ancora disponibili";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Icona social %s";
@@ -1528,7 +1528,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "Commento su";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1840,7 +1840,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't upload the featured image" = "Impossibile caricare l'immagine in evidenza";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "Impossibile chiudere l'account automaticamente";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Conteggio degli elementi media";
@@ -3329,7 +3329,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Sono ispirato dal lavoro del fotografo Cameron Karsten. Proverò queste tecniche durante il mio prossimo";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "Indirizzo IP";
 
 /* Title of a button style */
 "Icon & Text" = "Icona e testo";
@@ -3746,7 +3746,7 @@ translators: Block name. %s: The localized block name */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite raggiunto. Si consiglia di attendere almeno un minuto prima di riprovare. Se l'errore persiste, o se pensi che sia un errore del sistema, si prega di contattare il supporto.";
 
 /* No comment provided by engineer. */
-"Line Height" = "Line Height";
+"Line Height" = "Altezza linea";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4291,7 +4291,7 @@ translators: Block name. %s: The localized block name */
 "New Post" = "Nuovo articolo";
 
 /* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
+"New domain flow" = "Nuovo flusso del dominio";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nuova voce";
@@ -5276,7 +5276,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Sito principale";
 
 /* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Primary Site Address";
+"Primary Site Address" = "Indirizzo del sito principale";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5472,7 +5472,7 @@ translators: Block name. %s: The localized block name */
 "Reconnected" = "Riconnesso";
 
 /* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Redirected Domains";
+"Redirected Domains" = "Dominio reindirizzato";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referrer";
@@ -8259,10 +8259,10 @@ translators: Block name. %s: The localized block name */
 "We’ll walk you through the basics of building and growing your site" = "Ti insegneremo le basi per creare e far crescere il tuo sito";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Stiamo lavorando sodo per aggiungere il supporto per le anteprime di %s. Nel frattempo, puoi visualizzare in anteprima il contenuto incorporato nella pagina.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Stiamo lavorando sodo per aggiungere il supporto per le anteprime di %s. Nel frattempo, puoi visualizzare in anteprima il contenuto incorporato nell'articolo.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Abbiamo aggiunto più attività per aiutarti ad aumentare il tuo pubblico.";

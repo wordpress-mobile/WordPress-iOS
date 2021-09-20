@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-07 12:35:32+0000 */
+/* Translation-Revision-Date: 2021-09-14 11:22:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -8216,7 +8216,7 @@ translators: Block name. %s: The localized block name */
 "Week starts on" = "Java nis me";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "Përmbledhje Javore";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Javë";
@@ -8682,7 +8682,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Adresa juaj parësore e sajtit është ajo që vizitorët do të shohin në shtyllën e tyre të adresave, kur të vizitojnë sajtin tuaj.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Rikthimi juaj po zgjat më shumë se zakonisht, ju lutemi, rikontrolloni pas pak minutash.";

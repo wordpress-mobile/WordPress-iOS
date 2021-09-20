@@ -1,0 +1,8 @@
+- Restez au courant ! Vous pouvez désormais recevoir un récapitulatif hebdomadaire des activités sur vos sites les plus populaires.
+
+- Vous contrôlez davantage les commentaires sur vos sites : lorsque vous les modifiez, vous pouvez désormais également changer le nom de l’auteur, l’adresse e-mail et l’adresse Web.
+Nous avons apporté quelques modifications pratiques à l’éditeur de blocs. Le bloc de contenu embarqué vous donne désormais un premier aperçu lorsque vous effectuez un ajout depuis YouTube ou Twitter (plus de fournisseurs prochainement). De plus, lorsque vous essayez d’insérer un bloc introuvable, un message indique qu’aucun résultat n’est disponible.
+
+- Si vous accédez à Paramètres d’article > Format d’article, vous verrez que l’option « Standard » apparaît toujours dans la partie supérieure, mais que les autres options s’affichent désormais clairement par ordre alphabétique en dessous. (Les options varient en fonction des thèmes !)
+
+- Et enfin : vous pouvez désormais actualiser votre site très facilement en faisant simplement glisser vers le bas à partir de l’écran Mon site !
