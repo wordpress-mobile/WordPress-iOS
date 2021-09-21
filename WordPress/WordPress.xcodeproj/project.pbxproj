@@ -1395,6 +1395,12 @@
 		8BFE36FD230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */; };
 		8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */; };
 		8C6A22E425783D2000A79950 /* JetpackScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A22E325783D2000A79950 /* JetpackScanService.swift */; };
+		8F22804451E5812433733348 /* TimeZoneSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */; };
+		8F2281EE1C11E49A2B1FE337 /* TimeZoneSearchHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F228AE62B771552F0F971BE /* TimeZoneSearchHeaderView.xib */; };
+		8F228614F588222E57F2E8DE /* TimeZoneSearchHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F228AE62B771552F0F971BE /* TimeZoneSearchHeaderView.xib */; };
+		8F2289EDA1886BF77687D72D /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */; };
+		8F228B22E190FF92D05E53DB /* TimeZoneSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */; };
+		8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */; };
 		91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */; };
 		912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */; };
 		9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */; };
@@ -2324,7 +2330,6 @@
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
 		E1CA0A6C1FA73053004C4BBE /* PluginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */; };
 		E1CB6DA3200F376400945457 /* TimeZoneStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB6DA2200F376400945457 /* TimeZoneStore.swift */; };
-		E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */; };
 		E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
 		E1CFC1571E0AC8FF001DF9E9 /* Pattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */; };
 		E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D81516D3B86800E33F4C /* SafariActivity.m */; };
@@ -3221,7 +3226,6 @@
 		FABB21FD2602FC2C00C8785C /* ActivityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */; };
 		FABB21FE2602FC2C00C8785C /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
 		FABB21FF2602FC2C00C8785C /* JetpackBackupStatusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD4F25AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift */; };
-		FABB22002602FC2C00C8785C /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */; };
 		FABB22012602FC2C00C8785C /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
 		FABB22022602FC2C00C8785C /* MediaThumbnailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */; };
 		FABB22032602FC2C00C8785C /* RevisionDiffsPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */; };
@@ -6120,6 +6124,9 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DCE7542239FBC709B90EA85 /* Pods_WordPressUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E65034AFB7DC85D70CCC064 /* Pods-WordPressThisWeekWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressThisWeekWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
+		8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
+		8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneSearchHeaderView.swift; sourceTree = "<group>"; };
+		8F228AE62B771552F0F971BE /* TimeZoneSearchHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeZoneSearchHeaderView.xib; sourceTree = "<group>"; };
 		91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergVideoUploadProcessor.swift; sourceTree = "<group>"; };
 		912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+InformativeDialog.swift"; sourceTree = "<group>"; };
 		9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergInformativeDialogTests.swift; sourceTree = "<group>"; };
@@ -7202,7 +7209,6 @@
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
 		E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginStore.swift; sourceTree = "<group>"; };
 		E1CB6DA2200F376400945457 /* TimeZoneStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneStore.swift; sourceTree = "<group>"; };
-		E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
 		E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareExtractor.swift; path = WordPressShareExtension/ShareExtractor.swift; sourceTree = SOURCE_ROOT; };
 		E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pattern.swift; sourceTree = "<group>"; };
 		E1D0D81416D3B86800E33F4C /* SafariActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariActivity.h; sourceTree = "<group>"; };
@@ -11341,6 +11347,15 @@
 			name = "Prepublishing Nudges";
 			sourceTree = "<group>";
 		};
+		8F228031B2964AE9A667C735 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */,
+				8F228AE62B771552F0F971BE /* TimeZoneSearchHeaderView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		931215E2267F4F92008C3B69 /* Referrer Details */ = {
 			isa = PBXGroup;
 			children = (
@@ -12367,6 +12382,7 @@
 		B53AD9B31BE9560F009AB87E /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				DC590CFE26F205C400EB0F73 /* Time Zone */,
 				E1EEFAD91CC4CC5700126533 /* Confirmable.h */,
 				B55086201CC15CCB004EADB4 /* PromptViewController.swift */,
 				E185042E1EE6ABD9005C234C /* Restorer.swift */,
@@ -12381,7 +12397,6 @@
 				B53AD9B81BE95687009AB87E /* SettingsTextViewController.h */,
 				B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */,
 				E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */,
-				E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */,
 				3F170E232655917400F6F670 /* UIView+SwiftUI.swift */,
 			);
 			path = Tools;
@@ -13529,6 +13544,15 @@
 				D8225407219AB0520014D0E2 /* SiteInformation.swift */,
 			);
 			name = "Site Creation";
+			sourceTree = "<group>";
+		};
+		DC590CFE26F205C400EB0F73 /* Time Zone */ = {
+			isa = PBXGroup;
+			children = (
+				8F228031B2964AE9A667C735 /* Views */,
+				8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */,
+			);
+			path = "Time Zone";
 			sourceTree = "<group>";
 		};
 		E10520591F2B1CD400A948F6 /* 61-62 */ = {
@@ -15539,6 +15563,7 @@
 				1761F17626209AEE000815EF /* wordpress-dark-icon-app-76x76@2x.png in Resources */,
 				9A9E3FAE230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib in Resources */,
 				17222D95261DDDF90047B163 /* pink-icon-app-76x76.png in Resources */,
+				8F2281EE1C11E49A2B1FE337 /* TimeZoneSearchHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15968,6 +15993,7 @@
 				FABB20BF2602FC2C00C8785C /* DetailDataCell.xib in Resources */,
 				FABB20C02602FC2C00C8785C /* StatsGhostTwoColumnCell.xib in Resources */,
 				17C1D6F626711ED0006C8970 /* Emoji.txt in Resources */,
+				8F228614F588222E57F2E8DE /* TimeZoneSearchHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -17218,7 +17244,6 @@
 				825327581FBF7CD600B8B7D2 /* ActivityUtils.swift in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				FAB8FD5025AEB0F500D5D54A /* JetpackBackupStatusCoordinator.swift in Sources */,
-				E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */,
 				9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */,
 				FF4C069F206560E500E0B2BC /* MediaThumbnailCoordinator.swift in Sources */,
 				9A4697B221B002AD00468B64 /* RevisionDiffsPageManager.swift in Sources */,
@@ -18364,6 +18389,8 @@
 				B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */,
 				57AA848F228715DA00D3C2A2 /* PostCardCell.swift in Sources */,
 				FE43DAAF26DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */,
+				8F22804451E5812433733348 /* TimeZoneSearchHeaderView.swift in Sources */,
+				8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -19427,7 +19454,6 @@
 				FABB21FD2602FC2C00C8785C /* ActivityUtils.swift in Sources */,
 				FABB21FE2602FC2C00C8785C /* WPLogger.m in Sources */,
 				FABB21FF2602FC2C00C8785C /* JetpackBackupStatusCoordinator.swift in Sources */,
-				FABB22002602FC2C00C8785C /* TimeZoneSelectorViewController.swift in Sources */,
 				FABB22012602FC2C00C8785C /* RevisionDiff.swift in Sources */,
 				FABB22022602FC2C00C8785C /* MediaThumbnailCoordinator.swift in Sources */,
 				FABB22032602FC2C00C8785C /* RevisionDiffsPageManager.swift in Sources */,
@@ -20577,6 +20603,8 @@
 				FABB261C2602FC2C00C8785C /* ReferrerStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB261D2602FC2C00C8785C /* CommentsTableViewCell.swift in Sources */,
 				FABB261E2602FC2C00C8785C /* PostCardCell.swift in Sources */,
+				8F228B22E190FF92D05E53DB /* TimeZoneSearchHeaderView.swift in Sources */,
+				8F2289EDA1886BF77687D72D /* TimeZoneSelectorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
