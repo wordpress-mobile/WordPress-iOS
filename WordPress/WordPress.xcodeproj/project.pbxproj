@@ -2643,6 +2643,12 @@
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
 		FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
 		FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
+		FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA347AEB26EB6E300096604B /* GrowAudienceCell.swift */; };
+		FA347AEE26EB6E300096604B /* GrowAudienceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA347AEB26EB6E300096604B /* GrowAudienceCell.swift */; };
+		FA347AEF26EB6E300096604B /* GrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AEC26EB6E300096604B /* GrowAudienceCell.xib */; };
+		FA347AF026EB6E300096604B /* GrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AEC26EB6E300096604B /* GrowAudienceCell.xib */; };
+		FA347AF226EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */; };
+		FA347AF326EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */; };
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
 		FA41044D263932AC00E90EBF /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
 		FA4104602639346D00E90EBF /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
@@ -7495,6 +7501,9 @@
 		FA25F9FD2609AA830005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA25FA332609AAAA0005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
+		FA347AEB26EB6E300096604B /* GrowAudienceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowAudienceCell.swift; sourceTree = "<group>"; };
+		FA347AEC26EB6E300096604B /* GrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GrowAudienceCell.xib; sourceTree = "<group>"; };
+		FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsGhostGrowAudienceCell.xib; sourceTree = "<group>"; };
 		FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreCompleteViewController.swift; sourceTree = "<group>"; };
 		FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogScreen.swift; sourceTree = "<group>"; };
 		FA4104732639393700E90EBF /* JetpackScanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanScreen.swift; sourceTree = "<group>"; };
@@ -11855,6 +11864,8 @@
 				9895B6DF21ED49160053D370 /* TopTotalsCell.xib */,
 				98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */,
 				98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */,
+				FA347AEB26EB6E300096604B /* GrowAudienceCell.swift */,
+				FA347AEC26EB6E300096604B /* GrowAudienceCell.xib */,
 			);
 			path = "Shared Views";
 			sourceTree = "<group>";
@@ -11872,6 +11883,7 @@
 				9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */,
 				9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */,
 				9AB36B83236B25D900FAD72A /* StatsGhostTitleCell.xib */,
+				FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */,
 			);
 			path = GhostViews;
 			sourceTree = "<group>";
@@ -15326,6 +15338,7 @@
 				98797DBD222F434500128C21 /* OverviewCell.xib in Resources */,
 				9A8ECE1E2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib in Resources */,
 				1761F18626209AEE000815EF /* pride-icon-app-60x60@2x.png in Resources */,
+				FA347AF226EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */,
 				464688D9255C71D200ECA61C /* TemplatePreviewViewController.xib in Resources */,
 				98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
@@ -15344,6 +15357,7 @@
 				1761F17D26209AEE000815EF /* open-source-icon-app-83.5x83.5@2x.png in Resources */,
 				1761F17126209AEE000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png in Resources */,
 				9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */,
+				FA347AEF26EB6E300096604B /* GrowAudienceCell.xib in Resources */,
 				98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */,
 				17222D82261DDDF90047B163 /* celadon-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */,
@@ -15871,7 +15885,9 @@
 				98E5501A265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */,
 				FABB209B2602FC2C00C8785C /* acknowledgements.html in Resources */,
 				FABB209C2602FC2C00C8785C /* ReaderDetailViewController.storyboard in Resources */,
+				FA347AF026EB6E300096604B /* GrowAudienceCell.xib in Resources */,
 				FABB209D2602FC2C00C8785C /* EditCommentViewController.xib in Resources */,
+				FA347AF326EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */,
 				FABB209E2602FC2C00C8785C /* GutenGhostView.xib in Resources */,
 				FABB20A12602FC2C00C8785C /* MenuItemEditing.storyboard in Resources */,
 				FABB20A22602FC2C00C8785C /* CountriesCell.xib in Resources */,
@@ -17788,6 +17804,7 @@
 				F532AE1C253E55D40013B42E /* CreateButtonActionSheet.swift in Sources */,
 				8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
+				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
@@ -19785,6 +19802,7 @@
 				FABB238E2602FC2C00C8785C /* NotificationSettingsService.swift in Sources */,
 				FABB238F2602FC2C00C8785C /* WPButtonForNavigationBar.m in Sources */,
 				FABB23902602FC2C00C8785C /* WidgetDifferenceCell.swift in Sources */,
+				FA347AEE26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				FABB23912602FC2C00C8785C /* WidgetTwoColumnCell.swift in Sources */,
 				FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */,
 				FABB23932602FC2C00C8785C /* LoadMoreCounter.swift in Sources */,

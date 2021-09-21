@@ -61,6 +61,18 @@ class SiteStatsInsightsViewModel: Observable {
             }
 
             switch insightType {
+            case .growAudience:
+                tableRows.append(blocks(for: .growAudience,
+                                        type: .insights,
+                                        status: insightsStore.allTimeStatus,
+                                        block: {
+                                            let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
+                                            return GrowAudienceRow(hintType: .bloggingReminders,
+                                                                   allTimeViewsCount: viewsCount ?? 0,
+                                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loading: {
+                    return StatsGhostGrowAudienceImmutableRow()
+                }, error: errorBlock))
             case .customize:
                 tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .latestPostSummary:

@@ -2,6 +2,7 @@ import UIKit
 import WordPressFlux
 
 enum InsightType: Int {
+    case growAudience
     case customize
     case latestPostSummary
     case allTimeStats
@@ -79,6 +80,7 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
+    @objc optional func growAudienceDismissButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
     @objc optional func addInsightDismissed()
@@ -98,6 +100,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
+
+    // Store 'grow audience' separately as it is not per site.
+    private let userDefaultsHideGrowAudienceKey = "StatsInsightsHideGrowAudienceCard"
 
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
@@ -183,6 +188,7 @@ private extension SiteStatsInsightsTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [InsightCellHeaderRow.self,
+                GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
                 TwoColumnStatsRow.self,
@@ -191,6 +197,7 @@ private extension SiteStatsInsightsTableViewController {
                 TopTotalsInsightStatsRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
+                StatsGhostGrowAudienceImmutableRow.self,
                 StatsGhostChartImmutableRow.self,
                 StatsGhostTwoColumnImmutableRow.self,
                 StatsGhostTopImmutableRow.self,
@@ -247,7 +254,7 @@ private extension SiteStatsInsightsTableViewController {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
             insightsToShow = InsightType.defaultInsights
-            loadCustomizeCardSetting()
+            loadPinnedCards()
             return
         }
 
@@ -259,8 +266,7 @@ private extension SiteStatsInsightsTableViewController {
         let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
         insightsToShow = InsightType.typesForValues(insightTypesValues)
 
-        // Add the 'customize' card if necessary.
-        loadCustomizeCardSetting()
+        loadPinnedCards()
     }
 
     func writeInsightsToUserDefaults() {
@@ -279,7 +285,15 @@ private extension SiteStatsInsightsTableViewController {
         UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
     }
 
-    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show.
+    func loadPinnedCards() {
+        loadGrowAudienceCardSetting()
+
+        if !insightsToShow.contains(.growAudience) {
+            loadCustomizeCardSetting()
+        }
+    }
+
+    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show as needed.
     ///
     /// - Parameters:
     ///   - insight: An insight that can be permanently dismissed for all sites
@@ -289,9 +303,14 @@ private extension SiteStatsInsightsTableViewController {
         let shouldAddInsight =
             !UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && !insightsToShow.contains(insight)
 
+        /// Note that this flag isn't an inversion of the shouldAddInsight flag.
+        let shouldRemoveInsight =
+            UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && insightsToShow.contains(insight)
+
+        /// Add or remove the insight as needed. If it's already showing and hasn't been dismissed, do nothing.
         if shouldAddInsight {
             insightsToShow.insert(insight, at: 0)
-        } else {
+        } else if shouldRemoveInsight {
             insightsToShow = insightsToShow.filter { $0 != insight }
         }
     }
@@ -314,6 +333,16 @@ private extension SiteStatsInsightsTableViewController {
 
     func dismissCustomizeCard() {
         permanentlyDismissInsight(.customize, using: userDefaultsHideCustomizeKey)
+    }
+
+    // MARK: - Grow Audience Card Management
+
+    func loadGrowAudienceCardSetting() {
+        loadPermanentlyDismissableInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
+    }
+
+    func dismissGrowAudienceCard() {
+        permanentlyDismissInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
     }
 
     // MARK: - Insights Management
@@ -370,7 +399,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func canMoveInsightUp(_ insight: InsightType) -> Bool {
-        let isShowingPinnedCard = insightsToShow.contains(.customize)
+        let isShowingPinnedCard = insightsToShow.contains(.customize) || insightsToShow.contains(.growAudience)
 
         let minIndex = isShowingPinnedCard ? 1 : 0
 
@@ -496,6 +525,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func customizeTryButtonTapped() {
         showAddInsightView()
+    }
+
+    func growAudienceDismissButtonTapped() {
+        dismissGrowAudienceCard()
+        updateView()
     }
 
     func showAddInsight() {
