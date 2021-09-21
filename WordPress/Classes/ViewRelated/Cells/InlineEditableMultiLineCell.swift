@@ -1,17 +1,23 @@
 import Foundation
 
-protocol EditCommentMultiLineCellDelegate: AnyObject {
-    func textViewHeightUpdated()
-    func textUpdated(_ updatedText: String?)
+// UITableViewCell that displays an editable UITextView to allow text to be modified inline.
+// The cell height resizes as the text is modified.
+// The delegate is notified when:
+// - The height is updated.
+// - The text is updated.
+
+protocol InlineEditableMultiLineCellDelegate: AnyObject {
+    func textViewHeightUpdatedForCell(_ cell: InlineEditableMultiLineCell)
+    func textUpdatedForCell(_ cell: InlineEditableMultiLineCell)
 }
 
-class EditCommentMultiLineCell: UITableViewCell, NibReusable {
+class InlineEditableMultiLineCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewMinHeightConstraint: NSLayoutConstraint!
-    weak var delegate: EditCommentMultiLineCellDelegate?
+    weak var delegate: InlineEditableMultiLineCellDelegate?
 
     // MARK: - View
 
@@ -29,10 +35,10 @@ class EditCommentMultiLineCell: UITableViewCell, NibReusable {
 
 // MARK: - UITextViewDelegate
 
-extension EditCommentMultiLineCell: UITextViewDelegate {
+extension InlineEditableMultiLineCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
-        delegate?.textUpdated(textView.text)
+        delegate?.textUpdatedForCell(self)
         adjustHeight()
     }
 
@@ -40,7 +46,7 @@ extension EditCommentMultiLineCell: UITextViewDelegate {
 
 // MARK: - Private Extension
 
-private extension EditCommentMultiLineCell {
+private extension InlineEditableMultiLineCell {
 
     func configureCell() {
         textView.font = .preferredFont(forTextStyle: .body)
@@ -55,7 +61,7 @@ private extension EditCommentMultiLineCell {
         textView.frame.size.height = CGFloat(textViewHeight)
 
         if textViewHeight != Float(originalHeight) {
-            delegate?.textViewHeightUpdated()
+            delegate?.textViewHeightUpdatedForCell(self)
         }
     }
 
