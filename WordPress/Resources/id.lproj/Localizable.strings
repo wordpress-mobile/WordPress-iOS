@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-07 05:27:59+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:42:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -1528,7 +1528,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "Komentar di";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1840,7 +1840,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't upload the featured image" = "Tidak dapat mengunggah gambar andalan";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "Tidak dapat menutup akun secara otomatis";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Menghitung item media...";
@@ -3329,7 +3329,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Saya sangat terinspirasi oleh karya fotografer Cameron Karsten. Saya akan mencoba teknik ini selanjutnya";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "Alamat IP";
 
 /* Title of a button style */
 "Icon & Text" = "Ikon & Teks";
@@ -3746,7 +3746,7 @@ translators: Block name. %s: The localized block name */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Melampaui Batas. Anda dapat coba lagi semenit kemudian. Mencoba sebelum semenit akan menambah waktu Anda harus menunggu sebelum ban dicabut. Jika Anda merasa ini sebuah kesalahan, silahkan kontak support.";
 
 /* No comment provided by engineer. */
-"Line Height" = "Line Height";
+"Line Height" = "Ketinggian Baris";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4291,7 +4291,7 @@ translators: Block name. %s: The localized block name */
 "New Post" = "Postingan Baru";
 
 /* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
+"New domain flow" = "Alur domain baru";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Item baru";
@@ -5276,7 +5276,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Situs Utama";
 
 /* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Primary Site Address";
+"Primary Site Address" = "Alamat Situs Utama";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5472,7 +5472,7 @@ translators: Block name. %s: The localized block name */
 "Reconnected" = "Dihubungkan kembali";
 
 /* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Redirected Domains";
+"Redirected Domains" = "Domain yang Dialihkan";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Perujuk";
@@ -5492,7 +5492,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "Daftarkan Secara Pribadi Dengan Perlindungan Privasi";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "Daftarkan domain gratis";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7195,7 +7195,7 @@ translators: Block name. %s: The localized block name */
 "To add photos or videos to your posts." = "Untuk menambahkan foto atau video ke pos Anda.";
 
 /* Error message displayed when unable to close user account. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+"To close this account now, contact our support team." = "Untuk menutup akun ini sekarang juga, hubungi tim dukungan kami.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Untuk melanjutkan, masukkan alamat email dan nama Anda.";
@@ -8210,13 +8210,13 @@ translators: Block name. %s: The localized block name */
 "Web News" = "Berita Web";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "Alamat situs web";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Minggu dimulai";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "Ringkasan Mingguan";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Minggu";
@@ -8682,7 +8682,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "Pos, laman, dan pengaturan Anda akan dikirim melalui alamat email %@.";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Alamat situs utama adalah yang akan muncul pada kotak alamat browser saat pengunjung mengunjungi situs web Anda.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Pemulihan Anda memerlukan waktu lebih lama dari biasanya, periksa lagi dalam beberapa menit.";

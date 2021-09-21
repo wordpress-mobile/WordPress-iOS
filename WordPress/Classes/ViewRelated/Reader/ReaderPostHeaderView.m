@@ -48,7 +48,7 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisHorizontal;
-    stackView.distribution = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentTop;
     stackView.spacing = 8.0;
 
@@ -89,7 +89,7 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.preservesSuperviewLayoutMargins = YES;
     stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.distribution = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentLeading;
 
     [self.stackView addArrangedSubview:stackView];
