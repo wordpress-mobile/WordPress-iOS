@@ -720,7 +720,7 @@ import WordPressFlux
 
 
     /// Returns the analytics property dictionary for the current topic.
-    private func topicPropertyForStats() -> [AnyHashable: Any]? {
+    private func topicPropertyForStats(post: ReaderPost? = nil) -> [AnyHashable: Any]? {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
             return nil
@@ -735,7 +735,16 @@ import WordPressFlux
             key = "site"
         }
 
-        return [key: title, "source": statSource.rawValue]
+        var dict: [String: Any] = [key: title, "source": statSource.rawValue]
+        
+        if let post = post {
+            dict["blog_id"] = String(Int(truncating: post.siteID))
+            dict["feed_id"] = String(Int(truncating: post.feedID))
+            dict["follow"] = post.isFollowing
+        }
+
+        print(dict)
+        return dict
     }
 
     /// The fetch request can need a different predicate depending on how the content
@@ -1577,7 +1586,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         } else {
-            WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
+            WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats(post: apost) ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
