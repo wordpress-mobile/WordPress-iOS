@@ -7,8 +7,8 @@ import Foundation
 // - The text is updated.
 
 protocol InlineEditableMultiLineCellDelegate: AnyObject {
-    func textViewHeightUpdated()
-    func textUpdated(_ updatedText: String?)
+    func textViewHeightUpdatedForCell(_ cell: InlineEditableMultiLineCell)
+    func textUpdatedForCell(_ cell: InlineEditableMultiLineCell)
 }
 
 class InlineEditableMultiLineCell: UITableViewCell, NibReusable {
@@ -38,7 +38,7 @@ class InlineEditableMultiLineCell: UITableViewCell, NibReusable {
 extension InlineEditableMultiLineCell: UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
-        delegate?.textUpdated(textView.text)
+        delegate?.textUpdatedForCell(self)
         adjustHeight()
     }
 
@@ -61,7 +61,7 @@ private extension InlineEditableMultiLineCell {
         textView.frame.size.height = CGFloat(textViewHeight)
 
         if textViewHeight != Float(originalHeight) {
-            delegate?.textViewHeightUpdated()
+            delegate?.textViewHeightUpdatedForCell(self)
         }
     }
 

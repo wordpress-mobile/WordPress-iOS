@@ -265,12 +265,12 @@ extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
 
 extension EditCommentTableViewController: InlineEditableMultiLineCellDelegate {
 
-    func textViewHeightUpdated() {
+    func textViewHeightUpdatedForCell(_ cell: InlineEditableMultiLineCell) {
         tableView.performBatchUpdates({})
     }
 
-    func textUpdated(_ updatedText: String?) {
-        updatedContent = updatedText?.trim()
+    func textUpdatedForCell(_ cell: InlineEditableMultiLineCell) {
+        updatedContent = cell.textView.text.trim()
         updateDoneButton()
     }
 
