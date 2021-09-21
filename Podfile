@@ -167,7 +167,7 @@ abstract_target 'Apps' do
     ## =====================
     ##
     # gutenberg :tag => 'v1.61.1'
-    gutenberg :commit => 'ed0467396e85f3d37281d86d660f3ec0fafe7376'
+    gutenberg :commit => 'df1f38340498127c1b60d4cdfca356efb5aff902'
 
     ## Third party libraries
     ## =====================
