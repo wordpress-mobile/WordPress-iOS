@@ -40,6 +40,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
+    
+    if (self.isModal) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(doneButtonTapped)];
+    }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self syncServices];
@@ -66,6 +72,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
+- (void)doneButtonTapped
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - UITableView Delegate methods
 
