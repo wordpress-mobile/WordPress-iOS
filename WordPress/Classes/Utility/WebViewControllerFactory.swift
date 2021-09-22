@@ -39,4 +39,11 @@ class WebViewControllerFactory: NSObject {
         return controller(configuration: configuration)
     }
 
+    static func controllerWithDefaultAccountAndSecureInteraction(url: URL) -> UIViewController {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.secureInteraction = true
+        return controller(configuration: configuration)
+    }
+
 }

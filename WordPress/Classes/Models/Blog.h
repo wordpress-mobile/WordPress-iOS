@@ -100,6 +100,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *dotComID;
 @property (nonatomic, strong, readwrite, nullable) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
+@property (nonatomic, strong, readwrite, nonnull) NSNumber *organizationID;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
 @property (nonatomic, strong, readwrite, nullable) NSSet<AbstractPost *> *posts;

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-01 11:54:10+0000 */
+/* Translation-Revision-Date: 2021-09-15 18:32:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -218,7 +218,7 @@ translators: Block name. %s: The localized block name */
 "%s block options" = "%s blok seçenekleri";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s block previews are coming soon";
+"%s block previews are coming soon" = "%s blok önizlemeleri yakında kullanıma hazır";
 
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s blok, hazır";
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s için ayarlanmış bir URL yok";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "%s önizlemeleri henüz kullanılamıyor";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s sosyal simge";
@@ -1528,7 +1528,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "Şununla ilgili yorum:";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1840,7 +1840,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't upload the featured image" = "Öne çıkan görsel yüklenemedi";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "Hesap otomatik olarak kapatılamadı";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Ortam öğeleri sayılıyor...";
@@ -3329,7 +3329,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Fotoğrafçı Cameron Karsten'in çalışmalarından çok ilham alıyorum. Bu teknikleri bir sonraki adımda deneyeceğim";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "IP adresi";
 
 /* Title of a button style */
 "Icon & Text" = "Simge ve metin";
@@ -3746,7 +3746,7 @@ translators: Block name. %s: The localized block name */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite ulaşıldı. Bir dakika içinde tekrar deneyebilirsiniz. Bundan önceki denemeler, sadece engellemenin kalkması için beklemeniz gereken süreyi arttıracaktır. Eğer bunun bir hata olduğunu düşünüyorsanız destek ile iletişime geçin.";
 
 /* No comment provided by engineer. */
-"Line Height" = "Line Height";
+"Line Height" = "Çizgi Yüksekliği";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -4291,7 +4291,7 @@ translators: Block name. %s: The localized block name */
 "New Post" = "Yeni yazı";
 
 /* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
+"New domain flow" = "Yeni alan adı akışı";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Yeni öge";
@@ -5276,7 +5276,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Birincil site";
 
 /* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Primary Site Address";
+"Primary Site Address" = "Birincil Site Adresi";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5472,7 +5472,7 @@ translators: Block name. %s: The localized block name */
 "Reconnected" = "Yeniden bağlandı";
 
 /* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Redirected Domains";
+"Redirected Domains" = "Yönlendirilmiş Alan Adları";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "Kaynak";
@@ -5492,7 +5492,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "Gizlilik koruması ile özel olarak kaydet";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "Ücretsiz bir alan adı kaydettirin";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -7195,7 +7195,7 @@ translators: Block name. %s: The localized block name */
 "To add photos or videos to your posts." = "Yazılarınızda fotoğraf veya video eklemek için.";
 
 /* Error message displayed when unable to close user account. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+"To close this account now, contact our support team." = "Bu hesabı şimdi kapatmak için destek ekibimize başvurun.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Devam etmek için lütfen e-posta adresinizi ve adınızı girin.";
@@ -8210,13 +8210,13 @@ translators: Block name. %s: The localized block name */
 "Web News" = "Web Haberleri";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "Web adresi";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Haftanın başlangıcı";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "Haftalık Özet";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Haftalar";
@@ -8259,10 +8259,10 @@ translators: Block name. %s: The localized block name */
 "We’ll walk you through the basics of building and growing your site" = "Sitenizi oluşturma ve geliştirme konusundaki temel bilgiler hakkında size rehberlik edeceğiz";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "%s önizlemelerine yönelik destek eklemek için çalışmalarımız devam ediyor. Bu arada, sayfadaki gömülü içeriği önizleyebilirsiniz.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "%s önizlemelerine yönelik destek eklemek için çalışmalarımız devam ediyor. Bu arada, gönderideki gömülü içeriği önizleyebilirsiniz.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "Kitlenizi geliştirmenize yardımcı olacak daha fazla görev ekledik.";
@@ -8682,7 +8682,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "Yazılarınız, sayfalarınız ve ayarlarınız %@ adresine e-posta ile gönderilecek.";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Birincil site adresiniz, web sitenizi ziyaret edenlerin adres çubuğunda görecekleri adrestir.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Geri yüklemeniz normalden uzun sürüyor, lütfen birkaç dakika sonra tekrar kontrol edin.";

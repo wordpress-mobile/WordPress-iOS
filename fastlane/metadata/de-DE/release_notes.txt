@@ -1,0 +1,8 @@
+- Bleib auf dem Laufenden! Du kannst jetzt eine wöchentliche Übersicht über die Aktivitäten auf deinen beliebtesten Websites erhalten.
+
+- Du hast noch mehr Kontrolle über deine Website-Kommentare: Wenn du sie bearbeitest, kannst du jetzt auch den Namen, die E-Mail-Adresse und die Webadresse des Autors anpassen.
+Wir haben den Block-Editor um ein paar praktische Funktionen erweitert. Der Embed-Block zeigt dir jetzt eine Vorschau an, wenn du Inhalte aus YouTube oder Twitter (und bald noch von weiteren Anbietern) einfügst. Und wenn du einen Block einfügst und nichts gefunden wird, wird jetzt angezeigt, dass keine Ergebnisse vorhanden sind.
+
+- Wenn du zu „Beitragseinstellungen > Beitragsformat“ navigierst, wird nach wie vor oben die Option „Standard“ angezeigt. Darunter werden die anderen Optionen nun aber übersichtlich in alphabetischer Reihenfolge aufgeführt. (Die aufgeführten Optionen hängen vom jeweiligen Theme ab!)
+
+- Und noch etwas: Du kannst deine Website jetzt unglaublich einfach aktualisieren. Ziehe zum Aktualisieren einfach auf dem Bildschirm „Meine Website“ nach unten!

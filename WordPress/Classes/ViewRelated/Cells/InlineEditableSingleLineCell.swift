@@ -1,8 +1,11 @@
 import Foundation
 
+// UITableViewCell that displays an editable UITextField to allow text to be modified inline.
+// The text field and keyboard styles are set based on the TextFieldStyle. The default is `text`.
+// The delegate is notified as the text is modified.
 
-protocol EditCommentSingleLineCellDelegate: AnyObject {
-    func textUpdatedForCell(_ cell: EditCommentSingleLineCell)
+protocol InlineEditableSingleLineCellDelegate: AnyObject {
+    func textUpdatedForCell(_ cell: InlineEditableSingleLineCell)
 }
 
 // Used to determine TextField configuration options.
@@ -13,12 +16,12 @@ enum TextFieldStyle {
 }
 
 
-class EditCommentSingleLineCell: UITableViewCell, NibReusable {
+class InlineEditableSingleLineCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties
 
     @IBOutlet weak var textField: UITextField!
-    weak var delegate: EditCommentSingleLineCellDelegate?
+    weak var delegate: InlineEditableSingleLineCellDelegate?
     private(set) var textFieldStyle: TextFieldStyle = .text
     private(set) var isValid: Bool = true
 
@@ -50,7 +53,7 @@ class EditCommentSingleLineCell: UITableViewCell, NibReusable {
 
 // MARK: - UITextFieldDelegate
 
-extension EditCommentSingleLineCell: UITextFieldDelegate {
+extension InlineEditableSingleLineCell: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -65,7 +68,7 @@ extension EditCommentSingleLineCell: UITextFieldDelegate {
 
 // MARK: - Private Extension
 
-private extension EditCommentSingleLineCell {
+private extension InlineEditableSingleLineCell {
 
     func configureCell() {
         textField.font = .preferredFont(forTextStyle: .body)

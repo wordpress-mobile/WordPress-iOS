@@ -17,7 +17,7 @@ class EditCommentTableViewController: UITableViewController {
     // If the textView cell is recreated via dequeueReusableCell,
     // the cursor location is lost when the cell is scrolled off screen.
     // So save and use one instance of the cell.
-    private let commentContentCell = EditCommentMultiLineCell.loadFromNib()
+    private let commentContentCell = InlineEditableMultiLineCell.loadFromNib()
 
     // A closure executed when the view is dismissed.
     // Returns the Comment object and a Bool indicating if the Comment has been changed.
@@ -79,7 +79,7 @@ class EditCommentTableViewController: UITableViewController {
         }
 
         // All other cells
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EditCommentSingleLineCell.defaultReuseID) as? EditCommentSingleLineCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: InlineEditableSingleLineCell.defaultReuseID) as? InlineEditableSingleLineCell else {
             return UITableViewCell()
         }
 
@@ -120,11 +120,11 @@ private extension EditCommentTableViewController {
     func setupTableView() {
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
-        tableView.register(EditCommentSingleLineCell.defaultNib,
-                           forCellReuseIdentifier: EditCommentSingleLineCell.defaultReuseID)
+        tableView.register(InlineEditableSingleLineCell.defaultNib,
+                           forCellReuseIdentifier: InlineEditableSingleLineCell.defaultReuseID)
 
-        tableView.register(EditCommentMultiLineCell.defaultNib,
-                           forCellReuseIdentifier: EditCommentMultiLineCell.defaultReuseID)
+        tableView.register(InlineEditableMultiLineCell.defaultNib,
+                           forCellReuseIdentifier: InlineEditableMultiLineCell.defaultReuseID)
     }
 
     func configureCommentContentCell() {
@@ -237,9 +237,9 @@ private extension EditCommentTableViewController {
 
 }
 
-extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
+extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
 
-    func textUpdatedForCell(_ cell: EditCommentSingleLineCell) {
+    func textUpdatedForCell(_ cell: InlineEditableSingleLineCell) {
         let updatedText = cell.textField.text?.trim()
 
         switch cell.textFieldStyle {
@@ -263,14 +263,14 @@ extension EditCommentTableViewController: EditCommentSingleLineCellDelegate {
 
 }
 
-extension EditCommentTableViewController: EditCommentMultiLineCellDelegate {
+extension EditCommentTableViewController: InlineEditableMultiLineCellDelegate {
 
-    func textViewHeightUpdated() {
+    func textViewHeightUpdatedForCell(_ cell: InlineEditableMultiLineCell) {
         tableView.performBatchUpdates({})
     }
 
-    func textUpdated(_ updatedText: String?) {
-        updatedContent = updatedText?.trim()
+    func textUpdatedForCell(_ cell: InlineEditableMultiLineCell) {
+        updatedContent = cell.textView.text.trim()
         updateDoneButton()
     }
 
