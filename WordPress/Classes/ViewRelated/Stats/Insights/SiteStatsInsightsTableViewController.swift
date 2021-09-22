@@ -81,6 +81,7 @@ enum InsightType: Int {
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
     @objc optional func growAudienceDismissButtonTapped()
+    @objc optional func growAudienceEnablePostSharingButtonTapped()
     @objc optional func growAudienceBloggingRemindersButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
@@ -566,6 +567,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func growAudienceDismissButtonTapped() {
         dismissGrowAudienceCard()
         updateView()
+    }
+
+    func growAudienceEnablePostSharingButtonTapped() {
     }
 
     func growAudienceBloggingRemindersButtonTapped() {
