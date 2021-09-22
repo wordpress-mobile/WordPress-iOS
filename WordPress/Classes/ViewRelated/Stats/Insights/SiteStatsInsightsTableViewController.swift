@@ -570,6 +570,23 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func growAudienceEnablePostSharingButtonTapped() {
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            return
+        }
+
+        var controller: UIViewController
+
+        if !blog.supportsPublicize() {
+            controller = SharingButtonsViewController(blog: blog)
+        } else {
+            controller = SharingViewController(blog: blog)
+        }
+
+        let navigationController = UINavigationController(rootViewController: controller)
+
+        present(navigationController, animated: true)
     }
 
     func growAudienceBloggingRemindersButtonTapped() {
