@@ -19,8 +19,8 @@ public class EditorPostSettings: BaseScreen {
         super.init(element: settingsTable)
     }
 
-    public func selectCategory(name: String) -> EditorPostSettings {
-        return openCategories()
+    public func selectCategory(name: String) throws -> EditorPostSettings {
+        return try openCategories()
             .selectCategory(name: name)
             .goBackToSettings()
     }
@@ -31,10 +31,10 @@ public class EditorPostSettings: BaseScreen {
             .goBackToSettings()
     }
 
-    func openCategories() -> CategoriesComponent {
+    func openCategories() throws -> CategoriesComponent {
         categoriesSection.tap()
 
-        return CategoriesComponent()
+        return try CategoriesComponent()
     }
 
     func openTags() -> TagsComponent {

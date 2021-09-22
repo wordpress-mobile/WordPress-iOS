@@ -1,13 +1,10 @@
+import ScreenObject
 import XCTest
 
-public class CategoriesComponent: BaseScreen {
-    let categoriesList: XCUIElement
+public class CategoriesComponent: ScreenObject {
 
-    init() {
-        let app = XCUIApplication()
-        categoriesList = app.tables["CategoriesList"]
-
-        super.init(element: categoriesList)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [ { $0.tables["CategoriesList"] } ], app: app)
     }
 
     public func selectCategory(name: String) -> CategoriesComponent {
@@ -24,6 +21,6 @@ public class CategoriesComponent: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().tables["CategoriesList"].exists
+        (try? CategoriesComponent().isLoaded) ?? false
     }
 }

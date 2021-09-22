@@ -45,7 +45,7 @@ class EditorGutenbergTests: XCTestCase {
         let content = getRandomContent()
         let category = getCategory()
         let tag = getTag()
-        editorScreen
+        try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
