@@ -465,6 +465,8 @@
 		3F2F854326FAEA50000FCDA5 /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
 		3F2F854426FAEA82000FCDA5 /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
 		3F2F854526FAEB86000FCDA5 /* MediaPickerAlbumScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52189B2279D295008998CE /* MediaPickerAlbumScreen.swift */; };
+		3F2F854726FAED51000FCDA5 /* MediaPickerAlbumListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */; };
+		3F2F854826FAEEEC000FCDA5 /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3087C324EDB7040087B548 /* AnnouncementCell.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
 		3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */; };
@@ -1977,7 +1979,6 @@
 		BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D82F1FF11DEF00A11345 /* EditorAztecTests.swift */; };
 		BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		BED4D8351FF1208400A11345 /* AztecEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8341FF1208400A11345 /* AztecEditorScreen.swift */; };
-		BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		C314543B262770BE005B216B /* BlogServiceAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314543A262770BE005B216B /* BlogServiceAuthorTests.swift */; };
 		C387B7A22638D66F00BDEF86 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
 		C3E2462926277B7700B99EA6 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
@@ -2060,7 +2061,6 @@
 		CC2BB0CA2289CC3B0034F9AB /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		CC2BB0D0228ACF710034F9AB /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
 		CC52188C2278C622008998CE /* EditorFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52188B2278C622008998CE /* EditorFlow.swift */; };
-		CC52189A2279CF3B008998CE /* MediaPickerAlbumListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */; };
 		CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97222B1510900642EE9 /* SignupTests.swift */; };
 		CC7CB97622B15A2900642EE9 /* SignupEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97522B15A2900642EE9 /* SignupEmailScreen.swift */; };
 		CC7CB97822B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97722B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift */; };
@@ -2642,7 +2642,6 @@
 		F9C47A7A238C7DAC00AAD9ED /* ReaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707182006E48E004FB5A4 /* ReaderScreen.swift */; };
 		F9C47A7B238C7DAC00AAD9ED /* SiteSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */; };
 		F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */; };
-		F9C47A7E238C7DC100AAD9ED /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		F9C47A7F238C7DC100AAD9ED /* AztecEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8341FF1208400A11345 /* AztecEditorScreen.swift */; };
 		F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		F9C47A81238C7DC100AAD9ED /* EditorNoticeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */; };
@@ -2651,7 +2650,6 @@
 		F9C47A84238C7DC500AAD9ED /* SignupEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97522B15A2900642EE9 /* SignupEmailScreen.swift */; };
 		F9C47A85238C7DC500AAD9ED /* SignupCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97722B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift */; };
 		F9C47A86238C7DC500AAD9ED /* SignupEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97922B15C1000642EE9 /* SignupEpilogueScreen.swift */; };
-		F9C47A87238C7DF100AAD9ED /* MediaPickerAlbumListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */; };
 		F9C47A89238C7E2600AAD9ED /* CategoriesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE55E982242715C002A9634 /* CategoriesComponent.swift */; };
 		F9C47A8A238C7E2600AAD9ED /* TagsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8498D22241477F00DB490A /* TagsComponent.swift */; };
 		F9C47A8C238C801600AAD9ED /* PostsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8B238C801600AAD9ED /* PostsScreen.swift */; };
@@ -4330,7 +4328,6 @@
 		FAF64B722637DEEC00E8A1DF /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		FAF64B732637DEEC00E8A1DF /* SignupEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97522B15A2900642EE9 /* SignupEmailScreen.swift */; };
 		FAF64B742637DEEC00E8A1DF /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
-		FAF64B752637DEEC00E8A1DF /* MediaPickerAlbumListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */; };
 		FAF64B772637DEEC00E8A1DF /* LoginEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */; };
 		FAF64B782637DEEC00E8A1DF /* GetStartedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA22BE25082B1E005CCC13 /* GetStartedScreen.swift */; };
 		FAF64B792637DEEC00E8A1DF /* NotificationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */; };
@@ -4358,7 +4355,6 @@
 		FAF64B922637DEEC00E8A1DF /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511CFC41C60884400B7CEED /* SnapshotHelper.swift */; };
 		FAF64B932637DEEC00E8A1DF /* SignupCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97722B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift */; };
 		FAF64B942637DEEC00E8A1DF /* SignupEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97922B15C1000642EE9 /* SignupEpilogueScreen.swift */; };
-		FAF64B952637DEEC00E8A1DF /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		FAF64B972637DEEC00E8A1DF /* ReaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707182006E48E004FB5A4 /* ReaderScreen.swift */; };
 		FAF64B982637DEEC00E8A1DF /* ScreenshotCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */; };
 		FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */; };
@@ -9130,9 +9126,18 @@
 		3F2F854626FAEBBA000FCDA5 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */,
 				CC52189B2279D295008998CE /* MediaPickerAlbumScreen.swift */,
 			);
 			path = Media;
+			sourceTree = "<group>";
+		};
+		3F2F854926FAEF9C000FCDA5 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
+			);
+			path = Editor;
 			sourceTree = "<group>";
 		};
 		3F3087C024EDB6900087B548 /* Views */ = {
@@ -9481,6 +9486,7 @@
 			children = (
 				F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */,
 				FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */,
+				3F2F854926FAEF9C000FCDA5 /* Editor */,
 				3F2F854126FAEA2D000FCDA5 /* Jetpack */,
 				CC2BB0CC2289D0F20034F9AB /* Me */,
 				3F2F854626FAEBBA000FCDA5 /* Media */,
@@ -12989,7 +12995,6 @@
 		BE2B4E991FD6640E007AE3E4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				CC5218982279CF06008998CE /* Media */,
 				BED4D83D1FF13C7300A11345 /* Login */,
 				CC7CB97422B159FE00642EE9 /* Signup */,
 				BED4D83C1FF13C6200A11345 /* Editor */,
@@ -13085,7 +13090,6 @@
 			isa = PBXGroup;
 			children = (
 				CC8498CF2241473400DB490A /* EditorSettingsComponents */,
-				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
 				BED4D8341FF1208400A11345 /* AztecEditorScreen.swift */,
 				CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */,
 				CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */,
@@ -13332,14 +13336,6 @@
 				6EC71EC22689A67400ACC0A0 /* SupportScreen.swift */,
 			);
 			path = Me;
-			sourceTree = "<group>";
-		};
-		CC5218982279CF06008998CE /* Media */ = {
-			isa = PBXGroup;
-			children = (
-				CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */,
-			);
-			path = Media;
 			sourceTree = "<group>";
 		};
 		CC7CB97422B159FE00642EE9 /* Signup */ = {
@@ -18430,10 +18426,12 @@
 				3FE39A3E26F8383E006E2B3A /* MediaScreen.swift in Sources */,
 				3FE39A4226F838A0006E2B3A /* ActionSheetComponent.swift in Sources */,
 				3F2F854526FAEB86000FCDA5 /* MediaPickerAlbumScreen.swift in Sources */,
+				3F2F854826FAEEEC000FCDA5 /* EditorPublishEpilogueScreen.swift in Sources */,
 				3F2F854326FAEA50000FCDA5 /* JetpackBackupScreen.swift in Sources */,
 				3F762E9526784B540088CD45 /* WireMock.swift in Sources */,
 				3FE39A3F26F8384E006E2B3A /* StatsScreen.swift in Sources */,
 				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
+				3F2F854726FAED51000FCDA5 /* MediaPickerAlbumListScreen.swift in Sources */,
 				3F762E9926784CC90088CD45 /* XCUIElementQuery+Utils.swift in Sources */,
 				3F762E9D26784DB40088CD45 /* Globals.swift in Sources */,
 				3FE39A3726F83748006E2B3A /* SupportScreen.swift in Sources */,
@@ -18591,7 +18589,6 @@
 				F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */,
 				F9C47A84238C7DC500AAD9ED /* SignupEmailScreen.swift in Sources */,
 				CCBC9EB4251258FB008E1D5F /* WPUITestCredentials.swift in Sources */,
-				F9C47A87238C7DF100AAD9ED /* MediaPickerAlbumListScreen.swift in Sources */,
 				F9C47A77238C7D8800AAD9ED /* LoginEpilogueScreen.swift in Sources */,
 				CCBC9EB02512446F008E1D5F /* GetStartedScreen.swift in Sources */,
 				F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */,
@@ -18620,7 +18617,6 @@
 				8511CFC51C60884400B7CEED /* SnapshotHelper.swift in Sources */,
 				F9C47A85238C7DC500AAD9ED /* SignupCheckMagicLinkScreen.swift in Sources */,
 				F9C47A86238C7DC500AAD9ED /* SignupEpilogueScreen.swift in Sources */,
-				F9C47A7E238C7DC100AAD9ED /* EditorPublishEpilogueScreen.swift in Sources */,
 				F9C47A7A238C7DAC00AAD9ED /* ReaderScreen.swift in Sources */,
 				F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */,
 			);
@@ -20599,7 +20595,6 @@
 				FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */,
 				FAF64B732637DEEC00E8A1DF /* SignupEmailScreen.swift in Sources */,
 				FAF64B742637DEEC00E8A1DF /* WPUITestCredentials.swift in Sources */,
-				FAF64B752637DEEC00E8A1DF /* MediaPickerAlbumListScreen.swift in Sources */,
 				FAF64B772637DEEC00E8A1DF /* LoginEpilogueScreen.swift in Sources */,
 				FAF64B782637DEEC00E8A1DF /* GetStartedScreen.swift in Sources */,
 				FAF64B792637DEEC00E8A1DF /* NotificationsScreen.swift in Sources */,
@@ -20627,7 +20622,6 @@
 				FAF64B922637DEEC00E8A1DF /* SnapshotHelper.swift in Sources */,
 				FAF64B932637DEEC00E8A1DF /* SignupCheckMagicLinkScreen.swift in Sources */,
 				FAF64B942637DEEC00E8A1DF /* SignupEpilogueScreen.swift in Sources */,
-				FAF64B952637DEEC00E8A1DF /* EditorPublishEpilogueScreen.swift in Sources */,
 				FAF64B972637DEEC00E8A1DF /* ReaderScreen.swift in Sources */,
 				FAF64B982637DEEC00E8A1DF /* ScreenshotCredentials.swift in Sources */,
 			);
@@ -20637,7 +20631,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC52189A2279CF3B008998CE /* MediaPickerAlbumListScreen.swift in Sources */,
 				98ADDDDA25083CA9008FF6EE /* PasswordScreen.swift in Sources */,
 				BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */,
 				CCE911BC221D8497007E1D4E /* LoginSiteAddressScreen.swift in Sources */,
@@ -20674,7 +20667,6 @@
 				CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */,
 				CC7CB97822B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift in Sources */,
 				CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */,
-				BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */,
 				CC52188C2278C622008998CE /* EditorFlow.swift in Sources */,
 				8B5FEAF125A746CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
 				BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */,

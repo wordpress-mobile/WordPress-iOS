@@ -1,11 +1,10 @@
-import UITestsFoundation
 import XCTest
 
-class EditorPublishEpilogueScreen: BaseScreen {
+public class EditorPublishEpilogueScreen: BaseScreen {
     let doneButton: XCUIElement
     let viewButton: XCUIElement
 
-    init() {
+    public init() {
         let app = XCUIApplication()
         let published = app.staticTexts["publishedPostStatusLabel"]
         doneButton = app.navigationBars.buttons["doneButton"]
@@ -15,11 +14,11 @@ class EditorPublishEpilogueScreen: BaseScreen {
     }
 
     // returns void since return screen depends on what screen you started on
-    func done() {
+    public func done() {
         doneButton.tap()
     }
 
-    func verifyEpilogueDisplays(postTitle expectedPostTitle: String, siteAddress expectedSiteAddress: String) -> EditorPublishEpilogueScreen {
+    public func verifyEpilogueDisplays(postTitle expectedPostTitle: String, siteAddress expectedSiteAddress: String) -> EditorPublishEpilogueScreen {
         let actualPostTitle = XCUIApplication().staticTexts["postTitle"].label
         let actualSiteAddress = XCUIApplication().staticTexts["siteUrl"].label
 
