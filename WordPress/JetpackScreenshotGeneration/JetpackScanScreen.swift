@@ -1,8 +1,9 @@
+import UITestsFoundation
 import XCTest
 
-public class JetpackBackupOptionsScreen: BaseScreen {
+class JetpackScanScreen: BaseScreen {
 
-    public init() {
+    init() {
         super.init(element: XCUIApplication().otherElements.firstMatch)
     }
 }
