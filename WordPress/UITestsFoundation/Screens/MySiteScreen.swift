@@ -115,9 +115,9 @@ public class MySiteScreen: BaseScreen {
         return SiteSettingsScreen()
     }
 
-    func gotoCreateSheet() -> ActionSheetComponent {
+    func gotoCreateSheet() throws -> ActionSheetComponent {
         createButton.tap()
-        return ActionSheetComponent()
+        return try ActionSheetComponent()
     }
 
     public static func isLoaded() -> Bool {
