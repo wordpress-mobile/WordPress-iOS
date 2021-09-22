@@ -1,4 +1,3 @@
-import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
@@ -12,8 +11,7 @@ private struct ElementStringIDs {
 
 /// This screen object is for the Support section. In the app, it's a modal we can get to from Me 
 /// > Help & Support, or, when logged out, from Prologue > tap either continue button > Help.
-
-class SupportScreen: BaseScreen {
+public class SupportScreen: BaseScreen {
     let closeButton: XCUIElement
     let helpCenter: XCUIElement
     let contact: XCUIElement
@@ -21,7 +19,7 @@ class SupportScreen: BaseScreen {
     let contactEmail: XCUIElement
     let activityLogs: XCUIElement
 
-    init() {
+    public init() {
         let app = XCUIApplication()
         closeButton = app.buttons[ElementStringIDs.closeButton]
         helpCenter = app.cells[ElementStringIDs.helpCenter]
@@ -40,7 +38,7 @@ class SupportScreen: BaseScreen {
         XCTAssert(activityLogs.exists)
     }
 
-    func dismiss() {
+    public func dismiss() {
         closeButton.tap()
     }
 
