@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Build a website or blog"
+msgid "Build a website or blog
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -40,16 +41,13 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.2-whats-new"
+msgctxt "v18.3-whats-new"
 msgid ""
-"- Stay informed! You can now receive a weekly summary of the activity on your most popular sites.\n"
+"-Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.\n"
 "\n"
-"- You have even more control of your site comments — when you edit them you can now also adjust the author’s name, email address, and web address.\n"
-"We have made a couple of handy tweaks to the Block editor. The Embed block now gives you a sneak preview when you add something from YouTube or Twitter (more providers to come). Also, when you go to insert a block and nothing is found, there is now a no results view.\n"
+"-Various improvements: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) You will also notice that you can now publish a page via the app’s Share Extension feature.\n"
 "\n"
-"- If you go to Post Settings > Post Format, you will find the “Standard” option still at the top, but the other options are now neatly alphabetized below. (Options will vary with themes!)\n"
-"\n"
-"- And one more quick one: Refreshing your site is now super easy — just pull to refresh from the My Site screen!\n"
+"-Bug fixes: We addressed an issue in the Reader that prevented you from removing Saved posts, and also fixed a bug that prevented you from following a conversation by email through a post’s comments.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
