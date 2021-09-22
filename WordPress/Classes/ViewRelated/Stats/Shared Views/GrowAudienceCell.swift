@@ -10,6 +10,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var actionButton: UIButton!
 
+    private var hintType: HintType?
+
     private weak var insightsDelegate: SiteStatsInsightsDelegate?
 
     override func awakeFromNib() {
@@ -22,6 +24,9 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     func configure(hintType: HintType,
                    allTimeViewsCount: Int,
                    insightsDelegate: SiteStatsInsightsDelegate?) {
+        self.hintType = hintType
+        self.insightsDelegate = insightsDelegate
+
         viewCountLabel.text = String(allTimeViewsCount)
         viewCountDescriptionLabel.text = Strings.getViewsCountDescription(viewsCount: allTimeViewsCount)
         tipLabel.text = Strings.tipTitle
@@ -29,7 +34,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         iconView.image = hintType.image
         dismissButton.setTitle(Strings.dismissButtonTitle, for: .normal)
         actionButton.setTitle(hintType.actionButtonTitle, for: .normal)
-        self.insightsDelegate = insightsDelegate
     }
 
     // MARK: - Styling
@@ -64,7 +68,14 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     }
 
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
-        // TODO: address in a future PR
+        guard let hintType = hintType else {
+            return
+        }
+
+        switch hintType {
+        case .bloggingReminders:
+            insightsDelegate?.growAudienceBloggingRemindersButtonTapped?()
+        }
     }
 
     // MARK: - Localization
