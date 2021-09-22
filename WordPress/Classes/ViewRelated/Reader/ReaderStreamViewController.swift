@@ -1588,7 +1588,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         controller.coordinator?.readerTopic = readerTopic
 
         if post.isSavedForLater || contentType == .saved {
-            trackSavedPostNavigation()
+            trackSavedPostNavigation(post: apost)
         } else {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats(post: apost) ?? [:])
         }

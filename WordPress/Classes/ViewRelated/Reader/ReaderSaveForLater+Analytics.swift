@@ -76,14 +76,20 @@ extension ReaderSaveForLaterAction {
 }
 
 extension ReaderStreamViewController {
-    func trackSavedPostNavigation() {
+    func trackSavedPostNavigation(post: ReaderPost) {
+        let blogID = post.siteID ?? 0
+        let feedID = post.feedID ?? 0
+        var properties: [String: Any] = ["blog_id": blogID,
+                                         "feed_id": feedID,
+                                         "foolow": post.isFollowing]
+        
         if contentType == .saved {
-            WPAppAnalytics.track(.readerSavedPostOpened,
-                                 withProperties: [readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue])
+            properties[readerSaveForLaterSourceKey] = ReaderSaveForLaterOrigin.savedStream.openPostValue
         } else {
             // TODO: - READERNAV - See refactor note in ReaderSaveForLater+Analytics.viewAllPostsValue.
-            WPAppAnalytics.track(.readerSavedPostOpened,
-                                 withProperties: [readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue])
+            properties[readerSaveForLaterSourceKey] = ReaderSaveForLaterOrigin.otherStream.openPostValue
         }
+
+        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: properties)
     }
 }
