@@ -1,3 +1,4 @@
+import ScreenObject
 import UIKit
 import UITestsFoundation
 import XCTest
@@ -85,6 +86,19 @@ class JetpackScreenshotGeneration: XCTestCase {
 }
 
 extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
+        let mode = XCUIDevice.inDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
+
+        return self
+    }
+}
+
+extension ScreenObject {
+
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = XCUIDevice.inDarkMode ? "dark" : "light"
