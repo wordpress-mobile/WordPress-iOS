@@ -245,10 +245,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         NSNumber *siteID = readerPost.siteID;
         void (^successBlock)(void) = ^void() {
             if (postID && siteID) {
-                NSDictionary *properties = @{
-                                              WPAppAnalyticsKeyPostID: postID,
-                                              WPAppAnalyticsKeyBlogID: siteID
-                                              };
+                NSMutableDictionary *properties = [NSMutableDictionary new];
+                [properties setObject:postID forKey:WPAppAnalyticsKeyPostID];
+                [properties setObject:siteID forKey:WPAppAnalyticsKeyBlogID];
+                [properties setObject:readerPost.feedID forKey:WPAppAnalyticsKeyFeedID];
+                [properties setObject:[NSNumber numberWithBool:readerPost.isFollowing] forKey:WPAppAnalyticsKeyIsFollowing];
+
                 if (like) {
                     [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
                     if (railcar) {
