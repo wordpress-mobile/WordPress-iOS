@@ -1,13 +1,12 @@
-import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
     static let draftsButton = "drafts"
 }
 
-class StatsScreen: BaseScreen {
+public class StatsScreen: BaseScreen {
 
-    enum Mode: String {
+    public enum Mode: String {
         case months = "months"
         case years = "years"
     }
@@ -16,12 +15,12 @@ class StatsScreen: BaseScreen {
         static let dismissCustomizeInsightsButton = "dismiss-customize-insights-cell"
     }
 
-    init() {
+    public init() {
         super.init(element: XCUIApplication().otherElements.firstMatch)
     }
 
     @discardableResult
-    func dismissCustomizeInsightsNotice() -> StatsScreen {
+    public func dismissCustomizeInsightsNotice() -> StatsScreen {
         let button = XCUIApplication().buttons[ElementStringIDs.dismissCustomizeInsightsButton]
 
         if button.exists {
@@ -32,7 +31,7 @@ class StatsScreen: BaseScreen {
     }
 
     @discardableResult
-    func switchTo(mode: Mode) -> StatsScreen {
+    public func switchTo(mode: Mode) -> StatsScreen {
         XCUIApplication().buttons[mode.rawValue].tap()
         return self
     }

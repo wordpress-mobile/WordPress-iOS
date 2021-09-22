@@ -580,6 +580,7 @@
 		3FE39A3726F83748006E2B3A /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC71EC22689A67400ACC0A0 /* SupportScreen.swift */; };
 		3FE39A3926F837E1006E2B3A /* ActivityLogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */; };
 		3FE39A3E26F8383E006E2B3A /* MediaScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97DA41F23D67B820050E791 /* MediaScreen.swift */; };
+		3FE39A3F26F8384E006E2B3A /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */; };
 		3FE39A4226F838A0006E2B3A /* ActionSheetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */; };
 		3FE3D1FC26A6F2AC00F3CD10 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		3FE3D1FD26A6F34900F3CD10 /* WPStyleGuide+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */; };
@@ -2653,8 +2654,6 @@
 		F9C47A8A238C7E2600AAD9ED /* TagsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8498D22241477F00DB490A /* TagsComponent.swift */; };
 		F9C47A8C238C801600AAD9ED /* PostsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8B238C801600AAD9ED /* PostsScreen.swift */; };
 		F9C47A8D238C809700AAD9ED /* PostsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8B238C801600AAD9ED /* PostsScreen.swift */; };
-		F9C47A8F238C9D6400AAD9ED /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */; };
-		F9C47A90238C9D6700AAD9ED /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */; };
 		FA00863D24EB68B100C863F2 /* FollowCommentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */; };
 		FA1A543E25A6E2F60033967D /* RestoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */; };
 		FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A543F25A6E3080033967D /* RestoreWarningView.xib */; };
@@ -4348,7 +4347,6 @@
 		FAF64B7D2637DEEC00E8A1DF /* WelcomeScreenLoginComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985F06B42303866200949733 /* WelcomeScreenLoginComponent.swift */; };
 		FAF64B7E2637DEEC00E8A1DF /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */; };
 		FAF64B7F2637DEEC00E8A1DF /* LinkOrPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */; };
-		FAF64B802637DEEC00E8A1DF /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */; };
 		FAF64B812637DEEC00E8A1DF /* TabNavComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */; };
 		FAF64B822637DEEC00E8A1DF /* FeaturedImageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD47BDE2474228C00F00660 /* FeaturedImageScreen.swift */; };
 		FAF64B832637DEEC00E8A1DF /* MeTabScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3311FD6803700E55192 /* MeTabScreen.swift */; };
@@ -9475,6 +9473,7 @@
 				FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */,
 				CC2BB0CC2289D0F20034F9AB /* Me */,
 				F97DA41F23D67B820050E791 /* MediaScreen.swift */,
+				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -12991,7 +12990,6 @@
 				7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */,
 				BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */,
 				F9C47A8B238C801600AAD9ED /* PostsScreen.swift */,
-				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
 				FA4104732639393700E90EBF /* JetpackScanScreen.swift */,
 				FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */,
 				FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */,
@@ -18423,6 +18421,7 @@
 				3FE39A3E26F8383E006E2B3A /* MediaScreen.swift in Sources */,
 				3FE39A4226F838A0006E2B3A /* ActionSheetComponent.swift in Sources */,
 				3F762E9526784B540088CD45 /* WireMock.swift in Sources */,
+				3FE39A3F26F8384E006E2B3A /* StatsScreen.swift in Sources */,
 				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
 				3F762E9926784CC90088CD45 /* XCUIElementQuery+Utils.swift in Sources */,
 				3F762E9D26784DB40088CD45 /* Globals.swift in Sources */,
@@ -18592,7 +18591,6 @@
 				F9C47A6F238C7D8800AAD9ED /* WelcomeScreenLoginComponent.swift in Sources */,
 				F9C47A70238C7D8800AAD9ED /* WelcomeScreen.swift in Sources */,
 				F9C47A73238C7D8800AAD9ED /* LinkOrPasswordScreen.swift in Sources */,
-				F9C47A90238C9D6700AAD9ED /* StatsScreen.swift in Sources */,
 				F9C47A6E238C7D7D00AAD9ED /* TabNavComponent.swift in Sources */,
 				CCBC9EB52512590B008E1D5F /* FeaturedImageScreen.swift in Sources */,
 				F9C47A79238C7DAC00AAD9ED /* MeTabScreen.swift in Sources */,
@@ -20605,7 +20603,6 @@
 				FAF64B7D2637DEEC00E8A1DF /* WelcomeScreenLoginComponent.swift in Sources */,
 				FAF64B7E2637DEEC00E8A1DF /* WelcomeScreen.swift in Sources */,
 				FAF64B7F2637DEEC00E8A1DF /* LinkOrPasswordScreen.swift in Sources */,
-				FAF64B802637DEEC00E8A1DF /* StatsScreen.swift in Sources */,
 				FAF64B812637DEEC00E8A1DF /* TabNavComponent.swift in Sources */,
 				FAF64B822637DEEC00E8A1DF /* FeaturedImageScreen.swift in Sources */,
 				FAF64B832637DEEC00E8A1DF /* MeTabScreen.swift in Sources */,
@@ -20670,7 +20667,6 @@
 				CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */,
 				BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */,
 				BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */,
-				F9C47A8F238C9D6400AAD9ED /* StatsScreen.swift in Sources */,
 				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
 				FA4104742639393700E90EBF /* JetpackScanScreen.swift in Sources */,
 				F9C47A8C238C801600AAD9ED /* PostsScreen.swift in Sources */,
