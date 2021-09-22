@@ -73,6 +73,8 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         }
 
         switch hintType {
+        case .social:
+            insightsDelegate?.growAudienceEnablePostSharingButtonTapped?()
         case .bloggingReminders:
             insightsDelegate?.growAudienceBloggingRemindersButtonTapped?()
         }
@@ -99,6 +101,14 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             return viewsCount == 1 ? viewsCountDescriptionSingular : viewsCountDescriptionPlural
         }
 
+        enum Social {
+            static let detailsTitle =
+                NSLocalizedString("Automatically share new posts to your social media to start bringing that audience over to your site.",
+                                  comment: "A detailed message to users about growing the audience for their site through enabling post sharing.")
+            static let actionButtonTitle =
+                NSLocalizedString("Enable post sharing", comment: "Title for button that will open up the social media Sharing screen.")
+        }
+
         enum BloggingReminders {
             static let detailsTitle =
                 NSLocalizedString("Posting regularly can help build an audience. Reminders help keep you on track.",
@@ -114,10 +124,14 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 extension GrowAudienceCell {
 
     enum HintType {
+
+        case social
         case bloggingReminders
 
         var detailsTitle: String {
             switch self {
+            case .social:
+                return Strings.Social.detailsTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.detailsTitle
             }
@@ -125,6 +139,8 @@ extension GrowAudienceCell {
 
         var actionButtonTitle: String {
             switch self {
+            case .social:
+                return Strings.Social.actionButtonTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.actionButtonTitle
             }
@@ -132,6 +148,8 @@ extension GrowAudienceCell {
 
         var image: UIImage? {
             switch self {
+            case .social:
+                return UIImage(named: "grow-audience-illustration-social")
             case .bloggingReminders:
                 return UIImage(named: "grow-audience-illustration-blogging-reminders")
             }
