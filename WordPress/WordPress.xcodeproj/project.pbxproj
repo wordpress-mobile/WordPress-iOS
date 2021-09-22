@@ -461,9 +461,9 @@
 		3F2656A125AF4DFA0073A832 /* LocalizedStringKey+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* LocalizedStringKey+extension.swift */; };
 		3F29EB7224042276005313DE /* MeViewController+UIViewControllerRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */; };
 		3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2F0C15256C6B2C003351C7 /* StatsWidgetsService.swift */; };
-		3F2F853D26FAE81E000FCDA5 /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
-		3F2F853E26FAE81E000FCDA5 /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
-		3F2F853F26FAE81E000FCDA5 /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
+		3F2F854226FAEA50000FCDA5 /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
+		3F2F854326FAEA50000FCDA5 /* JetpackBackupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */; };
+		3F2F854426FAEA82000FCDA5 /* JetpackBackupOptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */; };
 		3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3087C324EDB7040087B548 /* AnnouncementCell.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
 		3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */; };
@@ -9119,6 +9119,16 @@
 			path = "Remote service";
 			sourceTree = "<group>";
 		};
+		3F2F854126FAEA2D000FCDA5 /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+				FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */,
+				FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */,
+				FA4104732639393700E90EBF /* JetpackScanScreen.swift */,
+			);
+			path = Jetpack;
+			sourceTree = "<group>";
+		};
 		3F3087C024EDB6900087B548 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -9465,6 +9475,7 @@
 			children = (
 				F5E032EB240D49FF003AF350 /* ActionSheetComponent.swift */,
 				FA41044C263932AC00E90EBF /* ActivityLogScreen.swift */,
+				3F2F854126FAEA2D000FCDA5 /* Jetpack */,
 				CC2BB0CC2289D0F20034F9AB /* Me */,
 				F97DA41F23D67B820050E791 /* MediaScreen.swift */,
 				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
@@ -14536,9 +14547,6 @@
 			isa = PBXGroup;
 			children = (
 				FAF64BDC2637DF7500E8A1DF /* Info.plist */,
-				FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */,
-				FA4104BE26393F1A00E90EBF /* JetpackBackupScreen.swift */,
-				FA4104732639393700E90EBF /* JetpackScanScreen.swift */,
 				FAF64E4E2637E85800E8A1DF /* JetpackScreenshotGeneration.swift */,
 			);
 			path = JetpackScreenshotGeneration;
@@ -18410,16 +18418,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F762E9726784BED0088CD45 /* FancyAlertComponent.swift in Sources */,
+				3F2F854226FAEA50000FCDA5 /* JetpackScanScreen.swift in Sources */,
 				3FE39A3926F837E1006E2B3A /* ActivityLogScreen.swift in Sources */,
 				3F762E9B26784D2A0088CD45 /* XCUIElement+Utils.swift in Sources */,
 				3FE39A3E26F8383E006E2B3A /* MediaScreen.swift in Sources */,
 				3FE39A4226F838A0006E2B3A /* ActionSheetComponent.swift in Sources */,
+				3F2F854326FAEA50000FCDA5 /* JetpackBackupScreen.swift in Sources */,
 				3F762E9526784B540088CD45 /* WireMock.swift in Sources */,
 				3FE39A3F26F8384E006E2B3A /* StatsScreen.swift in Sources */,
 				3FA640642670CED80064401E /* BaseScreen.swift in Sources */,
 				3F762E9926784CC90088CD45 /* XCUIElementQuery+Utils.swift in Sources */,
 				3F762E9D26784DB40088CD45 /* Globals.swift in Sources */,
 				3FE39A3726F83748006E2B3A /* SupportScreen.swift in Sources */,
+				3F2F854426FAEA82000FCDA5 /* JetpackBackupOptionsScreen.swift in Sources */,
 				3F762E9326784A950088CD45 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -20575,7 +20586,6 @@
 			files = (
 				FAF64B6C2637DEEC00E8A1DF /* LoginEmailScreen.swift in Sources */,
 				FAF64B6D2637DEEC00E8A1DF /* PrologueScreen.swift in Sources */,
-				3F2F853E26FAE81E000FCDA5 /* JetpackBackupOptionsScreen.swift in Sources */,
 				FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */,
 				FAF64B702637DEEC00E8A1DF /* BlockEditorScreen.swift in Sources */,
 				FAF64B712637DEEC00E8A1DF /* EditorPostSettings.swift in Sources */,
@@ -20587,7 +20597,6 @@
 				FAF64B772637DEEC00E8A1DF /* LoginEpilogueScreen.swift in Sources */,
 				FAF64B782637DEEC00E8A1DF /* GetStartedScreen.swift in Sources */,
 				FAF64B792637DEEC00E8A1DF /* NotificationsScreen.swift in Sources */,
-				3F2F853D26FAE81E000FCDA5 /* JetpackScanScreen.swift in Sources */,
 				FAF64B7A2637DEEC00E8A1DF /* PasswordScreen.swift in Sources */,
 				FAF64B7B2637DEEC00E8A1DF /* LoginFlow.swift in Sources */,
 				FAF64B7C2637DEEC00E8A1DF /* PostsScreen.swift in Sources */,
@@ -20597,7 +20606,6 @@
 				FAF64B812637DEEC00E8A1DF /* TabNavComponent.swift in Sources */,
 				FAF64B822637DEEC00E8A1DF /* FeaturedImageScreen.swift in Sources */,
 				FAF64B832637DEEC00E8A1DF /* MeTabScreen.swift in Sources */,
-				3F2F853F26FAE81E000FCDA5 /* JetpackBackupScreen.swift in Sources */,
 				FAF64B842637DEEC00E8A1DF /* MySiteScreen.swift in Sources */,
 				FAF64B852637DEEC00E8A1DF /* LoginPasswordScreen.swift in Sources */,
 				FAF64B862637DEEC00E8A1DF /* AztecEditorScreen.swift in Sources */,

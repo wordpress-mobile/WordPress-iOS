@@ -1,4 +1,3 @@
-import UITestsFoundation
 import XCTest
 
 private struct ElementStringIDs {
@@ -6,11 +5,11 @@ private struct ElementStringIDs {
     static let backupTable = "jetpack-backup-table"
 }
 
-class JetpackBackupScreen: BaseScreen {
+public class JetpackBackupScreen: BaseScreen {
     let ellipsisButton: XCUIElement
     let downloadBackupButton: XCUIElement
 
-    init() {
+    public init() {
         let app = XCUIApplication()
         let backupTable = app.tables[ElementStringIDs.backupTable]
         let firstCell = backupTable.cells.element(boundBy: 0)
@@ -19,7 +18,7 @@ class JetpackBackupScreen: BaseScreen {
         super.init(element: ellipsisButton)
     }
 
-    func goToBackupOptions() -> JetpackBackupOptionsScreen {
+    public func goToBackupOptions() -> JetpackBackupOptionsScreen {
         ellipsisButton.tap()
 
         XCTAssert(downloadBackupButton.waitForExistence(timeout: 3))
