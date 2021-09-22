@@ -75,9 +75,9 @@ public class MySiteScreen: BaseScreen {
         }
     }
 
-    public func gotoActivityLog() -> ActivityLogScreen {
+    public func goToActivityLog() throws -> ActivityLogScreen {
         activityLogButton.tap()
-        return ActivityLogScreen()
+        return try ActivityLogScreen()
     }
 
     public func gotoJetpackScan() -> JetpackScanScreen {

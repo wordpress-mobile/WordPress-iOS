@@ -32,7 +32,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         super.tearDown()
     }
 
-    func testGenerateScreenshots() {
+    func testGenerateScreenshots() throws {
 
         // Get My Site screenshot
         let mySite = MySiteScreen()
@@ -41,8 +41,8 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(1, named: "MySite")
 
         // Get Activity Log screenshot
-        let activityLog = mySite
-            .gotoActivityLog()
+        let activityLog = try mySite
+            .goToActivityLog()
             .thenTakeScreenshot(2, named: "ActivityLog")
 
         if !XCUIDevice.isPad {
