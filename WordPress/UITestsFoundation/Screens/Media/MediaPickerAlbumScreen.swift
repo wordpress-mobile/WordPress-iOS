@@ -1,11 +1,10 @@
-import UITestsFoundation
 import XCTest
 
-class MediaPickerAlbumScreen: BaseScreen {
+public class MediaPickerAlbumScreen: BaseScreen {
     let mediaCollection: XCUIElement
     let insertButton: XCUIElement
 
-    init() {
+    public init() {
         let app = XCUIApplication()
         mediaCollection = app.collectionViews["MediaCollection"]
         insertButton = app.buttons["SelectedActionButton"]
@@ -13,7 +12,7 @@ class MediaPickerAlbumScreen: BaseScreen {
         super.init(element: mediaCollection)
     }
 
-    func selectImage(atIndex index: Int) {
+    public func selectImage(atIndex index: Int) {
         let selectedImage = mediaCollection.cells.element(boundBy: index)
         XCTAssertTrue(selectedImage.waitForExistence(timeout: 5), "Selected image did not load")
         selectedImage.tap()
@@ -23,7 +22,7 @@ class MediaPickerAlbumScreen: BaseScreen {
         insertButton.tap()
     }
 
-    static func isLoaded() -> Bool {
+    public static func isLoaded() -> Bool {
         // Check if the media picker is loaded as a component within the editor
         // and only return true if the media picker is a full screen
         if XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].exists {
