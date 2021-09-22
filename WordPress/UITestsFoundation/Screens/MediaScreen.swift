@@ -1,13 +1,12 @@
-import UITestsFoundation
 import XCTest
 
-class MediaScreen: BaseScreen {
+public class MediaScreen: BaseScreen {
 
     private struct ElementIDs {
         static let mediaGridView = "MediaCollection"
     }
 
-    init() {
+    public init() {
         let mediaGrid = XCUIApplication().collectionViews[ElementIDs.mediaGridView]
         super.init(element: mediaGrid)
     }
