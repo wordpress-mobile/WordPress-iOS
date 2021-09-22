@@ -81,6 +81,7 @@ enum InsightType: Int {
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
     @objc optional func growAudienceDismissButtonTapped()
+    @objc optional func growAudienceBloggingRemindersButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
     @objc optional func addInsightDismissed()
@@ -565,6 +566,18 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func growAudienceDismissButtonTapped() {
         dismissGrowAudienceCard()
         updateView()
+    }
+
+    func growAudienceBloggingRemindersButtonTapped() {
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            return
+        }
+
+        BloggingRemindersFlow.present(from: self,
+                                      for: blog,
+                                      source: .statsInsights)
     }
 
     func showAddInsight() {
