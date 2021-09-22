@@ -28,7 +28,7 @@ class EditorGutenbergTests: XCTestCase {
 
         let title = getRandomPhrase()
         let content = getRandomContent()
-        editorScreen
+        try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
@@ -60,7 +60,7 @@ class EditorGutenbergTests: XCTestCase {
             .setFeaturedImage()
             .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
             .closePostSettings()
-        BlockEditorScreen().publish()
+        try BlockEditorScreen().publish()
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
