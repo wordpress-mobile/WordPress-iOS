@@ -54,7 +54,12 @@ extension ReaderSaveForLaterAction {
     func trackSaveAction(for post: ReaderPost, origin: ReaderSaveForLaterOrigin) {
         let willSave = (post.isSavedForLater == false)
 
-        let properties = [ readerSaveForLaterSourceKey: origin.saveActionValue ]
+        let siteID = post.siteID ?? 0
+        let feedID = post.feedID ?? 0
+        let properties: [String: Any] = [readerSaveForLaterSourceKey: origin.saveActionValue,
+                                         "blog_id": siteID,
+                                         "feed_id": feedID,
+                                         "follow": post.isFollowing]
 
         if willSave {
             WPAppAnalytics.track(.readerPostSaved, withProperties: properties)
