@@ -1,11 +1,5 @@
-* [*] Fixed a bug on Reader that prevented Saved posts to be removed
-* [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
-* [*] Updated the wording for the "Posts" and "Pages" entries in My Site screen [https://github.com/wordpress-mobile/WordPress-iOS/pull/17156]
-* [*] Fixed an issue that caused `Follow conversation by email` to not appear on some post's comments. [#17159]
-* [**] Block editor: Embed block: Enable WordPress embed preview [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3853]
-* [**] Block editor: Embed block: Add error bottom sheet with retry and convert to link actions. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3921]
-* [**] Block editor: Embed block: Implemented the No Preview UI when an embed is successful, but we're unable to show an inline preview [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3927]
-* [*] Block editor: Embed block: Add device's locale to preview content [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3788]
-* [*] Block editor: Column block: Translate column width's control labels [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3952]
-* [**] Block editor: Embed block: Enable embed preview for Instagram and Vimeo providers. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3918]
+-Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.
 
+-Various improvements: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) You will also notice that you can now publish a page via the app’s Share Extension feature.
+
+-Bug fixes: We addressed an issue in the Reader that prevented you from removing Saved posts, and also fixed a bug that prevented you from following a conversation by email through a post’s comments.
