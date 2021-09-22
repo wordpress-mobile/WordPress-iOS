@@ -167,6 +167,40 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         },
                                                  failure: { error in })
     }
+    
+    static private let checkoutURLPrefix = "https://wordpress.com/checkout"
+    static private let checkoutSuccessURLPrefix = "https://wordpress.com/checkout/thank-you/"
+    
+    /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
+    /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
+    /// through said web view.
+    ///
+    /// - Parameters:
+    ///     - newURL: the newly set URL for the web view.
+    ///     - domain: the domain the user is purchasing.
+    ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
+    ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
+    ///
+    private func handleWebViewURLChange(
+        _ newURL: URL,
+        domain: String,
+        onCancel: () -> Void,
+        onSuccess: () -> Void) {
+            
+        let canOpenNewURL = newURL.absoluteString.starts(with: Self.checkoutURLPrefix)
+
+        guard canOpenNewURL else {
+            onCancel()
+            return
+        }
+
+        let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Self.checkoutSuccessURLPrefix)
+
+        if domainRegistrationSucceeded {
+            onSuccess()
+            return
+        }
+    }
 
     private func presentWebViewForCurrentSite(domain: String) {
         guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
@@ -177,27 +211,24 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
         let navController = LightNavigationController(rootViewController: webViewController)
 
+        // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions
+        // for domain registration is because our checkout process (for some unknown reason) doesn't trigger
+        // call to WKWebViewDelegate methods.
+        //
+        // This was last checked by @diegoreymendez on 2021-09-22.
+        //
         webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
             guard let self = self,
                   let newURL = change.newValue as? URL else {
                 return
             }
 
-            let canOpenNewURL = newURL.absoluteString.starts(with: "https://wordpress.com/checkout")
-
-            guard canOpenNewURL else {
+            self.handleWebViewURLChange(newURL, domain: domain, onCancel: {
                 navController.dismiss(animated: true)
-                return
-            }
-
-            let domainRegistrationSucceeded = newURL.absoluteString.starts(with: "https://wordpress.com/checkout/thank-you/")
-
-            if domainRegistrationSucceeded {
+            }) {
                 self.dismiss(animated: true, completion: { [weak self] in
                     self?.domainPurchasedCallback(domain)
                 })
-
-                return
             }
         }
 
