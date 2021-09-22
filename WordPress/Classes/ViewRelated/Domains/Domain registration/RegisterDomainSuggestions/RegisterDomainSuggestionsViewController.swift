@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
@@ -15,6 +16,8 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
     private var siteName: String?
     private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
+
+    private var webViewURLChangeObservation: NSKeyValueObservation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -160,18 +163,44 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                                                  domainSuggestion: domain,
                                                  privacyProtectionEnabled: false,
                                                  success: { [weak self] _ in
-            self?.presentWebViewForCurrentSite()
+            self?.presentWebViewForCurrentSite(domain: domain.domainName)
         },
                                                  failure: { error in })
     }
-    private func presentWebViewForCurrentSite() {
 
+    private func presentWebViewForCurrentSite(domain: String) {
         guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
-              let url = URL(string: Constants.checkoutWebAddress + host),
-              let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url) as? WebKitViewController else {
+              let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
         }
+
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
         let navController = LightNavigationController(rootViewController: webViewController)
+
+        webViewURLChangeObservation = webViewController.webView.observe(\.url, options: .new) { [weak self] _, change in
+            guard let self = self,
+                  let newURL = change.newValue as? URL else {
+                return
+            }
+
+            let canOpenNewURL = newURL.absoluteString.starts(with: "https://wordpress.com/checkout")
+
+            guard canOpenNewURL else {
+                navController.dismiss(animated: true)
+                return
+            }
+
+            let domainRegistrationSucceeded = newURL.absoluteString.starts(with: "https://wordpress.com/checkout/thank-you/")
+
+            if domainRegistrationSucceeded {
+                self.dismiss(animated: true, completion: { [weak self] in
+                    self?.domainPurchasedCallback(domain)
+                })
+
+                return
+            }
+        }
+
         if let storeSandobxCookie = (HTTPCookieStorage.shared.cookies?.first {
 
             $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
