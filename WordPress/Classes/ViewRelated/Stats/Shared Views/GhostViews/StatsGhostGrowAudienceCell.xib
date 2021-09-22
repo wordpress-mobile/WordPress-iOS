@@ -16,66 +16,48 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="256"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oRq-Yy-EB0">
-                        <rect key="frame" x="16" y="24" width="32" height="32"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="32" id="04r-ES-3Iq"/>
-                            <constraint firstAttribute="height" constant="32" id="yLV-ij-fdt"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wex-fe-ee3">
-                        <rect key="frame" x="56" y="40" width="100" height="16"/>
+                        <rect key="frame" x="16" y="40" width="200" height="16"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="100" id="8bK-jF-CrV"/>
+                            <constraint firstAttribute="width" constant="200" id="8bK-jF-CrV"/>
                             <constraint firstAttribute="height" constant="16" id="amP-Ph-bTe"/>
                         </constraints>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="80" translatesAutoresizingMaskIntoConstraints="NO" id="JjF-Qe-4WD">
-                        <rect key="frame" x="16" y="80" width="382" height="98"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="NRZ-tk-S2r">
+                        <rect key="frame" x="16" y="132" width="250" height="44"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="NRZ-tk-S2r">
-                                <rect key="frame" x="0.0" y="0.0" width="214" height="96"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrN-Sa-4uf">
-                                        <rect key="frame" x="0.0" y="0.0" width="214" height="40"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="xVa-vr-sYv"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uod-lr-D1U">
-                                        <rect key="frame" x="0.0" y="48" width="214" height="48"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="48" id="92Z-dx-G3Q"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                            </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gs2-8u-XNT">
-                                <rect key="frame" x="294" y="0.0" width="88" height="88"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrN-Sa-4uf">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="gs2-8u-XNT" secondAttribute="height" multiplier="1:1" id="1wJ-Qt-dud"/>
-                                    <constraint firstAttribute="width" constant="88" id="OIg-sz-Kuv"/>
+                                    <constraint firstAttribute="height" constant="16" id="xVa-vr-sYv"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uod-lr-D1U">
+                                <rect key="frame" x="0.0" y="28" width="250" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="92Z-dx-G3Q"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="250" id="D5T-NL-1O2"/>
+                        </constraints>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hTQ-wK-Kvh">
-                        <rect key="frame" x="16" y="210" width="382" height="30"/>
+                        <rect key="frame" x="16" y="224" width="382" height="16"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6YA-w0-Isv">
-                                <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="16"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="7cY-sR-8xH"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4H-Qd-4cd">
-                                <rect key="frame" x="282" y="0.0" width="100" height="30"/>
+                                <rect key="frame" x="282" y="0.0" width="100" height="16"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="Y7G-6x-chX"/>
@@ -83,22 +65,29 @@
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="VRh-G6-lnr"/>
+                            <constraint firstAttribute="height" constant="16" id="VRh-G6-lnr"/>
                         </constraints>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Btw-Vm-80L">
+                        <rect key="frame" x="16" y="88" width="175" height="32"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="9gk-ZB-TKA"/>
+                            <constraint firstAttribute="width" constant="175" id="CA4-Er-EzJ"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="oRq-Yy-EB0" firstAttribute="top" secondItem="jCC-TG-PHL" secondAttribute="top" constant="24" id="3rh-ER-WG4"/>
+                    <constraint firstItem="NRZ-tk-S2r" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="3pq-1F-dzG"/>
+                    <constraint firstItem="hTQ-wK-Kvh" firstAttribute="top" secondItem="NRZ-tk-S2r" secondAttribute="bottom" constant="48" id="4MG-DC-1Nl"/>
                     <constraint firstAttribute="bottom" secondItem="hTQ-wK-Kvh" secondAttribute="bottom" constant="16" id="4ql-pQ-Cvy"/>
-                    <constraint firstItem="JjF-Qe-4WD" firstAttribute="top" secondItem="oRq-Yy-EB0" secondAttribute="bottom" constant="24" id="6H3-2Q-pB2"/>
+                    <constraint firstItem="Btw-Vm-80L" firstAttribute="top" secondItem="Wex-fe-ee3" secondAttribute="bottom" constant="32" id="9zf-cv-I1r"/>
                     <constraint firstItem="hTQ-wK-Kvh" firstAttribute="centerX" secondItem="jCC-TG-PHL" secondAttribute="centerX" id="A04-CH-7Vr"/>
-                    <constraint firstItem="JjF-Qe-4WD" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="E1G-sd-f9w"/>
-                    <constraint firstItem="JjF-Qe-4WD" firstAttribute="centerX" secondItem="jCC-TG-PHL" secondAttribute="centerX" id="czi-W6-UOR"/>
-                    <constraint firstItem="oRq-Yy-EB0" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="gd3-7K-y6H"/>
+                    <constraint firstItem="Wex-fe-ee3" firstAttribute="top" secondItem="jCC-TG-PHL" secondAttribute="top" constant="40" id="Qsg-0r-3Ia"/>
+                    <constraint firstItem="NRZ-tk-S2r" firstAttribute="top" secondItem="Btw-Vm-80L" secondAttribute="bottom" constant="12" id="STH-AC-gic"/>
+                    <constraint firstItem="Wex-fe-ee3" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="Zpd-Ss-jHJ"/>
+                    <constraint firstItem="Btw-Vm-80L" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="bCc-yb-cUk"/>
                     <constraint firstAttribute="trailing" secondItem="hTQ-wK-Kvh" secondAttribute="trailing" constant="16" id="key-Dc-hzl"/>
-                    <constraint firstItem="Wex-fe-ee3" firstAttribute="leading" secondItem="oRq-Yy-EB0" secondAttribute="trailing" constant="8" id="l7r-qu-CRf"/>
-                    <constraint firstItem="Wex-fe-ee3" firstAttribute="bottom" secondItem="oRq-Yy-EB0" secondAttribute="bottom" id="ppe-PM-M51"/>
-                    <constraint firstItem="hTQ-wK-Kvh" firstAttribute="top" secondItem="JjF-Qe-4WD" secondAttribute="bottom" constant="32" id="rNc-i2-xdM"/>
                     <constraint firstItem="hTQ-wK-Kvh" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="tR1-Kp-M6A"/>
                 </constraints>
             </tableViewCellContentView>
