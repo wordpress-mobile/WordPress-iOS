@@ -42,11 +42,11 @@ msgstr ""
 
 msgctxt "v18.3-whats-new"
 msgid ""
-"-Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.\n"
+"- Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.\n"
 "\n"
-"-Various improvements: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) You will also notice that you can now publish a page via the app’s Share Extension feature.\n"
+"- Various improvements: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) You will also notice that you can now publish a page via the app’s Share Extension feature.\n"
 "\n"
-"-Bug fixes: We addressed an issue in the Reader that prevented you from removing Saved posts, and also fixed a bug that prevented you from following a conversation by email through a post’s comments.\n"
+"- Bug fixes: We addressed an issue in the Reader that prevented you from removing Saved posts, and also fixed a bug that prevented you from following a conversation by email through a post’s comments.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
