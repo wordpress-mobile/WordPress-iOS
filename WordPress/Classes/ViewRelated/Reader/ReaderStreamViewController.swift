@@ -1961,8 +1961,14 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
         tableView.endUpdates()
     }
 
-    func didSelect(topic: String) {
+    func didSelect(topic: String, from post: ReaderPost?) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+
+        guard let post = post else {
+            return
+        }
+        let properties = topicPropertyForStats(post: post)
+        WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 }
