@@ -11,8 +11,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="approvedButton" destination="LN1-7X-UXx" id="7pK-0f-GwO"/>
                 <outlet property="contentView" destination="fad-ek-phg" id="hH2-yh-b2Q"/>
+                <outlet property="firstDivider" destination="hDr-cL-ID4" id="C4l-gw-gmt"/>
                 <outlet property="pendingButton" destination="2wQ-QH-nFG" id="fDp-PC-lKd"/>
+                <outlet property="secondDivider" destination="FN5-XD-9q2" id="aYi-f6-Lhj"/>
+                <outlet property="spamButton" destination="amj-pE-B3g" id="PdL-iS-0X2"/>
+                <outlet property="thirdDivider" destination="FJo-JA-CxT" id="Tts-NM-oCD"/>
+                <outlet property="trashButton" destination="Wss-Fs-Ja4" id="Lmy-GK-01S"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -23,29 +29,104 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fad-ek-phg" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wQ-QH-nFG">
-                            <rect key="frame" x="4" y="4" width="76" height="55"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="au2-Qc-dqY">
+                            <rect key="frame" x="4" y="4" width="406" height="55"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wQ-QH-nFG">
+                                    <rect key="frame" x="0.0" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Pending">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="pendingTapped:" destination="-1" eventType="touchUpInside" id="yN6-hc-bjS"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LN1-7X-UXx">
+                                    <rect key="frame" x="101.5" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Approved">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="approvedTapped:" destination="-1" eventType="touchUpInside" id="PJo-FX-E5p"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amj-pE-B3g">
+                                    <rect key="frame" x="203" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Spam">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="spamTapped:" destination="-1" eventType="touchUpInside" id="B2t-fu-MCD"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wss-Fs-Ja4">
+                                    <rect key="frame" x="304.5" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Trash">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="trashTapped:" destination="-1" eventType="touchUpInside" id="wpW-cn-khe"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDr-cL-ID4" userLabel="First Divider">
+                            <rect key="frame" x="105.5" y="9" width="1" height="45"/>
+                            <viewLayoutGuide key="safeArea" id="L22-49-ute"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="76" id="SCQ-Qr-jaG"/>
+                                <constraint firstAttribute="width" constant="1" id="2ZI-sY-eMs"/>
                             </constraints>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal" title="Pending">
-                                <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
-                            </state>
-                            <connections>
-                                <action selector="pendingTapped:" destination="-1" eventType="touchUpInside" id="yN6-hc-bjS"/>
-                            </connections>
-                        </button>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FN5-XD-9q2" userLabel="Second Divider">
+                            <rect key="frame" x="207" y="9" width="1" height="45"/>
+                            <viewLayoutGuide key="safeArea" id="gqa-s3-Sh0"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="Q9A-qW-yjr"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FJo-JA-CxT" userLabel="Third Divider">
+                            <rect key="frame" x="308.5" y="9" width="1" height="45"/>
+                            <viewLayoutGuide key="safeArea" id="Pw0-Rc-zvI"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="uRU-KX-m19"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="2wQ-QH-nFG" firstAttribute="top" secondItem="fad-ek-phg" secondAttribute="top" constant="4" id="800-Ij-SWw"/>
-                        <constraint firstAttribute="bottom" secondItem="2wQ-QH-nFG" secondAttribute="bottom" constant="4" id="O43-1P-czA"/>
-                        <constraint firstItem="2wQ-QH-nFG" firstAttribute="leading" secondItem="fad-ek-phg" secondAttribute="leading" constant="4" id="PHU-lN-3IC"/>
+                        <constraint firstItem="FJo-JA-CxT" firstAttribute="height" secondItem="hDr-cL-ID4" secondAttribute="height" id="3Ue-HN-EjY"/>
+                        <constraint firstAttribute="bottom" secondItem="au2-Qc-dqY" secondAttribute="bottom" constant="4" id="408-DG-9QK"/>
+                        <constraint firstAttribute="trailing" secondItem="au2-Qc-dqY" secondAttribute="trailing" constant="4" id="5q8-Nr-2T7"/>
+                        <constraint firstItem="FN5-XD-9q2" firstAttribute="top" secondItem="hDr-cL-ID4" secondAttribute="top" id="Bem-4b-Zm4"/>
+                        <constraint firstItem="FN5-XD-9q2" firstAttribute="height" secondItem="hDr-cL-ID4" secondAttribute="height" id="RRB-Sf-iEU"/>
+                        <constraint firstItem="hDr-cL-ID4" firstAttribute="centerY" secondItem="2wQ-QH-nFG" secondAttribute="centerY" id="VKf-r2-vNk"/>
+                        <constraint firstItem="FN5-XD-9q2" firstAttribute="leading" secondItem="LN1-7X-UXx" secondAttribute="trailing" id="dCw-qE-Olu"/>
+                        <constraint firstItem="au2-Qc-dqY" firstAttribute="top" secondItem="fad-ek-phg" secondAttribute="top" constant="4" id="f8r-28-sxU"/>
+                        <constraint firstItem="FJo-JA-CxT" firstAttribute="top" secondItem="hDr-cL-ID4" secondAttribute="top" id="fwp-gb-ZnU"/>
+                        <constraint firstItem="hDr-cL-ID4" firstAttribute="leading" secondItem="2wQ-QH-nFG" secondAttribute="trailing" id="mjr-vU-wWi"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="oIi-Yd-nBb"/>
+                        <constraint firstItem="FJo-JA-CxT" firstAttribute="leading" secondItem="amj-pE-B3g" secondAttribute="trailing" id="oq7-QC-wPS"/>
+                        <constraint firstItem="hDr-cL-ID4" firstAttribute="height" secondItem="2wQ-QH-nFG" secondAttribute="height" constant="-10" id="uqA-fs-MVV"/>
+                        <constraint firstItem="au2-Qc-dqY" firstAttribute="leading" secondItem="fad-ek-phg" secondAttribute="leading" constant="4" id="zch-9z-raG"/>
                     </constraints>
                 </view>
             </subviews>
