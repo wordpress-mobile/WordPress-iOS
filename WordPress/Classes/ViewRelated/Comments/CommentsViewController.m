@@ -660,6 +660,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)adjustNoResultViewPlacement
 {
+    // calling this too early results in wrong tableView frame used for initial state
     if(self.noResultsViewController.view.window == nil) {
         return;
     }
