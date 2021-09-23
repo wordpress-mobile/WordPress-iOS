@@ -9,7 +9,7 @@ final class ReaderLikeAction {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
         let service = ReaderPostService(managedObjectContext: context)
-        service.toggleLiked(for: post, success: {
+        service.toggleLiked(for: post, fromArticleDetails: false, success: {
             completion?()
         }, failure: { (error: Error?) in
             if let anError = error {

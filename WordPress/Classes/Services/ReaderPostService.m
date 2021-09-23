@@ -209,7 +209,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 #pragma mark - Update Methods
 
-- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)post fromArticleDetails:(BOOL)details success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     [self.managedObjectContext performBlock:^{
 
@@ -251,14 +251,16 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                 [properties setObject:readerPost.feedID forKey:WPAppAnalyticsKeyFeedID];
                 [properties setObject:[NSNumber numberWithBool:readerPost.isFollowing] forKey:WPAppAnalyticsKeyIsFollowing];
 
+                NSUInteger event;
                 if (like) {
-                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
+                    event = (details) ? WPAnalyticsStatReaderArticleDetailLiked : WPAnalyticsStatReaderArticleLiked;
                     if (railcar) {
-                        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:railcar];
+                        [WPAnalytics trackReaderStat:event properties:railcar];
                     }
                 } else {
-                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleUnliked properties:properties];
+                    event = (details) ? WPAnalyticsStatReaderArticleDetailUnliked : WPAnalyticsStatReaderArticleUnliked;
                 }
+                [WPAnalytics trackReaderStat:event properties:properties];
             }
             if (success) {
                 success();

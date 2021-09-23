@@ -106,6 +106,7 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleLikedForPost:(ReaderPost *)post
+        fromArticleDetails:(BOOL) details
                    success:(void (^)(void))success
                    failure:(void (^)(NSError *error))failure;
 
