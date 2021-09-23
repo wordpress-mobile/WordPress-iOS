@@ -53,7 +53,7 @@ protocol PublishingEditor where Self: UIViewController {
 
 var postPublishedReceipt: Receipt?
 
-extension PublishingEditor where Self: UIViewController {
+extension PublishingEditor {
 
     func canViewEditorOnboarding() -> Bool {
         return false
@@ -452,7 +452,7 @@ extension PublishingEditor where Self: UIViewController {
     }
 }
 
-extension PublishingEditor where Self: UIViewController {
+extension PublishingEditor {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
@@ -464,7 +464,7 @@ extension PublishingEditor where Self: UIViewController {
 
 // MARK: - Publishing
 
-extension PublishingEditor where Self: UIViewController {
+extension PublishingEditor {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
