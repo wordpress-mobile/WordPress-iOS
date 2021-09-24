@@ -118,7 +118,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // Configure feature availability.
         isReactionEnabled = !comment.isReadOnly()
-        isCommentLikesEnabled = comment.blog?.supports(.commentLikes) ?? false
+        isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
         isAccessoryButtonEnabled = comment.isApproved()
 
         // Configure comment content.
