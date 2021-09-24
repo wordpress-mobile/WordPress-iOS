@@ -102,6 +102,7 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  Toggle the liked status of the specified post.
 
  @param post The reader post to like/unlike.
+ @param details Boolean value indicating if the action is initated from the article details screen.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
