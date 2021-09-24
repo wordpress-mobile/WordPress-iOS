@@ -81,7 +81,7 @@ extension ReaderStreamViewController {
         let feedID = post.feedID ?? 0
         var properties: [String: Any] = ["blog_id": blogID,
                                          "feed_id": feedID,
-                                         "foolow": post.isFollowing]
+                                         "follow": post.isFollowing]
 
         if contentType == .saved {
             properties[readerSaveForLaterSourceKey] = ReaderSaveForLaterOrigin.savedStream.openPostValue
