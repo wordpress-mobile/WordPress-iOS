@@ -92,21 +92,21 @@
                                 <rect key="frame" x="0.0" y="112" width="288" height="0.0"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="62.5" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="0.0"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
                                         <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
                                         <state key="normal" title="Reply">
                                             <color key="titleColor" systemColor="secondaryLabelColor"/>
-                                            <imageReference key="image" image="arrowshape.turn.up.backward" catalog="system" symbolScale="default" renderingMode="template"/>
+                                            <imageReference key="image" image="icon-reader-comment-reply" symbolScale="default" renderingMode="template"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default">
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             </preferredSymbolConfiguration>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="62.5" y="0.0" width="78.5" height="0.0"/>
+                                        <rect key="frame" x="60" y="0.0" width="78.5" height="0.0"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="10" maxX="35" maxY="15"/>
@@ -158,8 +158,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="arrowshape.turn.up.backward" catalog="system" width="128" height="106"/>
         <image name="gravatar" width="85" height="85"/>
+        <image name="icon-reader-comment-reply" width="13" height="12"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <systemColor name="secondaryLabelColor">
