@@ -321,9 +321,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (following) {
-        [siteService followSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+        [siteService followSiteWithID:[siteID integerValue] site:NULL success:successBlock failure:failureBlock];
     } else {
-        [siteService unfollowSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+        [siteService unfollowSiteWithID:[siteID integerValue] site:NULL success:successBlock failure:failureBlock];
     }
 }
 
@@ -406,9 +406,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (!post.isExternal) {
         if (follow) {
-            [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[post.siteID integerValue] site:NULL success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService unfollowSiteWithID:[post.siteID integerValue] site:NULL success:successBlock failure:failureBlock];
         }
     } else if (post.blogURL) {
         if (follow) {

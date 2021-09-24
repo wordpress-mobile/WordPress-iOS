@@ -16,15 +16,15 @@ class NotificationActionsService: LocalCoreDataService {
             return
         }
 
-        siteService.followSite(withID: siteID, success: {
+        siteService.followSite(withID: siteID, site: nil) {
             DDLogInfo("Successfully followed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
-        }, failure: { error in
+        } failure: { error in
             DDLogError("Error while trying to follow site: \(String(describing: error))")
             completion?(false)
-        })
+        }
     }
 
 
@@ -39,15 +39,15 @@ class NotificationActionsService: LocalCoreDataService {
             return
         }
 
-        siteService.unfollowSite(withID: siteID, success: {
+        siteService.unfollowSite(withID: siteID, site: nil) {
             DDLogInfo("Successfully unfollowed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
-        }, failure: { error in
+        } failure: { error in
             DDLogError("Error while trying to unfollow site: \(String(describing: error))")
             completion?(false)
-        })
+        }
     }
 
 

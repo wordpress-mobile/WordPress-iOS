@@ -35,7 +35,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)followSiteWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
+- (void)followSiteWithID:(NSUInteger)siteID site:(ReaderSiteTopic *)site success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -55,8 +55,11 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         }
         [service followSiteWithID:siteID success:^(){
             [self fetchTopicServiceWithID:siteID success:success failure:failure];
-            NSNumber *blogID = [NSNumber numberWithUnsignedInteger:siteID];
-            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteFollowed properties:@{ @"blog_id": blogID }];
+            NSDictionary *properties = @{
+                @"blog_id": site.siteID,
+                @"feed_id": site.feedID
+            };
+            [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteFollowed properties:properties];
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -66,7 +69,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteWithID:(NSUInteger)siteID site:(ReaderSiteTopic *)site success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -82,8 +85,11 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        NSNumber *blogID = [NSNumber numberWithUnsignedInteger:siteID];
-        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteUnfollowed properties:@{ @"blog_id": blogID }];
+        NSDictionary *properties = @{
+            @"blog_id": site.siteID,
+            @"feed_id": site.feedID
+        };
+        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteUnfollowed properties:properties];
         
     } failure:failure];
 }
@@ -260,7 +266,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
         if (siteID) {
-            [self followSiteWithID:siteID success:success failure:failure];
+            [self followSiteWithID:siteID site:NULL success:success failure:failure];
         } else {
             [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
         }
