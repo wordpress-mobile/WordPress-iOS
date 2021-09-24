@@ -1,11 +1,12 @@
 import UIKit
+import WebKit
 
 class WebViewControllerFactory: NSObject {
     @available(*, unavailable)
     override init() {
     }
 
-    @objc static func controller(configuration: WebViewControllerConfiguration) -> UIViewController {
+    @objc static func controller(configuration: WebViewControllerConfiguration) -> WebKitViewController {
         let controller = WebKitViewController(configuration: configuration)
         return controller
     }
@@ -39,11 +40,11 @@ class WebViewControllerFactory: NSObject {
         return controller(configuration: configuration)
     }
 
-    static func controllerWithDefaultAccountAndSecureInteraction(url: URL) -> UIViewController {
+    static func controllerWithDefaultAccountAndSecureInteraction(url: URL) -> WebKitViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         configuration.secureInteraction = true
+
         return controller(configuration: configuration)
     }
-
 }
