@@ -276,11 +276,11 @@ public class AztecEditorScreen: BaseScreen {
         }
     }
 
-    public func openPostSettings() -> EditorPostSettings {
+    public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
         postSettingsButton.tap()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
     private func getHTMLContent() -> String {

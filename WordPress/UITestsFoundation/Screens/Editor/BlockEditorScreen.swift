@@ -111,11 +111,11 @@ public class BlockEditorScreen: BaseScreen {
         return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
     }
 
-    public func openPostSettings() -> EditorPostSettings {
+    public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
         postSettingsButton.tap()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
     private func addBlock(_ blockLabel: String) {

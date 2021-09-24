@@ -16,10 +16,10 @@ public class TagsComponent: BaseScreen {
         return self
     }
 
-    func goBackToSettings() -> EditorPostSettings {
+    func goBackToSettings() throws -> EditorPostSettings {
         navBackButton.tap()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
     public static func isLoaded() -> Bool {
