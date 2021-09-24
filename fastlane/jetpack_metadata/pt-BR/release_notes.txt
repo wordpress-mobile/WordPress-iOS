@@ -1,8 +1,0 @@
-- Fique por dentro! Agora você pode receber um resumo semanal das atividades dos seus sites mais populares.
-
-- Tenha ainda mais controle sobre os comentários no seu site: ao editá-los, agora você também pode ajustar o nome do autor, endereço de e-mail e endereço na Web.
-Fizemos alguns ajustes práticos no editor de blocos. O bloco de mídia incorporada agora fornece uma prévia quando você adiciona mídia do YouTube ou Twitter (em breve mais provedores). Além disso, quando você quer inserir um bloco e não encontra nada, agora aparece uma visualização "Nenhum resultado".
-
-- Se você acessar Configurações do post > Formato do post, ainda verá a opção "Padrão" na parte superior da tela, mas as outras opções agora são exibidas em ordem alfabética abaixo. (As opções variam conforme o tema!)
-
-- Só mais uma coisinha: agora é muito simples atualizar seu site! Basta arrastrar para baixo na tela Meu site.

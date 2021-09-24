@@ -230,9 +230,14 @@ extension WPMediaAsset {
     }
 
     /// Produces a Publisher containing a URL of saved video and any errors which occurred.
+    ///
+    /// - Parameters:
+    ///     - skipTransformCheck: Skips the transform check.
+    ///
     /// - Returns: Publisher containing the URL to a saved video and any errors which occurred.
-    func videoURLPublisher() -> AnyPublisher<URL, Error> {
-        return videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
+    ///
+    func videoURLPublisher(skipTransformCheck: Bool = false) -> AnyPublisher<URL, Error> {
+        videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
             let filename = UUID().uuidString
             let url = try StoryEditor.mediaCacheDirectory().appendingPathComponent(filename)
             let urlAsset = asset as? AVURLAsset
@@ -240,7 +245,13 @@ extension WPMediaAsset {
             // Portrait video is exported so that it is rotated for use in Kanvas.
             // Once the Metal renderer is fixed to properly rotate this media, this can be removed.
             let trackTransform = asset.tracks(withMediaType: .video).first?.preferredTransform
-            if let assetURL = urlAsset?.url, trackTransform == CGAffineTransform.identity {
+
+            // DRM: I moved this logic into a variable because it seems to be completely out of place in this method
+            // and it was causing some issues when sharing videos that needed to be downloaded.  I added a parameter
+            // with a default value that will make sure this check is executed for any old code.
+            let transformCheck = skipTransformCheck || trackTransform == CGAffineTransform.identity
+
+            if let assetURL = urlAsset?.url, transformCheck {
                 let exportURL = url.appendingPathExtension(assetURL.pathExtension)
                 if urlAsset?.url.scheme != "file" {
                     // Download any file which isn't local and move it to the proper location.
@@ -325,7 +336,7 @@ extension WPMediaAsset {
     /// Produces a Publisher  `AVAsset` from a `WPMediaAsset` object.
     /// - Returns: Publisher with an AVAsset and any errors which occur during export.
     func videoAssetPublisher() -> AnyPublisher<AVAsset, Error> {
-        return Future<AVAsset, Error> { [weak self] promise in
+        Future<AVAsset, Error> { [weak self] promise in
             self?.videoAsset(completionHandler: { asset, error in
                 guard let asset = asset else {
                     if let error = error {

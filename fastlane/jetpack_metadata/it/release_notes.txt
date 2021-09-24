@@ -1,8 +1,0 @@
-- Rimani aggiornato. Ora puoi ricevere un riepilogo settimanale dell'attività sui siti più popolari.
-
-- Hai ancora più controllo sui commenti del sito: quando li modifichi ora puoi anche regolare il nome dell'autore, l'indirizzo e-mail e quello del sito.
-Abbiamo apportato un paio di utili miglioramenti all'editor a blocchi. Il blocco Incorporamenti ora ti offre un assaggio di anteprima quando aggiungi qualcosa da YouTube o Twitter (sono in arrivo altri fornitori). Inoltre, quando vai a inserire un blocco e non trovi nulla, ora viene mostrata una visualizzazione "nessun risultato".
-
-- Se vai su Impostazioni dell'articolo > Formato articolo, troverai l'opzione "Standard" ancora nella parte superiore, ma le altre opzioni sono in ordine alfabetico a seguire. (Le opzioni possono variare in base ai temi.)
-
-- E ancora più velocità: aggiornare il tuo sito ora è semplicissimo. Basta scorrere con il dito per aggiornare la schermata Il mio sito.

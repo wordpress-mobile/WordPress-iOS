@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-06 08:24:13+0000 */
+/* Translation-Revision-Date: 2021-09-20 12:14:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opciones del bloque %s";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "Pronto llegarán las vistas previas del bloque %s";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "Bloque %s, disponible nuevamente";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s convertido a bloques normales";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "Pronto llegarán las vistas previas del bloque incrustado de %s";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s tiene una URL configurada";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Añade aquí una URL del CSS personalizado para que se cargue en el lector. Si estás ejecutando Calypso localmente, esto puede ser algo como: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Añade un dominio";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Añade un nuevo bloque en cualquier momento tocando el icono «+» en la barra de herramientas de la parte inferior izquierda. ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Entradas del blog";
-
 /* Create new Blog Post button title */
 "Blog post" = "Entrada del blog";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Fondos coloridos";
 
+/* translators: %d: column index. */
+"Column %d" = "Columna %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Ajustes de columna";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continuando con Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Convertir a enlace";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Cocina";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "No se pudieron cargar las etiquetas. Toca para volver a intentarlo.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "No se pudo marcar como spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "No se pudo desmarcar como spam";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "No se ha podido subir la imagen destacada";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Toca dos veces para deshacer el último cambio";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Doble toque para ver las opciones de incrustación.";
+
 /* Download button title */
 "Download" = "Descarga";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "¡Correo electrónico enviado!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Pronto llegarán las vistas previas del bloque incrustado";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Leyenda incrustada. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Medio incrustado";
+
+/* No comment provided by engineer. */
+"Embed options" = "Opciones de incrustación";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Pon la bola a rodar y aumenta las visitas compartiendo tu entrada.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Consigue tu dominio";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Obtén tus avisos más rápido";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Marcar como fija";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Marcar como no spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Marcar como leída";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Marcar como spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Marcar como spam.";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nueva entrada";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "Nuevo flujo de dominio ";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nuevo elemento";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "No hay entradas.";
+
+/* No comment provided by engineer. */
+"No preview available" = "Vista previa no disponible";
 
 /* A message title */
 "No recent posts" = "No hay entradas recientes";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "TELÉFONO";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Página actualizada";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Páginas";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Idiomas populares";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Publicar";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Entradas";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Publicar inmediatamente";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Publicar página el:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publicar entrada el:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Publicando en";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Publicando página…";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publicando entrada…";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Guardar";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Guarda %ld fotos como borrador de página el:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Guarda %ld fotos como borrador de entrada el:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Guarda 1 foto como borrador de página el:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Guarda 1 foto como borrador de entrada el:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Guardar como borrador";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Guardar borrador de la página el:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Guarda borrador de la entrada el:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Guarda esta entrada para más tarde.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Guardando página…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Guardando entrada...";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Ve comentarios y avisos en tiempo real.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Elegir";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Idioma del sitio";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Páginas del sitio";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirección de sitio";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Toca para descartar esta tarjeta";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Toca para mostrar el referente de la página web.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Toca para introducir un valor personalizado";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Toca para ocultar el teclado";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Toca para marcar al referente como no spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Toca para marcar al referente como spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Toca para ver todas las etiquetas de esta entrada";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nombre de usuario de Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Tipo";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Teclea una URL";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "más tarde hoy";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "marcado como spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "de";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "url desconocida";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "desmarcado como spam";
 
 /* Noun. Describes a site's user. */
 "user" = "usuario";

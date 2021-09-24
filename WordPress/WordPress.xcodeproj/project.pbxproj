@@ -1504,6 +1504,10 @@
 		9826AE9121B5D3CD00C851FA /* PostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */; };
 		9829162F2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */; };
 		982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
+		982D99FE26F922C100AA794C /* InlineEditableMultiLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982D99FC26F922C100AA794C /* InlineEditableMultiLineCell.swift */; };
+		982D99FF26F922C100AA794C /* InlineEditableMultiLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982D99FC26F922C100AA794C /* InlineEditableMultiLineCell.swift */; };
+		982D9A0026F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 982D99FD26F922C100AA794C /* InlineEditableMultiLineCell.xib */; };
+		982D9A0126F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 982D99FD26F922C100AA794C /* InlineEditableMultiLineCell.xib */; };
 		982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */; };
 		982DA9A8263B1E2F00E5743B /* CommentService+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */; };
 		982DDF90263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DDF8C263238A6002B3904 /* LikeUser+CoreDataClass.swift */; };
@@ -1611,10 +1615,6 @@
 		98906508237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */; };
 		98906509237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */; };
 		98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF621372E12004949AA /* MediaCoordinator.swift */; };
-		9894080C26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */; };
-		9894080D26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */; };
-		9894080E26CEE03A0035FB4C /* EditCommentSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */; };
-		9894080F26CEE03B0035FB4C /* EditCommentSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */; };
 		9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */; };
 		9895401226C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */; };
 		9895B6E021ED49160053D370 /* TopTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9895B6DF21ED49160053D370 /* TopTotalsCell.xib */; };
@@ -1655,6 +1655,10 @@
 		98B88453261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */; };
 		98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */; };
 		98B88467261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */; };
+		98BAA7C126F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */; };
+		98BAA7C226F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */; };
+		98BAA7C326F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BAA7C026F925F70073A2F9 /* InlineEditableSingleLineCell.swift */; };
+		98BAA7C426F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BAA7C026F925F70073A2F9 /* InlineEditableSingleLineCell.swift */; };
 		98BDFF6B20D0732900C72C58 /* SupportTableViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */; };
 		98BFF57C2398406A008A1DCB /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
 		98BFF57E23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */; };
@@ -1687,10 +1691,6 @@
 		98E5D4922620C2B40074A56A /* UserProfileSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */; };
 		98E5D4932620C2B40074A56A /* UserProfileSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */; };
 		98EB126A20D2DC2500D2D5B5 /* NoResultsViewController+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */; };
-		98EC6B7926D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */; };
-		98EC6B7A26D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */; };
-		98EC6B7B26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */; };
-		98EC6B7C26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */; };
 		98ED5963265EBD0000A0B33E /* ReaderDetailLikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */; };
 		98ED5964265EBD0000A0B33E /* ReaderDetailLikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */; };
 		98F0297C2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F0297A2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift */; };
@@ -6263,6 +6263,8 @@
 		9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostingActivityCell.xib; sourceTree = "<group>"; };
 		9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsDetailsViewModel.swift; sourceTree = "<group>"; };
 		982A4C3420227D6700B5518E /* NoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsViewController.swift; sourceTree = "<group>"; };
+		982D99FC26F922C100AA794C /* InlineEditableMultiLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineEditableMultiLineCell.swift; sourceTree = "<group>"; };
+		982D99FD26F922C100AA794C /* InlineEditableMultiLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineEditableMultiLineCell.xib; sourceTree = "<group>"; };
 		982DA9A6263B1E2F00E5743B /* CommentService+Likes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentService+Likes.swift"; sourceTree = "<group>"; };
 		982DDF8C263238A6002B3904 /* LikeUser+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeUser+CoreDataClass.swift"; sourceTree = "<group>"; };
 		982DDF8D263238A6002B3904 /* LikeUser+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -6339,8 +6341,6 @@
 		989064FD237CC1DE00218CD2 /* WidgetTwoColumnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetTwoColumnCell.swift; sourceTree = "<group>"; };
 		989064FE237CC1DE00218CD2 /* WidgetTwoColumnCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WidgetTwoColumnCell.xib; sourceTree = "<group>"; };
 		98921EF621372E12004949AA /* MediaCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaCoordinator.swift; sourceTree = "<group>"; };
-		9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCommentSingleLineCell.swift; sourceTree = "<group>"; };
-		9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCommentSingleLineCell.xib; sourceTree = "<group>"; };
 		9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCommentTableViewController.swift; sourceTree = "<group>"; };
 		9895B6DF21ED49160053D370 /* TopTotalsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopTotalsCell.xib; sourceTree = "<group>"; };
 		989643EA23A0437B0070720A /* WidgetDifferenceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDifferenceCell.swift; sourceTree = "<group>"; };
@@ -6372,6 +6372,8 @@
 		98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDataHelper.swift; sourceTree = "<group>"; };
 		98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserTableViewCell.swift; sourceTree = "<group>"; };
 		98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikeUserTableViewCell.xib; sourceTree = "<group>"; };
+		98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineEditableSingleLineCell.xib; sourceTree = "<group>"; };
+		98BAA7C026F925F70073A2F9 /* InlineEditableSingleLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineEditableSingleLineCell.swift; sourceTree = "<group>"; };
 		98BBB642258047DD0084FF72 /* WordPress 107.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 107.xcdatamodel"; sourceTree = "<group>"; };
 		98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SupportTableViewController+Activity.swift"; sourceTree = "<group>"; };
 		98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTimeWidgetStats.swift; sourceTree = "<group>"; };
@@ -6402,8 +6404,6 @@
 		98E58A432361019300E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileSectionHeader.xib; sourceTree = "<group>"; };
 		98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+Model.swift"; sourceTree = "<group>"; };
-		98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCommentMultiLineCell.swift; sourceTree = "<group>"; };
-		98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCommentMultiLineCell.xib; sourceTree = "<group>"; };
 		98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailLikesListController.swift; sourceTree = "<group>"; };
 		98F0297A2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEpilogueConnectSiteCell.swift; sourceTree = "<group>"; };
 		98F0297B2405C9E500FFD862 /* LoginEpilogueConnectSiteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginEpilogueConnectSiteCell.xib; sourceTree = "<group>"; };
@@ -10918,34 +10918,38 @@
 		8320B5CF11FCA3EA00607422 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */,
-				E14977171C0DC0770057CD60 /* MediaSizeSliderCell.swift */,
-				E14977191C0DCB6F0057CD60 /* MediaSizeSliderCell.xib */,
+				9F74696A209EFD0C0074D52B /* CheckmarkTableViewCell.swift */,
+				4034FDE92007C42400153B87 /* ExpandableCell.swift */,
+				4034FDED2007D4F700153B87 /* ExpandableCell.xib */,
+				982D99FC26F922C100AA794C /* InlineEditableMultiLineCell.swift */,
+				982D99FD26F922C100AA794C /* InlineEditableMultiLineCell.xib */,
+				43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */,
+				43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */,
+				98BAA7C026F925F70073A2F9 /* InlineEditableSingleLineCell.swift */,
+				98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */,
+				1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */,
 				FF00889E204E01AE007CCE66 /* MediaQuotaCell.swift */,
 				FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */,
+				E14977171C0DC0770057CD60 /* MediaSizeSliderCell.swift */,
+				E14977191C0DCB6F0057CD60 /* MediaSizeSliderCell.xib */,
 				B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */,
 				5D839AA6187F0D6B00811F4A /* PostFeaturedImageCell.h */,
 				5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */,
+				FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */,
+				FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */,
 				B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */,
-				9F74696A209EFD0C0074D52B /* CheckmarkTableViewCell.swift */,
 				E1BB92311FDAAFFA00F2D817 /* TextWithAccessoryButtonCell.swift */,
+				40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */,
 				E66E2A671FE432B900788F22 /* TitleBadgeDisclosureCell.swift */,
-				4034FDE92007C42400153B87 /* ExpandableCell.swift */,
-				4034FDED2007D4F700153B87 /* ExpandableCell.xib */,
 				E66E2A681FE432BB00788F22 /* TitleBadgeDisclosureCell.xib */,
-				74558368201A1FD3007809BB /* WPReusableTableViewCells.swift */,
 				30EABE0718A5903400B73A9C /* WPBlogTableViewCell.h */,
 				30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */,
 				FF0AAE081A1509C50089841D /* WPProgressTableViewCell.h */,
 				FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */,
-				5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */,
+				74558368201A1FD3007809BB /* WPReusableTableViewCells.swift */,
 				8370D10811FA499A009D650F /* WPTableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
-				1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */,
-				43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */,
-				43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */,
-				FEC3B81526C2915A00A395C7 /* SingleButtonTableViewCell.swift */,
-				FEC3B81626C2915A00A395C7 /* SingleButtonTableViewCell.xib */,
+				5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -12553,10 +12557,6 @@
 				9835F16D25E492EE002EFF23 /* CommentsList.storyboard */,
 				B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */,
 				B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */,
-				98EC6B7726D019D30074DC70 /* EditCommentMultiLineCell.swift */,
-				98EC6B7826D019D40074DC70 /* EditCommentMultiLineCell.xib */,
-				9894080A26CEE0390035FB4C /* EditCommentSingleLineCell.swift */,
-				9894080B26CEE03A0035FB4C /* EditCommentSingleLineCell.xib */,
 				5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */,
 				FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */,
 			);
@@ -15363,7 +15363,6 @@
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */,
-				98EC6B7B26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
 				B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */,
 				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
@@ -15402,6 +15401,7 @@
 				B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */,
 				17222D93261DDDF90047B163 /* blue-classic-icon-app-76x76.png in Resources */,
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
+				982D9A0026F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */,
 				FA1A544025A6E3080033967D /* RestoreWarningView.xib in Resources */,
 				17222DAF261DDDF90047B163 /* spectrum-classic-icon-app-60x60@3x.png in Resources */,
 				1761F17D26209AEE000815EF /* open-source-icon-app-83.5x83.5@2x.png in Resources */,
@@ -15425,6 +15425,7 @@
 				57AA8491228715E700D3C2A2 /* PostCardCell.xib in Resources */,
 				3223393E24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
+				98BAA7C126F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */,
 				FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */,
 				E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */,
 				9AC3C69B231543C2007933CD /* StatsGhostChartCell.xib in Resources */,
@@ -15516,7 +15517,6 @@
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				17222DA4261DDDF90047B163 /* spectrum-icon-app-83.5x83.5@2x.png in Resources */,
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
-				9894080E26CEE03A0035FB4C /* EditCommentSingleLineCell.xib in Resources */,
 				469CE06E24BCED75003BDC8B /* CategorySectionTableViewCell.xib in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
 				1761F18026209AEE000815EF /* jetpack-green-icon-app-76x76.png in Resources */,
@@ -15815,7 +15815,6 @@
 				FABB1FF72602FC2C00C8785C /* Revisions.storyboard in Resources */,
 				FABB1FF82602FC2C00C8785C /* ActivityDetailViewController.storyboard in Resources */,
 				FABB1FF92602FC2C00C8785C /* ReaderDetailHeaderView.xib in Resources */,
-				9894080F26CEE03B0035FB4C /* EditCommentSingleLineCell.xib in Resources */,
 				FABB1FFA2602FC2C00C8785C /* ReaderTagsFooter.xib in Resources */,
 				FABB1FFB2602FC2C00C8785C /* PostingActivityLegend.xib in Resources */,
 				FABB1FFC2602FC2C00C8785C /* PostingActivityViewController.storyboard in Resources */,
@@ -15945,12 +15944,12 @@
 				FABB20A72602FC2C00C8785C /* ReaderCrossPostCell.xib in Resources */,
 				FABB20A82602FC2C00C8785C /* StatsStackViewCell.xib in Resources */,
 				FABB20AA2602FC2C00C8785C /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
+				98BAA7C226F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */,
 				FABB20AB2602FC2C00C8785C /* Pages.storyboard in Resources */,
 				FABB20AC2602FC2C00C8785C /* Shrikhand-Regular.ttf in Resources */,
 				FABB20AD2602FC2C00C8785C /* StatsGhostSingleRowCell.xib in Resources */,
 				FABB20AE2602FC2C00C8785C /* ThemeBrowser.storyboard in Resources */,
 				FABB20AF2602FC2C00C8785C /* StatsGhostTabbedCell.xib in Resources */,
-				98EC6B7C26D019D40074DC70 /* EditCommentMultiLineCell.xib in Resources */,
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
 				FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */,
 				FABB20B42602FC2C00C8785C /* WidgetUrlCell.xib in Resources */,
@@ -15965,6 +15964,7 @@
 				FABB20BC2602FC2C00C8785C /* StatsTotalRow.xib in Resources */,
 				FABB20BD2602FC2C00C8785C /* ViewMoreRow.xib in Resources */,
 				FABB20BE2602FC2C00C8785C /* SiteSegmentsWizardContent.xib in Resources */,
+				982D9A0126F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */,
 				FABB20BF2602FC2C00C8785C /* DetailDataCell.xib in Resources */,
 				FABB20C02602FC2C00C8785C /* StatsGhostTwoColumnCell.xib in Resources */,
 				17C1D6F626711ED0006C8970 /* Emoji.txt in Resources */,
@@ -17371,7 +17371,6 @@
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
 				73CE3E0E21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift in Sources */,
 				436D56292117312700CEAA33 /* RegisterDomainDetailsViewController.swift in Sources */,
-				98EC6B7926D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */,
 				F5E29036243E4F5F00C19CA5 /* FilterProvider.swift in Sources */,
 				027AC51D227896540033E56E /* DomainCreditEligibilityChecker.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
@@ -17863,6 +17862,7 @@
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
 				178DDD30266D7576006C68C4 /* BloggingRemindersFlowCompletionViewController.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
+				98BAA7C326F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
 				57276E71239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
 				FF1B11E5238FDFE70038B93E /* GutenbergGalleryUploadProcessor.swift in Sources */,
@@ -17979,7 +17979,6 @@
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				329F8E5624DDAC61002A5311 /* DynamicHeightCollectionView.swift in Sources */,
 				436D56242117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
-				9894080C26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */,
 				C81CCD65243AECA200A83E27 /* TenorGIF.swift in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
 				4353BFA9219E0E820009CED3 /* RevisionOperationViewController.swift in Sources */,
@@ -18289,6 +18288,7 @@
 				82A062DE2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift in Sources */,
 				73FEC871220B358500CEF791 /* WPAccount+RestApi.swift in Sources */,
 				93CDC72126CD342900C8A3A8 /* DestructiveAlertHelper.swift in Sources */,
+				982D99FE26F922C100AA794C /* InlineEditableMultiLineCell.swift in Sources */,
 				B5FF3BE71CAD881100C1D597 /* ImageCropOverlayView.swift in Sources */,
 				F5E032DB24088F44003AF350 /* UIView+SpringAnimations.swift in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
@@ -19244,6 +19244,7 @@
 				FABB21552602FC2C00C8785C /* WPTextAttachmentManager.swift in Sources */,
 				FABB21562602FC2C00C8785C /* ReaderSiteInfoSubscriptions.swift in Sources */,
 				FABB21572602FC2C00C8785C /* ReaderSaveForLaterAction.swift in Sources */,
+				982D99FF26F922C100AA794C /* InlineEditableMultiLineCell.swift in Sources */,
 				FABB21582602FC2C00C8785C /* WPHorizontalRuleAttachment.swift in Sources */,
 				FABB21592602FC2C00C8785C /* ImmuTable+Optional.swift in Sources */,
 				FABB215A2602FC2C00C8785C /* WordPressComRestApi+Defaults.swift in Sources */,
@@ -19639,6 +19640,7 @@
 				FABB22BF2602FC2C00C8785C /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB22C02602FC2C00C8785C /* SchedulingCalendarViewController.swift in Sources */,
 				FABB22C12602FC2C00C8785C /* DomainsService.swift in Sources */,
+				98BAA7C426F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
 				FABB22C22602FC2C00C8785C /* PasswordAlertController.swift in Sources */,
 				FABB22C32602FC2C00C8785C /* ReaderTagsFooter.swift in Sources */,
 				FABB22C42602FC2C00C8785C /* ReaderPostCellActions.swift in Sources */,
@@ -20183,7 +20185,6 @@
 				FABB24B52602FC2C00C8785C /* RestoreStatusView.swift in Sources */,
 				FABB24B62602FC2C00C8785C /* CustomizeInsightsCell.swift in Sources */,
 				FABB24B72602FC2C00C8785C /* SVProgressHUD+Dismiss.m in Sources */,
-				9894080D26CEE03A0035FB4C /* EditCommentSingleLineCell.swift in Sources */,
 				FABB24B82602FC2C00C8785C /* DynamicHeightCollectionView.swift in Sources */,
 				FABB24B92602FC2C00C8785C /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				FABB24BA2602FC2C00C8785C /* TenorGIF.swift in Sources */,
@@ -20274,7 +20275,6 @@
 				FABB25072602FC2C00C8785C /* SiteAssemblyService.swift in Sources */,
 				FABB25082602FC2C00C8785C /* ManagedPerson.swift in Sources */,
 				FABB25092602FC2C00C8785C /* ChosenValueRow.swift in Sources */,
-				98EC6B7A26D019D40074DC70 /* EditCommentMultiLineCell.swift in Sources */,
 				FABB250A2602FC2C00C8785C /* ReplyTextView.swift in Sources */,
 				FABB250B2602FC2C00C8785C /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift in Sources */,
 				FABB250C2602FC2C00C8785C /* MenuItemEditingFooterView.m in Sources */,
