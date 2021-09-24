@@ -47,7 +47,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cKe-Bh-l5b">
                                         <rect key="frame" x="0.0" y="0.0" width="176" height="43"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfa-NZ-hro">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfa-NZ-hro">
                                                 <rect key="frame" x="0.0" y="0.0" width="176" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <nil key="textColor"/>
@@ -93,6 +93,9 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="kpo-nB-hhL"/>
+                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
@@ -101,7 +104,7 @@
                     <constraint firstItem="i0C-45-Gzk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="CFa-hw-edV"/>
                     <constraint firstAttribute="bottom" secondItem="i0C-45-Gzk" secondAttribute="bottom" constant="16" id="FQg-Oi-D1A"/>
                     <constraint firstItem="i0C-45-Gzk" firstAttribute="top" secondItem="3IP-zQ-LiU" secondAttribute="bottom" constant="32" id="IGp-jg-Kvl"/>
-                    <constraint firstItem="3IP-zQ-LiU" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="kCU-K6-xyp"/>
+                    <constraint firstAttribute="trailing" secondItem="3IP-zQ-LiU" secondAttribute="trailing" constant="16" id="oec-8F-pUZ"/>
                     <constraint firstItem="i0C-45-Gzk" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="x6N-ZM-9FF"/>
                 </constraints>
             </tableViewCellContentView>
@@ -114,6 +117,7 @@
                 <outlet property="tipLabel" destination="pfa-NZ-hro" id="Ozz-Qt-iRe"/>
                 <outlet property="viewCountDescriptionLabel" destination="jRn-F4-sDs" id="b6r-JZ-UUI"/>
                 <outlet property="viewCountLabel" destination="51V-ZR-g2T" id="E3P-ol-JEo"/>
+                <outlet property="viewCountStackView" destination="VAy-zn-9th" id="OlH-Vv-iL1"/>
             </connections>
             <point key="canvasLocation" x="71" y="62"/>
         </tableViewCell>

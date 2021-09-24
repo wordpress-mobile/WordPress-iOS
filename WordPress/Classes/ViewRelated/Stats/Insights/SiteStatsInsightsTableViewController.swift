@@ -156,6 +156,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         loadInsightsFromUserDefaults()
         initViewModel()
         tableView.estimatedRowHeight = 500
+        tableView.rowHeight = UITableView.automaticDimension
 
         displayEmptyViewIfNecessary()
     }
@@ -587,6 +588,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let navigationController = UINavigationController(rootViewController: controller)
 
         present(navigationController, animated: true)
+
+        applyTableUpdates()
     }
 
     func growAudienceBloggingRemindersButtonTapped() {
@@ -599,6 +602,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         BloggingRemindersFlow.present(from: self,
                                       for: blog,
                                       source: .statsInsights)
+
+        applyTableUpdates()
     }
 
     func showAddInsight() {
