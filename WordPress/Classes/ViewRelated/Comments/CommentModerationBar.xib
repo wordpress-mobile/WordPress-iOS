@@ -52,7 +52,7 @@
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="Approved">
                                         <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                        <imageReference key="image" image="checkmark.circle" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
                                         <action selector="approvedTapped:" destination="-1" eventType="touchUpInside" id="PJo-FX-E5p"/>
@@ -65,7 +65,7 @@
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="Spam">
                                         <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                        <imageReference key="image" image="exclamationmark.octagon" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
                                         <action selector="spamTapped:" destination="-1" eventType="touchUpInside" id="B2t-fu-MCD"/>
@@ -78,7 +78,7 @@
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="Trash">
                                         <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                        <imageReference key="image" image="trash" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
                                         <action selector="trashTapped:" destination="-1" eventType="touchUpInside" id="wpW-cn-khe"/>
@@ -145,6 +145,9 @@
         </view>
     </objects>
     <resources>
+        <image name="checkmark.circle" catalog="system" width="128" height="121"/>
+        <image name="exclamationmark.octagon" catalog="system" width="128" height="112"/>
+        <image name="trash" catalog="system" width="121" height="128"/>
         <image name="tray" catalog="system" width="128" height="88"/>
     </resources>
 </document>
