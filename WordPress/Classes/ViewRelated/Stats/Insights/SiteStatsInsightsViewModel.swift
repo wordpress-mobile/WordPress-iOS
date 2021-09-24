@@ -69,7 +69,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         status: insightsStore.allTimeStatus,
                                         block: {
                                             let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
-                                            return GrowAudienceRow(hintType: .bloggingReminders,
+                                            return GrowAudienceRow(hintType: .social,
                                                                    allTimeViewsCount: viewsCount ?? 0,
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {

@@ -2,6 +2,7 @@ import UIKit
 
 class GrowAudienceCell: UITableViewCell, NibLoadable {
 
+    @IBOutlet weak var viewCountStackView: UIStackView!
     @IBOutlet weak var viewCountLabel: UILabel!
     @IBOutlet weak var viewCountDescriptionLabel: UILabel!
     @IBOutlet weak var tipLabel: UILabel!
@@ -29,11 +30,10 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
         viewCountLabel.text = String(allTimeViewsCount)
         viewCountDescriptionLabel.text = Strings.getViewsCountDescription(viewsCount: allTimeViewsCount)
-        tipLabel.text = Strings.tipTitle
-        detailsLabel.text = hintType.detailsTitle
         iconView.image = hintType.image
         dismissButton.setTitle(Strings.dismissButtonTitle, for: .normal)
-        actionButton.setTitle(hintType.actionButtonTitle, for: .normal)
+
+        updateView(isCompleted: false)
     }
 
     // MARK: - Styling
@@ -61,6 +61,21 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         actionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
     }
 
+    private func updateView(isCompleted: Bool) {
+        guard let hintType = hintType else {
+            return
+        }
+
+        viewCountStackView.isHidden = isCompleted
+        iconView.isHidden = isCompleted
+
+        tipLabel.text = hintType.getTipTitle(isCompleted)
+        detailsLabel.text = hintType.getDetailsTitle(isCompleted)
+        actionButton.setTitle(hintType.getActionButtonTitle(isCompleted), for: .normal)
+
+        layoutIfNeeded()
+    }
+
     // MARK: - IBAction
 
     @IBAction private func dismissButtonTapped(_ sender: UIButton) {
@@ -72,12 +87,15 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             return
         }
 
+        updateView(isCompleted: true)
+
         switch hintType {
         case .social:
             insightsDelegate?.growAudienceEnablePostSharingButtonTapped?()
         case .bloggingReminders:
             insightsDelegate?.growAudienceBloggingRemindersButtonTapped?()
         }
+
     }
 
     // MARK: - Localization
@@ -105,16 +123,40 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             static let detailsTitle =
                 NSLocalizedString("Automatically share new posts to your social media to start bringing that audience over to your site.",
                                   comment: "A detailed message to users about growing the audience for their site through enabling post sharing.")
+
             static let actionButtonTitle =
                 NSLocalizedString("Enable post sharing", comment: "Title for button that will open up the social media Sharing screen.")
+
+            static let completedTipTitle =
+                NSLocalizedString("Sharing is set up!",
+                                  comment: "A hint to users that they've set up post sharing.")
+
+            static let completedDetailsTitle =
+                NSLocalizedString("When you publish your next post it will be automatically shared to your connected networks.",
+                                  comment: "A detailed message to users indicating that they've set up post sharing.")
+
+            static let completedActionButtonTitle =
+                NSLocalizedString("Connect more networks", comment: "Title for button that will open up the social media Sharing screen.")
         }
 
         enum BloggingReminders {
             static let detailsTitle =
                 NSLocalizedString("Posting regularly can help build an audience. Reminders help keep you on track.",
                                   comment: "A detailed message to users about growing the audience for their site through blogging reminders.")
+
             static let actionButtonTitle =
                 NSLocalizedString("Set up blogging reminders", comment: "Title for button that will open up the blogging reminders screen.")
+
+            static let completedTipTitle =
+                NSLocalizedString("You set up blogging reminders",
+                                  comment: "A hint to users that they've set up blogging reminders.")
+
+            static let completedDetailsTitle =
+                NSLocalizedString("Keep blogging and check back to see visitors arriving at your site.",
+                                  comment: "A detailed message to users indicating that they've set up blogging reminders.")
+
+            static let completedActionButtonTitle =
+                NSLocalizedString("Edit reminders", comment: "Title for button that will open up the blogging reminders screen.")
         }
 
     }
@@ -128,6 +170,27 @@ extension GrowAudienceCell {
         case social
         case bloggingReminders
 
+        func getTipTitle(_ isCompleted: Bool) -> String {
+            return isCompleted ? completedTipTitle : Strings.tipTitle
+        }
+
+        func getDetailsTitle(_ isCompleted: Bool) -> String {
+            return isCompleted ? completedDetailsTitle : detailsTitle
+        }
+
+        func getActionButtonTitle(_ isCompleted: Bool) -> String {
+            return isCompleted ? completedActionButtonTitle : actionButtonTitle
+        }
+
+        var completedTipTitle: String {
+            switch self {
+            case .social:
+                return Strings.Social.completedTipTitle
+            case .bloggingReminders:
+                return Strings.BloggingReminders.completedTipTitle
+            }
+        }
+
         var detailsTitle: String {
             switch self {
             case .social:
@@ -137,12 +200,30 @@ extension GrowAudienceCell {
             }
         }
 
+        var completedDetailsTitle: String {
+            switch self {
+            case .social:
+                return Strings.Social.completedDetailsTitle
+            case .bloggingReminders:
+                return Strings.BloggingReminders.completedDetailsTitle
+            }
+        }
+
         var actionButtonTitle: String {
             switch self {
             case .social:
                 return Strings.Social.actionButtonTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.actionButtonTitle
+            }
+        }
+
+        var completedActionButtonTitle: String {
+            switch self {
+            case .social:
+                return Strings.Social.completedActionButtonTitle
+            case .bloggingReminders:
+                return Strings.BloggingReminders.completedActionButtonTitle
             }
         }
 
