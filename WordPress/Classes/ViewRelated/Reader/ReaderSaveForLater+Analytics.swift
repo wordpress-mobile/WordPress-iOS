@@ -82,7 +82,7 @@ extension ReaderStreamViewController {
         var properties: [String: Any] = ["blog_id": blogID,
                                          "feed_id": feedID,
                                          "foolow": post.isFollowing]
-        
+
         if contentType == .saved {
             properties[readerSaveForLaterSourceKey] = ReaderSaveForLaterOrigin.savedStream.openPostValue
         } else {

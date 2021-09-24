@@ -400,7 +400,7 @@ class ReaderDetailCoordinator {
         guard let post = post else {
             return
         }
-        
+
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
