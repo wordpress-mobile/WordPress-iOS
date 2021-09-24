@@ -65,11 +65,61 @@ struct TimeZoneSelectorViewModel: Observable {
         })
     }
 
+    private let timeZoneOffsetFormatter = DateFormatter()
+
+    private let timeAtTimeZoneFormatter = DateFormatter()
+
+    private let currentDate = Date()
+
+    // DateFormatter is expensive https://sarunw.com/posts/how-expensive-is-dateformatter/
+    // initializer to ensure that:
+    // 1. Existing 3 property struct initialization of state, selectedValue, filter work normally
+    // 2. DateFormatters are configured whenever we create instance of TimeZoneSelectorViewModel
+    // 3. DateFormatters are private and their state not mutable from outside callers (thread-safety)
+    init(state: State, selectedValue: String?, filter: String?) {
+        self.state = state
+        self.selectedValue = selectedValue
+        self.filter = filter
+
+        if FeatureFlag.timeZoneSuggester.enabled {
+            configureDateFormatter(formatter: timeZoneOffsetFormatter, timeStyle: .none, dateFormat: Constants.timeZoneOffsetFormat)
+            configureDateFormatter(formatter: timeAtTimeZoneFormatter, timeStyle: .short, dateFormat: nil)
+        }
+    }
+
+    private func configureDateFormatter(formatter: DateFormatter, timeStyle: DateFormatter.Style, dateFormat: String?) {
+        formatter.locale = Locale.autoupdatingCurrent
+        formatter.timeStyle = timeStyle
+
+        if let dateFormat = dateFormat {
+            formatter.dateFormat = dateFormat
+        }
+    }
+
     func getTimeZoneForIdentifier(_ timeZoneIdentifier: String) -> WPTimeZone? {
         return groups
             .flatMap({ $0.timezones })
             .filter({ $0.value.lowercased() == timeZoneIdentifier.lowercased() })
             .first
+    }
+
+    private func getZoneOffset(_ zone: WPTimeZone) -> String {
+        guard let namedTimeZone = zone as? NamedTimeZone, let timeZone = TimeZone(identifier: namedTimeZone.value), let timeZoneLocalized = timeZone.localizedName(for: .standard, locale: .current) else {
+            return ""
+        }
+        timeZoneOffsetFormatter.timeZone = timeZone
+
+        let offset = timeZoneOffsetFormatter.string(from: currentDate)
+        return "\(timeZoneLocalized) (\(offset))"
+    }
+
+    private func getTimeAtZone(_ zone: WPTimeZone) -> String {
+        guard let namedTimeZone = zone as? NamedTimeZone, let timeZone = TimeZone(identifier: namedTimeZone.value) else {
+            return ""
+        }
+        timeAtTimeZoneFormatter.timeZone = timeZone
+
+        return timeAtTimeZoneFormatter.string(from: currentDate)
     }
 
     func tableViewModel(selectionHandler: @escaping (WPTimeZone) -> Void) -> ImmuTable {
@@ -78,9 +128,16 @@ struct TimeZoneSelectorViewModel: Observable {
                 return ImmuTableSection(
                     headerText: group.name,
                     rows: group.timezones.map({ (timezone) -> ImmuTableRow in
-                        return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
-                            selectionHandler(timezone)
-                        })
+                        if FeatureFlag.timeZoneSuggester.enabled {
+                            return TimeZoneRow(title: timezone.label, leftSubtitle: getZoneOffset(timezone), rightSubtitle: getTimeAtZone(timezone), action: { _ in
+                                selectionHandler(timezone)
+                            })
+                        }
+                        else {
+                            return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
+                                selectionHandler(timezone)
+                            })
+                        }
                     }))
             })
         )
@@ -114,6 +171,9 @@ struct TimeZoneSelectorViewModel: Observable {
         static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required", comment: "Error message when loading failed because there's no connection")
     }
 
+    private enum Constants {
+        static let timeZoneOffsetFormat = "ZZZZ"
+    }
 }
 
 class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
@@ -157,7 +217,13 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
+        if FeatureFlag.timeZoneSuggester.enabled {
+            ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
+        }
+        else {
+            ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
+        }
+
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
 
@@ -271,5 +337,14 @@ extension TimeZoneSelectorViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension TimeZoneSelectorViewController {
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
