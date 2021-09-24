@@ -33,7 +33,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var webViewBottomConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
@@ -71,7 +70,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var isReactionEnabled: Bool = false {
         didSet {
             reactionBarView.isHidden = !isReactionEnabled
-            webViewBottomConstraint.isActive = !isReactionEnabled
         }
     }
 
