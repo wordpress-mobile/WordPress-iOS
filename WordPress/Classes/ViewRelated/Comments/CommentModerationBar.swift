@@ -126,6 +126,7 @@ private extension UIButton {
         layer.shadowRadius = 2.0
 
         verticallyAlignImageAndText()
+        flipInsetsForRightToLeftLayoutDirection()
         configureState()
     }
 
