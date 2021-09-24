@@ -1,8 +1,0 @@
-- Håll dig uppdaterad! Nu kan du få veckosammanfattningar över aktiviteten på dina populäraste webbplatser.
-
-- Ännu bättre kontroll över webbplatsens kommentarer – när du redigerar dem kan du samtidigt anpassa författarens namn, e-postadress och webb-URL.
-Vi har gjort några saker smidigare i blockredigeraren. Blocket för inbäddning ger en förhandsvisning när du bäddar in något från YouTube eller Twitter (fler plattformar kommer att läggas till). Och om du ska infoga ett block men inget hittas får du nu en speciell vy för ”inget hittat”.
-
-- Om du går till inläggsinställningar > inläggsformat hittar du fortfarande alternativet ”standard” längst upp, men de övriga alternativen visas sedan prydligt i bokstavsordning. (Vilka alternativ som finns beror på vilket tema du använder!)
-
-- Och en snabb liten extra finess: nu har det blivit superenkelt att uppdatera din webbplats – du behöver bara dra i vyn ”Min webbplats” för att uppdatera!
