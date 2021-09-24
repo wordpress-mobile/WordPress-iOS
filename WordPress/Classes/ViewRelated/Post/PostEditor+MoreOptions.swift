@@ -1,7 +1,7 @@
 import Foundation
 import WordPressFlux
 
-extension PostEditor where Self: UIViewController {
+extension PostEditor {
 
     func displayPostSettings() {
         let settingsViewController: PostSettingsViewController

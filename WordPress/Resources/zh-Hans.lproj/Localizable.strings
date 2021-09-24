@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-07 08:22:12+0000 */
+/* Translation-Revision-Date: 2021-09-07 08:22:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s 区块预览即将推出";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s 区块全新推出";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s 已转换为常规区块";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s已设置URL";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此处添加自定义 CSS URL 以将其加载到阅读器中。 如果您在本地运行 Calypso，则可能类似于：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Add a domain";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "轻点左下角工具栏上的 + 图标，随时添加新的区块。 ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "博客";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "博客文章";
-
 /* Create new Blog Post button title */
 "Blog post" = "博文";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "丰富多彩的背景";
 
+/* translators: %d: column index. */
+"Column %d" = "Column %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "列设置";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "继续使用 Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Convert to link";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "烹饪";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "无法加载标签，请轻点以重试。";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Couldn't mark as spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Couldn't unmark as spam";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "无法上传特色图片";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "轻点两次以撤销上次的更改";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Double tap to view embed options.";
+
 /* Download button title */
 "Download" = "下载";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "电子邮件已发送！";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "嵌入说明文字。%s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "嵌入媒体";
+
+/* No comment provided by engineer. */
+"Embed options" = "Embed options";
 
 /* Title for the Emoji section */
 "Emoji" = "表情图示";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Get your domain";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "更快收到通知";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "标记为置顶";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Mark as not spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "标记为已读";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Mark as spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "标记为垃圾评论。";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "新建文章";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "新重定向域名";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "新建项目";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "无文章。";
+
+/* No comment provided by engineer. */
+"No preview available" = "No preview available";
 
 /* A message title */
 "No recent posts" = "无近期文章";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "电话";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "页面";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "页面已更新";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "页面";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "热门语言";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "发布";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "文章";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "立即发布";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Publish page on:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "在以下站点发布文章：";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "发布位置";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Publishing page...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "正在发布文章…";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "保存";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Save %ld photos as a draft page on:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "在以下网站上将 %ld 张照片保存为草稿文章：";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Save 1 photo as a draft page on:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "在以下网站上将 1 张照片保存为草稿文章：";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "保存为草稿";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Save draft page on:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "在以下网站上保存草稿文章：";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "保存此文章以供稍后查看。";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Saving page…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "正在保存文章…";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "实时查看评论和通知。";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "选择";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "站点语言";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "站点页面";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "站点重定向";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "轻点可退出此卡片";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Tap to display referrer web page.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "轻点以输入自定义值";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "轻点以隐藏键盘";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Tap to mark referrer as spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "轻点以查看此文章的所有标签";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter 用户名";
+
+/* Type menu item in share extension. */
+"Type" = "Type";
 
 /* No comment provided by engineer. */
 "Type a URL" = "键入URL";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "稍后再说";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "marked as spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "未知 URL";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "unmarked as spam";
 
 /* Noun. Describes a site's user. */
 "user" = "用户";
