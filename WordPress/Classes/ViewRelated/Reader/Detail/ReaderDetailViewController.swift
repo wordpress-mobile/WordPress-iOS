@@ -760,6 +760,7 @@ extension ReaderDetailViewController: WKNavigationDelegate {
 
         isLoadingWebView = false
         hideLoading()
+        trackArticleRenderedReaderEvent()
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -771,6 +772,24 @@ extension ReaderDetailViewController: WKNavigationDelegate {
         } else {
             decisionHandler(.allow)
         }
+    }
+}
+
+// MARK: - Reader Events Tracking
+
+private extension ReaderDetailViewController {
+    func trackArticleRenderedReaderEvent() {
+        guard let blogID = post?.siteID,
+              let feedID = post?.feedID,
+              let isFollowing = post?.isFollowing else {
+                  return
+              }
+        let properties: [String: Any] = [
+            "blog_id": blogID,
+            "feed_id": feedID,
+            "follow": isFollowing
+        ]
+        WPAnalytics.trackReader(.readerArticleRendered, properties: properties)
     }
 }
 

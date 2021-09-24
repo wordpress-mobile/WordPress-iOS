@@ -1423,6 +1423,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderArticleOpened:
             eventName = @"reader_article_opened";
             break;
+        case WPAnalyticsStatReaderArticleRendered:
+            eventName = @"reader_article_rendered";
+            break;
         case WPAnalyticsStatReaderArticleUnliked:
             eventName = @"reader_article_unliked";
             break;
