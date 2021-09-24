@@ -188,10 +188,12 @@ private extension CommentDetailViewController {
 
         // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when `canModerate` is true.
         if comment.canModerate {
-            rows.append(contentsOf: [
-                .text(title: .emailAddressLabelText, detail: comment.author_email),
-                .text(title: .ipAddressLabelText, detail: comment.author_ip)
-            ])
+            // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
+            if !comment.author_email.isEmpty {
+                rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
+            }
+
+            rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
         }
 
         self.rows = rows
