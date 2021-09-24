@@ -555,7 +555,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.42.0)
   - WordPressKit (~> 4.42.0)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (from `../WordPress-iOS-Shared`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `fix/16961-update-reader-tracking-events`)
   - WordPressUI (~> 1.12.2-beta.1)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.62.0/third-party-podspecs/Yoga.podspec.json`)
@@ -711,7 +711,8 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.62.0
   WordPressShared:
-    :path: "../WordPress-iOS-Shared"
+    :branch: fix/16961-update-reader-tracking-events
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.62.0/third-party-podspecs/Yoga.podspec.json
 
@@ -727,6 +728,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.62.0
+  WordPressShared:
+    :commit: 8f0bcc47c53f24328ba0e66ed6fe0ed2c686bc89
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -827,6 +831,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 39dda0f5fb1a0abc77875bc071864f4f8b82aab3
+PODFILE CHECKSUM: e5974ae80d429b46530e494cd9eb50bc9139d94e
 
 COCOAPODS: 1.10.1
