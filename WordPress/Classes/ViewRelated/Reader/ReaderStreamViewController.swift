@@ -747,7 +747,6 @@ import WordPressFlux
             dict["follow"] = topic.following
         }
 
-        print(dict)
         return dict
     }
 
