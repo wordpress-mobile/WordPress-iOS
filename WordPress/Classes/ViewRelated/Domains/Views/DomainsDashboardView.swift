@@ -14,6 +14,7 @@ struct DomainsDashboardView: View {
         .padding(.top, Metrics.topPadding)
         .buttonStyle(.plain)
         .onTapGesture(perform: { })
+        .navigationBarTitle(TextContent.navigationTitle)
     }
 
     @ViewBuilder
@@ -112,6 +113,8 @@ struct DomainsDashboardView: View {
 private extension DomainsDashboardView {
 
     enum TextContent {
+        // Navigation bar
+        static let navigationTitle = NSLocalizedString("Site Domains", comment: "Title of the Domains Dashboard.")
         // Site address section
         static func primarySiteSectionFooter(_ paidPlan: Bool) -> String {
             paidPlan ? "" : NSLocalizedString("Your primary site address is what visitors will see in their address bar when visiting your website.",
