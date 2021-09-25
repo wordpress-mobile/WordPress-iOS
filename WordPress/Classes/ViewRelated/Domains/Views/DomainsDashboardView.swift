@@ -34,7 +34,7 @@ struct DomainsDashboardView: View {
                 Text(blog.freeSiteAddress)
                     .bold()
                 if blog.displayURLIsPrimary {
-                    ShapeWithText(title: TextContent.primaryAddressLabel)
+                    ShapeWithTextView(title: TextContent.primaryAddressLabel)
                         .smallRoundedRectangle()
                 }
             }
@@ -46,7 +46,7 @@ struct DomainsDashboardView: View {
         if domain.domain.isPrimaryDomain {
             VStack(alignment: .leading) {
                 Text(domain.domain.domainName)
-                ShapeWithText(title: TextContent.primaryAddressLabel)
+                ShapeWithTextView(title: TextContent.primaryAddressLabel)
                     .smallRoundedRectangle()
             }
         }
@@ -85,7 +85,7 @@ struct DomainsDashboardView: View {
                 highlight: siteAddressForGetFirstDomainSection) {
                         makeDomainSearch(for: blog)
                     } appearance: {
-                        ShapeWithText(title: TextContent.firstSearchDomainButtonTitle)
+                        ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
                             .largeRoundedRectangle()
                     }
         }
