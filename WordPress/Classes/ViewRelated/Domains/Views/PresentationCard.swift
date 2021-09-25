@@ -10,7 +10,7 @@ struct PresentationCard<Destination: View, Appearance: View>: View {
 
     var destination: () -> Destination
     var appearance: () -> Appearance
-    
+
     var body: some View {
         VStack {
             Text(title)
