@@ -218,25 +218,61 @@ struct ReaderPostMenuButtonTitles {
         }
     }
 
+    @objc open class func statsProperties(for post: AnyObject, mergeWith existing: [String: Any]? = nil) -> [String: Any] {
+        var dict: [String: Any] = [:]
 
-    @objc open class func statsPropertiesForPost(_ post: ReaderPost, andValue value: AnyObject?, forKey key: String?) -> [AnyHashable: Any] {
-        var properties = [AnyHashable: Any]()
-        properties[WPAppAnalyticsKeyBlogID] = post.siteID
-        properties[WPAppAnalyticsKeyPostID] = post.postID
-        properties[WPAppAnalyticsKeyIsJetpack] = post.isJetpack
-        properties[WPAppAnalyticsKeyIsFollowing] = post.isFollowing
-        if let feedID = post.feedID, let feedItemID = post.feedItemID {
-            properties[WPAppAnalyticsKeyFeedID] = feedID
-            properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
+        var blogID = 0
+        var postID = 0
+        var feedID = 0
+        var feedItemID = 0
+        var isFollowing = false
+        var isJetpack = false
+
+        if let post = post as? ReaderPost {
+            if let temp = post.siteID {
+                blogID = Int(truncating: temp)
+            }
+            if let temp = post.postID {
+                postID = Int(truncating: temp)
+            }
+            if let temp = post.feedID {
+                feedID = Int(truncating: temp)
+            }
+            if let temp = post.feedItemID {
+                feedItemID = Int(truncating: temp)
+            }
+            isFollowing = post.isFollowing
+            isJetpack = post.isJetpack
+        } else if let post = post as? ReaderSiteTopic {
+            blogID = Int(truncating: post.siteID)
+            feedID = Int(truncating: post.feedID)
+            isFollowing = post.following
+            isJetpack = post.isJetpack
+        } else {
+            return existing ?? [:]
         }
 
-        if let value = value, let key = key {
-            properties[key] = value
+        if blogID != 0 {
+            dict[WPAppAnalyticsKeyBlogID] = String(blogID)
         }
+        if postID != 0 {
+            dict[WPAppAnalyticsKeyPostID] = String(postID)
+        }
+        if feedID != 0 {
+            dict[WPAppAnalyticsKeyFeedID] = String(feedID)
+        }
+        if feedItemID != 0 {
+            dict[WPAppAnalyticsKeyFeedItemID] = String(feedItemID)
+        }
+        dict[WPAppAnalyticsKeyIsFollowing] = isFollowing
+        dict[WPAppAnalyticsKeyIsJetpack] = isJetpack
 
-        return properties
+        if let existing = existing {
+            return dict.merging(existing) { $1 }
+        } else {
+            return dict
+        }
     }
-
 
     @objc open class func bumpPageViewForPost(_ post: ReaderPost) {
         // Don't bump page views for feeds else the wrong blog/post get's bumped
