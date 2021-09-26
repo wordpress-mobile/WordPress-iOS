@@ -245,12 +245,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         NSNumber *siteID = readerPost.siteID;
         void (^successBlock)(void) = ^void() {
             if (postID && siteID) {
-                NSMutableDictionary *properties = [NSMutableDictionary new];
-                [properties setObject:postID forKey:WPAppAnalyticsKeyPostID];
-                [properties setObject:siteID forKey:WPAppAnalyticsKeyBlogID];
-                [properties setObject:readerPost.feedID forKey:WPAppAnalyticsKeyFeedID];
-                [properties setObject:[NSNumber numberWithBool:readerPost.isFollowing] forKey:WPAppAnalyticsKeyIsFollowing];
-
+                NSDictionary *properties = [ReaderHelpers statsPropertiesFor:readerPost mergeWith:NULL];
                 NSUInteger event;
                 if (like) {
                     event = (details) ? WPAnalyticsStatReaderArticleDetailLiked : WPAnalyticsStatReaderArticleLiked;
@@ -321,9 +316,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (following) {
-        [siteService followSiteWithID:[siteID integerValue] site:NULL success:successBlock failure:failureBlock];
+        [siteService followSiteWithID:[siteID integerValue] topic:NULL post:NULL success:successBlock failure:failureBlock];
     } else {
-        [siteService unfollowSiteWithID:[siteID integerValue] site:NULL success:successBlock failure:failureBlock];
+        [siteService unfollowSiteWithID:[siteID integerValue] topic:NULL post:NULL success:successBlock failure:failureBlock];
     }
 }
 
@@ -406,9 +401,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (!post.isExternal) {
         if (follow) {
-            [siteService followSiteWithID:[post.siteID integerValue] site:NULL success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[post.siteID integerValue] topic:NULL post:readerPost success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteWithID:[post.siteID integerValue] site:NULL success:successBlock failure:failureBlock];
+            [siteService unfollowSiteWithID:[post.siteID integerValue] topic:NULL post:readerPost success:successBlock failure:failureBlock];
         }
     } else if (post.blogURL) {
         if (follow) {

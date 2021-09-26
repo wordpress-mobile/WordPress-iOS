@@ -735,19 +735,9 @@ import WordPressFlux
             key = "site"
         }
 
-        var dict: [String: Any] = [key: title, "source": statSource.rawValue]
-
-        if let post = post {
-            dict["blog_id"] = String(Int(truncating: post.siteID))
-            dict["feed_id"] = String(Int(truncating: post.feedID))
-            dict["follow"] = post.isFollowing
-        } else if let topic = topic as? ReaderSiteTopic {
-            dict["blog_id"] = String(Int(truncating: topic.siteID))
-            dict["feed_id"] = String(Int(truncating: topic.feedID))
-            dict["follow"] = topic.following
-        }
-
-        return dict
+        let dict: [String: Any] = [key: title, "source": statSource.rawValue]
+        let properties = ReaderHelpers.statsProperties(for: post ?? topic, mergeWith: dict)
+        return properties
     }
 
     /// The fetch request can need a different predicate depending on how the content

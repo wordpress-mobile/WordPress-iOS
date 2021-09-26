@@ -2,6 +2,8 @@
 #import "LocalCoreDataService.h"
 #import "ReaderTopicService.h"
 
+@class ReaderPost;
+
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,
     ReaderSiteServiceErrorAlreadyFollowingSite
@@ -28,12 +30,14 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  Follow a wpcom site by ID.
 
  @param siteID The ID of the site.
- @param site Site that's being followed. Optional parameter.
+ @param topic Topic that's being followed. Optional parameter.
+ @param post Post that's being followed. Optional parameter.
  @param success block called on a successful follow.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)followSiteWithID:(NSUInteger)siteID
-                    site:(ReaderSiteTopic *)site
+                   topic:(ReaderSiteTopic *)topic
+                    post:(ReaderPost *)post
                  success:(void(^)(void))success
                  failure:(void(^)(NSError *error))failure;
 
@@ -41,12 +45,14 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  Unfollow a wpcom site by ID
 
  @param siteID The ID of the site.
- @param site Site that's being unfollowed. Optional parameter.
+ @param topic Topic that's being followed. Optional parameter.
+ @param post Post that's being followed. Optional parameter.
  @param success block called on a successful unfollow.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)unfollowSiteWithID:(NSUInteger)siteID
-                      site:(ReaderSiteTopic *)site
+                     topic:(ReaderSiteTopic *)topic
+                      post:(ReaderPost *)post
                    success:(void(^)(void))success
                    failure:(void(^)(NSError *error))failure;
 

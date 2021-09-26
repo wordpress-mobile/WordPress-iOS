@@ -7,11 +7,7 @@ final class ReaderShareAction {
 
             sharingController.shareReaderPost(post, fromView: anchor, inViewController: vc)
 
-            let siteID = post.siteID ?? 0
-            let feedID = post.feedID ?? 0
-            let properties: [String: Any] = ["blog_id": siteID,
-                                             "feed_id": feedID,
-                                             "follow": post.isFollowing]
+            let properties = ReaderHelpers.statsProperties(for: post)
             WPAnalytics.trackReader(.itemSharedReader, properties: properties)
         }
     }

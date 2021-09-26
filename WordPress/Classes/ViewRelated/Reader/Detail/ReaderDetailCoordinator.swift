@@ -370,7 +370,7 @@ class ReaderDetailCoordinator {
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
+        let properties = ReaderHelpers.statsProperties(for: post, mergeWith: ["URL": post.blogURL])
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
@@ -401,7 +401,7 @@ class ReaderDetailCoordinator {
             return
         }
 
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
+        let properties = ReaderHelpers.statsProperties(for: post, mergeWith: ["tag": post.primaryTagSlug])
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 
@@ -591,7 +591,7 @@ class ReaderDetailCoordinator {
         let detailType = readerPost.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
 
-        var properties = ReaderHelpers.statsPropertiesForPost(readerPost, andValue: nil, forKey: nil)
+        var properties = ReaderHelpers.statsProperties(for: readerPost)
         properties[DetailAnalyticsConstants.TypeKey] = detailType
         properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
 

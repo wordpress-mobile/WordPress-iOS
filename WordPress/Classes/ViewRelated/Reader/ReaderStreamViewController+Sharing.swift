@@ -2,6 +2,7 @@
 import MobileCoreServices
 
 import Gridicons
+import WordPressShared
 
 // MARK: - Functionality related to sharing a blog via the reader.
 
@@ -38,9 +39,8 @@ extension ReaderStreamViewController {
             return
         }
 
-        let dict: [String: Any] = ["feed_id": sitePendingPost.feedID,
-                                   "follow": sitePendingPost.following]
-        WPAppAnalytics.track(.readerSiteShared, withProperties: dict, withBlogID: sitePendingPost.siteID)
+        let properties = ReaderHelpers.statsProperties(for: sitePendingPost)
+        WPAppAnalytics.track(.readerSiteShared, withProperties: properties)
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let activityViewController = UIActivityViewController(activityItems: [sitePendingPost], applicationActivities: activities)

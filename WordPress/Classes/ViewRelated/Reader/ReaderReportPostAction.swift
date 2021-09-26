@@ -21,7 +21,7 @@ final class ReaderReportPostAction {
         origin.present(navController, animated: true)
 
         // Track the report action
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: nil, forKey: nil)
+        let properties = ReaderHelpers.statsProperties(for: post)
         WPAnalytics.trackReader(.readerPostReported, properties: properties)
     }
 

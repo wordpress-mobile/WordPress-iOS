@@ -54,13 +54,7 @@ extension ReaderSaveForLaterAction {
     func trackSaveAction(for post: ReaderPost, origin: ReaderSaveForLaterOrigin) {
         let willSave = (post.isSavedForLater == false)
 
-        let siteID = post.siteID ?? 0
-        let feedID = post.feedID ?? 0
-        let properties: [String: Any] = [readerSaveForLaterSourceKey: origin.saveActionValue,
-                                         "blog_id": siteID,
-                                         "feed_id": feedID,
-                                         "follow": post.isFollowing]
-
+        let properties = ReaderHelpers.statsProperties(for: post, mergeWith: [readerSaveForLaterSourceKey: origin.saveActionValue])
         if willSave {
             WPAppAnalytics.track(.readerPostSaved, withProperties: properties)
         } else {
@@ -77,12 +71,7 @@ extension ReaderSaveForLaterAction {
 
 extension ReaderStreamViewController {
     func trackSavedPostNavigation(post: ReaderPost) {
-        let blogID = post.siteID ?? 0
-        let feedID = post.feedID ?? 0
-        var properties: [String: Any] = ["blog_id": blogID,
-                                         "feed_id": feedID,
-                                         "follow": post.isFollowing]
-
+        var properties = ReaderHelpers.statsProperties(for: post)
         if contentType == .saved {
             properties[readerSaveForLaterSourceKey] = ReaderSaveForLaterOrigin.savedStream.openPostValue
         } else {

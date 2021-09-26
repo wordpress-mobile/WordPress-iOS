@@ -16,7 +16,7 @@ class NotificationActionsService: LocalCoreDataService {
             return
         }
 
-        siteService.followSite(withID: siteID, site: nil) {
+        siteService.followSite(withID: siteID, topic: nil, post: nil) {
             DDLogInfo("Successfully followed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
@@ -39,7 +39,7 @@ class NotificationActionsService: LocalCoreDataService {
             return
         }
 
-        siteService.unfollowSite(withID: siteID, site: nil) {
+        siteService.unfollowSite(withID: siteID, topic: nil, post: nil) {
             DDLogInfo("Successfully unfollowed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)

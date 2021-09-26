@@ -59,13 +59,7 @@ extension ReaderSitesCardCell: ReaderRecommendedSitesCardCellDelegate {
 
         (delegate as? ReaderSitesCardCellDelegate)?.handleFollowActionForTopic(topic, for: self)
 
-        // Track Follow Action
-        var properties = [String: Any]()
-        properties[WPAppAnalyticsKeyFollowAction] = !topic.following
-        properties[WPAppAnalyticsKeyBlogID] = topic.siteID
-        properties[WPAppAnalyticsKeyFeedID] = topic.feedID
-        properties[WPAppAnalyticsKeyIsFollowing] = topic.following
-
+        let properties = ReaderHelpers.statsProperties(for: topic, mergeWith: [WPAppAnalyticsKeyFollowAction: !topic.following])
         WPAnalytics.trackReader(.readerSuggestedSiteToggleFollow, properties: properties)
     }
 }

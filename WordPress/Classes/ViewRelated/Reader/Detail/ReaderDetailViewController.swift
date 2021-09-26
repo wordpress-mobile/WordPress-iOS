@@ -779,16 +779,10 @@ extension ReaderDetailViewController: WKNavigationDelegate {
 
 private extension ReaderDetailViewController {
     func trackArticleRenderedReaderEvent() {
-        guard let blogID = post?.siteID,
-              let feedID = post?.feedID,
-              let isFollowing = post?.isFollowing else {
-                  return
-              }
-        let properties: [String: Any] = [
-            "blog_id": blogID,
-            "feed_id": feedID,
-            "follow": isFollowing
-        ]
+        guard let post = post else {
+            return
+        }
+        let properties = ReaderHelpers.statsProperties(for: post)
         WPAnalytics.trackReader(.readerArticleRendered, properties: properties)
     }
 }
