@@ -821,6 +821,7 @@ extension WordPressAppDelegate {
 
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
+        WPStyleGuide.configureTableViewAppearance()
         WPStyleGuide.configureDefaultTint()
         WPStyleGuide.configureLightNavigationBarAppearance()
 

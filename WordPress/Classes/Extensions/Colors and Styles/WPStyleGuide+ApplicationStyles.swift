@@ -55,6 +55,13 @@ extension WPStyleGuide {
         buttonBarAppearance.tintColor = .appBarTint
     }
 
+    /// Style `UITableView` in the app
+    class func configureTableViewAppearance() {
+        if #available(iOS 15.0, *) {
+            UITableView.appearance().sectionHeaderTopPadding = 0
+        }
+    }
+
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
         UITabBar.appearance().tintColor = .tabSelected
