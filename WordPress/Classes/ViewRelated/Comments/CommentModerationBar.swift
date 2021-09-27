@@ -5,7 +5,15 @@ class CommentModerationBar: UIView {
     // MARK: - Properties
 
     @IBOutlet private weak var contentView: UIView!
+
     @IBOutlet private weak var pendingButton: UIButton!
+    @IBOutlet private weak var approvedButton: UIButton!
+    @IBOutlet private weak var spamButton: UIButton!
+    @IBOutlet private weak var trashButton: UIButton!
+
+    @IBOutlet private weak var firstDivider: UIView!
+    @IBOutlet private weak var secondDivider: UIView!
+    @IBOutlet private weak var thirdDivider: UIView!
 
     // MARK: - Init
 
@@ -37,7 +45,11 @@ private extension CommentModerationBar {
 
     func configureView() {
         configureBackground()
+        configureDividers()
         pendingButton.configureFor(.pending)
+        approvedButton.configureFor(.approved)
+        spamButton.configureFor(.spam)
+        trashButton.configureFor(.trash)
     }
 
     func configureBackground() {
@@ -45,12 +57,35 @@ private extension CommentModerationBar {
         contentView.layer.cornerRadius = 15
     }
 
+    func configureDividers() {
+        firstDivider.configureAsDivider()
+        secondDivider.configureAsDivider()
+        thirdDivider.configureAsDivider()
+    }
+
     // MARK: - Button Actions
 
     @IBAction func pendingTapped(_ sender: UIButton) {
         sender.toggleState()
+        firstDivider.isHidden = sender.isSelected
     }
 
+    @IBAction func approvedTapped(_ sender: UIButton) {
+        sender.toggleState()
+        firstDivider.isHidden = sender.isSelected
+        secondDivider.isHidden = sender.isSelected
+    }
+
+    @IBAction func spamTapped(_ sender: UIButton) {
+        sender.toggleState()
+        secondDivider.isHidden = sender.isSelected
+        thirdDivider.isHidden = sender.isSelected
+    }
+
+    @IBAction func trashTapped(_ sender: UIButton) {
+        sender.toggleState()
+        thirdDivider.isHidden = sender.isSelected
+    }
 }
 
 // MARK: - Moderation Button Types
@@ -65,8 +100,12 @@ private enum ModerationButtonType {
         switch self {
         case .pending:
             return NSLocalizedString("Pending", comment: "Button title for Pending comment state.")
-        default:
-            return ""
+        case .approved:
+            return NSLocalizedString("Approved", comment: "Button title for Approved comment state.")
+        case .spam:
+            return NSLocalizedString("Spam", comment: "Button title for Spam comment state.")
+        case .trash:
+            return NSLocalizedString("Trash", comment: "Button title for Trash comment state.")
         }
     }
 
@@ -74,8 +113,12 @@ private enum ModerationButtonType {
         switch self {
         case .pending:
             return UIImage(systemName: "tray")?.imageWithTintColor(.textSubtle)
-        default:
-            return UIImage()
+        case .approved:
+            return UIImage(systemName: "checkmark.circle")?.imageWithTintColor(.textSubtle)
+        case .spam:
+            return UIImage(systemName: "exclamationmark.octagon")?.imageWithTintColor(.textSubtle)
+        case .trash:
+            return UIImage(systemName: "trash")?.imageWithTintColor(.textSubtle)
         }
     }
 
@@ -83,8 +126,12 @@ private enum ModerationButtonType {
         switch self {
         case .pending:
             return UIImage(systemName: "tray.fill")?.imageWithTintColor(.muriel(name: .yellow, .shade30))
-        default:
-            return UIImage()
+        case .approved:
+            return UIImage(systemName: "checkmark.circle.fill")?.imageWithTintColor(.muriel(name: .green, .shade40))
+        case .spam:
+            return UIImage(systemName: "exclamationmark.octagon.fill")?.imageWithTintColor(.muriel(name: .orange, .shade40))
+        case .trash:
+            return UIImage(systemName: "trash.fill")?.imageWithTintColor(.muriel(name: .red, .shade40))
         }
     }
 }
@@ -130,4 +177,16 @@ private extension UIButton {
         configureState()
     }
 
+}
+
+// MARK: - UIView Extension
+
+private extension UIView {
+    func configureAsDivider() {
+        backgroundColor = .textSubtle
+
+        if let existingConstraint = constraint(for: .width, withRelation: .equal) {
+            existingConstraint.constant = .hairlineBorderWidth
+        }
+    }
 }
