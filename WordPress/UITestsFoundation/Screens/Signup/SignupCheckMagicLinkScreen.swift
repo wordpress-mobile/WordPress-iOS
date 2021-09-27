@@ -1,17 +1,13 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let mailButton = "Open Mail Button"
-}
+public class SignupCheckMagicLinkScreen: ScreenObject {
 
-public class SignupCheckMagicLinkScreen: BaseScreen {
-    let mailButton: XCUIElement
-
-    init() {
-        let app = XCUIApplication()
-        mailButton = app.buttons[ElementStringIDs.mailButton]
-
-        super.init(element: mailButton)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [{ $0.buttons["Open Mail Button"] }],
+            app: app
+        )
     }
 
     public func openMagicSignupLink() -> SignupEpilogueScreen {

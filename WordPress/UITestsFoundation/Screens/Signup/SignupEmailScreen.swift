@@ -19,11 +19,11 @@ public class SignupEmailScreen: BaseScreen {
         super.init(element: emailTextField)
     }
 
-    public func proceedWith(email: String) -> SignupCheckMagicLinkScreen {
+    public func proceedWith(email: String) throws -> SignupCheckMagicLinkScreen {
         emailTextField.tap()
         emailTextField.typeText(email)
         nextButton.tap()
 
-        return SignupCheckMagicLinkScreen()
+        return try SignupCheckMagicLinkScreen()
     }
 }
