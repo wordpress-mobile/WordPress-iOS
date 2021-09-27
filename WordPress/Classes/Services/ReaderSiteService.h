@@ -30,14 +30,14 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  Follow a wpcom site by ID.
 
  @param siteID The ID of the site.
- @param topic Topic that's being followed. Optional parameter.
- @param post Post that's being followed. Optional parameter.
+ @param topic Topic in which the user is following the site. Optional parameter.
+ @param post Post in which the user is following the site. Optional parameter.
  @param success block called on a successful follow.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)followSiteWithID:(NSUInteger)siteID
-                   topic:(ReaderSiteTopic *)topic
-                    post:(ReaderPost *)post
+               fromTopic:(ReaderSiteTopic *)topic
+                fromPost:(ReaderPost *)post
                  success:(void(^)(void))success
                  failure:(void(^)(NSError *error))failure;
 
@@ -45,14 +45,14 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  Unfollow a wpcom site by ID
 
  @param siteID The ID of the site.
- @param topic Topic that's being followed. Optional parameter.
- @param post Post that's being followed. Optional parameter.
+ @param topic Topic in which the user is unfollowing the site. Optional parameter.
+ @param post Post in which the user is unfollowing the site. Optional parameter.
  @param success block called on a successful unfollow.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)unfollowSiteWithID:(NSUInteger)siteID
-                     topic:(ReaderSiteTopic *)topic
-                      post:(ReaderPost *)post
+                 fromTopic:(ReaderSiteTopic *)topic
+                  fromPost:(ReaderPost *)post
                    success:(void(^)(void))success
                    failure:(void(^)(NSError *error))failure;
 

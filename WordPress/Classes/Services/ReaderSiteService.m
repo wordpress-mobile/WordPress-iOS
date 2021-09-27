@@ -35,7 +35,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)followSiteWithID:(NSUInteger)siteID topic:(ReaderSiteTopic *)topic post:(ReaderPost *)post success:(void(^)(void))success failure:(void(^)(NSError *error))failure
+- (void)followSiteWithID:(NSUInteger)siteID fromTopic:(ReaderSiteTopic *)topic fromPost:(ReaderPost *)post success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -73,7 +73,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)unfollowSiteWithID:(NSUInteger)siteID topic:(ReaderSiteTopic *)topic post:(ReaderPost *)post success:(void(^)(void))success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteWithID:(NSUInteger)siteID fromTopic:(ReaderSiteTopic *)topic fromPost:(ReaderPost *)post success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -274,7 +274,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
         if (siteID) {
-            [self followSiteWithID:siteID topic:NULL post:NULL success:success failure:failure];
+            [self followSiteWithID:siteID fromTopic:NULL fromPost:NULL success:success failure:failure];
         } else {
             [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
         }
