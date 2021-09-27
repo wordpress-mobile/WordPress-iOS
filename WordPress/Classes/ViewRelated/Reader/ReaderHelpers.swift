@@ -252,18 +252,10 @@ struct ReaderPostMenuButtonTitles {
             return existing ?? [:]
         }
 
-        if blogID != 0 {
-            dict[WPAppAnalyticsKeyBlogID] = String(blogID)
-        }
-        if postID != 0 {
-            dict[WPAppAnalyticsKeyPostID] = String(postID)
-        }
-        if feedID != 0 {
-            dict[WPAppAnalyticsKeyFeedID] = String(feedID)
-        }
-        if feedItemID != 0 {
-            dict[WPAppAnalyticsKeyFeedItemID] = String(feedItemID)
-        }
+        dict[WPAppAnalyticsKeyBlogID] = String(blogID)
+        dict[WPAppAnalyticsKeyPostID] = String(postID)
+        dict[WPAppAnalyticsKeyFeedID] = String(feedID)
+        dict[WPAppAnalyticsKeyFeedItemID] = String(feedItemID)
         dict[WPAppAnalyticsKeyIsFollowing] = isFollowing
         dict[WPAppAnalyticsKeyIsJetpack] = isJetpack
 
