@@ -1,26 +1,39 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let navBar = "WordPress.GetStartedView"
-    static let emailTextField = "Email address"
-    static let continueButton = "Get Started Email Continue Button"
-    static let helpButton = "authenticator-help-button"
-}
+public class GetStartedScreen: ScreenObject {
 
-public class GetStartedScreen: BaseScreen {
-    let navBar: XCUIElement
-    public let emailTextField: XCUIElement
-    let continueButton: XCUIElement
-    let helpButton: XCUIElement
+    private let navBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["WordPress.GetStartedView"]
+    }
 
-    public init() {
-        let app = XCUIApplication()
-        navBar = app.navigationBars[ElementStringIDs.navBar]
-        emailTextField = app.textFields[ElementStringIDs.emailTextField]
-        continueButton = app.buttons[ElementStringIDs.continueButton]
-        helpButton = app.buttons[ElementStringIDs.helpButton]
+    private let emailTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Email address"]
+    }
 
-        super.init(element: emailTextField)
+    private let continueButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Get Started Email Continue Button"]
+    }
+
+    private let helpButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["authenticator-help-button"]
+    }
+
+    var navBar: XCUIElement { navBarGetter(app) }
+    public var emailTextField: XCUIElement { emailTextFieldGetter(app) }
+    var continueButton: XCUIElement { continueButtonGetter(app) }
+    var helpButton: XCUIElement { helpButtonGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [
+                navBarGetter,
+                emailTextFieldGetter,
+                continueButtonGetter,
+                helpButtonGetter
+            ],
+            app: app
+        )
     }
 
     public func proceedWith(email: String) -> PasswordScreen {
@@ -38,12 +51,10 @@ public class GetStartedScreen: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.continueButton].exists
+        (try? GetStartedScreen().isLoaded) ?? false
     }
 
     public static func isEmailEntered() -> Bool {
-        let emailTextField = XCUIApplication().textFields[ElementStringIDs.emailTextField]
-        return emailTextField.value != nil
+        (try? GetStartedScreen().emailTextField.value != nil) ?? false
     }
-
 }

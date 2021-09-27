@@ -78,11 +78,11 @@ class LoginFlow {
             }
         }
 
-        XCTContext.runActivity(named: "Return to app prologue screen if needed") { (activity) in
+        try XCTContext.runActivity(named: "Return to app prologue screen if needed") { (activity) in
             if !PrologueScreen.isLoaded() {
                 while PasswordScreen.isLoaded() || GetStartedScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() || LoginCheckMagicLinkScreen.isLoaded() {
                     if GetStartedScreen.isLoaded() && GetStartedScreen.isEmailEntered() {
-                        GetStartedScreen().emailTextField.clearText()
+                        try GetStartedScreen().emailTextField.clearText()
                     }
                     navBackButton.tap()
                 }

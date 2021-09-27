@@ -21,10 +21,10 @@ public class PrologueScreen: ScreenObject {
         )
     }
 
-    public func selectContinue() -> GetStartedScreen {
+    public func selectContinue() throws -> GetStartedScreen {
         continueButton.tap()
 
-        return GetStartedScreen()
+        return try GetStartedScreen()
     }
 
     public func selectSiteAddress() -> LoginSiteAddressScreen {
