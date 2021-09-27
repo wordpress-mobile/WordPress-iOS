@@ -163,7 +163,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                                                  domainSuggestion: domain,
                                                  privacyProtectionEnabled: false,
                                                  success: { [weak self] _ in
-            self?.presentWebViewForCurrentSite(domain: domain.domainName)
+            self?.presentWebViewForCurrentSite(domainSuggestion: domain)
         },
                                                  failure: { error in })
     }
@@ -202,7 +202,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func presentWebViewForCurrentSite(domain: String) {
+    private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
         guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
@@ -223,11 +223,24 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 return
             }
 
-            self.handleWebViewURLChange(newURL, domain: domain, onCancel: {
+            let domain = Domain(
+                domainName: domainSuggestion.domainName,
+                isPrimaryDomain: false,
+                domainType: .registered)
+
+            self.handleWebViewURLChange(newURL, domain: domain.domainName, onCancel: {
                 navController.dismiss(animated: true)
-            }) {
+            }) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                if let domainService = DomainsService() {
+                    domainService.createWith(domain, forSite: self.site.siteID)
+                }
+
                 self.dismiss(animated: true, completion: { [weak self] in
-                    self?.domainPurchasedCallback(domain)
+                    self?.domainPurchasedCallback(domain.domainName)
                 })
             }
         }

@@ -23,7 +23,7 @@ class RegisterDomainDetailsViewModel {
 
         case checkMarkRowsUpdated(sectionIndex: Int)
 
-        case registerSucceeded(domain: String)
+        case registerSucceeded(_ domain: Domain, siteID: Int)
 
         case loading(Bool)
 
@@ -214,16 +214,25 @@ class RegisterDomainDetailsViewModel {
                                 // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
                                 WPAnalytics.track(.automatedTransferCustomDomainPurchased)
 
+                                let domain = Domain(
+                                    domainName: strongSelf.domain.domainName,
+                                    isPrimaryDomain: true,
+                                    domainType: .registered)
+
                                 strongSelf.isLoading = false
-                                strongSelf.onChange?(.registerSucceeded(domain: strongSelf.domain.domainName))
+                                strongSelf.onChange?(.registerSucceeded(domain, siteID: strongSelf.site.siteID))
                             },
                             failure: { error in
 
                                 // This means we've sucessfully bought/redeemed the domain, but something went wrong
                                 // when setting it to a primary.
+                                let domain = Domain(
+                                    domainName: strongSelf.domain.domainName,
+                                    isPrimaryDomain: false,
+                                    domainType: .registered)
 
                                 strongSelf.isLoading = false
-                                strongSelf.onChange?(.prefillError(message: Localized.changingPrimaryDomainError))
+                                strongSelf.onChange?(.registerSucceeded(domain, siteID: strongSelf.site.siteID))
                         })
                     }, failure: { (error) in
 

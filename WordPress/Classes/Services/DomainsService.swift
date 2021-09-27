@@ -88,7 +88,7 @@ struct DomainsService {
                 existingDomain.updateWith(remoteDomain, blog: blog)
                 DDLogDebug("Updated domain \(existingDomain)")
             } else {
-                createManagedDomain(remoteDomain, forSite: siteID)
+                createWith(remoteDomain, forSite: siteID)
             }
         }
 
@@ -116,7 +116,7 @@ struct DomainsService {
         return results.first
     }
 
-    fileprivate func createManagedDomain(_ domain: Domain, forSite siteID: Int) {
+    func createWith(_ domain: Domain, forSite siteID: Int) {
         guard let blog = blogForSiteID(siteID) else { return }
 
         let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
@@ -155,6 +155,16 @@ struct DomainsService {
 }
 
 extension DomainsService {
+    init?() {
+        let context = ContextManager.sharedInstance().mainContext
+
+        guard let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() else {
+            return nil
+        }
+
+        self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
+    }
+
     init(managedObjectContext context: NSManagedObjectContext, account: WPAccount) {
         self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
     }
