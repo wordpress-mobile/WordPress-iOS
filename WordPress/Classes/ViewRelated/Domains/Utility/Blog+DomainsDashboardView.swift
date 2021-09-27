@@ -27,23 +27,19 @@ extension Blog {
         (isHostedAtWPcom || isAtomic()) && hasDomainCredit
     }
 
-    var siteAddress: String {
-        (displayURL as String?) ?? Self.noPrimaryURLFound
+    var freeDomain: Domain? {
+        guard let domainsSet = domains as? Set<ManagedDomain>,
+              let freeDomain = (domainsSet.first { $0.domainType == .wpCom }) else {
+            return nil
+        }
+        return Domain(managedDomain: freeDomain)
     }
 
     var freeSiteAddress: String {
-        (hostname as String?) ?? Self.noPrimaryURLFound
+        freeDomain?.domainName ?? ""
     }
 
-    var primarySiteAddress: String? {
-        guard let domainsSet = domains as? Set<ManagedDomain>,
-                let primaryDomain = (domainsSet.first { $0.isPrimary }) else {
-            return nil
-        }
-        return Domain(managedDomain: primaryDomain).domainName
-    }
-
-    var displayURLIsPrimary: Bool {
-        return freeSiteAddress == primarySiteAddress
+    var freeDomainIsPrimary: Bool {
+        freeDomain?.isPrimaryDomain ?? false
     }
 }
