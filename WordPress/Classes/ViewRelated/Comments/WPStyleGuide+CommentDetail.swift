@@ -37,19 +37,14 @@ extension WPStyleGuide {
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
             private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .medium)
-            static let replyIconImage = replySymbol?.imageFlippedForRightToLeftLayoutDirection()
+            static let replyIconImage = UIImage(systemName: "arrowshape.turn.up.backward", withConfiguration: reactionIconConfiguration)?
+                .imageFlippedForRightToLeftLayoutDirection()
             static let unlikedIconImage = UIImage(systemName: "star", withConfiguration: reactionIconConfiguration)
             static let likedIconImage = UIImage(systemName: "star.fill", withConfiguration: reactionIconConfiguration)
 
             static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .large)
             static let shareIconImageName = "square.and.arrow.up"
             static let ellipsisIconImageName = "ellipsis.circle"
-
-            private static let replySymbol: UIImage? = {
-                // this symbol is only available in iOS 14. Therefore, the symbol template is imported to our assets so it can still be used.
-                let symbolImage = UIImage(systemName: "arrowshape.turn.up.backward", withConfiguration: reactionIconConfiguration)
-                return symbolImage ?? UIImage(named: "icon-arrowshape.turn.up.backward", in: .main, with: reactionIconConfiguration)
-            }()
         }
 
         public struct ReplyIndicator {
