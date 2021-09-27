@@ -44,10 +44,10 @@ public class GetStartedScreen: ScreenObject {
         return PasswordScreen()
     }
 
-    public func selectHelp() -> SupportScreen {
+    public func selectHelp() throws -> SupportScreen {
         helpButton.tap()
 
-        return SupportScreen()
+        return try SupportScreen()
     }
 
     public static func isLoaded() -> Bool {
