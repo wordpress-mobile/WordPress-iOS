@@ -18,7 +18,7 @@ public class JetpackBackupScreen: BaseScreen {
         super.init(element: ellipsisButton)
     }
 
-    public func goToBackupOptions() -> JetpackBackupOptionsScreen {
+    public func goToBackupOptions() throws -> JetpackBackupOptionsScreen {
         ellipsisButton.tap()
 
         XCTAssert(downloadBackupButton.waitForExistence(timeout: 3))
@@ -28,6 +28,6 @@ public class JetpackBackupScreen: BaseScreen {
 
         downloadBackupButton.tap()
 
-        return JetpackBackupOptionsScreen()
+        return try JetpackBackupOptionsScreen()
     }
 }
