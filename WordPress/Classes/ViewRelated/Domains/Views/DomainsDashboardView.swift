@@ -34,7 +34,7 @@ struct DomainsDashboardView: View {
                 Text(TextContent.siteAddressTitle)
                 Text(blog.freeSiteAddress)
                     .bold()
-                if blog.displayURLIsPrimary {
+                if blog.freeDomainIsPrimary {
                     ShapeWithTextView(title: TextContent.primaryAddressLabel)
                         .smallRoundedRectangle()
                 }
@@ -93,7 +93,7 @@ struct DomainsDashboardView: View {
     }
 
     private var siteAddressForGetFirstDomainSection: String {
-        blog.canRegisterDomainWithPaidPlan ? "" : blog.siteAddress
+        blog.canRegisterDomainWithPaidPlan ? "" : blog.freeSiteAddress
     }
 
     private func makeSiteAddressHeader() -> Divider? {
