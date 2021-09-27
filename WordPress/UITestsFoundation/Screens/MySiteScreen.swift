@@ -80,9 +80,9 @@ public class MySiteScreen: BaseScreen {
         return try ActivityLogScreen()
     }
 
-    public func gotoJetpackScan() -> JetpackScanScreen {
+    public func goToJetpackScan() throws -> JetpackScanScreen {
         jetpackScanButton.tap()
-        return JetpackScanScreen()
+        return try JetpackScanScreen()
     }
 
     public func goToJetpackBackup() throws -> JetpackBackupScreen {

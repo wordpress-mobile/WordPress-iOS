@@ -50,8 +50,8 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Scan screenshot
-        let jetpackScan = mySite
-            .gotoJetpackScan()
+        let jetpackScan = try mySite
+            .goToJetpackScan()
 
         sleep(scanWaitTime)
 
