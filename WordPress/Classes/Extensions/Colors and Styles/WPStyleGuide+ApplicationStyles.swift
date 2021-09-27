@@ -59,6 +59,15 @@ extension WPStyleGuide {
     class func configureTabBarAppearance() {
         UITabBar.appearance().tintColor = .tabSelected
         UITabBar.appearance().unselectedItemTintColor = .tabUnselected
+
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .systemBackground
+
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
 
     /// Style the `LightNavigationController` UINavigationBar and BarButtonItems
