@@ -23,16 +23,4 @@ public class ActionSheetComponent: BaseScreen {
         XCTAssert(blogPostButton.isHittable)
         blogPostButton.tap()
     }
-
-    func gotoSitePage() {
-        XCTAssert(sitePageButton.waitForExistence(timeout: 3))
-        XCTAssert(sitePageButton.waitForIsHittable(timeout: 3))
-
-        XCTAssert(sitePageButton.isHittable)
-        sitePageButton.tap()
-    }
-
-    static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementIDs.blogPostButton].waitForExistence(timeout: 3)
-    }
 }
