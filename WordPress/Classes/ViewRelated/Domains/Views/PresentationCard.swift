@@ -19,7 +19,9 @@ struct PresentationCard<Destination: View, Appearance: View>: View {
                                   design: .serif))
                 .padding()
             (Text(description) +
-             Text(highlight).bold()).multilineTextAlignment(.center)
+             Text(highlight).bold())
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
             PresentationButton(destination: destination, appearance: appearance)
                 .padding()
         }
