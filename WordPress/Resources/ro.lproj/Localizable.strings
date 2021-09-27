@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-20 18:16:54+0000 */
+/* Translation-Revision-Date: 2021-09-23 09:20:28+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -2529,13 +2529,13 @@ translators: Block name. %s: The localized block name */
 "Email" = "Email";
 
 /* Header for a comment author's email address, shown when editing a comment. */
-"Email Address" = "Adresa de email";
+"Email Address" = "Adresă email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
-"Email address" = "Adresă de email";
+"Email address" = "Adresă email";
 
 /* Notification Settings Channel */
 "Email from WordPress.com" = "Email de la WordPress.com";

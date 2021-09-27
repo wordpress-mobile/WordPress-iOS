@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-17 06:27:31+0000 */
+/* Translation-Revision-Date: 2021-09-24 11:30:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pl */
@@ -255,7 +255,7 @@ translators: Block name. %s: The localized block name */
 
 /* (no title)
    Lets a user know that a local draft does not have a title. */
-"(no title)" = "(bez tytułu)";
+"(no title)" = "(brak tytułu)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johann Brandt* responded to your post";
@@ -1611,7 +1611,7 @@ translators: Block name. %s: The localized block name */
 "Completed: View your site" = "Completed: View your site";
 
 /* Section title for the configure table section in the blog details screen */
-"Configure" = "Zmień ustawienia";
+"Configure" = "Konfiguruj";
 
 /* Confirm
    Verb. Title for Jetpack Restore confirm button. */
