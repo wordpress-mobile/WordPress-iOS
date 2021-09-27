@@ -224,6 +224,7 @@ struct ReaderPostMenuButtonTitles {
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
         properties[WPAppAnalyticsKeyIsJetpack] = post.isJetpack
+        properties[WPAppAnalyticsKeyIsFollowing] = post.isFollowing
         if let feedID = post.feedID, let feedItemID = post.feedItemID {
             properties[WPAppAnalyticsKeyFeedID] = feedID
             properties[WPAppAnalyticsKeyFeedItemID] = feedItemID

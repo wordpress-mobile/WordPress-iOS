@@ -1490,7 +1490,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"reader_site_followed";
             break;
         case WPAnalyticsStatReaderSitePreviewed:
-            eventName = @"reader_blog_preview";
+            eventName = @"reader_blog_previewed";
             break;
         case WPAnalyticsStatReaderSiteUnfollowed:
             eventName = @"reader_site_unfollowed";

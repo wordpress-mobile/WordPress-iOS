@@ -11,15 +11,15 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - AppCenter (4.2.0):
-    - AppCenter/Analytics (= 4.2.0)
-    - AppCenter/Crashes (= 4.2.0)
-  - AppCenter/Analytics (4.2.0):
+  - AppCenter (4.3.0):
+    - AppCenter/Analytics (= 4.3.0)
+    - AppCenter/Crashes (= 4.3.0)
+  - AppCenter/Analytics (4.3.0):
     - AppCenter/Core
-  - AppCenter/Core (4.2.0)
-  - AppCenter/Crashes (4.2.0):
+  - AppCenter/Core (4.3.0)
+  - AppCenter/Crashes (4.3.0):
     - AppCenter/Core
-  - AppCenter/Distribute (4.2.0):
+  - AppCenter/Distribute (4.3.0):
     - AppCenter/Core
   - Automattic-Tracks-iOS (0.9.1):
     - CocoaLumberjack (~> 3)
@@ -61,7 +61,7 @@ PODS:
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.6.1)
+  - GTMSessionFetcher/Core (1.7.0)
   - Gutenberg (1.62.0):
     - React (= 0.64.0)
     - React-CoreModules (= 0.64.0)
@@ -565,7 +565,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -608,6 +607,7 @@ SPEC REPOS:
     - WordPressKit
     - WordPressMocks
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -734,7 +734,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  AppCenter: 87ef6eefd8ade4df59e88951288587429f3dd2a5
+  AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
   Automattic-Tracks-iOS: f5a6188ad8d00680748111466beabb0aea11f856
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e7305369025cbdb0172ecf9751e2075bd472004d
@@ -752,7 +752,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
+  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   Gutenberg: f36dd75a01a2d6a1cbed5f23fcf72f4bdf88c92a
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
@@ -813,7 +813,7 @@ SPEC CHECKSUMS:
   WordPressKit: 0c8e1a1becfeffc882f06f55eb09cd485826c268
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
-  WordPressUI: 57cbe36d41fd95dc7597124c9010b9f872dc9951
+  WordPressUI: d3df8d4ba30d5d5e06adf2ba1349eb383aa699a1
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 982b1e7bf7c0873643955853293b269e4487890e

@@ -111,14 +111,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
-        service.toggleLiked(for: post, success: { [weak self] in
-            self?.trackArticleDetailsLikedOrUnliked()
-        }, failure: { [weak self] (error: Error?) in
-            self?.trackArticleDetailsLikedOrUnliked()
-            if let anError = error {
-                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
+        service.toggleLiked(for: post, fromArticleDetails: true) {
+            DDLogInfo("Article (un)liked from details screen!")
+        } failure: { error in
+            if let error = error {
+                DDLogError("Error (un)liking post: \(error.localizedDescription)")
             }
-        })
+        }
     }
 
     // MARK: - Styles
@@ -357,23 +356,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         } else {
             return WPStyleGuide.likeCountForDisplay(count)
         }
-    }
-
-    // MARK: - Analytics
-
-    private func trackArticleDetailsLikedOrUnliked() {
-        guard let post = post else {
-            return
-        }
-
-        let stat: WPAnalyticsStat  = post.isLiked
-            ? .readerArticleDetailLiked
-            : .readerArticleDetailUnliked
-
-        var properties = [AnyHashable: Any]()
-        properties[WPAppAnalyticsKeyBlogID] = post.siteID
-        properties[WPAppAnalyticsKeyPostID] = post.postID
-        WPAnalytics.track(stat, withProperties: properties)
     }
 
     // MARK: - Voice Over

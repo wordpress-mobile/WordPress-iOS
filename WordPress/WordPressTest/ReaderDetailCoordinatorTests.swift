@@ -174,7 +174,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         viewMock.navigationController = navigationControllerMock
         coordinator.post = post
 
-        coordinator.didTapTagButton()
+        coordinator.didSelectTopic(post.primaryTagSlug)
 
         expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
     }

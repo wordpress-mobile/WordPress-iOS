@@ -209,7 +209,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 #pragma mark - Update Methods
 
-- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)post fromArticleDetails:(BOOL)details success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     [self.managedObjectContext performBlock:^{
 
@@ -245,18 +245,22 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         NSNumber *siteID = readerPost.siteID;
         void (^successBlock)(void) = ^void() {
             if (postID && siteID) {
-                NSDictionary *properties = @{
-                                              WPAppAnalyticsKeyPostID: postID,
-                                              WPAppAnalyticsKeyBlogID: siteID
-                                              };
+                NSMutableDictionary *properties = [NSMutableDictionary new];
+                [properties setObject:postID forKey:WPAppAnalyticsKeyPostID];
+                [properties setObject:siteID forKey:WPAppAnalyticsKeyBlogID];
+                [properties setObject:readerPost.feedID forKey:WPAppAnalyticsKeyFeedID];
+                [properties setObject:[NSNumber numberWithBool:readerPost.isFollowing] forKey:WPAppAnalyticsKeyIsFollowing];
+
+                NSUInteger event;
                 if (like) {
-                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
+                    event = (details) ? WPAnalyticsStatReaderArticleDetailLiked : WPAnalyticsStatReaderArticleLiked;
                     if (railcar) {
-                        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:railcar];
+                        [WPAnalytics trackReaderStat:event properties:railcar];
                     }
                 } else {
-                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleUnliked properties:properties];
+                    event = (details) ? WPAnalyticsStatReaderArticleDetailUnliked : WPAnalyticsStatReaderArticleUnliked;
                 }
+                [WPAnalytics trackReaderStat:event properties:properties];
             }
             if (success) {
                 success();
@@ -317,9 +321,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (following) {
-        [siteService followSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+        [siteService followSiteWithID:[siteID integerValue] site:NULL success:successBlock failure:failureBlock];
     } else {
-        [siteService unfollowSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+        [siteService unfollowSiteWithID:[siteID integerValue] site:NULL success:successBlock failure:failureBlock];
     }
 }
 
@@ -402,9 +406,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (!post.isExternal) {
         if (follow) {
-            [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[post.siteID integerValue] site:NULL success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService unfollowSiteWithID:[post.siteID integerValue] site:NULL success:successBlock failure:failureBlock];
         }
     } else if (post.blogURL) {
         if (follow) {

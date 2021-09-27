@@ -720,7 +720,7 @@ import WordPressFlux
 
 
     /// Returns the analytics property dictionary for the current topic.
-    private func topicPropertyForStats() -> [AnyHashable: Any]? {
+    private func topicPropertyForStats(post: ReaderPost? = nil) -> [AnyHashable: Any]? {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
             return nil
@@ -735,7 +735,19 @@ import WordPressFlux
             key = "site"
         }
 
-        return [key: title, "source": statSource.rawValue]
+        var dict: [String: Any] = [key: title, "source": statSource.rawValue]
+
+        if let post = post {
+            dict["blog_id"] = String(Int(truncating: post.siteID))
+            dict["feed_id"] = String(Int(truncating: post.feedID))
+            dict["follow"] = post.isFollowing
+        } else if let topic = topic as? ReaderSiteTopic {
+            dict["blog_id"] = String(Int(truncating: topic.siteID))
+            dict["feed_id"] = String(Int(truncating: topic.feedID))
+            dict["follow"] = topic.following
+        }
+
+        return dict
     }
 
     /// The fetch request can need a different predicate depending on how the content
@@ -1575,9 +1587,9 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         controller.coordinator?.readerTopic = readerTopic
 
         if post.isSavedForLater || contentType == .saved {
-            trackSavedPostNavigation()
+            trackSavedPostNavigation(post: apost)
         } else {
-            WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
+            WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats(post: apost) ?? [:])
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
@@ -1948,8 +1960,14 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
         tableView.endUpdates()
     }
 
-    func didSelect(topic: String) {
+    func didSelect(topic: String, from post: ReaderPost?) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+
+        guard let post = post else {
+            return
+        }
+        let properties = topicPropertyForStats(post: post)
+        WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 }

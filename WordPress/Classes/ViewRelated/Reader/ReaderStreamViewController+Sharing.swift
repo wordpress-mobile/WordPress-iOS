@@ -38,7 +38,9 @@ extension ReaderStreamViewController {
             return
         }
 
-        WPAppAnalytics.track(.readerSiteShared, withBlogID: sitePendingPost.siteID)
+        let dict: [String: Any] = ["feed_id": sitePendingPost.feedID,
+                                   "follow": sitePendingPost.following]
+        WPAppAnalytics.track(.readerSiteShared, withProperties: dict, withBlogID: sitePendingPost.siteID)
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let activityViewController = UIActivityViewController(activityItems: [sitePendingPost], applicationActivities: activities)

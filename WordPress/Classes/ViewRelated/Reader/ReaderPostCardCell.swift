@@ -4,7 +4,7 @@ import WordPressShared
 import Gridicons
 
 protocol ReaderTopicsChipsDelegate: AnyObject {
-    func didSelect(topic: String)
+    func didSelect(topic: String, from post: ReaderPost?)
     func heightDidChange()
 }
 
@@ -980,6 +980,6 @@ extension ReaderPostCardCell: ReaderTopicCollectionViewCoordinatorDelegate {
     }
 
     func coordinator(_ coordinator: ReaderTopicCollectionViewCoordinator, didSelectTopic topic: String) {
-        topicChipsDelegate?.didSelect(topic: topic)
+        topicChipsDelegate?.didSelect(topic: topic, from: contentProvider as? ReaderPost)
     }
 }
