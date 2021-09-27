@@ -85,9 +85,9 @@ public class MySiteScreen: BaseScreen {
         return JetpackScanScreen()
     }
 
-    public func gotoJetpackBackup() -> JetpackBackupScreen {
+    public func goToJetpackBackup() throws -> JetpackBackupScreen {
         jetpackBackupButton.tap()
-        return JetpackBackupScreen()
+        return try JetpackBackupScreen()
     }
 
     public func gotoPostsScreen() -> PostsScreen {

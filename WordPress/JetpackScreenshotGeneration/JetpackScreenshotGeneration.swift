@@ -63,8 +63,8 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Backup screenshot
-        let jetpackBackup = mySite
-            .gotoJetpackBackup()
+        let jetpackBackup = try mySite
+            .goToJetpackBackup()
 
         let jetpackBackupOptions = try jetpackBackup
             .goToBackupOptions()

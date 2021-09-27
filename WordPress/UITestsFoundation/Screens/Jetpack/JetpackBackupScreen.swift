@@ -1,21 +1,17 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let actionButton = "activity-cell-action-button"
-    static let backupTable = "jetpack-backup-table"
-}
+public class JetpackBackupScreen: ScreenObject {
 
-public class JetpackBackupScreen: BaseScreen {
-    let ellipsisButton: XCUIElement
-    let downloadBackupButton: XCUIElement
+    private let ellipsisButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["jetpack-backup-table"].cells.element(boundBy: 0).buttons["activity-cell-action-button"]
+    }
 
-    public init() {
-        let app = XCUIApplication()
-        let backupTable = app.tables[ElementStringIDs.backupTable]
-        let firstCell = backupTable.cells.element(boundBy: 0)
-        ellipsisButton = firstCell.buttons[ElementStringIDs.actionButton]
-        downloadBackupButton = app.sheets.buttons.element(boundBy: 1)
-        super.init(element: ellipsisButton)
+    var ellipsisButton: XCUIElement { ellipsisButtonGetter(app) }
+    var downloadBackupButton: XCUIElement { app.sheets.buttons.element(boundBy: 1) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [ellipsisButtonGetter], app: app)
     }
 
     public func goToBackupOptions() throws -> JetpackBackupOptionsScreen {
