@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 블록 옵션";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s block previews are coming soon";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "새로 사용 가능한 %s 블록";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "일반 블록으로 %s 변환됨";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s에 설정된 URL 있음";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "리더에서 부를 사용자 정의 CSS URL을 여기에 추가하세요. 자체적으로 칼립소를 실행하고 있다면 다음과 같이 할 수 있습니다: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Add a domain";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "왼쪽 하단의 도구 모음에서 + 아이콘을 눌러 언제든지 새 블록을 추가하세요. ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "블로그";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "블로그 글";
-
 /* Create new Blog Post button title */
 "Blog post" = "블로그 글";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "화려한 배경";
 
+/* translators: %d: column index. */
+"Column %d" = "Column %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Columns Settings";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Apple 로 계속하기";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Convert to link";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "요리";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "태그를 로드할 수 없었습니다. 눌러서 다시 시도하세요.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Couldn't mark as spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Couldn't unmark as spam";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "특성 이미지를 업로드 할 수 없습니다";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "마지막 변경을 취소하려면 두 번 탭하세요.";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Double tap to view embed options.";
+
 /* Download button title */
 "Download" = "다운로드하기";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "이메일이 전송되었습니다.";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "캡션을 임베드합니다. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "미디어 임베드";
+
+/* No comment provided by engineer. */
+"Embed options" = "Embed options";
 
 /* Title for the Emoji section */
 "Emoji" = "이모티콘";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "시작한 후에는 글을 공유하여 조회수를 높이세요.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Get your domain";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "알림을 더 빨리 받기";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "붙박이로 표시";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Mark as not spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "읽음으로 표시";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Mark as spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "스팸으로 표시";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "새 글";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "새 항목";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "글이 없습니다.";
+
+/* No comment provided by engineer. */
+"No preview available" = "No preview available";
 
 /* A message title */
 "No recent posts" = "최근 글 없음";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "전화";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "페이지";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "페이지가 업데이트됨";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "페이지";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "인기 언어";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "게시물";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "글";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "즉시 공개";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Publish page on:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "글 발행 날짜:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "다음으로 발행하기";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Publishing page...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "글 발행 중...";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "저장하기";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Save %ld photos as a draft page on:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "사진 %ld을(를) 임시글로 다음 위치에 저장:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Save 1 photo as a draft page on:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "사진 1개를 임시글로 다음 위치에 저장:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "임시글로 저장";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Save draft page on:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "임시글을 다음 위치에 저장:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "나중에 사용할 수 있게 이 글 저장";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Saving page…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "글을 저장하는 중…";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "댓글과 알림을 실시간으로 보세요.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "선택";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "사이트 언어";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "사이트 페이지";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "사이트 리디렉팅";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "이 카드를 무시하려면 탭하세요.";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Tap to display referrer web page.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "사용자 정의 값을 입력하려면 탭하세요.";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "키보드를 숨기려면 탭";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Tap to mark referrer as spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "이 글의 모든 태그를 보려면 누르기";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter 사용자명";
+
+/* Type menu item in share extension. */
+"Type" = "Type";
 
 /* No comment provided by engineer. */
 "Type a URL" = "URL 입력";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "오늘 중";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "marked as spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "알 수 없는 url";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "unmarked as spam";
 
 /* Noun. Describes a site's user. */
 "user" = "사용자";
