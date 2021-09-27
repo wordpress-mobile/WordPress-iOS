@@ -36,10 +36,10 @@ public class EditorPostSettings: ScreenObject {
         return try CategoriesComponent()
     }
 
-    func openTags() -> TagsComponent {
+    func openTags() throws -> TagsComponent {
         tagsSection.tap()
 
-        return TagsComponent()
+        return try TagsComponent()
     }
 
     public func removeFeatureImage() throws -> EditorPostSettings {
