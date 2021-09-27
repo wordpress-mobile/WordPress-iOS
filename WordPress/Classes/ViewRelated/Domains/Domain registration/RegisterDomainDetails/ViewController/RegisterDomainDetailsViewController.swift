@@ -146,13 +146,9 @@ class RegisterDomainDetailsViewController: UITableViewController {
             tableView.reloadRows(at: [indexPath], with: .none)
         case .checkMarkRowsUpdated:
             tableView.reloadData()
-        case .registerSucceeded(let domain, let siteID):
-            if let domainService = DomainsService() {
-                domainService.createWith(domain, forSite: siteID)
-            }
-
+        case .registerSucceeded(let domain):
             dismiss(animated: true) { [weak self] in
-                self?.viewModel.domainPurchasedCallback(domain.domainName)
+                self?.viewModel.domainPurchasedCallback(domain)
             }
         case .unexpectedError(let message):
             showAlert(message: message)

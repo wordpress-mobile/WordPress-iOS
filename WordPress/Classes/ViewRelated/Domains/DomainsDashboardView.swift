@@ -6,6 +6,12 @@ struct DomainsDashboardView: View {
 
     var body: some View {
         makeList(blog: blog)
+        /*
+            .onAppear {
+                if let context = blog.managedObjectContext {
+                    context.refresh(blog, mergeChanges: false)
+                }
+            }*/
     }
 
     /// Builds the main list of the view

@@ -23,7 +23,7 @@ class RegisterDomainDetailsViewModel {
 
         case checkMarkRowsUpdated(sectionIndex: Int)
 
-        case registerSucceeded(_ domain: Domain, siteID: Int)
+        case registerSucceeded(_ domain: String)
 
         case loading(Bool)
 
@@ -179,76 +179,44 @@ class RegisterDomainDetailsViewModel {
     }
 
     func register() {
+        let domainSuggestion = domain
+        let contactInformation = jsonRepresentation()
         let privacyEnabled = privacySectionSelectedItem() == CellIndex.PrivacyProtection.privately
+        let registerDomainService = registerDomainDetailsService
+        let siteID = site.siteID
+        let onChange = onChange
 
         isLoading = true
         validateRemotely(successCompletion: { [weak self] in
-            guard let strongSelf = self else {
-                self?.isLoading = false
-                return
-            }
-
             WPAnalytics.track(.automatedTransferCustomDomainContactInfoValidated)
 
-            // This is a bit of a callback hell, but our services aren't super mobile friendly.
-            // We'll manage.
+            registerDomainService.purchaseDomainUsingCredits(
+                siteID: siteID,
+                domainSuggestion: domainSuggestion,
+                domainContactInformation: contactInformation,
+                privacyProtectionEnabled: privacyEnabled,
+                success: { domain in
+                    registerDomainService.setPrimaryDomain(
+                        siteID: siteID,
+                        domain: domain,
+                        success: {
+                            self?.isLoading = false
 
-            // First step is to create a cart.
-            strongSelf.registerDomainDetailsService.createTemporaryDomainShoppingCart(siteID: strongSelf.site.siteID,
-                                                                                      domainSuggestion: strongSelf.domain,
-                                                                                      privacyProtectionEnabled: privacyEnabled,
-                                                                                      success: { cart in
+                            onChange?(.registerSucceeded(domain))
+                        }, failure: { _ in
+                            self?.isLoading = false
 
-
-                    // And now that we have a cart — time to redeem it.
-                    strongSelf.registerDomainDetailsService.redeemCartUsingCredits(cart: cart,
-                                                                                   domainContactInformation: strongSelf.jsonRepresentation(),
-                                                                                   success: {
-
-                            // Hey! We redeemed the cart sucessfully. Now we just need to set the new domain to primary...
-                            strongSelf.registerDomainDetailsService.changePrimaryDomain(siteID: strongSelf.site.siteID,
-                                                                             newDomain: strongSelf.domain.domainName,
-                                                                             success: {
-
-                                // We've succeeded! The domain is purchased and set to the primary one — time to drop out of this flow
-                                // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
-                                WPAnalytics.track(.automatedTransferCustomDomainPurchased)
-
-                                let domain = Domain(
-                                    domainName: strongSelf.domain.domainName,
-                                    isPrimaryDomain: true,
-                                    domainType: .registered)
-
-                                strongSelf.isLoading = false
-                                strongSelf.onChange?(.registerSucceeded(domain, siteID: strongSelf.site.siteID))
-                            },
-                            failure: { error in
-
-                                // This means we've sucessfully bought/redeemed the domain, but something went wrong
-                                // when setting it to a primary.
-                                let domain = Domain(
-                                    domainName: strongSelf.domain.domainName,
-                                    isPrimaryDomain: false,
-                                    domainType: .registered)
-
-                                strongSelf.isLoading = false
-                                strongSelf.onChange?(.registerSucceeded(domain, siteID: strongSelf.site.siteID))
+                            // Setting the domain as primary doesn't affect the success of registering the domain
+                            // so we'll simply ignore this for now.  If we want to highlight this as an error to
+                            // the user we could opt to show a Notice in the future.
+                            onChange?(.registerSucceeded(domain))
                         })
-                    }, failure: { (error) in
-
-                        // Failure during the purchase step. Not much we can do from the mobile in any case,
-                        // so let's just show a generic error message.
-                        WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
-                        strongSelf.isLoading = false
-                        strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
-                    })
-            }) { (error) in
-
-                // Same as above. If adding items to cart fails, not much we can do to recover :(
-                WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
-                strongSelf.isLoading = false
-                strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
-            }
+                }, failure: { error in
+                    // Same as above. If adding items to cart fails, not much we can do to recover :(
+                    WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
+                    self?.isLoading = false
+                    onChange?(.prefillError(message: Localized.redemptionError))
+                })
         })
     }
 

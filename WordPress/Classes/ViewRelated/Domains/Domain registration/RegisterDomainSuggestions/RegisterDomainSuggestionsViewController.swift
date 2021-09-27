@@ -177,15 +177,17 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     ///
     /// - Parameters:
     ///     - newURL: the newly set URL for the web view.
+    ///     - siteID: the ID of the site we're trying to register the domain against.
     ///     - domain: the domain the user is purchasing.
     ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
     ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
     ///
     private func handleWebViewURLChange(
         _ newURL: URL,
+        siteID: Int,
         domain: String,
         onCancel: () -> Void,
-        onSuccess: () -> Void) {
+        onSuccess: (String) -> Void) {
 
         let canOpenNewURL = newURL.absoluteString.starts(with: Self.checkoutURLPrefix)
 
@@ -197,7 +199,15 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Self.checkoutSuccessURLPrefix)
 
         if domainRegistrationSucceeded {
-            onSuccess()
+
+            let registerDomainService = RegisterDomainDetailsServiceProxy()
+
+            registerDomainService.recordDomainPurchase(
+                siteID: siteID,
+                domain: domain,
+                isPrimaryDomain: false)
+
+            onSuccess(domain)
             return
         }
     }
@@ -207,6 +217,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
               let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
         }
+        let siteID = site.siteID
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
         let navController = LightNavigationController(rootViewController: webViewController)
@@ -223,24 +234,11 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 return
             }
 
-            let domain = Domain(
-                domainName: domainSuggestion.domainName,
-                isPrimaryDomain: false,
-                domainType: .registered)
-
-            self.handleWebViewURLChange(newURL, domain: domain.domainName, onCancel: {
+            self.handleWebViewURLChange(newURL, siteID: siteID, domain: domainSuggestion.domainName, onCancel: {
                 navController.dismiss(animated: true)
-            }) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                if let domainService = DomainsService() {
-                    domainService.createWith(domain, forSite: self.site.siteID)
-                }
-
+            }) { domain in
                 self.dismiss(animated: true, completion: { [weak self] in
-                    self?.domainPurchasedCallback(domain.domainName)
+                    self?.domainPurchasedCallback(domain)
                 })
             }
         }
