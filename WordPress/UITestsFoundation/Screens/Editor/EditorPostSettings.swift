@@ -44,7 +44,8 @@ public class EditorPostSettings: ScreenObject {
 
     public func removeFeatureImage() throws -> EditorPostSettings {
         changeFeaturedImageButton.tap()
-        FeaturedImageScreen()
+
+        try FeaturedImageScreen()
             .tapRemoveFeaturedImageButton()
 
         return try EditorPostSettings()
