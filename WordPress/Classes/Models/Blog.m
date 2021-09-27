@@ -580,6 +580,14 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsBlockEditorSettings];
         case BlogFeatureLayoutGrid:
             return [self supportsLayoutGrid];
+        case BlogFeatureFacebookEmbed:
+            return [self supportsFacebookEmbed];
+        case BlogFeatureInstagramEmbed:
+            return [self supportsInstagramEmbed];
+        case BlogFeatureLoomEmbed:
+            return [self supportsLoomEmbed];
+        case BlogFeatureSmartframeEmbed:
+            return [self supportsSmartframeEmbed];
     }
 }
 
@@ -678,6 +686,26 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsLayoutGrid
 {
     return self.isHostedAtWPcom || self.isAtomic;
+}
+
+- (BOOL)supportsFacebookEmbed
+{
+    return [self hasRequiredJetpackVersion:@"9.0"] || self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsInstagramEmbed
+{
+    return [self hasRequiredJetpackVersion:@"9.0"] || self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsLoomEmbed
+{
+    return [self hasRequiredJetpackVersion:@"9.0"] || self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsSmartframeEmbed
+{
+    return [self hasRequiredJetpackVersion:@"10.2"] || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount

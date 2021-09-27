@@ -1142,7 +1142,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
             .editorOnboarding: canViewEditorOnboarding(),
-            .firstGutenbergEditorSession: !gutenbergSettings.hasLaunchedGutenbergEditor
+            .firstGutenbergEditorSession: !gutenbergSettings.hasLaunchedGutenbergEditor,
+            // Jetpack embeds
+            .facebookEmbed: post.blog.supports(.facebookEmbed),
+            .instagramEmbed: post.blog.supports(.instagramEmbed),
+            .loomEmbed: post.blog.supports(.loomEmbed),
+            .smartframeEmbed: post.blog.supports(.smartframeEmbed)
         ]
     }
 
