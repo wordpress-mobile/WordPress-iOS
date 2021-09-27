@@ -48,7 +48,7 @@ extension WPStyleGuide {
             private static let replySymbol: UIImage? = {
                 // this symbol is only available in iOS 14. Therefore, the symbol template is imported to our assets so it can still be used.
                 let symbolImage = UIImage(systemName: "arrowshape.turn.up.backward", withConfiguration: reactionIconConfiguration)
-                return symbolImage ?? UIImage(named: "arrowshape.turn.up.backward", in: .main, with: reactionIconConfiguration)
+                return symbolImage ?? UIImage(named: "icon-arrowshape.turn.up.backward", in: .main, with: reactionIconConfiguration)
             }()
         }
 
