@@ -1,19 +1,24 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let continueButton = "Prologue Continue Button"
-    static let siteAddressButton = "Prologue Self Hosted Button"
-}
+public class PrologueScreen: ScreenObject {
 
-public class PrologueScreen: BaseScreen {
-    let continueButton: XCUIElement
-    let siteAddressButton: XCUIElement
+    private let continueButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Prologue Continue Button"]
+    }
 
-    public init() {
-        continueButton = XCUIApplication().buttons[ElementStringIDs.continueButton]
-        siteAddressButton = XCUIApplication().buttons[ElementStringIDs.siteAddressButton]
+    private let siteAddressButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Prologue Self Hosted Button"]
+    }
 
-        super.init(element: continueButton)
+    var continueButton: XCUIElement { continueButtonGetter(app) }
+    var siteAddressButton: XCUIElement { siteAddressButtonGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [continueButtonGetter, siteAddressButtonGetter],
+            app: app
+        )
     }
 
     public func selectContinue() -> GetStartedScreen {
@@ -28,7 +33,7 @@ public class PrologueScreen: BaseScreen {
         return LoginSiteAddressScreen()
     }
 
-    public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.continueButton].exists
+    public static func isLoaded(app: XCUIApplication = XCUIApplication()) -> Bool {
+        (try? PrologueScreen(app: app).isLoaded) ?? false
     }
 }

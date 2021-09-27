@@ -7,7 +7,7 @@ class LoginFlow {
     static func login(email: String, password: String) throws -> MySiteScreen {
         try logoutIfNeeded()
 
-        return PrologueScreen().selectContinue()
+        return try PrologueScreen().selectContinue()
             .proceedWith(email: email)
             .proceedWith(password: password)
             .continueWithSelectedSite()
@@ -19,7 +19,7 @@ class LoginFlow {
     static func login(siteUrl: String, username: String, password: String) throws -> MySiteScreen {
         try logoutIfNeeded()
 
-        return PrologueScreen().selectSiteAddress()
+        return try PrologueScreen().selectSiteAddress()
             .proceedWith(siteUrl: siteUrl)
             .proceedWith(username: username, password: password)
             .continueWithSelectedSite()
@@ -40,7 +40,7 @@ class LoginFlow {
     static func login(siteUrl: String, email: String, password: String) throws -> MySiteScreen {
         try logoutIfNeeded()
 
-        return PrologueScreen().selectSiteAddress()
+        return try PrologueScreen().selectSiteAddress()
             .proceedWithWP(siteUrl: siteUrl)
             .proceedWith(email: email)
             .proceedWith(password: password)
@@ -70,7 +70,7 @@ class LoginFlow {
                 Logger.log(message: "Logging out...", event: .i)
                 let meScreen = try TabNavComponent().gotoMeScreen()
                 if meScreen.isLoggedInToWpcom() {
-                    _ = meScreen.logoutToPrologue()
+                    _ = try meScreen.logoutToPrologue()
                 } else {
                     meScreen.dismiss().removeSelfHostedSite()
                 }
