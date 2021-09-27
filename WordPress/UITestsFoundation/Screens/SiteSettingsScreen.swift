@@ -11,10 +11,10 @@ public class SiteSettingsScreen: BaseScreen {
     let blockEditorToggle: XCUIElement
     let tabBar: TabNavComponent
 
-    public init() {
+    public init() throws {
         settingsTable = XCUIApplication().tables["siteSettingsTable"]
         blockEditorToggle = settingsTable.switches["useBlockEditorSwitch"]
-        tabBar = TabNavComponent()
+        tabBar = try TabNavComponent()
 
         super.init(element: settingsTable)
     }
@@ -34,11 +34,11 @@ public class SiteSettingsScreen: BaseScreen {
         return self
     }
 
-    public func goBackToMySite() -> MySiteScreen {
+    public func goBackToMySite() throws -> MySiteScreen {
         if XCUIDevice.isPhone {
             navBackButton.tap()
         }
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 
     private func isBlockEditorEnabled() -> Bool {

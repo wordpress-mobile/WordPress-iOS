@@ -34,7 +34,7 @@ class WordPressScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() throws {
 
         // Get post editor screenshot
-        let postList = MySiteScreen()
+        let postList = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
             .gotoPostsScreen()
@@ -70,7 +70,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Get My Site screenshot
-        let mySite = MySiteScreen()
+        let mySite = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
             .thenTakeScreenshot(4, named: "MySite")
@@ -93,7 +93,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
-        TabNavComponent()
+        try TabNavComponent()
             .gotoReaderScreen()
             .openDiscover()
             .thenTakeScreenshot(2, named: "Discover")

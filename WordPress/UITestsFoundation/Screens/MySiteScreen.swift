@@ -40,9 +40,9 @@ public class MySiteScreen: BaseScreen {
         return blogTable.exists && blogTable.isHittable
     }
 
-    public init() {
+    public init() throws {
         let app = XCUIApplication()
-        tabBar = TabNavComponent()
+        tabBar = try TabNavComponent()
         removeSiteButton = app.cells[ElementStringIDs.removeSiteButton]
         removeSiteSheet = app.sheets.buttons.element(boundBy: 0)
         removeSiteAlert = app.alerts.buttons.element(boundBy: 1)
@@ -110,9 +110,9 @@ public class MySiteScreen: BaseScreen {
         return StatsScreen()
     }
 
-    public func gotoSettingsScreen() -> SiteSettingsScreen {
+    public func goToSettingsScreen() throws -> SiteSettingsScreen {
         siteSettingsButton.tap()
-        return SiteSettingsScreen()
+        return try SiteSettingsScreen()
     }
 
     func gotoCreateSheet() throws -> ActionSheetComponent {

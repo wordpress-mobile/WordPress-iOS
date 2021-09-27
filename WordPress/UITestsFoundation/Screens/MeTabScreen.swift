@@ -64,9 +64,9 @@ public class MeTabScreen: ScreenObject {
         return try PrologueScreen()
     }
 
-    public func dismiss() -> MySiteScreen {
+    public func dismiss() throws -> MySiteScreen {
         app.buttons["Done"].tap()
 
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 }
