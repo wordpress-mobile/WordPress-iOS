@@ -101,8 +101,12 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
 
-    // Store 'grow audience' separately as it is not per site.
-    private let userDefaultsHideGrowAudienceKey = "StatsInsightsHideGrowAudienceCard"
+    // Grow audience key per site
+    private var userDefaultsHideGrowAudienceKey: String? {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return nil }
+        let key = "StatsInsightsHideGrowAudienceCard"
+        return key + "-\(siteID)"
+    }
 
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
@@ -338,11 +342,13 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func loadGrowAudienceCardSetting() {
-        loadPermanentlyDismissableInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
+        guard let key = userDefaultsHideGrowAudienceKey else { return }
+        loadPermanentlyDismissableInsight(.growAudience, using: key)
     }
 
     func dismissGrowAudienceCard() {
-        permanentlyDismissInsight(.growAudience, using: userDefaultsHideGrowAudienceKey)
+        guard let key = userDefaultsHideGrowAudienceKey else { return }
+        permanentlyDismissInsight(.growAudience, using: key)
     }
 
     // MARK: - Insights Management
