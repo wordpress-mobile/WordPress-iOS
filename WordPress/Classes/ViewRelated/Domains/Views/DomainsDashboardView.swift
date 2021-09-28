@@ -12,7 +12,7 @@ struct DomainsDashboardView: View {
         }
         .listStyle(GroupedListStyle())
         .padding(.top, Metrics.topPadding)
-        .buttonStyle(.plain)
+        .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .navigationBarTitle(TextContent.navigationTitle)
     }
