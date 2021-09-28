@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-06 18:01:09+0000 */
+/* Translation-Revision-Date: 2021-09-20 21:48:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blokopties";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s blokvoorbeelden komen binnenkort";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s blok, nieuw beschikbaar";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s geconverteerd naar gewone blokken";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s insluit blok voorbeelden komen binnenkort";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s heeft URL ingesteld";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Voeg een URL voor eigen CSS toe die geladen wordt in Lezer. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Voeg een domein toe";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Voeg op elk moment een nieuw blok toe, door te tikken op het + pictogram in de gereedschapsbalk links onderaan. ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Blogberichten";
-
 /* Create new Blog Post button title */
 "Blog post" = "Blogbericht";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1492,7 +1492,7 @@ translators: Block name. %s: The localized block name */
 "Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Ingevouwen, %i voltooide taken; door deze knop om te zetten, wordt de lijst met deze taken uitgevouwen";
 
 /* Accessibility hint */
-"Collapsed. Tap to expand." = "Ingeklapt. Tik om uit te klappen.";
+"Collapsed. Tap to expand." = "Ingevouwen. Tik om uit te vouwen.";
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Collapses the list of completed tasks." = "Vouwt de lijst met voltooide taken in.";
@@ -1502,6 +1502,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Kleurrijke achtergronden";
+
+/* translators: %d: column index. */
+"Column %d" = "Kolom %d";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Kolommen instellingen";
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Ga verder met Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Naar link converteren";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Koken";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Tags niet geladen. Tik om opnieuw te proberen.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Kon niet als spam markeren";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Kon spam markering niet verwijderen";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Uploaden uitgelichte afbeelding niet mogelijk";
@@ -2294,25 +2306,25 @@ translators: Block name. %s: The localized block name */
 "Double tap to add a block" = "Tik tweemaal om een blok toe te voegen";
 
 /* No comment provided by engineer. */
-"Double tap to add a link." = "Dubbeltik om een link toe te voegen.";
+"Double tap to add a link." = "Twee keer tikken om een link toe te voegen.";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
-"Double tap to dismiss" = "Dubbel klikken om te negeren";
+"Double tap to dismiss" = "Twee keer tikken om te negeren";
 
 /* No comment provided by engineer. */
-"Double tap to edit button text" = "Dubbel tikken om de knoptekst te bewerken";
+"Double tap to edit button text" = "Twee keer tikken om de knoptekst te bewerken";
 
 /* No comment provided by engineer. */
-"Double tap to edit label text" = "Dubbel tikken om de labeltekst te bewerken";
+"Double tap to edit label text" = "Twee keer tikken om de labeltekst te bewerken";
 
 /* No comment provided by engineer. */
-"Double tap to edit placeholder text" = "Dubbel tikken om de plaatshouder tekst te bewerken";
+"Double tap to edit placeholder text" = "Twee keer tikken om de plaatshouder tekst te bewerken";
 
 /* translators: accessibility text */
 "Double tap to edit this value" = "Tik tweemaal om deze waarde te bewerken";
 
 /* translators: accessibility text (hint for moving to color settings) */
-"Double tap to go to color settings" = "Tik tweemaal om naar de kleurinstellingen te gaan";
+"Double tap to go to color settings" = "Twee keer tikken om naar de kleurinstellingen te gaan";
 
 /* No comment provided by engineer. */
 "Double tap to listen the audio file" = "Twee keer tikken om te luisteren naar het audiobestand";
@@ -2330,28 +2342,28 @@ translators: Block name. %s: The localized block name */
 "Double tap to move the block up" = "Tik tweemaal om het blok omhoog te verplaatsen";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to add image or video" = "Dubbeltik om actieblad te openen om afbeelding of video toe te voegen";
+"Double tap to open Action Sheet to add image or video" = "Twee keer tikken om actieblad te openen om afbeelding of video toe te voegen";
 
 /* No comment provided by engineer. */
-"Double tap to open Action Sheet to edit, replace, or clear the image" = "Dubbeltikken om het actieblad te openen om de afbeelding te bewerken, vervangen of wissen";
+"Double tap to open Action Sheet to edit, replace, or clear the image" = "Twee keer tikken om het actieblad te openen om de afbeelding te bewerken, vervangen of wissen";
 
 /* No comment provided by engineer. */
 "Double tap to open Action Sheet with available options" = "Dubbeltik om actieblad te openen met beschikbare opties";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to add image or video" = "Dubbeltik om onderste blad te openen om afbeelding of video toe te voegen";
+"Double tap to open Bottom Sheet to add image or video" = "Twee keer tikken om onderste blad te openen om afbeelding of video toe te voegen";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Dubbeltikken om onderste blad te openen om de afbeelding te bewerken, vervangen of wissen";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Twee keer tikken om onderste blad te openen om de afbeelding te bewerken, vervangen of wissen";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Dubbeltik om onderste blad te openen met beschikbare opties";
 
 /* No comment provided by engineer. */
-"Double tap to preview page." = "Dubbeltik om een voorbeeld van het bericht te bekijken.";
+"Double tap to preview page." = "Twee keer tikken om een voorbeeld van het bericht te bekijken.";
 
 /* No comment provided by engineer. */
-"Double tap to preview post." = "Dubbel tikken om een voorbeeld van het bericht te bekijken.";
+"Double tap to preview post." = "Twee keer tikken om een voorbeeld van het bericht te bekijken.";
 
 /* No comment provided by engineer. */
 "Double tap to redo last change" = "Tik tweemaal om laatste wijziging opnieuw uit te voeren";
@@ -2376,6 +2388,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Tik tweemaal om laatste wijziging ongedaan te maken";
+
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Twee keer tikken om insluit opties te zien.";
 
 /* Download button title */
 "Download" = "Download";
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-mail verzonden!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Insluit blok voorbeelden komen binnenkort";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Bijschrift ingesloten inhoud. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Sluit media in";
+
+/* No comment provided by engineer. */
+"Embed options" = "Insluit opties";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2784,7 +2805,7 @@ translators: Block name. %s: The localized block name */
 "Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Uitgevouwen, %i voltooide taken; door deze functie om te zetten, wordt de lijst met deze taken ingevouwen";
 
 /* Accessibility hint */
-"Expanded. Tap to collapse." = "Uitgeklapt. Tik om in te klappen.";
+"Expanded. Tap to collapse." = "Uitgevouwen. Tik om in te vouwen.";
 
 /* Accessibility hint for the list of completed tasks presented during Quick Start. */
 "Expands the list of completed tasks." = "Breidt de lijst met voltooide taken uit.";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Breng de bal aan het rollen en vergroot je bericht weergaven door dit bericht te delen.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Krijg je domein";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Ontvang je berichten sneller";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Markeer als sticky";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Markeren als geen spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Markeer als gezien";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Markeer als spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Markeren als spam.";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nieuw bericht";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "New domain flow";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nieuw item";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Geen berichten.";
+
+/* No comment provided by engineer. */
+"No preview available" = "Geen voorbeeld beschikbaar";
 
 /* A message title */
 "No recent posts" = "Geen recente berichten";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "TELEFOON";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Pagina";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Pagina bijgewerkt";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pagina's";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Populaire talen";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Publiceer";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Berichten";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Onmiddellijk publiceren";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Publiceer pagina op:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publiceer bericht op:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Publiceren naar";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Pagina aan het publiceren...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Bericht publiceren...";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Opslaan";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Bewaar %ld foto's als conceptbericht op:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Bewaar %ld foto's als conceptbericht op:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Bewaar 1 foto als conceptbericht op:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Bewaar 1 foto als conceptbericht op:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Opslaan als concept";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Bewaar conceptpagina op:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Bewaar conceptbericht op:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Bewaart dit bericht voor later.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Opslaan pagina...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Bericht bewaren…";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Lees opmerkingen en ontvang meldingen in realtime.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Selecteer";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Site taal";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Site pagina's";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Sitedoorverwijzing";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Tik om deze kaart te negeren";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Tik om de verwijzer webpagina te tonen.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Tik om een aangepaste waarde in te voeren";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Tik om het toetsenbord te verbergen";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Tik om verwijzer als geen spam te markeren.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Tik om verwijzer als spam te markeren";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Tik om alle tags voor dit bericht te zien";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter gebruikersnaam";
+
+/* Type menu item in share extension. */
+"Type" = "Type";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Typ een URL";
@@ -8784,7 +8845,7 @@ translators: Block name. %s: The localized block name */
 "doesn’t it feel good to cross things off a list?" = "Voelt het niet goed om dingen af te strepen?";
 
 /* No comment provided by engineer. */
-"double-tap to change unit" = "dubbel tik om de eenheid te wijzigen";
+"double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "bijv. 1122334455";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "later vandaag";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "gemarkeerd als spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "van";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "onbekende url";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "niet meer als spam gemarkeerd";
 
 /* Noun. Describes a site's user. */
 "user" = "gebruiker";

@@ -1,8 +1,0 @@
-- Her şeyden haberdar olun! Artık en popüler sitelerinizdeki etkinliklerin haftalık özetini alabilirsiniz.
-
-- Site yorumlarınız üzerinde daha da fazla kontrole sahipsiniz. Onları düzenlerken artık yazarın adını, e-posta adresini ve web adresini de ayarlayabilirsiniz.
-Blok düzenleyicide kolaylık sağlayan birkaç değişiklik yaptık. Gömülü blok artık YouTube veya Twitter'dan bir şey eklediğinizde size bir önizleme görüntüler (yakında daha fazla sağlayıcı sunulacaktır). Ayrıca, bir blok eklemeye gittiğinizde hiçbir şey bulamazsanız, artık sonuçlar görünümü görüntülenmez.
-
-- Gönderi Ayarları > Gönderi Biçimi'ne giderseniz, "Standart" seçeneğini yine en üstte bulacaksınız, ancak diğer seçenekler artık aşağıda düzgün bir şekilde alfabetik olarak sıralanır. (Seçenekler temalara göre değişecektir.)
-
-- Ve bir tane daha: Sitenizi yenilemek artık çok kolay. Sitem ekranından yenilemek için çekmeniz yeterli
