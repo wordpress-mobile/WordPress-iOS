@@ -566,7 +566,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshAndSyncIfNeeded
 {
-    if (self.blog) {
+    if (self.blog && self.contentIsEmpty) {
         [self.syncHelper syncContent];
     }
 }
