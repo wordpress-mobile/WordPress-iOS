@@ -16,6 +16,7 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
     private var siteName: String?
     private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
+    private var includeSupportButton: Bool = true
 
     private var webViewURLChangeObservation: NSKeyValueObservation?
 
@@ -47,12 +48,14 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
 
     static func instance(site: JetpackSiteRef,
                          domainType: DomainType = .registered,
+                         includeSupportButton: Bool = true,
                          domainPurchasedCallback: @escaping ((String) -> Void)) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.site = site
         controller.domainType = domainType
         controller.domainPurchasedCallback = domainPurchasedCallback
+        controller.includeSupportButton = includeSupportButton
         controller.siteName = siteNameForSuggestions(for: site)
 
         return controller
@@ -81,6 +84,10 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
                                            target: self,
                                            action: #selector(handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
+
+        guard includeSupportButton else {
+            return
+        }
 
         let supportButton = UIBarButtonItem(title: TextContent.supportButtonTitle,
                                             style: .plain,
