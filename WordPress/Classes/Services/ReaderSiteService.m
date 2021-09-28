@@ -57,10 +57,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             [self fetchTopicServiceWithID:siteID success:success failure:failure];
 
             NSDictionary *properties = [NSDictionary new];
-            if (topic != NULL) {
-                properties = [ReaderHelpers statsPropertiesFor:topic mergeWith:NULL];
-            } else if (post != NULL) {
-                properties = [ReaderHelpers statsPropertiesFor:post mergeWith:NULL];
+            if (topic != nil) {
+                properties = [ReaderHelpers statsPropertiesFor:topic mergeWith:nil];
+            } else if (post != nil) {
+                properties = [ReaderHelpers statsPropertiesFor:post mergeWith:nil];
             }
 
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteFollowed properties:properties];
@@ -91,10 +91,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         }
 
         NSDictionary *properties = [NSDictionary new];
-        if (topic != NULL) {
-            properties = [ReaderHelpers statsPropertiesFor:topic mergeWith:NULL];
-        } else if (post != NULL) {
-            properties = [ReaderHelpers statsPropertiesFor:post mergeWith:NULL];
+        if (topic != nil) {
+            properties = [ReaderHelpers statsPropertiesFor:topic mergeWith:nil];
+        } else if (post != nil) {
+            properties = [ReaderHelpers statsPropertiesFor:post mergeWith:nil];
         }
 
         [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteUnfollowed properties:properties];
@@ -274,7 +274,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
         if (siteID) {
-            [self followSiteWithID:siteID fromTopic:NULL fromPost:NULL success:success failure:failure];
+            [self followSiteWithID:siteID fromTopic:nil fromPost:nil success:success failure:failure];
         } else {
             [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
         }

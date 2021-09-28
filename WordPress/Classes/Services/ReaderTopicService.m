@@ -546,13 +546,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         }
     } else {
         if (newFollowValue) {
-            [siteService followSiteWithID:[topic.siteID integerValue] fromTopic:topic fromPost:NULL success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[topic.siteID integerValue] fromTopic:topic fromPost:nil success:successBlock failure:failureBlock];
         } else {
             // Try to unfollow by ID as its the most reliable method.
             // Note that if the site has been deleted, attempting to unfollow by ID
             // results in an HTTP 403 on the v1.1 endpoint.  If this happens try
             // unfollowing via the less reliable URL method.
-            [siteService unfollowSiteWithID:[topic.siteID integerValue] fromTopic:topic fromPost:NULL success:successBlock failure:^(NSError *error) {
+            [siteService unfollowSiteWithID:[topic.siteID integerValue] fromTopic:topic fromPost:nil success:successBlock failure:^(NSError *error) {
                 if (error.code == WordPressComRestApiErrorAuthorizationRequired) {
                     [siteService unfollowSiteAtURL:topic.siteURL success:successBlock failure:failureBlock];
                     return;

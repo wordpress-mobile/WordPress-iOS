@@ -245,7 +245,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         NSNumber *siteID = readerPost.siteID;
         void (^successBlock)(void) = ^void() {
             if (postID && siteID) {
-                NSDictionary *properties = [ReaderHelpers statsPropertiesFor:readerPost mergeWith:NULL];
+                NSDictionary *properties = [ReaderHelpers statsPropertiesFor:readerPost mergeWith:nil];
                 NSUInteger event;
                 if (like) {
                     event = (details) ? WPAnalyticsStatReaderArticleDetailLiked : WPAnalyticsStatReaderArticleLiked;
@@ -316,9 +316,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (following) {
-        [siteService followSiteWithID:[siteID integerValue] fromTopic:NULL fromPost:NULL success:successBlock failure:failureBlock];
+        [siteService followSiteWithID:[siteID integerValue] fromTopic:nil fromPost:nil success:successBlock failure:failureBlock];
     } else {
-        [siteService unfollowSiteWithID:[siteID integerValue] fromTopic:NULL fromPost:NULL success:successBlock failure:failureBlock];
+        [siteService unfollowSiteWithID:[siteID integerValue] fromTopic:nil fromPost:nil success:successBlock failure:failureBlock];
     }
 }
 
@@ -401,9 +401,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (!post.isExternal) {
         if (follow) {
-            [siteService followSiteWithID:[post.siteID integerValue] fromTopic:NULL fromPost:readerPost success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[post.siteID integerValue] fromTopic:nil fromPost:readerPost success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteWithID:[post.siteID integerValue] fromTopic:NULL fromPost:readerPost success:successBlock failure:failureBlock];
+            [siteService unfollowSiteWithID:[post.siteID integerValue] fromTopic:nil fromPost:readerPost success:successBlock failure:failureBlock];
         }
     } else if (post.blogURL) {
         if (follow) {
