@@ -1,27 +1,23 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let draftsButton = "drafts"
-}
-
-public class StatsScreen: BaseScreen {
+public class StatsScreen: ScreenObject {
 
     public enum Mode: String {
-        case months = "months"
-        case years = "years"
+        case months
+        case years
     }
 
-    struct ElementStringIDs {
-        static let dismissCustomizeInsightsButton = "dismiss-customize-insights-cell"
-    }
-
-    public init() {
-        super.init(element: XCUIApplication().otherElements.firstMatch)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [{ $0.otherElements.firstMatch }],
+            app: app
+        )
     }
 
     @discardableResult
     public func dismissCustomizeInsightsNotice() -> StatsScreen {
-        let button = XCUIApplication().buttons[ElementStringIDs.dismissCustomizeInsightsButton]
+        let button = app.buttons["dismiss-customize-insights-cell"]
 
         if button.exists {
             button.tap()
@@ -32,7 +28,7 @@ public class StatsScreen: BaseScreen {
 
     @discardableResult
     public func switchTo(mode: Mode) -> StatsScreen {
-        XCUIApplication().buttons[mode.rawValue].tap()
+        app.buttons[mode.rawValue].tap()
         return self
     }
 }

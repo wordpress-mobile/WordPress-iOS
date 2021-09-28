@@ -105,9 +105,9 @@ public class MySiteScreen: BaseScreen {
         return MediaScreen()
     }
 
-    public func gotoStatsScreen() -> StatsScreen {
+    public func goToStatsScreen() throws -> StatsScreen {
         statsButton.tap()
-        return StatsScreen()
+        return try StatsScreen()
     }
 
     public func goToSettingsScreen() throws -> SiteSettingsScreen {

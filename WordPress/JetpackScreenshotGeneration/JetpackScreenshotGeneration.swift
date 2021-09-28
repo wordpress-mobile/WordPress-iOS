@@ -77,7 +77,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Stats screenshot
-        let statsScreen = mySite.gotoStatsScreen()
+        let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)

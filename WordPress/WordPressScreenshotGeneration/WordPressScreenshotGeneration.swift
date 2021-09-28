@@ -1,3 +1,4 @@
+import ScreenObject
 import UIKit
 import UITestsFoundation
 import XCTest
@@ -85,7 +86,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Get Stats screenshot
-        let statsScreen = mySite.gotoStatsScreen()
+        let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)
@@ -112,6 +113,19 @@ class WordPressScreenshotGeneration: XCTestCase {
 }
 
 extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
+        let mode = XCUIDevice.inDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
+
+        return self
+    }
+}
+
+extension ScreenObject {
+
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = XCUIDevice.inDarkMode ? "dark" : "light"
