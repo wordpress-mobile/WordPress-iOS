@@ -200,15 +200,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         makeSpacer()
     }()
 
-    private let dismissButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(.gridicon(.cross), for: .normal)
-        button.tintColor = .secondaryLabel
-        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
-        return button
-    }()
-
     // MARK: - Properties
 
     private let calendar: Calendar
@@ -273,7 +264,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
-        view.addSubview(dismissButton)
 
         configureStackView()
         configureConstraints()
@@ -429,7 +419,6 @@ private extension BloggingRemindersFlowSettingsViewController {
     func showFullUI(_ isVisible: Bool) {
         bottomTipPanel.isHidden = !isVisible
         imageView.isHidden = !isVisible
-        dismissButton.isHidden = !isVisible
     }
 
     /// Updates the title of the cconfirmation button depending on the action (new schedule or updated schedule)
@@ -518,8 +507,6 @@ private extension BloggingRemindersFlowSettingsViewController {
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right),
             topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
