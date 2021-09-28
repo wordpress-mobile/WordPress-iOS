@@ -19,7 +19,8 @@ class CommentModerationBar: UIView {
     @IBOutlet private weak var thirdDivider: UIView!
 
     private var compactHorizontalPadding: CGFloat = 4
-    private let horizontalPaddingMultiplier: CGFloat = 0.33
+    private let iPadPaddingMultiplier: CGFloat = 0.33
+    private let iPhonePaddingMultiplier: CGFloat = 0.15
 
     // MARK: - Init
 
@@ -83,10 +84,21 @@ private extension CommentModerationBar {
     }
 
     @objc func configureStackViewWidth() {
+        // On devices with a lot of horizontal space, increase the buttonStackView margins
+        // so the buttons are not severely stretched out. Specifically:
+        // - iPad landscape
+        // - Non split view iPhone landscape
         let horizontalPadding: CGFloat = {
-            if WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isLandscape {
-                return bounds.width * horizontalPaddingMultiplier
+            if WPDeviceIdentification.isiPad() &&
+                UIDevice.current.orientation.isLandscape {
+                return bounds.width * iPadPaddingMultiplier
             }
+
+            if traitCollection.horizontalSizeClass == .compact &&
+                traitCollection.verticalSizeClass == .compact {
+                return bounds.width * iPhonePaddingMultiplier
+            }
+
             return compactHorizontalPadding
         }()
 
