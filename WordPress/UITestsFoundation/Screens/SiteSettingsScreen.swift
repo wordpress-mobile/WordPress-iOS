@@ -1,22 +1,20 @@
+import ScreenObject
 import XCTest
 
-public class SiteSettingsScreen: BaseScreen {
+public class SiteSettingsScreen: ScreenObject {
 
     public enum Toggle {
         case on
         case off
     }
 
-    let settingsTable: XCUIElement
-    let blockEditorToggle: XCUIElement
-    let tabBar: TabNavComponent
+    private let blockEditorToggleGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["siteSettingsTable"].switches["useBlockEditorSwitch"]
+    }
+    var blockEditorToggle: XCUIElement { blockEditorToggleGetter(app) }
 
-    public init() throws {
-        settingsTable = XCUIApplication().tables["siteSettingsTable"]
-        blockEditorToggle = settingsTable.switches["useBlockEditorSwitch"]
-        tabBar = try TabNavComponent()
-
-        super.init(element: settingsTable)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [blockEditorToggleGetter], app: app)
     }
 
     @discardableResult
@@ -46,6 +44,6 @@ public class SiteSettingsScreen: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().navigationBars["Settings"].exists
+        (try? SiteSettingsScreen().isLoaded) ?? false
     }
 }
