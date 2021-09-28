@@ -11,9 +11,15 @@ class CommentModerationBar: UIView {
     @IBOutlet private weak var spamButton: UIButton!
     @IBOutlet private weak var trashButton: UIButton!
 
+    @IBOutlet private weak var buttonStackViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var buttonStackViewTrailingConstraint: NSLayoutConstraint!
+
     @IBOutlet private weak var firstDivider: UIView!
     @IBOutlet private weak var secondDivider: UIView!
     @IBOutlet private weak var thirdDivider: UIView!
+
+    private var compactHorizontalPadding: CGFloat = 4
+    private let horizontalPaddingMultiplier: CGFloat = 0.33
 
     // MARK: - Init
 
@@ -25,9 +31,21 @@ class CommentModerationBar: UIView {
             return
         }
 
+        // Save initial constraint value to use on device rotation.
+        compactHorizontalPadding = buttonStackViewLeadingConstraint.constant
+
         view.frame = self.bounds
         configureView()
         self.addSubview(view)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(configureStackViewWidth),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
 }
@@ -50,6 +68,7 @@ private extension CommentModerationBar {
         approvedButton.configureFor(.approved)
         spamButton.configureFor(.spam)
         trashButton.configureFor(.trash)
+        configureStackViewWidth()
     }
 
     func configureBackground() {
@@ -63,28 +82,40 @@ private extension CommentModerationBar {
         thirdDivider.configureAsDivider()
     }
 
+    @objc func configureStackViewWidth() {
+        let horizontalPadding: CGFloat = {
+            if WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isLandscape {
+                return bounds.width * horizontalPaddingMultiplier
+            }
+            return compactHorizontalPadding
+        }()
+
+        buttonStackViewLeadingConstraint.constant = horizontalPadding
+        buttonStackViewTrailingConstraint.constant = horizontalPadding
+    }
+
     // MARK: - Button Actions
 
     @IBAction func pendingTapped(_ sender: UIButton) {
         sender.toggleState()
-        firstDivider.isHidden = sender.isSelected
+        firstDivider.hideDivider(sender.isSelected)
     }
 
     @IBAction func approvedTapped(_ sender: UIButton) {
         sender.toggleState()
-        firstDivider.isHidden = sender.isSelected
-        secondDivider.isHidden = sender.isSelected
+        firstDivider.hideDivider(sender.isSelected)
+        secondDivider.hideDivider(sender.isSelected)
     }
 
     @IBAction func spamTapped(_ sender: UIButton) {
         sender.toggleState()
-        secondDivider.isHidden = sender.isSelected
-        thirdDivider.isHidden = sender.isSelected
+        secondDivider.hideDivider(sender.isSelected)
+        thirdDivider.hideDivider(sender.isSelected)
     }
 
     @IBAction func trashTapped(_ sender: UIButton) {
         sender.toggleState()
-        thirdDivider.isHidden = sender.isSelected
+        thirdDivider.hideDivider(sender.isSelected)
     }
 }
 
@@ -182,11 +213,17 @@ private extension UIButton {
 // MARK: - UIView Extension
 
 private extension UIView {
+
     func configureAsDivider() {
-        backgroundColor = .textSubtle
+        hideDivider(false)
 
         if let existingConstraint = constraint(for: .width, withRelation: .equal) {
             existingConstraint.constant = .hairlineBorderWidth
         }
     }
+
+    func hideDivider(_ hidden: Bool) {
+        backgroundColor = hidden ? .clear : .systemGray
+    }
+
 }
