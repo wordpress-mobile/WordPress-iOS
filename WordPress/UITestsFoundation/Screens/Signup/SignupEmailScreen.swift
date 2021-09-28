@@ -1,22 +1,23 @@
+import ScreenObject
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
 
-private struct ElementStringIDs {
-    static let emailTextField = "Signup Email Address"
-    static let nextButton = "Signup Email Next Button"
-}
+public class SignupEmailScreen: ScreenObject {
 
-public class SignupEmailScreen: BaseScreen {
-    let emailTextField: XCUIElement
-    let nextButton: XCUIElement
+    private let emailTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Signup Email Address"]
+    }
 
-    init() {
-        let app = XCUIApplication()
-        emailTextField = app.textFields[ElementStringIDs.emailTextField]
-        nextButton = app.buttons[ElementStringIDs.nextButton]
+    private let nextButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Signup Email Next Button"]
+    }
 
-        super.init(element: emailTextField)
+    var emailTextField: XCUIElement { emailTextFieldGetter(app) }
+    var nextButton: XCUIElement { nextButtonGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [emailTextFieldGetter, nextButtonGetter], app: app)
     }
 
     public func proceedWith(email: String) throws -> SignupCheckMagicLinkScreen {
