@@ -581,13 +581,13 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureLayoutGrid:
             return [self supportsLayoutGrid];
         case BlogFeatureFacebookEmbed:
-            return [self supportsFacebookEmbed];
+            return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureInstagramEmbed:
-            return [self supportsInstagramEmbed];
+            return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureLoomEmbed:
-            return [self supportsLoomEmbed];
+            return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureSmartframeEmbed:
-            return [self supportsSmartframeEmbed];
+            return [self supportsEmbedVariation: @"10.2"];
     }
 }
 
@@ -688,24 +688,9 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return self.isHostedAtWPcom || self.isAtomic;
 }
 
-- (BOOL)supportsFacebookEmbed
+- (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
 {
-    return [self hasRequiredJetpackVersion:@"9.0"] || self.isHostedAtWPcom;
-}
-
-- (BOOL)supportsInstagramEmbed
-{
-    return [self hasRequiredJetpackVersion:@"9.0"] || self.isHostedAtWPcom;
-}
-
-- (BOOL)supportsLoomEmbed
-{
-    return [self hasRequiredJetpackVersion:@"9.0"] || self.isHostedAtWPcom;
-}
-
-- (BOOL)supportsSmartframeEmbed
-{
-    return [self hasRequiredJetpackVersion:@"10.2"] || self.isHostedAtWPcom;
+    return [self hasRequiredJetpackVersion:requiredJetpackVersion] || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount
