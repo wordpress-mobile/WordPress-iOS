@@ -38,6 +38,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
+    @IBOutlet private weak var moderationBar: CommentModerationBar!
+
     // MARK: Private Properties
 
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
@@ -85,6 +87,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// Controls the visibility of the moderation bar view.
+    private var isModerationEnabled: Bool = false {
+        didSet {
+            moderationBar.isHidden = !isModerationEnabled
+        }
+    }
+
     // MARK: Lifecycle
 
     override func awakeFromNib() {
@@ -120,6 +129,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isReactionEnabled = !comment.isReadOnly()
         isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
         isAccessoryButtonEnabled = comment.isApproved()
+        isModerationEnabled = comment.canModerate
 
         // Configure comment content.
         self.onContentLoaded = onContentLoaded
