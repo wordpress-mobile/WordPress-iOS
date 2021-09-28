@@ -1,7 +1,6 @@
 import XCTest
 
 private struct ElementStringIDs {
-    static let navBar = "WordPressAuthenticator.LoginSiteAddressView"
     static let nextButton = "Site Address Next Button"
 
     // TODO: clean up comments when unifiedSiteAddress is permanently enabled.
@@ -15,13 +14,11 @@ private struct ElementStringIDs {
 }
 
 public class LoginSiteAddressScreen: BaseScreen {
-    let navBar: XCUIElement
     let siteAddressTextField: XCUIElement
     let nextButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars[ElementStringIDs.navBar]
         siteAddressTextField = app.textFields[ElementStringIDs.siteAddressTextField]
         nextButton = app.buttons[ElementStringIDs.nextButton]
 

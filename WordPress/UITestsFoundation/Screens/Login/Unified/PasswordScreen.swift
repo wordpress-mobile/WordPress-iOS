@@ -1,20 +1,17 @@
 import XCTest
 
 private struct ElementStringIDs {
-    static let navBar = "WordPress.PasswordView"
     static let passwordTextField = "Password"
     static let continueButton = "Continue Button"
     static let errorLabel = "Password Error"
 }
 
 public class PasswordScreen: BaseScreen {
-    let navBar: XCUIElement
     let passwordTextField: XCUIElement
     let continueButton: XCUIElement
 
     public init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars[ElementStringIDs.navBar]
         passwordTextField = app.secureTextFields[ElementStringIDs.passwordTextField]
         continueButton = app.buttons[ElementStringIDs.continueButton]
 
