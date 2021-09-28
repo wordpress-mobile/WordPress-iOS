@@ -45,7 +45,7 @@ private extension DomainSuggestion {
 
 // MARK: - DomainsServiceAdapter
 
-final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
+@objc final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: Properties
 
@@ -64,7 +64,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: LocalCoreDataService
 
-    override convenience init(managedObjectContext context: NSManagedObjectContext) {
+    @objc override convenience init(managedObjectContext context: NSManagedObjectContext) {
         let accountService = AccountService(managedObjectContext: context)
 
         let api: WordPressComRestApi
@@ -82,6 +82,10 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
         let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
         self.domainsService = DomainsService(managedObjectContext: context, remote: remoteService)
         super.init(managedObjectContext: context)
+    }
+
+    @objc func refreshDomains(for siteID: Int, completion: @escaping (Bool) -> Void) {
+        domainsService.refreshDomainsForSite(siteID, completion: completion)
     }
 
     // MARK: SiteAddressService
