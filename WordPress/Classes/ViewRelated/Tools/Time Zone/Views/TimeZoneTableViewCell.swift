@@ -39,6 +39,18 @@ class TimeZoneTableViewCell: WPTableViewCell {
 
         stackView.addArrangedSubviews([titleLabel, subtitleContainerView])
 
+        configureConstraints(subtitleContainerView: subtitleContainerView)
+
+        contentView.addSubview(stackView)
+        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(
+                top: Constants.topPadding,
+                left: Constants.leadingTrailingPadding,
+                bottom: Constants.bottomPadding,
+                right: Constants.leadingTrailingPadding)
+        )
+    }
+
+    private func configureConstraints(subtitleContainerView: UIView) {
         NSLayoutConstraint.activate([
             // contentView
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -54,14 +66,6 @@ class TimeZoneTableViewCell: WPTableViewCell {
             rightSubtitle.leadingAnchor.constraint(greaterThanOrEqualTo: leftSubtitle.trailingAnchor, constant: Constants.subtitleHorizSpacingBetweenLabels),
             rightSubtitle.trailingAnchor.constraint(equalTo: subtitleContainerView.trailingAnchor)
         ])
-
-        contentView.addSubview(stackView)
-        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(
-                top: Constants.topPadding,
-                left: Constants.leadingTrailingPadding,
-                bottom: Constants.bottomPadding,
-                right: Constants.leadingTrailingPadding)
-        )
     }
 
     private func setupTimeZoneLabel(label: UILabel, fontTextStyle: UIFont.TextStyle, textAlignment: NSTextAlignment, textColor: UIColor) {
