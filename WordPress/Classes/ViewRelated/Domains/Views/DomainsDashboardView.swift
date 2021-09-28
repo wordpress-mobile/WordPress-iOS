@@ -50,8 +50,7 @@ struct DomainsDashboardView: View {
                 ShapeWithTextView(title: TextContent.primaryAddressLabel)
                     .smallRoundedRectangle()
             }
-        }
-        else {
+        } else {
             Text(domain.domain.domainName)
         }
     }
