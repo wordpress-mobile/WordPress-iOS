@@ -44,7 +44,7 @@ class LoginTests: XCTestCase {
             .tabBar.goToMeScreen()
             .logout()
 
-        XCTAssert(welcomeScreen.isLoaded())
+        XCTAssert(welcomeScreen.isLoaded)
     }
 
     // Unified self hosted login/out
