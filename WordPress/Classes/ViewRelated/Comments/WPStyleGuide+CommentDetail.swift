@@ -61,14 +61,14 @@ extension WPStyleGuide {
 
         public struct ModerationBar {
             static let barBackgroundColor: UIColor = .systemGray6
-            static let cornerRadius = 15.0
+            static let cornerRadius: CGFloat = 15.0
 
             static let dividerColor: UIColor = .systemGray
             static let dividerHiddenColor: UIColor = .clear
 
             static let buttonShadowOffset = CGSize(width: 0, height: 2.0)
             static let buttonShadowOpacity: Float = 0.25
-            static let buttonShadowRadius = 2.0
+            static let buttonShadowRadius: CGFloat = 2.0
 
             static let buttonDefaultTitleColor = UIColor(light: .textSubtle, dark: .systemGray)
             static let buttonSelectedTitleColor = UIColor(light: .black, dark: .white)
