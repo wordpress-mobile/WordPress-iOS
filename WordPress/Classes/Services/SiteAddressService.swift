@@ -85,7 +85,11 @@ private extension DomainSuggestion {
     }
 
     @objc func refreshDomains(for siteID: Int, completion: @escaping (Bool) -> Void) {
-        domainsService.refreshDomainsForSite(siteID, completion: completion)
+        domainsService.refreshDomains(for: siteID) {
+            completion(true)
+        } failure: { _ in
+            completion(false)
+        }
     }
 
     // MARK: SiteAddressService

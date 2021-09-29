@@ -298,7 +298,15 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
-
+    
+    dispatch_group_enter(syncGroup);
+    [self refreshDomainsFor:blog
+                    success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to sync domains");
+        dispatch_group_leave(syncGroup);
+    }];
 
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler

@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressKit
 import CoreData
+import Combine
 
 struct DomainsService {
     let remote: DomainsServiceRemote
@@ -13,13 +14,15 @@ struct DomainsService {
         self.remote = remote
     }
 
-    func refreshDomainsForSite(_ siteID: Int, completion: @escaping (Bool) -> Void) {
-        remote.getDomainsForSite(siteID, success: { domains in
-            self.mergeDomains(domains, forSite: siteID)
-            completion(true)
+    func refreshDomains(siteID: Int) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            remote.getDomainsForSite(siteID, success: { domains in
+                self.mergeDomains(domains, forSite: siteID)
+                promise(.success(()))
             }, failure: { error in
-                completion(false)
-        })
+                promise(.failure(error))
+            })
+        }.eraseToAnyPublisher()
     }
 
     func getDomainSuggestions(base: String,
