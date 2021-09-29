@@ -11,7 +11,7 @@ class ScannerTests: XCTestCase {
 
         // When
         let scanner = Scanner(string: inputString)
-        let quotes = scanner.scanQuotedText() as? [String]
+        let quotes = scanner.scanQuotedText()
 
         // Then
         XCTAssertEqual(quotes, ["ipsum"])
@@ -23,7 +23,7 @@ class ScannerTests: XCTestCase {
 
         // When
         let scanner = Scanner(string: inputString)
-        let quotes = scanner.scanQuotedText() as? [String]
+        let quotes = scanner.scanQuotedText()
 
         // Then
         XCTAssertEqual(quotes, ["ipsum", "amet"])
@@ -35,7 +35,7 @@ class ScannerTests: XCTestCase {
 
         // When
         let scanner = Scanner(string: inputString)
-        let quotes = scanner.scanQuotedText() as? [String]
+        let quotes = scanner.scanQuotedText()
 
         // Then
         XCTAssertEqual(quotes, ["Lorem"])
@@ -47,7 +47,7 @@ class ScannerTests: XCTestCase {
 
         // When
         let scanner = Scanner(string: inputString)
-        let quotes = scanner.scanQuotedText() as? [String]
+        let quotes = scanner.scanQuotedText()
 
         // Then
         XCTAssertEqual(quotes, ["ipsum", "sit", "elit"])
@@ -59,7 +59,7 @@ class ScannerTests: XCTestCase {
 
         // When
         let scanner = Scanner(string: inputString)
-        let quotes = scanner.scanQuotedText() as? [String]
+        let quotes = scanner.scanQuotedText()
 
         // Then
         XCTAssertEqual(quotes, [])
