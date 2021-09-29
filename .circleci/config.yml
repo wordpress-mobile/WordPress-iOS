@@ -39,7 +39,7 @@ commands:
               echo $PATH
             fi
 
-            chruby ruby-2.6.6
+            chruby ruby-2.7.4
             gem install bundler
 
             # Prevent fastlane from checking for updates, also removing the verbose fastlane changelog at the end of each invocation.
