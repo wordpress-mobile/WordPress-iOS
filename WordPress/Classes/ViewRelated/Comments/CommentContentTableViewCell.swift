@@ -131,6 +131,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isAccessoryButtonEnabled = comment.isApproved()
         isModerationEnabled = comment.canModerate
 
+        if isModerationEnabled {
+            moderationBar.comment = comment
+        }
+
         // Configure comment content.
         self.onContentLoaded = onContentLoaded
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.

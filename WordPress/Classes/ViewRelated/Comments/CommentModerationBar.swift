@@ -6,6 +6,12 @@ class CommentModerationBar: UIView {
 
     // MARK: - Properties
 
+    var comment: Comment? {
+        didSet {
+            setButtonForStatus()
+        }
+    }
+
     @IBOutlet private weak var contentView: UIView!
 
     @IBOutlet private weak var pendingButton: UIButton!
@@ -110,6 +116,26 @@ private extension CommentModerationBar {
 
         buttonStackViewLeadingConstraint.constant = horizontalPadding
         buttonStackViewTrailingConstraint.constant = horizontalPadding
+    }
+
+    func setButtonForStatus() {
+        guard let comment = comment,
+              let commentStatusType = CommentStatusType.typeForStatus(comment.status) else {
+                  return
+              }
+
+        switch commentStatusType {
+        case .pending:
+            pendingTapped(pendingButton)
+        case .approved:
+            approvedTapped(approvedButton)
+        case .unapproved:
+            trashTapped(trashButton)
+        case .spam:
+            spamTapped(spamButton)
+        default:
+            break
+        }
     }
 
     // MARK: - Button Actions
