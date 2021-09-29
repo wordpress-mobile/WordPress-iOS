@@ -33,11 +33,23 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
         success: @escaping (String) -> Void,
         failure: @escaping (Error) -> Void)
 
+     func createTemporaryDomainShoppingCart(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        privacyProtectionEnabled: Bool,
+        success: @escaping (CartResponseProtocol) -> Void,
+        failure: @escaping (Error) -> Void)
+
     func createPersistentDomainShoppingCart(siteID: Int,
                                             domainSuggestion: DomainSuggestion,
                                             privacyProtectionEnabled: Bool,
                                             success: @escaping (CartResponseProtocol) -> Void,
                                             failure: @escaping (Error) -> Void)
+
+    func redeemCartUsingCredits(cart: CartResponseProtocol,
+                                domainContactInformation: [String: String],
+                                success: @escaping () -> Void,
+                                failure: @escaping (Error) -> Void)
 
     func setPrimaryDomain(
         siteID: Int,
@@ -152,7 +164,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
         }
     }
 
-    private func createTemporaryDomainShoppingCart(
+    func createTemporaryDomainShoppingCart(
         siteID: Int,
         domainSuggestion: DomainSuggestion,
         privacyProtectionEnabled: Bool,
@@ -179,7 +191,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                                      failure: failure)
     }
 
-    private func redeemCartUsingCredits(cart: CartResponseProtocol,
+    func redeemCartUsingCredits(cart: CartResponseProtocol,
                                 domainContactInformation: [String: String],
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error) -> Void) {
