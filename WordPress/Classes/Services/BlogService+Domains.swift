@@ -1,37 +1,37 @@
 import Combine
 import Foundation
 
+/// This extension is necessary because DomainsService is unavailable in ObjC.
+///
 extension BlogService {
-    private static var domainCancellablesAssociationKey = "org.wordpress.blogservice.domaincancellables"
-
-    var refreshDomainsCancellable: AnyCancellable? {
-        get {
-            return (objc_getAssociatedObject(self, &Self.domainCancellablesAssociationKey) as? AnyCancellable)
-        }
-
-        set(newValue) {
-            objc_setAssociatedObject(self, &Self.domainCancellablesAssociationKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-        }
+    enum BlogServiceDomainError: Error {
+        case noAccountForSpecifiedBlog(blog: Blog)
+        case noSiteIDForSpecifiedBlog(blog: Blog)
     }
 
+    /// Convenience method to be able to refresh the blogs from ObjC.
+    ///
     @objc
     func refreshDomains(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        guard let account = blog.account,
-              let blogID = blog.dotComID else {
+        guard let account = blog.account else {
+            failure(BlogServiceDomainError.noAccountForSpecifiedBlog(blog: blog))
+            return
+        }
 
+        guard let siteID = blog.dotComID?.intValue else {
+            failure(BlogServiceDomainError.noSiteIDForSpecifiedBlog(blog: blog))
             return
         }
 
         let service = DomainsService(managedObjectContext: managedObjectContext, account: account)
 
-        refreshDomainsCancellable = service.refreshDomains(siteID: blogID.intValue)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    failure(error)
-                case .finished:
-                    success()
-                }
-            }, receiveValue: {})
+        service.refreshDomains(siteID: siteID) { result in
+            switch result {
+            case .success:
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
     }
 }

@@ -14,15 +14,20 @@ struct DomainsService {
         self.remote = remote
     }
 
-    func refreshDomains(siteID: Int) -> AnyPublisher<Void, Error> {
-        Future { promise in
-            remote.getDomainsForSite(siteID, success: { domains in
-                self.mergeDomains(domains, forSite: siteID)
-                promise(.success(()))
-            }, failure: { error in
-                promise(.failure(error))
-            })
-        }.eraseToAnyPublisher()
+    /// Refreshes the domains for the specified site.  Since this method takes care of merging the new data into our local
+    /// persistance layer making it useful to call even without knowing the result, the completion closure is optional.
+    ///
+    /// - Parameters:
+    ///     - siteID: the ID of the site to refresh the domains for.
+    ///     - completion: the result of the refresh request.
+    ///
+    func refreshDomains(siteID: Int, completion: ((Result<Void, Error>) -> Void)? = nil) {
+        remote.getDomainsForSite(siteID, success: { domains in
+            self.mergeDomains(domains, forSite: siteID)
+            completion?(.success(()))
+        }, failure: { error in
+            completion?(.failure(error))
+        })
     }
 
     func getDomainSuggestions(base: String,
@@ -161,24 +166,6 @@ struct DomainsService {
 }
 
 extension DomainsService {
-    init?() {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() else {
-            return nil
-        }
-
-        self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
-    }
-
-    init?(context: NSManagedObjectContext) {
-        guard let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() else {
-            return nil
-        }
-
-        self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
-    }
-
     init(managedObjectContext context: NSManagedObjectContext, account: WPAccount) {
         self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
     }

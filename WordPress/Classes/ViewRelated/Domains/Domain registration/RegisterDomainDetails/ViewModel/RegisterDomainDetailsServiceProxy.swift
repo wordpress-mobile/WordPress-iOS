@@ -192,11 +192,23 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                          failure: failure)
     }
 
-    func setPrimaryDomain(
-        siteID: Int,
-        domain: String,
-        success: @escaping () -> Void,
-        failure: @escaping (Error) -> Void) {
+    func setPrimaryDomain(siteID: Int,
+                          domain: String,
+                          success: @escaping () -> Void,
+                          failure: @escaping (Error) -> Void) {
+
+        if let blog = try? Blog.lookup(withID: siteID, in: context),
+           let domains = blog.domains as? Set<ManagedDomain>,
+           let newPrimaryDomain = domains.first(where: { $0.domainName == domain }) {
+
+            for existingPrimaryDomain in domains.filter({ $0.isPrimary }) {
+                existingPrimaryDomain.isPrimary = false
+            }
+
+            newPrimaryDomain.isPrimary = true
+
+            ContextManager.shared.save(context)
+        }
 
         domainsServiceRemote.setPrimaryDomainForSite(siteID: siteID,
                                                      domain: domain,

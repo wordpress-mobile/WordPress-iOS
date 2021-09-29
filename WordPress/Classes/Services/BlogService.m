@@ -298,7 +298,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
-    
+
     dispatch_group_enter(syncGroup);
     [self refreshDomainsFor:blog
                     success:^{
