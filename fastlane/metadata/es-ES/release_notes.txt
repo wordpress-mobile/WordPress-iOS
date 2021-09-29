@@ -1,8 +1,5 @@
-- ¡Mantente informado! Ahora puedes recibir un resumen semanal de la actividad en tus sitios más populares.
+- Actualizaciones del bloque de incrustación: Hemos activado las vistas previas de incrustación de WordPress, así como las incrustaciones para el contenido de Instagram y Vimeo. Para algunos medios, puede que incrustes correctamente una URL, pero no podrás la vista previa del contenido; en estos casos, verás el mensaje «Vista previa no disponible». En los casos en los que no puedas incrustar medios, ahora verás la opción «Reintentar» para volver a incrustar el contenido y una opción alternativa para convertirlo en su lugar en un enlace.
 
-- Tienes aún más control sobre los comentarios de tu sitio — cuando los editas, ahora también puedes ajustar el nombre, la dirección de correo electrónico y la dirección web del autor.
-Hemos hecho un par de prácticos retoques en el editor de bloques. El bloque de incrustación ahora te da una vista previa cuando añades algo de YouTube o Twitter (habrá más proveedores). Además, cuando vas a insertar un bloque y no se encuentra nada, ahora hay una vista sin resultados.
+- Varias mejoras: Hemos simplificado el menú «Mi sitio», cambiando «Entradas del blog» por «Entradas» y «Páginas del sitio» por «Páginas». (Esto no ha afectado al contenido de tus entradas y páginas, ¡lo prometemos!) También habrás visto que ahora puedes publicar una página a través de la característica de la extensión para compartir de la aplicación.
 
-- Si vas a «Ajustes de la entrada > Formato de la entrada», aún encontrarás la opción «Estándar» en la parte superior, pero las otras opciones ahora están ordenadas alfabéticamente debajo. (¡Las opciones variarán con los temas!)
-
-- Y algo rápido: Ahora, actualizar tu sitio es superfácil — ¡solo tienes que pulsar para actualizar desde la pantalla «Mi sitio»!
+- Correcciones de fallos: Hemos solucionado un problema en el Lector que te impedía eliminar las entradas guardadas y, también, hemos corregido un fallo que te impedía seguir una conversación por correo electrónico a través de los comentarios de una entrada.
