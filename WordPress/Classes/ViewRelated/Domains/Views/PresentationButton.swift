@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PresentationButton<Destination: View, Appearance: View>: View {
-    var destination: () -> Destination
+    var destination: (_ hideSheet: @escaping () -> Void) -> Destination
     var appearance: () -> Appearance
 
     @State private var showingSheet = false
@@ -13,7 +13,9 @@ struct PresentationButton<Destination: View, Appearance: View>: View {
             self.appearance()
         }
         .sheet(isPresented: $showingSheet) {
-            destination()
+            destination() {
+                showingSheet = false
+            }
         }
     }
 }

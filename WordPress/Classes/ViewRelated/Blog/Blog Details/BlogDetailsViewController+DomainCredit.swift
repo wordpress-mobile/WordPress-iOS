@@ -54,7 +54,7 @@ extension BlogDetailsViewController {
 }
 
 extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewControllerDelegate {
-    func continueButtonPressed() {
+    func continueButtonPressed(domain: String) {
         dismiss(animated: true) { [weak self] in
             guard let email = self?.accountEmail() else {
                 return

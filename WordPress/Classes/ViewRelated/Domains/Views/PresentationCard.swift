@@ -8,7 +8,7 @@ struct PresentationCard<Destination: View, Appearance: View>: View {
 
     private let titleFontSize: CGFloat = 28
 
-    var destination: () -> Destination
+    var destination: (_ hideSheet: @escaping () -> Void) -> Destination
     var appearance: () -> Appearance
 
     var body: some View {
