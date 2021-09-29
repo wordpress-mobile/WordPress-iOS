@@ -9,27 +9,33 @@ final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable
     private let domainType: DomainType
 
     private weak var domainSuggestionViewController: RegisterDomainSuggestionsViewController?
+    private weak var wrapperNavigationController: LightNavigationController?
 
     init(blog: Blog, domainType: DomainType) {
         self.blog = blog
         self.domainType = domainType
     }
 
-    func makeUIViewController(context: Context) -> RegisterDomainSuggestionsViewController {
+    func makeUIViewController(context: Context) -> LightNavigationController {
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         let viewController = RegisterDomainSuggestionsViewController
         /// TODO: - DOMAINS - Resolve the force unwrap here
-            .instance(site: JetpackSiteRef(blog: blog)!, domainType: domainType, domainPurchasedCallback: { domain in
+            .instance(site: JetpackSiteRef(blog: blog)!,
+                      domainType: domainType,
+                      includeSupportButton: false,
+                      domainPurchasedCallback: { domain in
                     blogService.syncBlogAndAllMetadata(self.blog) { }
                     WPAnalytics.track(.domainCreditRedemptionSuccess)
                     self.presentDomainCreditRedemptionSuccess(domain: domain)
                 })
         domainSuggestionViewController = viewController
-        return viewController
+        let navigationController = LightNavigationController(rootViewController: viewController)
+        wrapperNavigationController = navigationController
+        return navigationController
     }
 
-    func updateUIViewController(_ uiViewController: RegisterDomainSuggestionsViewController, context: Context) { }
+    func updateUIViewController(_ uiViewController: LightNavigationController, context: Context) { }
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
         guard let presentingController = domainSuggestionViewController else {

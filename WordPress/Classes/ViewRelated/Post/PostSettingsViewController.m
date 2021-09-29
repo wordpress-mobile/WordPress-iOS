@@ -459,7 +459,6 @@ FeaturedImageViewControllerDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = CGRectGetWidth(self.tableView.frame);
     NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
     if (sectionId == PostSettingsSectionFeaturedImage) {
