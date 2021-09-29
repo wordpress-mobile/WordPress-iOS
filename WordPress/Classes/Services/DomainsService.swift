@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressKit
 import CoreData
-import Combine
 
 struct DomainsService {
     let remote: DomainsServiceRemote
