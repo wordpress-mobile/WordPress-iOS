@@ -65,17 +65,7 @@ struct TimeZoneSelectorViewModel: Observable {
         })
     }
 
-    private var timeZoneFormatter: TimeZoneFormatter?
-
-    init(state: State, selectedValue: String?, filter: String?) {
-        self.state = state
-        self.selectedValue = selectedValue
-        self.filter = filter
-
-        if FeatureFlag.timeZoneSuggester.enabled {
-            timeZoneFormatter = TimeZoneFormatter(currentDate: Date())
-        }
-    }
+    private let timeZoneFormatter = TimeZoneFormatter(currentDate: Date())
 
     func getTimeZoneForIdentifier(_ timeZoneIdentifier: String) -> WPTimeZone? {
         return groups
@@ -91,17 +81,11 @@ struct TimeZoneSelectorViewModel: Observable {
                     headerText: group.name,
                     rows: group.timezones.map({ (timezone) -> ImmuTableRow in
                         if FeatureFlag.timeZoneSuggester.enabled {
-                            guard let timeZoneFormatter = timeZoneFormatter else {
-                                return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
-                                    selectionHandler(timezone)
-                                })
-                            }
                             return TimeZoneRow(title: timezone.label, leftSubtitle: timeZoneFormatter.getZoneOffset(timezone), rightSubtitle: timeZoneFormatter.getTimeAtZone(timezone), action: { _ in
                                 selectionHandler(timezone)
                             })
                         }
                         else {
-                            // below will be removed when feature flags no longer needed
                             return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
                                 selectionHandler(timezone)
                             })

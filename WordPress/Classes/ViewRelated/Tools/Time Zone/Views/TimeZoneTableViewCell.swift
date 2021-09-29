@@ -2,11 +2,64 @@ import UIKit
 
 class TimeZoneTableViewCell: WPTableViewCell {
 
-    let titleLabel = UILabel()
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .label
 
-    let leftSubtitle = UILabel()
+        if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next natural_text_alignment
+            label.textAlignment = .left
+        } else {
+            // swiftlint:disable:next inverse_text_alignment
+            label.textAlignment = .right
+        }
+        return label
+    }()
 
-    let rightSubtitle = UILabel()
+    let leftSubtitle: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption1)
+        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .secondaryLabel
+
+        if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next natural_text_alignment
+            label.textAlignment = .left
+        } else {
+            // swiftlint:disable:next inverse_text_alignment
+            label.textAlignment = .right
+        }
+
+        return label
+    }()
+
+    let rightSubtitle: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption1)
+        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .secondaryLabel
+
+        if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            label.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            label.textAlignment = .left
+        }
+
+        return label
+    }()
 
     // MARK: - Initializers
 
@@ -21,10 +74,6 @@ class TimeZoneTableViewCell: WPTableViewCell {
     }
 
     private func setupSubviews() {
-        setupTimeZoneLabel(label: titleLabel, fontTextStyle: .body, textAlignment: .left, textColor: .label)
-        setupTimeZoneLabel(label: leftSubtitle, fontTextStyle: .caption1, textAlignment: .left, textColor: .secondaryLabel)
-        setupTimeZoneLabel(label: rightSubtitle, fontTextStyle: .caption1, textAlignment: .right, textColor: .secondaryLabel)
-
         // Not every WPTimeZone has a time zone offset so wrapping content in UIStackView
         // to allow for dynamic resizing for these cases
         let stackView = UIStackView()
@@ -66,16 +115,6 @@ class TimeZoneTableViewCell: WPTableViewCell {
             rightSubtitle.leadingAnchor.constraint(greaterThanOrEqualTo: leftSubtitle.trailingAnchor, constant: Constants.subtitleHorizSpacingBetweenLabels),
             rightSubtitle.trailingAnchor.constraint(equalTo: subtitleContainerView.trailingAnchor)
         ])
-    }
-
-    private func setupTimeZoneLabel(label: UILabel, fontTextStyle: UIFont.TextStyle, textAlignment: NSTextAlignment, textColor: UIColor) {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: fontTextStyle)
-        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
-        label.adjustsFontForContentSizeCategory = true
-        label.textAlignment = textAlignment
-        label.textColor = textColor
     }
 }
 
