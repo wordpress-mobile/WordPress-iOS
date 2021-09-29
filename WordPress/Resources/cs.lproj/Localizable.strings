@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-27 06:31:59+0000 */
+/* Translation-Revision-Date: 2021-09-23 10:55:39+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -497,7 +497,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Zde přidejte vlastní adresu URL CSS, která se načte do aplikace Reader. Pokud používáte Calypso místně, může to být něco jako: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
-"Add a domain" = "Add a domain";
+"Add a domain" = "Přidat doménu";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. ";
@@ -1747,7 +1747,7 @@ translators: Block name. %s: The localized block name */
 "Continuing with Apple" = "Pokračování s Apple";
 
 /* No comment provided by engineer. */
-"Convert to link" = "Convert to link";
+"Convert to link" = "Převést na odkaz";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Vaření";
@@ -2768,7 +2768,7 @@ translators: Block name. %s: The localized block name */
 "Event" = "Událost";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
-"Every day" = "Every day";
+"Every day" = "Každý den";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Every day at %@";
@@ -3153,7 +3153,7 @@ translators: Block name. %s: The localized block name */
 "Gmail" = "Gmail";
 
 /* No comment provided by engineer. */
-"Go back" = "Go back";
+"Go back" = "Zpět";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "Přejít na sledování";
@@ -3353,7 +3353,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Práce fotografa Camerona Karstena mě tak inspirovala. Tyto techniky budu zkoušet při příštím";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "IP adresa";
 
 /* Title of a button style */
 "Icon & Text" = "Ikony a text";
@@ -4008,13 +4008,13 @@ translators: Block name. %s: The localized block name */
 "Mark as Sticky" = "Označit jako připnutý";
 
 /* Action title for unmarking referrer as spam */
-"Mark as not spam" = "Mark as not spam";
+"Mark as not spam" = "Označit jako není spam";
 
 /* An option to mark a post as seen. */
 "Mark as seen" = "Označit jako viditelné";
 
 /* Action title for marking referrer as spam */
-"Mark as spam" = "Mark as spam";
+"Mark as spam" = "Označit jako spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Označit jako spam.";
@@ -4202,7 +4202,7 @@ translators: Block name. %s: The localized block name */
 "Move block up from row %1$s to row %2$s" = "Přesunout blok nahoru z řádku %1$s do řádku %2$s";
 
 /* No comment provided by engineer. */
-"Move blocks" = "Move blocks";
+"Move blocks" = "Posunout bloky";
 
 /* Option to move Insight down in the view. */
 "Move down" = "Posunout dolů";
@@ -4535,7 +4535,7 @@ translators: Block name. %s: The localized block name */
 "No posts." = "Žádné příspěvky.";
 
 /* No comment provided by engineer. */
-"No preview available" = "No preview available";
+"No preview available" = "Náhled není k dispozici.";
 
 /* A message title */
 "No recent posts" = "Žádné nedávné příspěvky";
@@ -5430,7 +5430,7 @@ translators: Block name. %s: The localized block name */
 "Publishing To" = "Publikování do";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
-"Publishing page..." = "Publishing page...";
+"Publishing page..." = "Publikuji stránku...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publikovat příspěvek...";
@@ -5559,7 +5559,7 @@ translators: Block name. %s: The localized block name */
 "Related Posts displays relevant content from your site below your posts" = "Podobné příspěvky zobrazí relevantní obsah vašeho webu, přímo pod příspěvky.";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
-"Reminders removed" = "Reminders removed";
+"Reminders removed" = "Připomenutí odstraněny!";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -5635,7 +5635,7 @@ translators: Block name. %s: The localized block name */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Odebráním dalších kroků skryjete všechny prohlídky na tomto webu. Tuto akci nelze vrátit zpět.";
 
 /* Button to confirm the replacement of a featured image. */
-"Replace" = "Replace";
+"Replace" = "Nahradit";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Vyměňte aktuální blok";
@@ -5883,7 +5883,7 @@ translators: Block name. %s: The localized block name */
 "Saves this post for later." = "Uloží tento příspěvek na později.";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
-"Saving page…" = "Saving page…";
+"Saving page…" = "Ukládám stránku...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Ukládání příspěvku...";
@@ -6111,7 +6111,7 @@ translators: Block name. %s: The localized block name */
 "Selected media is unavailable." = "Vybrané médium není k dispozici.";
 
 /* translators: %s: Select control option value e.g: \"Auto, 25%\". */
-"Selected: %s" = "Selected: %s";
+"Selected: %s" = "Vybráno: %s";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Vybrání jiného umístění menu zahodí změny, které jste provedli v aktuálním menu. Jste si jisti, že chcete pokračovat?";
@@ -6175,7 +6175,7 @@ translators: Block name. %s: The localized block name */
 "Set as featured image" = "Set as featured image";
 
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Set reminders";
+"Set reminders" = "Nastavit připomenutí";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "Instalace";
@@ -7450,7 +7450,7 @@ translators: Block name. %s: The localized block name */
 "Twitter Username" = "Twitter uživatelské jméno";
 
 /* Type menu item in share extension. */
-"Type" = "Type";
+"Type" = "Typ";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Typ URL";
@@ -7626,7 +7626,7 @@ translators: Block name. %s: The localized block name */
 "Unavailable" = "Nedostupné";
 
 /* When the App can't figure out what language a blog is configured to use. */
-"Undefined" = "Undefined";
+"Undefined" = "Neurčeno";
 
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
@@ -8271,7 +8271,7 @@ translators: Block name. %s: The localized block name */
 "Web News" = "Novinky na webu";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "Webová adresa";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Týden začíná v";
@@ -8880,7 +8880,7 @@ translators: Block name. %s: The localized block name */
 "later today" = "Dnes později";
 
 /* Indicating that referrer was marked as spam */
-"marked as spam" = "marked as spam";
+"marked as spam" = "Označeno jako spam";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "z";
