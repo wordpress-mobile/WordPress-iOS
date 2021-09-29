@@ -15,12 +15,13 @@ public class EditorPublishEpilogueScreen: ScreenObject {
     var viewButton: XCUIElement { getViewButton(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
+        // Defining this via a `let` rather than inline only to avoid a SwiftLint style violation
+        let publishedPostStatusGetter: (XCUIApplication) -> XCUIElement = {
+            $0.staticTexts["publishedPostStatusLabel"]
+        }
+
         try super.init(
-            expectedElementGetters: [
-                getDoneButton,
-                getViewButton,
-                { $0.staticTexts["publishedPostStatusLabel"] }
-            ],
+            expectedElementGetters: [ getDoneButton, getViewButton, publishedPostStatusGetter ],
             app: app
         )
     }
