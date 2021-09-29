@@ -12,7 +12,7 @@ struct DomainsDashboardView: View {
         }
         .listStyle(GroupedListStyle())
         .padding(.top, Metrics.topPadding)
-        .buttonStyle(.plain)
+        .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .navigationBarTitle(TextContent.navigationTitle)
     }
@@ -50,8 +50,7 @@ struct DomainsDashboardView: View {
                 ShapeWithTextView(title: TextContent.primaryAddressLabel)
                     .smallRoundedRectangle()
             }
-        }
-        else {
+        } else {
             Text(domain.domain.domainName)
         }
     }
