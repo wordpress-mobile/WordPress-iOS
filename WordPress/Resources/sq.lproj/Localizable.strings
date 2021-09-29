@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-14 11:22:21+0000 */
+/* Translation-Revision-Date: 2021-09-22 11:57:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Mundësi blloku %s";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "Paraparjet për blloqe %s vijnë së shpejti";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s bllok, i passhëm rishtas";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s u shndërrua në blloqe të rregullt";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s ka të caktuar URL";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Shtoni këtu një URL CSS-je vetjake që të ngarkohet në Lexues. Nëse xhironi Calypso-n lokalisht, kjo mund të ishte diçka si: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Shtoni përkatësi";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Shtoni një bllok të ri në çfarëdo kohe, duke prekur mbi ikonën + te paneli poshtë majtas. ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Postime Blogu";
-
 /* Create new Blog Post button title */
 "Blog post" = "Postim blogu";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Sfonde shumëngjyrësh";
 
+/* translators: %d: column index. */
+"Column %d" = "Shtylla %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Rregullime Shtyllash";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Po vazhdohet me Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Shndërroje në lidhje";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Gatim";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "S’u ngarkuan dot etiketa. Prekeni, që të riprovohet.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "S’iu vu dot shenjë si i padëshiruar";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "S’iu hoq dot shenja si i padëshiruar";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "S’u ngarkua figurë e zgjedhur";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Që të zhbëhet ndryshimi i fundit, prekeni dyfish";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Prekeni dy herë që të shihni mundësi trupëzimi.";
+
 /* Download button title */
 "Download" = "Shkarkoje";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email-i u dërgua!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Paraparjet për blloqe trupëzimesh vijnë së shpejti";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Titull trupëzimi. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Trupëzo media";
+
+/* No comment provided by engineer. */
+"Embed options" = "Mundësi trupëzimi";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Futjuni punës dhe shtoni parjet e postimit tuaj përmes ndarjes së tij me të tjerët.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Merrni përkatësinë tuaj";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Merrini më shpejtë njoftimet tuaja";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "I vini shenjë si Ngjitës";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Vëri shenjë si jo i padëshiruar";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Vëri shenjë si i parë";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Mark as spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Vëri shenjë si i padëshiruar.";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Postim i Ri";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "Proces përkatësie të re";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Element i ri";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Pa postime.";
+
+/* No comment provided by engineer. */
+"No preview available" = "S’ka paraparje gati";
 
 /* A message title */
 "No recent posts" = "Pa postime së fundi";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "TELEFON";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Faqe";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Faqja u përditësua";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Faqe";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Gjuhë popullore";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Postim";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Postime";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Botoje menjëherë";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Botojeni faqen në:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Botojeni postimin në:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Botim Te";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Po botohet faqe…";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Po botohet postimi…";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Ruaje";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Ruani %ld fotot si një skicë faqeje në:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Ruani %ld fotot si një skicë postimi në:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Ruani 1 foto si një skicë faqeje në:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Ruani 1 foto si një skicë postimi në:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Ruaje si Skicë";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Ruaje faqen skicë te:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Ruaje si skicë postimi te:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "E ruan këtë postim për më vonë.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Po ruhet faqe…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Po ruhet postimi…";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Shihni aty për aty komente dhe njoftime.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Përzgjidhni";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Gjuhë Sajti";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Faqe Sajti";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Ridrejtim Sajti";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Prekeni që të hidhet tej kjo kartë";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Prekeni që të shfaqet faqe web e referuesit.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Prekeni që të jepni një vlerë vetjake";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Prekeni që të fshihet tastiera";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Prekeni që referuesit t’i vihet shenjë si jo i padëshiruar.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Prekeni që referuesit t’i vihet shenjë si i padëshiruar.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Prekeni që të shihni krejt etiketat për këtë postim";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Emër përdoruesi Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Lloj";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Shtypni një URL";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "më vonë, sot";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "iu vu shenjë si i padëshiruar";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "nga";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL e panjohur";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "iu hoq shenja si i padëshiruar";
 
 /* Noun. Describes a site's user. */
 "user" = "përdorues";

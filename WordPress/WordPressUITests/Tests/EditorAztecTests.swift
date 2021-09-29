@@ -1,3 +1,4 @@
+import UITestsFoundation
 import XCTest
 
 class EditorAztecTests: XCTestCase {
