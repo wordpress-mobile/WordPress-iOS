@@ -48,6 +48,20 @@ class CommentDetailViewController: UITableViewController {
         return cell
     }()
 
+    private lazy var commentService: CommentService = {
+        return .init()
+    }()
+
+    private lazy var parentComment: Comment? = {
+        guard comment.parentID > 0,
+              let blog = comment.blog,
+              let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
+                  return nil
+              }
+
+        return parentComment
+    }()
+
     // MARK: Initialization
 
     @objc required init(comment: Comment) {
@@ -209,8 +223,14 @@ private extension CommentDetailViewController {
     // MARK: Cell configuration
 
     func configureHeaderCell() {
-        // TODO: detect if the comment is a reply.
+        // if the comment is a reply, show the author of the parent comment.
+        if let parentComment = self.parentComment {
+            headerCell.textLabel?.text = String(format: .replyCommentTitleFormat, parentComment.authorForDisplay())
+            headerCell.detailTextLabel?.text = parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines)
+            return
+        }
 
+        // otherwise, if this is a comment to a post, show the post title instead.
         headerCell.textLabel?.text = .postCommentTitleText
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
     }
@@ -326,6 +346,9 @@ private extension String {
     static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
                                                             + "The title of the post will displayed below this string. "
                                                             + "Example: Comment on \n My First Post")
+    static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
+                                                           + "%1$@ is a placeholder for the comment author that's been replied to."
+                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
