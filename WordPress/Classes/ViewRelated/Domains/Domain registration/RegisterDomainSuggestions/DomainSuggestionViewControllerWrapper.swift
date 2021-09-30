@@ -57,14 +57,5 @@ extension DomainSuggestionViewControllerWrapper: DomainCreditRedemptionSuccessVi
         domainSuggestionViewController?.dismiss(animated: true) { [weak self] in
             self?.onDismiss()
         }
-        /*
-        domainSuggestionViewController?.dismiss(animated: true) { [weak self] in
-            /*
-            if let popController = self?.domainSuggestionViewController?.navigationController?.viewControllers.first(where: {
-                                                                                $0 is UIHostingController<DomainsDashboardView>
-            }) ?? self?.domainSuggestionViewController?.navigationController?.topViewController {
-                self?.domainSuggestionViewController?.navigationController?.popToViewController(popController, animated: true)
-            }*/
-        }*/
     }
 }
