@@ -93,7 +93,7 @@
                                         <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
-                                        <action selector="pendingTapped:" destination="-1" eventType="touchUpInside" id="yN6-hc-bjS"/>
+                                        <action selector="pendingTapped" destination="-1" eventType="touchUpInside" id="abh-IY-oNX"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LN1-7X-UXx">
@@ -106,7 +106,7 @@
                                         <imageReference key="image" image="checkmark.circle" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
-                                        <action selector="approvedTapped:" destination="-1" eventType="touchUpInside" id="PJo-FX-E5p"/>
+                                        <action selector="approvedTapped" destination="-1" eventType="touchUpInside" id="B2l-HC-xk7"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amj-pE-B3g">
@@ -119,7 +119,7 @@
                                         <imageReference key="image" image="exclamationmark.octagon" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
-                                        <action selector="spamTapped:" destination="-1" eventType="touchUpInside" id="B2t-fu-MCD"/>
+                                        <action selector="spamTapped" destination="-1" eventType="touchUpInside" id="kJJ-NH-Awv"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wss-Fs-Ja4">
@@ -132,7 +132,7 @@
                                         <imageReference key="image" image="trash" catalog="system" symbolScale="large"/>
                                     </state>
                                     <connections>
-                                        <action selector="trashTapped:" destination="-1" eventType="touchUpInside" id="wpW-cn-khe"/>
+                                        <action selector="trashTapped" destination="-1" eventType="touchUpInside" id="6fP-BE-5rs"/>
                                     </connections>
                                 </button>
                             </subviews>
