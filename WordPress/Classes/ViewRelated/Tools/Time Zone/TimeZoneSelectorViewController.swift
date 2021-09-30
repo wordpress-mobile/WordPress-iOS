@@ -65,6 +65,8 @@ struct TimeZoneSelectorViewModel: Observable {
         })
     }
 
+    private let timeZoneFormatter = TimeZoneFormatter(currentDate: Date())
+
     func getTimeZoneForIdentifier(_ timeZoneIdentifier: String) -> WPTimeZone? {
         return groups
             .flatMap({ $0.timezones })
@@ -78,9 +80,16 @@ struct TimeZoneSelectorViewModel: Observable {
                 return ImmuTableSection(
                     headerText: group.name,
                     rows: group.timezones.map({ (timezone) -> ImmuTableRow in
-                        return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
-                            selectionHandler(timezone)
-                        })
+                        if FeatureFlag.timeZoneSuggester.enabled {
+                            return TimeZoneRow(title: timezone.label, leftSubtitle: timeZoneFormatter.getZoneOffset(timezone), rightSubtitle: timeZoneFormatter.getTimeAtZone(timezone), action: { _ in
+                                selectionHandler(timezone)
+                            })
+                        }
+                        else {
+                            return CheckmarkRow(title: timezone.label, checked: timezone.value == selectedValue, action: { _ in
+                                selectionHandler(timezone)
+                            })
+                        }
                     }))
             })
         )
@@ -157,7 +166,13 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
+        if FeatureFlag.timeZoneSuggester.enabled {
+            ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
+        }
+        else {
+            ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
+        }
+
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
 
@@ -271,5 +286,14 @@ extension TimeZoneSelectorViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension TimeZoneSelectorViewController {
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
