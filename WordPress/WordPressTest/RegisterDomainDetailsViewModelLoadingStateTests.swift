@@ -118,9 +118,9 @@ class RegisterDomainDetailsViewModelLoadingStateTests: XCTestCase {
             switch change {
             case .prefillError:
                 XCTFail()
-            case .domainIsPrimary(_):
+            case .domainIsPrimary:
                 XCTFail()
-            case .registerSucceeded(_):
+            case .registerSucceeded:
                 XCTAssert(self?.viewModel.isLoading == false)
                 waitExpectation.fulfill()
             default:
