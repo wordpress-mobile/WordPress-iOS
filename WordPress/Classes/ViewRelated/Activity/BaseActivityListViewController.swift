@@ -412,7 +412,7 @@ extension BaseActivityListViewController: ActivityPresenter {
     }
 
     func presentRestoreFor(activity: Activity, from: String? = nil) {
-        guard activity.isRewindable, let rewindID = activity.rewindID else {
+        guard activity.isRewindable, activity.rewindID != nil else {
             return
         }
 
