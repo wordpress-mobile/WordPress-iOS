@@ -52,8 +52,15 @@ class CommentDetailViewController: UITableViewController {
         return .init()
     }()
 
+    /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
+    /// However, since this class is still initialized in Objective-C files, it cannot declare `ContentCoordinator` as the init parameter, unless the protocol
+    /// is `@objc`-ified. Let's move this to the init parameter once the caller has been converted to Swift.
+    private lazy var contentCoordinator: ContentCoordinator = {
+        return DefaultContentCoordinator(controller: self, context: comment.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
+    }()
+
     private lazy var parentComment: Comment? = {
-        guard comment.parentID > 0,
+        guard comment.hasParentComment,
               let blog = comment.blog,
               let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
                   return nil
@@ -135,7 +142,7 @@ class CommentDetailViewController: UITableViewController {
 
         switch rows[indexPath.row] {
         case .header:
-            navigateToPost()
+            comment.hasParentComment ? navigateToParentComment() : navigateToPost()
 
         case .replyIndicator:
             // TODO: Navigate to the comment reply.
@@ -265,6 +272,19 @@ private extension CommentDetailViewController {
 
     // MARK: Actions and navigations
 
+    // Shows the comment thread with the parent comment highlighted.
+    func navigateToParentComment() {
+        guard let parentComment = parentComment,
+              let blog = comment.blog else {
+                  navigateToPost()
+                  return
+              }
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: blog.dotComID,
+                                                          commentID: NSNumber(value: parentComment.commentID))
+    }
+
     func navigateToPost() {
         guard let blog = comment.blog,
               let siteID = blog.dotComID,
@@ -333,6 +353,12 @@ private extension CommentDetailViewController {
         openWebView(for: authorURL)
     }
 
+}
+
+private extension Comment {
+    var hasParentComment: Bool {
+        return parentID > 0
+    }
 }
 
 // MARK: - Strings
