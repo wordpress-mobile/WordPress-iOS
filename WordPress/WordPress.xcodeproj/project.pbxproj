@@ -2067,6 +2067,8 @@
 		C8567498243F41CA001A995E /* MockTenorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567497243F41CA001A995E /* MockTenorService.swift */; };
 		C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567499243F4292001A995E /* TenorMockDataHelper.swift */; };
 		C94C0B1B25DCFA0100F2F69B /* FilterableCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94C0B1A25DCFA0100F2F69B /* FilterableCategoriesViewController.swift */; };
+		C957C20626DCC1770037628F /* SiteAssemblyCompletionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* SiteAssemblyCompletionHelper.swift */; };
+		C957C20726DCC1770037628F /* SiteAssemblyCompletionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957C20526DCC1770037628F /* SiteAssemblyCompletionHelper.swift */; };
 		C99B08FC26081AD600CA71EB /* TemplatePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */; };
 		CB1FD8D826E4BBAA00EDAF06 /* SharePostTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB48172926E0D93D008C2D9B /* SharePostTypePickerViewController.swift */; };
 		CB48172A26E0D93D008C2D9B /* SharePostTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB48172926E0D93D008C2D9B /* SharePostTypePickerViewController.swift */; };
@@ -6716,6 +6718,7 @@
 		C8FC2DE857126670AE377B5D /* Pods-WordPressScreenshotGeneration.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.debug.xcconfig"; sourceTree = "<group>"; };
 		C9264D275F6288F66C33D2CE /* Pods-WordPressTest.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C94C0B1A25DCFA0100F2F69B /* FilterableCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableCategoriesViewController.swift; sourceTree = "<group>"; };
+		C957C20526DCC1770037628F /* SiteAssemblyCompletionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyCompletionHelper.swift; sourceTree = "<group>"; };
 		C99B039B2602F3CB00CA71EB /* WordPress 117.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 117.xcdatamodel"; sourceTree = "<group>"; };
 		C99B08FB26081AD600CA71EB /* TemplatePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewViewController.swift; sourceTree = "<group>"; };
 		C9BDC428A69177C2CBF0C247 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -10264,6 +10267,7 @@
 				73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */,
 				73856E5A21E1602400773CD9 /* SiteCreationRequest+Validation.swift */,
 				3221278523A0BD27002CA183 /* SiteCreationRotatingMessageView.swift */,
+				C957C20526DCC1770037628F /* SiteAssemblyCompletionHelper.swift */,
 			);
 			path = FinalAssembly;
 			sourceTree = "<group>";
@@ -18178,6 +18182,7 @@
 				98E54FF2265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */,
 				FFABD80821370496003C65B6 /* SelectPostViewController.swift in Sources */,
 				D8212CBD20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift in Sources */,
+				C957C20626DCC1770037628F /* SiteAssemblyCompletionHelper.swift in Sources */,
 				8BB185D524B66FE600A4CCE8 /* ReaderCard+CoreDataProperties.swift in Sources */,
 				F10E655021B0613A007AB2EE /* GutenbergViewController+MoreActions.swift in Sources */,
 				E148362F1C6DF7D8005ACF53 /* Product.swift in Sources */,
@@ -19156,6 +19161,7 @@
 				FABB21412602FC2C00C8785C /* QuickStartTours.swift in Sources */,
 				FABB21422602FC2C00C8785C /* RevisionsTableViewFooter.swift in Sources */,
 				FABB21432602FC2C00C8785C /* KanvasCameraAnalyticsHandler.swift in Sources */,
+				C957C20726DCC1770037628F /* SiteAssemblyCompletionHelper.swift in Sources */,
 				FABB21442602FC2C00C8785C /* MediaEditorOperation+Description.swift in Sources */,
 				FABB21452602FC2C00C8785C /* WPStyleGuide+FilterTabBar.swift in Sources */,
 				FABB21462602FC2C00C8785C /* PagedViewController.swift in Sources */,
