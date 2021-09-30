@@ -1,22 +1,27 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let readerTable = "Reader"
-    static let discoverButton = "Discover"
-}
+public class ReaderScreen: ScreenObject {
 
-public class ReaderScreen: BaseScreen {
-    let discoverButton: XCUIElement
+    private let discoverButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Discover"]
+    }
 
-    init() {
-        let readerTable = XCUIApplication().tables[ElementStringIDs.readerTable]
-        discoverButton = XCUIApplication().buttons[ElementStringIDs.discoverButton]
+    var discoverButton: XCUIElement { discoverButtonGetter(app) }
 
-        super.init(element: readerTable)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [
+                // swiftlint:skip:next opening_brace
+                { $0.tables["Reader"] },
+                discoverButtonGetter
+            ],
+            app: app
+        )
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().tables[ElementStringIDs.readerTable].exists
+        (try? ReaderScreen().isLoaded) ?? false
     }
 
     public func openDiscover() -> ReaderScreen {
