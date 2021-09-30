@@ -1,5 +1,7 @@
 import UIKit
 
+private typealias Style = WPStyleGuide.CommentDetail.ModerationBar
+
 class CommentModerationBar: UIView {
 
     // MARK: - Properties
@@ -65,22 +67,26 @@ private extension CommentModerationBar {
     func configureView() {
         configureBackground()
         configureDividers()
-        pendingButton.configureFor(.pending)
-        approvedButton.configureFor(.approved)
-        spamButton.configureFor(.spam)
-        trashButton.configureFor(.trash)
+        configureButtons()
         configureStackViewWidth()
     }
 
     func configureBackground() {
-        contentView.backgroundColor = .tertiaryFill
-        contentView.layer.cornerRadius = 15
+        contentView.backgroundColor = Style.barBackgroundColor
+        contentView.layer.cornerRadius = Style.cornerRadius
     }
 
     func configureDividers() {
         firstDivider.configureAsDivider()
         secondDivider.configureAsDivider()
         thirdDivider.configureAsDivider()
+    }
+
+    func configureButtons() {
+        pendingButton.configureFor(.pending)
+        approvedButton.configureFor(.approved)
+        spamButton.configureFor(.spam)
+        trashButton.configureFor(.trash)
     }
 
     @objc func configureStackViewWidth() {
@@ -133,7 +139,7 @@ private extension CommentModerationBar {
 
 // MARK: - Moderation Button Types
 
-private enum ModerationButtonType {
+enum ModerationButtonType {
     case pending
     case approved
     case spam
@@ -153,29 +159,11 @@ private enum ModerationButtonType {
     }
 
     var defaultIcon: UIImage? {
-        switch self {
-        case .pending:
-            return UIImage(systemName: "tray")?.imageWithTintColor(.textSubtle)
-        case .approved:
-            return UIImage(systemName: "checkmark.circle")?.imageWithTintColor(.textSubtle)
-        case .spam:
-            return UIImage(systemName: "exclamationmark.octagon")?.imageWithTintColor(.textSubtle)
-        case .trash:
-            return UIImage(systemName: "trash")?.imageWithTintColor(.textSubtle)
-        }
+        return Style.defaultImageFor(self)
     }
 
     var selectedIcon: UIImage? {
-        switch self {
-        case .pending:
-            return UIImage(systemName: "tray.fill")?.imageWithTintColor(.muriel(name: .yellow, .shade30))
-        case .approved:
-            return UIImage(systemName: "checkmark.circle.fill")?.imageWithTintColor(.muriel(name: .green, .shade40))
-        case .spam:
-            return UIImage(systemName: "exclamationmark.octagon.fill")?.imageWithTintColor(.muriel(name: .orange, .shade40))
-        case .trash:
-            return UIImage(systemName: "trash.fill")?.imageWithTintColor(.muriel(name: .red, .shade40))
-        }
+        return Style.selectedImageFor(self)
     }
 }
 
@@ -190,11 +178,11 @@ private extension UIButton {
 
     func configureState() {
         if isSelected {
-            backgroundColor = .white
-            layer.shadowColor = UIColor.black.cgColor
+            backgroundColor = Style.buttonSelectedBackgroundColor
+            layer.shadowColor = Style.buttonSelectedShadowColor
         } else {
-            backgroundColor = .clear
-            layer.shadowColor = UIColor.clear.cgColor
+            backgroundColor = Style.buttonDefaultBackgroundColor
+            layer.shadowColor = Style.buttonDefaultShadowColor
         }
     }
 
@@ -207,13 +195,13 @@ private extension UIButton {
     }
 
     func commonConfigure() {
-        setTitleColor(.textSubtle, for: UIControl.State())
-        setTitleColor(.black, for: .selected)
+        setTitleColor(Style.buttonDefaultTitleColor, for: UIControl.State())
+        setTitleColor(Style.buttonSelectedTitleColor, for: .selected)
 
-        layer.cornerRadius = 15
-        layer.shadowOffset = CGSize(width: 0, height: 2.0)
-        layer.shadowOpacity = 0.25
-        layer.shadowRadius = 2.0
+        layer.cornerRadius = Style.cornerRadius
+        layer.shadowOffset = Style.buttonShadowOffset
+        layer.shadowOpacity = Style.buttonShadowOpacity
+        layer.shadowRadius = Style.buttonShadowRadius
 
         verticallyAlignImageAndText()
         flipInsetsForRightToLeftLayoutDirection()
@@ -235,7 +223,7 @@ private extension UIView {
     }
 
     func hideDivider(_ hidden: Bool) {
-        backgroundColor = hidden ? .clear : .systemGray
+        backgroundColor = hidden ? Style.dividerHiddenColor : Style.dividerColor
     }
 
 }
