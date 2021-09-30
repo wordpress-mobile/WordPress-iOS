@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 /// This extension is necessary because DomainsService is unavailable in ObjC.
