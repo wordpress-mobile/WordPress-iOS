@@ -51,15 +51,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return button
     }()
 
-    private let dismissButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(.gridicon(.cross), for: .normal)
-        button.tintColor = .secondaryLabel
-        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
-        return button
-    }()
-
     // MARK: - Initializers
 
     private let blog: Blog
@@ -97,7 +88,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
-        view.addSubview(dismissButton)
 
         configureStackView()
         configureConstraints()
@@ -158,9 +148,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
             getStartedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
             getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right)
         ])
     }
 

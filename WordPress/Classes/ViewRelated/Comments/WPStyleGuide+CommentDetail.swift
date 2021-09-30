@@ -58,5 +58,76 @@ extension WPStyleGuide {
                 .withRenderingMode(.alwaysTemplate)
                 .imageFlippedForRightToLeftLayoutDirection()
         }
+
+        public struct ModerationBar {
+            static let barBackgroundColor: UIColor = .systemGray6
+            static let cornerRadius: CGFloat = 15.0
+
+            static let dividerColor: UIColor = .systemGray
+            static let dividerHiddenColor: UIColor = .clear
+
+            static let buttonShadowOffset = CGSize(width: 0, height: 2.0)
+            static let buttonShadowOpacity: Float = 0.25
+            static let buttonShadowRadius: CGFloat = 2.0
+
+            static let buttonDefaultTitleColor = UIColor(light: .textSubtle, dark: .systemGray)
+            static let buttonSelectedTitleColor = UIColor(light: .black, dark: .white)
+            static let buttonDefaultBackgroundColor: UIColor = .clear
+            static let buttonDefaultShadowColor = UIColor.clear.cgColor
+            static let buttonSelectedBackgroundColor: UIColor = .tertiaryBackground
+            static let buttonSelectedShadowColor = UIColor.black.cgColor
+
+            static let pendingImageName = "tray"
+            static let approvedImageName = "checkmark.circle"
+            static let spamImageName = "exclamationmark.octagon"
+            static let trashImageName = "trash"
+
+            static let imageDefaultTintColor = buttonDefaultTitleColor
+            static let pendingSelectedColor: UIColor = .muriel(name: .yellow, .shade30)
+            static let approvedSelectedColor: UIColor = .muriel(name: .green, .shade40)
+            static let spamSelectedColor: UIColor = .muriel(name: .orange, .shade40)
+            static let trashSelectedColor: UIColor = .muriel(name: .red, .shade40)
+
+            static func defaultImageFor(_ buttonType: ModerationButtonType) -> UIImage? {
+                return UIImage(systemName: imageNameFor(buttonType))?
+                    .withTintColor(imageDefaultTintColor)
+                    .withRenderingMode(.alwaysOriginal)
+            }
+
+            static func selectedImageFor(_ buttonType: ModerationButtonType) -> UIImage? {
+                return UIImage(systemName: imageNameFor(buttonType, selected: true))?
+                    .imageWithTintColor(imageTintColorFor(buttonType))
+            }
+
+            static func imageNameFor(_ buttonType: ModerationButtonType, selected: Bool = false) -> String {
+                let imageName: String = {
+                    switch buttonType {
+                    case .pending:
+                        return pendingImageName
+                    case .approved:
+                        return approvedImageName
+                    case .spam:
+                        return spamImageName
+                    case .trash:
+                        return trashImageName
+                    }
+                }()
+
+                return selected ? (imageName + ".fill") : imageName
+            }
+
+            static func imageTintColorFor(_ buttonType: ModerationButtonType) -> UIColor {
+                switch buttonType {
+                case .pending:
+                    return pendingSelectedColor
+                case .approved:
+                    return approvedSelectedColor
+                case .spam:
+                    return spamSelectedColor
+                case .trash:
+                    return trashSelectedColor
+                }
+            }
+        }
     }
 }

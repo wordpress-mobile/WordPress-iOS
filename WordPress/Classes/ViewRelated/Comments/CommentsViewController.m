@@ -566,7 +566,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshAndSyncIfNeeded
 {
-    if (self.blog) {
+    if (self.blog && self.contentIsEmpty) {
         [self.syncHelper syncContent];
     }
 }
@@ -660,6 +660,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)adjustNoResultViewPlacement
 {
+    // calling this too early results in wrong tableView frame used for initial state
+    if(self.noResultsViewController.view.window == nil) {
+        return;
+    }
+
     // Adjust the NRV placement to accommodate for the filterTabBar.
     CGRect noResultsFrame = self.tableView.frame;
     noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;

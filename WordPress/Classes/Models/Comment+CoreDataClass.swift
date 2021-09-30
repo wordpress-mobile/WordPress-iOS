@@ -154,4 +154,21 @@ extension Comment: PostContentProvider {
             return "draft"
         }
     }
+
+    static func typeForStatus(_ status: String) -> CommentStatusType? {
+        switch status {
+        case "hold":
+            return .pending
+        case "approve":
+            return .approved
+        case "trash":
+            return .unapproved
+        case "spam":
+            return .spam
+        case "draft":
+            return .draft
+        default:
+            return nil
+        }
+    }
 }

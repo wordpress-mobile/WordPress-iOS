@@ -1,8 +1,5 @@
-- Her şeyden haberdar olun! Artık en popüler sitelerinizdeki etkinliklerin haftalık özetini alabilirsiniz.
+- Gömülü blok güncellemeleri: WordPress gömme önizlemelerinin yanı sıra Instagram ve Vimeo içeriği için de gömme işlevini etkinleştirdik. Bazı medyalarda bir URL'yi başarılı bir şekilde gömebilirsiniz ancak içeriği önizleyemezsiniz; bu durumlarda, "Önizleme yok" mesajını görürsünüz. Medyayı gömemediğiniz durumlarda, içeriği tekrar gömmek için artık bir “Yeniden Dene” seçeneği ve gömmek yerine bağlantıya dönüştürmek için de alternatif bir seçenek göreceksiniz.
 
-- Site yorumlarınız üzerinde daha da fazla kontrole sahipsiniz. Onları düzenlerken artık yazarın adını, e-posta adresini ve web adresini de ayarlayabilirsiniz.
-Blok düzenleyicide kolaylık sağlayan birkaç değişiklik yaptık. Gömülü blok artık YouTube veya Twitter'dan bir şey eklediğinizde size bir önizleme görüntüler (yakında daha fazla sağlayıcı sunulacaktır). Ayrıca, bir blok eklemeye gittiğinizde hiçbir şey bulamazsanız, artık sonuçlar görünümü görüntülenmez.
+- Çeşitli iyileştirmeler: "Blog Gönderileri"ni "Gönderiler", "Site Sayfaları"nı "Sayfalar" olarak değiştirerek Sitem menünüzü modernleştirdik. (Bunun gönderiniz ve sayfa içeriğiniz üzerinde hiçbir etkisi olmayacak; söz veriyoruz!) Ayrıca artık uygulamanın Paylaşım Uzantısı'nı kullanarak bir sayfayı yayımlayabileceğinizi de fark edeceksiniz.
 
-- Gönderi Ayarları > Gönderi Biçimi'ne giderseniz, "Standart" seçeneğini yine en üstte bulacaksınız, ancak diğer seçenekler artık aşağıda düzgün bir şekilde alfabetik olarak sıralanır. (Seçenekler temalara göre değişecektir.)
-
-- Ve bir tane daha: Sitenizi yenilemek artık çok kolay. Sitem ekranından yenilemek için çekmeniz yeterli
+- Hata düzeltmeleri: Okuyucu'da Kaydedilmiş gönderileri kaldırmanızı engelleyen bir sorunu, ayrıca bir gönderinin yorumları üzerinden bir konuşmayı e-postayla takip etmenizi engelleyen bir hatayı düzelttik.

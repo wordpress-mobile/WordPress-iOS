@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-06 09:01:08+0000 */
+/* Translation-Revision-Date: 2021-09-20 12:13:48+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "настройки блока %s";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "Скоро будет доступен предварительный просмотр блока объектов типа %s";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "Недавно доступный, блок %s";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s сконвертирован в обычные блоки";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "Просмотр блоков объектов типа %s пока не доступен";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "Для %s установлен URL";
@@ -496,8 +496,11 @@ translators: Block name. %s: The localized block name */
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Добавьте URL пользовательской CSS для загрузки в Чтиве. Если вы используете локальную установку Calypso, то он может выглядеть примерно так: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Добавить домен";
+
 /* No comment provided by engineer. */
-"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Добавьте новый блок в любое время, нажав на значок + на панели инструментов  внизу слева.";
+"Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Добавьте новый блок в любое время, нажав на значок + на панели инструментов внизу слева. ";
 
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Добавить автономный веб-сайт";
@@ -965,7 +968,7 @@ translators: Block name. %s: The localized block name */
 "Backup" = "Резервное копирование";
 
 /* Title for error displayed when preparing a backup fails. */
-"Backup failed" = "Сбой резервного копирования.";
+"Backup failed" = "Сбой резервного копирования";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Столбчатая диаграмма с комментариями за выбранный период.";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Блог";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Записи в блоге";
-
 /* Create new Blog Post button title */
 "Blog post" = "Запись блога";
 
@@ -1111,7 +1110,7 @@ translators: Block name. %s: The localized block name */
 "Button position" = "Положение кнопки";
 
 /* Label for the post author in the post detail. */
-"By " = "Автор:";
+"By " = "Автор: ";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "By %@." = "Автор: %@.";
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1311,7 +1311,7 @@ translators: Block name. %s: The localized block name */
 "Check Purchases Error" = "Ошибка проверки покупок";
 
 /* Instruction text after a login Magic Link was requested. */
-"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Проверьте почту на этом устройстве и нажмите ссылку в письме от WordPress.com";
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Проверьте почту на этом устройстве и нажмите ссылку в письме от WordPress.com.";
 
 /* Instructional text on how to open the email containing a magic link. */
 "Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Проверьте вашу почту и нажмите на ссылку в сообщении полученном от\nWordPress.com\n\nНе нашли сообщение ? Поищите в спаме.";
@@ -1502,6 +1502,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Цветные фоны";
+
+/* translators: %d: column index. */
+"Column %d" = "Столбец %d";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Настройки столбцов";
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Продолжение через Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Преобразовать в ссылку";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Кулинария";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Не удалось загрузить теги. Нажмите, чтобы повторить попытку.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Невозможно пометить как спам";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Невозможно снять отметку спам";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Не удалось загрузить избранное изображение.";
@@ -2129,7 +2141,7 @@ translators: Block name. %s: The localized block name */
 "Deny" = "Отклонить";
 
 /* No comment provided by engineer. */
-"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Опишите назначение изображения. Оставьте пустым, если изображение является только элементом декора.";
+"Describe the purpose of the image. Leave empty if the image is purely decorative. " = "Опишите назначение изображения. Оставьте пустым, если изображение является только элементом декора. ";
 
 /* Label for the description for a media asset (image / video)
    Section header for tag name in Tag Details View.
@@ -2342,7 +2354,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to open Bottom Sheet to add image or video" = "Нажмите дважды для того, чтобы открыть нижнюю панель действий для добавления изображения или видео";
 
 /* No comment provided by engineer. */
-"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Нажмите дважды, чтобы открыть нижний список действий для редактирования, замены или очистки изображения.";
+"Double tap to open Bottom Sheet to edit, replace, or clear the image" = "Нажмите дважды, чтобы открыть нижний список действий для редактирования, замены или очистки изображения";
 
 /* No comment provided by engineer. */
 "Double tap to open Bottom Sheet with available options" = "Нажмите дважды для того, чтобы открыть нижнюю панель действий с доступными возможностями";
@@ -2376,6 +2388,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Нажмите дважды для отмены последнего действия";
+
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Нажмите дважды, чтобы просмотреть возможности встраивания.";
 
 /* Download button title */
 "Download" = "Скачать";
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "Письмо отправлено!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Предварительный просмотр встроенного содержимого в блоках скоро будет доступен";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Подпись встроенного объекта. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Встроить медиасодержимое";
+
+/* No comment provided by engineer. */
+"Embed options" = "Параметры встраивания";
 
 /* Title for the Emoji section */
 "Emoji" = "Эмодзи";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Поехали! Увеличьте число просмотров вашей записи поделившись ей.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Получите собственный домен";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Получайте уведомления быстрее";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Прикрепить";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Отметить как не спам";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Отметить как прочитанное";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Пометить как спам";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Пометить как спам.";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Новая запись";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "Покупка нового домена";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Новый элемент";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Записей нет.";
+
+/* No comment provided by engineer. */
+"No preview available" = "Предварительный просмотр недоступен.";
 
 /* A message title */
 "No recent posts" = "Нет свежих записей";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "ТЕЛЕФОН";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Страница";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4851,13 +4882,15 @@ translators: Block name. %s: The localized block name */
 "Page title. %s" = "Название страницы. %s";
 
 /* translators: accessibility text. empty page title. */
-"Page title. Empty" = "Название страницы. Пустое.";
+"Page title. Empty" = "Название страницы. Пустое";
 
 /* Title of notification displayed when a page has been successfully updated. */
 "Page updated" = "Страница обновлена";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Страницы";
 
 /* Comments Paging
@@ -4959,7 +4992,7 @@ translators: Block name. %s: The localized block name */
 "Please check your internet connection and try again." = "Проверьте подключение к Интернету и повторите попытку.";
 
 /* Confirmation title presented before fixing all the threats, displays the number of threats to be fixed */
-"Please confirm you want to fix all %1$d active threats" = "Подтвердите исправление %1$d активных угроз.";
+"Please confirm you want to fix all %1$d active threats" = "Подтвердите исправление %1$d активных угроз";
 
 /* Confirmation title presented before fixing a single threat */
 "Please confirm you want to fix this threat" = "Подтвердите исправление активной угрозы";
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Популярные языки";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Запись";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Записи";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Опубликовать немедленно";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Опубликовать страницу на:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Опубликовать запись на:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Публикация на";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Публикация страницы...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Публикация записи...";
@@ -5561,7 +5602,7 @@ translators: Block name. %s: The localized block name */
 "Remove Site Icon" = "Удалить значок сайта";
 
 /* No comment provided by engineer. */
-"Remove as Featured Image " = "Удалить как избранное изображение";
+"Remove as Featured Image " = "Удалить как избранное изображение ";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Удалить с экрана тенденций";
@@ -5694,7 +5735,7 @@ translators: Block name. %s: The localized block name */
 "Restore" = "Восстановить";
 
 /* Title for Jetpack Restore Failed screen */
-"Restore Failed" = "Не удалось восстановить.";
+"Restore Failed" = "Не удалось восстановить";
 
 /* Title for error displayed when restoring a site fails. */
 "Restore failed" = "Не удалось восстановить";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Сохранить";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Сохранить %ld изображений как черновик записи на:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Сохранить %ld изображений как черновик записи на:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Сохранить 1 изображение как черновик записи на:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Сохранить 1 изображение как черновик записи на: 	";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Сохранить как черновик";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Сохранить черновик страницы на:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Сохранить черновик записи на: 	";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Сохраняет эту запись на потом.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Сохранение страницы...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Сохранение записи...";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Следите в реальном времени за комментариями и уведомлениями.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Выбор";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Язык сайта";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Страницы сайта";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Перенаправление сайта";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Нажмите, чтобы скрыть эту карточку";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Нажмите для отображения ссылающейся веб страницы.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Нажмите чтобы ввести пользовательское значение";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Нажмите, чтобы скрыть клавиатуру";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Нажмите для отметки ссылающейся страницы как не спам.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Нажмите для отметки ссылающейся страницы как спам.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Нажмите, чтобы развернуть все метки записи";
@@ -6786,7 +6844,7 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Только текст";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Элементы управления форматированием текста расположены на панели инструментов над клавиатурой при редактировании текстового блока.";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Элементы управления форматированием текста расположены на панели инструментов над клавиатурой при редактировании текстового блока";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7070,7 +7128,7 @@ translators: Block name. %s: The localized block name */
 "There's a restore currently in progress, please wait before starting the next one" = "Идет восстановление, пожалуйста дождитесь окончания процесса перед новым запросом";
 
 /* Second story intro item description */
-"They're published as a new blog post on your site so your audience never misses out on a thing." = "Они публикуются как новые записи блога на вашем сайте, ваша аудитория их не пропустит, это точно!";
+"They're published as a new blog post on your site so your audience never misses out on a thing." = "Они публикуются как новые записи блога на вашем сайте, ваша аудитория их не пропустит, это точно.";
 
 /* Insights 'This Year' header */
 "This Year" = "В этом году";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Имя пользователя Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Тип";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Введите URL";
@@ -8522,7 +8583,7 @@ translators: Block name. %s: The localized block name */
 "You can update this any time via My Site > Site Settings" = "Вы можете обновить это в любое время в Мой сайт > Настройки сайта";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "Вы можете обновить это в любое время.";
+"You can update this anytime" = "Вы можете обновить это в любое время";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Этот почтовый адрес нельзя использовать для регистрации. Некоторые из наших писем блокируются данной почтовой службой. Пожалуйста, используйте другую службу.";
@@ -8658,7 +8719,7 @@ translators: Block name. %s: The localized block name */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Ваше имя пользователя - %1$@. За некоторыми исключениями, другие всегда будут видеть ваше отображаемое имя - %2$@.";
 
 /* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Ваша первая резервная копия появится здесь в течение 24 часов. Вы получите уведомление, когда резервная копия будет готова.";
+"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Ваша первая резервная копия появится здесь в течение 24 часов. Вы получите уведомление, когда резервная копия будет готова";
 
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Ваша первая резервная копия скоро будет готова";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "позже сегодня";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "отмечено как спам";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "из";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "неизвестный URL";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "отметка \"спам\" удалена";
 
 /* Noun. Describes a site's user. */
 "user" = "пользователь";

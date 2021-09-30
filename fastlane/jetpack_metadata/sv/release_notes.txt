@@ -1,8 +1,3 @@
-- Håll dig uppdaterad! Du kan nu få en veckovis sammanfattning av aktiviteten på dina mest populära webbplatser.
+- Inbäddningsblocken har uppdaterats: Vi har aktiverat förhandsgranskningar av WordPress-inbäddningar samt inbäddningar för Instagram- och Vimeo-innehåll. För visst mediainnehåll går det att bädda in en URL, men inte att förhandsgranska innehållet. I dessa instanser kommer meddelandet "Ingen förhandsgranskning tillgänglig" att visas. Om det inte går att bädda in mediainnehåll kommer du nu i vissa fall att se alternativet "Försök igen", med vilket du kan försöka bädda in innehållet igen, samt alternativet att istället konvertera innehållet till en länk.
 
-- Du har ännu mer kontroll över dina webbplatskommentarer – när du redigerar dem kan du nu även justera författarens namn, e-postadress och webbadress.
-Vi har gjort ett par praktiska ändringar i blockredigeraren. Inbäddningsblocket ger dig nu en förhandsvisning när du lägger till något från YouTube eller Twitter (fler leverantörer kommer). Dessutom visas nu en vy utan resultat när du ska infoga ett block och ingenting hittas.
-
-- Om du går till Inläggsinställningar > Inläggsformat kan du se att alternativet "Standard" fortfarande visas högst upp, men att de andra alternativen nu visas i alfabetisk ordning nedanför.  (Alternativen varierar beroende på tema!)
-
-- Och en sak till: Det är nu superenkelt att uppdatera din webbplats – det är bara att uppdatera på skärmen Min webbplats!
+- Diverse förbättringar och korrigeringar: Vi har gjort menyn Min webbplats smidigare och ändrat "Blogginlägg" till "Inlägg" och "Webbplatssidor" till "Sidor". (Detta påverkar inte innehållet i dina inlägg eller på dina sidor – vi lovar!) Vi har också åtgärdat ett fel som gjorde att det inte gick att följa en konversation via e-post genom kommentarerna för ett inlägg.
