@@ -126,13 +126,13 @@ private extension CommentModerationBar {
 
         switch commentStatusType {
         case .pending:
-            pendingTapped(pendingButton)
+            pendingTapped()
         case .approved:
-            approvedTapped(approvedButton)
+            approvedTapped()
         case .unapproved:
-            trashTapped(trashButton)
+            trashTapped()
         case .spam:
-            spamTapped(spamButton)
+            spamTapped()
         default:
             break
         }
@@ -140,26 +140,26 @@ private extension CommentModerationBar {
 
     // MARK: - Button Actions
 
-    @IBAction func pendingTapped(_ sender: UIButton) {
-        sender.toggleState()
-        firstDivider.hideDivider(sender.isSelected)
+    @IBAction func pendingTapped() {
+        pendingButton.toggleState()
+        firstDivider.hideDivider(pendingButton.isSelected)
     }
 
-    @IBAction func approvedTapped(_ sender: UIButton) {
-        sender.toggleState()
-        firstDivider.hideDivider(sender.isSelected)
-        secondDivider.hideDivider(sender.isSelected)
+    @IBAction func approvedTapped() {
+        approvedButton.toggleState()
+        firstDivider.hideDivider(approvedButton.isSelected)
+        secondDivider.hideDivider(approvedButton.isSelected)
     }
 
-    @IBAction func spamTapped(_ sender: UIButton) {
-        sender.toggleState()
-        secondDivider.hideDivider(sender.isSelected)
-        thirdDivider.hideDivider(sender.isSelected)
+    @IBAction func spamTapped() {
+        spamButton.toggleState()
+        secondDivider.hideDivider(spamButton.isSelected)
+        thirdDivider.hideDivider(spamButton.isSelected)
     }
 
-    @IBAction func trashTapped(_ sender: UIButton) {
-        sender.toggleState()
-        thirdDivider.hideDivider(sender.isSelected)
+    @IBAction func trashTapped() {
+        trashButton.toggleState()
+        thirdDivider.hideDivider(trashButton.isSelected)
     }
 }
 
