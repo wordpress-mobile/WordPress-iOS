@@ -58,6 +58,10 @@ public class Comment: NSManagedObject {
         return !author_url.isEmpty
     }
 
+    func hasParentComment() -> Bool {
+        return parentID > 0
+    }
+
 }
 
 private extension Comment {

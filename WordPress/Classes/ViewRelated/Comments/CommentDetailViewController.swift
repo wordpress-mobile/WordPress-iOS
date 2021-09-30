@@ -60,7 +60,7 @@ class CommentDetailViewController: UITableViewController {
     }()
 
     private lazy var parentComment: Comment? = {
-        guard comment.hasParentComment,
+        guard comment.hasParentComment(),
               let blog = comment.blog,
               let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
                   return nil
@@ -142,7 +142,7 @@ class CommentDetailViewController: UITableViewController {
 
         switch rows[indexPath.row] {
         case .header:
-            comment.hasParentComment ? navigateToParentComment() : navigateToPost()
+            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
 
         case .replyIndicator:
             // TODO: Navigate to the comment reply.
@@ -353,12 +353,6 @@ private extension CommentDetailViewController {
         openWebView(for: authorURL)
     }
 
-}
-
-private extension Comment {
-    var hasParentComment: Bool {
-        return parentID > 0
-    }
 }
 
 // MARK: - Strings
