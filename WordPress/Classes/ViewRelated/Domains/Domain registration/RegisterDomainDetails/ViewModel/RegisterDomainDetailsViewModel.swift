@@ -24,6 +24,7 @@ class RegisterDomainDetailsViewModel {
         case checkMarkRowsUpdated(sectionIndex: Int)
 
         case registerSucceeded(_ domain: String)
+        case domainIsPrimary(domain: String)
 
         case loading(Bool)
 
@@ -203,6 +204,7 @@ class RegisterDomainDetailsViewModel {
                             self?.isLoading = false
 
                             onChange?(.registerSucceeded(domain))
+                            onChange?(.domainIsPrimary(domain: domain))
                         }, failure: { _ in
                             self?.isLoading = false
 

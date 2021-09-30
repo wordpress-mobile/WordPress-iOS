@@ -123,7 +123,11 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         success: @escaping (String) -> Void,
         failure: @escaping (Error) -> Void) {
 
-        success(domainSuggestion.domainName)
+        createTemporaryDomainShoppingCart(siteID: siteID, domainSuggestion: domainSuggestion, privacyProtectionEnabled: privacyProtectionEnabled, success: { cart in
+            self.redeemCartUsingCredits(cart: cart, domainContactInformation: domainContactInformation, success: {
+                success(domainSuggestion.domainName)
+            }, failure: failure)
+        }, failure: failure)
     }
 
     func createTemporaryDomainShoppingCart(siteID: Int,
