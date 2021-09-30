@@ -144,8 +144,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
             }, failure: failure)
     }
 
-    /// This method should not be called directly.  It's only meant to be used when a domain purchase is performed through
-    /// a web view, to let our local storage record the event.
+    /// Records that a domain purchase took place.
     ///
     func recordDomainPurchase(
         siteID: Int,
