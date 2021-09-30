@@ -61,7 +61,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         switch source {
         case .publishFlow:
             return TextContent.postPublishingintroDescription
-        case .blogSettings:
+        case .blogSettings, .notificationSettings:
             return TextContent.siteSettingsIntroDescription
 
         }
