@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-15 18:44:49+0000 */
+/* Translation-Revision-Date: 2021-09-29 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -230,7 +230,7 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "%s 已轉換為一般區塊";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+"%s embed block previews are coming soon" = "%s 嵌入內容區塊預覽功能即將推出";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s 有 URL 集";
@@ -497,7 +497,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "在此新增要在讀取器中載入的自訂 CSS URL。 若你在本機執行 Calypso，可能會看到類似以下格式的 URL：http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
-"Add a domain" = "Add a domain";
+"Add a domain" = "新增網域";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "隨時都能點選左下角工具列的「+」號圖示新增區塊。 ";
@@ -1504,7 +1504,7 @@ translators: Block name. %s: The localized block name */
 "Colorful backgrounds" = "彩色背景";
 
 /* translators: %d: column index. */
-"Column %d" = "Column %d";
+"Column %d" = "欄 %d";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "欄位設定";
@@ -1747,7 +1747,7 @@ translators: Block name. %s: The localized block name */
 "Continuing with Apple" = "繼續使用 Apple";
 
 /* No comment provided by engineer. */
-"Convert to link" = "Convert to link";
+"Convert to link" = "轉換為連結";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "烹飪";
@@ -1843,10 +1843,10 @@ translators: Block name. %s: The localized block name */
 "Couldn't load tags. Tap to retry." = "無法載入標籤。點選以重試。";
 
 /* Indicating that referrer couldn't be marked as spam */
-"Couldn't mark as spam" = "Couldn't mark as spam";
+"Couldn't mark as spam" = "無法標示為垃圾訊息";
 
 /* Indicating that referrer couldn't be unmarked as spam */
-"Couldn't unmark as spam" = "Couldn't unmark as spam";
+"Couldn't unmark as spam" = "無法取消垃圾訊息的標示";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "無法上傳特色圖片";
@@ -2390,7 +2390,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to undo last change" = "按兩次即可復原上次變更";
 
 /* No comment provided by engineer. */
-"Double tap to view embed options." = "Double tap to view embed options.";
+"Double tap to view embed options." = "點兩下即可檢視嵌入選項。";
 
 /* Download button title */
 "Download" = "下載";
@@ -2569,7 +2569,7 @@ translators: Block name. %s: The localized block name */
 "Embed media" = "嵌入媒體";
 
 /* No comment provided by engineer. */
-"Embed options" = "Embed options";
+"Embed options" = "嵌入選項";
 
 /* Title for the Emoji section */
 "Emoji" = "表情圖示";
@@ -3126,7 +3126,7 @@ translators: Block name. %s: The localized block name */
 "Get the ball rolling and increase your post views by sharing your post." = "分享你的文章，讓這些文章廣為人知，並增加文章檢視次數。";
 
 /* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Get your domain";
+"Get your domain" = "取得你的網域名稱";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "更快收到通知";
@@ -4008,13 +4008,13 @@ translators: Block name. %s: The localized block name */
 "Mark as Sticky" = "標記為置頂";
 
 /* Action title for unmarking referrer as spam */
-"Mark as not spam" = "Mark as not spam";
+"Mark as not spam" = "標示為非垃圾訊息";
 
 /* An option to mark a post as seen. */
 "Mark as seen" = "標示為已讀。";
 
 /* Action title for marking referrer as spam */
-"Mark as spam" = "Mark as spam";
+"Mark as spam" = "標記為垃圾訊息";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "標記為垃圾。";
@@ -4535,7 +4535,7 @@ translators: Block name. %s: The localized block name */
 "No posts." = "沒有文章。";
 
 /* No comment provided by engineer. */
-"No preview available" = "No preview available";
+"No preview available" = "無法預覽";
 
 /* A message title */
 "No recent posts" = "沒有近期文章";
@@ -5408,7 +5408,7 @@ translators: Block name. %s: The localized block name */
 "Publish immediately" = "立即發表";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
-"Publish page on:" = "Publish page on:";
+"Publish page on:" = "將頁面張貼在以下位置：";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "文章發表位置：";
@@ -5430,7 +5430,7 @@ translators: Block name. %s: The localized block name */
 "Publishing To" = "發表到";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
-"Publishing page..." = "Publishing page...";
+"Publishing page..." = "正在張貼頁面…";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "正在發表文章…";
@@ -5835,13 +5835,13 @@ translators: Block name. %s: The localized block name */
 "Save" = "儲存";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
-"Save %ld photos as a draft page on:" = "Save %ld photos as a draft page on:";
+"Save %ld photos as a draft page on:" = "將 %ld 張相片儲存成草稿頁，儲存位置：";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "將 %ld 張照片作為文章草稿儲存於：";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
-"Save 1 photo as a draft page on:" = "Save 1 photo as a draft page on:";
+"Save 1 photo as a draft page on:" = "將 1 張相片儲存成草稿頁，儲存位置：";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "將 1 張照片作為文章草稿儲存於：";
@@ -5857,7 +5857,7 @@ translators: Block name. %s: The localized block name */
 "Save as Draft" = "儲存為草稿";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
-"Save draft page on:" = "Save draft page on:";
+"Save draft page on:" = "將草稿頁面儲存在以下位置：";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "將草稿儲存於：";
@@ -5883,7 +5883,7 @@ translators: Block name. %s: The localized block name */
 "Saves this post for later." = "儲存此文章以供稍後使用。";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
-"Saving page…" = "Saving page…";
+"Saving page…" = "正在儲存頁面…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "正在儲存文章…";
@@ -6787,7 +6787,7 @@ translators: Block name. %s: The localized block name */
 "Tap to dismiss this card" = "點選以略過此卡片";
 
 /* Accessibility hint for referrer details row. */
-"Tap to display referrer web page." = "Tap to display referrer web page.";
+"Tap to display referrer web page." = "點選即可顯示推薦連結網頁。";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "點選以輸入自訂值";
@@ -6796,10 +6796,10 @@ translators: Block name. %s: The localized block name */
 "Tap to hide the keyboard" = "點選即可隱藏鍵盤";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
+"Tap to mark referrer as not spam." = "點選即可將推薦連結標示為非垃圾訊息。";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as spam." = "Tap to mark referrer as spam.";
+"Tap to mark referrer as spam." = "點選即可將推薦連結標示為垃圾訊息。";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "點選以查看此文章的所有標籤";
@@ -7450,7 +7450,7 @@ translators: Block name. %s: The localized block name */
 "Twitter Username" = "Twitter 使用者名稱";
 
 /* Type menu item in share extension. */
-"Type" = "Type";
+"Type" = "類型";
 
 /* No comment provided by engineer. */
 "Type a URL" = "輸入 URL";
@@ -8880,7 +8880,7 @@ translators: Block name. %s: The localized block name */
 "later today" = "今日稍晚";
 
 /* Indicating that referrer was marked as spam */
-"marked as spam" = "marked as spam";
+"marked as spam" = "已標示為垃圾訊息";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "的";
@@ -8904,7 +8904,7 @@ translators: Block name. %s: The localized block name */
 "unknown url" = "不明的 URL";
 
 /* Indicating that referrer was unmarked as spam */
-"unmarked as spam" = "unmarked as spam";
+"unmarked as spam" = "取消垃圾訊息的標示";
 
 /* Noun. Describes a site's user. */
 "user" = "使用者";

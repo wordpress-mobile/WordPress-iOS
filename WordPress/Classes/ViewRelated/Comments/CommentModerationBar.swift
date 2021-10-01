@@ -1,8 +1,16 @@
 import UIKit
 
+private typealias Style = WPStyleGuide.CommentDetail.ModerationBar
+
 class CommentModerationBar: UIView {
 
     // MARK: - Properties
+
+    var comment: Comment? {
+        didSet {
+            setButtonForStatus()
+        }
+    }
 
     @IBOutlet private weak var contentView: UIView!
 
@@ -11,9 +19,16 @@ class CommentModerationBar: UIView {
     @IBOutlet private weak var spamButton: UIButton!
     @IBOutlet private weak var trashButton: UIButton!
 
+    @IBOutlet private weak var buttonStackViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var buttonStackViewTrailingConstraint: NSLayoutConstraint!
+
     @IBOutlet private weak var firstDivider: UIView!
     @IBOutlet private weak var secondDivider: UIView!
     @IBOutlet private weak var thirdDivider: UIView!
+
+    private var compactHorizontalPadding: CGFloat = 4
+    private let iPadPaddingMultiplier: CGFloat = 0.33
+    private let iPhonePaddingMultiplier: CGFloat = 0.15
 
     // MARK: - Init
 
@@ -25,9 +40,21 @@ class CommentModerationBar: UIView {
             return
         }
 
+        // Save initial constraint value to use on device rotation.
+        compactHorizontalPadding = buttonStackViewLeadingConstraint.constant
+
         view.frame = self.bounds
         configureView()
         self.addSubview(view)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(configureStackViewWidth),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
 }
@@ -46,15 +73,13 @@ private extension CommentModerationBar {
     func configureView() {
         configureBackground()
         configureDividers()
-        pendingButton.configureFor(.pending)
-        approvedButton.configureFor(.approved)
-        spamButton.configureFor(.spam)
-        trashButton.configureFor(.trash)
+        configureButtons()
+        configureStackViewWidth()
     }
 
     func configureBackground() {
-        contentView.backgroundColor = .tertiaryFill
-        contentView.layer.cornerRadius = 15
+        contentView.backgroundColor = Style.barBackgroundColor
+        contentView.layer.cornerRadius = Style.cornerRadius
     }
 
     func configureDividers() {
@@ -63,34 +88,84 @@ private extension CommentModerationBar {
         thirdDivider.configureAsDivider()
     }
 
+    func configureButtons() {
+        pendingButton.configureFor(.pending)
+        approvedButton.configureFor(.approved)
+        spamButton.configureFor(.spam)
+        trashButton.configureFor(.trash)
+    }
+
+    @objc func configureStackViewWidth() {
+        // On devices with a lot of horizontal space, increase the buttonStackView margins
+        // so the buttons are not severely stretched out. Specifically:
+        // - iPad landscape
+        // - Non split view iPhone landscape
+        let horizontalPadding: CGFloat = {
+            if WPDeviceIdentification.isiPad() &&
+                UIDevice.current.orientation.isLandscape {
+                return bounds.width * iPadPaddingMultiplier
+            }
+
+            if traitCollection.horizontalSizeClass == .compact &&
+                traitCollection.verticalSizeClass == .compact {
+                return bounds.width * iPhonePaddingMultiplier
+            }
+
+            return compactHorizontalPadding
+        }()
+
+        buttonStackViewLeadingConstraint.constant = horizontalPadding
+        buttonStackViewTrailingConstraint.constant = horizontalPadding
+    }
+
+    func setButtonForStatus() {
+        guard let comment = comment,
+              let commentStatusType = CommentStatusType.typeForStatus(comment.status) else {
+                  return
+              }
+
+        switch commentStatusType {
+        case .pending:
+            pendingTapped()
+        case .approved:
+            approvedTapped()
+        case .unapproved:
+            trashTapped()
+        case .spam:
+            spamTapped()
+        default:
+            break
+        }
+    }
+
     // MARK: - Button Actions
 
-    @IBAction func pendingTapped(_ sender: UIButton) {
-        sender.toggleState()
-        firstDivider.isHidden = sender.isSelected
+    @IBAction func pendingTapped() {
+        pendingButton.toggleState()
+        firstDivider.hideDivider(pendingButton.isSelected)
     }
 
-    @IBAction func approvedTapped(_ sender: UIButton) {
-        sender.toggleState()
-        firstDivider.isHidden = sender.isSelected
-        secondDivider.isHidden = sender.isSelected
+    @IBAction func approvedTapped() {
+        approvedButton.toggleState()
+        firstDivider.hideDivider(approvedButton.isSelected)
+        secondDivider.hideDivider(approvedButton.isSelected)
     }
 
-    @IBAction func spamTapped(_ sender: UIButton) {
-        sender.toggleState()
-        secondDivider.isHidden = sender.isSelected
-        thirdDivider.isHidden = sender.isSelected
+    @IBAction func spamTapped() {
+        spamButton.toggleState()
+        secondDivider.hideDivider(spamButton.isSelected)
+        thirdDivider.hideDivider(spamButton.isSelected)
     }
 
-    @IBAction func trashTapped(_ sender: UIButton) {
-        sender.toggleState()
-        thirdDivider.isHidden = sender.isSelected
+    @IBAction func trashTapped() {
+        trashButton.toggleState()
+        thirdDivider.hideDivider(trashButton.isSelected)
     }
 }
 
 // MARK: - Moderation Button Types
 
-private enum ModerationButtonType {
+enum ModerationButtonType {
     case pending
     case approved
     case spam
@@ -110,29 +185,11 @@ private enum ModerationButtonType {
     }
 
     var defaultIcon: UIImage? {
-        switch self {
-        case .pending:
-            return UIImage(systemName: "tray")?.imageWithTintColor(.textSubtle)
-        case .approved:
-            return UIImage(systemName: "checkmark.circle")?.imageWithTintColor(.textSubtle)
-        case .spam:
-            return UIImage(systemName: "exclamationmark.octagon")?.imageWithTintColor(.textSubtle)
-        case .trash:
-            return UIImage(systemName: "trash")?.imageWithTintColor(.textSubtle)
-        }
+        return Style.defaultImageFor(self)
     }
 
     var selectedIcon: UIImage? {
-        switch self {
-        case .pending:
-            return UIImage(systemName: "tray.fill")?.imageWithTintColor(.muriel(name: .yellow, .shade30))
-        case .approved:
-            return UIImage(systemName: "checkmark.circle.fill")?.imageWithTintColor(.muriel(name: .green, .shade40))
-        case .spam:
-            return UIImage(systemName: "exclamationmark.octagon.fill")?.imageWithTintColor(.muriel(name: .orange, .shade40))
-        case .trash:
-            return UIImage(systemName: "trash.fill")?.imageWithTintColor(.muriel(name: .red, .shade40))
-        }
+        return Style.selectedImageFor(self)
     }
 }
 
@@ -147,11 +204,11 @@ private extension UIButton {
 
     func configureState() {
         if isSelected {
-            backgroundColor = .white
-            layer.shadowColor = UIColor.black.cgColor
+            backgroundColor = Style.buttonSelectedBackgroundColor
+            layer.shadowColor = Style.buttonSelectedShadowColor
         } else {
-            backgroundColor = .clear
-            layer.shadowColor = UIColor.clear.cgColor
+            backgroundColor = Style.buttonDefaultBackgroundColor
+            layer.shadowColor = Style.buttonDefaultShadowColor
         }
     }
 
@@ -164,13 +221,13 @@ private extension UIButton {
     }
 
     func commonConfigure() {
-        setTitleColor(.textSubtle, for: UIControl.State())
-        setTitleColor(.black, for: .selected)
+        setTitleColor(Style.buttonDefaultTitleColor, for: UIControl.State())
+        setTitleColor(Style.buttonSelectedTitleColor, for: .selected)
 
-        layer.cornerRadius = 15
-        layer.shadowOffset = CGSize(width: 0, height: 2.0)
-        layer.shadowOpacity = 0.25
-        layer.shadowRadius = 2.0
+        layer.cornerRadius = Style.cornerRadius
+        layer.shadowOffset = Style.buttonShadowOffset
+        layer.shadowOpacity = Style.buttonShadowOpacity
+        layer.shadowRadius = Style.buttonShadowRadius
 
         verticallyAlignImageAndText()
         flipInsetsForRightToLeftLayoutDirection()
@@ -182,11 +239,17 @@ private extension UIButton {
 // MARK: - UIView Extension
 
 private extension UIView {
+
     func configureAsDivider() {
-        backgroundColor = .textSubtle
+        hideDivider(false)
 
         if let existingConstraint = constraint(for: .width, withRelation: .equal) {
             existingConstraint.constant = .hairlineBorderWidth
         }
     }
+
+    func hideDivider(_ hidden: Bool) {
+        backgroundColor = hidden ? Style.dividerHiddenColor : Style.dividerColor
+    }
+
 }

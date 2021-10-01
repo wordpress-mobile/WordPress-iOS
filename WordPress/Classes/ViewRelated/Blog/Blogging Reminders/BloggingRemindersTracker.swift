@@ -30,6 +30,7 @@ class BloggingRemindersTracker {
     enum FlowStartSource: String {
         case publishFlow = "publish_flow"
         case blogSettings = "blog_settings"
+        case notificationSettings = "notification_settings"
     }
 
     enum FlowDismissSource: String {
