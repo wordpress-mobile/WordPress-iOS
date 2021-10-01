@@ -181,9 +181,22 @@ private extension CommentDetailViewController {
     }
 
     func configureNavigationBar() {
-        if comment.canModerate {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped))
-        }
+        // apply a Messages-like visual blur effect when content is scrolled.
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+
+        // to apply visual blur only when content is scrolled, don't change the scrollEdgeAppearance.
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationItem.compactAppearance = appearance
+        self.navigationItem.standardAppearance = appearance
+
+        configureEditButtonItem()
+    }
+
+    func configureEditButtonItem() {
+        let editButtonItem = comment.canModerate ? UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped)) : nil
+        navigationItem.rightBarButtonItem = editButtonItem
     }
 
     func configureTable() {
@@ -227,6 +240,7 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
+        configureEditButtonItem()
         configureRows()
         tableView.reloadData()
     }
