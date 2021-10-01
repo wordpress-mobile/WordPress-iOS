@@ -1,10 +1,13 @@
 import UIKit
+import CoreData
 
 class CommentDetailViewController: UITableViewController {
 
     // MARK: Properties
 
     private var comment: Comment
+
+    private var managedObjectContext: NSManagedObjectContext
 
     private var rows = [RowType]()
 
@@ -49,14 +52,14 @@ class CommentDetailViewController: UITableViewController {
     }()
 
     private lazy var commentService: CommentService = {
-        return .init()
+        return .init(managedObjectContext: managedObjectContext)
     }()
 
     /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
     /// However, since this class is still initialized in Objective-C files, it cannot declare `ContentCoordinator` as the init parameter, unless the protocol
     /// is `@objc`-ified. Let's move this to the init parameter once the caller has been converted to Swift.
     private lazy var contentCoordinator: ContentCoordinator = {
-        return DefaultContentCoordinator(controller: self, context: comment.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
+        return DefaultContentCoordinator(controller: self, context: managedObjectContext)
     }()
 
     private lazy var parentComment: Comment? = {
@@ -71,8 +74,9 @@ class CommentDetailViewController: UITableViewController {
 
     // MARK: Initialization
 
-    @objc required init(comment: Comment) {
+    @objc required init(comment: Comment, managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
+        self.managedObjectContext = managedObjectContext
         super.init(style: .plain)
     }
 
@@ -329,9 +333,6 @@ private extension CommentDetailViewController {
     func updateComment() {
         // Regardless of success or failure track the user's intent to save a change.
         CommentAnalytics.trackCommentEdited(comment: comment)
-
-        let context = ContextManager.sharedInstance().mainContext
-        let commentService = CommentService(managedObjectContext: context)
 
         commentService.uploadComment(comment,
                                      success: { [weak self] in
