@@ -426,4 +426,3 @@ private struct SettingsSection {
         self.footerText     = footerText
     }
 }
-
