@@ -1,14 +1,14 @@
 import SwiftUI
 
 /// A card with a title, a description and a button that can present a view
-struct PresentationCard<Destination: View, Appearance: View>: View {
+struct PresentationCard<Appearance: View>: View {
     var title: String
     var description: String
     var highlight: String
+    @Binding var isShowingDestination: Bool
 
     private let titleFontSize: CGFloat = 28
 
-    var destination: (_ hideSheet: @escaping () -> Void) -> Destination
     var appearance: () -> Appearance
 
     var body: some View {
@@ -22,7 +22,9 @@ struct PresentationCard<Destination: View, Appearance: View>: View {
              Text(highlight).bold())
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
-            PresentationButton(destination: destination, appearance: appearance)
+            PresentationButton(
+                isShowingDestination: $isShowingDestination,
+                appearance: appearance)
                 .padding()
         }
     }

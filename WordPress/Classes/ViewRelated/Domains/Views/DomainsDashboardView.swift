@@ -4,6 +4,7 @@ import WordPressKit
 /// The Domains dashboard screen, accessible from My Site
 struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
+    @State var isShowingDomainRegistrationFlow = false
 
     var body: some View {
         List {
@@ -15,6 +16,11 @@ struct DomainsDashboardView: View {
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .navigationBarTitle(TextContent.navigationTitle)
+        .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
+            makeDomainSearch(for: blog, onDismiss: {
+                isShowingDomainRegistrationFlow = false
+            })
+        })
     }
 
     @ViewBuilder
@@ -62,9 +68,7 @@ struct DomainsDashboardView: View {
                 makeDomainCell(domain: $0)
             }
             PresentationButton(
-                destination: { hideSheet in
-                    makeDomainSearch(for: blog, onDismiss: hideSheet)
-                },
+                isShowingDestination: $isShowingDomainRegistrationFlow,
                 appearance: {
                     HStack {
                         Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
@@ -83,9 +87,8 @@ struct DomainsDashboardView: View {
             PresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
-                highlight: siteAddressForGetFirstDomainSection) { hideSheet in
-                    makeDomainSearch(for: blog, onDismiss: hideSheet)
-                } appearance: {
+                highlight: siteAddressForGetFirstDomainSection,
+                isShowingDestination: $isShowingDomainRegistrationFlow) {
                     ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
                         .largeRoundedRectangle()
                 }
