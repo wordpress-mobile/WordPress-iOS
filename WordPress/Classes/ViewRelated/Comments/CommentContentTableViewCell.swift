@@ -226,10 +226,12 @@ private extension CommentContentTableViewCell {
         replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         replyButton?.setImage(Style.replyIconImage, for: .normal)
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
+        replyButton?.flipInsetsForRightToLeftLayoutDirection()
 
         likeButton?.titleLabel?.font = Style.reactionButtonFont
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton?.flipInsetsForRightToLeftLayoutDirection()
         updateLikeButton(liked: false, numberOfLikes: 0)
     }
 
