@@ -16,6 +16,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var likeButtonAction: (() -> Void)? = nil
 
+    var contentLinkTapAction: ((URL) -> Void)? = nil
+
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
@@ -171,13 +173,17 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        // TODO: Offload the decision making to the delegate.
-        // For now, all navigation requests will be rejected (except for loading local files).
         switch navigationAction.navigationType {
         case .other:
+            // allow local file requests.
             decisionHandler(.allow)
         default:
             decisionHandler(.cancel)
+            guard let destinationURL = navigationAction.request.url,
+                  let linkTapAction = contentLinkTapAction else {
+                      return
+                  }
+            linkTapAction(destinationURL)
         }
     }
 }
