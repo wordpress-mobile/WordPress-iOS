@@ -1,5 +1,9 @@
 import UIKit
 
+protocol CommentModerationBarDelegate: AnyObject {
+    func statusChangedTo(_ commentStatus: CommentStatusType)
+}
+
 private typealias Style = WPStyleGuide.CommentDetail.ModerationBar
 
 class CommentModerationBar: UIView {
@@ -30,6 +34,7 @@ class CommentModerationBar: UIView {
     private let iPadPaddingMultiplier: CGFloat = 0.33
     private let iPhonePaddingMultiplier: CGFloat = 0.15
 
+    weak var delegate: CommentModerationBarDelegate?
     // MARK: - Init
 
     required init?(coder aDecoder: NSCoder) {
