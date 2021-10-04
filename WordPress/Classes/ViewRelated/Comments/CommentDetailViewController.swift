@@ -128,9 +128,8 @@ class CommentDetailViewController: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
                 return .init()
             }
-            cell.configure(with: comment) { _ in
-                self.tableView.performBatchUpdates({})
-            }
+
+            configureContentCell(cell, comment: comment)
             return cell
 
         case .replyIndicator:
@@ -244,6 +243,18 @@ private extension CommentDetailViewController {
         // otherwise, if this is a comment to a post, show the post title instead.
         headerCell.textLabel?.text = .postCommentTitleText
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
+    }
+
+    func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
+        cell.configure(with: comment) { _ in
+            self.tableView.performBatchUpdates({})
+        }
+
+        cell.contentLinkTapAction = { url in
+            // open all tapped links in web view.
+            // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
+            self.openWebView(for: url)
+        }
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
