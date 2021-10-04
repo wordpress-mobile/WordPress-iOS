@@ -342,6 +342,10 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func loadGrowAudienceCardSetting() {
+        guard shouldDisplayGrowAudienceCard else {
+            dismissGrowAudienceCard()
+            return
+        }
         guard let key = userDefaultsHideGrowAudienceKey else { return }
         loadPermanentlyDismissableInsight(.growAudience, using: key)
     }
