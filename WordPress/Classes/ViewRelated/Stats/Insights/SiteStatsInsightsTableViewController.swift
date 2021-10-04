@@ -146,8 +146,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        loadInsightsFromUserDefaults()
         initViewModel()
+        loadInsightsFromUserDefaults()
+        updateView()
         tableView.estimatedRowHeight = 500
 
         displayEmptyViewIfNecessary()
