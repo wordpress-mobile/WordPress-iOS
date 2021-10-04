@@ -24,7 +24,10 @@ struct DomainsDashboardView: View {
                 // register a free domain
                 Section(header: Text(TextContent.redirectedDomainsSectionHeader)) {
                     /// - TODO: - DOMAINS - Add the action that will start the new domain registration flow here
-                    Text(TextContent.redirectedDomainsLabel)
+                    NavigationLink(destination: DomainSuggestionViewControllerWrapper(blog: blog, domainType: .siteRedirect)) {
+                        /// - TODO: - DOMAINS - adjust the title depending on wether there is already a redirected domain or not
+                        Text(TextContent.firstRedirectedDomainLabel)
+                    }
                 }
 
                 // register a free domain with a paid plan
@@ -34,7 +37,7 @@ struct DomainsDashboardView: View {
 
                     Section(footer: Text(TextContent.paidPlanDomainSectionFooter)) {
                         /// - TODO: DOMAINS - We keep both options at the moment, for testing purposes. We will need to remove the one that we choose not to use.
-                        NavigationLink(destination: DomainSuggestionViewControllerWrapper(blog: blog)) {
+                        NavigationLink(destination: DomainSuggestionViewControllerWrapper(blog: blog, domainType: .registered)) {
                             Text(TextContent.paidPlanRegistrationLabelNavigation)
                         }
                     }
@@ -69,9 +72,13 @@ private extension DomainsDashboardView {
         // redirected domains
         static let redirectedDomainsSectionHeader: String = NSLocalizedString("Redirected Domains",
                                                                               comment: "Header of the redirected domains section in the Domains Dashboard.")
-        /// - TODO: DOMAINS - This title needs to be reviewed
-        static let redirectedDomainsLabel: String = NSLocalizedString("New domain flow",
-                                                                      comment: "Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard.")
+        // button title when adding the first redirected domain
+        static let firstRedirectedDomainLabel: String = NSLocalizedString("Get your domain",
+                                                                      comment: "Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard.")
+
+        // button title when adding another redirected domain
+        static let additionalRedirectedDomainLabel: String = NSLocalizedString("Add a domain",
+                                                                               comment: "Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard.")
 
         // paid plans
         static let paidPlanDomainSectionFooter: String = NSLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.",

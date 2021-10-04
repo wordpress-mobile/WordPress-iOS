@@ -1,8 +1,5 @@
-- Rimani aggiornato. Ora puoi ricevere un riepilogo settimanale dell'attività sui siti più popolari.
+- Aggiornamenti al blocco Incorporamenti: abbiamo abilitato le anteprime degli incorporamenti di WordPress, nonché gli incorporamenti per i contenuti di Instagram e Vimeo. Per alcuni elementi multimediali, puoi incorporare correttamente un URL, ma non puoi visualizzare in anteprima il contenuto; in alcune istanze, visualizzerai un messaggio "Nessuna anteprima disponibile". Nei casi in cui non sei in grado di incorporare elementi multimediali, visualizzerai ora un'opzione "Riprova" per incorporare nuovamente il contenuto e un'opzione alternativa per convertirlo invece in un link.
 
-- Hai ancora più controllo sui commenti del sito: quando li modifichi ora puoi anche regolare il nome dell'autore, l'indirizzo e-mail e quello del sito.
-Abbiamo apportato un paio di utili miglioramenti all'editor a blocchi. Il blocco Incorporamenti ora ti offre un assaggio di anteprima quando aggiungi qualcosa da YouTube o Twitter (sono in arrivo altri fornitori). Inoltre, quando vai a inserire un blocco e non trovi nulla, ora viene mostrata una visualizzazione "nessun risultato".
+- Vari miglioramenti: abbiamo semplificato il menu Il mio sito, modificando "Articoli del blog" con "Articoli" e "Pagine del sito" con "Pagine". (Ciò non ha interessato i contenuti del tuo articolo e della tua pagina, promesso!) Noterai anche che ora puoi pubblicare una pagina tramite la funzionalità Condividi estensione dell'app.
 
-- Se vai su Impostazioni dell'articolo > Formato articolo, troverai l'opzione "Standard" ancora nella parte superiore, ma le altre opzioni sono in ordine alfabetico a seguire. (Le opzioni possono variare in base ai temi.)
-
-- E ancora più velocità: aggiornare il tuo sito ora è semplicissimo. Basta scorrere con il dito per aggiornare la schermata Il mio sito.
+- Correzioni di bug: abbiamo risolto un problema nel Reader che ti impediva di rimuovere Articoli salvati e abbiamo anche corretto un bug che ti impediva di seguire una conversazione via e-mail per i commenti di un articolo.

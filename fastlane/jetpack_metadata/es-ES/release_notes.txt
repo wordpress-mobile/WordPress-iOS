@@ -1,8 +1,3 @@
-- ¡No te pierdas nada! Ahora puedes recibir un resumen semanal de la actividad de tus sitios más populares.
+- Actualizaciones del bloque de incrustar: hemos activado las vistas previas de incrustación de WordPress, así como las incrustaciones de contenido de Instagram y Vimeo. En el caso de algunos medios, es posible que puedas incrustar con éxito una URL, pero no puedas ver previamente el contenido; en estos casos, aparecerá el siguiente mensaje: "La vista previa no está disponible". En los casos en los que no puedas incrustar medios, verás la opción de "Reintentar" para incrustar el contenido de nuevo, además de una opción alternativa para convertirlo en un enlace.
 
-- Ahora tienes aún más control de los comentarios de tu sitio: al editarlos, también puedes cambiar el nombre del autor, la dirección de correo electrónico y la dirección web.
-Hemos realizado un par de mejoras al Editor de bloques. Ahora el bloque de incrustar te muestra una vista previa cuando añades contenido de YouTube o de Twitter (próximamente se añadirán más proveedores). Además, cuando quieres insertar un bloque pero no se encuentra nada, ahora aparece una vista sin resultados.
-
-- Si vas a Ajustes de la entrada > Formato de entrada, verás que la opción "Estándar" sigue en cabeza, pero que el resto de opciones ahora se enumeran debajo por orden alfabético. (¡Las opciones pueden variar según los temas!)
-
-- Y otra mejora rápida: ahora es muy fácil refrescar tu sitio, ¡solo tienes que refrescar la página desde Mi sitio!
+- Varias mejoras y correcciones: hemos simplificado el menú de Mi sitio, al cambiar "Entradas del blog" por "Entradas" y "Páginas del sitio" por "Páginas". (Te prometemos que esto no ha afectado al contenido de tus entradas y páginas). También hemos corregido un error que impedía seguir una conversación por correo electrónico a través de los comentarios de una entrada.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-06 13:48:09+0000 */
+/* Translation-Revision-Date: 2021-09-23 09:20:28+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opțiuni bloc %s";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "În curând, previzualizări pentru blocul %s";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "Bloc %s, este disponibil acum";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s a fost convertit în blocuri normale";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s are setat un URL";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adaugă aici URL-ul pentru CSS-ul personalizat care să fie încărcat în Cititor. Dacă rulezi Calypso local, ar trebuie să fi ceva de genul: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Adaugă un domeniu";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Poți să adaugi un bloc oricând prin atingerea iconului + din bara de unelte, în stânga jos.";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Articole de blog";
-
 /* Create new Blog Post button title */
 "Blog post" = "Articol blog";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Fundaluri pline de culoare";
 
+/* translators: %d: column index. */
+"Column %d" = "Coloana %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Setări coloane";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continui cu Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Convertește în legătură";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Bucătărie";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "N-am putut încărca etichete. Atinge pentru a reîncerca.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Nu am putut marca ca spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Nu am putut anula marcarea ca spam";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Nu am putut încărca imaginea reprezentativă";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Atinge de două ori pentru a anula ultima modificare";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Atinge de două ori pentru a vedea opțiunile de înglobare.";
+
 /* Download button title */
 "Download" = "Descarcă";
 
@@ -2514,13 +2529,13 @@ translators: Block name. %s: The localized block name */
 "Email" = "Email";
 
 /* Header for a comment author's email address, shown when editing a comment. */
-"Email Address" = "Adresa de email";
+"Email Address" = "Adresă email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
-"Email address" = "Adresă de email";
+"Email address" = "Adresă email";
 
 /* Notification Settings Channel */
 "Email from WordPress.com" = "Email de la WordPress.com";
@@ -2541,6 +2556,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email trimis!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "În curând, previzualizări pentru blocul Înglobează";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Înglobează subtitrarea. %s";
 
@@ -2552,6 +2570,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Înglobează media";
+
+/* No comment provided by engineer. */
+"Embed options" = "Opțiuni de înglobare";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoticon";
@@ -2597,7 +2618,7 @@ translators: Block name. %s: The localized block name */
 "Enter Full Screen" = "Intră pe ecran complet";
 
 /* Enter a custom value */
-"Enter a custom value" = "Introdu o valoare  personalizată";
+"Enter a custom value" = "Introdu o valoare personalizată";
 
 /* No comment provided by engineer. */
 "Enter a password" = "Introdu o parolă";
@@ -3107,6 +3128,9 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Dă-i drumul la treabă și asigură-te că mărești numărul de vizualizări ale articolului tău prin partajarea lui.";
 
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Ia-ți domeniul";
+
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Primești notificările mai repede";
 
@@ -3589,7 +3613,7 @@ translators: Block name. %s: The localized block name */
 
 /* Description for a label when the scan has failed
    Error message shown when the scan start has failed. */
-"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Scanarea Jetpack nu a putut finaliza scanarea site-ului tău. Te rog verifică dacă nu ți-a căzut site-ul - dacă funcționează, încearcă din nou.  Dacă site-ul funcționează și ai în continuare probleme cu scanarea Jetpack, contactează echipa noastră pentru suport.";
+"Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team." = "Scanarea Jetpack nu a putut finaliza scanarea site-ului tău. Te rog verifică dacă nu ți-a căzut site-ul - dacă funcționează, încearcă din nou. Dacă site-ul funcționează și ai în continuare probleme cu scanarea Jetpack, contactează echipa noastră pentru suport.";
 
 /* Description for a label when there are threats on the site, displays the number of threats, and the site's title */
 "Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us." = "Scanarea Jetpack a găsit %1$d amenințări posibile pe %2$@. Te rog examinează fiecare amenințare și acționează sau atinge butonul Înlătură-le pe toate. Suntem aici pentru a te ajuta, dacă ai nevoie de noi.";
@@ -3986,8 +4010,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Marchează ca reprezentativ";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Marchează ca nefiind spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Marchează ca văzut";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Marchează ca spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Marchează ca spam.";
@@ -4293,9 +4323,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Articol nou";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "Flux nou de domenii";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Element nou";
 
@@ -4509,6 +4536,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Niciun articol.";
+
+/* No comment provided by engineer. */
+"No preview available" = "Nu este disponibilă nicio previzualizare";
 
 /* A message title */
 "No recent posts" = "Niciun articol recent";
@@ -4810,7 +4840,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "TELEFON";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Pagină";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4860,7 +4891,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Pagina a fost actualizată";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pagini";
 
 /* Comments Paging
@@ -5105,7 +5138,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Limbi populare";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Articol";
 
 /* Title for selecting categories for a post */
@@ -5201,7 +5235,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Articole";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5375,6 +5410,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Publică imediat";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Publică pagina pe:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publică articolul pe:";
 
@@ -5393,6 +5431,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Publicare în";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Public pagina...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Public articolul...";
@@ -5796,8 +5837,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Salvare";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Salvează %ld fotografii ca o pagină ciornă pe:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Salvează %ld fotografii ca articol ciornă pe:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Salvează o fotografie ca o pagină ciornă pe:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Salvează o fotografie ca articol ciornă pe:";
@@ -5811,6 +5858,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Salvează ca ciornă";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Salvează pagina ciornă pe:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Salvează articolul ciornă pe:";
@@ -5834,6 +5884,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Salvează acest articol pentru mai târziu.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Salvez pagina...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Salvez articolul...";
@@ -5957,7 +6010,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Vezi comentariile și notificările în timp real.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Selectează";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6313,11 +6367,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Limbă site";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Pagini site";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirecționare site";
@@ -6740,11 +6789,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Atinge pentru a respinge acest cartuș";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Atinge pentru a afișa pagina web a referentului.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Atinge pentru a introduce o valoare personalizată";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Atinge pentru a ascunde tastatura";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Atinge pentru a marca referentul ca nefiind spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Atinge pentru a marca referentul ca spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Atinge pentru a vedea toate etichetele pentru acest articol";
@@ -7393,6 +7451,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nume utilizator Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Tastează";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Introdu un URL";
@@ -8821,6 +8882,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "azi, mai târziu";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "marcat ca spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "din";
 
@@ -8841,6 +8905,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL necunoscut";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "anulează marcarea ca spam";
 
 /* Noun. Describes a site's user. */
 "user" = "utilizator";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-15 18:32:25+0000 */
+/* Translation-Revision-Date: 2021-09-29 21:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blok seçenekleri";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%s blok önizlemeleri yakında kullanıma hazır";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s blok, hazır";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s normal bloklara dönüştürüldü";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s Gömülü blok önizlemeleri yakında geliyor";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s için URL ayarlanmış ";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader'a yüklenmek üzere buraya özel bir CSS URL'si ekleyin. Calypso'yu yerel olarak çalıştırıyorsanız şu şekilde olabilir: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Alan adı ekle";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Sol alttaki araç çubuğundaki + simgesine dokunarak istediğiniz zaman yeni bir blok ekleyin. ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Blog yazıları";
-
 /* Create new Blog Post button title */
 "Blog post" = "Blog yazısı";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Renkli arka planlar";
 
+/* translators: %d: column index. */
+"Column %d" = "Sütun %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Sütun Ayarları";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Apple ile devam ediliyor";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Bağlantıya dönüştür";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Yemek pişirme";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Etiketler yüklenemiyor. Tekrar denemek için dokunun.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Spam olarak işaretlenemedi";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Spam işareti kaldırılamadı";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Öne çıkan görsel yüklenemedi";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Son değişikliği geri almak için çift dokunun";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Gömme seçeneklerini görüntülemek için iki kez dokunun.";
+
 /* Download button title */
 "Download" = "İndir";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "E-posta gönderildi!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Açıklama göm. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Medya gömün";
+
+/* No comment provided by engineer. */
+"Embed options" = "Gömme seçenekleri";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Harekete geçin ve yazınızı paylaşarak yazınızın görüntülenme sayısını artırın.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Alan adınızı alın";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Bildirimlerinizi daha hızlı alın";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Yapışkan olarak işaretle";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Spam değil olarak işaretle";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Görüldü olarak işaretle";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Mark as spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "İstenmeyen olarak işaretle.";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Yeni yazı";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "Yeni alan adı akışı";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Yeni öge";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Yazı yok.";
+
+/* No comment provided by engineer. */
+"No preview available" = "Önizleme yok";
 
 /* A message title */
 "No recent posts" = "Güncel yazı yok";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "TELEFON";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Sayfa";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Sayfa güncellendi";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Sayfalar";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Popüler diller";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Yazı";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Yazılar";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Hemen yayımla";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Sayfayı şurada yayınla:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Yazıyı şurada yayımla:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Yayımlanıyor";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Sayfa yayımlanıyor...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Yazı yayımlanıyor...";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Kaydet";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "%ld fotoğrafı şuraya taslak sayfa olarak kaydet:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "%ld fotoğrafı taslak yazı olarak şuraya kaydet:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "1 fotoğrafı şuraya taslak sayfa olarak kaydet:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "1 fotoğrafı taslak yazı olarak şuraya kaydet:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Taslak olarak kaydet";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Taslak sayfasını şuraya kaydet:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Taslak yazıyı şuraya kaydet:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Bu yazıyı sonrası için kaydeder.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Sayfa kaydediliyor…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Yazı kaydediliyor...";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Yorumları ve bildirimleri gerçek zamanlı olarak görün.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Seç";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Site dili";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Site sayfaları";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Site yönlendirme";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Bu kartı kapatmak için dokunun";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Yönlendiren web sayfasını görüntülemek için dokunun.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Özel bir değer girmek için dokunun";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Klavyeyi gizlemek için dokunun";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Yönlendireni spam değil olarak işaretlemek için dokunun.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Yönlendireni spam olarak işaretlemek için dokunun. ";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Bu yazıya ait tüm etiketleri görmek için dokunun";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter kullanıcı adı";
+
+/* Type menu item in share extension. */
+"Type" = "Tür";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Bir URL yazın";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "bugün daha sonra";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "spam olarak işaretlendi";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = ",";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "bilinmeyen url";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "istenmeyen posta işaretini kaldır";
 
 /* Noun. Describes a site's user. */
 "user" = "kullanıcı";

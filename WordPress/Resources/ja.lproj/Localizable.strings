@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-15 18:33:29+0000 */
+/* Translation-Revision-Date: 2021-09-29 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s ブロックオプション";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "%sブロックのプレビューはまもなく公開予定です";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "新たに追加された%sブロック";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%sを通常のブロックへ変換しました";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s 埋め込みブロックのプレビューがまもなく公開予定です ";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s にカスタム URL が設定されています";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Reader に読み込むカスタム CSS URL はここに追加できます。Calypso をローカル環境で実行している場合、次のようになります: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "ドメインを追加";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "左下のツールバーにある + アイコンをタップすることで、いつでも新しいブロックを追加できます。 ";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "ブログ";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "ブログ投稿";
-
 /* Create new Blog Post button title */
 "Blog post" = "ブログ投稿";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "カラフルな背景";
 
+/* translators: %d: column index. */
+"Column %d" = "カラム %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "カラム設定";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Apple と連携しています";
 
+/* No comment provided by engineer. */
+"Convert to link" = "リンクに変換";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "料理";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "タグを読み込めませんでした。タップして再試行します。";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "スパムとしてマークできませんでした";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "スパムのマークを解除できませんでした";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "アイキャッチ画像をアップロードできませんでした";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "ダブルタップして前回の変更を元に戻す";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "ダブルタップして埋め込みオプションを表示します。";
+
 /* Download button title */
 "Download" = "ダウンロード";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "メールを送信しました。";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Embed block previews are coming soon";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "画像キャプション。%s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "メディアを埋め込み";
+
+/* No comment provided by engineer. */
+"Embed options" = "埋め込みオプション";
 
 /* Title for the Emoji section */
 "Emoji" = "絵文字";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "投稿をシェアして閲覧数を増やしましょう。";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "ドメインを取得";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "通知をもっとすばやく受信";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "先頭固定表示にする";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "非スパムとしてマーク";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "既読にする";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Mark as spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "スパムとしてマーク。";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "新規投稿";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "新規ドメインのフロー";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "新規項目";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "投稿がありません。";
+
+/* No comment provided by engineer. */
+"No preview available" = "利用できるプレビューがありません";
 
 /* A message title */
 "No recent posts" = "最近の投稿はありません";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "電話";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "ページ";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "ページを更新しました";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "ページ";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "人気の言語";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "投稿";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "投稿";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "すぐに公開";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "次にページを公開:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "以下の投稿に公開:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "公開先";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "ページを公開しています...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "投稿を公開しています...";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "保存";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "%ld枚の写真を下書きページとして以下に保存:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "%ld枚の写真を下書き投稿として保存:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "1枚の写真を下書きページとして次に保存:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "1つの写真を下書き投稿として以下に保存:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "下書きとして保存";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "下書きページを次に保存:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "下書き投稿を以下に保存:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "この投稿をブックマークする。";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "ページを保存しています…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "投稿を保存中…";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "コメントと通知をリアルタイムで表示します。";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "選択";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "サイトの言語";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "サイトのページ";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "サイト転送";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "タップしてこのカードを閉じます";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "タップしてリファラーの Web ページを表示します。";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "タップしてカスタム値を入力";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "タップしてキーボードを非表示";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "タップしてリファラーを非スパムとしてマークします。";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "タップしてリファラーをスパムとしてマークします。";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "タップしてこの投稿のすべてのフラグを表示";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter ユーザー名";
+
+/* Type menu item in share extension. */
+"Type" = "タイプ";
 
 /* No comment provided by engineer. */
 "Type a URL" = "URL を入力";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "今日あとで";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "スパムとしてマーク";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "不明な URL";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "スパムとしてのマークを解除";
 
 /* Noun. Describes a site's user. */
 "user" = "ユーザー";

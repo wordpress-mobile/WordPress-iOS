@@ -14,6 +14,7 @@ class SiteStatsDetailsViewModel: Observable {
 
     private var statSection: StatSection?
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsReceipt: Receipt?
@@ -31,8 +32,10 @@ class SiteStatsDetailsViewModel: Observable {
 
     // MARK: - Init
 
-    init(detailsDelegate: SiteStatsDetailsDelegate) {
+    init(detailsDelegate: SiteStatsDetailsDelegate,
+         referrerDelegate: SiteStatsReferrerDelegate) {
         self.detailsDelegate = detailsDelegate
+        self.referrerDelegate = referrerDelegate
     }
 
     // MARK: - Data Fetching
@@ -399,7 +402,6 @@ class SiteStatsDetailsViewModel: Observable {
 
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
-
 }
 
 // MARK: - Private Extension
@@ -739,7 +741,8 @@ private extension SiteStatsDetailsViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }
@@ -963,6 +966,7 @@ private extension SiteStatsDetailsViewModel {
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {
         return DetailExpandableRow(rowData: rowData,
                                    detailsDelegate: detailsDelegate,
+                                   referrerDelegate: referrerDelegate,
                                    hideIndentedSeparator: hideIndentedSeparator,
                                    hideFullSeparator: hideFullSeparator,
                                    expanded: expanded)

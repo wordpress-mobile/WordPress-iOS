@@ -1,8 +1,3 @@
-- Bleib auf dem Laufenden! Du kannst jetzt eine wöchentliche Übersicht über die Aktivitäten auf deinen beliebtesten Websites erhalten.
+- Updates am Embed-Block: Wir haben eine Vorschau für eingebettete Inhalte in WordPress hinzugefügt und ermöglichen jetzt das Einbetten von Instagram- und Vimeo-Inhalten. Bei manchen Medien kannst du eine URL einbetten, aber keine Vorschau anzeigen. In solchen Fällen wird die Meldung „Keine Vorschau erhältlich“ angezeigt. Falls sich Medien nicht einbetten lassen, kannst du mit der Option „Erneut versuchen“ die Inhalte noch einmal einbetten. Alternativ kannst du sie in einen Link konvertieren.
 
-- Du hast noch mehr Kontrolle über deine Website-Kommentare: Wenn du sie bearbeitest, kannst du jetzt auch den Namen, die E-Mail-Adresse und die Webadresse des Autors anpassen.
-Wir haben den Block-Editor um ein paar praktische Funktionen erweitert. Der Embed-Block zeigt dir jetzt eine Vorschau an, wenn du Inhalte aus YouTube oder Twitter (und bald noch von weiteren Anbietern) einfügst. Und wenn du einen Block einfügst und nichts gefunden wird, wird jetzt angezeigt, dass keine Ergebnisse vorhanden sind.
-
-- Wenn du zu „Beitragseinstellungen > Beitragsformat“ navigierst, wird nach wie vor oben die Option „Standard“ angezeigt. Darunter werden die anderen Optionen nun aber übersichtlich in alphabetischer Reihenfolge aufgeführt. (Die aufgeführten Optionen hängen vom jeweiligen Theme ab!)
-
-- Und noch etwas: Du kannst deine Website jetzt unglaublich einfach aktualisieren. Ziehe zum Aktualisieren einfach auf dem Bildschirm „Meine Website“ nach unten!
+- Verschiedene Verbesserungen und Fehlerbehebungen: Wir haben im „Meine Website“-Menü „Blogbeiträge“ zu „Beiträge“ und „Website-Seiten“ zu „Seiten“ vereinheitlicht. (Doch keine Sorge, das beeinträchtigt die Inhalte deiner Beiträge und Seiten nicht!) Außerdem haben wir einen Fehler behoben, aufgrund dessen du einer E-Mail-Unterhaltung über die Kommentare eines Beitrags nicht folgen konntest.

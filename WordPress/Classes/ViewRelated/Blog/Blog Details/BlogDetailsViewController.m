@@ -884,7 +884,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    BlogDetailsRow *postsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
+    BlogDetailsRow *postsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                               accessibilityIdentifier:@"Blog Post Row"
                                                                 image:[[UIImage gridiconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
                                                              callback:^{
@@ -900,7 +900,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                             }];
     [rows addObject:mediaRow];
 
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
                                              accessibilityIdentifier:@"Site Pages Row"
                                                     image:[UIImage gridiconOfType:GridiconTypePages]
                                                  callback:^{
@@ -1731,7 +1731,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPlugins
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
-    PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
+    PluginDirectoryViewController *controller = [self makePluginDirectoryViewControllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 

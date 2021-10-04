@@ -1,8 +1,3 @@
-- Tetap tahu kabar terbaru. Anda sekarang dapat menerima ringkasan mingguan terkait aktivitas di situs Anda yang paling populer.
+- Pembaruan blok sematan: Kami telah mengaktifkan pratinjau sematan WordPress, serta sematan untuk konten Instagram dan Vimeo.  Untuk beberapa media, Anda mungkin berhasil menyematkan URL tetapi tidak dapat melihat pratinjau konten; dalam hal ini, Anda akan melihat pesan “Pratinjau tidak tersedia”. Jika Anda tidak dapat menyematkan media, Anda akan melihat pilihan "Coba lagi" untuk menyematkan konten kembali, dan pilihan alternatif untuk mengonversinya menjadi tautan.
 
-- Komentar situs makin bisa diatur — saat mengedit komentar, Anda juga bisa menyesuaikan nama, alamat email, dan alamat web penulis.
-Kami melakukan beberapa penyesuaian bermanfaat untuk editor Blok. Blok Sematan sekarang dilengkapi pratinjau singkat untuk konten yang ditambahkan dari YouTube atau Twitter (penyedia lainnya akan hadir). Selain itu, sekarang saat blok dimasukkan dan tidak ada konten yang ditemukan, tampilan tidak ada hasil akan muncul.
-
-- Untuk opsi dalam Pengaturan Pos > Format Pos, "Standar" akan tetap menjadi opsi teratas, tetapi opsi lain kini akan ditampilkan urut sesuai abjad di bawahnya. (Opsi akan berbeda-beda tergantung tema!)
-
-- Dan satu lagi: Memuat ulang situs Anda kini sangat mudah — cukup tarik untuk memuat ulang dari layar Situs Saya!
+- Berbagai peningkatan dan perbaikan: Kami telah menyederhanakan menu Situs Saya dengan mengubah “Pos Blog” menjadi “Pos” dan “Halaman Situs” menjadi “Halaman”. (Penyederhanaan ini tidak memengaruhi konten pos dan halaman Anda—percayalah!) Kami juga memperbaiki bug yang menghambat Anda mengikuti percakapan via email melalui komentar pos.

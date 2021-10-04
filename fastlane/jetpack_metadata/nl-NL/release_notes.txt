@@ -1,8 +1,3 @@
-- Blijf op de hoogte! Je kunt nu een wekelijks overzicht van de activiteit op je meest populaire sites ontvangen.
+- Updates voor insluitblok: We hebben niet alleen ingesloten voorbeeldweergaven van WordPress ingeschakeld, maar ook van Instagram- en Vimeo-content. Je kunt voor sommige media een URL insluiten maar geen voorbeeldweergave van de content bekijken. Bij die media wordt een bericht ‘Geen voorbeeldweergave beschikbaar’ weergegeven. Als je geen media kunt insluiten, wordt de optie ‘Opnieuw proberen’ weergegeven om de content opnieuw in te sluiten. Ook wordt de alternatieve optie weergegeven om de content te converteren naar een link.
 
-- Je hebt nog meer controle over de opmerkingen op je site: als je opmerkingen bewerkt, kun je nu ook de naam, het e-mailadres en het webadres van de auteur aanpassen.
-We hebben enkele kleine maar nuttige aanpassingen aangebracht aan de blokeditor. Het insluitblok toont nu een voorbeeldweergave wanneer je iets van YouTube of Twitter toevoegt (in de toekomst meer platformen). Waneer je een blok toevoegt, maar er niets wordt gevonden, is er nu een weergave voor geen resultaten.
-
-- Als je naar Berichtinstellingen > Berichtindeling gaat, tref je de optie 'Standaard' nog steeds bovenaan aan, maar de andere opties staan nu netjes op alfabetische volgorde daaronder. (Opties verschillen per thema!)
-
-- En nog een laatste kleine aanpassing: Het is nu ontzettend gemakkelijk om je site te vernieuwen: veeg simpelweg omlaag op het scherm Mijn site om te vernieuwen!
+- Verschillende verbeteringen en oplossingen: We hebben je menu Mijn site gestroomlijnd, waarbij we ‘Blogberichten’ hebben gewijzigd in ‘Berichten’ en ‘Sitepagina’s’ in ‘Pagina’s’. (We beloven dat dit geen gevolgen heeft voor je bericht en paginacontent!) We hebben ook een bug opgelost die voorkwam dat je een gesprek per e-mail kon volgen via de opmerkingen bij een bericht.

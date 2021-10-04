@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-15 18:42:06+0000 */
+/* Translation-Revision-Date: 2021-09-30 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -217,9 +217,6 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s pilihan blok";
 
-/* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s block previews are coming soon" = "Pratinjau blok %s akan segera tersedia";
-
 /* translators: Newly available block name. %s: The localized block name */
 "%s block, newly available" = "%s blok, baru tersedia";
 
@@ -231,6 +228,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s diubah ke blok reguler";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "Pratinjau blok sematan %s akan segera hadir";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "URL %s telah ditetapkan ";
@@ -495,6 +495,9 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Tambah domain";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Tambahkan blok baru kapan saja dengan mengetuk ikon + di toolbar di kiri bawah.";
@@ -1051,10 +1054,6 @@ translators: Block name. %s: The localized block name */
 /* Opens the WordPress Mobile Blog */
 "Blog" = "Blog";
 
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Pos-pos Blog";
-
 /* Create new Blog Post button title */
 "Blog post" = "Pos blog";
 
@@ -1165,6 +1164,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1503,6 +1503,9 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Latar belakang berwarna";
 
+/* translators: %d: column index. */
+"Column %d" = "Kolom %d";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Pengaturan Kolom";
 
@@ -1743,6 +1746,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Melanjutkan dengan Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Konversikan ke tautan";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Memasak";
 
@@ -1835,6 +1841,12 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Tidak bisa memuat tag. Ketuk untuk mencoba lagi.";
+
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Tidak dapat menandai sebagai spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Tidak dapat menghilangkan tanda  spam";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Tidak dapat mengunggah gambar andalan";
@@ -2377,6 +2389,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Ketuk dua kali untuk mengurungkan perubahan terakhir";
 
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Ketuk dua kali untuk melihat pilihan sematan.";
+
 /* Download button title */
 "Download" = "Unduh";
 
@@ -2538,6 +2553,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email terkirim!";
 
+/* No comment provided by engineer. */
+"Embed block previews are coming soon" = "Pratinjau blok sematan akan segera hadir";
+
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Sematkan keterangan. %s";
 
@@ -2549,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Embed media" = "Sematkan media";
+
+/* No comment provided by engineer. */
+"Embed options" = "Pilihan sematan";
 
 /* Title for the Emoji section */
 "Emoji" = "Emotikon";
@@ -3103,6 +3124,9 @@ translators: Block name. %s: The localized block name */
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Mulai pos dan tingkatkan tampilan pos Anda dengan membagikannya.";
+
+/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Dapatkan domain Anda";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Dapatkan pemberitahuan lebih cepat";
@@ -3983,8 +4007,14 @@ translators: Block name. %s: The localized block name */
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Tandai sebagai Lekat";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Tandai bukan spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Tandai sebagai telah dilihat";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Tandai sebagai spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Tandai sebagai spam.";
@@ -4290,9 +4320,6 @@ translators: Block name. %s: The localized block name */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Postingan Baru";
 
-/* Label of the button that starts the purchase of a new redirected domain in the Domains Dashboard. */
-"New domain flow" = "Alur domain baru";
-
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Item baru";
 
@@ -4506,6 +4533,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Tidak ada pos.";
+
+/* No comment provided by engineer. */
+"No preview available" = "Pratinjau tidak tersedia";
 
 /* A message title */
 "No recent posts" = "Tidak ada pos terbaru";
@@ -4807,7 +4837,8 @@ translators: Block name. %s: The localized block name */
 "PHONE" = "TELEPON";
 
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Halaman";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4857,7 +4888,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Halaman diperbarui";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Halaman-halaman";
 
 /* Comments Paging
@@ -5102,7 +5135,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Bahasa populer";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Postingan";
 
 /* Title for selecting categories for a post */
@@ -5198,7 +5232,8 @@ translators: Block name. %s: The localized block name */
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Tulisan-tulisan";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5372,6 +5407,9 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Terbitkan segera";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Menerbitkan halaman pada:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Terbitkan pos di:";
 
@@ -5390,6 +5428,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Memublikasikan ke";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Menerbitkan halaman...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Menerbitkan pos...";
@@ -5793,8 +5834,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Simpan";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Simpan %ld foto sebagai halaman konsep pada:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Simpan %ld foto sebagai pos konsep pada:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Simpan 1 foto sebagai halaman konsep pada:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Simpan 1 foto sebagai konsep pos pada:";
@@ -5808,6 +5855,9 @@ translators: Block name. %s: The localized block name */
 /* Title of button allowing users to change the status of the post they are currently editing to Draft.
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Simpan sebagai Konsep";
+
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Simpan halaman konsep pada:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Simpan konsep pos pada:";
@@ -5831,6 +5881,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Menyimpan pos ini untuk nanti.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Menyimpan halaman...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Menyimpan pos…";
@@ -5954,7 +6007,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Lihat komentar dan pemberitahuan secara real-time.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Pilih";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -6310,11 +6364,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the Language Picker View */
 "Site Language" = "Bahasa Situs";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Laman Situs";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Pengalihan Situs";
@@ -6737,11 +6786,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Ketuk untuk membuang kartu ini";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Ketuk untuk menampilkan halaman web pengarah.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Ketuk untuk memasukkan nilai kustom";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Ketuk untuk menyembunyikan keyboard";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Ketuk untuk menandai pengarah sebagai bukan spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Ketuk untuk menandai pengarah sebagai spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Ketuk untuk melihat semua tag untuk pos ini";
@@ -7390,6 +7448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nama Pengguna Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Jenis";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Ketik URL";
@@ -8818,6 +8879,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "belakangan hari ini";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "ditandai sebagai spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "dari";
 
@@ -8838,6 +8902,9 @@ translators: Block name. %s: The localized block name */
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "url tidak diketahui";
+
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "tanda sebagai spam dihilangkan";
 
 /* Noun. Describes a site's user. */
 "user" = "pengguna";

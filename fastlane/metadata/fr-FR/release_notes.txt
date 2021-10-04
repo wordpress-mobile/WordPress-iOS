@@ -1,8 +1,5 @@
-- Restez au courant ! Vous pouvez désormais recevoir un récapitulatif hebdomadaire des activités sur vos sites les plus populaires.
+- Mises à jour des blocs de contenu embarqué : les aperçus embarqués WordPress sont désormais disponibles ainsi que les intégrations de contenus Instagram et Vimeo. Pour certains médias, vous pouvez intégrer une URL, mais pas voir d’aperçu du contenu ; dans ce cas, le message « Aucun aperçu disponible » apparaîtra. Si vous ne parvenez pas à intégrer de média, vous verrez désormais une option « Réessayer » et vous aurez également la possibilité de convertir le média en lien.
 
-- Vous contrôlez davantage les commentaires sur vos sites : lorsque vous les modifiez, vous pouvez désormais également changer le nom de l’auteur, l’adresse e-mail et l’adresse Web.
-Nous avons apporté quelques modifications pratiques à l’éditeur de blocs. Le bloc de contenu embarqué vous donne désormais un premier aperçu lorsque vous effectuez un ajout depuis YouTube ou Twitter (plus de fournisseurs prochainement). De plus, lorsque vous essayez d’insérer un bloc introuvable, un message indique qu’aucun résultat n’est disponible.
+- Améliorations variées : nous avons simplifié le menu Mon site, en remplaçant « Articles de blog » par « Articles » et « Pages du site » par « Pages ». (Le contenu de vos articles et pages n’est pas affecté, promis !) Vous remarquez également que vous pouvez désormais publier une page à partir de l’extension Partage de l’application.
 
-- Si vous accédez à Paramètres d’article > Format d’article, vous verrez que l’option « Standard » apparaît toujours dans la partie supérieure, mais que les autres options s’affichent désormais clairement par ordre alphabétique en dessous. (Les options varient en fonction des thèmes !)
-
-- Et enfin : vous pouvez désormais actualiser votre site très facilement en faisant simplement glisser vers le bas à partir de l’écran Mon site !
+- Correctifs : nous avons résolu un problème dans le Lecteur qui empêchait la suppression des articles enregistrés et corrigé un bug qui empêchait de continuer une conversation par e-mail à partir des commentaires d’un article.
