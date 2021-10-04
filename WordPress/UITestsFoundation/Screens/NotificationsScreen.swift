@@ -2,13 +2,11 @@ import XCTest
 
 public class NotificationsScreen: BaseScreen {
 
-    let tabBar: TabNavComponent
     let replyButton: XCUIElement
 
     init() {
         let navBar = XCUIApplication().tables["Notifications Table"]
         replyButton = XCUIApplication().buttons["reply-button"]
-        tabBar = TabNavComponent()
 
         super.init(element: navBar)
     }

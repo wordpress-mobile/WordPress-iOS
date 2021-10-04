@@ -3,21 +3,18 @@ import XCTest
 // TODO: remove when unifiedAuth is permanent.
 
 private struct ElementStringIDs {
-    static let navBar = "WordPress.LoginEmailView"
     static let emailTextField = "Login Email Address"
     static let nextButton = "Login Email Next Button"
     static let siteAddressButton = "Self Hosted Login Button"
 }
 
 public class LoginEmailScreen: BaseScreen {
-    let navBar: XCUIElement
     let emailTextField: XCUIElement
     let nextButton: XCUIElement
     let siteAddressButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars[ElementStringIDs.navBar]
         emailTextField = app.textFields[ElementStringIDs.emailTextField]
         nextButton = app.buttons[ElementStringIDs.nextButton]
         siteAddressButton = app.buttons[ElementStringIDs.siteAddressButton]

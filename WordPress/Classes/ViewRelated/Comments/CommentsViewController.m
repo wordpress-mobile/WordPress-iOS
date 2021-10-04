@@ -269,7 +269,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     UIViewController *detailViewController;
 
     if ([Feature enabled:FeatureFlagNewCommentDetail]) {
-        detailViewController = [[CommentDetailViewController alloc] initWithComment:comment];
+        detailViewController = [[CommentDetailViewController alloc] initWithComment:comment managedObjectContext:[ContextManager sharedInstance].mainContext];
     } else {
         CommentViewController *vc   = [CommentViewController new];
         vc.comment                  = comment;
@@ -566,7 +566,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshAndSyncIfNeeded
 {
-    if (self.blog) {
+    if (self.blog && self.contentIsEmpty) {
         [self.syncHelper syncContent];
     }
 }

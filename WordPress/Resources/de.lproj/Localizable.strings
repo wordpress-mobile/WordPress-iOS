@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-15 18:44:31+0000 */
+/* Translation-Revision-Date: 2021-09-29 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -230,7 +230,7 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "%s wurde in normale Blöcke umgewandelt";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+"%s embed block previews are coming soon" = "Embed-Block-Vorschau für %s-Inhalte demnächst verfügbar";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "Für %s wurde eine URL festgelegt";

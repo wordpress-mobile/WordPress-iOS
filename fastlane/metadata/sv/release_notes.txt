@@ -1,0 +1,5 @@
+– Uppdateringar av inbäddningsblocket: nu fungerar förhandsvisning av inbäddning från WordPress och även innehåll från Instagram och Vimeo. För vissa media går det att bädda in en URL trots att förhandsvisningen inte fungerar, i så fall visas ett meddelande om att förhandsvisning inte är tillgänglig. I andra fall, då media inte går att bädda in får du nu valet att försöka igen och ett alternativ att i stället konvertera inbäddningen till en länk.
+
+– Diverse förbättringar: vi har strukturerat menyn ”Min webbplats”, ändrat ”blogginlägg” till ”inlägg” och ”webbplatssidor” till ”sidor”. (Vi kan garantera att detta inte påverkar själva innehållet på något sätt!) Du märker också snart att du nu kan publicera en sida via appens delningsfunktion.
+
+– Felrättningar: vi har rättat ett fel i läsaren som inte lät dig ta bort sparade inlägg och ett fel som inte lät dig under ett inläggs kommentarer prenumerera på konversationen via e-post.

@@ -1014,6 +1014,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
         gutenbergSettings.blockTypeImpressions = impressions
     }
+
+    func gutenbergDidRequestContactCustomerSupport() {
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+    }
+
+    func gutenbergDidRequestGotoCustomerSupportOptions() {
+        let controller = SupportTableViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        self.topmostPresentedViewController.present(navController, animated: true)
+    }
 }
 
 // MARK: - Suggestions implementation

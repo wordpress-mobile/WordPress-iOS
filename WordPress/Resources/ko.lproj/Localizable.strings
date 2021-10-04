@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-01 09:54:11+0000 */
+/* Translation-Revision-Date: 2021-09-29 11:54:55+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -212,7 +212,7 @@
 
 /* translators: %s: Block name e.g. \"Image block\"
 translators: Block name. %s: The localized block name */
-"%s block" = "%s block";
+"%s block" = "%s 블록";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 블록 옵션";
@@ -230,7 +230,7 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "일반 블록으로 %s 변환됨";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+"%s embed block previews are coming soon" = "%s 임베드 블록 미리보기 곧 공개 예정";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s에 설정된 URL 있음";
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s에 설정된 URL 없음";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "%s 미리보기는 아직 사용할 수 없음";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "%s 소셜 아이콘";
@@ -309,7 +309,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "일주일에 <strong>%d<\/strong>번";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = " %2$@에서 일주일에 <strong>%1$d<\/strong>번";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "일주일에 <strong>한 번<\/strong>";
@@ -497,7 +497,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "리더에서 부를 사용자 정의 CSS URL을 여기에 추가하세요. 자체적으로 칼립소를 실행하고 있다면 다음과 같이 할 수 있습니다: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
-"Add a domain" = "Add a domain";
+"Add a domain" = "도메인 추가";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "왼쪽 하단의 도구 모음에서 + 아이콘을 눌러 언제든지 새 블록을 추가하세요. ";
@@ -1504,10 +1504,10 @@ translators: Block name. %s: The localized block name */
 "Colorful backgrounds" = "화려한 배경";
 
 /* translators: %d: column index. */
-"Column %d" = "Column %d";
+"Column %d" = "열 %d";
 
 /* No comment provided by engineer. */
-"Columns Settings" = "Columns Settings";
+"Columns Settings" = "열 설정";
 
 /* First story intro item description */
 "Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love." = "사진, 비디오, 그리고 문자를 조합하여 방문자에게 매력적이고 좋아할 수 있는 탭할 수 있는 이야기 글을 만드세요.";
@@ -1531,7 +1531,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "댓글";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1747,7 +1747,7 @@ translators: Block name. %s: The localized block name */
 "Continuing with Apple" = "Apple 로 계속하기";
 
 /* No comment provided by engineer. */
-"Convert to link" = "Convert to link";
+"Convert to link" = "링크로 변환";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "요리";
@@ -1843,16 +1843,16 @@ translators: Block name. %s: The localized block name */
 "Couldn't load tags. Tap to retry." = "태그를 로드할 수 없었습니다. 눌러서 다시 시도하세요.";
 
 /* Indicating that referrer couldn't be marked as spam */
-"Couldn't mark as spam" = "Couldn't mark as spam";
+"Couldn't mark as spam" = "스팸으로 표시할 수 없음";
 
 /* Indicating that referrer couldn't be unmarked as spam */
-"Couldn't unmark as spam" = "Couldn't unmark as spam";
+"Couldn't unmark as spam" = "스팸 표시를 취소할 수 없음";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "특성 이미지를 업로드 할 수 없습니다";
 
 /* Error title displayed when unable to close user account. */
-"Couldn’t close account automatically" = "Couldn’t close account automatically";
+"Couldn’t close account automatically" = "계정을 자동으로 닫을 수 없습니다.";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "미디어 아이템 계산 중...";
@@ -2390,7 +2390,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to undo last change" = "마지막 변경을 취소하려면 두 번 탭하세요.";
 
 /* No comment provided by engineer. */
-"Double tap to view embed options." = "Double tap to view embed options.";
+"Double tap to view embed options." = "임베드 옵션을 보려면 두 번 누릅니다.";
 
 /* Download button title */
 "Download" = "다운로드하기";
@@ -2554,7 +2554,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "이메일이 전송되었습니다.";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "임베드 블록 미리보기는 곧 공개 예정";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "캡션을 임베드합니다. %s";
@@ -2569,7 +2569,7 @@ translators: Block name. %s: The localized block name */
 "Embed media" = "미디어 임베드";
 
 /* No comment provided by engineer. */
-"Embed options" = "Embed options";
+"Embed options" = "임베드 옵션";
 
 /* Title for the Emoji section */
 "Emoji" = "이모티콘";
@@ -2990,7 +2990,7 @@ translators: Block name. %s: The localized block name */
 "Follow other sites" = "다른 사이트 팔로우";
 
 /* Verb. An option to follow a site. */
-"Follow site" = "Follow site";
+"Follow site" = "사이트 팔로우하기";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "토픽 따르기";
@@ -3126,7 +3126,7 @@ translators: Block name. %s: The localized block name */
 "Get the ball rolling and increase your post views by sharing your post." = "시작한 후에는 글을 공유하여 조회수를 높이세요.";
 
 /* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Get your domain";
+"Get your domain" = "도메인 가져오기";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "알림을 더 빨리 받기";
@@ -3353,7 +3353,7 @@ translators: Block name. %s: The localized block name */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "저는 사진 작가 Cameron Karsten의 작업에서 많은 영감을 받았습니다. 다음 작업에서 이러한 기법을 시도해볼 생각합니다.";
 
 /* Describes the IP address section in the comment detail screen. */
-"IP address" = "IP address";
+"IP address" = "IP 주소";
 
 /* Title of a button style */
 "Icon & Text" = "아이콘 및 텍스트";
@@ -3770,7 +3770,7 @@ translators: Block name. %s: The localized block name */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "한계에 이르렀습니다. 1분 후에 다시 할 수 있습니다. 제한이 해제 되기까지 기다리는 시간을 증가시키기 전에 다시 해보세요. 이것이 에러라면 지원 센터에 연락하세요. ";
 
 /* No comment provided by engineer. */
-"Line Height" = "Line Height";
+"Line Height" = "줄 간격";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -3798,7 +3798,7 @@ translators: Block name. %s: The localized block name */
 "Link inserted" = "링크 삽입됨";
 
 /* No comment provided by engineer. */
-"Link text" = "Link text";
+"Link text" = "링크 텍스트";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "기존 콘텐츠에 연결";
@@ -4008,13 +4008,13 @@ translators: Block name. %s: The localized block name */
 "Mark as Sticky" = "붙박이로 표시";
 
 /* Action title for unmarking referrer as spam */
-"Mark as not spam" = "Mark as not spam";
+"Mark as not spam" = "스팸 아님으로 표시";
 
 /* An option to mark a post as seen. */
 "Mark as seen" = "읽음으로 표시";
 
 /* Action title for marking referrer as spam */
-"Mark as spam" = "Mark as spam";
+"Mark as spam" = "스팸으로 표시";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "스팸으로 표시";
@@ -4535,7 +4535,7 @@ translators: Block name. %s: The localized block name */
 "No posts." = "글이 없습니다.";
 
 /* No comment provided by engineer. */
-"No preview available" = "No preview available";
+"No preview available" = "사용 가능한 미리보기 없음";
 
 /* A message title */
 "No recent posts" = "최근 글 없음";
@@ -4961,7 +4961,7 @@ translators: Block name. %s: The localized block name */
 "Photo Library" = "사진 라이브러리";
 
 /* Tab bar title for the Photos tab in Media Picker */
-"Photos" = "Photos";
+"Photos" = "사진";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Pexels 제공 사진";
@@ -5311,7 +5311,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "기본 사이트";
 
 /* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Primary Site Address";
+"Primary Site Address" = "기본 사이트 주소";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5408,7 +5408,7 @@ translators: Block name. %s: The localized block name */
 "Publish immediately" = "즉시 공개";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
-"Publish page on:" = "Publish page on:";
+"Publish page on:" = "페이지 발행 중:";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "글 발행 날짜:";
@@ -5430,7 +5430,7 @@ translators: Block name. %s: The localized block name */
 "Publishing To" = "다음으로 발행하기";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
-"Publishing page..." = "Publishing page...";
+"Publishing page..." = "페이지 발행 중...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "글 발행 중...";
@@ -5513,7 +5513,7 @@ translators: Block name. %s: The localized block name */
 "Reconnected" = "다시 연결됨";
 
 /* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Redirected Domains";
+"Redirected Domains" = "제한된 도메인";
 
 /* Label for link title in Referrers stat. */
 "Referrer" = "참조자";
@@ -5533,7 +5533,7 @@ translators: Block name. %s: The localized block name */
 "Register Privately with Privacy Protection" = "개인정보 보호를 통해 비공개로 등록";
 
 /* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Register a free domain";
+"Register a free domain" = "새로운 무료 도메인 등록";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -5678,7 +5678,7 @@ translators: Block name. %s: The localized block name */
 "Reply to post…" = "답글 달기…";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
+"Report this post" = "이 글 신고하기";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "이 링크 수보다 링크가 많이 포함된 댓글에 대한 수동 승인이 필요합니다.";
@@ -5738,7 +5738,7 @@ translators: Block name. %s: The localized block name */
 "Restore Failed" = "복원 실패";
 
 /* Title for error displayed when restoring a site fails. */
-"Restore failed" = "Restore failed";
+"Restore failed" = "복원 실패";
 
 /* Label that describes the restore site action */
 "Restore site" = "사이트 복원하기";
@@ -5835,13 +5835,13 @@ translators: Block name. %s: The localized block name */
 "Save" = "저장하기";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
-"Save %ld photos as a draft page on:" = "Save %ld photos as a draft page on:";
+"Save %ld photos as a draft page on:" = "사진 %ld개를 임시글 페이지로 저장:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "사진 %ld을(를) 임시글로 다음 위치에 저장:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
-"Save 1 photo as a draft page on:" = "Save 1 photo as a draft page on:";
+"Save 1 photo as a draft page on:" = "사진 1개를 임시글 페이지로 저장:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "사진 1개를 임시글로 다음 위치에 저장:";
@@ -5857,7 +5857,7 @@ translators: Block name. %s: The localized block name */
 "Save as Draft" = "임시글로 저장";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
-"Save draft page on:" = "Save draft page on:";
+"Save draft page on:" = "임시글 페이지 저장: ";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "임시글을 다음 위치에 저장:";
@@ -5883,7 +5883,7 @@ translators: Block name. %s: The localized block name */
 "Saves this post for later." = "나중에 사용할 수 있게 이 글 저장";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
-"Saving page…" = "Saving page…";
+"Saving page…" = "페이지 저장 중…";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "글을 저장하는 중…";
@@ -5977,7 +5977,7 @@ translators: Block name. %s: The localized block name */
 "Search posts" = "글 검색";
 
 /* No comment provided by engineer. */
-"Search settings" = "Search settings";
+"Search settings" = "검색 설정";
 
 /* Title for placeholder in Tenor picker */
 "Search to find GIFs to add to your Media Library!" = "GIF를 검색하여 미디어 라이브러리에 추가하세요!";
@@ -6787,7 +6787,7 @@ translators: Block name. %s: The localized block name */
 "Tap to dismiss this card" = "이 카드를 무시하려면 탭하세요.";
 
 /* Accessibility hint for referrer details row. */
-"Tap to display referrer web page." = "Tap to display referrer web page.";
+"Tap to display referrer web page." = "참조자 웹 페이지를 표시하려면 누릅니다.";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "사용자 정의 값을 입력하려면 탭하세요.";
@@ -6796,10 +6796,10 @@ translators: Block name. %s: The localized block name */
 "Tap to hide the keyboard" = "키보드를 숨기려면 탭";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
+"Tap to mark referrer as not spam." = "참조자를 스팸 아님으로 표시하려면 누릅니다.";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as spam." = "Tap to mark referrer as spam.";
+"Tap to mark referrer as spam." = "참조자를 스팸으로 표시하려면 누릅니다.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "이 글의 모든 태그를 보려면 누르기";
@@ -7253,7 +7253,7 @@ translators: Block name. %s: The localized block name */
 "To add photos or videos to your posts." = "글에 사진이나 비디오를 추가";
 
 /* Error message displayed when unable to close user account. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+"To close this account now, contact our support team." = "이 계정을 지금 닫으려면, 지원 팀에 문의하세요.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "계속하려면 이메일 주소와 이름을 입력하세요.";
@@ -7450,7 +7450,7 @@ translators: Block name. %s: The localized block name */
 "Twitter Username" = "Twitter 사용자명";
 
 /* Type menu item in share extension. */
-"Type" = "Type";
+"Type" = "유형";
 
 /* No comment provided by engineer. */
 "Type a URL" = "URL 입력";
@@ -8271,13 +8271,13 @@ translators: Block name. %s: The localized block name */
 "Web News" = "웹 뉴스";
 
 /* Describes the web address section in the comment detail screen. */
-"Web address" = "Web address";
+"Web address" = "웹 주소";
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "시작 요일";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "주간 종합";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "주";
@@ -8320,10 +8320,10 @@ translators: Block name. %s: The localized block name */
 "We’ll walk you through the basics of building and growing your site" = "사이트 빌드 및 성장에 대한 기본 사항을 안내해 드립니다.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "%s 미리 보기에 대한 지원을 추가하려고 노력하고 있습니다. 그동안에는 페이지에 임베드된 콘텐츠를 미리 볼 수 있습니다.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "%s 미리 보기에 대한 지원을 추가하려고 노력하고 있습니다. 그동안에는 글에 임베드된 콘텐츠를 미리 볼 수 있습니다.";
 
 /* Body text of alert letting users know we've upgraded the quick start checklist. */
 "We’ve added more tasks to help you grow your audience." = "방문자 수를 늘리는 데 도움이 되는 작업이 추가되었습니다.";
@@ -8347,7 +8347,7 @@ translators: Block name. %s: The localized block name */
 "What is alt text?" = "대체 텍스트란 무엇인가요?";
 
 /* Title for the problem section in the Threat Details */
-"What was the problem?" = "What was the problem?";
+"What was the problem?" = "문제가 무엇이었나요?";
 
 /* Title of section that contains plugins' change log */
 "What's New" = "새로운 기능";
@@ -8583,7 +8583,7 @@ translators: Block name. %s: The localized block name */
 "You can update this any time via My Site > Site Settings" = "내 사이트 > 사이트 설정에서 언제든지 업데이트할 수 있습니다.";
 
 /* Prompt shown on the Blogging Reminders Settings screen. */
-"You can update this anytime" = "You can update this anytime";
+"You can update this anytime" = "언제든지 업데이트할 수 있습니다.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "해당 이메일 주소를 회원가입하는데 사용할 수 없습니다. 우리의 이메일을 차단하는 문제를 일으킵니다. 다른 이메일 제공자를 사용하세요.";
@@ -8743,7 +8743,7 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "글, 페이지 및 설정이 %@(으)로 메일로 전송됩니다.";
 
 /* Footer of the primary site section in the Domains dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "기본 사이트 주소는 방문자가 당신의 사이트에 방문할 때 브라우저의 주소창에 표시되는 주소입니다.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "복원은 평소보다 오래 걸립니다. 잠시 후에 다시 확인하세요.";
@@ -8880,7 +8880,7 @@ translators: Block name. %s: The localized block name */
 "later today" = "오늘 중";
 
 /* Indicating that referrer was marked as spam */
-"marked as spam" = "marked as spam";
+"marked as spam" = "스팸으로 표시됨";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -8904,7 +8904,7 @@ translators: Block name. %s: The localized block name */
 "unknown url" = "알 수 없는 url";
 
 /* Indicating that referrer was unmarked as spam */
-"unmarked as spam" = "unmarked as spam";
+"unmarked as spam" = "스팸 표시 취소됨";
 
 /* Noun. Describes a site's user. */
 "user" = "사용자";

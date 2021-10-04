@@ -34,6 +34,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 - (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
 
+- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog;
+
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
                     success:(void (^)(BOOL hasMore))success

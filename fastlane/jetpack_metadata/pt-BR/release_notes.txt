@@ -1,0 +1,3 @@
+- Atualizações no bloco de mídia incorporada: habilitamos a prévia de mídias incorporadas ao WordPress e ao conteúdo do Instagram e Vimeo. No caso de algumas mídias, pode ser que você consiga incorporar a URL, mas não pré-visualizar o conteúdo. Agora se você não puder incorporar mídias, verá a opção "Tente novamente" para incorporar o conteúdo de novo, e uma alternativa de convertê-lo em um link.
+
+- Várias melhorias e correções: simplificamos o menu Meu site, mudando "Posts do blog" para "Posts" e "Páginas do site" para "Páginas". Isso não afeta o conteúdo do seu post ou página, pode confiar! Além disso, corrigimos um bug que impedia você de acompanhar uma conversa por e-mail nos comentários de um post.
