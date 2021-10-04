@@ -351,6 +351,13 @@ private extension SiteStatsInsightsTableViewController {
         permanentlyDismissInsight(.growAudience, using: key)
     }
 
+    var shouldDisplayGrowAudienceCard: Bool {
+        let threshold = 30
+        let insightsStore = StoreContainer.shared.statsInsights
+        let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        return count < threshold
+    }
+
     // MARK: - Insights Management
 
     func showAddInsightView() {
