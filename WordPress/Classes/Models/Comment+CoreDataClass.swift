@@ -159,7 +159,7 @@ extension Comment: PostContentProvider {
         }
     }
 
-    static func typeForStatus(_ status: String) -> CommentStatusType? {
+    static func typeForStatus(_ status: String?) -> CommentStatusType? {
         switch status {
         case "hold":
             return .pending
