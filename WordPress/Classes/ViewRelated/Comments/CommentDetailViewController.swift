@@ -130,6 +130,7 @@ class CommentDetailViewController: UITableViewController {
             }
 
             configureContentCell(cell, comment: comment)
+            cell.moderationBar.delegate = self
             return cell
 
         case .replyIndicator:
@@ -385,4 +386,19 @@ private extension String {
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
     static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
+}
+
+
+// MARK: - CommentModerationBarDelegate
+
+extension CommentDetailViewController: CommentModerationBarDelegate {
+    func statusChangedTo(_ commentStatus: CommentStatusType) {
+
+        // TODO: update Comment
+
+        switch commentStatus {
+        default:
+            break
+        }
+    }
 }
