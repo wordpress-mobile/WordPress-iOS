@@ -281,7 +281,7 @@ private extension UIButton {
         layer.shadowOffset = Style.buttonShadowOffset
         layer.shadowOpacity = Style.buttonShadowOpacity
         layer.shadowRadius = Style.buttonShadowRadius
-        
+
         isExclusiveTouch = true
 
         verticallyAlignImageAndText()
