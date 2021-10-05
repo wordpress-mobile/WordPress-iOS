@@ -552,10 +552,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `ff18f5fe3c9766168a31e5c6117c47880dff0de6`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `161682387aea50251424cb5721aca3d01220600d`)
   - WordPressKit (~> 4.42.0)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `9978a4a3895faa820244e2ce8a954c36c6e2ec18`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `54fd3659a73b58b548818b9000ac75d1215e99b1`)
   - WordPressUI (~> 1.12.2)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.63.0/third-party-podspecs/Yoga.podspec.json`)
@@ -710,10 +710,10 @@ EXTERNAL SOURCES:
     :submodules: true
     :tag: v1.63.0
   WordPressAuthenticator:
-    :commit: ff18f5fe3c9766168a31e5c6117c47880dff0de6
+    :commit: 161682387aea50251424cb5721aca3d01220600d
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressShared:
-    :commit: 9978a4a3895faa820244e2ce8a954c36c6e2ec18
+    :commit: 54fd3659a73b58b548818b9000ac75d1215e99b1
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.63.0/third-party-podspecs/Yoga.podspec.json
@@ -731,10 +731,10 @@ CHECKOUT OPTIONS:
     :submodules: true
     :tag: v1.63.0
   WordPressAuthenticator:
-    :commit: ff18f5fe3c9766168a31e5c6117c47880dff0de6
+    :commit: 161682387aea50251424cb5721aca3d01220600d
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressShared:
-    :commit: 9978a4a3895faa820244e2ce8a954c36c6e2ec18
+    :commit: 54fd3659a73b58b548818b9000ac75d1215e99b1
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
@@ -836,6 +836,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 9c38239f51cd4eb2182732609038ec81f3a4ed14
+PODFILE CHECKSUM: 09c93bf96b8481bb954c38fc98ff56bbbdeb260f
 
 COCOAPODS: 1.10.1

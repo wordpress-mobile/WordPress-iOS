@@ -23,7 +23,7 @@ def wordpress_shared
     #pod 'WordPressShared', '~> 1.16.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '9978a4a3895faa820244e2ce8a954c36c6e2ec18'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '54fd3659a73b58b548818b9000ac75d1215e99b1'
     #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
 
@@ -217,7 +217,7 @@ abstract_target 'Apps' do
 
     # pod 'WordPressAuthenticator', '~> 1.42.0'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'ff18f5fe3c9766168a31e5c6117c47880dff0de6'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '161682387aea50251424cb5721aca3d01220600d'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.2.1'
