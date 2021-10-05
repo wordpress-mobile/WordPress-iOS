@@ -108,6 +108,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         return key + "-\(siteID)"
     }
 
+    // Local state for site current view count
+    private var currentViewCount: Int?
+
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
     // A single site's dictionary contains the InsightType values for that site.
@@ -360,6 +363,18 @@ private extension SiteStatsInsightsTableViewController {
         let insightsStore = StoreContainer.shared.statsInsights
         let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         return count < threshold
+    }
+
+    func refreshGrowAudienceCardIfNecessary() {
+        let insightsStore = StoreContainer.shared.statsInsights
+        guard let count = insightsStore.getAllTimeStats()?.viewsCount,
+              count != self.currentViewCount else {
+                  return
+              }
+
+        self.currentViewCount = count
+        self.loadInsightsFromUserDefaults()
+        self.updateView()
     }
 
     // MARK: - Insights Management
