@@ -50,6 +50,8 @@ class DomainSuggestionsTableViewController: UITableViewController {
         return useFadedColorForParentDomains ? .neutral(.shade30) : .neutral(.shade70)
     }
 
+    private let searchDebouncer = Debouncer(delay: 0.5)
+
     // MARK: - Init
 
     required init?(coder aDecoder: NSCoder) {
@@ -122,6 +124,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
         let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
 
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
+        SVProgressHUD.setContainerView(tableView)
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
         service.getDomainSuggestions(base: searchTerm,
@@ -131,8 +134,6 @@ class DomainSuggestionsTableViewController: UITableViewController {
             self?.noSuggestions = false
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .singleLine
-            // Dismiss the keyboard so the full results list can be seen.
-            self?.view.endEditing(true)
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
@@ -262,6 +263,8 @@ extension DomainSuggestionsTableViewController {
             fatalError()
         }
 
+        cell.allowSpaces = false
+        cell.liveSearch = true
         cell.placeholder = searchFieldPlaceholder
         cell.reloadTextfieldStyle()
         cell.delegate = self
@@ -372,7 +375,12 @@ extension DomainSuggestionsTableViewController {
 
 extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
+        searchDebouncer.call { [weak self] in
+            self?.search(for: searchTerm)
+        }
+    }
 
+    private func search(for searchTerm: String) {
         removeNoResultsFromView()
         delegate?.newSearchStarted()
 

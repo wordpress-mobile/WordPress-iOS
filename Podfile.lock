@@ -61,7 +61,7 @@ PODS:
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.6.1)
+  - GTMSessionFetcher/Core (1.7.0)
   - Gutenberg (1.63.0):
     - React (= 0.64.0)
     - React-CoreModules (= 0.64.0)
@@ -440,7 +440,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.4)
   - WordPress-Editor-iOS (1.19.4):
     - WordPress-Aztec-iOS (= 1.19.4)
-  - WordPressAuthenticator (1.42.0):
+  - WordPressAuthenticator (1.42.1-beta.1):
     - 1PasswordExtension (~> 1.8.6)
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -552,10 +552,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
-  - WordPressAuthenticator (~> 1.42.0)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `ff18f5fe3c9766168a31e5c6117c47880dff0de6`)
   - WordPressKit (~> 4.42.0)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (~> 1.16.0)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `9978a4a3895faa820244e2ce8a954c36c6e2ec18`)
   - WordPressUI (~> 1.12.2)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.63.0/third-party-podspecs/Yoga.podspec.json`)
@@ -564,7 +564,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
     - WordPressUI
   trunk:
     - 1PasswordExtension
@@ -607,7 +606,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -711,6 +709,12 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.63.0
+  WordPressAuthenticator:
+    :commit: ff18f5fe3c9766168a31e5c6117c47880dff0de6
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressShared:
+    :commit: 9978a4a3895faa820244e2ce8a954c36c6e2ec18
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.63.0/third-party-podspecs/Yoga.podspec.json
 
@@ -726,6 +730,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.63.0
+  WordPressAuthenticator:
+    :commit: ff18f5fe3c9766168a31e5c6117c47880dff0de6
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressShared:
+    :commit: 9978a4a3895faa820244e2ce8a954c36c6e2ec18
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -752,7 +762,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
+  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   Gutenberg: 354be2e209e0ba079d2cb4ec3ddd78ce6d77db67
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
@@ -809,7 +819,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
-  WordPressAuthenticator: 06278534519c741ecea346f504ad8d08082bfb0d
+  WordPressAuthenticator: f38702ccdfb2d17577ac9280fb5ac7b7003efde5
   WordPressKit: 0c8e1a1becfeffc882f06f55eb09cd485826c268
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 5477f179c7fe03b5d574f91adda66f67d131827e
@@ -826,6 +836,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d3c0ed623708a54861a6cc2184e5fcb421d0cbdb
+PODFILE CHECKSUM: 9c38239f51cd4eb2182732609038ec81f3a4ed14
 
 COCOAPODS: 1.10.1
