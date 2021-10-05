@@ -9,6 +9,7 @@
 * [**] Embed block: Add the top 5 specific embed blocks to the Block inserter list. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3995]
 * [*] Embed block: Fix URL update when edited after setting a bad URL of a provider. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4002]
 * [**] Users can now contact support from inside the block editor screen. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3975]
+* [**] Block editor: Support articles available within the block editor help menu [#17265]
 
 18.3
 -----
