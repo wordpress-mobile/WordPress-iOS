@@ -184,6 +184,7 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            self?.refreshGrowAudienceCardIfNecessary()
             self?.displayEmptyViewIfNecessary()
             self?.refreshTableView()
         }
