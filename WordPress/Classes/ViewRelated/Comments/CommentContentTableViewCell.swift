@@ -41,7 +41,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var likeButton: UIButton!
 
     // This is public so its delegate can be set directly.
-    @IBOutlet weak var moderationBar: CommentModerationBar!
+    @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
 
     // MARK: Private Properties
 
