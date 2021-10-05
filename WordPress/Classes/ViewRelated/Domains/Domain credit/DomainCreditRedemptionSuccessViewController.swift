@@ -1,7 +1,7 @@
 import UIKit
 
 protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
-    func continueButtonPressed()
+    func continueButtonPressed(domain: String)
 }
 
 /// Displays messaging after user successfully redeems domain credit.
@@ -22,6 +22,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
+
         let attributedSubtitleConfiguration: NoResultsViewController.AttributedSubtitleConfiguration = {
             [weak self] attributedText in
             guard let domain = self?.domain else {
@@ -61,6 +64,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
 extension DomainCreditRedemptionSuccessViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        delegate?.continueButtonPressed()
+        delegate?.continueButtonPressed(domain: domain)
     }
 }

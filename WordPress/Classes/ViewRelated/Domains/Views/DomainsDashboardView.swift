@@ -4,6 +4,7 @@ import WordPressKit
 /// The Domains dashboard screen, accessible from My Site
 struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
+    @State var isShowingDomainRegistrationFlow = false
 
     var body: some View {
         List {
@@ -15,6 +16,11 @@ struct DomainsDashboardView: View {
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .navigationBarTitle(TextContent.navigationTitle)
+        .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
+            makeDomainSearch(for: blog, onDismiss: {
+                isShowingDomainRegistrationFlow = false
+            })
+        })
     }
 
     @ViewBuilder
@@ -62,8 +68,7 @@ struct DomainsDashboardView: View {
                 makeDomainCell(domain: $0)
             }
             PresentationButton(
-                destination: {
-                    makeDomainSearch(for: blog) },
+                isShowingDestination: $isShowingDomainRegistrationFlow,
                 appearance: {
                     HStack {
                         Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
@@ -82,12 +87,11 @@ struct DomainsDashboardView: View {
             PresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
-                highlight: siteAddressForGetFirstDomainSection) {
-                        makeDomainSearch(for: blog)
-                    } appearance: {
-                        ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
-                            .largeRoundedRectangle()
-                    }
+                highlight: siteAddressForGetFirstDomainSection,
+                isShowingDestination: $isShowingDomainRegistrationFlow) {
+                    ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
+                        .largeRoundedRectangle()
+                }
         }
     }
 
@@ -103,8 +107,8 @@ struct DomainsDashboardView: View {
     }
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
-    private func makeDomainSearch(for blog: Blog) -> some View {
-        DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect)
+    private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
+        DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
     }
 }
 
