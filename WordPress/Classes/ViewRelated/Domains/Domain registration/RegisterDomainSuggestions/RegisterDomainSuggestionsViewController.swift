@@ -290,9 +290,9 @@ extension RegisterDomainSuggestionsViewController {
 
     enum TextContent {
 
-        static let title = NSLocalizedString("Register domain",
-                                             comment: "Register domain - Title for the Suggested domains screen")
-        static let primaryButtonTitle = NSLocalizedString("Choose domain",
+        static let title = NSLocalizedString("Search domains",
+                                             comment: "Search domain - Title for the Suggested domains screen")
+        static let primaryButtonTitle = NSLocalizedString("Select domain",
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
     }
