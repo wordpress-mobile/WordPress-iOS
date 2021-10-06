@@ -180,8 +180,9 @@ extension DomainSuggestionsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.titleAndDescription.rawValue,
-             Sections.searchField.rawValue:
+        case Sections.titleAndDescription.rawValue:
+            return !sectionTitle.isEmpty || !sectionDescription.isEmpty ? 1 : 0
+        case Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
             if noSuggestions == true {
@@ -244,6 +245,22 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == Sections.suggestions.rawValue {
             return 0.5
+        }
+        return 0
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == Sections.searchField.rawValue {
+            let header = UIView()
+            header.backgroundColor = tableView.backgroundColor
+            return header
+        }
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == Sections.searchField.rawValue {
+            return 10
         }
         return 0
     }
