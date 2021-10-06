@@ -343,6 +343,11 @@ private extension CommentContentTableViewCell {
         }
 
         isLikeButtonAnimating = true
+
+        if isLiked {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        }
+
         animateLikeButton {
             onAnimationComplete()
             self.isLikeButtonAnimating = false

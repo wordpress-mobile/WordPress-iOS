@@ -374,7 +374,6 @@ private extension CommentDetailViewController {
 
         if comment.isLiked {
             CommentAnalytics.trackCommentUnLiked(comment: comment)
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
         } else {
             CommentAnalytics.trackCommentLiked(comment: comment)
         }
