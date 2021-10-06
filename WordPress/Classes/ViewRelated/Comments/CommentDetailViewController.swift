@@ -11,6 +11,8 @@ class CommentDetailViewController: UITableViewController {
 
     private var rows = [RowType]()
 
+    private var moderationBar: CommentModerationBar?
+
     // MARK: Views
 
     private var headerCell = CommentHeaderTableViewCell()
@@ -131,6 +133,7 @@ class CommentDetailViewController: UITableViewController {
 
             configureContentCell(cell, comment: comment)
             cell.moderationBar.delegate = self
+            moderationBar = cell.moderationBar
             return cell
 
         case .replyIndicator:
@@ -394,11 +397,33 @@ private extension String {
 extension CommentDetailViewController: CommentModerationBarDelegate {
     func statusChangedTo(_ commentStatus: CommentStatusType) {
 
-        // TODO: update Comment
-
         switch commentStatus {
+        case .approved:
+            approveComment()
         default:
             break
         }
     }
+}
+
+// MARK: - Comment Moderation Actions
+
+private extension CommentDetailViewController {
+
+    func approveComment() {
+        CommentAnalytics.trackCommentApproved(comment: comment)
+
+        commentService.approve(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.approveSuccess)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.approveFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
+
+    struct ModerationMessages {
+        static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
+        static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
+    }
+
 }
