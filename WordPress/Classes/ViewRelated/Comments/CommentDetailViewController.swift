@@ -367,6 +367,11 @@ private extension CommentDetailViewController {
     }
 
     func toggleCommentLike() {
+        guard let siteID = comment.blog?.dotComID else {
+            refreshData() // revert the like button state.
+            return
+        }
+
         if comment.isLiked {
             CommentAnalytics.trackCommentUnLiked(comment: comment)
             UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -374,8 +379,8 @@ private extension CommentDetailViewController {
             CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
-        commentService.toggleLikeStatus(for: comment, siteID: comment.blog?.dotComID, success: {}, failure: { _ in
-            self.refreshData()
+        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: {}, failure: { _ in
+            self.refreshData() // revert the like button state.
         })
     }
 
