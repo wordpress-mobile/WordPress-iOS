@@ -564,7 +564,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressShared
     - WordPressUI
   trunk:
     - 1PasswordExtension
@@ -607,6 +606,7 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -817,7 +817,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: f38702ccdfb2d17577ac9280fb5ac7b7003efde5
   WordPressKit: 0c8e1a1becfeffc882f06f55eb09cd485826c268
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
-  WordPressShared: b05ef049ad2193577599a63e1b156319f679b4c2
+  WordPressShared: 3660920b90d44ca8cf6b4c9984aade433cdad50f
   WordPressUI: c573f4b5c2e5d0ffcebe69ecf86ae75ab7b6ff4d
   WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13

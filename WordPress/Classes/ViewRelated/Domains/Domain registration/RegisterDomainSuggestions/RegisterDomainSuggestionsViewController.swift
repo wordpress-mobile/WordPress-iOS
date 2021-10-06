@@ -203,13 +203,24 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let domain = domain else {
             return
         }
+
         switch domainType {
         case .registered:
             pushRegisterDomainDetailsViewController(domain)
         case .siteRedirect:
+            setPrimaryButtonLoading(true)
             createCartAndPresentWebView(domain)
         default:
             break
+        }
+    }
+
+    private func setPrimaryButtonLoading(_ isLoading: Bool, afterDelay delay: Double = 0.0) {
+        // We're dispatching here so that we can wait until after the webview has been
+        // fully presented before we switch the button back to its default state.
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            self.buttonViewController.setBottomButtonState(isLoading: isLoading,
+                                                           isEnabled: !isLoading)
         }
     }
 
@@ -226,6 +237,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                                                  privacyProtectionEnabled: false,
                                                  success: { [weak self] _ in
             self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
         },
                                                  failure: { error in })
     }
