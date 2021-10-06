@@ -859,7 +859,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                         if (success) {
                             success();
                         }
-                    } failure:^(NSError *error) {                        
+                    } failure:^(NSError *error) {
+                        DDLogError(@"Error moderating comment: %@", error);
                         [self.managedObjectContext performBlock:^{
                             // Note: The comment might have been deleted at this point
                             Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];

@@ -135,7 +135,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isModerationEnabled = comment.canModerate
 
         if isModerationEnabled {
-            moderationBar.comment = comment
+            moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
         }
 
         // Configure comment content.
