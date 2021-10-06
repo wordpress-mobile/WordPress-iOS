@@ -111,6 +111,8 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // Local state for site current view count
     private var currentViewCount: Int?
 
+    private let insightsStore = StoreContainer.shared.statsInsights
+
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
     // A single site's dictionary contains the InsightType values for that site.
@@ -173,7 +175,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
+                                               insightsDelegate: self,
+                                               insightsStore: insightsStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
     }
@@ -361,13 +365,11 @@ private extension SiteStatsInsightsTableViewController {
 
     var shouldDisplayGrowAudienceCard: Bool {
         let threshold = 30
-        let insightsStore = StoreContainer.shared.statsInsights
         let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         return count < threshold
     }
 
     func refreshGrowAudienceCardIfNecessary() {
-        let insightsStore = StoreContainer.shared.statsInsights
         guard let count = insightsStore.getAllTimeStats()?.viewsCount,
               count != self.currentViewCount else {
                   return
