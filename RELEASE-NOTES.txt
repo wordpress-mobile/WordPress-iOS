@@ -1,5 +1,6 @@
 18.5
 -----
+* [**] Block editor: Embed block: Include Jetpack embed variants. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4008]
 
 
 18.4
