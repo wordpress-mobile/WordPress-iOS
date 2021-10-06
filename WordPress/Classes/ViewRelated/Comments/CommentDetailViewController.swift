@@ -245,8 +245,9 @@ private extension CommentDetailViewController {
     }
 
     func configureEditButtonItem() {
-        let editButtonItem = comment.canModerate ? UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped)) : nil
-        navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem = comment.canModerate ? UIBarButtonItem(barButtonSystemItem: .edit,
+                                                                                  target: self,
+                                                                                  action: #selector(editButtonTapped)) : nil
     }
 
     func configureTable() {
