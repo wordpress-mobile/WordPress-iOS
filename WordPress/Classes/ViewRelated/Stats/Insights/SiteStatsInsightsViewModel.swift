@@ -11,7 +11,7 @@ class SiteStatsInsightsViewModel: Observable {
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore: StatsInsightsStore
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
@@ -23,11 +23,13 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Constructor
 
     init(insightsToShow: [InsightType],
-         insightsDelegate: SiteStatsInsightsDelegate) {
+         insightsDelegate: SiteStatsInsightsDelegate,
+         insightsStore: StatsInsightsStore) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
+        self.insightsStore = insightsStore
 
-        insightsChangeReceipt = insightsStore.onChange { [weak self] in
+        insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
             self?.emitChange()
         }
     }

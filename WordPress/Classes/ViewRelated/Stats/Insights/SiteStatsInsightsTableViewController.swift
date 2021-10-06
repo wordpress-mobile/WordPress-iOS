@@ -108,6 +108,11 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         return key + "-\(siteID)"
     }
 
+    // Local state for site current view count
+    private var currentViewCount: Int?
+
+    private let insightsStore = StoreContainer.shared.statsInsights
+
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
     // A single site's dictionary contains the InsightType values for that site.
@@ -170,7 +175,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
+                                               insightsDelegate: self,
+                                               insightsStore: insightsStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
     }
@@ -181,6 +188,7 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            self?.refreshGrowAudienceCardIfNecessary()
             self?.displayEmptyViewIfNecessary()
             self?.refreshTableView()
         }
@@ -342,6 +350,10 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func loadGrowAudienceCardSetting() {
+        guard shouldDisplayGrowAudienceCard else {
+            dismissGrowAudienceCard()
+            return
+        }
         guard let key = userDefaultsHideGrowAudienceKey else { return }
         loadPermanentlyDismissableInsight(.growAudience, using: key)
     }
@@ -349,6 +361,23 @@ private extension SiteStatsInsightsTableViewController {
     func dismissGrowAudienceCard() {
         guard let key = userDefaultsHideGrowAudienceKey else { return }
         permanentlyDismissInsight(.growAudience, using: key)
+    }
+
+    var shouldDisplayGrowAudienceCard: Bool {
+        let threshold = 30
+        let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        return count < threshold
+    }
+
+    func refreshGrowAudienceCardIfNecessary() {
+        guard let count = insightsStore.getAllTimeStats()?.viewsCount,
+              count != self.currentViewCount else {
+                  return
+              }
+
+        self.currentViewCount = count
+        self.loadInsightsFromUserDefaults()
+        self.updateView()
     }
 
     // MARK: - Insights Management
