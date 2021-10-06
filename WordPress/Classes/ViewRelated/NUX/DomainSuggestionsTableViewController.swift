@@ -125,19 +125,15 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
 
-        let activity = UIActivityIndicatorView(style: .large)
-        tableView.backgroundView = activity
-        activity.startAnimating()
-        //SVProgressHUD.setContainerView(tableView)
-        //SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
+        SVProgressHUD.setContainerView(tableView)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
         service.getDomainSuggestions(base: searchTerm,
                                      domainSuggestionType: domainSuggestionType,
                                      success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.noSuggestions = false
-            //SVProgressHUD.dismiss()
-            activity.stopAnimating()
+            SVProgressHUD.dismiss()
             self?.tableView.backgroundView = nil
             self?.tableView.refreshControl?.endRefreshing()
             self?.tableView.separatorStyle = .singleLine
@@ -146,8 +142,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
             self?.noSuggestions = true
-            //SVProgressHUD.dismiss()
-            activity.stopAnimating()
+            SVProgressHUD.dismiss()
             self?.tableView.backgroundView = nil
             self?.tableView.refreshControl?.endRefreshing()
             self?.tableView.separatorStyle = .none
