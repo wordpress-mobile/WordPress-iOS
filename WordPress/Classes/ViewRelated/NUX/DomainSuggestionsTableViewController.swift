@@ -134,8 +134,6 @@ class DomainSuggestionsTableViewController: UITableViewController {
             self?.isSearching = false
             self?.noSuggestions = false
             SVProgressHUD.dismiss()
-            self?.tableView.backgroundView = nil
-            self?.tableView.refreshControl?.endRefreshing()
             self?.tableView.separatorStyle = .singleLine
             addSuggestions(suggestions)
         }) { [weak self] (error) in
@@ -143,8 +141,6 @@ class DomainSuggestionsTableViewController: UITableViewController {
             self?.isSearching = false
             self?.noSuggestions = true
             SVProgressHUD.dismiss()
-            self?.tableView.backgroundView = nil
-            self?.tableView.refreshControl?.endRefreshing()
             self?.tableView.separatorStyle = .none
             // Dismiss the keyboard so the full no results view can be seen.
             self?.view.endEditing(true)
