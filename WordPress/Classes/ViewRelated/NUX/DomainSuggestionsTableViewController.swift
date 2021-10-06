@@ -35,7 +35,11 @@ class DomainSuggestionsTableViewController: UITableViewController {
     private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
     private var siteTitleSuggestions: [DomainSuggestion] = []
-    private var searchSuggestions: [DomainSuggestion] = []
+    private var searchSuggestions: [DomainSuggestion] = [] {
+        didSet {
+            tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
+        }
+    }
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
@@ -130,23 +134,31 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
         service.getDomainSuggestions(base: searchTerm,
                                      domainSuggestionType: domainSuggestionType,
-                                     success: { [weak self] (suggestions) in
-            self?.isSearching = false
-            self?.noSuggestions = false
-            SVProgressHUD.dismiss()
-            self?.tableView.separatorStyle = .singleLine
-            addSuggestions(suggestions)
-        }) { [weak self] (error) in
-            DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
-            self?.isSearching = false
-            self?.noSuggestions = true
-            SVProgressHUD.dismiss()
-            self?.tableView.separatorStyle = .none
-            // Dismiss the keyboard so the full no results view can be seen.
-            self?.view.endEditing(true)
-            // Add no suggestions to display the no results view.
-            addSuggestions([])
-        }
+                                     success: handleGetDomainSuggestionsSuccess,
+                                     failure: handleGetDomainSuggestionsFailure)
+    }
+
+    private func handleGetDomainSuggestionsSuccess(_ suggestions: [DomainSuggestion]) {
+        isSearching = false
+        noSuggestions = false
+        SVProgressHUD.dismiss()
+        tableView.separatorStyle = .singleLine
+
+        searchSuggestions = suggestions
+    }
+
+    private func handleGetDomainSuggestionsFailure(_ error: Error) {
+        DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
+        isSearching = false
+        noSuggestions = true
+        SVProgressHUD.dismiss()
+        tableView.separatorStyle = .none
+
+        // Dismiss the keyboard so the full no results view can be seen.
+        view.endEditing(true)
+
+        // Add no suggestions to display the no results view.
+        searchSuggestions = []
     }
 
     // MARK: background gesture recognizer
@@ -387,13 +399,11 @@ extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
 
         guard searchTerm.count > 0 else {
             searchSuggestions = []
-            tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
             return
         }
 
         suggestDomains(for: searchTerm) { [weak self] (suggestions) in
             self?.searchSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
 }
