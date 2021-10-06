@@ -260,6 +260,10 @@ private extension CommentDetailViewController {
         cell.accessoryButtonAction = { senderView in
             self.shareCommentURL(senderView)
         }
+
+        cell.likeButtonAction = {
+            self.toggleCommentLike()
+        }
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
@@ -360,6 +364,19 @@ private extension CommentDetailViewController {
                                                                         comment: "Error displayed if a comment fails to get updated")
                                         self?.displayNotice(title: message)
                                      })
+    }
+
+    func toggleCommentLike() {
+        if comment.isLiked {
+            CommentAnalytics.trackCommentUnLiked(comment: comment)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        } else {
+            CommentAnalytics.trackCommentLiked(comment: comment)
+        }
+
+        commentService.toggleLikeStatus(for: comment, siteID: comment.blog?.dotComID, success: {}, failure: { _ in
+            self.refreshData()
+        })
     }
 
     func visitAuthorURL() {
