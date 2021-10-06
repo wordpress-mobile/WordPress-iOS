@@ -84,8 +84,15 @@ private extension DomainSuggestion {
         super.init(managedObjectContext: context)
     }
 
-    @objc func refreshDomains(for siteID: Int, completion: @escaping (Bool) -> Void) {
-        domainsService.refreshDomainsForSite(siteID, completion: completion)
+    @objc func refreshDomains(siteID: Int, completion: @escaping (Bool) -> Void) {
+        domainsService.refreshDomains(siteID: siteID) { result in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
     }
 
     // MARK: SiteAddressService

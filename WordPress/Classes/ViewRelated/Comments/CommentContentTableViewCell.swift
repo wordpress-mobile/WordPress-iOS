@@ -16,6 +16,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var likeButtonAction: (() -> Void)? = nil
 
+    var contentLinkTapAction: ((URL) -> Void)? = nil
+
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
@@ -38,7 +40,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
-    @IBOutlet private weak var moderationBar: CommentModerationBar!
+    // This is public so its delegate can be set directly.
+    @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
 
     // MARK: Private Properties
 
@@ -171,13 +174,17 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        // TODO: Offload the decision making to the delegate.
-        // For now, all navigation requests will be rejected (except for loading local files).
         switch navigationAction.navigationType {
         case .other:
+            // allow local file requests.
             decisionHandler(.allow)
         default:
             decisionHandler(.cancel)
+            guard let destinationURL = navigationAction.request.url,
+                  let linkTapAction = contentLinkTapAction else {
+                      return
+                  }
+            linkTapAction(destinationURL)
         }
     }
 }
@@ -220,10 +227,12 @@ private extension CommentContentTableViewCell {
         replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         replyButton?.setImage(Style.replyIconImage, for: .normal)
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
+        replyButton?.flipInsetsForRightToLeftLayoutDirection()
 
         likeButton?.titleLabel?.font = Style.reactionButtonFont
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton?.flipInsetsForRightToLeftLayoutDirection()
         updateLikeButton(liked: false, numberOfLikes: 0)
     }
 
