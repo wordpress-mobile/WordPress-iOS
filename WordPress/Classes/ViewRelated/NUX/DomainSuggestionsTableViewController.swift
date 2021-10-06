@@ -124,22 +124,32 @@ class DomainSuggestionsTableViewController: UITableViewController {
         let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
 
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-        SVProgressHUD.setContainerView(tableView)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
+
+        let activity = UIActivityIndicatorView(style: .large)
+        tableView.backgroundView = activity
+        activity.startAnimating()
+        //SVProgressHUD.setContainerView(tableView)
+        //SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
         service.getDomainSuggestions(base: searchTerm,
                                      domainSuggestionType: domainSuggestionType,
                                      success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.noSuggestions = false
-            SVProgressHUD.dismiss()
+            //SVProgressHUD.dismiss()
+            activity.stopAnimating()
+            self?.tableView.backgroundView = nil
+            self?.tableView.refreshControl?.endRefreshing()
             self?.tableView.separatorStyle = .singleLine
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
             self?.noSuggestions = true
-            SVProgressHUD.dismiss()
+            //SVProgressHUD.dismiss()
+            activity.stopAnimating()
+            self?.tableView.backgroundView = nil
+            self?.tableView.refreshControl?.endRefreshing()
             self?.tableView.separatorStyle = .none
             // Dismiss the keyboard so the full no results view can be seen.
             self?.view.endEditing(true)

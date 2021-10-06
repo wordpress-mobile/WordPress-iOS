@@ -4,9 +4,9 @@ import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
-class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestionsButtonViewPresenter {
-
-    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
+class RegisterDomainSuggestionsViewController: UIViewController {
+    @IBOutlet weak var buttonContainerHiddenConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerShownConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     private var site: JetpackSiteRef!
@@ -23,11 +23,7 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        showButtonView(show: false, withAnimation: false)
+        setupButton()
     }
 
     @IBOutlet private var buttonViewContainer: UIView! {
@@ -96,6 +92,71 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
         navigationItem.rightBarButtonItem = supportButton
     }
 
+    private func setupButton() {
+        hideButton()
+    }
+
+    // MARK: - Bottom Hideable Button
+
+    /// Shows the domain picking button
+    ///
+    private func showButton() {
+        buttonContainerShownConstraint.isActive = true
+        buttonContainerHiddenConstraint.isActive = false
+    }
+
+    /// Shows the domain picking button
+    ///
+    /// - Parameters:
+    ///     - animated: whether the transition is animated.
+    ///
+    private func showButton(animated: Bool) {
+        guard animated else {
+            showButton()
+            return
+        }
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.showButton()
+
+            // Since the Button View uses auto layout, need to call this so the animation works properly.
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+
+    /// Hides the domain picking button
+    ///
+    /// - Parameters:
+    ///     - animated: whether the transition is animated.
+    ///
+    func hideButton(animated: Bool) {
+        guard animated else {
+            hideButton()
+            return
+        }
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.hideButton()
+
+            // Since the Button View uses auto layout, need to call this so the animation works properly.
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func hideButton() {
+        buttonContainerShownConstraint.isActive = false
+        buttonContainerHiddenConstraint.isActive = true
+    }
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -132,12 +193,12 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
     func domainSelected(_ domain: DomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
-        showButtonView(show: true, withAnimation: true)
+        showButton(animated: true)
     }
 
     func newSearchStarted() {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
-        showButtonView(show: false, withAnimation: true)
+        hideButton(animated: true)
     }
 }
 
