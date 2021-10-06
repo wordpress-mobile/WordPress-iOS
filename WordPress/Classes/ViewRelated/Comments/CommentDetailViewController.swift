@@ -216,13 +216,7 @@ private extension CommentDetailViewController {
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
     }
 
-    var topBarHeight: CGFloat {
-        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
-            (navigationController?.navigationBar.frame.height ?? 0.0)
-    }
-
     func configureNavigationBar() {
-
         if #available(iOS 15, *) {
             // In iOS 15, to apply visual blur only when content is scrolled, keep the scrollEdgeAppearance unchanged as it applies to ALL navigation bars.
             navigationItem.standardAppearance = blurredBarAppearance
