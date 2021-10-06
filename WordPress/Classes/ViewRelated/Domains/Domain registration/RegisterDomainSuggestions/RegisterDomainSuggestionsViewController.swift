@@ -5,9 +5,10 @@ import WordPressAuthenticator
 import WordPressFlux
 
 class RegisterDomainSuggestionsViewController: UIViewController {
-    @IBOutlet weak var buttonContainerHiddenConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonContainerShownConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
+
+    private var constraintsInitialized = false
 
     private var site: JetpackSiteRef!
     private var domainPurchasedCallback: ((String) -> Void)!
@@ -23,7 +24,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        setupButton()
+        hideButton()
     }
 
     @IBOutlet private var buttonViewContainer: UIView! {
@@ -92,17 +93,12 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         navigationItem.rightBarButtonItem = supportButton
     }
 
-    private func setupButton() {
-        hideButton()
-    }
-
     // MARK: - Bottom Hideable Button
 
     /// Shows the domain picking button
     ///
     private func showButton() {
-        buttonContainerShownConstraint.isActive = true
-        buttonContainerHiddenConstraint.isActive = false
+        buttonContainerBottomConstraint.constant = 0
     }
 
     /// Shows the domain picking button
@@ -128,6 +124,9 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         }, completion: nil)
     }
 
+    private func hideButton() {
+        buttonContainerBottomConstraint.constant = buttonViewContainer.frame.height
+    }
 
     /// Hides the domain picking button
     ///
@@ -150,11 +149,6 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             // Since the Button View uses auto layout, need to call this so the animation works properly.
             self.view.layoutIfNeeded()
         }, completion: nil)
-    }
-
-    private func hideButton() {
-        buttonContainerShownConstraint.isActive = false
-        buttonContainerHiddenConstraint.isActive = true
     }
 
     // MARK: - Navigation
