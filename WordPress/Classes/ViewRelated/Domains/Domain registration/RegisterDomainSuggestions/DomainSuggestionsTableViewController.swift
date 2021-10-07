@@ -23,14 +23,6 @@ class DomainSuggestionsTableViewController: UITableViewController {
         return false
     }
 
-    var sectionTitle: String {
-        return ""
-    }
-
-    var sectionDescription: String {
-        return ""
-    }
-
     var searchFieldPlaceholder: String {
         return NSLocalizedString(
             "Type to get more suggestions",
@@ -172,13 +164,12 @@ class DomainSuggestionsTableViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension DomainSuggestionsTableViewController {
-    fileprivate enum Sections: Int {
-        case titleAndDescription = 0
-        case searchField = 1
-        case suggestions = 2
+    fileprivate enum Sections: Int, CaseIterable {
+        case searchField
+        case suggestions
 
         static var count: Int {
-            return suggestions.rawValue + 1
+            return allCases.count
         }
     }
 
@@ -188,8 +179,6 @@ extension DomainSuggestionsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.titleAndDescription.rawValue:
-            return !sectionTitle.isEmpty || !sectionDescription.isEmpty ? 1 : 0
         case Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
@@ -205,8 +194,6 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         switch indexPath.section {
-        case Sections.titleAndDescription.rawValue:
-            cell = titleAndDescriptionCell()
         case Sections.searchField.rawValue:
             cell = searchFieldCell()
         case Sections.suggestions.rawValue:
@@ -274,13 +261,6 @@ extension DomainSuggestionsTableViewController {
     }
 
     // MARK: table view cells
-
-    @objc func titleAndDescriptionCell() -> UITableViewCell {
-        let cell = LoginSocialErrorCell(title: sectionTitle,
-                                        description: sectionDescription)
-        cell.selectionStyle = .none
-        return cell
-    }
 
     private func searchFieldCell() -> SearchTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else {
