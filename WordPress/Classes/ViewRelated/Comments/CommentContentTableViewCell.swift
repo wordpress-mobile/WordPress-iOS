@@ -71,6 +71,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
 
+    // MARK: Like Button State
+
+    private var isLiked: Bool = false
+
+    private var likeCount: Int = 0
+
+    private var isLikeButtonAnimating: Bool = false
+
     // MARK: Visibility Control
 
     /// Controls the visibility of the reaction bar view. Setting this to false disables Reply and Likes functionality.
@@ -205,6 +213,17 @@ private extension CommentContentTableViewCell {
         }
     }
 
+    var likeButtonTitle: String {
+        switch likeCount {
+        case .zero:
+            return .noLikes
+        case 1:
+            return String(format: .singularLikeFormat, likeCount)
+        default:
+            return String(format: .pluralLikesFormat, likeCount)
+        }
+    }
+
     // assign base styles for all the cell components.
     func configureViews() {
         selectionStyle = .none
@@ -297,21 +316,61 @@ private extension CommentContentTableViewCell {
         return htmlContent
     }
 
-    func likeButtonTitle(for numberOfLikes: Int) -> String {
-        switch numberOfLikes {
-        case .zero:
-            return .noLikes
-        case 1:
-            return String(format: .singularLikeFormat, numberOfLikes)
-        default:
-            return String(format: .pluralLikesFormat, numberOfLikes)
+    /// Updates the style and text of the Like button.
+    /// - Parameters:
+    ///   - liked: Represents the target state – true if the comment is liked, or should be false otherwise.
+    ///   - numberOfLikes: The number of likes to be displayed.
+    ///   - animated: Whether the Like button state change should be animated or not. Defaults to false.
+    ///   - completion: Completion block called once the animation is completed. Defaults to nil.
+    func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false, completion: (() -> Void)? = nil) {
+        guard !isLikeButtonAnimating else {
+            return
+        }
+
+        isLiked = liked
+        likeCount = numberOfLikes
+
+        let onAnimationComplete = {
+            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
+            self.likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
+            self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
+            completion?()
+        }
+
+        guard animated else {
+            onAnimationComplete()
+            return
+        }
+
+        isLikeButtonAnimating = true
+
+        if isLiked {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        }
+
+        animateLikeButton {
+            onAnimationComplete()
+            self.isLikeButtonAnimating = false
         }
     }
 
-    func updateLikeButton(liked: Bool, numberOfLikes: Int) {
-        likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
-        likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
-        likeButton.setTitle(likeButtonTitle(for: numberOfLikes), for: .normal)
+    /// Animates the Like button state change.
+    func animateLikeButton(completion: @escaping () -> Void) {
+        guard let buttonImageView = likeButton.imageView,
+              let overlayImage = Style.likedIconImage?.withTintColor(Style.likedTintColor) else {
+                  completion()
+                  return
+              }
+
+        let overlayImageView = UIImageView(image: overlayImage)
+        overlayImageView.frame = likeButton.convert(buttonImageView.bounds, from: buttonImageView)
+        likeButton.addSubview(overlayImageView)
+
+        let animation = isLiked ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
+        animation { _ in
+            overlayImageView.removeFromSuperview()
+            completion()
+        }
     }
 
     @objc func accessoryButtonTapped() {
@@ -323,7 +382,11 @@ private extension CommentContentTableViewCell {
     }
 
     @objc func likeButtonTapped() {
-        likeButtonAction?()
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true) {
+                self.likeButtonAction?()
+            }
+        }
     }
 }
 
