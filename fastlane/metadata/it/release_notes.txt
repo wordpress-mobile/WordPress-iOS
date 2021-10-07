@@ -1,5 +1,0 @@
-- Aggiornamenti al blocco Incorporamenti: abbiamo abilitato le anteprime degli incorporamenti di WordPress, nonché gli incorporamenti per i contenuti di Instagram e Vimeo. Per alcuni elementi multimediali, puoi incorporare correttamente un URL, ma non puoi visualizzare in anteprima il contenuto; in alcune istanze, visualizzerai un messaggio "Nessuna anteprima disponibile". Nei casi in cui non sei in grado di incorporare elementi multimediali, visualizzerai ora un'opzione "Riprova" per incorporare nuovamente il contenuto e un'opzione alternativa per convertirlo invece in un link.
-
-- Vari miglioramenti: abbiamo semplificato il menu Il mio sito, modificando "Articoli del blog" con "Articoli" e "Pagine del sito" con "Pagine". (Ciò non ha interessato i contenuti del tuo articolo e della tua pagina, promesso!) Noterai anche che ora puoi pubblicare una pagina tramite la funzionalità Condividi estensione dell'app.
-
-- Correzioni di bug: abbiamo risolto un problema nel Reader che ti impediva di rimuovere Articoli salvati e abbiamo anche corretto un bug che ti impediva di seguire una conversazione via e-mail per i commenti di un articolo.
