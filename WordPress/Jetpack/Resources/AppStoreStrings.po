@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Make your WordPress site faster and safer.
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -38,11 +39,15 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.3-whats-new"
+msgctxt "v18.4-whats-new"
 msgid ""
-"- Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.\n"
+"We have made life easier in the Block editor! There are dedicated embed blocks for YouTube, Twitter, WordPress, and Vimeo, which makes adding media super speedy — you can find them in the block picker view. The URLs can even be edited after you have selected them.\n"
 "\n"
-"- Various improvements and fixes: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) We also fixed a bug that prevented you from following a conversation by email through a post’s comments.\n"
+"We have also tweaked the gallery block, so your images will still be added if you close the post while they are uploading.\n"
+"\n"
+"Another fixed issue is the notification screen occasionally showing the wrong avatar when you are mentioned in a comment — your chosen image will now be proudly displayed!\n"
+"\n"
+"But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the  3-dot menu button, select “Help & Support”, then “Contact Support.”\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
