@@ -354,7 +354,7 @@ private extension CommentContentTableViewCell {
         }
     }
 
-    /// Animates the Like button state change, as seen in `NoteBlockActionsTableViewCell`.
+    /// Animates the Like button state change.
     func animateLikeButton(completion: @escaping () -> Void) {
         guard let buttonImageView = likeButton.imageView,
               let overlayImage = Style.likedIconImage?.withTintColor(Style.likedTintColor) else {
@@ -366,9 +366,7 @@ private extension CommentContentTableViewCell {
         overlayImageView.frame = likeButton.convert(buttonImageView.bounds, from: buttonImageView)
         likeButton.addSubview(overlayImageView)
 
-        // isLiked has been updated.
         let animation = isLiked ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
-
         animation { _ in
             overlayImageView.removeFromSuperview()
             completion()
