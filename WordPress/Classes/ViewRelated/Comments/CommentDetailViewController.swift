@@ -509,6 +509,8 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
             unapproveComment()
         case .approved:
             approveComment()
+        case .spam:
+            spamComment()
         default:
             break
         }
@@ -541,11 +543,24 @@ private extension CommentDetailViewController {
         })
     }
 
+    func spamComment() {
+        CommentAnalytics.trackCommentSpammed(comment: comment)
+
+        commentService.spamComment(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.spamSuccess)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.spamFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
+
     struct ModerationMessages {
         static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
         static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
         static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
         static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
+        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
+        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
     }
 
 }
