@@ -418,17 +418,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectID *commentID = comment.objectID;
     [self moderateComment:comment
                withStatus:CommentStatusTypeSpam
-                  success:^{
-                      Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-                      [self.managedObjectContext deleteObject:commentInContext];
-                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                      if (success) {
-                          success();
-                      }
-                  } failure:failure];
+                  success:success
+                  failure:failure];
 }
 
 // Delete comment
