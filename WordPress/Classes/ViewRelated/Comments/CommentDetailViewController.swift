@@ -259,6 +259,10 @@ private extension CommentDetailViewController {
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
             self.openWebView(for: url)
         }
+
+        cell.accessoryButtonAction = { senderView in
+            self.shareCommentURL(senderView)
+        }
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
@@ -367,6 +371,16 @@ private extension CommentDetailViewController {
         }
 
         openWebView(for: authorURL)
+    }
+
+    func shareCommentURL(_ senderView: UIView) {
+        guard let commentURL = comment.commentURL() else {
+            return
+        }
+
+        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = senderView
+        present(activityViewController, animated: true, completion: nil)
     }
 
 }

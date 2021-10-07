@@ -10,7 +10,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: - Public Properties
 
-    var accessoryButtonAction: (() -> Void)? = nil
+    /// A closure that's called when the accessory button is tapped.
+    /// The button's view is sent as the closure's parameter for reference.
+    var accessoryButtonAction: ((UIView) -> Void)? = nil
 
     var replyButtonAction: (() -> Void)? = nil
 
@@ -313,7 +315,7 @@ private extension CommentContentTableViewCell {
     }
 
     @objc func accessoryButtonTapped() {
-        accessoryButtonAction?()
+        accessoryButtonAction?(accessoryButton)
     }
 
     @objc func replyButtonTapped() {
