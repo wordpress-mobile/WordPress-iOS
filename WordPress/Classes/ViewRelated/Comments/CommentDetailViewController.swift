@@ -194,7 +194,8 @@ class CommentDetailViewController: UITableViewController {
         if #available(iOS 15, *) {
             return
         }
-        isContentScrolled = scrollView.contentOffset.y > 0
+
+        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
     }
 }
 
@@ -214,6 +215,18 @@ private extension CommentDetailViewController {
     struct Constants {
         static let tableLeadingInset: CGFloat = 20.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
+    }
+
+    /// returns the height of the navigation bar + the status bar.
+    var topBarHeight: CGFloat {
+        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
+            (navigationController?.navigationBar.frame.height ?? 0.0)
+    }
+
+    /// determines the threshold for the content offset on whether the content has scrolled.
+    /// for translucent navigation bars, the content view spans behind the status bar and navigation bar so we'd have to account for that.
+    var contentScrollThreshold: CGFloat {
+        (navigationController?.navigationBar.isTranslucent ?? false) ? -topBarHeight : 0
     }
 
     func configureNavigationBar() {
