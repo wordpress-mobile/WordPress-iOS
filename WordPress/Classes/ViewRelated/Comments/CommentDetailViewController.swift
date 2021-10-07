@@ -74,6 +74,34 @@ class CommentDetailViewController: UITableViewController {
         return parentComment
     }()
 
+    // transparent navigation bar style with visual blur effect.
+    private lazy var blurredBarAppearance: UINavigationBarAppearance = {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
+        return appearance
+    }()
+
+    /// opaque navigation bar style.
+    /// this is used for iOS 14 and below, since scrollEdgeAppearance only applies for large title bars, except on iOS 15 where it applies for all navbars.
+    private lazy var opaqueBarAppearance: UINavigationBarAppearance = {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        return appearance
+    }()
+
+    /// Convenience property that keeps track of whether the content has scrolled.
+    private var isContentScrolled: Bool = false {
+        didSet {
+            if isContentScrolled == oldValue {
+                return
+            }
+
+            // show blurred navigation bar when content is scrolled, or opaque style when the scroll position is at the top.
+            updateNavigationBarAppearance(isBlurred: isContentScrolled)
+        }
+    }
+
     // MARK: Initialization
 
     @objc required init(comment: Comment, managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
@@ -163,6 +191,15 @@ class CommentDetailViewController: UITableViewController {
         }
     }
 
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
+        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
+        if #available(iOS 15, *) {
+            return
+        }
+
+        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
+    }
 }
 
 // MARK: - Private Helpers
@@ -183,10 +220,44 @@ private extension CommentDetailViewController {
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
     }
 
+    /// returns the height of the navigation bar + the status bar.
+    var topBarHeight: CGFloat {
+        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
+            (navigationController?.navigationBar.frame.height ?? 0.0)
+    }
+
+    /// determines the threshold for the content offset on whether the content has scrolled.
+    /// for translucent navigation bars, the content view spans behind the status bar and navigation bar so we'd have to account for that.
+    var contentScrollThreshold: CGFloat {
+        (navigationController?.navigationBar.isTranslucent ?? false) ? -topBarHeight : 0
+    }
+
     func configureNavigationBar() {
-        if comment.canModerate {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped))
+        if #available(iOS 15, *) {
+            // In iOS 15, to apply visual blur only when content is scrolled, keep the scrollEdgeAppearance unchanged as it applies to ALL navigation bars.
+            navigationItem.standardAppearance = blurredBarAppearance
+        } else {
+            // For iOS 14 and below, scrollEdgeAppearance only affects large title navigation bars. Therefore we need to manually detect if the content
+            // has been scrolled and change the appearance accordingly.
+            updateNavigationBarAppearance()
         }
+
+        navigationController?.navigationBar.isTranslucent = true
+
+        configureEditButtonItem()
+    }
+
+    /// Updates the navigation bar style based on the `isBlurred` boolean parameter. The intent is to show a visual blur effect when the content is scrolled,
+    /// but reverts to opaque style when the scroll position is at the top. This method may be called multiple times since it's triggered by the `didSet`
+    /// property observer on the `isContentScrolled` property.
+    func updateNavigationBarAppearance(isBlurred: Bool = false) {
+        navigationItem.standardAppearance = isBlurred ? blurredBarAppearance : opaqueBarAppearance
+    }
+
+    func configureEditButtonItem() {
+        navigationItem.rightBarButtonItem = comment.canModerate ? UIBarButtonItem(barButtonSystemItem: .edit,
+                                                                                  target: self,
+                                                                                  action: #selector(editButtonTapped)) : nil
     }
 
     func configureTable() {
@@ -230,6 +301,7 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
+        configureEditButtonItem()
         configureRows()
         tableView.reloadData()
     }
