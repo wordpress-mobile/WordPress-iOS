@@ -1,6 +1,7 @@
-* [*] Improves our user images download logic to avoid synchronization issues. [#17197]
-* [*] Fixed an issue where images point to local URLs in the editor when saving a post with ongoing uploads. [#17157]
-* [**] Embed block: Add the top 5 specific embed blocks to the Block inserter list. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3995]
-* [*] Embed block: Fix URL update when edited after setting a bad URL of a provider. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4002]
-* [**] Users can now contact support from inside the block editor screen. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3975]
+We have made life easier in the Block editor! There are dedicated embed blocks for YouTube, Twitter, WordPress, and Vimeo, which makes adding media super speedy — you can find them in the block picker view. The URLs can even be edited after you have selected them.
 
+We have also tweaked the gallery block, so your images will still be added if you close the post while they are uploading.
+
+Another fixed issue is the notification screen occasionally showing the wrong avatar when you are mentioned in a comment — your chosen image will now be proudly displayed!
+
+But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the  3-dot menu button, select “Help & Support”, then “Contact Support.”
