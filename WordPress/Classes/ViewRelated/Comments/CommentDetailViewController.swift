@@ -398,6 +398,8 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
     func statusChangedTo(_ commentStatus: CommentStatusType) {
 
         switch commentStatus {
+        case .pending:
+            unapproveComment()
         case .approved:
             approveComment()
         default:
@@ -409,6 +411,17 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
 // MARK: - Comment Moderation Actions
 
 private extension CommentDetailViewController {
+
+    func unapproveComment() {
+        CommentAnalytics.trackCommentUnApproved(comment: comment)
+
+        commentService.unapproveComment(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.pendingSuccess)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.pendingFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
 
     func approveComment() {
         CommentAnalytics.trackCommentApproved(comment: comment)
@@ -422,6 +435,8 @@ private extension CommentDetailViewController {
     }
 
     struct ModerationMessages {
+        static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
+        static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
         static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
         static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
     }
