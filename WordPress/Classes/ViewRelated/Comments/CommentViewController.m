@@ -543,11 +543,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 
     __typeof(self) __weak weakSelf = self;
-
-    // If the Comment is currently Spam or Trash, the Trash action will permanently delete the Comment.
-    // Set the displayed messages accordingly.
-    BOOL willBePermanentlyDeleted = [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeSpam]] ||
-                                    [self.comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeUnapproved]];
+    BOOL willBePermanentlyDeleted = [self.comment deleteWillBePermanent];
     
     NSString *trashMessage = NSLocalizedString(@"Are you sure you want to mark this comment as Trash?",
                                                @"Message asking for confirmation before marking a comment as trash");
