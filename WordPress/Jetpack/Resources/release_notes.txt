@@ -4,4 +4,4 @@ We have also tweaked the gallery block, so your images will still be added if yo
 
 Another fixed issue is the notification screen occasionally showing the wrong avatar when you are mentioned in a comment — your chosen image will now be proudly displayed!
 
-But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the  3-dot menu button, select “Help & Support”, then “Contact Support.”
+But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the 3-dot menu button, select “Help & Support”, then “Contact Support.”

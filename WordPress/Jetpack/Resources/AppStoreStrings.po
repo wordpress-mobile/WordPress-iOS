@@ -46,7 +46,7 @@ msgid ""
 "\n"
 "Another fixed issue is the notification screen occasionally showing the wrong avatar when you are mentioned in a comment — your chosen image will now be proudly displayed!\n"
 "\n"
-"But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the  3-dot menu button, select “Help & Support”, then “Contact Support.”\n"
+"But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the 3-dot menu button, select “Help & Support”, then “Contact Support.”\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
