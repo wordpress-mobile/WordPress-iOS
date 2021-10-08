@@ -1,10 +1,13 @@
 import UIKit
+import CoreData
 
 class CommentDetailViewController: UITableViewController {
 
     // MARK: Properties
 
     private var comment: Comment
+
+    private var managedObjectContext: NSManagedObjectContext
 
     private var rows = [RowType]()
 
@@ -48,10 +51,32 @@ class CommentDetailViewController: UITableViewController {
         return cell
     }()
 
+    private lazy var commentService: CommentService = {
+        return .init(managedObjectContext: managedObjectContext)
+    }()
+
+    /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
+    /// However, since this class is still initialized in Objective-C files, it cannot declare `ContentCoordinator` as the init parameter, unless the protocol
+    /// is `@objc`-ified. Let's move this to the init parameter once the caller has been converted to Swift.
+    private lazy var contentCoordinator: ContentCoordinator = {
+        return DefaultContentCoordinator(controller: self, context: managedObjectContext)
+    }()
+
+    private lazy var parentComment: Comment? = {
+        guard comment.hasParentComment(),
+              let blog = comment.blog,
+              let parentComment = commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog) else {
+                  return nil
+              }
+
+        return parentComment
+    }()
+
     // MARK: Initialization
 
-    @objc required init(comment: Comment) {
+    @objc required init(comment: Comment, managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
+        self.managedObjectContext = managedObjectContext
         super.init(style: .plain)
     }
 
@@ -103,9 +128,8 @@ class CommentDetailViewController: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
                 return .init()
             }
-            cell.configure(with: comment) { _ in
-                self.tableView.performBatchUpdates({})
-            }
+
+            configureContentCell(cell, comment: comment)
             return cell
 
         case .replyIndicator:
@@ -121,7 +145,7 @@ class CommentDetailViewController: UITableViewController {
 
         switch rows[indexPath.row] {
         case .header:
-            navigateToPost()
+            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
 
         case .replyIndicator:
             // TODO: Navigate to the comment reply.
@@ -156,7 +180,9 @@ private extension CommentDetailViewController {
     }
 
     func configureNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped))
+        if comment.canModerate {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped))
+        }
     }
 
     func configureTable() {
@@ -173,23 +199,62 @@ private extension CommentDetailViewController {
     }
 
     func configureRows() {
-        rows = [
-            .header,
-            .content,
-            .replyIndicator, // TODO: Conditionally add this when user has replied to the comment.
-            .text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage),
-            .text(title: .emailAddressLabelText, detail: comment.author_email),
-            .text(title: .ipAddressLabelText, detail: comment.author_ip)
-        ]
+        // Header and content cells should always be visible, regardless of user roles.
+        var rows: [RowType] = [.header, .content]
+
+        // TODO: Detect if the comment has been replied.
+        rows.append(.replyIndicator)
+
+        // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
+        if comment.authorURL() != nil {
+            rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
+        }
+
+        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when `canModerate` is true.
+        if comment.canModerate {
+            // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
+            if !comment.author_email.isEmpty {
+                rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
+            }
+
+            rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
+        }
+
+        self.rows = rows
+    }
+
+    /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
+    /// Use this method instead of directly calling the `reloadData` on the table view property.
+    func refreshData() {
+        configureRows()
+        tableView.reloadData()
     }
 
     // MARK: Cell configuration
 
     func configureHeaderCell() {
-        // TODO: detect if the comment is a reply.
+        // if the comment is a reply, show the author of the parent comment.
+        if let parentComment = self.parentComment {
+            headerCell.textLabel?.text = String(format: .replyCommentTitleFormat, parentComment.authorForDisplay())
+            headerCell.detailTextLabel?.text = parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines)
+            return
+        }
 
+        // otherwise, if this is a comment to a post, show the post title instead.
         headerCell.textLabel?.text = .postCommentTitleText
         headerCell.detailTextLabel?.text = comment.titleForDisplay()
+    }
+
+    func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
+        cell.configure(with: comment) { _ in
+            self.tableView.performBatchUpdates({})
+        }
+
+        cell.contentLinkTapAction = { url in
+            // open all tapped links in web view.
+            // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
+            self.openWebView(for: url)
+        }
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
@@ -221,6 +286,19 @@ private extension CommentDetailViewController {
     }
 
     // MARK: Actions and navigations
+
+    // Shows the comment thread with the parent comment highlighted.
+    func navigateToParentComment() {
+        guard let parentComment = parentComment,
+              let blog = comment.blog else {
+                  navigateToPost()
+                  return
+              }
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: blog.dotComID,
+                                                          commentID: NSNumber(value: parentComment.commentID))
+    }
 
     func navigateToPost() {
         guard let blog = comment.blog,
@@ -254,7 +332,7 @@ private extension CommentDetailViewController {
             }
 
             self?.comment = comment
-            self?.tableView.reloadData()
+            self?.refreshData()
             self?.updateComment()
         })
 
@@ -267,13 +345,10 @@ private extension CommentDetailViewController {
         // Regardless of success or failure track the user's intent to save a change.
         CommentAnalytics.trackCommentEdited(comment: comment)
 
-        let context = ContextManager.sharedInstance().mainContext
-        let commentService = CommentService(managedObjectContext: context)
-
         commentService.uploadComment(comment,
                                      success: { [weak self] in
                                         // The comment might have changed its approval status
-                                        self?.tableView.reloadData()
+                                        self?.refreshData()
                                      },
                                      failure: { [weak self] error in
                                         let message = NSLocalizedString("There has been an unexpected error while editing your comment",
@@ -303,6 +378,9 @@ private extension String {
     static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
                                                             + "The title of the post will displayed below this string. "
                                                             + "Example: Comment on \n My First Post")
+    static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
+                                                           + "%1$@ is a placeholder for the comment author that's been replied to."
+                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")

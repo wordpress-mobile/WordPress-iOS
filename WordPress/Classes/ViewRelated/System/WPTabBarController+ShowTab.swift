@@ -72,7 +72,7 @@ extension WPTabBarController {
             do {
                 let controller = try StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in })
                 present(controller, animated: true, completion: nil)
-            } catch let error {
+            } catch {
                 assertionFailure("Story editor should not fail since this button is hidden on iPads.")
             }
         }

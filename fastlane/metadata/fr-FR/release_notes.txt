@@ -1,5 +1,0 @@
-- Mises à jour des blocs de contenu embarqué : les aperçus embarqués WordPress sont désormais disponibles ainsi que les intégrations de contenus Instagram et Vimeo. Pour certains médias, vous pouvez intégrer une URL, mais pas voir d’aperçu du contenu ; dans ce cas, le message « Aucun aperçu disponible » apparaîtra. Si vous ne parvenez pas à intégrer de média, vous verrez désormais une option « Réessayer » et vous aurez également la possibilité de convertir le média en lien.
-
-- Améliorations variées : nous avons simplifié le menu Mon site, en remplaçant « Articles de blog » par « Articles » et « Pages du site » par « Pages ». (Le contenu de vos articles et pages n’est pas affecté, promis !) Vous remarquez également que vous pouvez désormais publier une page à partir de l’extension Partage de l’application.
-
-- Correctifs : nous avons résolu un problème dans le Lecteur qui empêchait la suppression des articles enregistrés et corrigé un bug qui empêchait de continuer une conversation par e-mail à partir des commentaires d’un article.

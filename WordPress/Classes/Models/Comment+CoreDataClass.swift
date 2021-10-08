@@ -58,6 +58,10 @@ public class Comment: NSManagedObject {
         return !author_url.isEmpty
     }
 
+    func hasParentComment() -> Bool {
+        return parentID > 0
+    }
+
 }
 
 private extension Comment {
@@ -152,6 +156,23 @@ extension Comment: PostContentProvider {
             return "spam"
         case .draft:
             return "draft"
+        }
+    }
+
+    static func typeForStatus(_ status: String) -> CommentStatusType? {
+        switch status {
+        case "hold":
+            return .pending
+        case "approve":
+            return .approved
+        case "trash":
+            return .unapproved
+        case "spam":
+            return .spam
+        case "draft":
+            return .draft
+        default:
+            return nil
         }
     }
 }

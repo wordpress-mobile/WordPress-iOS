@@ -1,5 +1,0 @@
-- Updates voor insluitblok: We hebben niet alleen ingesloten voorbeeldweergaven van WordPress ingeschakeld, maar ook van Instagram en Vimeo-content. Je kunt voor sommige media een URL insluiten maar geen voorbeeldweergave van de content bekijken. Bij die media wordt een bericht ‘Geen voorbeeldweergave beschikbaar’ weergegeven. Als je geen media kunt insluiten, wordt de optie ‘Opnieuw proberen’ weergegeven om de content opnieuw in te sluiten. Ook wordt de alternatieve optie weergegeven om de content te converteren naar een link.
-
-- Verschillende verbeteringen: We hebben je menu Mijn site gestroomlijnd, waarbij we ‘Blogberichten’ hebben gewijzigd in ‘Berichten’ en ‘Sitepagina’s’ in ‘Pagina’s’. (We beloven dat dit geen gevolgen heeft voor je bericht en paginacontent!) Je kunt nu ook een pagina publiceren via de appfunctie Extensie delen.
-
-- Bugfixes: We hebben een probleem met de lezer opgelost waarbij het niet mogelijk was opgeslagen berichten te verwijderen. En we hebben een bug opgelost waarbij het niet mogelijk was een gesprek per e-mail te volgen via de opmerkingen bij een bericht.
