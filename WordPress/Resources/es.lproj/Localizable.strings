@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-20 12:14:12+0000 */
+/* Translation-Revision-Date: 2021-10-04 12:13:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -237,6 +237,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s no tiene una URL configurada";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "Enlace de %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Todavía no están disponibles las vistas previas de %s";
@@ -775,7 +778,8 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Aprobar";
 
-/* Title of approved Comments filter. */
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
 "Approved" = "Aprobado";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -1196,7 +1200,6 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
-   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1424,6 +1427,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Address information field City */
 "City" = "Ciudad";
+
+/* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Claim your free domain" = "Reclama tu dominio gratuito";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog clásico";
@@ -2232,8 +2238,7 @@ translators: Block name. %s: The localized block name */
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. User action to dismiss error alert when failing to load media item.
-   Verb. User action to dismiss error alert when failing to share media. */
+   Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Descartar";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2271,6 +2276,9 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the Domains screen.
    Title for the Domains list */
 "Domains" = "Dominios";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect users to " = "Los dominios comprados en este sitio redirigirán a los usuarios a";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "¿No tienes una cuenta? _Regístrate_";
@@ -3125,7 +3133,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Pon la bola a rodar y aumenta las visitas compartiendo tu entrada.";
 
-/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Consigue tu dominio";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
@@ -3263,11 +3271,11 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "Cabecera 6";
 
-/* Help button
-   Open editor help options */
+/* Help button */
 "Help" = "Ayuda";
 
 /* Link to Help section
+   Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ayuda y soporte";
 
@@ -4537,6 +4545,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "No preview available" = "Vista previa no disponible";
 
+/* String to display in place of the site address, in case it was not retrieved from the backend. */
+"No primary site address found" = "No se ha encontrado ninguna dirección del sitio principal";
+
 /* A message title */
 "No recent posts" = "No hay entradas recientes";
 
@@ -4932,7 +4943,8 @@ translators: Block name. %s: The localized block name */
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Pegar sin formato";
 
-/* Status for Media object that is being processed locally.
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Pendiente";
 
@@ -5310,8 +5322,8 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "Sitio principal";
 
-/* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Dirección principal del sitio";
+/* Primary site address label, used in the site address section of the Domains Dashboard. */
+"Primary site address" = "Dirección principal del sitio";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5512,9 +5524,6 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Conectado de nuevo";
 
-/* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Dominios redirigidos";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referencia";
 
@@ -5525,15 +5534,11 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "Volver a cargar";
 
-/* Action to redeem domain credit.
-   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
+/* Action to redeem domain credit. */
 "Register Domain" = "Registrar dominio";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "Registrar en privado con protección de privacidad";
-
-/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Registrar un dominio gratuito";
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
@@ -5670,6 +5675,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Texto de respuesta";
+
+/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+"Reply to %1$@" = "Responder a %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "Responder al comentario…";
@@ -5963,6 +5971,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Botón de búsqueda. El texto actual del botón es";
+
+/* title of the button that searches the first domain. */
+"Search for a domain" = "Buscar un dominio";
 
 /* No comment provided by engineer. */
 "Search input field." = "Campo de introducción de búsqueda.";
@@ -6359,6 +6370,9 @@ translators: Block name. %s: The localized block name */
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Sitio";
 
+/* Title of the Domains Dashboard. */
+"Site Domains" = "Dominios del sitio";
+
 /* Accessibility label for site icon button */
 "Site Icon" = "Icono del sitio";
 
@@ -6552,7 +6566,8 @@ translators: Block name. %s: The localized block name */
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Espacio utilizado";
 
-/* Marks comment as spam.
+/* Button title for Spam comment state.
+   Marks comment as spam.
    Spam
    Title of spam Comments filter. */
 "Spam" = "Spam";
@@ -7364,6 +7379,7 @@ translators: Block name. %s: The localized block name */
 "Transform block…" = "Transformar bloque…";
 
 /* Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
    Trash button title
    Trashes a comment
    Trashes the comment */
@@ -7514,9 +7530,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "No es posible seguir el sitio";
-
-/* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
-"Unable to get URL for media item." = "No ha sido posible recopilar la URL para el elemento multimedia.";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "No se ha podido cargar páginas en este momento.";
@@ -8618,6 +8631,9 @@ translators: Block name. %s: The localized block name */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Tienes 1 sitio WordPress oculto.";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan" = "Tienes el registro de dominio gratuito por un año con tu plan";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Dispones de mejoras premium activas en tu sitio. Cancela las mejoras antes de eliminar el sitio.";
 
@@ -8694,6 +8710,9 @@ translators: Block name. %s: The localized block name */
 /* Header title for your domains section of Domains. */
 "Your Domains" = "Tus dominios";
 
+/* Header of the domains list section in the Domains Dashboard. */
+"Your Site Domains" = "Dominios de tu sitio";
+
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Icono de tu sitio";
 
@@ -8724,6 +8743,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Tu primera copia de seguridad estará lista pronto";
 
+/* Title of the site address section in the Domains Dashboard. */
+"Your free WordPress.com address is" = "Tu dirección gratuita de WordPress.com es";
+
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "No se han podido exportar tus medios. Si continúa el problema, puedes contactar con nosotros a través de la pantalla «Yo > Ayuda y soporte».";
 
@@ -8742,7 +8764,7 @@ translators: Block name. %s: The localized block name */
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Recibirás tus entradas, páginas y ajustes por correo electrónico a %@.";
 
-/* Footer of the primary site section in the Domains dashboard. */
+/* Footer of the primary site section in the Domains Dashboard. */
 "Your primary site address is what visitors will see in their address bar when visiting your website." = "La dirección principal de tu sitio es la que los visitantes ven en su barra de direcciones al visitar tu web.";
 
 /* Text displayed when a site restore takes too long. */

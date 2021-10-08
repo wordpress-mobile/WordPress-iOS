@@ -511,6 +511,8 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
             approveComment()
         case .spam:
             spamComment()
+        case .unapproved:
+            deleteComment()
         default:
             break
         }
@@ -554,6 +556,17 @@ private extension CommentDetailViewController {
         })
     }
 
+    func deleteComment() {
+        CommentAnalytics.trackCommentTrashed(comment: comment)
+
+        commentService.delete(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.trashSuccess)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.trashFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
+
     struct ModerationMessages {
         static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
         static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
@@ -561,6 +574,8 @@ private extension CommentDetailViewController {
         static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
         static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
         static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
+        static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
+        static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
     }
 
 }
