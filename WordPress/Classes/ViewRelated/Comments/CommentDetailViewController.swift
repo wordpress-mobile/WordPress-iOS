@@ -53,6 +53,43 @@ class CommentDetailViewController: UITableViewController {
         return cell
     }()
 
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        let buttonColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(.deleteButtonText, for: .normal)
+        button.setTitleColor(buttonColor, for: .normal)
+        button.setTitleColor(.white, for: .highlighted)
+        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: buttonColor), for: .normal)
+        button.setBackgroundImage(.renderBackgroundImage(fill: buttonColor, border: buttonColor), for: .highlighted)
+
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.numberOfLines = 0
+
+        // add constraints to the title label, so the button can contain it properly in multi-line cases.
+        if let label = button.titleLabel {
+            button.pinSubviewToAllEdgeMargins(label)
+        }
+
+        button.on(.touchUpInside) { [weak self] _ in
+            self?.deleteButtonTapped()
+        }
+
+        return button
+    }()
+
+    private lazy var deleteButtonCell: UITableViewCell = {
+        let cell = UITableViewCell()
+        cell.selectionStyle = .none
+        cell.accessibilityTraits = .button
+
+        cell.contentView.addSubview(deleteButton)
+        cell.contentView.pinSubviewToAllEdges(deleteButton, insets: Constants.deleteButtonInsets)
+
+        return cell
+    }()
+
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
     }()
@@ -127,7 +164,7 @@ class CommentDetailViewController: UITableViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         // when an orientation change is triggered, recalculate the content cell's height.
-        guard let contentRowIndex = rows.firstIndex(where: { $0 == .content }) else {
+        guard let contentRowIndex = rows.firstIndex(of: .content) else {
             return
         }
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
@@ -149,27 +186,37 @@ class CommentDetailViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
-        switch row {
-        case .header:
-            configureHeaderCell()
-            return headerCell
+        let cell: UITableViewCell = {
+            switch row {
+            case .header:
+                configureHeaderCell()
+                return headerCell
 
-        case .content:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
-                return .init()
+            case .content:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                    return .init()
+                }
+
+                configureContentCell(cell, comment: comment)
+                cell.moderationBar.delegate = self
+                moderationBar = cell.moderationBar
+                return cell
+
+            case .replyIndicator:
+                return replyIndicatorCell
+
+            case .text:
+                return configuredTextCell(for: row)
+
+            case .deleteComment:
+                return deleteButtonCell
             }
+        }()
 
-            configureContentCell(cell, comment: comment)
-            cell.moderationBar.delegate = self
-            moderationBar = cell.moderationBar
-            return cell
+        // hide cell separator if it's positioned before the delete button cell.
+        cell.separatorInset = shouldHideCellSeparator(for: indexPath) ? insetsForHiddenCellSeparator : tableView.separatorInset
 
-        case .replyIndicator:
-            return replyIndicatorCell
-
-        case .text:
-            return configuredTextCell(for: row)
-        }
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -213,11 +260,21 @@ private extension CommentDetailViewController {
         case content
         case replyIndicator
         case text(title: String, detail: String, image: UIImage? = nil)
+        case deleteComment
     }
 
     struct Constants {
         static let tableLeadingInset: CGFloat = 20.0
+        static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
+
+        static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
+    }
+
+    /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
+    /// This needs to be computed because the frame size changes on orientation change.
+    var insetsForHiddenCellSeparator: UIEdgeInsets {
+        return .init(top: 0, left: tableView.frame.size.width, bottom: 0, right: 0).flippedForRightToLeftLayoutDirection()
     }
 
     /// returns the height of the navigation bar + the status bar.
@@ -262,7 +319,7 @@ private extension CommentDetailViewController {
 
     func configureTable() {
         // get rid of the separator line for the last cell.
-        tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
         // assign 20pt leading inset to the table view, as per the design.
         // note that by default, the system assigns 16pt inset for .phone, and 20pt for .pad idioms.
@@ -293,6 +350,11 @@ private extension CommentDetailViewController {
             }
 
             rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
+
+            if let statusType = CommentStatusType.typeForStatus(comment.status),
+               (statusType == .spam || statusType == .unapproved) {
+                rows.append(.deleteComment)
+            }
         }
 
         self.rows = rows
@@ -304,6 +366,16 @@ private extension CommentDetailViewController {
         configureEditButtonItem()
         configureRows()
         tableView.reloadData()
+    }
+
+
+    /// Checks if the index path is positioned before the delete button cell.
+    func shouldHideCellSeparator(for indexPath: IndexPath) -> Bool {
+        guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+            return false
+        }
+
+        return indexPath.row == deleteCellIndex - 1
     }
 
     // MARK: Cell configuration
@@ -425,6 +497,10 @@ private extension CommentDetailViewController {
         present(navigationControllerToPresent, animated: true)
     }
 
+    func deleteButtonTapped() {
+        // TODO: Implement delete functionality.
+    }
+
     func updateComment() {
         // Regardless of success or failure track the user's intent to save a change.
         CommentAnalytics.trackCommentEdited(comment: comment)
@@ -496,6 +572,7 @@ private extension String {
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
     static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
+    static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
 }
 
 
