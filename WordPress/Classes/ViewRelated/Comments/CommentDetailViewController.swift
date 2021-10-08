@@ -136,7 +136,7 @@ class CommentDetailViewController: UITableViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         // when an orientation change is triggered, recalculate the content cell's height.
-        guard let contentRowIndex = rows.firstIndex(where: { $0 == .content }) else {
+        guard let contentRowIndex = rows.firstIndex(of: .content) else {
             return
         }
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
