@@ -55,13 +55,13 @@ class CommentDetailViewController: UITableViewController {
 
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
+        let buttonColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .error
         button.setTitle(.deleteButtonText, for: .normal)
-        button.setTitleColor(.error, for: .normal)
+        button.setTitleColor(buttonColor, for: .normal)
         button.setTitleColor(.white, for: .highlighted)
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: .error), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: .error, border: .error), for: .highlighted)
+        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: buttonColor), for: .normal)
+        button.setBackgroundImage(.renderBackgroundImage(fill: buttonColor, border: buttonColor), for: .highlighted)
 
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         button.titleLabel?.textAlignment = .center
