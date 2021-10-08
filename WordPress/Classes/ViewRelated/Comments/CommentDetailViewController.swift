@@ -67,7 +67,7 @@ class CommentDetailViewController: UITableViewController {
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
 
-        // add constraints for the title label for the button to contain the label properly in multi-line cases.
+        // add constraints to the title label, so the button can contain it properly in multi-line cases.
         if let label = button.titleLabel {
             button.pinSubviewToAllEdgeMargins(label)
         }
