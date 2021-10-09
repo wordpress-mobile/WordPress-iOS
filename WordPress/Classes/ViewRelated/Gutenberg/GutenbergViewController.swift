@@ -1024,6 +1024,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let navController = UINavigationController(rootViewController: controller)
         self.topmostPresentedViewController.present(navController, animated: true)
     }
+
+    func gutenbergDidRequestShowNotice(_ message: String, duration: Int) {
+        print(#function)
+    }
 }
 
 // MARK: - Suggestions implementation
