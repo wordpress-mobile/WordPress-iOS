@@ -15,7 +15,8 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Make your WordPress site faster and safer.
+"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -42,11 +43,11 @@ msgctxt "v18.4-whats-new"
 msgid ""
 "We have made life easier in the Block editor! There are dedicated embed blocks for YouTube, Twitter, WordPress, and Vimeo, which makes adding media super speedy — you can find them in the block picker view. The URLs can even be edited after you have selected them.\n"
 "\n"
-"We have also tweaked the gallery block, so your images will still be added if you close the post while they are uploading.\n"
+"We fixed an issue with the gallery block, so now your images will still be added if you close the post while they are uploading.\n"
 "\n"
-"Another fixed issue is the notification screen occasionally showing the wrong avatar when you are mentioned in a comment — your chosen image will now be proudly displayed!\n"
+"But, if you are still having problems, asking for help is even easier. You can do it right inside the editor screen: Just tap the 3-dot menu button, select “Help & Support”, then “Contact Support.”\n"
 "\n"
-"But, if you are still having problems asking for help is even easier. You can do it right inside the editor screen: Just tap the 3-dot menu button, select “Help & Support”, then “Contact Support.”\n"
+"Lastly, we fixed an issue where the notification screen was occasionally showing the wrong avatar when you are mentioned in a comment — your chosen image will now be proudly displayed!\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
