@@ -4422,13 +4422,6 @@
 			remoteGlobalIDString = 096A92F526E29FFF00448C68;
 			remoteInfo = GenerateCredentials;
 		};
-		096A92FE26E2A0C000448C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 096A92F526E29FFF00448C68;
-			remoteInfo = GenerateCredentials;
-		};
 		3F526C5A2538CF2B0069706C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -14934,6 +14927,7 @@
 			buildConfigurationList = FABB264D2602FC2C00C8785C /* Build configuration list for PBXNativeTarget "Jetpack" */;
 			buildPhases = (
 				FABB1FA72602FC2C00C8785C /* [CP] Check Pods Manifest.lock */,
+				3F32E4AE270EAF5100A33D51 /* Generate Credentials */,
 				FABB1FA92602FC2C00C8785C /* App Icons: Add Version For Internal Releases */,
 				FABB1FAA2602FC2C00C8785C /* Resources */,
 				FABB20C12602FC2C00C8785C /* Copy Alternate Internal Icons (if needed) */,
@@ -14947,7 +14941,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				096A92FF26E2A0C000448C68 /* PBXTargetDependency */,
 				FABB1F902602FC2C00C8785C /* PBXTargetDependency */,
 			);
 			name = Jetpack;
@@ -16168,6 +16161,26 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressThisWeekWidget/Pods-WordPressThisWeekWidget-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		3F32E4AE270EAF5100A33D51 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
 		4CB8AA817C9BD74F3416B27C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -20610,11 +20623,6 @@
 			isa = PBXTargetDependency;
 			target = 096A92F526E29FFF00448C68 /* GenerateCredentials */;
 			targetProxy = 096A92FC26E2A0AE00448C68 /* PBXContainerItemProxy */;
-		};
-		096A92FF26E2A0C000448C68 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 096A92F526E29FFF00448C68 /* GenerateCredentials */;
-			targetProxy = 096A92FE26E2A0C000448C68 /* PBXContainerItemProxy */;
 		};
 		3F526C5B2538CF2B0069706C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
