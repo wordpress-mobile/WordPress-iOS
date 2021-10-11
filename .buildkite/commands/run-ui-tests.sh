@@ -7,7 +7,7 @@ IOS_VERSION=$3
 echo "Running $TEST_NAME on $DEVICE for iOS $IOS_VERSION"
 
 echo "--- 📦 Downloading Build Artifacts"
-buildkite-agent artifact download build-products.tar .
+download_artifact build-products.tar
 tar -xf build-products.tar
 
 echo "--- :wrench: Fixing VM"
