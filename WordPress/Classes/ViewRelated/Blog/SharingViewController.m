@@ -243,21 +243,19 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             [connections addObject:pubConn];
         }
     }
-
-    NSArray *populated = [NSArray arrayWithArray:connections];
-    [self.publicizeServicesState addConnections:populated];
-    return populated;
+    return [NSArray arrayWithArray:connections];
 }
 
-- (BOOL)hasConnectedAccounts
+- (NSArray *)allConnections
 {
-    int count = 0;
+    NSMutableArray *allConnections = [NSMutableArray new];
     for (PublicizeService *service in self.publicizeServices) {
-        if ([self connectionsForService:service].count > 0) {
-            count += 1;
+        NSArray *connections = [self connectionsForService:service];
+        if (connections.count > 0) {
+            [allConnections addObjectsFromArray:connections];
         }
     }
-    return count > 0;
+    return allConnections;
 }
 
 - (NSManagedObjectContext *)managedObjectContext
