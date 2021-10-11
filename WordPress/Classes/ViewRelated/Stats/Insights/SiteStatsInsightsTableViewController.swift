@@ -224,7 +224,7 @@ private extension SiteStatsInsightsTableViewController {
 
     func refreshTableView() {
         guard let viewModel = viewModel else {
-                return
+            return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
@@ -582,7 +582,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         if !blog.supportsPublicize() {
             controller = SharingButtonsViewController(blog: blog)
         } else {
-            controller = SharingViewController(blog: blog)
+            controller = SharingViewController(blog: blog, delegate: self)
         }
 
         let navigationController = UINavigationController(rootViewController: controller)
@@ -665,6 +665,16 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         present(alert, animated: true)
     }
 
+}
+
+// MARK: - SharingViewControllerDelegate
+
+extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
+    func someMethod() {
+        print("it's working!")
+        viewModel?.markEmptyStatsNudgeAsCompleted()
+        refreshTableView()
+    }
 }
 
 // MARK: - No Results Handling
