@@ -77,7 +77,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)doneButtonTapped
 {
     if ([self hasConnectedAccounts]) {
-        [self.delegate someMethod];
+        [self.delegate didChangePublicizeServices];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }

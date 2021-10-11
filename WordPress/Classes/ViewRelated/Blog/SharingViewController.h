@@ -2,7 +2,7 @@
 
 @protocol SharingViewControllerDelegate
 
-- (void)someMethod;
+- (void)didChangePublicizeServices;
 
 @end
 
