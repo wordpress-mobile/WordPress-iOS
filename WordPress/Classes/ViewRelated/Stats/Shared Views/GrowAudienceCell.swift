@@ -24,6 +24,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
     func configure(hintType: HintType,
                    allTimeViewsCount: Int,
+                   isNudgeCompleted: Bool,
                    insightsDelegate: SiteStatsInsightsDelegate?) {
         self.hintType = hintType
         self.insightsDelegate = insightsDelegate
@@ -33,7 +34,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         iconView.image = hintType.image
         dismissButton.setTitle(Strings.dismissButtonTitle, for: .normal)
 
-        updateView(isCompleted: false)
+        updateView(isCompleted: isNudgeCompleted)
     }
 
     // MARK: - Styling
@@ -87,7 +88,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             return
         }
 
-        updateView(isCompleted: true)
+//        updateView(isCompleted: true)
 
         switch hintType {
         case .social:
