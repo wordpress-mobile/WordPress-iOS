@@ -68,11 +68,9 @@ extension GutenbergViewController {
             ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
-        if canViewEditorOnboarding() {
-            alert.addDefaultActionWithTitle(MoreSheetAlert.editorHelpTitle) { [weak self] _ in
-                self?.showEditorHelp()
-                ActionDispatcher.dispatch(NoticeAction.unlock)
-            }
+        alert.addDefaultActionWithTitle(MoreSheetAlert.editorHelpTitle) { [weak self] _ in
+            self?.showEditorHelp()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
         if #available(iOS 14.0, *),

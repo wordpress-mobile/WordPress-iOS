@@ -446,12 +446,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return;
     }
 
+    RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
+    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    
+    // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
+    if (!comment.deleteWillBePermanent) {
+        [remote trashComment:remoteComment success:success failure:failure];
+        return;
+    }
+
     // For the best user experience we want to optimistically delete the comment.
     // However, if there is an error we need to restore it.
-    RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *blogObjID = comment.blog.objectID;
     NSManagedObjectContext *context = self.managedObjectContext;
-    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
 
     [context deleteObject:comment];
     [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
@@ -859,7 +866,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                         if (success) {
                             success();
                         }
-                    } failure:^(NSError *error) {                        
+                    } failure:^(NSError *error) {
+                        DDLogError(@"Error moderating comment: %@", error);
                         [self.managedObjectContext performBlock:^{
                             // Note: The comment might have been deleted at this point
                             Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
