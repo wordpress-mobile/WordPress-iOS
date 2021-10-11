@@ -53,6 +53,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self syncServices];
+    [self.publicizeServicesState addInitialConnections:[self allConnections]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -78,7 +79,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)doneButtonTapped
 {
-    if ([self hasConnectedAccounts]) {
+    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
         [self.delegate didChangePublicizeServices];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
