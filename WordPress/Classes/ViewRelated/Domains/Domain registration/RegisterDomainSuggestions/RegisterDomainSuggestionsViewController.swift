@@ -160,8 +160,13 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.delegate = self
             vc.siteName = siteName
 
-            if BlogService.blog(with: site)?.hasBloggerPlan == true {
-                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+            if let blog = BlogService.blog(with: site) {
+                vc.domainType = domainType
+                vc.freeSiteAddress = blog.freeSiteAddress
+
+                if blog.hasBloggerPlan == true {
+                    vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+                }
             }
 
             domainsTableViewController = vc
