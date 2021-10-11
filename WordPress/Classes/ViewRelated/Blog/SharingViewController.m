@@ -19,18 +19,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) NSArray *publicizeServices;
+@property (nonatomic, weak) id delegate;
 
 @end
 
 @implementation SharingViewController
 
-- (instancetype)initWithBlog:(Blog *)blog
+- (instancetype)initWithBlog:(Blog *)blog delegate:(id)delegate
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     self = [self initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
         _publicizeServices = [NSMutableArray new];
+        _delegate = delegate;
     }
     return self;
 }
@@ -74,6 +76,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)doneButtonTapped
 {
+    if ([self hasConnectedAccounts]) {
+        [self.delegate someMethod];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -237,6 +242,17 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }
     }
     return [NSArray arrayWithArray:connections];
+}
+
+- (BOOL)hasConnectedAccounts
+{
+    int count = 0;
+    for (PublicizeService *service in self.publicizeServices) {
+        if ([self connectionsForService:service].count > 0) {
+            count += 1;
+        }
+    }
+    return count > 0;
 }
 
 - (NSManagedObjectContext *)managedObjectContext
