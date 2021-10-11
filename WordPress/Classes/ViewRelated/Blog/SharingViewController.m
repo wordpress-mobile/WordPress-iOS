@@ -20,6 +20,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) NSArray *publicizeServices;
 @property (nonatomic, weak) id delegate;
+@property (nonatomic) PublicizeServicesState *publicizeServicesState;
 
 @end
 
@@ -33,6 +34,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         _blog = blog;
         _publicizeServices = [NSMutableArray new];
         _delegate = delegate;
+        _publicizeServicesState = [PublicizeServicesState new];
     }
     return self;
 }
@@ -241,7 +243,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             [connections addObject:pubConn];
         }
     }
-    return [NSArray arrayWithArray:connections];
+
+    NSArray *populated = [NSArray arrayWithArray:connections];
+    [self.publicizeServicesState addConnections:populated];
+    return populated;
 }
 
 - (BOOL)hasConnectedAccounts
