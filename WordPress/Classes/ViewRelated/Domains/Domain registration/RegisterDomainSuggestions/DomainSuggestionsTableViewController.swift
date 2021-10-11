@@ -271,24 +271,26 @@ extension DomainSuggestionsTableViewController {
 
     private func topBannerCell() -> UITableViewCell {
         let cell = UITableViewCell()
-        if let textLabel = cell.textLabel {
-            textLabel.font = UIFont.preferredFont(forTextStyle: .body)
-            textLabel.numberOfLines = 3
-            textLabel.lineBreakMode = .byTruncatingTail
-            textLabel.adjustsFontForContentSizeCategory = true
-            textLabel.adjustsFontSizeToFitWidth = true
-            textLabel.minimumScaleFactor = 0.5
+        guard let textLabel = cell.textLabel else {
+            return cell
         }
+
+        textLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        textLabel.numberOfLines = 3
+        textLabel.lineBreakMode = .byTruncatingTail
+        textLabel.adjustsFontForContentSizeCategory = true
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.5
 
         let template = NSLocalizedString("Domains purchased on this site will redirect to %@", comment: "Description for the first domain purchased with a free plan.")
         let formatted = String(format: template, freeSiteAddress)
         let attributed = NSMutableAttributedString(string: formatted, attributes: [:])
 
         if let range = formatted.range(of: freeSiteAddress) {
-            attributed.addAttributes([.font: cell.textLabel!.font.bold()], range: NSRange(range, in: formatted))
+            attributed.addAttributes([.font: textLabel.font.bold()], range: NSRange(range, in: formatted))
         }
 
-        cell.textLabel?.attributedText = attributed
+        textLabel.attributedText = attributed
 
         return cell
     }
