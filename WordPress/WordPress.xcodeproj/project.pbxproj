@@ -1464,6 +1464,8 @@
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
 		931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */; };
 		931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
+		931F312C2714302A0075433B /* PublicizeServicesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931F312B2714302A0075433B /* PublicizeServicesState.swift */; };
+		931F312D2714302A0075433B /* PublicizeServicesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931F312B2714302A0075433B /* PublicizeServicesState.swift */; };
 		932225B11C7CE50300443B02 /* WordPressShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		932645A41E7C206600134988 /* GutenbergSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932645A31E7C206600134988 /* GutenbergSettingsTests.swift */; };
 		933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 933D1F461EA64108009FB462 /* TestingAppDelegate.m */; };
@@ -6079,6 +6081,7 @@
 		931DF4DD18D09B1900540BDD /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4DE18D09B2600540BDD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4DF18D09B3900540BDD /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		931F312B2714302A0075433B /* PublicizeServicesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicizeServicesState.swift; sourceTree = "<group>"; };
 		932225A71C7CE50300443B02 /* WordPressShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		932645A31E7C206600134988 /* GutenbergSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergSettingsTests.swift; sourceTree = "<group>"; };
 		93267A6019B896CD00997EB8 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
@@ -13914,6 +13917,7 @@
 				E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */,
 				E64384821C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift */,
 				E60BD230230A3DD400727E82 /* KeyringAccountHelper.swift */,
+				931F312B2714302A0075433B /* PublicizeServicesState.swift */,
 			);
 			name = Sharing;
 			sourceTree = "<group>";
@@ -17595,6 +17599,7 @@
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
 				983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */,
 				98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */,
+				931F312C2714302A0075433B /* PublicizeServicesState.swift in Sources */,
 				8BDA5A75247C63F300AB124C /* ReaderDetailCoordinator.swift in Sources */,
 				FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
@@ -20127,6 +20132,7 @@
 				FABB248D2602FC2C00C8785C /* PostCoordinator.swift in Sources */,
 				FABB248E2602FC2C00C8785C /* AztecAttachmentDelegate.swift in Sources */,
 				FABB248F2602FC2C00C8785C /* Memoize.swift in Sources */,
+				931F312D2714302A0075433B /* PublicizeServicesState.swift in Sources */,
 				FABB24902602FC2C00C8785C /* StatsPeriodAsyncOperation.swift in Sources */,
 				FABB24912602FC2C00C8785C /* NotificationsViewController.swift in Sources */,
 				FABB24922602FC2C00C8785C /* PingHubManager.swift in Sources */,
