@@ -8,28 +8,26 @@ protocol DomainSuggestionsTableViewControllerDelegate {
     func newSearchStarted()
 }
 
-/// This is intended to be an abstract base class that provides domain
-/// suggestions for the keyword that user searches.
-/// Subclasses should override the open variables to make customizations.
+/// This class provides domain suggestions based on keyword searches
+/// performed by the user.
+///
 class DomainSuggestionsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    open var siteName: String?
-    open var delegate: DomainSuggestionsTableViewControllerDelegate?
-    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
+    var siteName: String?
+    var delegate: DomainSuggestionsTableViewControllerDelegate?
+    var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
 
-    open var useFadedColorForParentDomains: Bool {
-        return true
+    var useFadedColorForParentDomains: Bool {
+        return false
     }
-    open var sectionTitle: String {
-        return ""
-    }
-    open var sectionDescription: String {
-        return ""
-    }
-    open var searchFieldPlaceholder: String {
-        return ""
+
+    var searchFieldPlaceholder: String {
+        return NSLocalizedString(
+            "Type to get more suggestions",
+            comment: "Register domain - Search field placeholder for the Suggested Domain screen"
+        )
     }
 
     private var noResultsViewController: NoResultsViewController?
@@ -166,13 +164,12 @@ class DomainSuggestionsTableViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension DomainSuggestionsTableViewController {
-    fileprivate enum Sections: Int {
-        case titleAndDescription = 0
-        case searchField = 1
-        case suggestions = 2
+    fileprivate enum Sections: Int, CaseIterable {
+        case searchField
+        case suggestions
 
         static var count: Int {
-            return suggestions.rawValue + 1
+            return allCases.count
         }
     }
 
@@ -182,8 +179,6 @@ extension DomainSuggestionsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.titleAndDescription.rawValue:
-            return !sectionTitle.isEmpty || !sectionDescription.isEmpty ? 1 : 0
         case Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
@@ -199,8 +194,6 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         switch indexPath.section {
-        case Sections.titleAndDescription.rawValue:
-            cell = titleAndDescriptionCell()
         case Sections.searchField.rawValue:
             cell = searchFieldCell()
         case Sections.suggestions.rawValue:
@@ -268,13 +261,6 @@ extension DomainSuggestionsTableViewController {
     }
 
     // MARK: table view cells
-
-    @objc func titleAndDescriptionCell() -> UITableViewCell {
-        let cell = LoginSocialErrorCell(title: sectionTitle,
-                                        description: sectionDescription)
-        cell.selectionStyle = .none
-        return cell
-    }
 
     private func searchFieldCell() -> SearchTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else {
