@@ -8,28 +8,28 @@ protocol DomainSuggestionsTableViewControllerDelegate {
     func newSearchStarted()
 }
 
-/// This is intended to be an abstract base class that provides domain
-/// suggestions for the keyword that user searches.
-/// Subclasses should override the open variables to make customizations.
+/// This class provides domain suggestions based on keyword searches
+/// performed by the user.
+///
 class DomainSuggestionsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    open var siteName: String?
-    open var delegate: DomainSuggestionsTableViewControllerDelegate?
-    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
+    var siteName: String?
+    var delegate: DomainSuggestionsTableViewControllerDelegate?
+    var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
+    var domainType: DomainType?
+    var freeSiteAddress: String = ""
 
-    open var useFadedColorForParentDomains: Bool {
-        return true
+    var useFadedColorForParentDomains: Bool {
+        return false
     }
-    open var sectionTitle: String {
-        return ""
-    }
-    open var sectionDescription: String {
-        return ""
-    }
-    open var searchFieldPlaceholder: String {
-        return ""
+
+    var searchFieldPlaceholder: String {
+        return NSLocalizedString(
+            "Type to get more suggestions",
+            comment: "Register domain - Search field placeholder for the Suggested Domain screen"
+        )
     }
 
     private var noResultsViewController: NoResultsViewController?
@@ -178,13 +178,13 @@ class DomainSuggestionsTableViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension DomainSuggestionsTableViewController {
-    fileprivate enum Sections: Int {
-        case titleAndDescription = 0
-        case searchField = 1
-        case suggestions = 2
+    fileprivate enum Sections: Int, CaseIterable {
+        case topBanner
+        case searchField
+        case suggestions
 
         static var count: Int {
-            return suggestions.rawValue + 1
+            return allCases.count
         }
     }
 
@@ -194,8 +194,8 @@ extension DomainSuggestionsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.titleAndDescription.rawValue:
-            return !sectionTitle.isEmpty || !sectionDescription.isEmpty ? 1 : 0
+        case Sections.topBanner.rawValue:
+            return shouldShowTopBanner ? 1 : 0
         case Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
@@ -211,8 +211,8 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         switch indexPath.section {
-        case Sections.titleAndDescription.rawValue:
-            cell = titleAndDescriptionCell()
+        case Sections.topBanner.rawValue:
+            cell = topBannerCell()
         case Sections.searchField.rawValue:
             cell = searchFieldCell()
         case Sections.suggestions.rawValue:
@@ -281,11 +281,39 @@ extension DomainSuggestionsTableViewController {
 
     // MARK: table view cells
 
-    @objc func titleAndDescriptionCell() -> UITableViewCell {
-        let cell = LoginSocialErrorCell(title: sectionTitle,
-                                        description: sectionDescription)
-        cell.selectionStyle = .none
+    private func topBannerCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        guard let textLabel = cell.textLabel else {
+            return cell
+        }
+
+        textLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        textLabel.numberOfLines = 3
+        textLabel.lineBreakMode = .byTruncatingTail
+        textLabel.adjustsFontForContentSizeCategory = true
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.5
+
+        let template = NSLocalizedString("Domains purchased on this site will redirect to %@", comment: "Description for the first domain purchased with a free plan.")
+        let formatted = String(format: template, freeSiteAddress)
+        let attributed = NSMutableAttributedString(string: formatted, attributes: [:])
+
+        if let range = formatted.range(of: freeSiteAddress) {
+            attributed.addAttributes([.font: textLabel.font.bold()], range: NSRange(range, in: formatted))
+        }
+
+        textLabel.attributedText = attributed
+
         return cell
+    }
+
+    private var shouldShowTopBanner: Bool {
+        if let domainType = domainType,
+           domainType == .siteRedirect {
+            return true
+        }
+
+        return false
     }
 
     private func searchFieldCell() -> SearchTableViewCell {

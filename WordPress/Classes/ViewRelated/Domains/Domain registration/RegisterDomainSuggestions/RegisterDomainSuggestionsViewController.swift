@@ -15,7 +15,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var domain: DomainSuggestion?
     private var siteName: String?
-    private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
+    private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
     private var includeSupportButton: Bool = true
 
@@ -156,12 +156,17 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
+        if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
 
-            if BlogService.blog(with: site)?.hasBloggerPlan == true {
-                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+            if let blog = BlogService.blog(with: site) {
+                vc.domainType = domainType
+                vc.freeSiteAddress = blog.freeSiteAddress
+
+                if blog.hasBloggerPlan == true {
+                    vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+                }
             }
 
             domainsTableViewController = vc
