@@ -671,7 +671,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
-        print("it's working!")
         viewModel?.markEmptyStatsNudgeAsCompleted()
         refreshTableView()
     }
