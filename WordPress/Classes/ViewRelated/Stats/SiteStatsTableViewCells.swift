@@ -99,6 +99,7 @@ struct GrowAudienceRow: ImmuTableRow {
 
     let hintType: GrowAudienceCell.HintType
     let allTimeViewsCount: Int
+    let isNudgeCompleted: Bool
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
@@ -110,6 +111,7 @@ struct GrowAudienceRow: ImmuTableRow {
 
         cell.configure(hintType: hintType,
                        allTimeViewsCount: allTimeViewsCount,
+                       isNudgeCompleted: isNudgeCompleted,
                        insightsDelegate: siteStatsInsightsDelegate)
     }
 }
