@@ -113,6 +113,13 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // Local state for site current view count
     private var currentViewCount: Int?
 
+    private lazy var nudgeState: SiteStatsNudgeState? = {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return nil
+        }
+        return SiteStatsNudgeState(siteId: siteID)
+    }()
+
     private let insightsStore = StoreContainer.shared.statsInsights
 
     // Store Insights settings for all sites.
@@ -180,7 +187,8 @@ private extension SiteStatsInsightsTableViewController {
     func initViewModel() {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
                                                insightsDelegate: self,
-                                               insightsStore: insightsStore)
+                                               insightsStore: insightsStore,
+                                               nudgeState: nudgeState)
         addViewModelListeners()
         viewModel?.fetchInsights()
     }
