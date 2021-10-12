@@ -19,18 +19,22 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) NSArray *publicizeServices;
+@property (nonatomic, weak) id delegate;
+@property (nonatomic) PublicizeServicesState *publicizeServicesState;
 
 @end
 
 @implementation SharingViewController
 
-- (instancetype)initWithBlog:(Blog *)blog
+- (instancetype)initWithBlog:(Blog *)blog delegate:(id)delegate
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     self = [self initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
         _publicizeServices = [NSMutableArray new];
+        _delegate = delegate;
+        _publicizeServicesState = [PublicizeServicesState new];
     }
     return self;
 }
@@ -49,6 +53,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self syncServices];
+    [self.publicizeServicesState addInitialConnections:[self allConnections]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,6 +79,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)doneButtonTapped
 {
+    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
+        [self.delegate didChangePublicizeServices];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -237,6 +245,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }
     }
     return [NSArray arrayWithArray:connections];
+}
+
+- (NSArray *)allConnections
+{
+    NSMutableArray *allConnections = [NSMutableArray new];
+    for (PublicizeService *service in self.publicizeServices) {
+        NSArray *connections = [self connectionsForService:service];
+        if (connections.count > 0) {
+            [allConnections addObjectsFromArray:connections];
+        }
+    }
+    return allConnections;
 }
 
 - (NSManagedObjectContext *)managedObjectContext

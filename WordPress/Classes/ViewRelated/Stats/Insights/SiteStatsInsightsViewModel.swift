@@ -15,6 +15,7 @@ class SiteStatsInsightsViewModel: Observable {
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
+    private var isNudgeCompleted = false
 
     private var periodReceipt: Receipt?
 
@@ -71,6 +72,7 @@ class SiteStatsInsightsViewModel: Observable {
                                             let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
                                             return GrowAudienceRow(hintType: .social,
                                                                    allTimeViewsCount: viewsCount ?? 0,
+                                                                   isNudgeCompleted: isNudgeCompleted,
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostGrowAudienceImmutableRow()
@@ -256,6 +258,9 @@ class SiteStatsInsightsViewModel: Observable {
         insightsToShow = insights
     }
 
+    func markEmptyStatsNudgeAsCompleted() {
+        isNudgeCompleted = true
+    }
 }
 
 // MARK: - Private Extension

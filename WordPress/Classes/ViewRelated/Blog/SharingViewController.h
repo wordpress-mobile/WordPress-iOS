@@ -1,5 +1,11 @@
 #import <UIKit/UIKit.h>
 
+@protocol SharingViewControllerDelegate
+
+- (void)didChangePublicizeServices;
+
+@end
+
 @class Blog;
 
 /**
@@ -14,6 +20,6 @@
  *
  *  @return New instance of SharingViewController
  */
-- (instancetype)initWithBlog:(Blog *)blog;
+- (instancetype)initWithBlog:(Blog *)blog delegate:(id)delegate;
 
 @end
