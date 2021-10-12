@@ -13,6 +13,18 @@ protocol DomainSuggestionsTableViewControllerDelegate {
 ///
 class DomainSuggestionsTableViewController: UITableViewController {
 
+    // MARK: - Fonts
+
+    private let domainBaseFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+    private let domainTLDFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+    private let suggestionCostFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+    private let perYearPostfixFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+    private let freeForFirstYearFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+
+    // MARK: - Cell Identifiers
+
+    private static let suggestionCellIdentifier = "org.wordpress.domainsuggestionstable.suggestioncell"
+
     // MARK: - Properties
 
     var blog: Blog?
@@ -327,32 +339,10 @@ extension DomainSuggestionsTableViewController {
         return cell
     }
 
-    // MARK: - Fonts
-
-    private static var domainBaseFont: UIFont {
-        WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-    }
-
-    private static var domainTLDFont: UIFont {
-        WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-    }
-
-    private static var suggestionCostFont: UIFont {
-        WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-    }
-
-    private static var perYearPostfixFont: UIFont {
-        WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
-    }
-
-    private static var freeForFirstYearFont: UIFont {
-        WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-    }
-
     // MARK: - Suggestion Cell
 
     private func suggestionCell(_ suggestion: DomainSuggestion) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "org.wordpress.domainsuggestionstable.suggestioncell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: Self.suggestionCellIdentifier)
 
         cell.textLabel?.attributedText = attributedDomain(suggestion.domainName)
         cell.textLabel?.textColor = parentDomainColor
@@ -364,9 +354,7 @@ extension DomainSuggestionsTableViewController {
     }
 
     private func attributedDomain(_ domain: String) -> NSAttributedString {
-        let attributedDomain = NSMutableAttributedString()
-
-        attributedDomain.append(NSAttributedString(string: domain, attributes: [.font: Self.domainBaseFont]))
+        let attributedDomain = NSMutableAttributedString(string: domain, attributes: [.font: domainBaseFont])
 
         guard let dotPosition = domain.firstIndex(of: ".") else {
             return attributedDomain
@@ -376,7 +364,7 @@ extension DomainSuggestionsTableViewController {
         let nsRange = NSRange(tldRange, in: domain)
 
         attributedDomain.addAttribute(.font,
-                                      value: Self.domainTLDFont,
+                                      value: domainTLDFont,
                                       range: nsRange)
 
         return attributedDomain
@@ -402,7 +390,7 @@ extension DomainSuggestionsTableViewController {
     private func attributedFreeForTheFirstYear() -> NSAttributedString {
         NSAttributedString(
             string: NSLocalizedString("Free for the first year ", comment: "Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit."),
-            attributes: [.font: Self.freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
+            attributes: [.font: freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
     }
 
     private func attributedSuggestionCost(for suggestion: DomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
@@ -418,13 +406,13 @@ extension DomainSuggestionsTableViewController {
     }
 
     private func suggestionCostAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
-        [.font: Self.suggestionCostFont,
+        [.font: suggestionCostFont,
          .foregroundColor: hasDomainCredit ? UIColor.secondaryLabel : UIColor.label,
          .strikethroughStyle: hasDomainCredit ? 1 : 0]
     }
 
     private func perYearPostfixAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
-        [.font: Self.perYearPostfixFont,
+        [.font: perYearPostfixFont,
          .foregroundColor: UIColor.secondaryLabel,
          .strikethroughStyle: hasDomainCredit ? 1 : 0]
     }
