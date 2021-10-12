@@ -159,6 +159,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
+            vc.blog = BlogService.blog(with: site)
 
             if let blog = BlogService.blog(with: site) {
                 vc.domainType = domainType
