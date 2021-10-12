@@ -1500,6 +1500,8 @@
 		93CD939319099BE70049096E /* authtoken.json in Resources */ = {isa = PBXBuildFile; fileRef = 93CD939219099BE70049096E /* authtoken.json */; };
 		93CDC72126CD342900C8A3A8 /* DestructiveAlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CDC72026CD342900C8A3A8 /* DestructiveAlertHelper.swift */; };
 		93CDC72226CD342900C8A3A8 /* DestructiveAlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CDC72026CD342900C8A3A8 /* DestructiveAlertHelper.swift */; };
+		93CFF5E12715D0C20057520B /* SiteStatsNudgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CFF5E02715D0C20057520B /* SiteStatsNudgeState.swift */; };
+		93CFF5E22715D0C20057520B /* SiteStatsNudgeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CFF5E02715D0C20057520B /* SiteStatsNudgeState.swift */; };
 		93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */; };
 		93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DEB88119E5BF7100F9546D /* TodayExtensionService.m */; };
 		93E3D3C819ACE8E300B1C509 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -6134,6 +6136,7 @@
 		93C8829B1EEB18D700227A59 /* rsd.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = rsd.xml; sourceTree = "<group>"; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93CDC72026CD342900C8A3A8 /* DestructiveAlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructiveAlertHelper.swift; sourceTree = "<group>"; };
+		93CFF5E02715D0C20057520B /* SiteStatsNudgeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsNudgeState.swift; sourceTree = "<group>"; };
 		93D86B931C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		93D86B941C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		93DEB88019E5BF7100F9546D /* TodayExtensionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayExtensionService.h; sourceTree = "<group>"; };
@@ -11712,6 +11715,7 @@
 				98880A4722B2E3FC00464538 /* Two Column Stats */,
 				988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */,
 				9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */,
+				93CFF5E02715D0C20057520B /* SiteStatsNudgeState.swift */,
 				98563DDB21BF30C40006F5E9 /* TabbedTotalsCell.swift */,
 				98563DDC21BF30C40006F5E9 /* TabbedTotalsCell.xib */,
 			);
@@ -17622,6 +17626,7 @@
 				7E4123C220F4097B00DF8486 /* FormattableContentFormatter.swift in Sources */,
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
+				93CFF5E12715D0C20057520B /* SiteStatsNudgeState.swift in Sources */,
 				1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */,
 				F18CB8962642E58700B90794 /* FixedSizeImageView.swift in Sources */,
 				7E3E7A6020E44E490075D159 /* FooterContentGroup.swift in Sources */,
@@ -19264,6 +19269,7 @@
 				FABB216D2602FC2C00C8785C /* StatsGhostTableViewRows.swift in Sources */,
 				FABB216E2602FC2C00C8785C /* ActivityContentRouter.swift in Sources */,
 				FABB216F2602FC2C00C8785C /* UIView+ContentLayout.swift in Sources */,
+				93CFF5E22715D0C20057520B /* SiteStatsNudgeState.swift in Sources */,
 				FABB21702602FC2C00C8785C /* PeopleCell.swift in Sources */,
 				FABB21712602FC2C00C8785C /* AbstractPost+Local.swift in Sources */,
 				FABB21722602FC2C00C8785C /* MeScenePresenter.swift in Sources */,
