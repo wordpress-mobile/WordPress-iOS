@@ -377,7 +377,7 @@ extension DomainSuggestionsTableViewController {
 
     private func perYearPostfixAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
         [.font: Self.perYearPostfixFont,
-         .foregroundColor: hasDomainCredit ? UIColor.secondaryLabel : UIColor.label,
+         .foregroundColor: UIColor.secondaryLabel,
          .strikethroughStyle: hasDomainCredit ? 1 : 0]
     }
 }
