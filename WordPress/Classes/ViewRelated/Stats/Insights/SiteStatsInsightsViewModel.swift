@@ -15,7 +15,16 @@ class SiteStatsInsightsViewModel: Observable {
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
-    private var isNudgeCompleted = false
+
+    private let nudgeState: SiteStatsNudgeState?
+    private let nextNudge: GrowAudienceCell.HintType?
+    private var isNudgeCompleted: Bool {
+        guard let nudgeState = nudgeState,
+              let nudge = nextNudge else {
+                  return false
+              }
+        return nudgeState.isNudgeCompleted(nudge)
+    }
 
     private var periodReceipt: Receipt?
 
@@ -29,6 +38,14 @@ class SiteStatsInsightsViewModel: Observable {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
+
+        if let siteID = SiteStatsInformation.sharedInstance.siteID {
+            self.nudgeState = SiteStatsNudgeState(siteId: siteID)
+            self.nextNudge = nudgeState?.nextNudge
+        } else {
+            self.nudgeState = nil
+            self.nextNudge = nil
+        }
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
             self?.emitChange()
@@ -69,8 +86,9 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.allTimeStatus,
                                         block: {
+                                            let nudge = nextNudge ?? .social
                                             let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
-                                            return GrowAudienceRow(hintType: .social,
+                                            return GrowAudienceRow(hintType: nudge,
                                                                    allTimeViewsCount: viewsCount ?? 0,
                                                                    isNudgeCompleted: isNudgeCompleted,
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
@@ -259,7 +277,10 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func markEmptyStatsNudgeAsCompleted() {
-        isNudgeCompleted = true
+        guard let nudge = nextNudge else {
+            return
+        }
+        nudgeState?.markNudgeAsCompleted(nudge)
     }
 }
 
