@@ -346,7 +346,9 @@ extension DomainSuggestionsTableViewController {
         let hasDomainCredit = blog?.hasDomainCredit ?? false
 
         if hasDomainCredit {
-            let freeForFirstYear = NSAttributedString(string: "Free for the first year ", attributes: [.font: Self.freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
+            let freeForFirstYear = NSAttributedString(
+                string: NSLocalizedString("Free for the first year ", comment: "Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit."),
+                attributes: [.font: Self.freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
 
             attributedString.append(freeForFirstYear)
         }
@@ -365,7 +367,7 @@ extension DomainSuggestionsTableViewController {
 
     private func attributedPerYearPostfix(hasDomainCredit: Bool) -> NSAttributedString {
         NSAttributedString(
-            string: " / year",
+            string: NSLocalizedString(" / year", comment: "Per-year postfix shown after a domain's cost."),
             attributes: perYearPostfixAttributes(hasDomainCredit: hasDomainCredit))
     }
 
