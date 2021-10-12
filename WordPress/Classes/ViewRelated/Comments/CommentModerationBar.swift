@@ -196,7 +196,10 @@ private extension CommentModerationBar {
     }
 
     @IBAction func trashTapped() {
-        guard !trashButton.isSelected else {
+        // The Delete Permanently functionality deletes a spam comment,
+        // so don't allow it to be Trashed from here.
+        guard commentStatus != .spam,
+              !trashButton.isSelected else {
             return
         }
 
