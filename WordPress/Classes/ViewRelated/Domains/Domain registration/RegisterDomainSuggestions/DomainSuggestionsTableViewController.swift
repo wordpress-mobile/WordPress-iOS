@@ -346,17 +346,21 @@ extension DomainSuggestionsTableViewController {
         let hasDomainCredit = blog?.hasDomainCredit ?? false
 
         if hasDomainCredit {
-            let freeForFirstYear = NSAttributedString(
-                string: NSLocalizedString("Free for the first year ", comment: "Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit."),
-                attributes: [.font: Self.freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
-
-            attributedString.append(freeForFirstYear)
+            attributedString.append(attributedFreeForTheFirstYear())
         }
 
         attributedString.append(attributedSuggestionCost(for: suggestion, hasDomainCredit: hasDomainCredit))
         attributedString.append(attributedPerYearPostfix(hasDomainCredit: hasDomainCredit))
 
         return attributedString
+    }
+
+    // MARK: - Attributed partial strings
+
+    private func attributedFreeForTheFirstYear() -> NSAttributedString {
+        NSAttributedString(
+            string: NSLocalizedString("Free for the first year ", comment: "Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit."),
+            attributes: [.font: Self.freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
     }
 
     private func attributedSuggestionCost(for suggestion: DomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
