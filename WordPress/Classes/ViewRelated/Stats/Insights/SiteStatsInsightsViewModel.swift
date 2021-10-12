@@ -34,18 +34,13 @@ class SiteStatsInsightsViewModel: Observable {
 
     init(insightsToShow: [InsightType],
          insightsDelegate: SiteStatsInsightsDelegate,
-         insightsStore: StatsInsightsStore) {
+         insightsStore: StatsInsightsStore,
+         nudgeState: SiteStatsNudgeState?) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
-
-        if let siteID = SiteStatsInformation.sharedInstance.siteID {
-            self.nudgeState = SiteStatsNudgeState(siteId: siteID)
-            self.nextNudge = nudgeState?.nextNudge
-        } else {
-            self.nudgeState = nil
-            self.nextNudge = nil
-        }
+        self.nudgeState = nudgeState
+        self.nextNudge = nudgeState?.nextNudge
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
             self?.emitChange()
