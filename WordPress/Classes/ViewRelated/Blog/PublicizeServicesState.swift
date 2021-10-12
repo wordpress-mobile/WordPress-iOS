@@ -1,6 +1,6 @@
 import Foundation
 
-@objc class PublicizeServicesState: NSObject {
+@objc final class PublicizeServicesState: NSObject {
     private var connections = Set<PublicizeConnection>()
 }
 
