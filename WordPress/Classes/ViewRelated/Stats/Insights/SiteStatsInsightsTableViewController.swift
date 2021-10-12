@@ -361,10 +361,11 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func loadGrowAudienceCardSetting() {
-        guard shouldDisplayGrowAudienceCard else {
+        guard isSiteViewsCountLow, nudgeState?.nextNudge != nil else {
             dismissGrowAudienceCard()
             return
         }
+
         guard let key = userDefaultsHideGrowAudienceKey else { return }
         loadPermanentlyDismissableInsight(.growAudience, using: key)
     }
@@ -374,7 +375,7 @@ private extension SiteStatsInsightsTableViewController {
         permanentlyDismissInsight(.growAudience, using: key)
     }
 
-    var shouldDisplayGrowAudienceCard: Bool {
+    var isSiteViewsCountLow: Bool {
         let threshold = 30
         let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         return count < threshold
