@@ -164,7 +164,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
 extension GrowAudienceCell {
 
-    enum HintType {
+    enum HintType: String {
 
         case social
         case bloggingReminders
