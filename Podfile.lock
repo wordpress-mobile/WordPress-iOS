@@ -553,7 +553,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.4)
   - WordPressAuthenticator (~> 1.42.1-beta.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/domain-contact-messages`)
+  - WordPressKit (~> 4.42.1-beta.1)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.16.0)
   - WordPressUI (~> 1.12.2)
@@ -565,6 +565,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressUI
   trunk:
     - 1PasswordExtension
@@ -710,9 +711,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.64.0-alpha2
-  WordPressKit:
-    :branch: feature/domain-contact-messages
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.64.0-alpha2/third-party-podspecs/Yoga.podspec.json
 
@@ -728,9 +726,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.64.0-alpha2
-  WordPressKit:
-    :commit: 533f34515bbbe73e0ec3af67356b42035387fab8
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -815,7 +810,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 870c93297849072aadfc2223e284094e73023e82
   WordPress-Editor-iOS: 068b32d02870464ff3cb9e3172e74234e13ed88c
   WordPressAuthenticator: 828a4c2560e27443b5d7935a1b788aefe4f56792
-  WordPressKit: d556ff91aa383bbf6b831ed3e5a7290a3d0cb731
+  WordPressKit: 47f85458d42e44c75f279f745df7ae712f5f4a0e
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: 3660920b90d44ca8cf6b4c9984aade433cdad50f
   WordPressUI: c573f4b5c2e5d0ffcebe69ecf86ae75ab7b6ff4d
@@ -831,6 +826,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 44cc0ff1d28cda056f67a9d3bab53f2b4bc36b5c
+PODFILE CHECKSUM: fd0fb982f7e8a9f4d31ae1f5e03c00954fa8d681
 
 COCOAPODS: 1.10.1
