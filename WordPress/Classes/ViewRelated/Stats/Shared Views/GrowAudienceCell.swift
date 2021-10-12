@@ -88,8 +88,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             return
         }
 
-//        updateView(isCompleted: true)
-
         switch hintType {
         case .social:
             insightsDelegate?.growAudienceEnablePostSharingButtonTapped?()
