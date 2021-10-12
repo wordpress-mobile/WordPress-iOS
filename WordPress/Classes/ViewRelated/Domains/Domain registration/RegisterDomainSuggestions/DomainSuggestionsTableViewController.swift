@@ -202,13 +202,13 @@ extension DomainSuggestionsTableViewController {
             if noSuggestions == true {
                 cell = noResultsCell()
             } else {
-                let suggestion: String
+                let suggestion: DomainSuggestion
                 if searchSuggestions.count > 0 {
-                    suggestion = searchSuggestions[indexPath.row].domainName
+                    suggestion = searchSuggestions[indexPath.row]
                 } else {
-                    suggestion = siteTitleSuggestions[indexPath.row].domainName
+                    suggestion = siteTitleSuggestions[indexPath.row]
                 }
-                cell = suggestionCell(domain: suggestion)
+                cell = suggestionCell(suggestion)
             }
         }
         return cell
@@ -284,25 +284,66 @@ extension DomainSuggestionsTableViewController {
         return cell
     }
 
-    private func suggestionCell(domain: String) -> UITableViewCell {
-        let cell = UITableViewCell()
+    // MARK: - Fonts
 
-        cell.textLabel?.attributedText = styleDomain(domain)
+    private static var domainBaseFont: UIFont {
+        WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+    }
+
+    private static var domainTLDFont: UIFont {
+        WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+    }
+
+    private static var suggestionCostFont: UIFont {
+        WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+    }
+
+    private static var perYearPostfixFont: UIFont {
+        WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+    }
+
+    // MARK: - Suggestion Cell
+
+    private func suggestionCell(_ suggestion: DomainSuggestion) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "org.wordpress.domainsuggestionstable.suggestioncell")
+
+        cell.textLabel?.attributedText = attributedDomain(suggestion.domainName)
         cell.textLabel?.textColor = parentDomainColor
         cell.indentationWidth = 20.0
         cell.indentationLevel = 1
+        cell.detailTextLabel?.attributedText = attributedCostInformation(for: suggestion)
+
         return cell
     }
 
-    private func styleDomain(_ domain: String) -> NSAttributedString {
-        let styledDomain: NSMutableAttributedString = NSMutableAttributedString(string: domain)
+    private func attributedDomain(_ domain: String) -> NSAttributedString {
+        let attributedDomain = NSMutableAttributedString()
+
+        attributedDomain.append(NSAttributedString(string: domain, attributes: [.font: Self.domainBaseFont]))
+
         guard let dotPosition = domain.firstIndex(of: ".") else {
-            return styledDomain
+            return attributedDomain
         }
-        styledDomain.addAttribute(.foregroundColor,
-                                  value: UIColor.neutral(.shade70),
-                                  range: NSMakeRange(0, dotPosition.utf16Offset(in: domain)))
-        return styledDomain
+
+        let tldRange = dotPosition ..< domain.endIndex
+        let nsRange = NSRange(tldRange, in: domain)
+
+        attributedDomain.addAttribute(.font,
+                                      value: Self.domainTLDFont,
+                                      range: nsRange)
+
+        return attributedDomain
+    }
+
+    private func attributedCostInformation(for suggestion: DomainSuggestion) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString()
+        let suggestionCost = NSAttributedString(string: suggestion.costString, attributes: [.font: Self.suggestionCostFont])
+        let perYearPostfix = NSAttributedString(string: " / year", attributes: [.font: Self.perYearPostfixFont])
+
+        attributedString.append(suggestionCost)
+        attributedString.append(perYearPostfix)
+
+        return attributedString
     }
 }
 
