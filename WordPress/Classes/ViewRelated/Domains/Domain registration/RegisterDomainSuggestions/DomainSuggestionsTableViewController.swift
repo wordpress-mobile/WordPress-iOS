@@ -15,6 +15,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+    var blog: Blog?
     var siteName: String?
     var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
@@ -302,6 +303,10 @@ extension DomainSuggestionsTableViewController {
         WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
     }
 
+    private static var freeForFirstYearFont: UIFont {
+        WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+    }
+
     // MARK: - Suggestion Cell
 
     private func suggestionCell(_ suggestion: DomainSuggestion) -> UITableViewCell {
@@ -337,13 +342,43 @@ extension DomainSuggestionsTableViewController {
 
     private func attributedCostInformation(for suggestion: DomainSuggestion) -> NSAttributedString {
         let attributedString = NSMutableAttributedString()
-        let suggestionCost = NSAttributedString(string: suggestion.costString, attributes: [.font: Self.suggestionCostFont])
-        let perYearPostfix = NSAttributedString(string: " / year", attributes: [.font: Self.perYearPostfixFont])
 
-        attributedString.append(suggestionCost)
-        attributedString.append(perYearPostfix)
+        let hasDomainCredit = blog?.hasDomainCredit ?? false
+
+        if hasDomainCredit {
+            let freeForFirstYear = NSAttributedString(string: "Free for the first year ", attributes: [.font: Self.freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
+
+            attributedString.append(freeForFirstYear)
+        }
+
+        attributedString.append(attributedSuggestionCost(for: suggestion, hasDomainCredit: hasDomainCredit))
+        attributedString.append(attributedPerYearPostfix(hasDomainCredit: hasDomainCredit))
 
         return attributedString
+    }
+
+    private func attributedSuggestionCost(for suggestion: DomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
+        NSAttributedString(
+            string: suggestion.costString,
+            attributes: suggestionCostAttributes(hasDomainCredit: hasDomainCredit))
+    }
+
+    private func attributedPerYearPostfix(hasDomainCredit: Bool) -> NSAttributedString {
+        NSAttributedString(
+            string: " / year",
+            attributes: perYearPostfixAttributes(hasDomainCredit: hasDomainCredit))
+    }
+
+    private func suggestionCostAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
+        [.font: Self.suggestionCostFont,
+         .foregroundColor: hasDomainCredit ? UIColor.secondaryLabel : UIColor.label,
+         .strikethroughStyle: hasDomainCredit ? 1 : 0]
+    }
+
+    private func perYearPostfixAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
+        [.font: Self.perYearPostfixFont,
+         .foregroundColor: hasDomainCredit ? UIColor.secondaryLabel : UIColor.label,
+         .strikethroughStyle: hasDomainCredit ? 1 : 0]
     }
 }
 
