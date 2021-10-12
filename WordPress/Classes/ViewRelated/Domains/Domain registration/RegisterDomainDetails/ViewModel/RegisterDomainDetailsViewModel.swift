@@ -486,7 +486,7 @@ extension RegisterDomainDetailsViewModel {
                     return
                 }
 
-                if response.success {
+                if response.success && !response.hasMessages {
                     strongSelf.clearValidationErrors()
                     strongSelf.onChange?(.remoteValidationFinished)
                     successCompletion()
@@ -580,8 +580,8 @@ extension ValidateDomainContactInformationResponse.Messages {
             return firstName?.first
         case .lastName:
             return lastName?.first
-        default:
-            return nil
+        case .organization:
+            return organization?.first
         }
     }
 
