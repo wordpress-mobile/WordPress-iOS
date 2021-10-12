@@ -19,6 +19,8 @@ class DomainSuggestionsTableViewController: UITableViewController {
     var siteName: String?
     var delegate: DomainSuggestionsTableViewControllerDelegate?
     var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .noWordpressDotCom
+    var domainType: DomainType?
+    var freeSiteAddress: String = ""
 
     var useFadedColorForParentDomains: Bool {
         return false
@@ -166,6 +168,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
 extension DomainSuggestionsTableViewController {
     fileprivate enum Sections: Int, CaseIterable {
+        case topBanner
         case searchField
         case suggestions
 
@@ -180,6 +183,8 @@ extension DomainSuggestionsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
+        case Sections.topBanner.rawValue:
+            return shouldShowTopBanner ? 1 : 0
         case Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
@@ -195,6 +200,8 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         switch indexPath.section {
+        case Sections.topBanner.rawValue:
+            cell = topBannerCell()
         case Sections.searchField.rawValue:
             cell = searchFieldCell()
         case Sections.suggestions.rawValue:
@@ -262,6 +269,41 @@ extension DomainSuggestionsTableViewController {
     }
 
     // MARK: table view cells
+
+    private func topBannerCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        guard let textLabel = cell.textLabel else {
+            return cell
+        }
+
+        textLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        textLabel.numberOfLines = 3
+        textLabel.lineBreakMode = .byTruncatingTail
+        textLabel.adjustsFontForContentSizeCategory = true
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.5
+
+        let template = NSLocalizedString("Domains purchased on this site will redirect to %@", comment: "Description for the first domain purchased with a free plan.")
+        let formatted = String(format: template, freeSiteAddress)
+        let attributed = NSMutableAttributedString(string: formatted, attributes: [:])
+
+        if let range = formatted.range(of: freeSiteAddress) {
+            attributed.addAttributes([.font: textLabel.font.bold()], range: NSRange(range, in: formatted))
+        }
+
+        textLabel.attributedText = attributed
+
+        return cell
+    }
+
+    private var shouldShowTopBanner: Bool {
+        if let domainType = domainType,
+           domainType == .siteRedirect {
+            return true
+        }
+
+        return false
+    }
 
     private func searchFieldCell() -> SearchTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else {
