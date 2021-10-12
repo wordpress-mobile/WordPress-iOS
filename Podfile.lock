@@ -744,7 +744,7 @@ SPEC CHECKSUMS:
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 43160fc29f428c84706fef4e284e28d50d9925e8
-  FBReactNativeSpec: 86afc815d056c20bb7f2c1c202f2660652a4e381
+  FBReactNativeSpec: ba5eb7d7b0d126dab503f227c4919213561b2c82
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
