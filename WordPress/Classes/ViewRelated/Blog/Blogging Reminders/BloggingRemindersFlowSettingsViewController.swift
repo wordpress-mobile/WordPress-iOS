@@ -1,5 +1,8 @@
 import UIKit
 
+protocol BloggingRemindersFlowDelegate: AnyObject {
+    func didSetUpBloggingReminders()
+}
 
 class BloggingRemindersFlowSettingsViewController: UIViewController {
 
@@ -220,11 +223,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
     private var scheduledTime: Date
+    private weak var delegate: BloggingRemindersFlowDelegate?
 
     init(
         for blog: Blog,
         tracker: BloggingRemindersTracker,
-        calendar: Calendar? = nil) throws {
+        calendar: Calendar? = nil,
+        delegate: BloggingRemindersFlowDelegate? = nil) throws {
 
         self.blog = blog
         self.tracker = tracker
@@ -234,6 +239,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
             return calendar
         }()
+        self.delegate = delegate
 
         scheduler = try BloggingRemindersScheduler()
 
@@ -343,6 +349,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 self.tracker.scheduled(schedule, time: self.scheduledTime)
 
                 DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.didSetUpBloggingReminders()
                     self?.pushCompletionViewController()
                 }
             case .failure(let error):
