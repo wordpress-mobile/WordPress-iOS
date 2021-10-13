@@ -593,7 +593,7 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
         case .spam:
             spamComment()
         case .unapproved:
-            deleteComment()
+            trashComment()
         default:
             break
         }
@@ -637,18 +637,25 @@ private extension CommentDetailViewController {
         })
     }
 
+    func trashComment() {
+        CommentAnalytics.trackCommentTrashed(comment: comment)
+
+        commentService.trashComment(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.trashSuccess)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.trashFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
+
     func deleteComment(completion: ((Bool) -> Void)? = nil) {
         CommentAnalytics.trackCommentTrashed(comment: comment)
 
-        let permanentlyDeleted = comment.deleteWillBePermanent()
-        let successMessage = permanentlyDeleted ? ModerationMessages.deleteSuccess : ModerationMessages.trashSuccess
-        let failMessage = permanentlyDeleted ? ModerationMessages.deleteFail : ModerationMessages.trashFail
-
         commentService.delete(comment, success: { [weak self] in
-            self?.displayNotice(title: successMessage)
+            self?.displayNotice(title: ModerationMessages.deleteSuccess)
             completion?(true)
         }, failure: { [weak self] error in
-            self?.displayNotice(title: failMessage)
+            self?.displayNotice(title: ModerationMessages.deleteFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             completion?(false)
         })
