@@ -1,17 +1,21 @@
+import ScreenObject
 import XCTest
 
-public class MediaPickerAlbumListScreen: BaseScreen {
-    let albumList: XCUIElement
+public class MediaPickerAlbumListScreen: ScreenObject {
 
-    public init() {
-        let app = XCUIApplication()
-        albumList = app.tables["AlbumTable"]
+    private let albumListGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["AlbumTable"]
+    }
 
-        super.init(element: albumList)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetter: albumListGetter,
+            app: app
+        )
     }
 
     public func selectAlbum(atIndex index: Int) -> MediaPickerAlbumScreen {
-        let selectedAlbum = albumList.cells.element(boundBy: index)
+        let selectedAlbum = albumListGetter(app).cells.element(boundBy: index)
         XCTAssertTrue(selectedAlbum.waitForExistence(timeout: 5), "Selected album did not load")
         selectedAlbum.tap()
 
@@ -19,6 +23,6 @@ public class MediaPickerAlbumListScreen: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().tables["AlbumTable"].exists
+        (try? MediaPickerAlbumListScreen().isLoaded) ?? false
     }
 }

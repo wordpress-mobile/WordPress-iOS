@@ -53,7 +53,7 @@ public class EditorPostSettings: ScreenObject {
 
     public func setFeaturedImage() throws -> EditorPostSettings {
         featuredImageButton.tap()
-        MediaPickerAlbumListScreen()
+        try MediaPickerAlbumListScreen()
             .selectAlbum(atIndex: 0) // Select media library
             .selectImage(atIndex: 0) // Select latest uploaded image
 
