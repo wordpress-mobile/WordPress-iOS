@@ -101,7 +101,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Notifications screenshot
         let notificationList = try TabNavComponent()
-            .gotoNotificationsScreen()
+            .goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
             notificationList

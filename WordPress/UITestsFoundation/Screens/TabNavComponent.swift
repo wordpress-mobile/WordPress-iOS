@@ -68,9 +68,9 @@ public class TabNavComponent: ScreenObject {
         return try ReaderScreen()
     }
 
-    public func gotoNotificationsScreen() -> NotificationsScreen {
+    public func goToNotificationsScreen() throws -> NotificationsScreen {
         notificationsTabButton.tap()
-        return NotificationsScreen()
+        return try NotificationsScreen()
     }
 
     public static func isLoaded() -> Bool {

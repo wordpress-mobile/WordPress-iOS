@@ -32,7 +32,7 @@ class MainNavigationTests: XCTestCase {
         }
 
         _ = try mySiteScreen
-            .tabBar.gotoNotificationsScreen()
+            .tabBar.goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
 
         XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in
