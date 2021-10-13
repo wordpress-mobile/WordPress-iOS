@@ -54,6 +54,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self syncServices];
     [self.publicizeServicesState addInitialConnections:[self allConnections]];
+
+    self.navigationController.presentationController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -67,6 +69,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [super viewWillDisappear:animated];
     [ReachabilityUtils dismissNoInternetConnectionNotice];
+}
+
+-(void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    
 }
 
 - (void)refreshPublicizers
