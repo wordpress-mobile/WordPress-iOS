@@ -1,43 +1,43 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let blogsTable = "Blogs"
-    static let cancelButton = "cancel-button"
-    static let plusButton = "add-site-button"
-    static let addSelfHostedSiteButton = "Add self-hosted site"
-}
+/// The site switcher AKA blog list. Currently presented as a modal we can get to from My Site by
+/// tapping the down arrow next to the site title.
+public class MySitesScreen: ScreenObject {
+    let cancelButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["cancel-button"]
+    }
 
-/// The site switcher aka blog list. In the app, it's a modal we can get to from My Site by tapping the down arrow next to the site title.
-public class MySitesScreen: BaseScreen {
-    let blogsTable: XCUIElement
-    let cancelButton: XCUIElement
-    let plusButton: XCUIElement
-    let addSelfHostedSiteButton: XCUIElement
+    let plusButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["add-site-button"]
+    }
 
-    init() {
-        let app = XCUIApplication()
-        blogsTable = app.staticTexts[ElementStringIDs.blogsTable]
-        cancelButton = app.buttons[ElementStringIDs.cancelButton]
-        plusButton = app.buttons[ElementStringIDs.plusButton]
-        addSelfHostedSiteButton = app.buttons[ElementStringIDs.addSelfHostedSiteButton]
-
-        super.init(element: plusButton)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [
+                // swiftlint:disable:next opening_brace
+                { $0.staticTexts["Blogs"] },
+                cancelButtonGetter,
+                plusButtonGetter
+            ],
+            app: app
+        )
     }
 
     public func addSelfHostedSite() -> LoginSiteAddressScreen {
-        plusButton.tap()
-        addSelfHostedSiteButton.tap()
+        plusButtonGetter(app).tap()
+        app.buttons["Add self-hosted site"].tap()
         return LoginSiteAddressScreen()
     }
 
     public func closeModal() throws -> MySiteScreen {
-        cancelButton.tap()
+        cancelButtonGetter(app).tap()
         return try MySiteScreen()
     }
 
     @discardableResult
     public func switchToSite(withTitle title: String) throws -> MySiteScreen {
-        XCUIApplication().cells[title].tap()
+        app.cells[title].tap()
         return try MySiteScreen()
     }
 }

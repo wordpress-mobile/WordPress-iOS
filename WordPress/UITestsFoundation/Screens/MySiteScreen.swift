@@ -61,9 +61,9 @@ public class MySiteScreen: BaseScreen {
         super.init(element: navBar)
     }
 
-    public func showSiteSwitcher() -> MySitesScreen {
+    public func showSiteSwitcher() throws -> MySitesScreen {
         switchSiteButton.tap()
-        return MySitesScreen()
+        return try MySitesScreen()
     }
 
     public func removeSelfHostedSite() {
