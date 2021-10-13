@@ -54,6 +54,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self syncServices];
     [self.publicizeServicesState addInitialConnections:[self allConnections]];
+
+    self.navigationController.presentationController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,6 +71,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [ReachabilityUtils dismissNoInternetConnectionNotice];
 }
 
+-(void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    [self notifyDelegatePublicizeServicesChangedIfNeeded];
+}
+
 - (void)refreshPublicizers
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
@@ -79,9 +86,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)doneButtonTapped
 {
-    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
-        [self.delegate didChangePublicizeServices];
-    }
+    [self notifyDelegatePublicizeServicesChangedIfNeeded];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -257,6 +262,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }
     }
     return allConnections;
+}
+
+-(void)notifyDelegatePublicizeServicesChangedIfNeeded
+{
+    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
+        [self.delegate didChangePublicizeServices];
+    }
 }
 
 - (NSManagedObjectContext *)managedObjectContext

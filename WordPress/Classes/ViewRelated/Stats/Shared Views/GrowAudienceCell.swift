@@ -40,6 +40,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     // MARK: - Styling
 
     private func applyStyles() {
+        selectionStyle = .none
         backgroundColor = .listForeground
         addBottomBorder(withColor: .divider)
 
@@ -164,7 +165,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
 extension GrowAudienceCell {
 
-    enum HintType {
+    enum HintType: String {
 
         case social
         case bloggingReminders

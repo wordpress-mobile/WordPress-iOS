@@ -11,7 +11,7 @@
 /**
  *	@brief	Controller to display Calypso sharing options
  */
-@interface SharingViewController : UITableViewController
+@interface SharingViewController : UITableViewController<UIAdaptivePresentationControllerDelegate>
 
 /**
  *	@brief	Convenience initializer

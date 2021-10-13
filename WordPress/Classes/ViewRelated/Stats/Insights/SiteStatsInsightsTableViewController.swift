@@ -113,6 +113,13 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // Local state for site current view count
     private var currentViewCount: Int?
 
+    private lazy var nudgeState: SiteStatsNudgeState? = {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return nil
+        }
+        return SiteStatsNudgeState(siteId: siteID)
+    }()
+
     private let insightsStore = StoreContainer.shared.statsInsights
 
     // Store Insights settings for all sites.
@@ -180,7 +187,8 @@ private extension SiteStatsInsightsTableViewController {
     func initViewModel() {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
                                                insightsDelegate: self,
-                                               insightsStore: insightsStore)
+                                               insightsStore: insightsStore,
+                                               nudgeState: nudgeState)
         addViewModelListeners()
         viewModel?.fetchInsights()
     }
@@ -353,10 +361,11 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func loadGrowAudienceCardSetting() {
-        guard shouldDisplayGrowAudienceCard else {
+        guard isSiteViewsCountLow, nudgeState?.nudgeToDisplay != nil else {
             dismissGrowAudienceCard()
             return
         }
+
         guard let key = userDefaultsHideGrowAudienceKey else { return }
         loadPermanentlyDismissableInsight(.growAudience, using: key)
     }
@@ -366,7 +375,7 @@ private extension SiteStatsInsightsTableViewController {
         permanentlyDismissInsight(.growAudience, using: key)
     }
 
-    var shouldDisplayGrowAudienceCard: Bool {
+    var isSiteViewsCountLow: Bool {
         let threshold = 30
         let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         return count < threshold
