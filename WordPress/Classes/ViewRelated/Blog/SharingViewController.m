@@ -73,7 +73,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 -(void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
 {
-    
+    [self notifyDelegatePublicizeServicesChangedIfNeeded];
 }
 
 - (void)refreshPublicizers
@@ -86,9 +86,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)doneButtonTapped
 {
-    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
-        [self.delegate didChangePublicizeServices];
-    }
+    [self notifyDelegatePublicizeServicesChangedIfNeeded];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -264,6 +262,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }
     }
     return allConnections;
+}
+
+-(void)notifyDelegatePublicizeServicesChangedIfNeeded
+{
+    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
+        [self.delegate didChangePublicizeServices];
+    }
 }
 
 - (NSManagedObjectContext *)managedObjectContext
