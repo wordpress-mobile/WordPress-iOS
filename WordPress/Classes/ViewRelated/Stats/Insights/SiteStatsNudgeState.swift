@@ -9,7 +9,7 @@ final class SiteStatsNudgeState {
     }
 
     // Returns the first uncompleted nudge
-    var nextNudge: GrowAudienceCell.HintType? {
+    var nudgeToDisplay: GrowAudienceCell.HintType? {
         for nudge in nudges where !isNudgeCompleted(nudge) {
             return nudge
         }

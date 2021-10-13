@@ -361,7 +361,7 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func loadGrowAudienceCardSetting() {
-        guard isSiteViewsCountLow, nudgeState?.nextNudge != nil else {
+        guard isSiteViewsCountLow, nudgeState?.nudgeToDisplay != nil else {
             dismissGrowAudienceCard()
             return
         }
