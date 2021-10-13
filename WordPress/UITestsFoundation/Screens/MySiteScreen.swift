@@ -1,3 +1,4 @@
+import ScreenObject
 import XCTest
 
 private struct ElementStringIDs {
@@ -17,22 +18,35 @@ private struct ElementStringIDs {
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
-public class MySiteScreen: BaseScreen {
+public class MySiteScreen: ScreenObject {
     public let tabBar: TabNavComponent
-    let navBar: XCUIElement
-    let removeSiteButton: XCUIElement
-    let removeSiteSheet: XCUIElement
-    let removeSiteAlert: XCUIElement
-    let activityLogButton: XCUIElement
-    let jetpackScanButton: XCUIElement
-    let jetpackBackupButton: XCUIElement
-    let postsButton: XCUIElement
-    let mediaButton: XCUIElement
-    let statsButton: XCUIElement
-    let siteSettingsButton: XCUIElement
-    let createButton: XCUIElement
+
+    let activityLogButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells[ElementStringIDs.activityLogButton]
+    }
+
+    let postsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells[ElementStringIDs.postsButton]
+    }
+
+    let mediaButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells[ElementStringIDs.mediaButton]
+    }
+
+    var mediaButton: XCUIElement { mediaButtonGetter(app) }
+
+    let statsButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells[ElementStringIDs.statsButton]
+    }
+
+    let createButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons[ElementStringIDs.createButton]
+    }
     let readerButton: XCUIElement
-    let switchSiteButton: XCUIElement
+
+    let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons[ElementStringIDs.switchSiteButton]
+    }
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -40,53 +54,46 @@ public class MySiteScreen: BaseScreen {
         return blogTable.exists && blogTable.isHittable
     }
 
-    public init() throws {
-        let app = XCUIApplication()
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         tabBar = try TabNavComponent()
-        removeSiteButton = app.cells[ElementStringIDs.removeSiteButton]
-        removeSiteSheet = app.sheets.buttons.element(boundBy: 0)
-        removeSiteAlert = app.alerts.buttons.element(boundBy: 1)
-        activityLogButton = app.cells[ElementStringIDs.activityLogButton]
-        jetpackScanButton = app.cells[ElementStringIDs.jetpackScanButton]
-        jetpackBackupButton = app.cells[ElementStringIDs.jetpackBackupButton]
-        postsButton = app.cells[ElementStringIDs.postsButton]
-        mediaButton = app.cells[ElementStringIDs.mediaButton]
-        statsButton = app.cells[ElementStringIDs.statsButton]
-        siteSettingsButton = app.cells[ElementStringIDs.settingsButton]
-        createButton = app.buttons[ElementStringIDs.createButton]
         readerButton = app.buttons[ElementStringIDs.ReaderButton]
-        switchSiteButton = app.buttons[ElementStringIDs.switchSiteButton]
-        navBar = app.navigationBars[ElementStringIDs.navBarTitle]
 
-        super.init(element: navBar)
+        try super.init(
+            expectedElementGetters: [
+                switchSiteButtonGetter,
+                statsButtonGetter,
+                postsButtonGetter,
+                mediaButtonGetter,
+                createButtonGetter
+            ],
+            app: app
+        )
     }
 
     public func showSiteSwitcher() throws -> MySitesScreen {
-        switchSiteButton.tap()
+        switchSiteButtonGetter(app).tap()
         return try MySitesScreen()
     }
 
     public func removeSelfHostedSite() {
-        removeSiteButton.tap()
-        if XCUIDevice.isPad {
-            removeSiteAlert.tap()
-        } else {
-            removeSiteSheet.tap()
-        }
+        app.cells[ElementStringIDs.removeSiteButton].tap()
+        // TODO: Wouldn't it be better to do this with an accessibility label?
+        let index = XCUIDevice.isPad ? 1 : 0
+        app.sheets.buttons.element(boundBy: index).tap()
     }
 
     public func goToActivityLog() throws -> ActivityLogScreen {
-        activityLogButton.tap()
+        app.cells[ElementStringIDs.activityLogButton].tap()
         return try ActivityLogScreen()
     }
 
     public func goToJetpackScan() throws -> JetpackScanScreen {
-        jetpackScanButton.tap()
+        app.cells[ElementStringIDs.jetpackScanButton].tap()
         return try JetpackScanScreen()
     }
 
     public func goToJetpackBackup() throws -> JetpackBackupScreen {
-        jetpackBackupButton.tap()
+        app.cells[ElementStringIDs.jetpackBackupButton].tap()
         return try JetpackBackupScreen()
     }
 
@@ -96,7 +103,7 @@ public class MySiteScreen: BaseScreen {
             mediaButton.tap()
         }
 
-        postsButton.tap()
+        postsButtonGetter(app).tap()
         return try PostsScreen()
     }
 
@@ -106,21 +113,21 @@ public class MySiteScreen: BaseScreen {
     }
 
     public func goToStatsScreen() throws -> StatsScreen {
-        statsButton.tap()
+        statsButtonGetter(app).tap()
         return try StatsScreen()
     }
 
     public func goToSettingsScreen() throws -> SiteSettingsScreen {
-        siteSettingsButton.tap()
+        app.cells[ElementStringIDs.settingsButton].tap()
         return try SiteSettingsScreen()
     }
 
     func gotoCreateSheet() throws -> ActionSheetComponent {
-        createButton.tap()
+        createButtonGetter(app).tap()
         return try ActionSheetComponent()
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().navigationBars[ElementStringIDs.navBarTitle].exists
+        (try? MySiteScreen().isLoaded) ?? false
     }
 }
