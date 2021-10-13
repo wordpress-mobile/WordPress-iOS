@@ -77,7 +77,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(4, named: "MySite")
 
         // Get Media screenshot
-        _ = mySite.gotoMediaScreen()
+        _ = try mySite.goToMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
         mySite.thenTakeScreenshot(6, named: "Media")
 

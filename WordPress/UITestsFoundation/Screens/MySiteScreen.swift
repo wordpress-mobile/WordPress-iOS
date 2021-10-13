@@ -107,9 +107,9 @@ public class MySiteScreen: ScreenObject {
         return try PostsScreen()
     }
 
-    public func gotoMediaScreen() -> MediaScreen {
+    public func goToMediaScreen() throws -> MediaScreen {
         mediaButton.tap()
-        return MediaScreen()
+        return try MediaScreen()
     }
 
     public func goToStatsScreen() throws -> StatsScreen {
