@@ -40,6 +40,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     // MARK: - Styling
 
     private func applyStyles() {
+        selectionStyle = .none
         backgroundColor = .listForeground
         addBottomBorder(withColor: .divider)
 
