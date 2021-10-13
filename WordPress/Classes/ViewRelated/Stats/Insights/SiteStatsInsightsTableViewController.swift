@@ -610,7 +610,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         BloggingRemindersFlow.present(from: self,
                                       for: blog,
-                                      source: .statsInsights)
+                                      source: .statsInsights,
+                                      delegate: self)
 
         applyTableUpdates()
     }
@@ -680,6 +681,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
+        viewModel?.markEmptyStatsNudgeAsCompleted()
+        refreshTableView()
+    }
+}
+
+// MARK: - BloggingRemindersFlowDelegate
+
+extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
+    func didSetUpBloggingReminders() {
         viewModel?.markEmptyStatsNudgeAsCompleted()
         refreshTableView()
     }
