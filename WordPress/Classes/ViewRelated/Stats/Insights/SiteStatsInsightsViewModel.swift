@@ -17,10 +17,10 @@ class SiteStatsInsightsViewModel: Observable {
     private var insightsToShow = [InsightType]()
 
     private let nudgeState: SiteStatsNudgeState?
-    private let nextNudge: GrowAudienceCell.HintType?
+    private let nudgeToDisplay: GrowAudienceCell.HintType?
     private var isNudgeCompleted: Bool {
         guard let nudgeState = nudgeState,
-              let nudge = nextNudge else {
+              let nudge = nudgeToDisplay else {
                   return false
               }
         return nudgeState.isNudgeCompleted(nudge)
@@ -40,7 +40,7 @@ class SiteStatsInsightsViewModel: Observable {
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
         self.nudgeState = nudgeState
-        self.nextNudge = nudgeState?.nextNudge
+        self.nudgeToDisplay = nudgeState?.nudgeToDisplay
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
             self?.emitChange()
@@ -81,7 +81,7 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.allTimeStatus,
                                         block: {
-                                            let nudge = nextNudge ?? .social
+                                            let nudge = nudgeToDisplay ?? .social
                                             let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
                                             return GrowAudienceRow(hintType: nudge,
                                                                    allTimeViewsCount: viewsCount ?? 0,
@@ -272,7 +272,7 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func markEmptyStatsNudgeAsCompleted() {
-        guard let nudge = nextNudge else {
+        guard let nudge = nudgeToDisplay else {
             return
         }
         nudgeState?.markNudgeAsCompleted(nudge)
