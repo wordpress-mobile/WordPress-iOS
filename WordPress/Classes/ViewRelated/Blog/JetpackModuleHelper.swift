@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import Kanvas
 
 /// Shows a NoResultsViewController on a given VC and handle enabling
 /// a Jetpack module
@@ -7,10 +8,14 @@ import UIKit
     private weak var viewController: UIViewController?
     private let moduleName: String
     private var noResultsViewController: NoResultsViewController?
+    private let blog: Blog
+    private let service: BlogJetpackSettingsService
 
-    @objc init(viewController: UIViewController, moduleName: String) {
+    @objc init(viewController: UIViewController, moduleName: String, blog: Blog) {
         self.viewController = viewController
         self.moduleName = moduleName
+        self.blog = blog
+        self.service = BlogJetpackSettingsService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
     }
 
     @objc func show() {
@@ -29,9 +34,31 @@ import UIKit
             accessoryView: nil
         )
 
+        noResultsViewController?.delegate = self
+
         viewController?.addChild(noResultsViewController!)
         viewController?.view.addSubview(withFadeAnimation: noResultsViewController!.view)
         noResultsViewController?.view.frame = self.viewController?.view.bounds ?? .zero
         noResultsViewController?.didMove(toParent: viewController!)
+    }
+}
+
+extension JetpackModuleHelper: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        service.updateJetpackModuleActiveSettingForBlog(blog,
+                                                        module: moduleName,
+                                                        active: true,
+                                                        success: {
+
+        },
+                                                        failure: { [weak self] _ in
+            self?.viewController?.displayNotice(title: Constants.error)
+        })
+    }
+}
+
+private extension JetpackModuleHelper {
+    struct Constants {
+        static let error = NSLocalizedString("The module couldn't be activated.", comment: "Error shown when a module can not be enabled")
     }
 }
