@@ -18,6 +18,12 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
 
     private var noResultsViewController: NoResultsViewController?
 
+
+    /// Creates a Jetpack Module Wall that gives the user the option to enable a module
+    /// - Parameters:
+    ///   - viewController: a UIViewController that conforms to JetpackModuleHelperDelegate
+    ///   - moduleName: a `String` representing the name of the module
+    ///   - blog: a `Blog`
     @objc init(viewController: JetpackModuleHelperViewController, moduleName: String, blog: Blog) {
         self.viewController = viewController
         self.moduleName = moduleName
@@ -25,6 +31,11 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
         self.service = BlogJetpackSettingsService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
     }
 
+
+    /// Show the No Results View Controller
+    /// - Parameters:
+    ///   - title: A `String` to display on the title of the NVC
+    ///   - subtitle: A `String` to display as the subtitle of the NVC
     @objc func show(title: String, subtitle: String) {
         noResultsViewController = NoResultsViewController.controller()
         noResultsViewController?.configure(
