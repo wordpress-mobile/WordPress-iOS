@@ -16,14 +16,13 @@ class SiteStatsInsightsViewModel: Observable {
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
 
-    private let nudgeState: SiteStatsNudgeState?
-    private let nudgeToDisplay: GrowAudienceCell.HintType?
+    private let pinnedItemStore: SiteStatsPinnedItemStore?
+    private let itemToDisplay: SiteStatsPinnable?
     private var isNudgeCompleted: Bool {
-        guard let nudgeState = nudgeState,
-              let nudge = nudgeToDisplay else {
-                  return false
-              }
-        return nudgeState.isNudgeCompleted(nudge)
+        guard let pinnedItemStore = pinnedItemStore, let item = itemToDisplay, item is GrowAudienceCell.HintType else {
+            return false
+        }
+        return !pinnedItemStore.shouldShow(item)
     }
 
     private var periodReceipt: Receipt?
@@ -35,12 +34,13 @@ class SiteStatsInsightsViewModel: Observable {
     init(insightsToShow: [InsightType],
          insightsDelegate: SiteStatsInsightsDelegate,
          insightsStore: StatsInsightsStore,
-         nudgeState: SiteStatsNudgeState?) {
+         pinnedItemStore: SiteStatsPinnedItemStore?) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
-        self.nudgeState = nudgeState
-        self.nudgeToDisplay = nudgeState?.nudgeToDisplay
+        self.pinnedItemStore = pinnedItemStore
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        self.itemToDisplay = pinnedItemStore?.itemToDisplay(for: viewsCount)
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
             self?.emitChange()
@@ -81,10 +81,10 @@ class SiteStatsInsightsViewModel: Observable {
                                         type: .insights,
                                         status: insightsStore.allTimeStatus,
                                         block: {
-                                            let nudge = nudgeToDisplay ?? .social
-                                            let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
+                                            let nudge = itemToDisplay as? GrowAudienceCell.HintType ?? GrowAudienceCell.HintType.social
+                                            let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
                                             return GrowAudienceRow(hintType: nudge,
-                                                                   allTimeViewsCount: viewsCount ?? 0,
+                                                                   allTimeViewsCount: viewsCount,
                                                                    isNudgeCompleted: isNudgeCompleted,
                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
@@ -272,10 +272,10 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func markEmptyStatsNudgeAsCompleted() {
-        guard let nudge = nudgeToDisplay else {
+        guard let item = itemToDisplay else {
             return
         }
-        nudgeState?.markNudgeAsCompleted(nudge)
+        pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 }
 
