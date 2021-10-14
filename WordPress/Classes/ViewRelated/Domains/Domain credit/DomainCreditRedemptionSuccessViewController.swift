@@ -9,7 +9,7 @@ protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
 class DomainCreditRedemptionSuccessViewController: UIViewController {
     
     private let domain: String
-    private var subtitle: UILabel?
+    private var illustration: UIImageView?
 
     private weak var delegate: DomainCreditRedemptionSuccessViewControllerDelegate?
 
@@ -26,8 +26,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // Hide the subtitle if we only gave compact height
-        subtitle?.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
+        // Hide the illustration if we only have compact height, or if the user has
+        // dynamic content set to accessibility sizes.
+        illustration?.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     override func viewDidLoad() {
@@ -53,6 +54,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         let illustration = UIImageView(image: UIImage(named: "domains-success"))
         illustration.contentMode = .scaleAspectFit
+        self.illustration = illustration
 
         // Labels
 
