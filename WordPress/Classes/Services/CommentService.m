@@ -418,17 +418,42 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
+    
+    // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
+    if (!comment.deleteWillBePermanent) {
+        [self moderateComment:comment
+                   withStatus:CommentStatusTypeSpam
+                      success:success
+                      failure:failure];
+        
+        return;
+    }
+
     NSManagedObjectID *commentID = comment.objectID;
+    
     [self moderateComment:comment
                withStatus:CommentStatusTypeSpam
                   success:^{
-                      Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-                      [self.managedObjectContext deleteObject:commentInContext];
-                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                      if (success) {
-                          success();
-                      }
-                  } failure:failure];
+        Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
+        [self.managedObjectContext deleteObject:commentInContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
+    } failure: failure];
+    
+    
+}
+
+// Trash comment
+- (void)trashComment:(Comment *)comment
+                 success:(void (^)(void))success
+                 failure:(void (^)(NSError *error))failure
+{
+    [self moderateComment:comment
+               withStatus:CommentStatusTypeUnapproved
+                  success:success
+                  failure:failure];
 }
 
 // Delete comment
@@ -765,7 +790,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                           failure:failure];
 }
 
-// Trash
 - (void)deleteCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     success:(void (^)(void))success

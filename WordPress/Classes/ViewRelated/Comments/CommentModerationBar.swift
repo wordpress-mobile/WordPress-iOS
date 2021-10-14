@@ -32,9 +32,10 @@ class CommentModerationBar: UIView {
 
     var commentStatus: CommentStatusType? {
         didSet {
-            if oldValue != commentStatus {
-                toggleButtonForStatus(oldValue)
+            guard oldValue != commentStatus else {
+                return
             }
+            toggleButtonForStatus(oldValue)
             toggleButtonForStatus(commentStatus)
         }
     }

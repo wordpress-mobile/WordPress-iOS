@@ -351,8 +351,7 @@ private extension CommentDetailViewController {
 
             rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
 
-            if let statusType = CommentStatusType.typeForStatus(comment.status),
-               (statusType == .spam || statusType == .unapproved) {
+            if comment.deleteWillBePermanent() {
                 rows.append(.deleteComment)
             }
         }
@@ -498,7 +497,12 @@ private extension CommentDetailViewController {
     }
 
     func deleteButtonTapped() {
-        // TODO: Implement delete functionality.
+        deleteComment() { [weak self] success in
+            if success {
+                // Dismiss the view since the Comment no longer exists.
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
     }
 
     func updateComment() {
@@ -586,8 +590,10 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
             unapproveComment()
         case .approved:
             approveComment()
+        case .spam:
+            spamComment()
         case .unapproved:
-            deleteComment()
+            trashComment()
         default:
             break
         }
@@ -620,14 +626,38 @@ private extension CommentDetailViewController {
         })
     }
 
-    func deleteComment() {
+    func spamComment() {
+        CommentAnalytics.trackCommentSpammed(comment: comment)
+
+        commentService.spamComment(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.spamSuccess)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.spamFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
+
+    func trashComment() {
         CommentAnalytics.trackCommentTrashed(comment: comment)
 
-        commentService.delete(comment, success: { [weak self] in
+        commentService.trashComment(comment, success: { [weak self] in
             self?.displayNotice(title: ModerationMessages.trashSuccess)
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.trashFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+        })
+    }
+
+    func deleteComment(completion: ((Bool) -> Void)? = nil) {
+        CommentAnalytics.trackCommentTrashed(comment: comment)
+
+        commentService.delete(comment, success: { [weak self] in
+            self?.displayNotice(title: ModerationMessages.deleteSuccess)
+            completion?(true)
+        }, failure: { [weak self] error in
+            self?.displayNotice(title: ModerationMessages.deleteFail)
+            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            completion?(false)
         })
     }
 
@@ -636,8 +666,12 @@ private extension CommentDetailViewController {
         static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
         static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
         static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
+        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
+        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
         static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
         static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
+        static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
+        static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
     }
 
 }
