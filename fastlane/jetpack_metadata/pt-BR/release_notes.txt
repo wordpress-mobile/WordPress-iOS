@@ -1,3 +1,7 @@
-- Atualizações no bloco de mídia incorporada: habilitamos a prévia de mídias incorporadas ao WordPress e ao conteúdo do Instagram e Vimeo. No caso de algumas mídias, pode ser que você consiga incorporar a URL, mas não pré-visualizar o conteúdo. Agora se você não puder incorporar mídias, verá a opção "Tente novamente" para incorporar o conteúdo de novo, e uma alternativa de convertê-lo em um link.
+Tornamos o uso do editor de blocos ainda mais fácil! Na visualização do seletor de blocos, você encontra blocos de mídia incorporada para YouTube, Twitter, WordPress e Vimeo, o que acelera bastante a inclusão de mídia. As URLs podem até ser editadas depois de você selecioná-las.
 
-- Várias melhorias e correções: simplificamos o menu Meu site, mudando "Posts do blog" para "Posts" e "Páginas do site" para "Páginas". Isso não afeta o conteúdo do seu post ou página, pode confiar! Além disso, corrigimos um bug que impedia você de acompanhar uma conversa por e-mail nos comentários de um post.
+Além disso, corrigimos um erro no bloco de galeria para que as imagens continuem sendo adicionadas se você fechar o post durante o upload.
+
+Mas se você ainda estiver tendo problemas, solicitar ajuda é ainda mais fácil. Você pode fazer isso no próprio editor: basta tocar no botão de três pontos, selecionar "Ajuda e suporte" e tocar em "Contatar o suporte".
+
+Por último, corrigimos um erro que fazia a tela de notificação mostrar o avatar errado às vezes quando você era mencionado em um comentário. Você escolheu a imagem e ela será exibida!
