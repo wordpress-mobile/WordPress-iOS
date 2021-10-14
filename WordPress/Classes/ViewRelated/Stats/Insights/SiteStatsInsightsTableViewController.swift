@@ -622,3 +622,17 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         static let manageInsightsButtonTitle = NSLocalizedString("Add stats card", comment: "Button title displayed when the user has removed all Insights from display.")
     }
 }
+
+// MARK: - Tracks Support
+
+private extension SiteStatsInsightsTableViewController {
+
+    func trackNudgeEvent(_ event: WPAnalyticsEvent) {
+        if let blogId = SiteStatsInformation.sharedInstance.siteID,
+           let blog = Blog.lookup(withID: blogId, in: mainContext) {
+            WPAnalytics.track(event, properties: [:], blog: blog)
+        } else {
+            WPAnalytics.track(event)
+        }
+    }
+}
