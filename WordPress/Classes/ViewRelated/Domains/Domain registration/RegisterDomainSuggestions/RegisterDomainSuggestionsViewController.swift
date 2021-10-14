@@ -159,6 +159,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
+            vc.blog = BlogService.blog(with: site)
 
             if let blog = BlogService.blog(with: site) {
                 vc.domainType = domainType
@@ -239,7 +240,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: site.siteID,
                                                  domainSuggestion: domain,
-                                                 privacyProtectionEnabled: false,
+                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { [weak self] _ in
             self?.presentWebViewForCurrentSite(domainSuggestion: domain)
             self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
