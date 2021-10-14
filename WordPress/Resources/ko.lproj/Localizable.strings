@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-29 11:54:55+0000 */
+/* Translation-Revision-Date: 2021-10-12 11:42:51+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s에 설정된 URL 없음";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s 링크";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s 미리보기는 아직 사용할 수 없음";
@@ -1429,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "City" = "도시";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "무료 도메인 신청";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "클래식 블로그";
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "도메인";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "이 사이트에서 구매한 도메인에서는 사용자가 다음 위치로 리디렉팅됨 ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "아직 계정이 없으신가요? _가입_";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "사용 가능한 미리보기 없음";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "기본 사이트 주소를 찾을 수 없음";
 
 /* A message title */
 "No recent posts" = "최근 글 없음";
@@ -5323,7 +5323,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "기본 사이트";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "주요 사이트 주소";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "회신 메시지";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "%1$@에 회신";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "댓글에 응답하기...";
@@ -5973,7 +5973,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "검색 버튼입니다. 현재 버튼 텍스트는";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "도메인 검색";
 
 /* No comment provided by engineer. */
 "Search input field." = "입력 필드를 검색합니다.";
@@ -6371,7 +6371,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "사이트";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "사이트 도메인";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "사이트 아이콘";
@@ -8632,7 +8632,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "숨겨진 워드프레스 사이트가 하나 있습니다.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "이용 중인 요금제에 1년 무료 도메인 등록이 포함되어 있음";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "회원님의 사이트에서 프리미엄 업그레이드가 활성화되었습니다. 사이트를 삭제하기 전에 업그레이드를 취소하세요.";
@@ -8711,7 +8711,7 @@ translators: Block name. %s: The localized block name */
 "Your Domains" = "도메인";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "사이트 도메인";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "사이트 아이콘";
@@ -8744,7 +8744,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "첫 번째 백업이 곧 준비됩니다";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "무료 워드프레스닷컴 주소:";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "미디어를 내보낼 수 없음. If the problem persists you can contact us via the Me > 도움 및 지원 화면입니다.";
