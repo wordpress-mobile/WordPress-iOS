@@ -565,6 +565,8 @@ extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
     func didSetUpBloggingReminders() {
         viewModel?.markEmptyStatsNudgeAsCompleted()
         refreshTableView()
+
+        trackNudgeEvent(.statsBloggingRemindersNudgeCompleted)
     }
 }
 
