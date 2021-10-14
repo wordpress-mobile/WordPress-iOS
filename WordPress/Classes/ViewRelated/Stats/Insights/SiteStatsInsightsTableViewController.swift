@@ -466,6 +466,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         present(navigationController, animated: true)
 
         applyTableUpdates()
+
+        trackNudgeEvent(.statsPublicizeNudgeTapped)
     }
 
     func growAudienceBloggingRemindersButtonTapped() {
