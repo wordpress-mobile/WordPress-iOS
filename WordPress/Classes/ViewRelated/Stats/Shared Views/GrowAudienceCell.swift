@@ -35,6 +35,39 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         dismissButton.setTitle(Strings.dismissButtonTitle, for: .normal)
 
         updateView(isCompleted: isNudgeCompleted)
+
+        prepareForVoiceOver(hintType: hintType,
+                            allTimeViewsCount: allTimeViewsCount,
+                            isNudgeCompleted: isNudgeCompleted)
+    }
+
+    // MARK: - A11y
+
+    func prepareForVoiceOver(hintType: HintType, allTimeViewsCount: Int, isNudgeCompleted: Bool) {
+
+        viewCountStackView.isAccessibilityElement = true
+        viewCountStackView.accessibilityTraits = .staticText
+        viewCountStackView.accessibilityLabel = Strings.getViewCountSummary(viewsCount: allTimeViewsCount)
+
+        tipLabel.isAccessibilityElement = true
+        tipLabel.accessibilityTraits = .staticText
+        tipLabel.accessibilityLabel = hintType.getTipTitle((isNudgeCompleted))
+
+        detailsLabel.isAccessibilityElement = true
+        detailsLabel.accessibilityTraits = .staticText
+        detailsLabel.accessibilityLabel = hintType.getDetailsTitle(isNudgeCompleted)
+
+        dismissButton.accessibilityLabel = Strings.dismissButtonTitle
+
+        actionButton.accessibilityLabel = hintType.getActionButtonTitle(isNudgeCompleted)
+
+        accessibilityElements = [
+            viewCountStackView,
+            tipLabel,
+            detailsLabel,
+            dismissButton,
+            actionButton
+        ].compactMap { $0 }
     }
 
     // MARK: - Styling
@@ -117,6 +150,11 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
         static func getViewsCountDescription(viewsCount: Int) -> String {
             return viewsCount == 1 ? viewsCountDescriptionSingular : viewsCountDescriptionPlural
+        }
+
+        static func getViewCountSummary(viewsCount: Int) -> String {
+            let description = getViewsCountDescription(viewsCount: viewsCount)
+            return "\(viewsCount) \(description)"
         }
 
         enum Social {
