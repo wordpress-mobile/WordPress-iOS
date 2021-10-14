@@ -25,11 +25,12 @@ public class GetStartedScreen: ScreenObject {
     var helpButton: XCUIElement { helpButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
+        // Notice we are not checking for the continue button, because that's visible but not
+        // enabled, and `ScreenObject` checks for enabled elements.
         try super.init(
             expectedElementGetters: [
                 navBarGetter,
                 emailTextFieldGetter,
-                continueButtonGetter,
                 helpButtonGetter
             ],
             app: app
