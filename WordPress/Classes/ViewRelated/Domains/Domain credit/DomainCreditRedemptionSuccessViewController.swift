@@ -7,7 +7,7 @@ protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
 
 /// Displays messaging after user successfully redeems domain credit.
 class DomainCreditRedemptionSuccessViewController: UIViewController {
-    
+
     private let domain: String
     private var illustration: UIImageView?
 
