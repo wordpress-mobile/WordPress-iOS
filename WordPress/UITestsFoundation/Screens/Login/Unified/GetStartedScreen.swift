@@ -4,7 +4,7 @@ import XCTest
 public class GetStartedScreen: ScreenObject {
 
     private let navBarGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["WordPress.GetStartedView"]
+        $0.navigationBars["Get Started"]
     }
 
     private let emailTextFieldGetter: (XCUIApplication) -> XCUIElement = {
