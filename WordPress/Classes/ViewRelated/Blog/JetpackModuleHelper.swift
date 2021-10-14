@@ -15,6 +15,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
     private let moduleName: String
     private let blog: Blog
     private let service: BlogJetpackSettingsService
+    private let blogService: BlogService
 
     private var noResultsViewController: NoResultsViewController?
 
@@ -29,6 +30,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
         self.moduleName = moduleName
         self.blog = blog
         self.service = BlogJetpackSettingsService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
+        self.blogService = BlogService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
     }
 
 
@@ -69,8 +71,14 @@ extension JetpackModuleHelper: NoResultsViewControllerDelegate {
                                                         module: moduleName,
                                                         active: true,
                                                         success: { [weak self] in
-            self?.noResultsViewController?.removeFromView()
-            self?.viewController?.jetpackModuleEnabled()
+            guard let self = self else {
+                return
+            }
+
+            self.blogService.syncBlogAndAllMetadata(self.blog) {
+                self.noResultsViewController?.removeFromView()
+                self.viewController?.jetpackModuleEnabled()
+            }
         },
                                                         failure: { [weak self] _ in
             self?.viewController?.displayNotice(title: Constants.error)
