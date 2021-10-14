@@ -483,6 +483,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                                       delegate: self)
 
         applyTableUpdates()
+
+        trackNudgeEvent(.statsBloggingRemindersNudgeTapped)
     }
 
     func showAddInsight() {
