@@ -21,6 +21,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 @property (nonatomic, strong) NSArray *publicizeServices;
 @property (nonatomic, weak) id delegate;
 @property (nonatomic) PublicizeServicesState *publicizeServicesState;
+@property (nonatomic) JetpackModuleHelper *jetpackModuleHelper;
 
 @end
 
@@ -52,10 +53,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self syncServices];
     [self.publicizeServicesState addInitialConnections:[self allConnections]];
 
     self.navigationController.presentationController.delegate = self;
+
+    if ([self.blog supportsPublicize]) {
+        [self syncServices];
+    } else {
+        self.jetpackModuleHelper = [[JetpackModuleHelper alloc] initWithViewController:self moduleName:@"publicize" blog:self.blog];
+
+        [self.jetpackModuleHelper show];
+        self.tableView.dataSource = NULL;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -237,6 +246,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#pragma mark - JetpackModuleHelper
+
+- (void)jetpackModuleEnabled
+{
+    self.tableView.dataSource = self;
+    [self refreshPublicizers];
+}
 
 #pragma mark - Publicizer management
 
