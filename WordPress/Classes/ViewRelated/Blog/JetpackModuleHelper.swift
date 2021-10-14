@@ -43,8 +43,8 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
 
         viewController?.addChild(noResultsViewController!)
         viewController?.view.addSubview(withFadeAnimation: noResultsViewController!.view)
-        noResultsViewController?.view.frame = self.viewController?.view.bounds ?? .zero
         noResultsViewController?.didMove(toParent: viewController!)
+        noResultsViewController?.view.frame = self.viewController?.view.bounds ?? .zero
     }
 }
 
