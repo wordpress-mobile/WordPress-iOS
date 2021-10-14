@@ -11,10 +11,12 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
 /// a Jetpack module
 @objc class JetpackModuleHelper: NSObject {
     private weak var viewController: JetpackModuleHelperViewController?
+
     private let moduleName: String
-    private var noResultsViewController: NoResultsViewController?
     private let blog: Blog
     private let service: BlogJetpackSettingsService
+
+    private var noResultsViewController: NoResultsViewController?
 
     @objc init(viewController: JetpackModuleHelperViewController, moduleName: String, blog: Blog) {
         self.viewController = viewController
@@ -23,14 +25,14 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
         self.service = BlogJetpackSettingsService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
     }
 
-    @objc func show() {
+    @objc func show(title: String, subtitle: String) {
         noResultsViewController = NoResultsViewController.controller()
         noResultsViewController?.configure(
-            title: NSLocalizedString("Enable Publicize", comment: "Text shown when the site doesn't have the Publicize module enabled."),
+            title: title,
             attributedTitle: nil,
             noConnectionTitle: nil,
             buttonTitle: NSLocalizedString("Enable", comment: "Title of button to enable publicize."),
-            subtitle: NSLocalizedString("In order to share your published posts to your social media you need to enable the Publicize module.", comment: "Title of button to enable publicize."),
+            subtitle: subtitle,
             noConnectionSubtitle: nil,
             attributedSubtitle: nil,
             attributedSubtitleConfiguration: nil,

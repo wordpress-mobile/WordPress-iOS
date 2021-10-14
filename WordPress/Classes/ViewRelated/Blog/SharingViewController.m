@@ -62,7 +62,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     } else {
         self.jetpackModuleHelper = [[JetpackModuleHelper alloc] initWithViewController:self moduleName:@"publicize" blog:self.blog];
 
-        [self.jetpackModuleHelper show];
+        [self.jetpackModuleHelper showWithTitle:NSLocalizedString(@"Enable Publicize", "Text shown when the site doesn't have the Publicize module enabled.") subtitle:NSLocalizedString(@"In order to share your published posts to your social media you need to enable the Publicize module.", "Title of button to enable publicize.")];
+
         self.tableView.dataSource = NULL;
     }
 }
