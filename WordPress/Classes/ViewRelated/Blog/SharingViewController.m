@@ -252,7 +252,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)jetpackModuleEnabled
 {
     self.tableView.dataSource = self;
-    [self refreshPublicizers];
+    [self syncServices];
 }
 
 #pragma mark - Publicizer management
