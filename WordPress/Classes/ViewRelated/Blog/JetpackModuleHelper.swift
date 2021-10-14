@@ -1,16 +1,22 @@
 import Foundation
 import UIKit
 
+public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate & UIViewController
+
+@objc public protocol JetpackModuleHelperDelegate: AnyObject {
+    func jetpackModuleEnabled()
+}
+
 /// Shows a NoResultsViewController on a given VC and handle enabling
 /// a Jetpack module
 @objc class JetpackModuleHelper: NSObject {
-    private weak var viewController: UIViewController?
+    private weak var viewController: JetpackModuleHelperViewController?
     private let moduleName: String
     private var noResultsViewController: NoResultsViewController?
     private let blog: Blog
     private let service: BlogJetpackSettingsService
 
-    @objc init(viewController: UIViewController, moduleName: String, blog: Blog) {
+    @objc init(viewController: JetpackModuleHelperViewController, moduleName: String, blog: Blog) {
         self.viewController = viewController
         self.moduleName = moduleName
         self.blog = blog
@@ -47,8 +53,9 @@ extension JetpackModuleHelper: NoResultsViewControllerDelegate {
         service.updateJetpackModuleActiveSettingForBlog(blog,
                                                         module: moduleName,
                                                         active: true,
-                                                        success: {
-
+                                                        success: { [weak self] in
+            self?.noResultsViewController?.removeFromView()
+            self?.viewController?.jetpackModuleEnabled()
         },
                                                         failure: { [weak self] _ in
             self?.viewController?.displayNotice(title: Constants.error)
