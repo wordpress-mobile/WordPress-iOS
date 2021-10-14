@@ -41,12 +41,14 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
             accessoryView: nil
         )
 
-        noResultsViewController?.delegate = self
+        if let noResultsViewController = noResultsViewController, let viewController = viewController {
+            noResultsViewController.delegate = self
 
-        viewController?.addChild(noResultsViewController!)
-        viewController?.view.addSubview(withFadeAnimation: noResultsViewController!.view)
-        noResultsViewController?.didMove(toParent: viewController!)
-        noResultsViewController?.view.frame = self.viewController?.view.bounds ?? .zero
+            viewController.addChild(noResultsViewController)
+            viewController.view.addSubview(withFadeAnimation: noResultsViewController.view)
+            noResultsViewController.didMove(toParent: viewController)
+            noResultsViewController.view.frame = viewController.view.bounds
+        }
     }
 }
 
