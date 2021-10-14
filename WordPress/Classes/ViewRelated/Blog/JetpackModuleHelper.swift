@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import Kanvas
 
 /// Shows a NoResultsViewController on a given VC and handle enabling
 /// a Jetpack module
