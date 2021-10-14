@@ -38,6 +38,13 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         navigationController?.setNavigationBarHidden(true, animated: false)
 
+        // Scroll View
+
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        scrollView.showsVerticalScrollIndicator = false
+
         // Stack View
 
         let stackViewContainer = UIView()
@@ -60,16 +67,19 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         let title = UILabel()
         title.numberOfLines = 0
+        title.lineBreakMode = .byWordWrapping
         title.textAlignment = .center
         title.font = WPStyleGuide.serifFontForTextStyle(.largeTitle)
         title.textColor = .textInverted
         title.text = TextContent.title
+        title.adjustsFontForContentSizeCategory = true
 
         let subtitle = UILabel()
         subtitle.numberOfLines = 0
+        subtitle.lineBreakMode = .byWordWrapping
         subtitle.textAlignment = .center
         subtitle.textColor = .textInverted
-        self.subtitle = subtitle
+        subtitle.adjustsFontForContentSizeCategory = true
 
         let subtitleText = makeDomainDetailsString(domain: domain)
         subtitle.attributedText = applyDomainStyle(to: subtitleText, domain: domain)
@@ -86,7 +96,8 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         // Constraints
 
         stackViewContainer.addSubview(stackView)
-        view.addSubview(stackViewContainer)
+        scrollView.addSubview(stackViewContainer)
+        view.addSubview(scrollView)
         view.addSubview(buttonContainer)
 
         NSLayoutConstraint.activate([
@@ -96,10 +107,18 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: stackViewContainer.bottomAnchor),
             stackView.centerYAnchor.constraint(equalTo: stackViewContainer.centerYAnchor),
 
+            scrollView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Metrics.edgePadding),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Metrics.edgePadding),
+            scrollView.topAnchor.constraint(equalTo: view.safeTopAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: buttonContainer.topAnchor),
+
+            stackViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackViewContainer.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Metrics.edgePadding),
             stackViewContainer.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Metrics.edgePadding),
-            stackViewContainer.topAnchor.constraint(equalTo: view.safeTopAnchor),
-            stackViewContainer.bottomAnchor.constraint(equalTo: buttonContainer.topAnchor),
+            stackViewContainer.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackViewContainer.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
 
             buttonContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
