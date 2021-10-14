@@ -1,16 +1,14 @@
 import UIKit
 
+protocol CommentModerationBarDelegate: AnyObject {
+    func statusChangedTo(_ commentStatus: CommentStatusType)
+}
+
 private typealias Style = WPStyleGuide.CommentDetail.ModerationBar
 
 class CommentModerationBar: UIView {
 
     // MARK: - Properties
-
-    var comment: Comment? {
-        didSet {
-            setButtonForStatus()
-        }
-    }
 
     @IBOutlet private weak var contentView: UIView!
 
@@ -29,6 +27,18 @@ class CommentModerationBar: UIView {
     private var compactHorizontalPadding: CGFloat = 4
     private let iPadPaddingMultiplier: CGFloat = 0.33
     private let iPhonePaddingMultiplier: CGFloat = 0.15
+
+    weak var delegate: CommentModerationBarDelegate?
+
+    var commentStatus: CommentStatusType? {
+        didSet {
+            guard oldValue != commentStatus else {
+                return
+            }
+            toggleButtonForStatus(oldValue)
+            toggleButtonForStatus(commentStatus)
+        }
+    }
 
     // MARK: - Init
 
@@ -118,49 +128,88 @@ private extension CommentModerationBar {
         buttonStackViewTrailingConstraint.constant = horizontalPadding
     }
 
-    func setButtonForStatus() {
-        guard let comment = comment,
-              let commentStatusType = CommentStatusType.typeForStatus(comment.status) else {
-                  return
-              }
+    func toggleButtonForStatus(_ status: CommentStatusType?) {
+        guard let status = status else {
+            return
+        }
 
-        switch commentStatusType {
+        switch status {
         case .pending:
-            pendingTapped()
+            togglePending()
         case .approved:
-            approvedTapped()
+            toggleApproved()
         case .unapproved:
-            trashTapped()
+            toggleTrash()
         case .spam:
-            spamTapped()
+            toggleSpam()
         default:
             break
         }
     }
 
-    // MARK: - Button Actions
-
-    @IBAction func pendingTapped() {
+    func togglePending() {
         pendingButton.toggleState()
         firstDivider.hideDivider(pendingButton.isSelected)
     }
 
-    @IBAction func approvedTapped() {
+    func toggleApproved() {
         approvedButton.toggleState()
         firstDivider.hideDivider(approvedButton.isSelected)
         secondDivider.hideDivider(approvedButton.isSelected)
     }
 
-    @IBAction func spamTapped() {
+    func toggleSpam() {
         spamButton.toggleState()
         secondDivider.hideDivider(spamButton.isSelected)
         thirdDivider.hideDivider(spamButton.isSelected)
     }
 
-    @IBAction func trashTapped() {
+    func toggleTrash() {
         trashButton.toggleState()
         thirdDivider.hideDivider(trashButton.isSelected)
     }
+
+    // MARK: - Button Actions
+
+    @IBAction func pendingTapped() {
+        guard !pendingButton.isSelected else {
+            return
+        }
+
+        updateStatusTo(.pending)
+    }
+
+    @IBAction func approvedTapped() {
+        guard !approvedButton.isSelected else {
+            return
+        }
+
+        updateStatusTo(.approved)
+    }
+
+    @IBAction func spamTapped() {
+        guard !spamButton.isSelected else {
+            return
+        }
+
+        updateStatusTo(.spam)
+    }
+
+    @IBAction func trashTapped() {
+        guard !trashButton.isSelected else {
+            return
+        }
+
+        updateStatusTo(.unapproved)
+    }
+
+    func updateStatusTo(_ status: CommentStatusType) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            commentStatus = status
+            delegate?.statusChangedTo(status)
+        }
+    }
+
 }
 
 // MARK: - Moderation Button Types
@@ -228,6 +277,8 @@ private extension UIButton {
         layer.shadowOffset = Style.buttonShadowOffset
         layer.shadowOpacity = Style.buttonShadowOpacity
         layer.shadowRadius = Style.buttonShadowRadius
+
+        isExclusiveTouch = true
 
         verticallyAlignImageAndText()
         flipInsetsForRightToLeftLayoutDirection()

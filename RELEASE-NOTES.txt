@@ -1,6 +1,7 @@
 18.5
 -----
-
+* [**] Block editor: Embed block: Include Jetpack embed variants. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4008]
+* [*] Site Comments: fixed an issue that caused the lists to not refresh. [#17303]
 
 18.4
 -----
