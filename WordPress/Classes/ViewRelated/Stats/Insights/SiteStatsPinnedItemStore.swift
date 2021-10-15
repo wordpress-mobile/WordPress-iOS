@@ -16,11 +16,7 @@ final class SiteStatsPinnedItemStore {
         self.siteId = siteId
     }
 
-    func itemToDisplay(for siteViewsCount: Int?) -> SiteStatsPinnable? {
-        guard let siteViewsCount = siteViewsCount else {
-            return nil
-        }
-
+    func itemToDisplay(for siteViewsCount: Int) -> SiteStatsPinnable? {
         if siteViewsCount < lowSiteViewsCountTreshold {
             return nudgeToDisplay ?? customizeToDisplay
         } else {
