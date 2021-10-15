@@ -1,94 +1,6 @@
 import UIKit
 import WordPressFlux
 
-enum InsightType: Int {
-    case growAudience
-    case customize
-    case latestPostSummary
-    case allTimeStats
-    case followersTotals
-    case mostPopularTime
-    case tagsAndCategories
-    case annualSiteStats
-    case comments
-    case followers
-    case todaysStats
-    case postingActivity
-    case publicize
-    case allDotComFollowers
-    case allEmailFollowers
-    case allComments
-    case allTagsAndCategories
-    case allAnnual
-
-    // These Insights will be displayed in this order if a site's Insights have not been customized.
-    static let defaultInsights = [InsightType.latestPostSummary,
-                                  .todaysStats,
-                                  .allTimeStats,
-                                  .followersTotals
-    ]
-
-    static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }
-
-    static func typesForValues(_ values: [Int]) -> [InsightType] {
-        return values.compactMap { InsightType(rawValue: $0) }
-    }
-
-    static func valuesForTypes(_ types: [InsightType]) -> [Int] {
-        return types.compactMap { $0.rawValue }
-    }
-
-    var statSection: StatSection? {
-        switch self {
-        case .latestPostSummary:
-            return .insightsLatestPostSummary
-        case .allTimeStats:
-            return .insightsAllTime
-        case .followersTotals:
-            return .insightsFollowerTotals
-        case .mostPopularTime:
-            return .insightsMostPopularTime
-        case .tagsAndCategories:
-            return .insightsTagsAndCategories
-        case .annualSiteStats:
-            return .insightsAnnualSiteStats
-        case .comments:
-            return .insightsCommentsPosts
-        case .followers:
-            return .insightsFollowersEmail
-        case .todaysStats:
-            return .insightsTodaysStats
-        case .postingActivity:
-            return .insightsPostingActivity
-        case .publicize:
-            return .insightsPublicize
-        default:
-            return nil
-        }
-    }
-
-}
-
-@objc protocol SiteStatsInsightsDelegate {
-    @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func showCreatePost()
-    @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
-    @objc optional func showPostingActivityDetails()
-    @objc optional func tabbedTotalsCellUpdated()
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
-    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
-    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-    @objc optional func customizeDismissButtonTapped()
-    @objc optional func customizeTryButtonTapped()
-    @objc optional func growAudienceDismissButtonTapped()
-    @objc optional func growAudienceEnablePostSharingButtonTapped()
-    @objc optional func growAudienceBloggingRemindersButtonTapped()
-    @objc optional func showAddInsight()
-    @objc optional func addInsightSelected(_ insight: StatSection)
-    @objc optional func addInsightDismissed()
-    @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)
-}
-
 class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
@@ -100,24 +12,14 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     private var insightsToShow = [InsightType]()
     private let userDefaultsInsightTypesKey = "StatsInsightTypes"
 
-    // Store 'customize' separately as it is not per site.
-    private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
-
-    // Grow audience key per site
-    private var userDefaultsHideGrowAudienceKey: String? {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return nil }
-        let key = "StatsInsightsHideGrowAudienceCard"
-        return key + "-\(siteID)"
-    }
-
     // Local state for site current view count
     private var currentViewCount: Int?
 
-    private lazy var nudgeState: SiteStatsNudgeState? = {
+    private lazy var pinnedItemStore: SiteStatsPinnedItemStore? = {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return nil
         }
-        return SiteStatsNudgeState(siteId: siteID)
+        return SiteStatsPinnedItemStore(siteId: siteID)
     }()
 
     private let insightsStore = StoreContainer.shared.statsInsights
@@ -188,7 +90,7 @@ private extension SiteStatsInsightsTableViewController {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
                                                insightsDelegate: self,
                                                insightsStore: insightsStore,
-                                               nudgeState: nudgeState)
+                                               pinnedItemStore: pinnedItemStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
     }
@@ -309,76 +211,41 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func loadPinnedCards() {
-        loadGrowAudienceCardSetting()
-
-        if !insightsToShow.contains(.growAudience) {
-            loadCustomizeCardSetting()
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        switch pinnedItemStore?.itemToDisplay(for: viewsCount) {
+        case .none:
+            insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
+        case .some(let item):
+            switch item {
+            case is GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
+                insightsToShow = insightsToShow.filter { $0 != .customize }
+                insightsToShow.insert(.growAudience, at: 0)
+            case InsightType.customize where !insightsToShow.contains(.customize):
+                insightsToShow = insightsToShow.filter { $0 != .growAudience }
+                insightsToShow.insert(.customize, at: 0)
+            default:
+                break
+            }
         }
-    }
-
-    /// Loads an insight that can be permanently dismissed. Adds or removes the insight from the list of insights to show as needed.
-    ///
-    /// - Parameters:
-    ///   - insight: An insight that can be permanently dismissed for all sites
-    ///   - userDefaultsHideInsightKey: The UserDefaults key that indicates whether or not the insight should be hidden
-    func loadPermanentlyDismissableInsight(_ insight: InsightType, using userDefaultsHideInsightKey: String) {
-
-        let shouldAddInsight =
-            !UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && !insightsToShow.contains(insight)
-
-        /// Note that this flag isn't an inversion of the shouldAddInsight flag.
-        let shouldRemoveInsight =
-            UserDefaults.standard.bool(forKey: userDefaultsHideInsightKey) && insightsToShow.contains(insight)
-
-        /// Add or remove the insight as needed. If it's already showing and hasn't been dismissed, do nothing.
-        if shouldAddInsight {
-            insightsToShow.insert(insight, at: 0)
-        } else if shouldRemoveInsight {
-            insightsToShow = insightsToShow.filter { $0 != insight }
-        }
-    }
-
-    /// Permanently dismisses an insight for all sites.
-    ///
-    /// - Parameters:
-    ///   - insight: An insight that can be permanently dismissed for all sites
-    ///   - userDefaultsHideInsightKey: The UserDefaults key that indicates whether or not the insight should be hidden
-    func permanentlyDismissInsight(_ insight: InsightType, using userDefaultsHideInsightKey: String) {
-        insightsToShow = insightsToShow.filter { $0 != insight }
-        UserDefaults.standard.set(true, forKey: userDefaultsHideInsightKey)
     }
 
     // MARK: - Customize Card Management
 
-    func loadCustomizeCardSetting() {
-        loadPermanentlyDismissableInsight(.customize, using: userDefaultsHideCustomizeKey)
-    }
-
     func dismissCustomizeCard() {
-        permanentlyDismissInsight(.customize, using: userDefaultsHideCustomizeKey)
+        let item = InsightType.customize
+        insightsToShow = insightsToShow.filter { $0 != item }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 
     // MARK: - Grow Audience Card Management
 
-    func loadGrowAudienceCardSetting() {
-        guard isSiteViewsCountLow, nudgeState?.nudgeToDisplay != nil else {
-            dismissGrowAudienceCard()
+    func dismissGrowAudienceCard() {
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        guard let item = pinnedItemStore?.itemToDisplay(for: viewsCount) as? GrowAudienceCell.HintType else {
             return
         }
-
-        guard let key = userDefaultsHideGrowAudienceKey else { return }
-        loadPermanentlyDismissableInsight(.growAudience, using: key)
-    }
-
-    func dismissGrowAudienceCard() {
-        guard let key = userDefaultsHideGrowAudienceKey else { return }
-        permanentlyDismissInsight(.growAudience, using: key)
-    }
-
-    var isSiteViewsCountLow: Bool {
-        let threshold = 30
-        let count = insightsStore.getAllTimeStats()?.viewsCount ?? 0
-        return count < threshold
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 
     func refreshGrowAudienceCardIfNecessary() {
