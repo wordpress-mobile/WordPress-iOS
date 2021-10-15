@@ -211,8 +211,8 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func loadPinnedCards() {
-        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
-        switch pinnedItemStore?.itemToDisplay(for: viewsCount) {
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
+        switch pinnedItemStore?.itemToDisplay(for: viewsCount ?? 0) {
         case .none:
             insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
         case .some(let item):
@@ -220,11 +220,21 @@ private extension SiteStatsInsightsTableViewController {
             case let hintType as GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
                 insightsToShow = insightsToShow.filter { $0 != .customize }
                 insightsToShow.insert(.growAudience, at: 0)
-                trackNudgeShown(for: hintType)
+
+                // Work around to make sure nudge shown is tracked only once
+                if viewsCount != nil {
+                    trackNudgeShown(for: hintType)
+                }
+
             case InsightType.customize where !insightsToShow.contains(.customize):
                 insightsToShow = insightsToShow.filter { $0 != .growAudience }
                 insightsToShow.insert(.customize, at: 0)
-                WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
+
+                // Work around to make sure customize insights shown is tracked only once
+                if viewsCount != nil {
+                    WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
+                }
+
             default:
                 break
             }
