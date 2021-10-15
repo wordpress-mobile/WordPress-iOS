@@ -50,6 +50,14 @@ public class Comment: NSManagedObject {
         return URL(string: link)
     }
 
+    @objc func deleteWillBePermanent() -> Bool {
+        if !FeatureFlag.newCommentDetail.enabled {
+            return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
+        }
+
+        return status.isEqual(to: Comment.descriptionFor(.unapproved))
+    }
+
     func numberOfLikes() -> Int {
         return Int(likeCount)
     }
@@ -159,7 +167,7 @@ extension Comment: PostContentProvider {
         }
     }
 
-    static func typeForStatus(_ status: String) -> CommentStatusType? {
+    static func typeForStatus(_ status: String?) -> CommentStatusType? {
         switch status {
         case "hold":
             return .pending

@@ -4,17 +4,18 @@ import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
-class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestionsButtonViewPresenter {
-
-    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
+class RegisterDomainSuggestionsViewController: UIViewController {
+    @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
+
+    private var constraintsInitialized = false
 
     private var site: JetpackSiteRef!
     private var domainPurchasedCallback: ((String) -> Void)!
 
     private var domain: DomainSuggestion?
     private var siteName: String?
-    private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
+    private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
     private var includeSupportButton: Bool = true
 
@@ -23,11 +24,7 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        showButtonView(show: false, withAnimation: false)
+        hideButton()
     }
 
     @IBOutlet private var buttonViewContainer: UIView! {
@@ -96,17 +93,81 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
         navigationItem.rightBarButtonItem = supportButton
     }
 
+    // MARK: - Bottom Hideable Button
+
+    /// Shows the domain picking button
+    ///
+    private func showButton() {
+        buttonContainerBottomConstraint.constant = 0
+    }
+
+    /// Shows the domain picking button
+    ///
+    /// - Parameters:
+    ///     - animated: whether the transition is animated.
+    ///
+    private func showButton(animated: Bool) {
+        guard animated else {
+            showButton()
+            return
+        }
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.showButton()
+
+            // Since the Button View uses auto layout, need to call this so the animation works properly.
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func hideButton() {
+        buttonContainerBottomConstraint.constant = buttonViewContainer.frame.height
+    }
+
+    /// Hides the domain picking button
+    ///
+    /// - Parameters:
+    ///     - animated: whether the transition is animated.
+    ///
+    func hideButton(animated: Bool) {
+        guard animated else {
+            hideButton()
+            return
+        }
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.hideButton()
+
+            // Since the Button View uses auto layout, need to call this so the animation works properly.
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
+        if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
+            vc.blog = BlogService.blog(with: site)
 
-            if BlogService.blog(with: site)?.hasBloggerPlan == true {
-                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+            if let blog = BlogService.blog(with: site) {
+                vc.domainType = domainType
+                vc.freeSiteAddress = blog.freeSiteAddress
+
+                if blog.hasBloggerPlan == true {
+                    vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
+                }
             }
 
             domainsTableViewController = vc
@@ -132,12 +193,12 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
     func domainSelected(_ domain: DomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
-        showButtonView(show: true, withAnimation: true)
+        showButton(animated: true)
     }
 
     func newSearchStarted() {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
-        showButtonView(show: false, withAnimation: true)
+        hideButton(animated: true)
     }
 }
 
@@ -148,13 +209,24 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let domain = domain else {
             return
         }
+
         switch domainType {
         case .registered:
             pushRegisterDomainDetailsViewController(domain)
         case .siteRedirect:
+            setPrimaryButtonLoading(true)
             createCartAndPresentWebView(domain)
         default:
             break
+        }
+    }
+
+    private func setPrimaryButtonLoading(_ isLoading: Bool, afterDelay delay: Double = 0.0) {
+        // We're dispatching here so that we can wait until after the webview has been
+        // fully presented before we switch the button back to its default state.
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            self.buttonViewController.setBottomButtonState(isLoading: isLoading,
+                                                           isEnabled: !isLoading)
         }
     }
 
@@ -168,9 +240,10 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: site.siteID,
                                                  domainSuggestion: domain,
-                                                 privacyProtectionEnabled: false,
+                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { [weak self] _ in
-            self?.presentWebViewForCurrentSite(domain: domain.domainName)
+            self?.presentWebViewForCurrentSite(domainSuggestion: domain)
+            self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
         },
                                                  failure: { error in })
     }
@@ -184,15 +257,17 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     ///
     /// - Parameters:
     ///     - newURL: the newly set URL for the web view.
+    ///     - siteID: the ID of the site we're trying to register the domain against.
     ///     - domain: the domain the user is purchasing.
     ///     - onCancel: the closure that will be executed if we detect the conditions for cancelling the registration were met.
     ///     - onSuccess: the closure that will be executed if we detect a successful domain registration.
     ///
     private func handleWebViewURLChange(
         _ newURL: URL,
+        siteID: Int,
         domain: String,
         onCancel: () -> Void,
-        onSuccess: () -> Void) {
+        onSuccess: (String) -> Void) {
 
         let canOpenNewURL = newURL.absoluteString.starts(with: Self.checkoutURLPrefix)
 
@@ -204,16 +279,25 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Self.checkoutSuccessURLPrefix)
 
         if domainRegistrationSucceeded {
-            onSuccess()
+
+            let registerDomainService = RegisterDomainDetailsServiceProxy()
+
+            registerDomainService.recordDomainPurchase(
+                siteID: siteID,
+                domain: domain,
+                isPrimaryDomain: false)
+
+            onSuccess(domain)
             return
         }
     }
 
-    private func presentWebViewForCurrentSite(domain: String) {
+    private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
         guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
         }
+        let siteID = site.siteID
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
         let navController = LightNavigationController(rootViewController: webViewController)
@@ -230,9 +314,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
                 return
             }
 
-            self.handleWebViewURLChange(newURL, domain: domain, onCancel: {
+            self.handleWebViewURLChange(newURL, siteID: siteID, domain: domainSuggestion.domainName, onCancel: {
                 navController.dismiss(animated: true)
-            }) {
+            }) { domain in
                 self.dismiss(animated: true, completion: { [weak self] in
                     self?.domainPurchasedCallback(domain)
                 })
@@ -267,9 +351,9 @@ extension RegisterDomainSuggestionsViewController {
 
     enum TextContent {
 
-        static let title = NSLocalizedString("Register domain",
-                                             comment: "Register domain - Title for the Suggested domains screen")
-        static let primaryButtonTitle = NSLocalizedString("Choose domain",
+        static let title = NSLocalizedString("Search domains",
+                                             comment: "Search domain - Title for the Suggested domains screen")
+        static let primaryButtonTitle = NSLocalizedString("Select domain",
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
     }

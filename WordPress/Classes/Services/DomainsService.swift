@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressKit
+import CoreData
 
 struct DomainsService {
     let remote: DomainsServiceRemote
@@ -12,12 +13,19 @@ struct DomainsService {
         self.remote = remote
     }
 
-    func refreshDomainsForSite(_ siteID: Int, completion: @escaping (Bool) -> Void) {
+    /// Refreshes the domains for the specified site.  Since this method takes care of merging the new data into our local
+    /// persistance layer making it useful to call even without knowing the result, the completion closure is optional.
+    ///
+    /// - Parameters:
+    ///     - siteID: the ID of the site to refresh the domains for.
+    ///     - completion: the result of the refresh request.
+    ///
+    func refreshDomains(siteID: Int, completion: ((Result<Void, Error>) -> Void)? = nil) {
         remote.getDomainsForSite(siteID, success: { domains in
             self.mergeDomains(domains, forSite: siteID)
-            completion(true)
-            }, failure: { error in
-                completion(false)
+            completion?(.success(()))
+        }, failure: { error in
+            completion?(.failure(error))
         })
     }
 
@@ -88,7 +96,7 @@ struct DomainsService {
                 existingDomain.updateWith(remoteDomain, blog: blog)
                 DDLogDebug("Updated domain \(existingDomain)")
             } else {
-                createManagedDomain(remoteDomain, forSite: siteID)
+                create(remoteDomain, forSite: siteID)
             }
         }
 
@@ -116,12 +124,14 @@ struct DomainsService {
         return results.first
     }
 
-    fileprivate func createManagedDomain(_ domain: Domain, forSite siteID: Int) {
+    func create(_ domain: Domain, forSite siteID: Int) {
         guard let blog = blogForSiteID(siteID) else { return }
 
         let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
         DDLogDebug("Created domain \(managedDomain)")
+
+        ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
     fileprivate func domainsForSite(_ siteID: Int) -> [Domain] {
