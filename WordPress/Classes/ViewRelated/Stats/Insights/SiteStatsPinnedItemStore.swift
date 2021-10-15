@@ -4,11 +4,23 @@ import Foundation
 protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
-    private let items: [SiteStatsPinnable] = [
-        GrowAudienceCell.HintType.social,
-        GrowAudienceCell.HintType.bloggingReminders,
-        InsightType.customize
-    ]
+    private lazy var items: [SiteStatsPinnable] = {
+        if EmptyStatsAB.shared.variant == .control {
+            // Control has social first
+            return [
+                GrowAudienceCell.HintType.social,
+                GrowAudienceCell.HintType.bloggingReminders,
+                InsightType.customize
+            ]
+        } else {
+            // Treatment has blogging reminders first
+            return [
+                GrowAudienceCell.HintType.bloggingReminders,
+                GrowAudienceCell.HintType.social,
+                InsightType.customize
+            ]
+        }
+    }()
     private let lowSiteViewsCountTreshold = 30
     private let siteId: NSNumber
 
