@@ -47,11 +47,11 @@ def wordpress_ui
 end
 
 def wordpress_kit
-#    pod 'WordPressKit', '~> 4.42.1-beta.1'
+    pod 'WordPressKit', '~> 4.42.1-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-     pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/reader-post-update-subscription'
+    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-#     pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def kanvas
