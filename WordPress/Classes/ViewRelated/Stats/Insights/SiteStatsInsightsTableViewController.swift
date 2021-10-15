@@ -646,9 +646,11 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
 private extension SiteStatsInsightsTableViewController {
 
     func trackNudgeEvent(_ event: WPAnalyticsEvent) {
+        let firstNudge: String = EmptyStatsAB.shared.variant == .control ? "publicize" : "bloggingReminder"
+
         if let blogId = SiteStatsInformation.sharedInstance.siteID,
            let blog = Blog.lookup(withID: blogId, in: mainContext) {
-            WPAnalytics.track(event, properties: [:], blog: blog)
+            WPAnalytics.track(event, properties: ["first_nudge": firstNudge], blog: blog)
         } else {
             WPAnalytics.track(event)
         }
