@@ -2,6 +2,6 @@ Der Block-Editor ist jetzt benutzerfreundlicher! Es gibt jetzt dedizierte Embed-
 
 Wir haben das Problem mit dem Galerieblock behoben: Jetzt werden deine Bilder auch noch hinzugefügt, wenn du den Beitrag schließt, während sie hochgeladen werden.
 
-Falls du immer noch Probleme damit hast, kannst du uns jetzt noch einfacher um Hilfe bitten. Und zwar direkt im Bildschirm „Editor“: Klicke einfach auf den Menü-Button mit den drei Punkten, wähle „Help & Support“ (Hilfe & Support) und dann „Contact Support“ (Support kontaktieren).
+Falls du immer noch Probleme damit hast, kannst du uns jetzt noch einfacher um Hilfe bitten. Und zwar direkt im Bildschirm „Editor“: Klicke einfach auf den Menü-Button mit den drei Punkten, wähle „Hilfe & Support“ und dann „Support kontaktieren“.
 
 Zuletzt haben wir noch das Problem gelöst, bei dem der Bildschirm „Benachrichtigungen“ gelegentlich den falschen Avatar angezeigt hat, wenn du in einem Kommentar erwähnt wurdest – jetzt wird dein ausgewähltes Bild angezeigt!
