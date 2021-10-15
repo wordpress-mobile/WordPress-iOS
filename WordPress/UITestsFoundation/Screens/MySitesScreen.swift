@@ -16,7 +16,7 @@ public class MySitesScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [
                 // swiftlint:disable:next opening_brace
-                { $0.staticTexts["Blogs"] },
+                { $0.staticTexts["My Sites"] },
                 cancelButtonGetter,
                 plusButtonGetter
             ],
