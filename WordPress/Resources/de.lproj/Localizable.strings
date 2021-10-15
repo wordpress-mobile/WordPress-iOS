@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-12 15:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-14 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "Domains";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Auf dieser Seite erworbene Domains werden Nutzer weiterleiten zu ";
+"Domains purchased on this site will redirect users to " = "Auf dieser Website erworbene Domains werden Nutzer weiterleiten zu ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Du hast noch kein Konto? _Registrieren_";
