@@ -248,6 +248,8 @@ private extension SiteStatsInsightsTableViewController {
         }
         insightsToShow = insightsToShow.filter { $0 != .growAudience }
         pinnedItemStore?.markPinnedItemAsHidden(item)
+
+        trackNudgeDismissed(for: item)
     }
 
     func refreshGrowAudienceCardIfNecessary() {
@@ -652,6 +654,15 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsPublicizeNudgeShown)
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeShown)
+        }
+    }
+
+    func trackNudgeDismissed(for hintType: GrowAudienceCell.HintType) {
+        switch hintType {
+        case .social:
+            trackNudgeEvent(.statsPublicizeNudgeDismissed)
+        case .bloggingReminders:
+            trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
         }
     }
 }
