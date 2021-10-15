@@ -9,6 +9,7 @@ final class SiteStatsPinnedItemStore {
         GrowAudienceCell.HintType.bloggingReminders,
         InsightType.customize
     ]
+    private let lowSiteViewsCountTreshold = 30
     private let siteId: NSNumber
 
     init(siteId: NSNumber) {
@@ -16,8 +17,7 @@ final class SiteStatsPinnedItemStore {
     }
 
     func itemToDisplay(for siteViewsCount: Int) -> SiteStatsPinnable? {
-        let threshold = 30
-        if siteViewsCount < threshold {
+        if siteViewsCount < lowSiteViewsCountTreshold {
             return nudgeToDisplay ?? customizeToDisplay
         } else {
             return customizeToDisplay
