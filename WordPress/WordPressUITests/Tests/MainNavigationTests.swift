@@ -26,6 +26,11 @@ class MainNavigationTests: XCTestCase {
 
         XCTAssert(ReaderScreen.isLoaded(), "Reader screen isn't loaded.")
 
+        // We may get a notifications fancy alert when loading the reader for the first time
+        if let alert = try? FancyAlertComponent() {
+            alert.cancelAlert()
+        }
+
         _ = try mySiteScreen
             .tabBar.gotoNotificationsScreen()
             .dismissNotificationAlertIfNeeded()

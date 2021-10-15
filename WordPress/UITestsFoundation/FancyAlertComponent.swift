@@ -35,7 +35,7 @@ public class FancyAlertComponent: ScreenObject {
         defaultAlertButton.tap()
     }
 
-    func cancelAlert() {
+    public func cancelAlert() {
         cancelAlertButton.tap()
     }
 
