@@ -2,6 +2,7 @@
 -----
 * [**] Block editor: Embed block: Include Jetpack embed variants. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4008]
 * [*] Fixed a minor visual glitch on the pre-publishing nudge bottom sheet. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17300]
+* [*] Improved support for larger text sizes when choosing a homepage layout or page layout. [#17325]
 * [*] Site Comments: fixed an issue that caused the lists to not refresh. [#17303]
 * [*] Block editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4072]
 * [*] Block editor: Embed block: Fix URL not editable after dismissing the edit URL bottom sheet with empty value [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4094]
