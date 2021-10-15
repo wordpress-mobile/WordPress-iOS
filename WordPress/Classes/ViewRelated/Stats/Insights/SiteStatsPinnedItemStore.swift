@@ -1,6 +1,6 @@
 import Foundation
 
-// A protocol to contrain Site Stats pinned items together
+// A protocol to constrain Site Stats pinned items together
 protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
