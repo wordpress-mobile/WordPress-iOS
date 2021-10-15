@@ -47,6 +47,8 @@ private extension SiteStatsPinnedItemStore {
         return shouldShow(item) ? item : nil
     }
 
+    // Keys for 'nudge' items are site specific
+    // Key for 'customize' item is global
     func userDefaultsKey(for item: SiteStatsPinnable) -> String {
         switch item {
         case is GrowAudienceCell.HintType:
