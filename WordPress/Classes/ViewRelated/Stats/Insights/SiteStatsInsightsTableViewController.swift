@@ -217,9 +217,10 @@ private extension SiteStatsInsightsTableViewController {
             insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
         case .some(let item):
             switch item {
-            case is GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
+            case let hintType as GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
                 insightsToShow = insightsToShow.filter { $0 != .customize }
                 insightsToShow.insert(.growAudience, at: 0)
+                trackNudgeShown(for: hintType)
             case InsightType.customize where !insightsToShow.contains(.customize):
                 insightsToShow = insightsToShow.filter { $0 != .growAudience }
                 insightsToShow.insert(.customize, at: 0)
@@ -642,6 +643,15 @@ private extension SiteStatsInsightsTableViewController {
             WPAnalytics.track(event, properties: [:], blog: blog)
         } else {
             WPAnalytics.track(event)
+        }
+    }
+
+    func trackNudgeShown(for hintType: GrowAudienceCell.HintType) {
+        switch hintType {
+        case .social:
+            trackNudgeEvent(.statsPublicizeNudgeShown)
+        case .bloggingReminders:
+            trackNudgeEvent(.statsBloggingRemindersNudgeShown)
         }
     }
 }
