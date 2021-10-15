@@ -51,11 +51,7 @@ public class Comment: NSManagedObject {
     }
 
     @objc func deleteWillBePermanent() -> Bool {
-        if !FeatureFlag.newCommentDetail.enabled {
-            return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
-        }
-
-        return status.isEqual(to: Comment.descriptionFor(.unapproved))
+        return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
     }
 
     func numberOfLikes() -> Int {
