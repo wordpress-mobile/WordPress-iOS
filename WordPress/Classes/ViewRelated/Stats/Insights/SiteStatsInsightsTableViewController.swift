@@ -223,6 +223,7 @@ private extension SiteStatsInsightsTableViewController {
             case InsightType.customize where !insightsToShow.contains(.customize):
                 insightsToShow = insightsToShow.filter { $0 != .growAudience }
                 insightsToShow.insert(.customize, at: 0)
+                WPAnalytics.trackEvent(.statsCustomizeInsightsShown)
             default:
                 break
             }
