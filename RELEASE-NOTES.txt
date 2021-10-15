@@ -9,6 +9,8 @@
 * [**] Block editor: Embed block: Detect when an embeddable URL is pasted into an empty paragraph. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4048]
 * [**] Block editor: Pullquote block - Added support for text and background color customization [https://github.com/WordPress/gutenberg/pull/34451]
 * [**] Block editor: Preformatted block - Added support for text and background color customization [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4071]
+* [**] Stats: added Publicize and Blogging Reminders nudges for sites with low traffic in order to increase it.
+* [**] Stats: added Publicize and Blogging Reminders nudges for sites with low traffic in order to increase it. [#17142, #17261, #17294, #17312, #17323]
 
 18.4
 -----

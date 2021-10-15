@@ -1,11 +1,17 @@
 #import <UIKit/UIKit.h>
 
+@protocol SharingViewControllerDelegate
+
+- (void)didChangePublicizeServices;
+
+@end
+
 @class Blog;
 
 /**
  *	@brief	Controller to display Calypso sharing options
  */
-@interface SharingViewController : UITableViewController
+@interface SharingViewController : UITableViewController<UIAdaptivePresentationControllerDelegate>
 
 /**
  *	@brief	Convenience initializer
@@ -14,6 +20,6 @@
  *
  *  @return New instance of SharingViewController
  */
-- (instancetype)initWithBlog:(Blog *)blog;
+- (instancetype)initWithBlog:(Blog *)blog delegate:(id)delegate;
 
 @end
