@@ -567,6 +567,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
         viewModel?.markEmptyStatsNudgeAsCompleted()
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
         refreshTableView()
 
         trackNudgeEvent(.statsPublicizeNudgeCompleted)
@@ -578,6 +579,7 @@ extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
 extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
     func didSetUpBloggingReminders() {
         viewModel?.markEmptyStatsNudgeAsCompleted()
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
         refreshTableView()
 
         trackNudgeEvent(.statsBloggingRemindersNudgeCompleted)
