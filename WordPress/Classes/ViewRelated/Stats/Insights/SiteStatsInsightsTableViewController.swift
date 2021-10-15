@@ -211,7 +211,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func loadPinnedCards() {
-        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         switch pinnedItemStore?.itemToDisplay(for: viewsCount) {
         case .none:
             insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
