@@ -39,7 +39,7 @@ class SiteStatsInsightsViewModel: Observable {
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
         self.pinnedItemStore = pinnedItemStore
-        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
         self.itemToDisplay = pinnedItemStore?.itemToDisplay(for: viewsCount)
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
