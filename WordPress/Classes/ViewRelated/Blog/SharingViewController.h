@@ -6,12 +6,14 @@
 
 @end
 
+@protocol JetpackModuleHelperDelegate;
+
 @class Blog;
 
 /**
  *	@brief	Controller to display Calypso sharing options
  */
-@interface SharingViewController : UITableViewController<UIAdaptivePresentationControllerDelegate>
+@interface SharingViewController : UITableViewController<UIAdaptivePresentationControllerDelegate, JetpackModuleHelperDelegate>
 
 /**
  *	@brief	Convenience initializer

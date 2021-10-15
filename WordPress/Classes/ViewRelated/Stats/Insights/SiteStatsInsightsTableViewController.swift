@@ -467,13 +467,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        var controller: UIViewController
-
-        if !blog.supportsPublicize() {
-            controller = SharingButtonsViewController(blog: blog)
-        } else {
-            controller = SharingViewController(blog: blog, delegate: self)
-        }
+        let controller: UIViewController = SharingViewController(blog: blog, delegate: self)
 
         let navigationController = UINavigationController(rootViewController: controller)
 
