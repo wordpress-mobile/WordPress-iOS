@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-29 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-13 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s にカスタム URL が設定されていません";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s リンク";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%sプレビューはまだご利用いただけません";
@@ -1429,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "City" = "市区町村";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "無料ドメインを取得";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "クラシックブログ";
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "ドメイン";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "このサイトで購入したドメインにアクセスするとこちらに転送されます:  ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "アカウントをお持ちでない場合は_登録_してください";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "利用できるプレビューがありません";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "主要サイトのアドレスが見つかりません";
 
 /* A message title */
 "No recent posts" = "最近の投稿はありません";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "返信テキスト";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "%1$@ への返信";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "コメントに返信…";
@@ -5973,7 +5973,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "検索ボタンです。現在のボタンテキストは";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "ドメインを検索";
 
 /* No comment provided by engineer. */
 "Search input field." = "検索用の入力フィールド。";
@@ -6371,7 +6371,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "サイト";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "サイトドメイン";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "サイトアイコン";
@@ -8632,7 +8632,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "非公開の WordPress サイトがひとつあります。";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "このプランには、1年間の無料ドメイン登録が含まれています";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "サイトには有効なプレミアムアップグレードがあります。サイトを削除する前に、アップグレードをキャンセルしてください。";
@@ -8711,7 +8711,7 @@ translators: Block name. %s: The localized block name */
 "Your Domains" = "独自ドメイン";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "あなたのサイトドメイン";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "サイトアイコン";
@@ -8744,7 +8744,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "初回のバックアップは間もなく完了します";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "あなたの WordPress.com の無料アドレスは";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "メディアをエクスポートできません。問題が解決しない場合、「自分 > ヘルプ & サポート」画面からお問い合わせください。";

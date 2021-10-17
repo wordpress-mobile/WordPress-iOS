@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-29 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-12 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s 沒有 URL 集";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s 連結";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "尚未推出 %s 預覽";
@@ -1429,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "City" = "城市";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "索取你的免費網域";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "傳統網誌";
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "網域";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "在本網站購買的網域會將使用者重新導向至 ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "還沒有帳號？_註冊_";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "無法預覽";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "找不到主要網站位址";
 
 /* A message title */
 "No recent posts" = "沒有近期文章";
@@ -5323,7 +5323,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "主網站";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "網站主要網址";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "回覆文字";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "回覆 %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "回覆留言...";
@@ -5973,7 +5973,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "搜尋按鈕。 目前的按鈕文字是";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "搜尋網域";
 
 /* No comment provided by engineer. */
 "Search input field." = "搜尋意見回饋欄位。";
@@ -6371,7 +6371,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "網站";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "網站的網域名稱";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "網站圖示";
@@ -8632,7 +8632,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "你有 1 個隱藏的 WordPress 網站。";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "你的方案已包含一年免費網域註冊";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "你的網站已啟用進階版升級服務。刪除網站前，請先取消升級。";
@@ -8711,7 +8711,7 @@ translators: Block name. %s: The localized block name */
 "Your Domains" = "你的網域";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "你的網站網域";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "你的網站圖示";
@@ -8744,7 +8744,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "第一次備份即將準備就緒";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "你的 WordPress.com 免費位址是";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "無法匯出你的媒體. If the problem persists you can contact us via the Me >「說明與支援」畫面。";

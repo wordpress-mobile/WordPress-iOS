@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-01 20:45:21+0000 */
+/* Translation-Revision-Date: 2021-10-12 20:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "ليس لدى %s عنوان URL معين";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s رابط";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "معاينات %s غير متاحة حتى الآن";
@@ -1429,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "City" = "المدينة";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "طالب بنطاقك المجاني";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "المدونة التقليدية";
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "النطاقات";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "ستعيد النطاقات التي تم شراؤها على هذا الموقع المستخدمين إلى ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "ليس لديك حساب؟ _تسجيل_";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "لا توجد معاينة متاحة";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "لم يتم العثور على عنوان الموقع الأساسي";
 
 /* A message title */
 "No recent posts" = "لا توجد مقالات حديثة";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "نص الرد";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "الرد على %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "الرد على التعليق...";
@@ -5973,7 +5973,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "زر البحث. نص الزر الحالي هو";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "البحث عن نطاق";
 
 /* No comment provided by engineer. */
 "Search input field." = "حقل إدخال البحث.";
@@ -6371,7 +6371,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "الموقع";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "نطاقات الموقع";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "أيقونة الموقع";
@@ -8632,7 +8632,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "لديك موقع WordPress واحد مخفى.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "لديك تسجيل مجال مجاني مدته عام واحد في خطتك";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "لديك ترقيات متميزة نشطة على موقعك. يرجى إلغاء ترقياتك قبل حذف موقعك.";
@@ -8711,7 +8711,7 @@ translators: Block name. %s: The localized block name */
 "Your Domains" = "النطاقات الخاصة بك";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "نطاقات موقعك";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "أيقونة موقعك";
@@ -8744,7 +8744,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "ستكون نسختك الاحتياطية الأولى جاهزة قريبًا";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "عنوان ووردبريس.كوم المجاني الخاص بك هو";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "لا يمكن تصدير ملفات الوسائط الخاصة بك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
