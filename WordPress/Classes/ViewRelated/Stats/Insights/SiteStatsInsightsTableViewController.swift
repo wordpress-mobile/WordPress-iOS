@@ -495,6 +495,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         trackNudgeEvent(.statsBloggingRemindersNudgeTapped)
     }
 
+    func growAudienceReaderDiscoverButtonTapped() {
+    }
+
     func showAddInsight() {
         showAddInsightView()
     }

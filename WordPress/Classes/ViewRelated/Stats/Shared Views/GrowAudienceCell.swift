@@ -128,8 +128,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         case .bloggingReminders:
             insightsDelegate?.growAudienceBloggingRemindersButtonTapped?()
         case .readerDiscover:
-            // TODO: implement
-            break
+            insightsDelegate?.growAudienceReaderDiscoverButtonTapped?()
         }
 
     }

@@ -10,6 +10,7 @@ final class SiteStatsPinnedItemStore {
             return [
                 GrowAudienceCell.HintType.social,
                 GrowAudienceCell.HintType.bloggingReminders,
+                GrowAudienceCell.HintType.readerDiscover,
                 InsightType.customize
             ]
         } else {
@@ -17,6 +18,7 @@ final class SiteStatsPinnedItemStore {
             return [
                 GrowAudienceCell.HintType.bloggingReminders,
                 GrowAudienceCell.HintType.social,
+                GrowAudienceCell.HintType.readerDiscover,
                 InsightType.customize
             ]
         }
