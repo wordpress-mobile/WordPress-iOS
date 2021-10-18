@@ -127,6 +127,9 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             insightsDelegate?.growAudienceEnablePostSharingButtonTapped?()
         case .bloggingReminders:
             insightsDelegate?.growAudienceBloggingRemindersButtonTapped?()
+        case .readerDiscover:
+            // TODO: implement
+            break
         }
 
     }
@@ -197,6 +200,25 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
                 NSLocalizedString("Edit reminders", comment: "Title for button that will open up the blogging reminders screen.")
         }
 
+        enum ReaderDiscover {
+            static let detailsTitle =
+                NSLocalizedString("Connect with other bloggers by following, liking and commenting on their posts.",
+                                  comment: "A detailed message to users about growing the audience for their site through reader discover.")
+
+            static let actionButtonTitle =
+                NSLocalizedString("Discover blogs to follow", comment: "Title for button that will open up the follow topics screen.")
+
+            static let completedTipTitle =
+                NSLocalizedString("You've connected with other blogs",
+                                  comment: "A hint to users that they've set up reader discover.")
+
+            static let completedDetailsTitle =
+                NSLocalizedString("Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.",
+                                  comment: "A detailed message to users indicating that they've set up reader discover.")
+
+            static let completedActionButtonTitle =
+                NSLocalizedString("Do it again", comment: "Title for button that will open up the follow topics screen.")
+        }
     }
 
 }
@@ -207,6 +229,7 @@ extension GrowAudienceCell {
 
         case social
         case bloggingReminders
+        case readerDiscover
 
         func getTipTitle(_ isCompleted: Bool) -> String {
             return isCompleted ? completedTipTitle : Strings.tipTitle
@@ -226,6 +249,8 @@ extension GrowAudienceCell {
                 return Strings.Social.completedTipTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.completedTipTitle
+            case .readerDiscover:
+                return Strings.ReaderDiscover.completedTipTitle
             }
         }
 
@@ -235,6 +260,8 @@ extension GrowAudienceCell {
                 return Strings.Social.detailsTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.detailsTitle
+            case .readerDiscover:
+                return Strings.ReaderDiscover.detailsTitle
             }
         }
 
@@ -244,6 +271,8 @@ extension GrowAudienceCell {
                 return Strings.Social.completedDetailsTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.completedDetailsTitle
+            case .readerDiscover:
+                return Strings.ReaderDiscover.completedDetailsTitle
             }
         }
 
@@ -253,6 +282,8 @@ extension GrowAudienceCell {
                 return Strings.Social.actionButtonTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.actionButtonTitle
+            case .readerDiscover:
+                return Strings.ReaderDiscover.actionButtonTitle
             }
         }
 
@@ -262,6 +293,8 @@ extension GrowAudienceCell {
                 return Strings.Social.completedActionButtonTitle
             case .bloggingReminders:
                 return Strings.BloggingReminders.completedActionButtonTitle
+            case .readerDiscover:
+                return Strings.ReaderDiscover.completedActionButtonTitle
             }
         }
 
@@ -271,6 +304,8 @@ extension GrowAudienceCell {
                 return UIImage(named: "grow-audience-illustration-social")
             case .bloggingReminders:
                 return UIImage(named: "grow-audience-illustration-blogging-reminders")
+            case .readerDiscover:
+                return UIImage(named: "grow-audience-illustration-reader")
             }
         }
     }

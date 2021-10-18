@@ -662,6 +662,9 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsPublicizeNudgeShown)
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeShown)
+        case .readerDiscover:
+            // TODO: implement
+            break
         }
     }
 
@@ -671,6 +674,9 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsPublicizeNudgeDismissed)
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
+        case .readerDiscover:
+            // TODO: implement
+            break
         }
     }
 }
