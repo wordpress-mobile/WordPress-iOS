@@ -5,6 +5,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
+    var isGrowAudienceShowing: Bool {
+        return insightsToShow.contains(.growAudience)
+    }
 
     private var insightsChangeReceipt: Receipt?
 
