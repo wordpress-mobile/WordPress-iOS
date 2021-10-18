@@ -1,7 +1,0 @@
-Blok düzenleyicide hayatı kolaylaştırdık! Ortam eklemeyi süper hızlı hale getiren, YouTube, Twitter, WordPress ve Vimeo özel gömme blokları kullanıma sunuldu; bunları blok seçici görünümünde bulabilirsiniz. URL'leri seçtikten sonra dahi düzenleyebilirsiniz.
-
-Galeri blokuyla ilgili bir sorunu düzelttik, bu nedenle artık yükleme sırasında gönderiyi kapatsanız dahi resimleriniz eklenebilecek.
-
-Ancak hala sorun yaşıyorsanız, yardım istemek daha da kolaydır. Bunu doğrudan düzenleyici ekranının içinden yapabilirsiniz: 3 nokta menü düğmesine dokunun, "Yardım ve Destek"i seçin, ardından "Destek ile İletişime Geçin"i seçin.
-
-Son olarak, bir yorumda sizden bahsedildiğinde bildirim ekranının ara sıra yanlış avatar göstermesine neden olan bir sorunu düzelttik; seçtiğiniz resim şimdi gururla görüntülenecek!
