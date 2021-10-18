@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-14 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-18 19:49:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -1510,7 +1510,7 @@ translators: Block name. %s: The localized block name */
 "Colorful backgrounds" = "Farbige Hintergründe";
 
 /* translators: %d: column index. */
-"Column %d" = "Column %d";
+"Column %d" = "Spalte %d";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Spalteneinstellungen";
@@ -1753,7 +1753,7 @@ translators: Block name. %s: The localized block name */
 "Continuing with Apple" = "Weiter mit Apple";
 
 /* No comment provided by engineer. */
-"Convert to link" = "Convert to link";
+"Convert to link" = "In Link umwandeln";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Kochen";
@@ -2562,7 +2562,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "E-Mail gesendet!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "Eingebettete Block-Vorschau demnächst verfügbar";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Beschriftung einbetten %s";
@@ -3134,7 +3134,7 @@ translators: Block name. %s: The localized block name */
 "Get the ball rolling and increase your post views by sharing your post." = "Erhalte mehr Aufrufe deines Beitrags, indem du ihn teilst.";
 
 /* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Get your domain";
+"Get your domain" = "Hol dir deine Domain";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Erhalte deine Benachrichtigungen schneller";
@@ -4543,7 +4543,7 @@ translators: Block name. %s: The localized block name */
 "No posts." = "Keine Beiträge.";
 
 /* No comment provided by engineer. */
-"No preview available" = "No preview available";
+"No preview available" = "Keine Vorschau verfügbar";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
 "No primary site address found" = "Es wurde keine Adresse für eine Haupt-Website gefunden";
@@ -5323,7 +5323,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Haupt-Website";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "Adresse der Haupt-Website";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -7466,7 +7466,7 @@ translators: Block name. %s: The localized block name */
 "Twitter Username" = "Twitter-Benutzername";
 
 /* Type menu item in share extension. */
-"Type" = "Type";
+"Type" = "Typ";
 
 /* No comment provided by engineer. */
 "Type a URL" = "URL eingeben";
