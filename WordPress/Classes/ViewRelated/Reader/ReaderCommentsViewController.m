@@ -59,6 +59,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
 
+@property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
+
 @end
 
 
@@ -273,6 +276,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+
+    [self refreshFollowButton];
 }
 
 - (void)configurePostHeader
@@ -521,6 +526,38 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
+- (BOOL)followViaNotificationsEnabled
+{
+    return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
+}
+
+- (UIBarButtonItem *)followBarButtonItem
+{
+    if (!_followBarButtonItem) {
+        _followBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Follow", @"Button title. Follow the comments on a post.")
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:nil
+                                                               action:nil];
+    }
+
+    return _followBarButtonItem;
+}
+
+- (UIBarButtonItem *)subscriptionSettingsBarButtonItem
+{
+    if (!_subscriptionSettingsBarButtonItem) {
+        _subscriptionSettingsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"bell"]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(subscriptionSettingsTapped)];
+        _subscriptionSettingsBarButtonItem.accessibilityHint = NSLocalizedString(@"Open subscription settings for the post",
+                                                                                 @"VoiceOver hint. Informs the user that the button allows the user to access "
+                                                                                 + "post subscription settings.");
+    }
+
+    return _subscriptionSettingsBarButtonItem;
+}
+
 #pragma mark - Accessor methods
 
 - (void)setPost:(ReaderPost *)post
@@ -622,10 +659,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
-    
-    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
+
+    // when the "follow via notifications" flag is enabled, the Follow button is moved into the navigation bar as a UIButtonBarItem.
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation && ![self followViaNotificationsEnabled];
 }
 
+- (void)refreshFollowButton
+{
+    if (![self followViaNotificationsEnabled]) {
+        return;
+    }
+
+    self.navigationItem.rightBarButtonItem = self.post.isSubscribedComments ? self.subscriptionSettingsBarButtonItem : self.followBarButtonItem;
+}
+
+// NOTE: Remove this method once "follow via notifications" feature flag can be removed.
+// Subscription status is now available through ReaderPost's `isSubscribedComments` Boolean property.
 - (void)refreshSubscriptionStatusIfNeeded
 {
     if (!self.canFollowConversation) {
@@ -635,6 +684,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+
+        if ([self followViaNotificationsEnabled]) {
+            // update the ReaderPost button to keep it in-sync.
+            self.post.isSubscribedComments = isSubscribed;
+            [ContextManager.sharedInstance saveContext:self.post.managedObjectContext];
+        }
+
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
     }];
@@ -862,6 +918,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                      failure:failureBlock];
     }
     self.indexPathForCommentRepliedTo = nil;
+}
+
+- (void)subscriptionSettingsTapped
+{
+    // TODO: Show bottom sheet.
 }
 
 
