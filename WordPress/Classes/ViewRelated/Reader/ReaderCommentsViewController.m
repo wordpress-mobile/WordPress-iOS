@@ -921,11 +921,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.indexPathForCommentRepliedTo = nil;
 }
 
-- (void)followButtonTapped
-{
-
-}
-
 - (void)subscriptionSettingsButtonTapped
 {
     // TODO: Show bottom sheet.
@@ -1344,10 +1339,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
                 if ([self followViaNotificationsEnabled]) {
-                    // update the follow button state.
                     [weakSelf refreshFollowButton];
-                    [weakSelf displayFollowSuccessNoticeWithActionHandler:^{
-                        [weakSelf enableNotificationsButtonTapped];
+                    [weakSelf displayActionableNoticeWithTitle:NSLocalizedString(@"Following this conversation",
+                                                                                 @"The app successfully subscribed to the comments for the post")
+                                                       message:NSLocalizedString(@"Enable in-app notifications?",
+                                                                                 @"Hint for the action button that enables notification for new comments")
+                                                   actionTitle:NSLocalizedString(@"Enable",
+                                                                                 @"Button title to enable notifications for new comments")
+                                                 actionHandler:^(BOOL accepted) {
+                        [weakSelf handleNotificationsButtonTappedWithUndo:YES];
                     }];
                 } else {
                     [weakSelf displayNoticeWithTitle:title message:nil];
@@ -1379,27 +1379,36 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                          failure:failureBlock];
 }
 
-- (void)enableNotificationsButtonTapped
+/// Toggles the state of comment subscription notifications. When enabled, the user will receive in-app notifications for new comments.
+///
+/// @param canUndo Boolean. When true, this provides a way for the user to revert their actions.
+- (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo
 {
-    __weak __typeof(self) weakSelf = self;
-    void (^successBlock)(void) = ^{
-        // inform the user that the post has been successfully followed, along with the option to undo the action.
-        [weakSelf displayNotificationsEnabledNoticeWithActionHandler:^{
-            [weakSelf.followCommentsService toggleNotificationSettings:NO success:^{
-                NSString *title = NSLocalizedString(@"In-app notifications disabled", "The app successfully disabled notifications for the subscription");
-                [weakSelf displayNoticeWithTitle:title message:nil];
-            } failure:^(NSError * _Nullable error) {
-                NSString *title = NSLocalizedString(@"Unable to disable notifications", "The app failed to disable notifications for the subscription");
-                [weakSelf displayNoticeWithTitle:title message:nil];
-            }];
-        }];
-    };
+    BOOL desiredState = !self.post.receivesCommentNotifications;
 
-    [self.followCommentsService toggleNotificationSettings:YES
-                                                   success:successBlock
-                                                   failure:^(NSError * _Nullable error) {
-        NSString *title = NSLocalizedString(@"Could not enable notifications", "The app failed to enable notifications for the subscription");
-        [weakSelf displayNoticeWithTitle:title message:nil];
+    NSString *successTitle = desiredState == YES
+        ? NSLocalizedString(@"In-app notifications enabled", @"The app successfully enabled notifications for the subscription")
+        : NSLocalizedString(@"In-app notifications disabled", "The app successfully disabled notifications for the subscription");
+
+    NSString *failureTitle = desiredState == YES
+        ? NSLocalizedString(@"Could not enable notifications", "The app failed to enable notifications for the subscription")
+        : NSLocalizedString(@"Could not disable notifications", "The app failed to disable notifications for the subscription");
+
+    __weak __typeof(self) weakSelf = self;
+    [self.followCommentsService toggleNotificationSettings:desiredState success:^{
+        if (!canUndo) {
+            [weakSelf displayNoticeWithTitle:successTitle message:nil];
+            return;
+        }
+
+        // show the undo notice with action button.
+        NSString *undoActionTitle = NSLocalizedString(@"Undo", @"Button title. Reverts the previous notification operation");
+        [weakSelf displayActionableNoticeWithTitle:successTitle message:nil actionTitle:undoActionTitle actionHandler:^(BOOL accepted) {
+            [weakSelf handleNotificationsButtonTappedWithUndo:NO];
+        }];
+
+    } failure:^(NSError * _Nullable error) {
+        [weakSelf displayNoticeWithTitle:failureTitle message:nil];
     }];
 }
 
