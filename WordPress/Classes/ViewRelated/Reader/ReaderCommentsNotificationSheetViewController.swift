@@ -136,7 +136,7 @@ extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
     }
 
     func handleDismiss() {
-        // flush out the queued Notices before unlocking. Otherwise, all the Notices would be shown one after the other until the queue is empty.
+        // flush out the queued Notices before unlocking. Otherwise, all the Notices would be shown consecutively until the queue is empty.
         ActionDispatcher.dispatch(NoticeAction.empty)
         ActionDispatcher.dispatch(NoticeAction.unlock)
     }
