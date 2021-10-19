@@ -174,7 +174,7 @@ private extension ReaderCommentsNotificationSheetViewController {
     }
 
     func switchValueChanged(_ sender: UISwitch) {
-        // nil delegate is most likely an implementation bug. For now, revert the changes to the switch button.
+        // nil delegate is most likely an implementation bug. For now, revert the changes on the switch button when this happens.
         guard let delegate = delegate else {
             DDLogInfo("\(Self.classNameWithoutNamespaces()): delegate instance is nil")
             isNotificationEnabled = !sender.isOn
