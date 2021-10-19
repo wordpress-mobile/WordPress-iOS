@@ -4,7 +4,7 @@ import WordPressAuthenticator
 
 
 protocol DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: DomainSuggestion)
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion)
     func newSearchStarted()
 }
 
@@ -17,6 +17,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
     private let domainBaseFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
     private let domainTLDFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+    private let saleCostFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     private let suggestionCostFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     private let perYearPostfixFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
     private let freeForFirstYearFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
@@ -46,9 +47,8 @@ class DomainSuggestionsTableViewController: UITableViewController {
     }
 
     private var noResultsViewController: NoResultsViewController?
-    private var service: DomainsService?
-    private var siteTitleSuggestions: [DomainSuggestion] = []
-    private var searchSuggestions: [DomainSuggestion] = [] {
+    private var siteTitleSuggestions: [FullyQuotedDomainSuggestion] = []
+    private var searchSuggestions: [FullyQuotedDomainSuggestion] = [] {
         didSet {
             tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
@@ -130,7 +130,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     /// - Parameters:
     ///   - searchTerm: string to base suggestions on
     ///   - addSuggestions: function to call when results arrive
-    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [DomainSuggestion]) ->()) {
+    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [FullyQuotedDomainSuggestion]) ->()) {
         guard !isSearching else {
             return
         }
@@ -145,13 +145,13 @@ class DomainSuggestionsTableViewController: UITableViewController {
         SVProgressHUD.setContainerView(tableView)
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
-        service.getDomainSuggestions(base: searchTerm,
-                                     domainSuggestionType: domainSuggestionType,
-                                     success: handleGetDomainSuggestionsSuccess,
-                                     failure: handleGetDomainSuggestionsFailure)
+        service.getFullyQuotedDomainSuggestions(query: searchTerm,
+                                                domainSuggestionType: domainSuggestionType,
+                                                success: handleGetDomainSuggestionsSuccess,
+                                                failure: handleGetDomainSuggestionsFailure)
     }
 
-    private func handleGetDomainSuggestionsSuccess(_ suggestions: [DomainSuggestion]) {
+    private func handleGetDomainSuggestionsSuccess(_ suggestions: [FullyQuotedDomainSuggestion]) {
         isSearching = false
         noSuggestions = false
         SVProgressHUD.dismiss()
@@ -234,7 +234,7 @@ extension DomainSuggestionsTableViewController {
             if noSuggestions == true {
                 cell = noResultsCell()
             } else {
-                let suggestion: DomainSuggestion
+                let suggestion: FullyQuotedDomainSuggestion
                 if searchSuggestions.count > 0 {
                     suggestion = searchSuggestions[indexPath.row]
                 } else {
@@ -353,7 +353,7 @@ extension DomainSuggestionsTableViewController {
 
     // MARK: - Suggestion Cell
 
-    private func suggestionCell(_ suggestion: DomainSuggestion) -> UITableViewCell {
+    private func suggestionCell(_ suggestion: FullyQuotedDomainSuggestion) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: Self.suggestionCellIdentifier)
 
         cell.textLabel?.attributedText = attributedDomain(suggestion.domainName)
@@ -382,17 +382,19 @@ extension DomainSuggestionsTableViewController {
         return attributedDomain
     }
 
-    private func attributedCostInformation(for suggestion: DomainSuggestion) -> NSAttributedString {
+    private func attributedCostInformation(for suggestion: FullyQuotedDomainSuggestion) -> NSAttributedString {
         let attributedString = NSMutableAttributedString()
 
         let hasDomainCredit = blog?.hasDomainCredit ?? false
 
         if hasDomainCredit {
             attributedString.append(attributedFreeForTheFirstYear())
+        } else if let saleCost = attributedSaleCost(for: suggestion) {
+            attributedString.append(saleCost)
         }
 
         attributedString.append(attributedSuggestionCost(for: suggestion, hasDomainCredit: hasDomainCredit))
-        attributedString.append(attributedPerYearPostfix(hasDomainCredit: hasDomainCredit))
+        attributedString.append(attributedPerYearPostfix(for: suggestion, hasDomainCredit: hasDomainCredit))
 
         return attributedString
     }
@@ -405,28 +407,49 @@ extension DomainSuggestionsTableViewController {
             attributes: [.font: freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
     }
 
-    private func attributedSuggestionCost(for suggestion: DomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
+    private func attributedSaleCost(for suggestion: FullyQuotedDomainSuggestion) -> NSAttributedString? {
+        guard let saleCostString = suggestion.saleCostString else {
+            return nil
+        }
+
+        return NSAttributedString(
+            string: saleCostString + " ",
+            attributes: suggestionSaleCostAttributes())
+    }
+
+    private func attributedSuggestionCost(for suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
         NSAttributedString(
             string: suggestion.costString,
-            attributes: suggestionCostAttributes(hasDomainCredit: hasDomainCredit))
+            attributes: suggestionCostAttributes(striked: mustStrikeRegularPrice(suggestion, hasDomainCredit: hasDomainCredit)))
     }
 
-    private func attributedPerYearPostfix(hasDomainCredit: Bool) -> NSAttributedString {
+    private func attributedPerYearPostfix(for suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
         NSAttributedString(
             string: NSLocalizedString(" / year", comment: "Per-year postfix shown after a domain's cost."),
-            attributes: perYearPostfixAttributes(hasDomainCredit: hasDomainCredit))
+            attributes: perYearPostfixAttributes(striked: mustStrikeRegularPrice(suggestion, hasDomainCredit: hasDomainCredit)))
     }
 
-    private func suggestionCostAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
+    // MARK: - Attributed partial string attributes
+
+    private func mustStrikeRegularPrice(_ suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> Bool {
+        suggestion.saleCostString != nil || hasDomainCredit
+    }
+
+    private func suggestionSaleCostAttributes() -> [NSAttributedString.Key: Any] {
         [.font: suggestionCostFont,
-         .foregroundColor: hasDomainCredit ? UIColor.secondaryLabel : UIColor.label,
-         .strikethroughStyle: hasDomainCredit ? 1 : 0]
+         .foregroundColor: UIColor.label]
     }
 
-    private func perYearPostfixAttributes(hasDomainCredit: Bool) -> [NSAttributedString.Key: Any] {
+    private func suggestionCostAttributes(striked: Bool) -> [NSAttributedString.Key: Any] {
+        [.font: suggestionCostFont,
+         .foregroundColor: striked ? UIColor.secondaryLabel : UIColor.label,
+         .strikethroughStyle: striked ? 1 : 0]
+    }
+
+    private func perYearPostfixAttributes(striked: Bool) -> [NSAttributedString.Key: Any] {
         [.font: perYearPostfixFont,
          .foregroundColor: UIColor.secondaryLabel,
-         .strikethroughStyle: hasDomainCredit ? 1 : 0]
+         .strikethroughStyle: striked ? 1 : 0]
     }
 }
 
@@ -469,7 +492,7 @@ private extension DomainSuggestionsTableViewController {
 
 extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedDomain: DomainSuggestion
+        let selectedDomain: FullyQuotedDomainSuggestion
 
         switch indexPath.section {
         case Sections.suggestions.rawValue:

@@ -13,7 +13,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var site: JetpackSiteRef!
     private var domainPurchasedCallback: ((String) -> Void)!
 
-    private var domain: DomainSuggestion?
+    private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
@@ -190,7 +190,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 // MARK: - DomainSuggestionsTableViewControllerDelegate
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: DomainSuggestion) {
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
         showButton(animated: true)
@@ -230,16 +230,16 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func pushRegisterDomainDetailsViewController(_ domain: DomainSuggestion) {
+    private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
         let controller = RegisterDomainDetailsViewController()
         controller.viewModel = RegisterDomainDetailsViewModel(site: site, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCartAndPresentWebView(_ domain: DomainSuggestion) {
+    private func createCartAndPresentWebView(_ domain: FullyQuotedDomainSuggestion) {
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: site.siteID,
-                                                 domainSuggestion: domain,
+                                                 domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { [weak self] _ in
             self?.presentWebViewForCurrentSite(domainSuggestion: domain)
@@ -292,7 +292,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
+    private func presentWebViewForCurrentSite(domainSuggestion: FullyQuotedDomainSuggestion) {
         guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host) else {
             return
