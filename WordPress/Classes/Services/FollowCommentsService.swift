@@ -104,10 +104,15 @@ class FollowCommentsService: NSObject {
                                           success: @escaping () -> Void,
                                           failure: @escaping (Error?) -> Void) {
         remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                failure(nil)
+                return
+            }
+
             self.post.receivesCommentNotifications = isNotificationsEnabled
             ContextManager.sharedInstance().saveContextAndWait(self.context)
             success()
+
         } failure: { error in
             DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
             failure(error)
