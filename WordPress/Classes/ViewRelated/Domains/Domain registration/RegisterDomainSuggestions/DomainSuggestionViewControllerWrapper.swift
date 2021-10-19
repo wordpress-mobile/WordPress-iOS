@@ -24,7 +24,6 @@ final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         let viewController = RegisterDomainSuggestionsViewController
-        /// TODO: - DOMAINS - Resolve the force unwrap here
             .instance(site: blog,
                       domainType: domainType,
                       includeSupportButton: false,
