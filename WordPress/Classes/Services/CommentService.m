@@ -445,6 +445,17 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     
 }
 
+// Trash comment
+- (void)trashComment:(Comment *)comment
+                 success:(void (^)(void))success
+                 failure:(void (^)(NSError *error))failure
+{
+    [self moderateComment:comment
+               withStatus:CommentStatusTypeUnapproved
+                  success:success
+                  failure:failure];
+}
+
 // Delete comment
 - (void)deleteComment:(Comment *)comment
               success:(void (^)(void))success
@@ -779,7 +790,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                           failure:failure];
 }
 
-// Trash
 - (void)deleteCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     success:(void (^)(void))success

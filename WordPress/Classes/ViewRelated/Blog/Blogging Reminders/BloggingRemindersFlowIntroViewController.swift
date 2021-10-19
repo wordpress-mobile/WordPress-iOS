@@ -1,6 +1,5 @@
 import UIKit
 
-
 class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - Subviews
@@ -56,21 +55,27 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
     private let source: BloggingRemindersTracker.FlowStartSource
+    private weak var delegate: BloggingRemindersFlowDelegate?
 
     private var introDescription: String {
         switch source {
         case .publishFlow:
             return TextContent.postPublishingintroDescription
-        case .blogSettings, .notificationSettings:
+        case .blogSettings,
+             .notificationSettings,
+             .statsInsights:
             return TextContent.siteSettingsIntroDescription
-
         }
     }
 
-    init(for blog: Blog, tracker: BloggingRemindersTracker, source: BloggingRemindersTracker.FlowStartSource) {
+    init(for blog: Blog,
+         tracker: BloggingRemindersTracker,
+         source: BloggingRemindersTracker.FlowStartSource,
+         delegate: BloggingRemindersFlowDelegate? = nil) {
         self.blog = blog
         self.tracker = tracker
         self.source = source
+        self.delegate = delegate
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -155,7 +160,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         tracker.buttonPressed(button: .continue, screen: .main)
 
         do {
-            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker)
+            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker, delegate: delegate)
 
             navigationController?.pushViewController(flowSettingsViewController, animated: true)
         } catch {

@@ -51,9 +51,7 @@ public class Comment: NSManagedObject {
     }
 
     @objc func deleteWillBePermanent() -> Bool {
-        // If the Comment is currently Spam or Trash, the Trash action will permanently delete the Comment.
         return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
-
     }
 
     func numberOfLikes() -> Int {

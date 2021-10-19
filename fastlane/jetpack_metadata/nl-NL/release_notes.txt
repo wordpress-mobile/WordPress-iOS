@@ -1,3 +1,7 @@
-- Updates voor insluitblok: We hebben niet alleen ingesloten voorbeeldweergaven van WordPress ingeschakeld, maar ook van Instagram- en Vimeo-content. Je kunt voor sommige media een URL insluiten maar geen voorbeeldweergave van de content bekijken. Bij die media wordt een bericht ‘Geen voorbeeldweergave beschikbaar’ weergegeven. Als je geen media kunt insluiten, wordt de optie ‘Opnieuw proberen’ weergegeven om de content opnieuw in te sluiten. Ook wordt de alternatieve optie weergegeven om de content te converteren naar een link.
+We hebben alles wat gemakkelijker gemaakt in de blokeditor! Er zijn insluitblokken speciaal voor YouTube, Twitter, WordPress en Vimeo, wat toevoegen van media een fluitje van een cent maakt. Je vindt de blokken in de weergave met de blokkiezer. De URL's kunnen zelfs worden bewerkt nadat je ze hebt geselecteerd.
 
-- Verschillende verbeteringen en oplossingen: We hebben je menu Mijn site gestroomlijnd, waarbij we ‘Blogberichten’ hebben gewijzigd in ‘Berichten’ en ‘Sitepagina’s’ in ‘Pagina’s’. (We beloven dat dit geen gevolgen heeft voor je bericht en paginacontent!) We hebben ook een bug opgelost die voorkwam dat je een gesprek per e-mail kon volgen via de opmerkingen bij een bericht.
+We hebben een probleem met het galerijblok verholpen. Je afbeeldingen worden ook toegevoegd als je het bericht sluit terwijl ze worden geüpload.
+
+Maar loop je toch nog tegen problemen aan? Dan is vragen om hulp nu nog gemakkelijker. Je kunt dit nu doen vanuit het editorscherm: Tik simpelweg op het menu met de drie puntjes, selecteer 'Hulp en ondersteuning' en vervolgens 'Contact opnemen met ondersteuning'.
+
+Ten slotte hebben we een probleem verholpen waarbij het notificatiescherm soms de verkeerde avatar weergaf als je werd genoemd in een reactie. Je gekozen afbeelding wordt nu netjes weergegeven.
