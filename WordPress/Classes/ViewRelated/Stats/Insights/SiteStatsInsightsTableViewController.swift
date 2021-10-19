@@ -496,6 +496,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func growAudienceReaderDiscoverButtonTapped() {
+        guard let vc = viewModel?.followTopicsViewController else {
+            return
+        }
+        vc.didSaveInterests = { [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true)
+        }
+
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .formSheet
+        present(nc, animated: true, completion: nil)
     }
 
     func showAddInsight() {
