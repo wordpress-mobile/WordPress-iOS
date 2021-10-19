@@ -536,8 +536,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (!_followBarButtonItem) {
         _followBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Follow", @"Button title. Follow the comments on a post.")
                                                                 style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(handleFollowConversationButtonTapped)];
+                                                               target:nil
+                                                               action:nil];
     }
 
     return _followBarButtonItem;
