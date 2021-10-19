@@ -23,6 +23,7 @@ final class SiteStatsPinnedItemStore {
     }()
     private let lowSiteViewsCountTreshold = 30
     private let siteId: NSNumber
+    private(set) var currentItem: SiteStatsPinnable?
 
     init(siteId: NSNumber) {
         self.siteId = siteId
@@ -30,10 +31,11 @@ final class SiteStatsPinnedItemStore {
 
     func itemToDisplay(for siteViewsCount: Int) -> SiteStatsPinnable? {
         if siteViewsCount < lowSiteViewsCountTreshold {
-            return nudgeToDisplay ?? customizeToDisplay
+            currentItem = nudgeToDisplay ?? customizeToDisplay
         } else {
-            return customizeToDisplay
+            currentItem = customizeToDisplay
         }
+        return currentItem
     }
 
     func markPinnedItemAsHidden(_ item: SiteStatsPinnable) {

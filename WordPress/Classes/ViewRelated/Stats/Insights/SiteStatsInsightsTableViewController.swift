@@ -255,10 +255,10 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Grow Audience Card Management
 
     func dismissGrowAudienceCard() {
-        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
-        guard let item = pinnedItemStore?.itemToDisplay(for: viewsCount) as? GrowAudienceCell.HintType else {
+        guard let item = pinnedItemStore?.currentItem as? GrowAudienceCell.HintType else {
             return
         }
+
         insightsToShow = insightsToShow.filter { $0 != .growAudience }
         pinnedItemStore?.markPinnedItemAsHidden(item)
 
