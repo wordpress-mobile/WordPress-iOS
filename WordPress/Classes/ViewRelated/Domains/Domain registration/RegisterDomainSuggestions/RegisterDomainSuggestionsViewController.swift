@@ -301,7 +301,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
     private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
         guard let homeURL = site.homeURL,
-              let siteUrl = URL(string: "\(homeURL)"), let host = siteUrl.host,
+              let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host),
               let siteID = site.dotComID?.intValue else {
             return
