@@ -28,5 +28,7 @@ extension WPStyleGuide {
         static let switchLabelFont = fontForTextStyle(.body)
         static let buttonTitleLabelFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let buttonBorderColor = UIColor.systemGray3
+        static let switchOnTintColor = UIColor.systemGreen
+        static let switchInProgressTintColor = UIColor.brand
     }
 }

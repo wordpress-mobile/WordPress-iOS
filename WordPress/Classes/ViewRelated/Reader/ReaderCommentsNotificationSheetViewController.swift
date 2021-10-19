@@ -1,7 +1,7 @@
 import Foundation
 
-@objc protocol ReaderCommentsNotificationSheetDelegate: AnyObject {
-    func didToggleNotificationSwitch(isOn: Bool, completion: (Bool) -> Void)
+@objc public protocol ReaderCommentsNotificationSheetDelegate: AnyObject {
+    func didToggleNotificationSwitch(_ isOn: Bool, completion: @escaping (Bool) -> Void)
     func didTapUnfollowConversation()
 }
 
@@ -9,10 +9,14 @@ import Foundation
 
     // MARK: Properties
 
-    weak var delegate: ReaderCommentsNotificationSheetDelegate? = nil
+    private weak var delegate: ReaderCommentsNotificationSheetDelegate?
 
-    var isNotificationEnabled: Bool {
+    private var isNotificationEnabled: Bool {
         didSet {
+            guard oldValue != isNotificationEnabled else {
+                return
+            }
+
             updateViews()
         }
     }
@@ -63,7 +67,7 @@ import Foundation
 
     private lazy var switchButton: UISwitch = {
         let switchButton = UISwitch()
-        switchButton.onTintColor = .systemGreen
+        switchButton.onTintColor = Style.switchOnTintColor
         switchButton.isOn = isNotificationEnabled
 
         switchButton.on(.valueChanged, call: switchValueChanged)
@@ -152,21 +156,43 @@ private extension ReaderCommentsNotificationSheetViewController {
     func updateViews() {
         descriptionLabel.setText(isNotificationEnabled ? .descriptionTextForEnabledNotifications : .descriptionTextForDisabledNotifications)
         switchButton.isOn = isNotificationEnabled
+
+        // changes to the description label may change the content height. inform the drawer to recalculate its position.
+        if let drawer = presentedVC {
+            drawer.transition(to: drawer.currentPosition)
+        }
     }
 
     func switchValueChanged(_ sender: UISwitch) {
+        // nil delegate is most likely an implementation bug. For now, revert the changes to the switch button.
+        guard let delegate = delegate else {
+            DDLogInfo("\(Self.classNameWithoutNamespaces()): delegate instance is nil")
+            isNotificationEnabled = !sender.isOn
+            return
+        }
+
+        // prevent spam clicks by disabling the user interaction on the switch button.
+        // the tint color is temporarily changed to indicate that some process is in progress.
+        switchButton.onTintColor = Style.switchInProgressTintColor
+        switchButton.isUserInteractionEnabled = false
+
         // optimistically update the views first.
         isNotificationEnabled = sender.isOn
-        delegate?.didToggleNotificationSwitch(isOn: sender.isOn) { success in
-            // in case of failure, revert state changes.
+
+        delegate.didToggleNotificationSwitch(sender.isOn) { success in
             if !success {
+                // in case of failure, revert state changes.
                 self.isNotificationEnabled = !sender.isOn
             }
+            self.switchButton.onTintColor = Style.switchOnTintColor
+            self.switchButton.isUserInteractionEnabled = true
         }
     }
 
     func unfollowButtonTapped(_ sender: UIButton) {
-        delegate?.didTapUnfollowConversation()
+        dismiss(animated: true) {
+            self.delegate?.didTapUnfollowConversation()
+        }
     }
 }
 
