@@ -506,7 +506,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         let nc = UINavigationController(rootViewController: vc)
         nc.modalPresentationStyle = .formSheet
-        present(nc, animated: true, completion: nil)
+        present(nc, animated: true) { [weak self] in
+            let text = NSLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
+            self?.displayNotice(title: text)
+        }
     }
 
     func showAddInsight() {
