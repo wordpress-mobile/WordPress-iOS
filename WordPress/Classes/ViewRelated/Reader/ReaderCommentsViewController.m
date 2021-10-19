@@ -1388,11 +1388,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     NSString *successTitle = desiredState == YES
         ? NSLocalizedString(@"In-app notifications enabled", @"The app successfully enabled notifications for the subscription")
-        : NSLocalizedString(@"In-app notifications disabled", "The app successfully disabled notifications for the subscription");
+        : NSLocalizedString(@"In-app notifications disabled", @"The app successfully disabled notifications for the subscription");
 
     NSString *failureTitle = desiredState == YES
-        ? NSLocalizedString(@"Could not enable notifications", "The app failed to enable notifications for the subscription")
-        : NSLocalizedString(@"Could not disable notifications", "The app failed to disable notifications for the subscription");
+        ? NSLocalizedString(@"Could not enable notifications", @"The app failed to enable notifications for the subscription")
+        : NSLocalizedString(@"Could not disable notifications", @"The app failed to disable notifications for the subscription");
 
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService toggleNotificationSettings:desiredState success:^{
