@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 @objc public protocol ReaderCommentsNotificationSheetDelegate: AnyObject {
     func didToggleNotificationSwitch(_ isOn: Bool, completion: @escaping (Bool) -> Void)
@@ -109,6 +110,9 @@ import Foundation
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
+
+        // prevent Notices from being shown while the bottom sheet is displayed.
+        ActionDispatcher.dispatch(NoticeAction.lock)
     }
 }
 
@@ -129,6 +133,12 @@ extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
                                 + BottomSheetViewController.Constants.additionalContentTopMargin
                                 + view.safeAreaInsets.bottom
                                 + Constants.contentInset)
+    }
+
+    func handleDismiss() {
+        // flush out the queued Notices before unlocking. Otherwise, all the Notices would be shown one after the other until the queue is empty.
+        ActionDispatcher.dispatch(NoticeAction.empty)
+        ActionDispatcher.dispatch(NoticeAction.unlock)
     }
 }
 
