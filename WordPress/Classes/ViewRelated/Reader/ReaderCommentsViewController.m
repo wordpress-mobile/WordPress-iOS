@@ -25,6 +25,7 @@ static CGFloat const CommentIndentationWidth = 40.0;
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
+
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             ReaderCommentCellDelegate,
                                             ReplyTextViewDelegate,
@@ -536,8 +537,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (!_followBarButtonItem) {
         _followBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Follow", @"Button title. Follow the comments on a post.")
                                                                 style:UIBarButtonItemStylePlain
-                                                               target:nil
-                                                               action:nil];
+                                                               target:self
+                                                               action:@selector(handleFollowConversationButtonTapped)];
     }
 
     return _followBarButtonItem;
@@ -1335,10 +1336,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 ? NSLocalizedString(@"Successfully followed conversation", @"The app successfully subscribed to the comments for the post")
                 : NSLocalizedString(@"Successfully unfollowed conversation", @"The app successfully unsubscribed from the comments for the post");
 
-
             dispatch_async(dispatch_get_main_queue(), ^{
+                // update ReaderPost when the subscription process has succeeded.
+                weakSelf.post.isSubscribedComments = newIsSubscribed;
+                [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
+
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
-                [weakSelf displayNoticeWithTitle:title message:nil];
+
+                if ([self followViaNotificationsEnabled]) {
+                    // update the follow button state.
+                    [weakSelf refreshFollowButton];
+                    [weakSelf displayFollowSuccessNoticeWithActionHandler:^{
+                        [weakSelf enableNotificationsButtonTapped];
+                    }];
+                } else {
+                    [weakSelf displayNoticeWithTitle:title message:nil];
+                }
             });
         }
     };
@@ -1364,6 +1377,30 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.followCommentsService toggleSubscribed:oldIsSubscribed
                                          success:successBlock
                                          failure:failureBlock];
+}
+
+- (void)enableNotificationsButtonTapped
+{
+    __weak __typeof(self) weakSelf = self;
+    void (^successBlock)(void) = ^{
+        // inform the user that the post has been successfully followed, along with the option to undo the action.
+        [weakSelf displayNotificationsEnabledNoticeWithActionHandler:^{
+            [weakSelf.followCommentsService toggleNotificationSettings:NO success:^{
+                NSString *title = NSLocalizedString(@"In-app notifications disabled", "The app successfully disabled notifications for the subscription");
+                [weakSelf displayNoticeWithTitle:title message:nil];
+            } failure:^(NSError * _Nullable error) {
+                NSString *title = NSLocalizedString(@"Unable to disable notifications", "The app failed to disable notifications for the subscription");
+                [weakSelf displayNoticeWithTitle:title message:nil];
+            }];
+        }];
+    };
+
+    [self.followCommentsService toggleNotificationSettings:YES
+                                                   success:successBlock
+                                                   failure:^(NSError * _Nullable error) {
+        NSString *title = NSLocalizedString(@"Could not enable notifications", "The app failed to enable notifications for the subscription");
+        [weakSelf displayNoticeWithTitle:title message:nil];
+    }];
 }
 
 - (void)handleHeaderTapped
