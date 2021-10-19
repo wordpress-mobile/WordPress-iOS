@@ -923,7 +923,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)subscriptionSettingsButtonTapped
 {
-    // TODO: Show bottom sheet.
+    [self showNotificationSheetWithNotificationsEnabled:self.post.receivesCommentNotifications
+                                    sourceBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
 
 

@@ -21,4 +21,12 @@ extension WPStyleGuide {
 
         return attributes
     }
+
+    public struct ReaderCommentsNotificationSheet {
+        static let textColor = UIColor.text
+        static let descriptionLabelFont = fontForTextStyle(.subheadline)
+        static let switchLabelFont = fontForTextStyle(.body)
+        static let buttonTitleLabelFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        static let buttonBorderColor = UIColor.systemGray3
+    }
 }
