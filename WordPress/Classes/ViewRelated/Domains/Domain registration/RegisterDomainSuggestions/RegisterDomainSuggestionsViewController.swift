@@ -163,7 +163,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
             vc.domainType = domainType
             vc.freeSiteAddress = site.freeSiteAddress
 
-            if site.hasBloggerPlan == true {
+            if site.hasBloggerPlan {
                 vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
