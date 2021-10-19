@@ -549,7 +549,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         _subscriptionSettingsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"bell"]
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
-                                                                             action:@selector(subscriptionSettingsTapped)];
+                                                                             action:@selector(subscriptionSettingsButtonTapped)];
         _subscriptionSettingsBarButtonItem.accessibilityHint = NSLocalizedString(@"Open subscription settings for the post",
                                                                                  @"VoiceOver hint. Informs the user that the button allows the user to access "
                                                                                  + "post subscription settings.");
@@ -666,7 +666,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshFollowButton
 {
-    if (![self followViaNotificationsEnabled]) {
+    if (!self.canFollowConversation || ![self followViaNotificationsEnabled]) {
         return;
     }
 
@@ -920,7 +920,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.indexPathForCommentRepliedTo = nil;
 }
 
-- (void)subscriptionSettingsTapped
+- (void)followButtonTapped
+{
+
+}
+
+- (void)subscriptionSettingsButtonTapped
 {
     // TODO: Show bottom sheet.
 }
