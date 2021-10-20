@@ -9,11 +9,66 @@ protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
 class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     private let domain: String
-    private var illustration: UIImageView?
 
     private weak var delegate: DomainCreditRedemptionSuccessViewControllerDelegate?
 
     // MARK: - Views
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        scrollView.showsVerticalScrollIndicator = false
+        return scrollView
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = Metrics.stackViewSpacing
+        stackView.alignment = .fill
+        return stackView
+    }()
+
+    private lazy var stackViewContainer: UIView = {
+        let stackViewContainer = UIView()
+        stackViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        stackViewContainer.setContentHuggingPriority(.defaultLow, for: .vertical)
+        return stackViewContainer
+    }()
+
+    private lazy var titleLabel: UILabel = {
+        let title = UILabel()
+        title.numberOfLines = 0
+        title.lineBreakMode = .byWordWrapping
+        title.textAlignment = .center
+        title.font = WPStyleGuide.serifFontForTextStyle(.largeTitle)
+        title.textColor = .textInverted
+        title.text = TextContent.title
+        title.adjustsFontForContentSizeCategory = true
+        return title
+    }()
+
+    private lazy var subtitleLabel: UILabel = {
+        let subtitle = UILabel()
+        subtitle.numberOfLines = 0
+        subtitle.lineBreakMode = .byWordWrapping
+        subtitle.textAlignment = .center
+        subtitle.textColor = .textInverted
+        subtitle.adjustsFontForContentSizeCategory = true
+
+        let subtitleText = makeDomainDetailsString(domain: domain)
+        subtitle.attributedText = applyDomainStyle(to: subtitleText, domain: domain)
+
+        return subtitle
+    }()
+
+    private lazy var illustration: UIImageView = {
+        let illustration = UIImageView(image: UIImage(named: "domains-success"))
+        illustration.contentMode = .scaleAspectFit
+        return illustration
+    }()
 
     private lazy var doneButton: UIButton = {
         let button = FancyButton()
@@ -32,6 +87,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(doneButton)
         view.pinSubviewToAllEdges(doneButton, insets: Metrics.doneButtonInsets)
+        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         return view
     }()
 
@@ -41,6 +97,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         view.backgroundColor = UIColor(white: 1.0, alpha: 0.3)
         return view
     }()
+
+
+    // MARK: - View lifecycle
 
     init(domain: String, delegate: DomainCreditRedemptionSuccessViewControllerDelegate) {
         self.domain = domain
@@ -57,7 +116,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         // Hide the illustration if we only have compact height, or if the user has
         // dynamic content set to accessibility sizes.
-        illustration?.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        illustration.isHidden = traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     override func viewDidLoad() {
@@ -67,66 +126,20 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         navigationController?.setNavigationBarHidden(true, animated: false)
 
-        // Scroll View
+        setupViewHierarchy()
+        configureConstraints()
+    }
 
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.setContentHuggingPriority(.defaultLow, for: .vertical)
-        scrollView.showsVerticalScrollIndicator = false
-
-        // Stack View
-
-        let stackViewContainer = UIView()
-        stackViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        stackViewContainer.setContentHuggingPriority(.defaultLow, for: .vertical)
-
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = Metrics.stackViewSpacing
-        stackView.alignment = .fill
-
-        // Image
-
-        let illustration = UIImageView(image: UIImage(named: "domains-success"))
-        illustration.contentMode = .scaleAspectFit
-        self.illustration = illustration
-
-        // Labels
-
-        let title = UILabel()
-        title.numberOfLines = 0
-        title.lineBreakMode = .byWordWrapping
-        title.textAlignment = .center
-        title.font = WPStyleGuide.serifFontForTextStyle(.largeTitle)
-        title.textColor = .textInverted
-        title.text = TextContent.title
-        title.adjustsFontForContentSizeCategory = true
-
-        let subtitle = UILabel()
-        subtitle.numberOfLines = 0
-        subtitle.lineBreakMode = .byWordWrapping
-        subtitle.textAlignment = .center
-        subtitle.textColor = .textInverted
-        subtitle.adjustsFontForContentSizeCategory = true
-
-        let subtitleText = makeDomainDetailsString(domain: domain)
-        subtitle.attributedText = applyDomainStyle(to: subtitleText, domain: domain)
-
-        stackView.addArrangedSubviews([illustration, title, subtitle])
-
-        // Buttons
-
-        doneButtonContainer.setContentHuggingPriority(.defaultHigh, for: .vertical)
-
-        // Constraints
-
+    private func setupViewHierarchy() {
+        stackView.addArrangedSubviews([illustration, titleLabel, subtitleLabel])
         stackViewContainer.addSubview(stackView)
         scrollView.addSubview(stackViewContainer)
         view.addSubview(scrollView)
         view.addSubview(doneButtonContainer)
         view.addSubview(divider)
+    }
 
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: stackViewContainer.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: stackViewContainer.trailingAnchor),
@@ -158,6 +171,8 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
         ])
     }
+
+    // MARK: - Text helpers
 
     private func applyDomainStyle(to string: String, domain: String) -> NSAttributedString? {
         let attributedString = NSAttributedString(string: string, attributes: [.font: subtitleFont])
