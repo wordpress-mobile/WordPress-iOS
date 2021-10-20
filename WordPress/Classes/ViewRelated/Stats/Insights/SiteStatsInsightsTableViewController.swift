@@ -502,6 +502,14 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         vc.didSaveInterests = { [weak self] in
             guard let self = self else { return }
             self.dismiss(animated: true)
+            self.navigationController?.popToRootViewController(animated: false)
+
+            WPTabBarController.sharedInstance().showReaderTab()
+            if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
+            let vc = nc.topViewController as? ReaderTabViewController {
+                print(vc)
+                vc.setFilter()
+            }
         }
 
         let nc = UINavigationController(rootViewController: vc)
