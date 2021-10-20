@@ -1,8 +1,9 @@
+import ScreenObject
 import XCTest
 
-public class ActivityLogScreen: BaseScreen {
+public class ActivityLogScreen: ScreenObject {
 
-    public init() {
-        super.init(element: XCUIApplication().otherElements.firstMatch)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [ { $0.otherElements.firstMatch } ])
     }
 }

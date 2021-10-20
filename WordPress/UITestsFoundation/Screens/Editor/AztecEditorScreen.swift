@@ -260,12 +260,12 @@ public class AztecEditorScreen: BaseScreen {
         }
     }
 
-    func publish() -> EditorNoticeComponent {
+    func publish() throws -> EditorNoticeComponent {
         publishButton.tap()
 
         confirmPublish()
 
-        return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+        return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
     }
 
     private func confirmPublish() {
@@ -276,11 +276,11 @@ public class AztecEditorScreen: BaseScreen {
         }
     }
 
-    public func openPostSettings() -> EditorPostSettings {
+    public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
         postSettingsButton.tap()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
     private func getHTMLContent() -> String {

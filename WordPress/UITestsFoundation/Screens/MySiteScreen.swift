@@ -75,9 +75,9 @@ public class MySiteScreen: BaseScreen {
         }
     }
 
-    public func gotoActivityLog() -> ActivityLogScreen {
+    public func goToActivityLog() throws -> ActivityLogScreen {
         activityLogButton.tap()
-        return ActivityLogScreen()
+        return try ActivityLogScreen()
     }
 
     public func gotoJetpackScan() -> JetpackScanScreen {
@@ -115,9 +115,9 @@ public class MySiteScreen: BaseScreen {
         return SiteSettingsScreen()
     }
 
-    func gotoCreateSheet() -> ActionSheetComponent {
+    func gotoCreateSheet() throws -> ActionSheetComponent {
         createButton.tap()
-        return ActionSheetComponent()
+        return try ActionSheetComponent()
     }
 
     public static func isLoaded() -> Bool {

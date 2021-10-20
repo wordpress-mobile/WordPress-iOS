@@ -1,66 +1,66 @@
+import ScreenObject
 import XCTest
 
-public class EditorPostSettings: BaseScreen {
-    let settingsTable: XCUIElement
-    let categoriesSection: XCUIElement
-    let tagsSection: XCUIElement
-    let featuredImageButton: XCUIElement
-    var changeFeaturedImageButton: XCUIElement {
-        return settingsTable.cells["CurrentFeaturedImage"]
+public class EditorPostSettings: ScreenObject {
+
+    // expectedElement comes from the superclass and gets the first expectedElementGetters result
+    var settingsTable: XCUIElement { expectedElement }
+
+    var categoriesSection: XCUIElement { settingsTable.cells["Categories"] }
+    var tagsSection: XCUIElement { settingsTable.cells["Tags"] }
+    var featuredImageButton: XCUIElement { settingsTable.cells["SetFeaturedImage"] }
+    var changeFeaturedImageButton: XCUIElement { settingsTable.cells["CurrentFeaturedImage"] }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.tables["SettingsTable"] } ],
+            app: app
+        )
     }
 
-    init() {
-        let app = XCUIApplication()
-        settingsTable = app.tables["SettingsTable"]
-        categoriesSection = settingsTable.cells["Categories"]
-        tagsSection = settingsTable.cells["Tags"]
-        featuredImageButton = settingsTable.cells["SetFeaturedImage"]
-
-        super.init(element: settingsTable)
-    }
-
-    public func selectCategory(name: String) -> EditorPostSettings {
-        return openCategories()
+    public func selectCategory(name: String) throws -> EditorPostSettings {
+        return try openCategories()
             .selectCategory(name: name)
             .goBackToSettings()
     }
 
-    public func addTag(name: String) -> EditorPostSettings {
-        return openTags()
+    public func addTag(name: String) throws -> EditorPostSettings {
+        return try openTags()
             .addTag(name: name)
             .goBackToSettings()
     }
 
-    func openCategories() -> CategoriesComponent {
+    func openCategories() throws -> CategoriesComponent {
         categoriesSection.tap()
 
-        return CategoriesComponent()
+        return try CategoriesComponent()
     }
 
-    func openTags() -> TagsComponent {
+    func openTags() throws -> TagsComponent {
         tagsSection.tap()
 
-        return TagsComponent()
+        return try TagsComponent()
     }
 
-    public func removeFeatureImage() -> EditorPostSettings {
+    public func removeFeatureImage() throws -> EditorPostSettings {
         changeFeaturedImageButton.tap()
-        FeaturedImageScreen()
+
+        try FeaturedImageScreen()
             .tapRemoveFeaturedImageButton()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
-    public func setFeaturedImage() -> EditorPostSettings {
+    public func setFeaturedImage() throws -> EditorPostSettings {
         featuredImageButton.tap()
         MediaPickerAlbumListScreen()
             .selectAlbum(atIndex: 0) // Select media library
             .selectImage(atIndex: 0) // Select latest uploaded image
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
-    public func verifyPostSettings(withCategory category: String? = nil, withTag tag: String? = nil, hasImage: Bool) -> EditorPostSettings {
+    public func verifyPostSettings(withCategory category: String? = nil, withTag tag: String? = nil, hasImage: Bool) throws -> EditorPostSettings {
         if let postCategory = category {
             XCTAssertTrue(categoriesSection.staticTexts[postCategory].exists, "Category \(postCategory) not set")
         }
@@ -74,15 +74,15 @@ public class EditorPostSettings: BaseScreen {
             XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
         }
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
-    // returns void since return screen depends on which editor you're in
+    /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
     public func closePostSettings() {
         navBackButton.tap()
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().tables["SettingsTable"].exists
+        return (try? EditorPostSettings().isLoaded) ?? false
     }
 }

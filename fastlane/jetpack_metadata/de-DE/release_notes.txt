@@ -1,3 +1,7 @@
-- Updates am Embed-Block: Wir haben eine Vorschau für eingebettete Inhalte in WordPress hinzugefügt und ermöglichen jetzt das Einbetten von Instagram- und Vimeo-Inhalten. Bei manchen Medien kannst du eine URL einbetten, aber keine Vorschau anzeigen. In solchen Fällen wird die Meldung „Keine Vorschau erhältlich“ angezeigt. Falls sich Medien nicht einbetten lassen, kannst du mit der Option „Erneut versuchen“ die Inhalte noch einmal einbetten. Alternativ kannst du sie in einen Link konvertieren.
+Der Block-Editor ist jetzt benutzerfreundlicher! Es gibt jetzt dedizierte Embed-Blocks für YouTube, Twitter, WordPress und Vimeo, mit denen du Medien schneller denn je hinzufügen kannst. Du findest diese Blocks in der Ansicht „Blockauswahl“. Du kannst die URLs sogar noch bearbeiten, nachdem du sie ausgewählt hast.
 
-- Verschiedene Verbesserungen und Fehlerbehebungen: Wir haben im „Meine Website“-Menü „Blogbeiträge“ zu „Beiträge“ und „Website-Seiten“ zu „Seiten“ vereinheitlicht. (Doch keine Sorge, das beeinträchtigt die Inhalte deiner Beiträge und Seiten nicht!) Außerdem haben wir einen Fehler behoben, aufgrund dessen du einer E-Mail-Unterhaltung über die Kommentare eines Beitrags nicht folgen konntest.
+Wir haben das Problem mit dem Galerieblock behoben: Jetzt werden deine Bilder auch noch hinzugefügt, wenn du den Beitrag schließt, während sie hochgeladen werden.
+
+Falls du immer noch Probleme damit hast, kannst du uns jetzt noch einfacher um Hilfe bitten. Und zwar direkt im Bildschirm „Editor“: Klicke einfach auf den Menü-Button mit den drei Punkten, wähle „Hilfe & Support“ und dann „Support kontaktieren“.
+
+Zuletzt haben wir noch das Problem gelöst, bei dem der Bildschirm „Benachrichtigungen“ gelegentlich den falschen Avatar angezeigt hat, wenn du in einem Kommentar erwähnt wurdest – jetzt wird dein ausgewähltes Bild angezeigt!

@@ -1,3 +1,4 @@
+import ScreenObject
 import UIKit
 import UITestsFoundation
 import XCTest
@@ -31,7 +32,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         super.tearDown()
     }
 
-    func testGenerateScreenshots() {
+    func testGenerateScreenshots() throws {
 
         // Get My Site screenshot
         let mySite = MySiteScreen()
@@ -40,8 +41,8 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(1, named: "MySite")
 
         // Get Activity Log screenshot
-        let activityLog = mySite
-            .gotoActivityLog()
+        let activityLog = try mySite
+            .goToActivityLog()
             .thenTakeScreenshot(2, named: "ActivityLog")
 
         if !XCUIDevice.isPad {
@@ -85,6 +86,19 @@ class JetpackScreenshotGeneration: XCTestCase {
 }
 
 extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
+        let mode = XCUIDevice.inDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
+
+        return self
+    }
+}
+
+extension ScreenObject {
+
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = XCUIDevice.inDarkMode ? "dark" : "light"
