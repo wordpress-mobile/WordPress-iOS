@@ -13,6 +13,24 @@ class ReaderTabViewController: UIViewController {
 
     private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
+    func setFilter() {
+
+        let context = ContextManager.sharedInstance().mainContext
+        let topics: [ReaderTagTopic]
+        if let fetchRequest = ReaderTagTopic.tagsFetchRequest as? NSFetchRequest<ReaderTagTopic>,
+           let fetchedTopics = try? context.fetch(fetchRequest) {
+            topics = fetchedTopics
+        } else {
+            topics = []
+        }
+
+        let topic = topics.first!
+        print(topic)
+
+        viewModel.setFilterContent(topic: topic)
+        readerTabView.applyFilter(for: topic)
+    }
+
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
