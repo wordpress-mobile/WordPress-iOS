@@ -1,7 +1,0 @@
-Nous avons rendu la vie plus facile dans l’éditeur de blocs ! Il existe des blocs d’intégration dédiés pour YouTube, Twitter, WordPress et Vimeo, ce qui rend l’ajout de médias super rapide. Vous pouvez les trouver dans la vue du sélecteur de blocs. Les URL peuvent même être modifiées après que vous les ayez sélectionnées.
-
-Nous avons corrigé un problème avec le bloc galerie, donc maintenant vos images seront toujours ajoutées si vous fermez la publication pendant qu’elles sont en train de télécharger.
-
-Mais, si vous avez encore des problèmes, demander de l’aide est encore plus facile. Vous pouvez le faire directement dans l’écran de l’éditeur : Il suffit de toucher le bouton de menu à 3 points, de sélectionner « Aide et assistance », puis « Contacter l’assistance »
-
-Enfin, nous avons corrigé un problème où l’écran de notifications affichait parfois le mauvais avatar lorsque vous étiez mentionné dans un commentaire. L’image que vous avez choisie s’affichera désormais fièrement !

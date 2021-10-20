@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-12 20:54:09+0000 */
+/* Translation-Revision-Date: 2021-10-19 07:18:38+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "النطاقات";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "ستعيد النطاقات التي تم شراؤها على هذا الموقع المستخدمين إلى ";
+"Domains purchased on this site will redirect users to " = "النطاقات التي تم شراؤها على هذا الموقع ستعيد توجيه الزائرين إلى ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "ليس لديك حساب؟ _تسجيل_";
@@ -2962,7 +2962,7 @@ translators: Block name. %s: The localized block name */
 "Find sites that speak to you, and follow them to get updates when they publish." = "يمكنك العثور على المواقع التي تتواصل معك ومتابعتها للحصول على التحديثات عندما تقوم بالنشر.";
 
 /* The hint button's title text to help users find their site address. */
-"Find your site address" = "العثور على عنوان الموقع";
+"Find your site address" = "العثور على عنوان رابط الموقع";
 
 /* Label displayed to the user while loading their selected interests */
 "Finding blogs and stories you’ll love..." = "العثور على مدونات وقصص ستُحبّها...";
@@ -3551,7 +3551,7 @@ translators: Block name. %s: The localized block name */
 "Invalid URL scheme inserted, only HTTP and HTTPS are supported." = "تم إدخال نظام URL غير صالح، يتم دعم HTTP وHTTPS فقط.";
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
-"Invalid URL, please check if you wrote a valid site address." = "عنوان URL غير صالح، الرجاء التحقق من كتابة عنوان الموقع الصالح.";
+"Invalid URL, please check if you wrote a valid site address." = "عنوان URL غير صالح، الرجاء التحقق من كتابة عنوان لرابط الموقع الصحيح.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "رابط غير صالح. لم يتم العثور على ملف صوت.";
@@ -4296,7 +4296,7 @@ translators: Block name. %s: The localized block name */
 "Need Help?" = "هل تحتاج إلى المساعدة؟";
 
 /* A button title. */
-"Need help finding your site address?" = "هل تحتاج إلى المساعدة في العثور على عنوان موقعك؟";
+"Need help finding your site address?" = "هل تحتاج إلى المساعدة في العثور على عنوان رابط موقعك؟";
 
 /* Takes the user to get help */
 "Need help?" = "هل تحتاج إلى مساعدة؟";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "لا توجد معاينة متاحة";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "لم يتم العثور على عنوان الموقع الأساسي";
+"No primary site address found" = "لم يتم العثور على عنوان رابط الموقع الأساسي";
 
 /* A message title */
 "No recent posts" = "لا توجد مقالات حديثة";
@@ -4802,7 +4802,7 @@ translators: Block name. %s: The localized block name */
 "Or" = "أو";
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
-"Or log in by _entering your site address_." = "أو تسجيل الدخول عن طريق _إدخال عنوان موقعك_.";
+"Or log in by _entering your site address_." = "أو تسجيل الدخول عن طريق _إدخال عنوان رابط موقعك_.";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "قائمة مرتبة";
@@ -5323,7 +5323,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "الموقع الرئيسي";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "رابط الموقع الأساسي";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -7439,7 +7439,7 @@ translators: Block name. %s: The localized block name */
 "Try with another email" = "حاول ببريد إلكتروني آخر";
 
 /* When social login fails, this button offers to let them try tp login using a URL */
-"Try with the site address" = "حاول بعنوان الموقع";
+"Try with the site address" = "حاول بعنوان رابط الموقع";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "إيقاف تشغيل التنبيهات في الموقع";
@@ -8370,7 +8370,7 @@ translators: Block name. %s: The localized block name */
 "What's New in WordPress" = "ما الجديد في ووردبريس";
 
 /* Title of alert helping users understand their site address */
-"What's my site address?" = "ما عنوان الموقع الخاص بي؟";
+"What's my site address?" = "ما هو عنوان رابط الموقع الخاص بي؟";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "سواء أرغبتَ في الإنشاء أم المشاركة، فإنَّنا سنساعدك على القيام بذلك بشكل صحيح.";
@@ -8765,13 +8765,13 @@ translators: Block name. %s: The localized block name */
 "Your posts, pages, and settings will be mailed to you at %@." = "سيتم إرسال المقالات والصفحات والإعدادات الخاصة بك لك عبر %@.";
 
 /* Footer of the primary site section in the Domains Dashboard. */
-"Your primary site address is what visitors will see in their address bar when visiting your website." = "عنوان الموقع الأساسي هو العنوان الذي سيراه الزائرون في شريط العناوين بمتصفحاتهم عند زيارة موقعك.";
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "رابط الموقع الأساسي هو العنوان الذي سيراه الزائرون في شريط العناوين بمتصفحاتهم عند زيارة موقعك.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "استغرقت محاولة الاستعادة أكثر من المعتاد، يُرجى التحقق مرة أخرى بعد دقائق قليلة.";
 
 /* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "يظهر عنوان موقعك في الشريط الموجود أعلى الشاشة عندما تزور موقعك من متصفح Safari.";
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "يظهر عنوان رابط موقعك في الشريط الموجود أعلى الشاشة عندما تزور موقعك من متصفح Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "تم إنشاء موقعك!";

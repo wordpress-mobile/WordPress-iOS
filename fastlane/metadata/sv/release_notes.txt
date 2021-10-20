@@ -1,7 +1,0 @@
-Vi har underlättat livet i blockredigeraren! Nu finns det specialiserade inbäddningsblock för innehåll från YouTube, Twitter, WordPress och Vimeo så att det går riktigt snabbt att lägga in media. De syns i blockväljaren.  Du kan redigera URL:en även efter att du valt ett av dessa block.
-
-Vi har rättat ett problem med galleriblocket. Nu kommer dina bilder med även om du stänger inlägget medan uppladdningen ännu pågår.
-
-Om du ändå skulle ha några problem har det blivit ännu enklare att be om hjälp. Nu kan du få hjälp direkt inifrån redigeringsvyn. Det är bara att trycka på menyknappn (tre punkter), välja ”hjälp och support” och sedan ”kontakta supporten”.
-
-Slutligen har vi korrigerat ett fel där aivseringsvyn ibland visade fel avatar när någon nämnt dig i en kommentar. Nu kommer den bild du valt att visas prydligt!

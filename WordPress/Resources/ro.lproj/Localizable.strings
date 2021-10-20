@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-05 15:11:32+0000 */
+/* Translation-Revision-Date: 2021-10-16 07:07:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -1901,7 +1901,7 @@ translators: Block name. %s: The localized block name */
 
 /* Button title, encourages users to create post on their blog.
    Label for action to create a new post. */
-"Create Post" = "Creare articol";
+"Create Post" = "Creează un articol";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title */
@@ -4558,7 +4558,7 @@ translators: Block name. %s: The localized block name */
 "No results. Please try a different search." = "Niciun rezultat. Te rog încearcă o altă căutare.";
 
 /* A message title */
-"No sites found" = "Niciun site găsit";
+"No sites found" = "Nu am găsit niciun site";
 
 /* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No sites found matching %@ in your language." = "Nu am găsit niciun site care să se potrivească cu %@ în limba ta.";
@@ -5924,7 +5924,7 @@ translators: Block name. %s: The localized block name */
 "Scanning files" = "Scanez fișierele";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Programare";
+"Schedule" = "Programează";
 
 /* Label for the button that schedules the post */
 "Schedule Now" = "Programează acum";
