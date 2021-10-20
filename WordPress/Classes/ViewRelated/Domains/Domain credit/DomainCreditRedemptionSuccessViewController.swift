@@ -44,7 +44,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         title.lineBreakMode = .byWordWrapping
         title.textAlignment = .center
         title.font = WPStyleGuide.serifFontForTextStyle(.largeTitle)
-        title.textColor = .textInverted
+        title.textColor = .white
         title.text = TextContent.title
         title.adjustsFontForContentSizeCategory = true
         return title
@@ -55,7 +55,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         subtitle.numberOfLines = 0
         subtitle.lineBreakMode = .byWordWrapping
         subtitle.textAlignment = .center
-        subtitle.textColor = .textInverted
+        subtitle.textColor = .white
         subtitle.adjustsFontForContentSizeCategory = true
 
         let subtitleText = makeDomainDetailsString(domain: domain)
@@ -70,7 +70,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         return illustration
     }()
 
-    private lazy var doneButton: UIButton = {
+    private lazy var doneButton: FancyButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +79,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         button.isPrimary = false
         button.accessibilityIdentifier = Accessibility.doneButtonIdentifier
         button.accessibilityHint = Accessibility.doneButtonHint
+        button.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .muriel(name: .blue, .shade40))
         return button
     }()
 
@@ -122,7 +123,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = .primary
+        self.view.backgroundColor = UIColor(light: .primary, dark: .secondarySystemBackground)
 
         navigationController?.setNavigationBarHidden(true, animated: false)
 
