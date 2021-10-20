@@ -1,7 +1,0 @@
-Kami telah mempermudah penggunaan editor Blok! Ada blok sematan khusus untuk YouTube, Twitter, WordPress, dan Vimeo, yang mempercepat penambahan media — Anda bisa menemukannya di tampilan pemilih blok. URL bahkan dapat disunting setelah Anda menentukannya.
-
-Kami telah memperbaiki masalah pada blok galeri sehingga sekarang gambar tetap akan ditambahkan meski Anda menutup pos setelah melakukan pengunggahan. 
-
-Namun, jika masih mengalami masalah, mintalah bantuan untuk lebih memudahkan hidup Anda. Anda dapat meminta bantuan langsung dari layar editor: Cukup ketuk tombol menu 3 titik, pilih "Bantuan & Dukungan", lalu "Hubungi Dukungan."
-
-Terakhir, kami telah memperbaiki masalah terkait layar pemberitahuan yang terkadang menampilkan avatar yang salah saat Anda disebutkan di komentar — sekarang gambar yang Anda pilih akan ditampilkan dengan benar!
