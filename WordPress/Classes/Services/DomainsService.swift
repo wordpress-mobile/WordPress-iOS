@@ -81,12 +81,16 @@ struct DomainsService {
                 getDomainSuggestions(query: query, segmentID: segmentID, quantity: quantity, domainSuggestionType: domainSuggestionType, success: { domainSuggestions in
 
                     success(domainSuggestions.map { remoteSuggestion in
-                        FullyQuotedDomainSuggestion(
+                        let saleCostString = products.first() {
+                            $0.id == remoteSuggestion.productID
+                        }?.saleCostForDisplay()
+
+                        return FullyQuotedDomainSuggestion(
                             domainName: remoteSuggestion.domainName,
                             productID: remoteSuggestion.productID,
                             supportsPrivacy: remoteSuggestion.supportsPrivacy,
                             costString: remoteSuggestion.costString,
-                            saleCostString: "US$0.99")
+                            saleCostString: saleCostString)
                     })
                 }, failure: failure)
             }

@@ -437,7 +437,7 @@ extension DomainSuggestionsTableViewController {
 
     private func suggestionSaleCostAttributes() -> [NSAttributedString.Key: Any] {
         [.font: suggestionCostFont,
-         .foregroundColor: UIColor.label]
+         .foregroundColor: UIColor.muriel(name: .orange, .shade50)]
     }
 
     private func suggestionCostAttributes(striked: Bool) -> [NSAttributedString.Key: Any] {
