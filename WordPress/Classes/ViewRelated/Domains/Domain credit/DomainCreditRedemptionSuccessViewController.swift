@@ -1,5 +1,5 @@
 import UIKit
-import WordPressAuthenticator
+import WordPressUI
 
 protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
     func continueButtonPressed(domain: String)
@@ -12,6 +12,35 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     private var illustration: UIImageView?
 
     private weak var delegate: DomainCreditRedemptionSuccessViewControllerDelegate?
+
+    // MARK: - Views
+
+    private lazy var doneButton: UIButton = {
+        let button = FancyButton()
+        button.isPrimary = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(TextContent.doneButtonTitle, for: .normal)
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        button.isPrimary = false
+        button.accessibilityIdentifier = Accessibility.doneButtonIdentifier
+        button.accessibilityHint = Accessibility.doneButtonHint
+        return button
+    }()
+
+    private lazy var doneButtonContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(doneButton)
+        view.pinSubviewToAllEdges(doneButton, insets: Metrics.doneButtonInsets)
+        return view
+    }()
+
+    private lazy var divider: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(white: 1.0, alpha: 0.3)
+        return view
+    }()
 
     init(domain: String, delegate: DomainCreditRedemptionSuccessViewControllerDelegate) {
         self.domain = domain
@@ -88,17 +117,15 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
         // Buttons
 
-        let buttonContainer = UIView()
-        buttonContainer.translatesAutoresizingMaskIntoConstraints = false
-        buttonViewController.move(to: self, into: buttonContainer)
-        buttonContainer.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        doneButtonContainer.setContentHuggingPriority(.defaultHigh, for: .vertical)
 
         // Constraints
 
         stackViewContainer.addSubview(stackView)
         scrollView.addSubview(stackViewContainer)
         view.addSubview(scrollView)
-        view.addSubview(buttonContainer)
+        view.addSubview(doneButtonContainer)
+        view.addSubview(divider)
 
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: stackViewContainer.leadingAnchor),
@@ -110,7 +137,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Metrics.edgePadding),
             scrollView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Metrics.edgePadding),
             scrollView.topAnchor.constraint(equalTo: view.safeTopAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: buttonContainer.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: doneButtonContainer.topAnchor),
 
             stackViewContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackViewContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -120,10 +147,15 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             stackViewContainer.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackViewContainer.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
 
-            buttonContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            buttonContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            buttonContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonControllerMinHeight)
+            doneButtonContainer.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor),
+            doneButtonContainer.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor),
+            doneButtonContainer.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            doneButtonContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.buttonControllerMinHeight),
+
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: doneButtonContainer.topAnchor),
+            divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
         ])
     }
 
@@ -145,29 +177,13 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         String(format: TextContent.domainDetailsString, domain)
     }
 
-    private lazy var buttonViewController: NUXButtonViewController = {
-        let buttonViewController = NUXButtonViewController.instance()
-        buttonViewController.delegate = self
-        buttonViewController.setButtonTitles(
-            primary: "Done"
-        )
+    // MARK: - Actions
 
-        let normalStyle = NUXButtonStyle.ButtonStyle(backgroundColor: .basicBackground,
-                                                     borderColor: .basicBackground,
-                                                     titleColor: .text)
+    @objc func doneButtonTapped() {
+        delegate?.continueButtonPressed(domain: domain)
+    }
 
-        let dimmedStyle = NUXButtonStyle.ButtonStyle(backgroundColor: .basicBackground.withAlphaComponent(0.7),
-                                                     borderColor: .basicBackground.withAlphaComponent(0.7),
-                                                     titleColor: .text)
-
-        buttonViewController.bottomButtonStyle = NUXButtonStyle(normal: normalStyle,
-                                                                highlighted: dimmedStyle,
-                                                                disabled: dimmedStyle)
-
-        return buttonViewController
-    }()
-
-// MARK: - Constants
+    // MARK: - Constants
 
     private let subtitleFont = UIFont.preferredFont(forTextStyle: .title3)
 
@@ -175,16 +191,19 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         static let title = NSLocalizedString("Congratulations on your purchase!", comment: "Title of domain name purchase success screen")
         static let domainDetailsString = NSLocalizedString("Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.",
                                                            comment: "Details about recently acquired domain on domain credit redemption success screen")
+        static let doneButtonTitle = NSLocalizedString("Done",
+                                                       comment: "Done button title")
     }
+
     private enum Metrics {
         static let stackViewSpacing: CGFloat = 16.0
         static let buttonControllerMinHeight: CGFloat = 84.0
         static let edgePadding: CGFloat = 20.0
+        static let doneButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
-}
 
-extension DomainCreditRedemptionSuccessViewController: NUXButtonViewControllerDelegate {
-    func primaryButtonPressed() {
-        delegate?.continueButtonPressed(domain: domain)
+    private enum Accessibility {
+        static let doneButtonIdentifier = "DomainsSuccessDoneButton"
+        static let doneButtonHint = NSLocalizedString("Dismiss screen", comment: "Accessibility hint for a done button that dismisses the current modal screen")
     }
 }
