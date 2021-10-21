@@ -34,12 +34,6 @@ msgid ""
 "View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
 msgstr ""
 
-#. translators: Keywords used in the App Store search engine to find the app.
-#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
-msgctxt "app_store_keywords"
-msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
-msgstr ""
-
 msgctxt "v18.5-whats-new"
 msgid ""
 "This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.\n"
