@@ -15,11 +15,13 @@ public class SupportScreen: ScreenObject {
         try super.init(
             expectedElementGetters: [
                 closeButtonGetter,
+                // swiftlint:disable opening_brace
                 { $0.cells["help-center-link-button"] },
                 { $0.cells["contact-support-button"] },
                 { $0.cells["my-tickets-button"] },
                 { $0.cells["set-contact-email-button"] },
                 { $0.cells["activity-logs-button"] }
+                // swiftlint:enable opening_brace
             ],
             app: app
         )
