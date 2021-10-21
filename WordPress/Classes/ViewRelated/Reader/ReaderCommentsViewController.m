@@ -1406,11 +1406,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     BOOL desiredState = !self.post.receivesCommentNotifications;
 
-    NSString *successTitle = desiredState == YES
+    NSString *successTitle = desiredState
         ? NSLocalizedString(@"In-app notifications enabled", @"The app successfully enabled notifications for the subscription")
         : NSLocalizedString(@"In-app notifications disabled", @"The app successfully disabled notifications for the subscription");
 
-    NSString *failureTitle = desiredState == YES
+    NSString *failureTitle = desiredState
         ? NSLocalizedString(@"Could not enable notifications", @"The app failed to enable notifications for the subscription")
         : NSLocalizedString(@"Could not disable notifications", @"The app failed to disable notifications for the subscription");
 

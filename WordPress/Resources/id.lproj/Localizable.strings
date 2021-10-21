@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-30 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-11 19:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "URL %s belum ditetapkan ";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s tautan";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Pratinjau %s belum tersedia";
@@ -1429,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "City" = "Kota";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "Klaim domain gratis Anda";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog Klasik";
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "Domain";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "Domain yang dibeli di situs ini akan mengalihkan pengguna ke ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Belum memiliki akun? _Daftar_";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "Pratinjau tidak tersedia";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "Tidak ada alamat situs utama";
 
 /* A message title */
 "No recent posts" = "Tidak ada pos terbaru";
@@ -5323,7 +5323,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Situs Utama";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "Alamat situs utama";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "Teks Jawab";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "Balas ke %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "Balas komentar…";
@@ -5973,7 +5973,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "Tombol cari. Teks tombol saat ini adalah";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "Cari domain";
 
 /* No comment provided by engineer. */
 "Search input field." = "Kolom input pencarian.";
@@ -6371,7 +6371,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "Situs";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "Domain Situs";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Ikon Situs";
@@ -8632,7 +8632,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "Anda memiliki 1 situs WordPress tersembunyi.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "Anda memiliki registrasi domain gratis selama satu tahun dengan paket Anda";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Anda memiliki peningkatan premium aktif dalam situs Anda. Batalkan peningkatan sebelum menghapus situs Anda.";
@@ -8711,7 +8711,7 @@ translators: Block name. %s: The localized block name */
 "Your Domains" = "Domain Anda";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "Domain Situs Anda";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikon Situs Anda";
@@ -8744,7 +8744,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "Pencadangan pertama Anda akan segera tersedia";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "Alamat WordPress.com gratis Anda adalah";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media Anda tidak dapat diekspor. If the problem persists you can contact us via the Me > layar Bantuan & Dukungan.";

@@ -36,9 +36,9 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         super.setUp()
 
         let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
-        let site = JetpackSiteRef.mock(siteID: 9001, username: "test")
+        let siteID = 9001
 
-        viewModel = RegisterDomainDetailsViewModel(site: site, domain: domainSuggestion) { _ in return }
+        viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domainSuggestion) { _ in return }
         viewModel.onChange = { [weak self] (change: Change) in
             self?.changeArray.append(change)
         }

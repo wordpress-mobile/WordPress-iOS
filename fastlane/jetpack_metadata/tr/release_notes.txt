@@ -1,3 +1,7 @@
-- Gömülü blok güncellemeleri: WordPress gömme önizlemelerinin yanı sıra Instagram ve Vimeo içeriği için de gömme işlevini etkinleştirdik.  Bazı medyalarda bir URL'yi başarılı bir şekilde gömebilirsiniz ancak içeriği önizleyemezsiniz; bu durumlarda, "Önizleme yok" mesajını görürsünüz. Medyayı gömemediğiniz durumlarda, içeriği tekrar gömmek için artık bir “Yeniden Dene” seçeneği ve gömmek yerine bağlantıya dönüştürmek için de alternatif bir seçenek göreceksiniz.
+Blok düzenleyicide hayatı kolaylaştırdık! Ortam eklemeyi süper hızlı hale getiren, YouTube, Twitter, WordPress ve Vimeo özel gömme blokları kullanıma sunuldu; bunları blok seçici görünümünde bulabilirsiniz. URL'leri seçtikten sonra dahi düzenleyebilirsiniz.
 
-- Çeşitli iyileştirmeler ve düzeltmeler: "Blog Gönderileri"ni "Gönderiler", "Site Sayfaları"nı "Sayfalar" olarak değiştirerek Sitem menünüzü modernleştirdik. (Bunun gönderiniz ve sayfa içeriğiniz üzerinde hiçbir etkisi olmayacak; söz veriyoruz!) Ayrıca, bir blog gönderisinin yorumları üzerinden e-posta yoluyla bir sohbeti takip etmenizi engelleyen bir hatayı da düzelttik.
+Galeri blokuyla ilgili bir sorunu düzelttik, bu nedenle artık yükleme sırasında gönderiyi kapatsanız dahi resimleriniz eklenebilecek.
+
+Ancak hala sorun yaşıyorsanız, yardım istemek daha da kolaydır. Bunu doğrudan düzenleyici ekranının içinden yapabilirsiniz: 3 nokta menü düğmesine dokunun, "Yardım ve Destek"i seçin, ardından "Destek ile İletişime Geçin"i seçin.
+
+Son olarak, bir yorumda sizden bahsedildiğinde bildirim ekranının ara sıra yanlış avatar göstermesine neden olan bir sorunu düzelttik; seçtiğiniz resim şimdi gururla görüntülenecek!

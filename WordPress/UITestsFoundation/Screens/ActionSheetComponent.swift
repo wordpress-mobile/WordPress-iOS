@@ -1,19 +1,22 @@
+import ScreenObject
 import XCTest
+import XCUITestHelpers
 
-public class ActionSheetComponent: BaseScreen {
-    let blogPostButton: XCUIElement
-    let sitePageButton: XCUIElement
+public class ActionSheetComponent: ScreenObject {
 
-    struct ElementIDs {
-        static let blogPostButton = "blogPostButton"
-        static let sitePageButton = "sitePageButton"
+    private static let getBlogPostButton: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["blogPostButton"]
     }
 
-    public init() {
-        blogPostButton = XCUIApplication().buttons[ElementIDs.blogPostButton]
-        sitePageButton = XCUIApplication().buttons[ElementIDs.sitePageButton]
+    private static let getSitePageButton: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["sitePageButton"]
+    }
 
-        super.init(element: blogPostButton)
+    var blogPostButton: XCUIElement { Self.getBlogPostButton(app) }
+    var sitePageButton: XCUIElement { Self.getSitePageButton(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [Self.getBlogPostButton, Self.getSitePageButton])
     }
 
     public func goToBlogPost() {
