@@ -264,12 +264,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     self.displayedCommentIndexPath = indexPath;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL isLastRow = [self.tableViewHandler.resultsController isLastIndexPathInSection:indexPath];
     UIViewController *detailViewController;
 
     if ([Feature enabled:FeatureFlagNewCommentDetail]) {
         self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
-                                                                                   isLastInList:isLastRow
+                                                                                   isLastInList:[self isLastRow:indexPath]
                                                                            managedObjectContext:[ContextManager sharedInstance].mainContext];
         self.commentDetailViewController.delegate = self;
          detailViewController = self.commentDetailViewController;
@@ -281,6 +280,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     [self.navigationController pushViewController:detailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
 }
 
 - (BOOL)indexPathIsValid:(NSIndexPath *)indexPath
@@ -298,9 +302,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return YES;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+- (BOOL)isLastRow:(NSIndexPath *)indexPath
 {
-    return 0;
+    NSInteger lastSectionIndex = [self.tableView numberOfSections] - 1;
+    NSInteger lastRowIndex = [self.tableView numberOfRowsInSection:lastSectionIndex] - 1;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+    return lastIndexPath == indexPath;
 }
 
 #pragma mark - Comment Actions
@@ -406,10 +413,9 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     if (![self indexPathIsValid:nextIndexPath] || !self.commentDetailViewController) {
         return;
     }
-
+    
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
-    BOOL isLastRow = [self.tableViewHandler.resultsController isLastIndexPathInSection:nextIndexPath];
-    [self.commentDetailViewController displayComment:comment isLastInList:isLastRow];
+    [self.commentDetailViewController displayComment:comment isLastInList:[self isLastRow:nextIndexPath]];
     self.displayedCommentIndexPath = nextIndexPath;
 }
 
