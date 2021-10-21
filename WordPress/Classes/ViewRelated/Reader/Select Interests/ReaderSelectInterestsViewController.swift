@@ -52,7 +52,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private let configuration: ReaderSelectInterestsConfiguration
 
-    var didSaveInterests: (() -> Void)? = nil
+    var didSaveInterests: (([RemoteReaderInterest]) -> Void)? = nil
 
     // MARK: - Init
     init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
@@ -216,7 +216,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     @objc private func saveSelectedInterests() {
         guard !dataSource.selectedInterests.isEmpty else {
-            self.didSaveInterests?()
+            self.didSaveInterests?([])
             return
         }
 
@@ -235,7 +235,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
             self?.trackEvents(with: selectedInterests)
             self?.stopLoading()
-            self?.didSaveInterests?()
+            self?.didSaveInterests?(selectedInterests)
         }
     }
 
