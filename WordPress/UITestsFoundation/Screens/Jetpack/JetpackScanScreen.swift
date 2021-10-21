@@ -5,7 +5,7 @@ public class JetpackScanScreen: ScreenObject {
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            expectedElementGetters: [{ $0.otherElements.firstMatch }],
+            expectedElementGetters: [ { $0.otherElements.firstMatch } ],
             app: app
         )
     }
