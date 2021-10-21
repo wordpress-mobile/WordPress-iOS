@@ -13,15 +13,6 @@ class ReaderTabViewController: UIViewController {
 
     private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
-    func setFilter(for topic: ReaderTagTopic) {
-        viewModel.fetchReaderMenu()
-        viewModel.showTab(at: 0)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.viewModel.setFilterContent(topic: topic)
-            self.readerTabView.applyFilter(for: topic)
-        }
-    }
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
@@ -107,6 +98,11 @@ class ReaderTabViewController: UIViewController {
         }
 
         ReaderTracker.shared.start(.main)
+    }
+
+    func presentDiscoverTab() {
+        viewModel.fetchReaderMenu()
+        viewModel.showTab(at: 1)
     }
 }
 

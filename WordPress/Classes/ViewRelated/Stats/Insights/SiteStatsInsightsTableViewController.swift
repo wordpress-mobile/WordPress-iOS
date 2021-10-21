@@ -504,23 +504,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                 return
             }
             self.dismiss(animated: true)
-            guard let interest = interests.first else {
+            guard !interests.isEmpty else {
                 return
             }
-
-            let context = ContextManager.sharedInstance().mainContext
-            guard let fetchRequest = ReaderTagTopic.tagsFetchRequest as? NSFetchRequest<ReaderTagTopic>,
-                  let fetchedTopics = try? context.fetch(fetchRequest),
-                  let topic = fetchedTopics.first(where: { $0.title == interest.title.lowercased() }) else {
-                      return
-                  }
 
             self.navigationController?.popToRootViewController(animated: false)
             WPTabBarController.sharedInstance().showReaderTab()
             if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
                let vc = nc.topViewController as? ReaderTabViewController {
-                print(vc)
-                vc.setFilter(for: topic)
+                vc.presentDiscoverTab()
             }
         }
 
