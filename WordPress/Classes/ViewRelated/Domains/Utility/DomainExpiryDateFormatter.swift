@@ -4,12 +4,12 @@ struct DomainExpiryDateFormatter {
     static func expiryDate(for domain: Domain) -> String {
         if domain.expiryDate.isEmpty {
             return Localized.neverExpires
+        } else if domain.expired {
+            return Localized.expired
         } else if domain.autoRenewing && domain.autoRenewalDate.isEmpty {
             return Localized.autoRenews
         } else if domain.autoRenewing {
             return String(format: Localized.renewsOn, domain.autoRenewalDate)
-        } else if domain.expired {
-            return Localized.expired
         } else {
             return String(format: Localized.expiresOn, domain.expiryDate)
         }
