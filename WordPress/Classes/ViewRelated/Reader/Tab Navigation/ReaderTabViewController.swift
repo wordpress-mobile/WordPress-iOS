@@ -13,18 +13,7 @@ class ReaderTabViewController: UIViewController {
 
     private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
-    func setFilter() {
-        let context = ContextManager.sharedInstance().mainContext
-        let topics: [ReaderTagTopic]
-        if let fetchRequest = ReaderTagTopic.tagsFetchRequest as? NSFetchRequest<ReaderTagTopic>,
-           let fetchedTopics = try? context.fetch(fetchRequest) {
-            topics = fetchedTopics
-        } else {
-            topics = []
-        }
-
-        guard let topic = topics.first else { return }
-
+    func setFilter(for topic: ReaderTagTopic) {
         viewModel.fetchReaderMenu()
         viewModel.showTab(at: 0)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

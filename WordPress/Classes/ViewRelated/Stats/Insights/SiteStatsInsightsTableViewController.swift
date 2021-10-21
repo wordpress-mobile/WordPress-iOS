@@ -499,16 +499,28 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         guard let vc = viewModel?.followTopicsViewController else {
             return
         }
-        vc.didSaveInterests = { [weak self] in
-            guard let self = self else { return }
+        vc.didSaveInterests = { [weak self] interests in
+            guard let self = self else {
+                return
+            }
             self.dismiss(animated: true)
-            self.navigationController?.popToRootViewController(animated: false)
+            guard let interest = interests.first else {
+                return
+            }
 
+            let context = ContextManager.sharedInstance().mainContext
+            guard let fetchRequest = ReaderTagTopic.tagsFetchRequest as? NSFetchRequest<ReaderTagTopic>,
+                  let fetchedTopics = try? context.fetch(fetchRequest),
+                  let topic = fetchedTopics.first(where: { $0.title == interest.title.lowercased() }) else {
+                      return
+                  }
+
+            self.navigationController?.popToRootViewController(animated: false)
             WPTabBarController.sharedInstance().showReaderTab()
             if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
-            let vc = nc.topViewController as? ReaderTabViewController {
+               let vc = nc.topViewController as? ReaderTabViewController {
                 print(vc)
-                vc.setFilter()
+                vc.setFilter(for: topic)
             }
         }
 
