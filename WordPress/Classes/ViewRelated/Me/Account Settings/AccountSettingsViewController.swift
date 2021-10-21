@@ -246,8 +246,8 @@ private class AccountSettingsController: SettingsController {
             guard let self = self else { return }
             switch self.hasAtomicSite {
             case true:
-                self.showCloseAccountErrorAlert()
-            case false :
+                self.showCloseAccountErrorAlert(message: self.localizedErrorMessageForAtomicSites)
+            case false:
                 self.showCloseAccountAlert()
             }
         }
@@ -278,6 +278,7 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.show(withStatus: status)
 
         accountSettingsService.closeAccount { [weak self] in
+            guard let self = self else { return }
             switch $0 {
             case .success:
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
@@ -286,16 +287,14 @@ private class AccountSettingsController: SettingsController {
             case .failure(let error):
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
-                self?.showCloseAccountErrorAlert()
+                self.showCloseAccountErrorAlert(message: self.generateLocalizedMessage(error))
             }
         }
     }
 
-    private func showCloseAccountErrorAlert() {
+    private func showCloseAccountErrorAlert(message: String) {
         let title = NSLocalizedString("Couldn’t close account automatically",
                                       comment: "Error title displayed when unable to close user account.")
-        let message = NSLocalizedString("To close this account now, contact our support team.",
-                                        comment: "Error message displayed when unable to close user account.")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         let contactSupportTitle = NSLocalizedString("Contact Support",
