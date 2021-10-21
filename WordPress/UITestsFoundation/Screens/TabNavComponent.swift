@@ -27,17 +27,17 @@ public class TabNavComponent: BaseScreen {
         return MySiteScreen()
     }
 
-    public func gotoAztecEditorScreen() -> AztecEditorScreen {
+    public func gotoAztecEditorScreen() throws -> AztecEditorScreen {
         let mySiteScreen = gotoMySiteScreen()
-        let actionSheet = mySiteScreen.gotoCreateSheet()
+        let actionSheet = try mySiteScreen.gotoCreateSheet()
         actionSheet.goToBlogPost()
 
         return AztecEditorScreen(mode: .rich)
     }
 
-    public func gotoBlockEditorScreen() -> BlockEditorScreen {
+    public func gotoBlockEditorScreen() throws -> BlockEditorScreen {
         let mySite = gotoMySiteScreen()
-        let actionSheet = mySite.gotoCreateSheet()
+        let actionSheet = try mySite.gotoCreateSheet()
         actionSheet.goToBlogPost()
 
         return BlockEditorScreen()

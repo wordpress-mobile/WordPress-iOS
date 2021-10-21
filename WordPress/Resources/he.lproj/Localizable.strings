@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-29 11:54:53+0000 */
+/* Translation-Revision-Date: 2021-10-12 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -239,7 +239,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "ב-%s לא הוגדרה כתובת URL";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s קישור";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "תצוגות מקדימות של %s עדיין לא זמינות";
@@ -1429,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "City" = "עיר";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "לקבל דומיין בחינם";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "בלוג קלאסי";
@@ -2278,7 +2278,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "דומיינים";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "דומיינים שנרכשו באתר זה ינתבו את המשתמשים אל ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "אין לך חשבון עדיין? _הרשמה_";
@@ -4546,7 +4546,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "תצוגה מקדימה לא זמינה";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "לא נמצא כתובת אתר ראשי";
 
 /* A message title */
 "No recent posts" = "אין פוסטים מהזמן האחרון";
@@ -5677,7 +5677,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "טקסט תגובה";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "לענות ל-%1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "מענה לתגובה...";
@@ -5973,7 +5973,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "הכפתור 'חיפוש'. הטקסט הנוכחי של הכפתור הוא";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "לחפש דומיין";
 
 /* No comment provided by engineer. */
 "Search input field." = "שדה להזנת חיפוש.";
@@ -6371,7 +6371,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "אתר";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "דומיינים באתר";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "סמל אתר";
@@ -8632,7 +8632,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "יש לך אתר WordPress מוסתר אחד.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "אנחנו מעניקים לך רישום דומיין בחינם לשנה עם התוכנית שלך";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "קיימים שדרוגים פעילים באתר שלך. יש לבטל את השדרוגים לפני מחיקת האתר.";
@@ -8711,7 +8711,7 @@ translators: Block name. %s: The localized block name */
 "Your Domains" = "הדומיינים שלך";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "הדומיינים באתר שלך";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "הסמל של האתר שלך";
@@ -8744,7 +8744,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "הגיבוי הראשון שלך יהיה מוכן בקרוב";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "הכתובת החינמית שלך ב-WordPress.com היא";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "לא ניתן היה לייצא את המדיה שלך. If the problem persists you can contact us via the Me > מסך 'עזרה ותמיכה'.";
