@@ -360,7 +360,10 @@ extension DomainSuggestionsTableViewController {
         cell.textLabel?.textColor = parentDomainColor
         cell.indentationWidth = 20.0
         cell.indentationLevel = 1
-        cell.detailTextLabel?.attributedText = attributedCostInformation(for: suggestion)
+
+        if Feature.enabled(.domains) {
+            cell.detailTextLabel?.attributedText = attributedCostInformation(for: suggestion)
+        }
 
         return cell
     }
