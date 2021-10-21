@@ -307,6 +307,36 @@ private class AccountSettingsController: SettingsController {
         alert.presentFromRootViewController()
     }
 
+    private func generateLocalizedMessage(_ error: Error) -> String {
+        let userInfo = (error as NSError).userInfo
+        let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+
+        switch errorCode {
+        case "unauthorized":
+            return NSLocalizedString("You're not authorized to close the account.",
+                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
+        case "atomic-site":
+            return localizedErrorMessageForAtomicSites
+        case "chargebacked-site":
+            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
+                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
+        case "active-subscriptions":
+            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
+                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
+        case "active-memberships":
+            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
+                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
+        default:
+            return NSLocalizedString("An error occured while closing account.",
+                                     comment: "Default error message displayed when unable to close user account.")
+        }
+    }
+
+    private var localizedErrorMessageForAtomicSites: String {
+        NSLocalizedString("To close this account now, contact our support team.",
+                                 comment: "Error message displayed when unable to close user account due to having active atomic site.")
+    }
+
     private var contactSupportAction: ((UIAlertAction) -> Void) {
         return { action in
             if ZendeskUtils.zendeskEnabled {
