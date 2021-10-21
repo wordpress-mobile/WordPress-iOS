@@ -14,7 +14,6 @@ class ReaderTabViewController: UIViewController {
     private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
     func setFilter() {
-
         let context = ContextManager.sharedInstance().mainContext
         let topics: [ReaderTagTopic]
         if let fetchRequest = ReaderTagTopic.tagsFetchRequest as? NSFetchRequest<ReaderTagTopic>,
@@ -24,11 +23,14 @@ class ReaderTabViewController: UIViewController {
             topics = []
         }
 
-        let topic = topics.first!
-        print(topic)
+        guard let topic = topics.first else { return }
 
-        viewModel.setFilterContent(topic: topic)
-        readerTabView.applyFilter(for: topic)
+        viewModel.fetchReaderMenu()
+        viewModel.showTab(at: 0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.viewModel.setFilterContent(topic: topic)
+            self.readerTabView.applyFilter(for: topic)
+        }
     }
 
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
