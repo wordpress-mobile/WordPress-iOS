@@ -530,6 +530,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             let text = NSLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
             self?.displayNotice(title: text)
         }
+
+        trackNudgeEvent(.statsReaderDiscoverNudgeTapped)
     }
 
     func showAddInsight() {
@@ -616,7 +618,7 @@ extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
 extension SiteStatsInsightsTableViewController: ReaderDiscoverFlowDelegate {
     func didCompleteReaderDiscoverFlow() {
         markCurrentNudgeAsCompleted()
-        // TODO: implement tracking event
+        trackNudgeEvent(.statsReaderDiscoverNudgeCompleted)
     }
 }
 
@@ -703,8 +705,7 @@ private extension SiteStatsInsightsTableViewController {
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeShown)
         case .readerDiscover:
-            // TODO: implement
-            break
+            trackNudgeEvent(.statsReaderDiscoverNudgeShown)
         }
     }
 
@@ -715,8 +716,7 @@ private extension SiteStatsInsightsTableViewController {
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
         case .readerDiscover:
-            // TODO: implement
-            break
+            trackNudgeEvent(.statsReaderDiscoverNudgeDismissed)
         }
     }
 }
