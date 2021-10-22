@@ -1,11 +1,7 @@
-* [**] Block editor: Embed block: Include Jetpack embed variants. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4008]
-* [*] Fixed a minor visual glitch on the pre-publishing nudge bottom sheet. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17300]
-* [*] Improved support for larger text sizes when choosing a homepage layout or page layout. [#17325]
-* [*] Site Comments: fixed an issue that caused the lists to not refresh. [#17303]
-* [*] Block editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4072]
-* [*] Block editor: Embed block: Fix URL not editable after dismissing the edit URL bottom sheet with empty value [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4094]
-* [**] Block editor: Embed block: Detect when an embeddable URL is pasted into an empty paragraph. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4048]
-* [**] Block editor: Pullquote block - Added support for text and background color customization [https://github.com/WordPress/gutenberg/pull/34451]
-* [**] Block editor: Preformatted block - Added support for text and background color customization [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4071]
-* [**] Stats: added Publicize and Blogging Reminders nudges for sites with low traffic in order to increase it. [#17142, #17261, #17294, #17312, #17323]
+This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.
 
+Speaking of blocks, you can now customize the text and background color in the Pullquote and Preformatted blocks.
+
+Need help reaching more readers? The new Publicize and Blogging Reminder nudges will help you stick to a consistent publishing schedule.
+
+Finally, we improved support for larger text sizes when choosing a homepage or page layout, fixed the site comments list not refreshing on certain occasions, and polished the pre-publishing bottom sheet header.
