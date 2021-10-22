@@ -506,6 +506,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         guard let vc = viewModel?.followTopicsViewController else {
             return
         }
+        vc.spotlightIsShown = true
         vc.readerDiscoverFlowDelegate = self
         vc.didSaveInterests = { [weak self] interests in
             guard let self = self else {

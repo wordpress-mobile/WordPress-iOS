@@ -43,6 +43,22 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
 
+    // MARK: - Views
+
+    private let spotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
+    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
+    var spotlightIsShown: Bool = false {
+        didSet {
+            spotlightView.isHidden = !spotlightIsShown
+        }
+    }
+
     // MARK: - Data
     private lazy var dataSource: ReaderInterestsDataSource = {
         return ReaderInterestsDataSource(topics: topics)
@@ -99,6 +115,14 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        view.addSubview(spotlightView)
+        view.bringSubviewToFront(spotlightView)
+
+        NSLayoutConstraint.activate([
+            collectionView.centerXAnchor.constraint(equalTo: spotlightView.centerXAnchor),
+            collectionView.centerYAnchor.constraint(equalTo: spotlightView.centerYAnchor)
+        ])
 
         WPAnalytics.trackReader(.selectInterestsShown)
     }
@@ -221,6 +245,8 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     @objc private func saveSelectedInterests() {
+        spotlightIsShown = false
+
         guard !dataSource.selectedInterests.isEmpty else {
             self.didSaveInterests?([])
             return
