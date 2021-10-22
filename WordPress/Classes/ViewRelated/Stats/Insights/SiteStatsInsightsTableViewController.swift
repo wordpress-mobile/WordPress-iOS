@@ -359,6 +359,13 @@ private extension SiteStatsInsightsTableViewController {
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
     }
 
+    // MARK: - Grow Audience Helpers
+
+    func markCurrentNudgeAsCompleted() {
+        viewModel?.markEmptyStatsNudgeAsCompleted()
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
+        refreshTableView()
+    }
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
@@ -499,6 +506,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         guard let vc = viewModel?.followTopicsViewController else {
             return
         }
+        vc.readerDiscoverFlowDelegate = self
         vc.didSaveInterests = { [weak self] interests in
             guard let self = self else {
                 return
@@ -589,10 +597,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
-        viewModel?.markEmptyStatsNudgeAsCompleted()
-        insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        refreshTableView()
-
+        markCurrentNudgeAsCompleted()
         trackNudgeEvent(.statsPublicizeNudgeCompleted)
     }
 }
@@ -601,11 +606,17 @@ extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
 
 extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
     func didSetUpBloggingReminders() {
-        viewModel?.markEmptyStatsNudgeAsCompleted()
-        insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        refreshTableView()
-
+        markCurrentNudgeAsCompleted()
         trackNudgeEvent(.statsBloggingRemindersNudgeCompleted)
+    }
+}
+
+// MARK: - ReaderDiscoverFlowDelegate
+
+extension SiteStatsInsightsTableViewController: ReaderDiscoverFlowDelegate {
+    func didCompleteReaderDiscoverFlow() {
+        markCurrentNudgeAsCompleted()
+        // TODO: implement tracking event
     }
 }
 
