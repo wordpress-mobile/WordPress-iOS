@@ -2,6 +2,10 @@ import Foundation
 
 extension WPAnalytics {
     static func domainsProperties(for blog: Blog) -> [AnyHashable: Any] {
-        ["using_credit":  blog.canRegisterDomainWithPaidPlan.stringLiteral]
+        domainsProperties(usingCredit: blog.canRegisterDomainWithPaidPlan)
+    }
+
+    static func domainsProperties(usingCredit: Bool) -> [AnyHashable: Any] {
+        ["using_credit":  usingCredit.stringLiteral]
     }
 }
