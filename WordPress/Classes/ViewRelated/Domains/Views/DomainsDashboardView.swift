@@ -110,7 +110,7 @@ struct DomainsDashboardView: View {
     private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
         WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
 
-        return DomainSuggestionViewControllerWrapper(blog: blog,domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
+        return DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
     }
 }
 

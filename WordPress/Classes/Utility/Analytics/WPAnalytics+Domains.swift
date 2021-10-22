@@ -6,6 +6,6 @@ extension WPAnalytics {
     }
 
     static func domainsProperties(usingCredit: Bool) -> [AnyHashable: Any] {
-        ["using_credit":  usingCredit.stringLiteral]
+        ["using_credit": usingCredit.stringLiteral]
     }
 }
