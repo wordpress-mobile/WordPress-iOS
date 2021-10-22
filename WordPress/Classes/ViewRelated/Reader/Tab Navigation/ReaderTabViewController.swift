@@ -101,8 +101,9 @@ class ReaderTabViewController: UIViewController {
     }
 
     func presentDiscoverTab() {
+        let discoverIndex = 1
         viewModel.fetchReaderMenu()
-        viewModel.showTab(at: 1)
+        viewModel.showTab(at: discoverIndex)
     }
 }
 
