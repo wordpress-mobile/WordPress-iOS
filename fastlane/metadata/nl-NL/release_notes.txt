@@ -1,7 +1,0 @@
-We hebben het leven gemakkelijker gemaakt in de blok-editor! Er zijn speciale insluit blokken voor YouTube, Twitter, WordPress en Vimeo, waardoor het toevoegen van media supersnel is — je kunt ze vinden in de blokkiezer weergave. De URL's kunnen zelfs worden bewerkt nadat je ze hebt geselecteerd.
-
-We hebben een probleem opgelost met het galerij blok, dus nu worden je afbeeldingen nog steeds toegevoegd als je het bericht sluit terwijl ze uploaden.
-
-Maar als je nog steeds problemen hebt, is het vragen om hulp nog gemakkelijker. Je kunt dit rechtstreeks in het editor scherm doen: tik gewoon op de menuknop met 3 stippen, selecteer "Hulp & Ondersteuning" en vervolgens "Contact opnemen met ondersteuning".
-
-Ten slotte hebben we een probleem opgelost waarbij het meldingsscherm af en toe de verkeerde avatar liet zien wanneer je in een reactie wordt genoemd — je gekozen afbeelding wordt nu trots weergegeven!
