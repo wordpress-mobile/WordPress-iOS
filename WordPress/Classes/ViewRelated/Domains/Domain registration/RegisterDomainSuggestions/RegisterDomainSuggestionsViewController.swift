@@ -333,7 +333,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             }
         }
 
-        if let storeSandobxCookie = (HTTPCookieStorage.shared.cookies?.first {
+        WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+
+        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
 
             $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
             $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
@@ -344,7 +346,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             cookieStore.getAllCookies { [weak self] cookies in
 
                     var newCookies = cookies
-                    newCookies.append(storeSandobxCookie)
+                    newCookies.append(storeSandboxCookie)
 
                     cookieStore.setCookies(newCookies) {
                         self?.present(navController, animated: true)

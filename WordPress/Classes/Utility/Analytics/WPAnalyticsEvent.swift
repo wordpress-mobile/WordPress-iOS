@@ -201,6 +201,7 @@ import Foundation
     case domainsSearchSelectDomainTapped
     case domainsRegistrationFormViewed
     case domainsRegistrationFormSubmitted
+    case domainsPurchaseWebviewViewed
 
     /// A String that represents the event
     var value: String {
@@ -550,6 +551,8 @@ import Foundation
             return "domains_registration_form_viewed"
         case .domainsRegistrationFormSubmitted:
             return "domains_registration_form_submitted"
+        case .domainsPurchaseWebviewViewed:
+            return "domains_purchase_webview_viewed"
         }
     }
 
