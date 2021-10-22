@@ -407,8 +407,18 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 // find the next comment in the list and update comment details with it.
 - (void)showNextComment
 {
-    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:self.displayedCommentIndexPath.row + 1
-                                                    inSection:self.displayedCommentIndexPath.section];
+    NSIndexPath *nextIndexPath;
+    BOOL showingLastRowInSection = [self.tableViewHandler.resultsController isLastIndexPathInSection:self.displayedCommentIndexPath];
+
+    if (showingLastRowInSection) {
+        // Move to the first row in the next section.
+        nextIndexPath = [NSIndexPath indexPathForRow:0
+                                           inSection:self.displayedCommentIndexPath.section + 1];
+    } else {
+        // Move to the next row in the current section.
+        nextIndexPath = [NSIndexPath indexPathForRow:self.displayedCommentIndexPath.row + 1
+                                           inSection:self.displayedCommentIndexPath.section];
+    }
     
     if (![self indexPathIsValid:nextIndexPath] || !self.commentDetailViewController) {
         return;
