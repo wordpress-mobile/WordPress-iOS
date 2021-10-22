@@ -233,6 +233,8 @@
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
 		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
 		175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */; };
+		175CC17927230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */; };
+		175CC17A27230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */; };
 		175F99B52625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */; };
 		175F99B62625FDE100F2687E /* FancyAlertViewController+AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */; };
 		1761F17126209AEE000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */; };
@@ -4800,6 +4802,7 @@
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSaveForLater+Analytics.swift"; sourceTree = "<group>"; };
+		175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+StringRepresentation.swift"; sourceTree = "<group>"; };
 		175F99B42625FDE100F2687E /* FancyAlertViewController+AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+AppIcons.swift"; sourceTree = "<group>"; };
 		1761F14E26209AEC000815EF /* open-source-dark-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
 		1761F14F26209AEC000815EF /* open-source-dark-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-source-dark-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
@@ -12609,6 +12612,7 @@
 				8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */,
 				E1AB5A061E0BF17500574B4E /* Array.swift */,
 				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
+				175CC17827230DC900622FB4 /* Bool+StringRepresentation.swift */,
 				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
 				E14DFAFA1E07E7C400494688 /* Data.swift */,
 				E1C9AA501C10419200732665 /* Math.swift */,
@@ -16895,6 +16899,7 @@
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
 				40C403F42215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift in Sources */,
+				175CC17927230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */,
 				7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */,
 				7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */,
 				17A4A36920EE51870071C2CA /* Routes+Reader.swift in Sources */,
@@ -20332,6 +20337,7 @@
 				FABB25242602FC2C00C8785C /* UIEdgeInsets.swift in Sources */,
 				FABB25252602FC2C00C8785C /* RestorePageTableViewCell.m in Sources */,
 				FABB25262602FC2C00C8785C /* String+RegEx.swift in Sources */,
+				175CC17A27230DC900622FB4 /* Bool+StringRepresentation.swift in Sources */,
 				F1BC842F27035A1800C39993 /* BlogService+Domains.swift in Sources */,
 				FABB25272602FC2C00C8785C /* UIImage+Exporters.swift in Sources */,
 				FABB25282602FC2C00C8785C /* PostStatsTitleCell.swift in Sources */,

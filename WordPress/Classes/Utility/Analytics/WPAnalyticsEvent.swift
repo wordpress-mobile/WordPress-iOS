@@ -197,6 +197,7 @@ import Foundation
 
     // Domains
     case domainsDashboardViewed
+    case domainsDashboardAddDomainTapped
     /// A String that represents the event
     var value: String {
         switch self {
@@ -536,6 +537,8 @@ import Foundation
 
         case .domainsDashboardViewed:
             return "domains_dashboard_viewed"
+        case .domainsDashboardAddDomainTapped:
+            return "domains_dashboard_add_domain_tapped"
         }
     }
 
