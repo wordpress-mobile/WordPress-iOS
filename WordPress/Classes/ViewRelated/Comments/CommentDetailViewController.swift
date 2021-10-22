@@ -684,7 +684,10 @@ private extension CommentDetailViewController {
             return
         }
 
-        displayActionableNotice(title: title, actionTitle: ModerationMessages.next, actionHandler: { [weak self] _ in
+        displayActionableNotice(title: title,
+                                style: NormalNoticeStyle(showNextArrow: true),
+                                actionTitle: ModerationMessages.next,
+                                actionHandler: { [weak self] _ in
             self?.showNextComment()
         })
     }
