@@ -1,5 +1,9 @@
 import UIKit
 
+protocol ReaderDiscoverFlowDelegate: AnyObject {
+    func didCompleteReaderDiscoverFlow()
+}
+
 struct ReaderSelectInterestsConfiguration {
     let title: String
     let subtitle: String?
@@ -53,6 +57,8 @@ class ReaderSelectInterestsViewController: UIViewController {
     private let configuration: ReaderSelectInterestsConfiguration
 
     var didSaveInterests: (([RemoteReaderInterest]) -> Void)? = nil
+
+    weak var readerDiscoverFlowDelegate: ReaderDiscoverFlowDelegate?
 
     // MARK: - Init
     init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
@@ -236,6 +242,7 @@ class ReaderSelectInterestsViewController: UIViewController {
             self?.trackEvents(with: selectedInterests)
             self?.stopLoading()
             self?.didSaveInterests?(selectedInterests)
+            self?.readerDiscoverFlowDelegate?.didCompleteReaderDiscoverFlow()
         }
     }
 
