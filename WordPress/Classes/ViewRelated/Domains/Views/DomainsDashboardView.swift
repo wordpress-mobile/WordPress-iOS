@@ -108,7 +108,7 @@ struct DomainsDashboardView: View {
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
     private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
-        WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: ["using_credit":  blog.canRegisterDomainWithPaidPlan.stringLiteral], blog: blog)
+        WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
 
         return DomainSuggestionViewControllerWrapper(blog: blog,domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
     }

@@ -207,6 +207,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
 
+        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+
         switch domainType {
         case .registered:
             pushRegisterDomainDetailsViewController(domain)

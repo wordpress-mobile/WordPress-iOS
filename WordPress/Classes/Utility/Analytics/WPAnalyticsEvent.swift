@@ -198,6 +198,8 @@ import Foundation
     // Domains
     case domainsDashboardViewed
     case domainsDashboardAddDomainTapped
+    case domainsSearchSelectDomainTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -535,9 +537,12 @@ import Foundation
         case .recommendAppContentFetchFailed:
             return "recommend_app_content_fetch_failed"
 
+        // Domains
         case .domainsDashboardViewed:
             return "domains_dashboard_viewed"
         case .domainsDashboardAddDomainTapped:
+            return "domains_dashboard_add_domain_tapped"
+        case .domainsSearchSelectDomainTapped:
             return "domains_dashboard_add_domain_tapped"
         }
     }
