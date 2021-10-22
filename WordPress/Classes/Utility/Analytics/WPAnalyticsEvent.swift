@@ -195,6 +195,8 @@ import Foundation
     case recommendAppEngaged
     case recommendAppContentFetchFailed
 
+    // Domains
+    case domainsDashboardViewed
     /// A String that represents the event
     var value: String {
         switch self {
@@ -531,6 +533,9 @@ import Foundation
         // When the content fetching for the recommend app failed
         case .recommendAppContentFetchFailed:
             return "recommend_app_content_fetch_failed"
+
+        case .domainsDashboardViewed:
+            return "domains_dashboard_viewed"
         }
     }
 
@@ -631,15 +636,22 @@ extension WPAnalytics {
     /// Track a event in Obj-C
     ///
     /// This will call each registered tracker and fire the given event
-    /// - Parameter event: a `String` that represents the event name
+    /// - Parameter event: a `WPAnalyticsEvent` that represents the event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
     @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
-        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
-        mergedProperties.merge(properties) { (_, new) in new }
+        track(event, properties: properties)
+    }
 
-
-        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    /// Track an event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - event: a `WPAnalyticsEvent` that represents the event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
+        track(event, properties: properties, blog: blog)
     }
 
     /// Track a Reader event in Obj-C
