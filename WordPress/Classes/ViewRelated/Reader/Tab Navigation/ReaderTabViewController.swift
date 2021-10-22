@@ -104,6 +104,7 @@ class ReaderTabViewController: UIViewController {
 
     func presentDiscoverTab() {
         let discoverIndex = 1
+        viewModel.isReaderDiscoverNudgeFlow = true
         viewModel.fetchReaderMenu()
         viewModel.showTab(at: discoverIndex)
     }

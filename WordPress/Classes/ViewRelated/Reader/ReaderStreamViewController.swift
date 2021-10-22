@@ -24,6 +24,8 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
+    var isReaderDiscoverNudgeFlow: Bool = false
+
     var tableView: UITableView! {
         return tableViewController.tableView
     }
@@ -364,6 +366,10 @@ import WordPressFlux
 
         if contentType == .saved {
             postCellActions?.clearRemovedPosts()
+        }
+
+        if isReaderDiscoverNudgeFlow {
+            WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
         }
 
         dismissNoNetworkAlert()
@@ -1497,6 +1503,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
+
+        if let topic = readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           indexPath.row == 0,
+           isReaderDiscoverNudgeFlow {
+            cell.spotlightIsShown = true
+        } else {
+            cell.spotlightIsShown = false
+        }
+
         return cell
     }
 
