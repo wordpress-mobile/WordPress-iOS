@@ -12,6 +12,9 @@ import WordPressFlux
 
     private weak var delegate: ReaderCommentsNotificationSheetDelegate?
 
+    /// used to cache the "correct" height for the ContainerStackView.
+    private var contentHeight: CGFloat = .zero
+
     private var isNotificationEnabled: Bool {
         didSet {
             guard oldValue != isNotificationEnabled else {
@@ -28,8 +31,8 @@ import WordPressFlux
         let stackView = UIStackView(arrangedSubviews: [descriptionLabel, switchContainer, unfollowButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 15.0
-        stackView.setCustomSpacing(9.0, after: descriptionLabel)
+        stackView.setCustomSpacing(Constants.switchContainerTopSpacing, after: descriptionLabel)
+        stackView.setCustomSpacing(Constants.switchContainerBottomSpacing, after: switchContainer)
 
         return stackView
     }()
@@ -45,19 +48,17 @@ import WordPressFlux
         return label
     }()
 
-    private lazy var switchContainer: UIView = {
-        let stackView = UIStackView(arrangedSubviews: [switchLabel, UIView(), switchButton])
+    private lazy var switchContainer: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [switchLabel, switchButton])
         stackView.axis = .horizontal
+        stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 20.0
 
         return stackView
     }()
 
     private lazy var switchLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.font = Style.switchLabelFont
         label.textColor = Style.textColor
         label.numberOfLines = 0
@@ -68,6 +69,8 @@ import WordPressFlux
 
     private lazy var switchButton: UISwitch = {
         let switchButton = UISwitch()
+        switchButton.translatesAutoresizingMaskIntoConstraints = false
+        switchButton.setContentHuggingPriority(.required, for: .horizontal)
         switchButton.onTintColor = Style.switchOnTintColor
         switchButton.isOn = isNotificationEnabled
 
@@ -114,6 +117,13 @@ import WordPressFlux
         // prevent Notices from being shown while the bottom sheet is displayed.
         ActionDispatcher.dispatch(NoticeAction.lock)
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        contentHeight = max(contentHeight, containerStackView.frame.size.height + verticalPadding)
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: contentHeight)
+    }
 }
 
 // MARK: Drawer Presentable
@@ -129,10 +139,7 @@ extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
         }
 
         view.layoutIfNeeded()
-        return .contentHeight(containerStackView.frame.height
-                                + BottomSheetViewController.Constants.additionalContentTopMargin
-                                + view.safeAreaInsets.bottom
-                                + Constants.contentInset)
+        return .intrinsicHeight
     }
 
     func handleDismiss() {
@@ -148,16 +155,32 @@ private extension ReaderCommentsNotificationSheetViewController {
     typealias Style = WPStyleGuide.ReaderCommentsNotificationSheet
 
     struct Constants {
-        static let contentInset: CGFloat = 20
+        /// On iPad, the sheet is displayed without the `gripButton` and the additional top spacing that comes with it.
+        /// The top padding is added in this case so the spacing looks good on iPad.
+        static var contentInsets: NSDirectionalEdgeInsets = .init(top: (WPDeviceIdentification.isiPad() ? 20 : 0), leading: 20, bottom: 20, trailing: 20)
+        static var switchContainerTopSpacing: CGFloat = 15.0
+        static var switchContainerBottomSpacing: CGFloat = 21.0
+    }
+
+    /// Returns the vertical padding outside the intrinsic height of the `containerStackView`, so the component is displayed properly.
+    var verticalPadding: CGFloat {
+        return Constants.contentInsets.top
+            + Constants.contentInsets.bottom
+            + additionalVerticalPadding
+    }
+
+    /// Calculates the default top margin from the `BottomSheetViewController`, plus the bottom safe area inset.
+    var additionalVerticalPadding: CGFloat {
+        WPDeviceIdentification.isiPad() ? 0 : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
     }
 
     func configureViews() {
         view.addSubview(containerStackView)
         NSLayoutConstraint.activate([
-            containerStackView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Constants.contentInset),
-            containerStackView.topAnchor.constraint(equalTo: view.safeTopAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Constants.contentInset),
-            containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Constants.contentInset)
+            containerStackView.topAnchor.constraint(equalTo: view.safeTopAnchor, constant: Constants.contentInsets.top),
+            containerStackView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Constants.contentInsets.leading),
+            containerStackView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Constants.contentInsets.trailing),
+            containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Constants.contentInsets.bottom)
         ])
 
         updateViews()
@@ -169,6 +192,8 @@ private extension ReaderCommentsNotificationSheetViewController {
 
         // changes to the description label may change the content height. inform the drawer to recalculate its position.
         if let drawer = presentedVC {
+            // reset the stored content height so it can be recalculated properly.
+            contentHeight = .zero
             drawer.transition(to: drawer.currentPosition)
         }
     }
@@ -202,6 +227,13 @@ private extension ReaderCommentsNotificationSheetViewController {
     func unfollowButtonTapped(_ sender: UIButton) {
         dismiss(animated: true) {
             self.delegate?.didTapUnfollowConversation()
+
+            // On iPad, the view is displayed with a popover. Since the dismiss is called programmatically, it will not trigger `handleDismiss`
+            // properly, causing the Notice to be forever locked. `handleDismiss` is called here to prevent such event from happening.
+            //
+            // Consecutive calls to the NoticeAction's `lock` or `unlock` does nothing if they're already in the desired state, so calling
+            // `handleDismiss` multiple times should be fine.
+            self.handleDismiss()
         }
     }
 }
