@@ -679,10 +679,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 // Subscription status is now available through ReaderPost's `isSubscribedComments` Boolean property.
 - (void)refreshSubscriptionStatusIfNeeded
 {
-    if (!self.canFollowConversation) {
-        return;
-    }
-    
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
