@@ -33,12 +33,12 @@ public class LoginSiteAddressScreen: BaseScreen {
         return LoginUsernamePasswordScreen()
     }
 
-    public func proceedWithWP(siteUrl: String) -> GetStartedScreen {
+    public func proceedWithWP(siteUrl: String) throws -> GetStartedScreen {
         siteAddressTextField.tap()
         siteAddressTextField.typeText(siteUrl)
         nextButton.tap()
 
-        return GetStartedScreen()
+        return try GetStartedScreen()
     }
 
     public static func isLoaded() -> Bool {
