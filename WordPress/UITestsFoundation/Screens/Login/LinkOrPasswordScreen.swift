@@ -18,10 +18,10 @@ public class LinkOrPasswordScreen: BaseScreen {
         super.init(element: passwordOption)
     }
 
-    func proceedWithPassword() -> LoginPasswordScreen {
+    func proceedWithPassword() throws -> LoginPasswordScreen {
         passwordOption.tap()
 
-        return LoginPasswordScreen()
+        return try LoginPasswordScreen()
     }
 
     public func proceedWithLink() -> LoginCheckMagicLinkScreen {

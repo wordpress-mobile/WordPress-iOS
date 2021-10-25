@@ -17,10 +17,10 @@ public class LoginCheckMagicLinkScreen: BaseScreen {
         super.init(element: mailButton)
     }
 
-    func proceedWithPassword() -> LoginPasswordScreen {
+    func proceedWithPassword() throws -> LoginPasswordScreen {
         passwordOption.tap()
 
-        return LoginPasswordScreen()
+        return try LoginPasswordScreen()
     }
 
     public func openMagicLoginLink() -> LoginEpilogueScreen {
