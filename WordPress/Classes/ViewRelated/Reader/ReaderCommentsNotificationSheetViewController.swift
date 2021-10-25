@@ -27,12 +27,27 @@ import WordPressFlux
 
     // MARK: Views
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.bounces = false
+
+        scrollView.addSubview(containerStackView)
+        scrollView.pinSubviewToAllEdges(containerStackView)
+        NSLayoutConstraint.activate([
+            containerStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+
+        return scrollView
+    }()
+
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [descriptionLabel, switchContainer, unfollowButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.setCustomSpacing(Constants.switchContainerTopSpacing, after: descriptionLabel)
-        stackView.setCustomSpacing(Constants.switchContainerBottomSpacing, after: switchContainer)
+        stackView.setCustomSpacing(Constants.switchContainerInsets.top, after: descriptionLabel)
+        stackView.setCustomSpacing(Constants.switchContainerInsets.bottom, after: switchContainer)
 
         return stackView
     }()
@@ -43,25 +58,41 @@ import WordPressFlux
         label.font = Style.descriptionLabelFont
         label.textColor = Style.textColor
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         label.setText(.descriptionTextForDisabledNotifications)
 
         return label
     }()
 
-    private lazy var switchContainer: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [switchLabel, switchButton])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
+    private lazy var switchContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews([switchLabel, switchButton])
 
-        return stackView
+        NSLayoutConstraint.activate([
+            switchLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.switchLabelVerticalPadding),
+            switchLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.switchLabelVerticalPadding),
+            switchLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            switchLabel.trailingAnchor.constraint(equalTo: switchButton.leadingAnchor, constant: Constants.switchContainerContentSpacing),
+
+            // prevent the UISwitch from getting shrinked in large content sizes.
+            switchButton.widthAnchor.constraint(equalToConstant: switchButton.intrinsicContentSize.width),
+            switchButton.centerYAnchor.constraint(equalTo: switchLabel.centerYAnchor),
+
+            // prevent the edge of UISwitch from being clipped.
+            switchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.switchButtonTrailingPadding)
+        ])
+
+        return view
     }()
 
     private lazy var switchLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Style.switchLabelFont
         label.textColor = Style.textColor
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         label.setText(.notificationSwitchLabelText)
 
         return label
@@ -70,7 +101,7 @@ import WordPressFlux
     private lazy var switchButton: UISwitch = {
         let switchButton = UISwitch()
         switchButton.translatesAutoresizingMaskIntoConstraints = false
-        switchButton.setContentHuggingPriority(.required, for: .horizontal)
+        switchButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         switchButton.onTintColor = Style.switchOnTintColor
         switchButton.isOn = isNotificationEnabled
 
@@ -88,6 +119,7 @@ import WordPressFlux
         button.titleLabel?.font = Style.buttonTitleLabelFont
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
 
         // add constraints to the button's title label so it can contain multi-line cases properly.
         if let label = button.titleLabel {
@@ -120,9 +152,7 @@ import WordPressFlux
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        contentHeight = max(contentHeight, containerStackView.frame.size.height + verticalPadding)
-        preferredContentSize = CGSize(width: preferredContentSize.width, height: contentHeight)
+        updatePreferredContentSize()
     }
 }
 
@@ -142,6 +172,10 @@ extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
         return .intrinsicHeight
     }
 
+    var scrollableView: UIScrollView? {
+        return scrollView
+    }
+
     func handleDismiss() {
         ActionDispatcher.dispatch(NoticeAction.unlock)
     }
@@ -154,10 +188,11 @@ private extension ReaderCommentsNotificationSheetViewController {
 
     struct Constants {
         /// On iPad, the sheet is displayed without the `gripButton` and the additional top spacing that comes with it.
-        /// The top padding is added in this case so the spacing looks good on iPad.
-        static var contentInsets: NSDirectionalEdgeInsets = .init(top: (WPDeviceIdentification.isiPad() ? 20 : 0), leading: 20, bottom: 20, trailing: 20)
-        static var switchContainerTopSpacing: CGFloat = 15.0
-        static var switchContainerBottomSpacing: CGFloat = 21.0
+        static var contentInsets = UIEdgeInsets(top: WPDeviceIdentification.isiPad() ? 20 : 0, left: 20, bottom: 20, right: 20)
+        static var switchContainerInsets = UIEdgeInsets(top: 15, left: 0, bottom: 21, right: 0)
+        static var switchContainerContentSpacing: CGFloat = 4
+        static var switchLabelVerticalPadding: CGFloat = 6
+        static var switchButtonTrailingPadding: CGFloat = 2
     }
 
     /// Returns the vertical padding outside the intrinsic height of the `containerStackView`, so the component is displayed properly.
@@ -168,18 +203,14 @@ private extension ReaderCommentsNotificationSheetViewController {
     }
 
     /// Calculates the default top margin from the `BottomSheetViewController`, plus the bottom safe area inset.
+    /// The 5pt is for an extra bottom padding on iPad, to make it look better.
     var additionalVerticalPadding: CGFloat {
-        WPDeviceIdentification.isiPad() ? 0 : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
+        WPDeviceIdentification.isiPad() ? 5 : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
     }
 
     func configureViews() {
-        view.addSubview(containerStackView)
-        NSLayoutConstraint.activate([
-            containerStackView.topAnchor.constraint(equalTo: view.safeTopAnchor, constant: Constants.contentInsets.top),
-            containerStackView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: Constants.contentInsets.leading),
-            containerStackView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -Constants.contentInsets.trailing),
-            containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Constants.contentInsets.bottom)
-        ])
+        view.addSubview(scrollView)
+        view.pinSubviewToAllEdges(scrollView, insets: Constants.contentInsets)
 
         updateViews()
     }
@@ -188,12 +219,16 @@ private extension ReaderCommentsNotificationSheetViewController {
         descriptionLabel.setText(isNotificationEnabled ? .descriptionTextForEnabledNotifications : .descriptionTextForDisabledNotifications)
         switchButton.isOn = isNotificationEnabled
 
-        // changes to the description label may change the content height. inform the drawer to recalculate its position.
+        // readjust drawer height on content size changes.
         if let drawer = presentedVC {
-            // reset the stored content height so it can be recalculated properly.
-            contentHeight = .zero
+            view.layoutIfNeeded()
+            updatePreferredContentSize()
             drawer.transition(to: drawer.currentPosition)
         }
+    }
+
+    func updatePreferredContentSize() {
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: containerStackView.frame.height + verticalPadding)
     }
 
     func switchValueChanged(_ sender: UISwitch) {
