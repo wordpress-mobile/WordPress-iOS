@@ -10,6 +10,7 @@ public class StatsScreen: ScreenObject {
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
+            // swiftlint:disable:next opening_brace
             expectedElementGetters: [{ $0.otherElements.firstMatch }],
             app: app
         )
