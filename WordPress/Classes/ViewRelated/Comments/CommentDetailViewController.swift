@@ -1,11 +1,17 @@
 import UIKit
 import CoreData
 
+@objc protocol CommentDetailsDelegate: AnyObject {
+    func nextCommentSelected()
+}
+
 class CommentDetailViewController: UITableViewController {
 
     // MARK: Properties
 
+    @objc weak var delegate: CommentDetailsDelegate?
     private var comment: Comment
+    private var isLastInList: Bool
     private var managedObjectContext: NSManagedObjectContext
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
@@ -142,8 +148,11 @@ class CommentDetailViewController: UITableViewController {
 
     // MARK: Initialization
 
-    @objc required init(comment: Comment, managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+    @objc required init(comment: Comment,
+                        isLastInList: Bool,
+                        managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
+        self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
         super.init(style: .plain)
     }
@@ -168,7 +177,14 @@ class CommentDetailViewController: UITableViewController {
         guard let contentRowIndex = rows.firstIndex(of: .content) else {
             return
         }
+
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
+    }
+
+    @objc func displayComment(_ comment: Comment, isLastInList: Bool) {
+        self.comment = comment
+        self.isLastInList = isLastInList
+        refreshData()
     }
 
     // MARK: Table view data source
@@ -663,7 +679,7 @@ private extension CommentDetailViewController {
     }
 
     func showActionableNotice(title: String) {
-        guard viewIsVisible else {
+        guard viewIsVisible, !isLastInList else {
             displayNotice(title: title)
             return
         }
@@ -678,7 +694,7 @@ private extension CommentDetailViewController {
             return
         }
 
-        // TODO: show next comment
+        delegate?.nextCommentSelected()
     }
 
     struct ModerationMessages {
