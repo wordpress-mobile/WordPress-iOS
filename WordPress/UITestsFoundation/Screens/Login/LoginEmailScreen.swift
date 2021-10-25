@@ -31,10 +31,10 @@ public class LoginEmailScreen: ScreenObject {
         return try LinkOrPasswordScreen()
     }
 
-    func goToSiteAddressLogin() -> LoginSiteAddressScreen {
+    func goToSiteAddressLogin() throws -> LoginSiteAddressScreen {
         app.buttons["Self Hosted Login Button"].tap()
 
-        return LoginSiteAddressScreen()
+        return try LoginSiteAddressScreen()
     }
 
     static func isLoaded() -> Bool {

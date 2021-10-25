@@ -25,9 +25,9 @@ public class WelcomeScreenLoginComponent: ScreenObject {
         return try LoginEmailScreen()
     }
 
-    func goToSiteAddressLogin() -> LoginSiteAddressScreen {
+    func goToSiteAddressLogin() throws -> LoginSiteAddressScreen {
         siteAddressButtonGetter(app).tap()
 
-        return LoginSiteAddressScreen()
+        return try LoginSiteAddressScreen()
     }
 }
