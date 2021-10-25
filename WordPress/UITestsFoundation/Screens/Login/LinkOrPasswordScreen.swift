@@ -22,10 +22,10 @@ public class LinkOrPasswordScreen: ScreenObject {
         return try LoginPasswordScreen()
     }
 
-    public func proceedWithLink() -> LoginCheckMagicLinkScreen {
+    public func proceedWithLink() throws -> LoginCheckMagicLinkScreen {
         linkButtonGetter(app).tap()
 
-        return LoginCheckMagicLinkScreen()
+        return try LoginCheckMagicLinkScreen()
     }
 
     public static func isLoaded() -> Bool {
