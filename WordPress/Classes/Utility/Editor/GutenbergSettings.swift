@@ -13,7 +13,6 @@ class GutenbergSettings {
             return "kShowGutenbergPhase2Dialog-" + url
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
-        static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
@@ -167,16 +166,6 @@ class GutenbergSettings {
         }
         set {
             database.set(newValue, forKey: Key.focalPointPickerTooltipShown)
-        }
-    }
-
-    /// True if the Gutenberg editor has previously launched from this app installation
-    var hasLaunchedGutenbergEditor: Bool {
-        get {
-            database.bool(forKey: Key.hasLaunchedGutenbergEditor)
-        }
-        set {
-            database.set(newValue, forKey: Key.hasLaunchedGutenbergEditor)
         }
     }
 
