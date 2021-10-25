@@ -30,18 +30,13 @@ class CommentModerationBar: UIView {
 
     weak var delegate: CommentModerationBarDelegate?
 
-    var comment: Comment? {
+    var commentStatus: CommentStatusType? {
         didSet {
-            currentStatus = CommentStatusType.typeForStatus(comment?.status)
-        }
-    }
-
-    private var currentStatus: CommentStatusType? {
-        didSet {
-            if oldValue != currentStatus {
-                toggleButtonForStatus(oldValue)
+            guard oldValue != commentStatus else {
+                return
             }
-            toggleButtonForStatus(currentStatus)
+            toggleButtonForStatus(oldValue)
+            toggleButtonForStatus(commentStatus)
         }
     }
 
@@ -209,9 +204,10 @@ private extension CommentModerationBar {
     }
 
     func updateStatusTo(_ status: CommentStatusType) {
-        // Don't change the comment.status. It is needed to fallback to if the update fails.
-        currentStatus = status
-        delegate?.statusChangedTo(status)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            commentStatus = status
+            delegate?.statusChangedTo(status)
+        }
     }
 
 }

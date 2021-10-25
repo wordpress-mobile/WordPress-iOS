@@ -1,3 +1,7 @@
-- Inbäddningsblocken har uppdaterats: Vi har aktiverat förhandsgranskningar av WordPress-inbäddningar samt inbäddningar för Instagram- och Vimeo-innehåll. För visst mediainnehåll går det att bädda in en URL, men inte att förhandsgranska innehållet. I dessa instanser kommer meddelandet "Ingen förhandsgranskning tillgänglig" att visas. Om det inte går att bädda in mediainnehåll kommer du nu i vissa fall att se alternativet "Försök igen", med vilket du kan försöka bädda in innehållet igen, samt alternativet att istället konvertera innehållet till en länk.
+Vi har gjort livet enklare i blockredigeraren! Det finns dedikerade inbäddningsblock för YouTube, Twitter, WordPress och Vimeo, vilket gör att det går supersnabbt att lägga till media – du kan hitta dem i blockväljarvyn. URL:erna kan till och med redigeras efter att du har valt dem.
 
-- Diverse förbättringar och korrigeringar: Vi har gjort menyn Min webbplats smidigare och ändrat "Blogginlägg" till "Inlägg" och "Webbplatssidor" till "Sidor". (Detta påverkar inte innehållet i dina inlägg eller på dina sidor – vi lovar!) Vi har också åtgärdat ett fel som gjorde att det inte gick att följa en konversation via e-post genom kommentarerna för ett inlägg.
+Vi har åtgärdat ett problem med galleriblocket, så nu läggs dina bilder till även om du stänger inlägget medan de laddas upp.
+
+Om du fortfarande har problem är det nu ännu enklare att be om hjälp. Du kan göra det direkt från redigerarens skärm: Tryck bara på menyknappen med tre punkter och välj sedan "Hjälp och support" följt av "Kontakta supporten".
+
+Slutligen har vi åtgärdat ett problem som gjorde att aviseringsskärmen ibland visade fel profilbild när man blev omnämnd i en kommentar – din valda bild kommer nu att visas!

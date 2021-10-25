@@ -50,6 +50,10 @@ public class Comment: NSManagedObject {
         return URL(string: link)
     }
 
+    @objc func deleteWillBePermanent() -> Bool {
+        return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
+    }
+
     func numberOfLikes() -> Int {
         return Int(likeCount)
     }

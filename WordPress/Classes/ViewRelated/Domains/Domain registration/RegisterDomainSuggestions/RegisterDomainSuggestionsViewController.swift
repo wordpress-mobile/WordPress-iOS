@@ -4,17 +4,18 @@ import WebKit
 import WordPressAuthenticator
 import WordPressFlux
 
-class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestionsButtonViewPresenter {
-
-    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
+class RegisterDomainSuggestionsViewController: UIViewController {
+    @IBOutlet weak var buttonContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
-    private var site: JetpackSiteRef!
+    private var constraintsInitialized = false
+
+    private var site: Blog!
     private var domainPurchasedCallback: ((String) -> Void)!
 
     private var domain: DomainSuggestion?
     private var siteName: String?
-    private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
+    private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
     private var includeSupportButton: Bool = true
 
@@ -23,11 +24,7 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        showButtonView(show: false, withAnimation: false)
+        hideButton()
     }
 
     @IBOutlet private var buttonViewContainer: UIView! {
@@ -46,7 +43,7 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
         return buttonViewController
     }()
 
-    static func instance(site: JetpackSiteRef,
+    static func instance(site: Blog,
                          domainType: DomainType = .registered,
                          includeSupportButton: Bool = true,
                          domainPurchasedCallback: @escaping ((String) -> Void)) -> RegisterDomainSuggestionsViewController {
@@ -61,12 +58,12 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
         return controller
     }
 
-    private static func siteNameForSuggestions(for site: JetpackSiteRef) -> String? {
-        if let siteTitle = BlogService.blog(with: site)?.settings?.name?.nonEmptyString() {
+    private static func siteNameForSuggestions(for site: Blog) -> String? {
+        if let siteTitle = site.settings?.name?.nonEmptyString() {
             return siteTitle
         }
 
-        if let siteUrl = BlogService.blog(with: site)?.url {
+        if let siteUrl = site.url {
             let components = URLComponents(string: siteUrl)
             if let firstComponent = components?.host?.split(separator: ".").first {
                 return String(firstComponent)
@@ -96,16 +93,77 @@ class RegisterDomainSuggestionsViewController: UIViewController, DomainSuggestio
         navigationItem.rightBarButtonItem = supportButton
     }
 
+    // MARK: - Bottom Hideable Button
+
+    /// Shows the domain picking button
+    ///
+    private func showButton() {
+        buttonContainerBottomConstraint.constant = 0
+    }
+
+    /// Shows the domain picking button
+    ///
+    /// - Parameters:
+    ///     - animated: whether the transition is animated.
+    ///
+    private func showButton(animated: Bool) {
+        guard animated else {
+            showButton()
+            return
+        }
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.showButton()
+
+            // Since the Button View uses auto layout, need to call this so the animation works properly.
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func hideButton() {
+        buttonContainerBottomConstraint.constant = buttonViewContainer.frame.height
+    }
+
+    /// Hides the domain picking button
+    ///
+    /// - Parameters:
+    ///     - animated: whether the transition is animated.
+    ///
+    func hideButton(animated: Bool) {
+        guard animated else {
+            hideButton()
+            return
+        }
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.hideButton()
+
+            // Since the Button View uses auto layout, need to call this so the animation works properly.
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
+        if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
+            vc.blog = site
+            vc.domainType = domainType
+            vc.freeSiteAddress = site.freeSiteAddress
 
-            if BlogService.blog(with: site)?.hasBloggerPlan == true {
+            if site.hasBloggerPlan {
                 vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
@@ -132,12 +190,12 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
     func domainSelected(_ domain: DomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
-        showButtonView(show: true, withAnimation: true)
+        showButton(animated: true)
     }
 
     func newSearchStarted() {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
-        showButtonView(show: false, withAnimation: true)
+        hideButton(animated: true)
     }
 }
 
@@ -170,16 +228,26 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func pushRegisterDomainDetailsViewController(_ domain: DomainSuggestion) {
+        guard let siteID = site.dotComID?.intValue else {
+            DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
         let controller = RegisterDomainDetailsViewController()
-        controller.viewModel = RegisterDomainDetailsViewModel(site: site, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
+        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
     private func createCartAndPresentWebView(_ domain: DomainSuggestion) {
+        guard let siteID = site.dotComID?.intValue else {
+            DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
         let proxy = RegisterDomainDetailsServiceProxy()
-        proxy.createPersistentDomainShoppingCart(siteID: site.siteID,
+        proxy.createPersistentDomainShoppingCart(siteID: siteID,
                                                  domainSuggestion: domain,
-                                                 privacyProtectionEnabled: false,
+                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { [weak self] _ in
             self?.presentWebViewForCurrentSite(domainSuggestion: domain)
             self?.setPrimaryButtonLoading(false, afterDelay: 0.25)
@@ -232,11 +300,12 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
     }
 
     private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
-        guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
-              let url = URL(string: Constants.checkoutWebAddress + host) else {
+        guard let homeURL = site.homeURL,
+              let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
+              let url = URL(string: Constants.checkoutWebAddress + host),
+              let siteID = site.dotComID?.intValue else {
             return
         }
-        let siteID = site.siteID
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
         let navController = LightNavigationController(rootViewController: webViewController)
@@ -290,9 +359,9 @@ extension RegisterDomainSuggestionsViewController {
 
     enum TextContent {
 
-        static let title = NSLocalizedString("Register domain",
-                                             comment: "Register domain - Title for the Suggested domains screen")
-        static let primaryButtonTitle = NSLocalizedString("Choose domain",
+        static let title = NSLocalizedString("Search domains",
+                                             comment: "Search domain - Title for the Suggested domains screen")
+        static let primaryButtonTitle = NSLocalizedString("Select domain",
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
     }

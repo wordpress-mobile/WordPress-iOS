@@ -11,10 +11,19 @@ class SiteStatsInsightsViewModel: Observable {
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore: StatsInsightsStore
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
+
+    private let pinnedItemStore: SiteStatsPinnedItemStore?
+    private let itemToDisplay: SiteStatsPinnable?
+    private var isNudgeCompleted: Bool {
+        guard let pinnedItemStore = pinnedItemStore, let item = itemToDisplay, item is GrowAudienceCell.HintType else {
+            return false
+        }
+        return !pinnedItemStore.shouldShow(item)
+    }
 
     private var periodReceipt: Receipt?
 
@@ -23,11 +32,17 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Constructor
 
     init(insightsToShow: [InsightType],
-         insightsDelegate: SiteStatsInsightsDelegate) {
+         insightsDelegate: SiteStatsInsightsDelegate,
+         insightsStore: StatsInsightsStore,
+         pinnedItemStore: SiteStatsPinnedItemStore?) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
+        self.insightsStore = insightsStore
+        self.pinnedItemStore = pinnedItemStore
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+        self.itemToDisplay = pinnedItemStore?.itemToDisplay(for: viewsCount)
 
-        insightsChangeReceipt = insightsStore.onChange { [weak self] in
+        insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
             self?.emitChange()
         }
     }
@@ -61,6 +76,20 @@ class SiteStatsInsightsViewModel: Observable {
             }
 
             switch insightType {
+            case .growAudience:
+                tableRows.append(blocks(for: .growAudience,
+                                        type: .insights,
+                                        status: insightsStore.allTimeStatus,
+                                        block: {
+                                            let nudge = itemToDisplay as? GrowAudienceCell.HintType ?? GrowAudienceCell.HintType.social
+                                            let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
+                                            return GrowAudienceRow(hintType: nudge,
+                                                                   allTimeViewsCount: viewsCount,
+                                                                   isNudgeCompleted: isNudgeCompleted,
+                                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loading: {
+                    return StatsGhostGrowAudienceImmutableRow()
+                }, error: errorBlock))
             case .customize:
                 tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .latestPostSummary:
@@ -242,6 +271,12 @@ class SiteStatsInsightsViewModel: Observable {
         insightsToShow = insights
     }
 
+    func markEmptyStatsNudgeAsCompleted() {
+        guard let item = itemToDisplay else {
+            return
+        }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
+    }
 }
 
 // MARK: - Private Extension

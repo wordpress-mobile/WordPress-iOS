@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-23 09:20:28+0000 */
+/* Translation-Revision-Date: 2021-10-21 16:25:04+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nPentru a confirma, te rog ca înainte de a-l închide să introduci din nou numele de utilizator.\n\n";
 
+/* No comment provided by engineer. */
+" \/ year" = "\/an";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Imagini „încărcate lent”";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Buton \"Mai mult\"";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ este punctul selectat pentru restaurarea ta.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -230,13 +233,16 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "%s a fost convertit în blocuri normale";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+"%s embed block previews are coming soon" = "În curând, previzualizări pentru înglobarea blocului %s";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s are setat un URL";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "%s nu are setat un URL";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "Legătură la %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Previzualizările %s nu sunt încă disponibile";
@@ -350,6 +356,9 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Există deja o etichetă cu numele „%@”.";
 
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "Un sfat pentru a crește audiența";
+
 /* Placeholder text for the title of a site */
 "A title for the site" = "Un titlu pentru site";
 
@@ -456,9 +465,6 @@ translators: Block name. %s: The localized block name */
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Adaugă %@";
-
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "Adaugă un domeniu nou";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Adaugă bloc după";
@@ -775,7 +781,8 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Aprobă";
 
-/* Title of approved Comments filter. */
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
 "Approved" = "Aprobat";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -927,6 +934,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Partajează automat articole noi în conturile tale din media socială.";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Partajează automat articolele noi pe rețelele sociale pentru a începe să atragi public pe site.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Actualizări automate";
@@ -1196,7 +1206,6 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
-   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1380,9 +1389,6 @@ translators: Block name. %s: The localized block name */
 /* Title to choose date range in a calendar */
 "Choose date range" = "Alege intervalul de date";
 
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "Alege domeniul";
-
 /* No comment provided by engineer. */
 "Choose file" = "Alege fișierul";
 
@@ -1424,6 +1430,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Address information field City */
 "City" = "Oraș";
+
+/* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Claim your free domain" = "Revendică-ți domeniul gratuit";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog clasic";
@@ -1523,15 +1532,30 @@ translators: Block name. %s: The localized block name */
 /* Title for the `comment likes` setting */
 "Comment Likes" = "Aprecieri la comentarii";
 
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "Comentariu aprobat.";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "Comentariu șters.";
+
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Comentariul a fost șters";
 
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Comentariul a fost marcat ca spam";
 
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "Comentariu marcat ca spam.";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "Comentariu mutat la gunoi.";
+
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "Comentariu la";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "Comentariu pus în așteptare.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1653,6 +1677,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link to connect another site, shown after logging in. */
 "Connect another site" = "Conectează un alt site";
+
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "Conectează mai multe rețele";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Conectare pentru a partaja automat articolele blogului tău cu %@";
@@ -1895,7 +1922,7 @@ translators: Block name. %s: The localized block name */
 
 /* Button title, encourages users to create post on their blog.
    Label for action to create a new post. */
-"Create Post" = "Creare articol";
+"Create Post" = "Creează un articol";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title */
@@ -1936,6 +1963,12 @@ translators: Block name. %s: The localized block name */
 
 /* Button title for download backup action */
 "Create downloadable file" = "Creează un fișier care se poate descărca";
+
+/* No comment provided by engineer. */
+"Create embed" = "Creează înglobare";
+
+/* No comment provided by engineer. */
+"Create link" = "Creează legătură";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te asupra datelor care te interesează cel mai mult.";
@@ -2107,7 +2140,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Șterge definitiv";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2229,11 +2263,11 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. User action to dismiss error alert when failing to load media item.
-   Verb. User action to dismiss error alert when failing to share media. */
+   Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Respinge";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2268,9 +2302,14 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Proprietarii de domenii trebuie să partajeze informațiile de contact într-o bază de date publică a tuturor domeniilor. Cu protecția de confidențialitate, publicăm propriile informații în loc de ale tale și îți trimitem privat toate comunicările.";
 
-/* Noun. Title. Links to the Domains screen.
-   Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domenii";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "Domeniile cumpărate pe acest site vor redirecționa la %@";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect users to " = "Domeniile cumpărate pentru acest site vor redirecționa utilizatorii la ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Nu ai un cont? _Sign up_";
@@ -2481,6 +2520,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editează articole și pagini noi cu editorul de blocuri.";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "Editează reamintiri";
+
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editare butoane de partajare";
 
@@ -2584,8 +2626,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL gol";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Title of button to enable publicize. */
 "Enable" = "Activează";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "Activează Publicizare";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Activează Inițiere rapidă pentru site";
@@ -2596,7 +2642,8 @@ translators: Block name. %s: The localized block name */
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Activează accesul la microfon pentru a înregistra sunetul în videourile tale.";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen.
+   Title of a Quick Start Tour */
 "Enable post sharing" = "Activează partajarea articolelor";
 
 /* Message prompting user to enable site notifications. */
@@ -2682,6 +2729,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "Eroare la aprobarea comentariului";
 
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "Eroare la aprobarea comentariului.";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Eroare de comunicare cu serverul, te rog încercă din nou";
@@ -2691,6 +2741,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "Eroare la ștergerea comentariului";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "Eroare la ștergerea comentariului.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Eroare la dezactivarea actualizărilor automate pentru %@.";
@@ -2718,6 +2771,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "Eroare la marcarea comentariului ca spam";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "Eroare la marcarea comentariului ca spam.";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "Eroare la mutarea comentariului la gunoi.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "A apărut o eroare\nîn timpul încărcării";
@@ -2751,6 +2810,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "Eroare la trimiterea emailului de confirmare. Verifică-ți conexiunea și reîncearcă.";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "Eroare la punerea în așteptare a comentariului.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Eroare la refuzarea comentariului";
@@ -3073,6 +3135,9 @@ translators: Block name. %s: The localized block name */
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Bibliotecă de fotografii gratuite";
 
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "Gratuit pentru primul an";
+
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Ștergând fișierele media temporare, eliberezi spațiul de stocare pe acest dispozitiv. Acest lucru nu va afecta fișierele media de pe site-ul tău.";
 
@@ -3128,7 +3193,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Dă-i drumul la treabă și asigură-te că mărești numărul de vizualizări ale articolului tău prin partajarea lui.";
 
-/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "Ia-ți domeniul";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
@@ -3266,11 +3331,11 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "Subtitlu 6";
 
-/* Help button
-   Open editor help options */
+/* Help button */
 "Help" = "Ajutor";
 
 /* Link to Help section
+   Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ajutor și suport";
 
@@ -3435,6 +3500,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Descrie în câteva cuvinte acest site.";
+
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Pentru a partaja articolele publicate pe rețelele de socializare, trebuie să activezi extensia Publicizare.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Inactiv";
@@ -3671,6 +3739,9 @@ translators: Block name. %s: The localized block name */
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Stai în editare";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "Continuă să scrii pe blog și întoarce-te apoi pentru a vedea vizitatorii site-ului.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Fii la curent cu performanța site-ului tău.";
@@ -3976,7 +4047,7 @@ translators: Block name. %s: The localized block name */
    Title for the Reader Manage screen.
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
-"Manage" = "Gestionează";
+"Manage" = "Administrează";
 
 /* Jetpack Settings: Manage Connection
    Label for managing the Blog Jetpack Connection section
@@ -4540,6 +4611,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "No preview available" = "Nu este disponibilă nicio previzualizare";
 
+/* String to display in place of the site address, in case it was not retrieved from the backend. */
+"No primary site address found" = "Nu am găsit nicio adresă principală pentru site";
+
 /* A message title */
 "No recent posts" = "Niciun articol recent";
 
@@ -4547,7 +4621,7 @@ translators: Block name. %s: The localized block name */
 "No results. Please try a different search." = "Niciun rezultat. Te rog încearcă o altă căutare.";
 
 /* A message title */
-"No sites found" = "Niciun site găsit";
+"No sites found" = "Nu am găsit niciun site";
 
 /* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No sites found matching %@ in your language." = "Nu am găsit niciun site care să se potrivească cu %@ în limba ta.";
@@ -4879,7 +4953,7 @@ translators: Block name. %s: The localized block name */
 "Page published" = "Pagină publicată";
 
 /* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Pagină programată";
+"Page scheduled" = "Pagina este programată";
 
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Titlu pagină. %s";
@@ -4935,7 +5009,8 @@ translators: Block name. %s: The localized block name */
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Plasează fără formatare";
 
-/* Status for Media object that is being processed locally.
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "În așteptare";
 
@@ -4968,9 +5043,6 @@ translators: Block name. %s: The localized block name */
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotografii oferite de Pexels";
-
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "Alege o adresă disponibilă";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Alege numele de utilizator";
@@ -5034,6 +5106,9 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Te rog introdu un nume valid";
 
 /* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "Te rog să introduci o organizație validă";
+
+/* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Te rog introdu un cod poștal valid";
 
 /* Register Domain - Domain contact information validation error message for an input field */
@@ -5046,7 +5121,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid address" = "Te rog introdu o adresă validă";
 
 /* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Te rog să introduci o adresă validă de email ";
+"Please enter a valid email address." = "Te rog introdu o adresă de email validă.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Te rog introdu un număr de telefon valid";
@@ -5199,7 +5274,7 @@ translators: Block name. %s: The localized block name */
 "Post saved." = "Articol salvat.";
 
 /* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Articol programat";
+"Post scheduled" = "Articolul este programat";
 
 /* Title displayed in popup when user tries to copy a post with unsaved changes */
 "Post sync conflict" = "Conflict la sincronizarea articolului";
@@ -5228,6 +5303,9 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Activitate de publicare";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Dacă publici regulat contribui la construirea unui public. Reamintirile te ajută să rămâi pe drumul cel bun.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Dacă publici în mod regulat, cititorii tăi rămân angrenați pe site și atragi vizitatori noi.";
@@ -5313,8 +5391,8 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "Site principal";
 
-/* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "Adresă site principal";
+/* Primary site address label, used in the site address section of the Domains Dashboard. */
+"Primary site address" = "Adresă principală site";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5515,9 +5593,6 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Reconectat";
 
-/* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "Domenii redirecționate";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Referință";
 
@@ -5528,19 +5603,14 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "Reîmprospătare";
 
-/* Action to redeem domain credit.
-   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
+/* Action to redeem domain credit. */
 "Register Domain" = "Înregistrează domeniul";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "Înregistrează-l public cu protecție de confidențialitate";
 
-/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "Înregistrează un domeniu gratuit";
-
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "Înregistrează domeniul";
 
@@ -5673,6 +5743,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text pentru răspuns";
+
+/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+"Reply to %1$@" = "Răspunde-i lui %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "Răspunde la comentariu...";
@@ -5916,7 +5989,7 @@ translators: Block name. %s: The localized block name */
 "Scanning files" = "Scanez fișierele";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Programare";
+"Schedule" = "Programează";
 
 /* Label for the button that schedules the post */
 "Schedule Now" = "Programează acum";
@@ -5966,6 +6039,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Buton Căutare. Textul actual al butonului este";
+
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Caută domenii";
+
+/* title of the button that searches the first domain. */
+"Search for a domain" = "Caută un domeniu";
 
 /* No comment provided by engineer. */
 "Search input field." = "Câmp de intrare pentru căutare.";
@@ -6070,6 +6149,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Select a layout" = "Setează un aranjament";
+
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "Selectează domeniul";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selectează media.";
@@ -6186,6 +6268,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Inițializează Jetpack";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "Setează reamintirile pentru publicare";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Configurează reamintirile pentru publicare, zilele în care vrei să publici.";
 
@@ -6258,6 +6343,9 @@ translators: Block name. %s: The localized block name */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Eroare de partajare";
+
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "Partajarea este inițializată!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Arată antet";
@@ -6361,6 +6449,9 @@ translators: Block name. %s: The localized block name */
 
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
+
+/* Title of the Domains Dashboard. */
+"Site Domains" = "Domenii site";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Icon site";
@@ -6555,7 +6646,8 @@ translators: Block name. %s: The localized block name */
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Spațiu folosit";
 
-/* Marks comment as spam.
+/* Button title for Spam comment state.
+   Marks comment as spam.
    Spam
    Title of spam Comments filter. */
 "Spam" = "Spam";
@@ -6950,6 +7042,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Elementul media nu a putut fi adăugat în Biblioteca media.";
 
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "Nu am putut activa extensia.";
+
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Numărul de articole de arătat per pagină.";
 
@@ -7008,7 +7103,7 @@ translators: Block name. %s: The localized block name */
 "The video could not be added to the Media Library." = "Videoul nu a putut fi adăugat în Biblioteca media.";
 
 /* Title of alert when theme activation succeeds */
-"Theme Activated" = "Temă activată";
+"Theme Activated" = "Tema a fost activată";
 
 /* The menu item to select during a guided tour.
    Themes option in the blog details
@@ -7367,6 +7462,7 @@ translators: Block name. %s: The localized block name */
 "Transform block…" = "Transformă blocul...";
 
 /* Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
    Trash button title
    Trashes a comment
    Trashes the comment */
@@ -7517,9 +7613,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Nu pot să urmăresc site-ul";
-
-/* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
-"Unable to get URL for media item." = "Nu pot obține URL-ul pentru elementul media.";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Nu pot să încarc pagini chiar acum.";
@@ -7947,6 +8040,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more stats. */
 "View more" = "Vezi mai mult";
 
+/* Description for view count. Singular. */
+"View to your site so far" = "Vizualizarea pe site de până acum";
+
 /* Title of a Quick Start Tour */
 "View your site" = "Vezi site-ul";
 
@@ -7964,6 +8060,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "Vizualizări";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "Vizualizările pe site de până acum";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8380,6 +8479,9 @@ translators: Block name. %s: The localized block name */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Când faci modificări pe site-ul tău, aici vei putea vedea istoricul activităților.";
 
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "Când publici următorul articol, aceasta va fi partajat automat pe rețelele conectate.";
+
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Care versiune vrei s-o editezi?";
 
@@ -8621,6 +8723,9 @@ translators: Block name. %s: The localized block name */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Ai un site WordPress ascuns.";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan" = "În planul tău ai o înregistrare gratuită pentru un domeniu în primul an";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Ai actualizări premium active pe site. Te rog anulează actualizările înainte de a șterge site-ul.";
 
@@ -8676,6 +8781,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Se pare că ai instalat un modul mobil de la DudaMobile care împiedică aplicația să se conecteze la blogul tău.";
 
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "Ai setat reamintiri pentru publicare";
+
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Nu ar trebui să ignori o problemă de securitate decât dacă ești absolut sigur că ea este inofensivă. Dacă alegi să ignori această amenințare, ea va rămâne pe site-ul tău „%1$@”.";
 
@@ -8694,8 +8802,8 @@ translators: Block name. %s: The localized block name */
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Ai modificări nesalvate la acest articol";
 
-/* Header title for your domains section of Domains. */
-"Your Domains" = "Domeniile tale";
+/* Header of the domains list section in the Domains Dashboard. */
+"Your Site Domains" = "Domeniile site-ului tău";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Iconul site-ului tău";
@@ -8727,6 +8835,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Prima copie de siguranță va fi gata în curând";
 
+/* Title of the site address section in the Domains Dashboard. */
+"Your free WordPress.com address is" = "Adresa ta gratuită pentru WordPress.com este";
+
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Elementul media nu a putut fi exportat. Dacă problema persistă poți să ne contactezi folosind ecranul Eu > Ajutor și suport.";
 
@@ -8745,7 +8856,7 @@ translators: Block name. %s: The localized block name */
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Articolele, paginile și setările ți se vor trimite prin email la %@.";
 
-/* Footer of the primary site section in the Domains dashboard. */
+/* Footer of the primary site section in the Domains Dashboard. */
 "Your primary site address is what visitors will see in their address bar when visiting your website." = "Adresa site-ului principal este ceea ce vor vedea vizitatorii în bara lor de adrese când îți vizitează site-ul.";
 
 /* Text displayed when a site restore takes too long. */

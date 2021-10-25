@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-29 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-12 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n如果您确认关闭账户，请在关闭之前重新输入您的用户名。\n";
 
+/* No comment provided by engineer. */
+" \/ year" = " \/ year";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "“延迟加载”图片";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "“更多”按钮";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ 是供您还原的选定点。";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -239,6 +242,9 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s没有URL集";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s 链接";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "%s 预览尚不可用";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -350,6 +356,9 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "名为“%@”的标签已存在。";
 
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "A tip to grow your audience";
+
 /* Placeholder text for the title of a site */
 "A title for the site" = "站点标题";
 
@@ -456,9 +465,6 @@ translators: Block name. %s: The localized block name */
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "添加 %@";
-
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "添加新域";
 
 /* No comment provided by engineer. */
 "Add Block After" = "在之后添加区块";
@@ -775,7 +781,8 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "批准";
 
-/* Title of approved Comments filter. */
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
 "Approved" = "通过";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -927,6 +934,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "自动将新文章共享到社交媒体账户。";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
@@ -1196,7 +1206,6 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
-   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1380,9 +1389,6 @@ translators: Block name. %s: The localized block name */
 /* Title to choose date range in a calendar */
 "Choose date range" = "选择日期范围";
 
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "选择域";
-
 /* No comment provided by engineer. */
 "Choose file" = "选择文件";
 
@@ -1424,6 +1430,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Address information field City */
 "City" = "城市";
+
+/* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Claim your free domain" = "声明您的免费域";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "经典博客";
@@ -1523,15 +1532,30 @@ translators: Block name. %s: The localized block name */
 /* Title for the `comment likes` setting */
 "Comment Likes" = "评论点赞";
 
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "Comment approved.";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "Comment deleted.";
+
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "评论已删除";
 
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "评论已被标记为垃圾评论";
 
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "Comment marked as spam.";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "Comment moved to trash.";
+
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "评论于";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "Comment set to pending.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1653,6 +1677,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link to connect another site, shown after logging in. */
 "Connect another site" = "连接其他站点";
+
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "Connect more networks";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "连接以自动将您的博客文章分享至 %@";
@@ -1937,6 +1964,12 @@ translators: Block name. %s: The localized block name */
 /* Button title for download backup action */
 "Create downloadable file" = "创建可下载的文件";
 
+/* No comment provided by engineer. */
+"Create embed" = "Create embed";
+
+/* No comment provided by engineer. */
+"Create link" = "Create link";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "创建专属于您的自定义控制面板并选择查看哪些报告。重点关注您最关心的数据。";
 
@@ -2107,7 +2140,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "永久删除";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2229,11 +2263,11 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. User action to dismiss error alert when failing to load media item.
-   Verb. User action to dismiss error alert when failing to share media. */
+   Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "关闭";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2268,9 +2302,14 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "域所有者必须在所有域的公共数据库中共享联系信息。通过隐私保护功能，我们会发布自己的信息（而不是您的信息），并以私密方式将所有邮件转发给您。";
 
-/* Noun. Title. Links to the Domains screen.
-   Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "域";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect users to " = "在此站点上购买的域名会将用户重定向至 ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "还没有账户？_注册_";
@@ -2481,6 +2520,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "Edit reminders";
+
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "编辑共享按钮";
 
@@ -2554,7 +2596,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "电子邮件已发送！";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "嵌入区块预览即将推出";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "嵌入说明文字。%s";
@@ -2581,8 +2623,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空 URL";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Title of button to enable publicize. */
 "Enable" = "启用";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "Enable Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "为站点启用快速入门";
@@ -2593,7 +2639,8 @@ translators: Block name. %s: The localized block name */
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "启用麦克风来记录制视频中的声音。";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen.
+   Title of a Quick Start Tour */
 "Enable post sharing" = "启用文章共享";
 
 /* Message prompting user to enable site notifications. */
@@ -2679,6 +2726,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "批准评论时出错";
 
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "Error approving comment.";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "与服务器通信时出错，请重试";
@@ -2688,6 +2738,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "删除评论时出错";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "Error deleting comment.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "禁用 %@ 的自动更新时出错。";
@@ -2715,6 +2768,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "将评论标记为垃圾时出错";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "Error marking comment as spam.";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "Error moving comment to trash.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "发生错误\n在加载中";
@@ -2748,6 +2807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "发送验证电子邮件时发生错误。请检查连接并重试。";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "Error setting comment to pending.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "取消批准评论时出错";
@@ -3070,6 +3132,9 @@ translators: Block name. %s: The localized block name */
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "免费照片库";
 
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "Free for the first year ";
+
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "删除临时媒体文件，释放此设备的存储空间。此操作不会影响您站点上的媒体。";
 
@@ -3125,7 +3190,7 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
 
-/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
+/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
 "Get your domain" = "获取您的域名";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
@@ -3263,11 +3328,11 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "六级标题";
 
-/* Help button
-   Open editor help options */
+/* Help button */
 "Help" = "帮助";
 
 /* Link to Help section
+   Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "帮助与支持";
 
@@ -3432,6 +3497,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "简要描述该站点。";
+
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
 
 /* Describes a status of a plugin */
 "Inactive" = "未激活";
@@ -3668,6 +3736,9 @@ translators: Block name. %s: The localized block name */
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "保存编辑";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "使您站点的性能始终不会落伍。";
@@ -4537,6 +4608,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "No preview available" = "无可用预览";
 
+/* String to display in place of the site address, in case it was not retrieved from the backend. */
+"No primary site address found" = "找不到主站点地址";
+
 /* A message title */
 "No recent posts" = "无近期文章";
 
@@ -4932,7 +5006,8 @@ translators: Block name. %s: The localized block name */
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "不带格式粘贴";
 
-/* Status for Media object that is being processed locally.
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "待审";
 
@@ -4965,9 +5040,6 @@ translators: Block name. %s: The localized block name */
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Pexels 提供的照片";
-
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "选择一个可用的地址";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "选择用户名";
@@ -5029,6 +5101,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Last Name" = "请输入有效的姓氏";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "Please enter a valid Organization";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "请输入有效的邮政编码";
@@ -5226,6 +5301,9 @@ translators: Block name. %s: The localized block name */
    Title for stats Posting Activity view. */
 "Posting Activity" = "博文发布情况";
 
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
 
@@ -5310,8 +5388,8 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "主站点";
 
-/* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "主要站点地址";
+/* Primary site address label, used in the site address section of the Domains Dashboard. */
+"Primary site address" = "主站点地址";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5512,9 +5590,6 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "已重新连接";
 
-/* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "重定向域名";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "引用网站";
 
@@ -5525,19 +5600,14 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "刷新";
 
-/* Action to redeem domain credit.
-   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
+/* Action to redeem domain credit. */
 "Register Domain" = "注册域";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "通过隐私保护功能私密注册";
 
-/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "注册一个免费域";
-
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "注册域";
 
@@ -5670,6 +5740,9 @@ translators: Block name. %s: The localized block name */
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "回复文本";
+
+/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+"Reply to %1$@" = "回复 %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "回复评论…";
@@ -5964,6 +6037,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "搜索按钮。当前按钮文字为";
 
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Search domains";
+
+/* title of the button that searches the first domain. */
+"Search for a domain" = "搜索域";
+
 /* No comment provided by engineer. */
 "Search input field." = "搜索输入字段。";
 
@@ -6067,6 +6146,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Select a layout" = "选择布局";
+
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "Select domain";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "选择媒体。";
@@ -6183,6 +6265,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "设置 Jetpack";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "Set up blogging reminders";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "在希望发布文章的日期设置博客发布提醒。";
 
@@ -6255,6 +6340,9 @@ translators: Block name. %s: The localized block name */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "共享错误";
+
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "Sharing is set up!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "显示标题";
@@ -6358,6 +6446,9 @@ translators: Block name. %s: The localized block name */
 
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "站点";
+
+/* Title of the Domains Dashboard. */
+"Site Domains" = "站点域";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "站点图标";
@@ -6552,7 +6643,8 @@ translators: Block name. %s: The localized block name */
 /* Label for showing the available disk space quota available for media */
 "Space used" = "已使用的空间";
 
-/* Marks comment as spam.
+/* Button title for Spam comment state.
+   Marks comment as spam.
    Spam
    Title of spam Comments filter. */
 "Spam" = "垃圾评论";
@@ -6946,6 +7038,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "无法将媒体添加到媒体库。";
+
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "The module couldn't be activated.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "每页显示的文章数。";
@@ -7364,6 +7459,7 @@ translators: Block name. %s: The localized block name */
 "Transform block…" = "转换区块…";
 
 /* Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
    Trash button title
    Trashes a comment
    Trashes the comment */
@@ -7514,9 +7610,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notice title when following a site fails. */
 "Unable to follow site" = "无法关注站点";
-
-/* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
-"Unable to get URL for media item." = "无法获取媒体项目的 URL。";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "目前无法加载页面。";
@@ -7944,6 +8037,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more stats. */
 "View more" = "查看更多信息";
 
+/* Description for view count. Singular. */
+"View to your site so far" = "View to your site so far";
+
 /* Title of a Quick Start Tour */
 "View your site" = "查看您的站点";
 
@@ -7961,6 +8057,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "查看数";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "Views to your site so far";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8377,6 +8476,9 @@ translators: Block name. %s: The localized block name */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "在对站点进行更改时，您可在此处查看您的活动历史记录。";
 
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "您想要编辑哪个版本？";
 
@@ -8618,6 +8720,9 @@ translators: Block name. %s: The localized block name */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "您有 1 个隐藏的 WordPress 站点。";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan" = "您的套餐中包括为期一年的免费域名注册";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "您的站点上具有活动的高级套餐升级。在删除站点前，请先取消升级。";
 
@@ -8673,6 +8778,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "您似乎安装了来自 DudaMobile 的移动插件，该插件会阻止应用程序连接到您的博客";
 
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "You set up blogging reminders";
+
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "您不应忽视安全性问题，除非您确信该问题不会带来负面影响。如果您选择忽略此威胁，它将继续存留在您的站点“%1$@”。";
 
@@ -8691,8 +8799,8 @@ translators: Block name. %s: The localized block name */
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
 
-/* Header title for your domains section of Domains. */
-"Your Domains" = "您的域";
+/* Header of the domains list section in the Domains Dashboard. */
+"Your Site Domains" = "您的站点域名";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "您的站点图标";
@@ -8724,6 +8832,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "您的第一个备份即将准备就绪";
 
+/* Title of the site address section in the Domains Dashboard. */
+"Your free WordPress.com address is" = "您的免费 WordPress.com 地址是";
+
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "您的媒体无法导出。如果问题仍然存在，您可以通过 \"我\">\"帮助和支持 \"屏幕与我们联系。";
 
@@ -8742,7 +8853,7 @@ translators: Block name. %s: The localized block name */
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "文章、页面和设置将通过邮件发送给您（地址为：%@）。";
 
-/* Footer of the primary site section in the Domains dashboard. */
+/* Footer of the primary site section in the Domains Dashboard. */
 "Your primary site address is what visitors will see in their address bar when visiting your website." = "主域名是访客访问您的站点时，其浏览器中所显示的地址。";
 
 /* Text displayed when a site restore takes too long. */

@@ -8,8 +8,10 @@ class RegisterDomainDetailsViewModelLoadingStateTests: XCTestCase {
         super.setUp()
 
         let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
-        let site = JetpackSiteRef.mock(siteID: 9001, username: "test")
-        viewModel = RegisterDomainDetailsViewModel(site: site, domain: domainSuggestion) { _ in return }
+        let siteID = 9001
+
+        viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domainSuggestion) { _ in return
+        }
     }
 
     func testLoadingStateWithContactInfoValidationFailure() {
