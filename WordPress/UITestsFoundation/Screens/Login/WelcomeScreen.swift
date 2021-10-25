@@ -26,10 +26,10 @@ public class WelcomeScreen: ScreenObject {
         return try WelcomeScreenSignupComponent()
     }
 
-    public func selectLogin() -> WelcomeScreenLoginComponent {
+    public func selectLogin() throws -> WelcomeScreenLoginComponent {
         logInButton.tap()
 
-        return WelcomeScreenLoginComponent()
+        return try WelcomeScreenLoginComponent()
     }
 
     static func isLoaded() -> Bool {
