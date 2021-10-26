@@ -12,16 +12,13 @@ import WordPressFlux
 
     private weak var delegate: ReaderCommentsNotificationSheetDelegate?
 
-    /// used to cache the "correct" height for the ContainerStackView.
-    private var contentHeight: CGFloat = .zero
-
     private var isNotificationEnabled: Bool {
         didSet {
             guard oldValue != isNotificationEnabled else {
                 return
             }
 
-            updateViews()
+            updateViews(updatesContentSize: true)
         }
     }
 
@@ -156,7 +153,7 @@ import WordPressFlux
     }
 }
 
-// MARK: Drawer Presentable
+// MARK: - Drawer Presentable
 
 extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
@@ -214,24 +211,40 @@ private extension ReaderCommentsNotificationSheetViewController {
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView, insets: Constants.contentInsets)
 
-        updateViews()
+        // don't update the content size at this state, because the layout pass has not completed.
+        // doing so will cause the height to be incorrectly assigned to the preferredContentSize.
+        updateViews(updatesContentSize: false)
     }
 
-    func updateViews() {
+    func updateViews(updatesContentSize: Bool) {
         descriptionLabel.setText(isNotificationEnabled ? .descriptionTextForEnabledNotifications : .descriptionTextForDisabledNotifications)
         switchButton.isOn = isNotificationEnabled
 
-        // readjust drawer height on content size changes.
-        if let drawer = presentedVC {
+        if updatesContentSize {
             view.layoutIfNeeded()
             updatePreferredContentSize()
+        }
+
+        // readjust drawer height on content size changes.
+        if let drawer = presentedVC {
             drawer.transition(to: drawer.currentPosition)
         }
     }
 
     func updatePreferredContentSize() {
-        preferredContentSize = CGSize(width: preferredContentSize.width, height: containerStackView.frame.height + verticalPadding)
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: scrollView.contentSize.height + verticalPadding)
     }
+
+    func toggleNoticeLock(_ locked: Bool) {
+        // only enable locking/unlocking notices on iPhone. Notices should always be shown in iPad since it's displayed in a popover view.
+        guard WPDeviceIdentification.isiPhone() else {
+            return
+        }
+
+        ActionDispatcher.dispatch(locked ? NoticeAction.lock : NoticeAction.unlock)
+    }
+
+    // MARK: Actions
 
     func switchValueChanged(_ sender: UISwitch) {
         // nil delegate is most likely an implementation bug. For now, revert the changes on the switch button when this happens.
@@ -270,15 +283,6 @@ private extension ReaderCommentsNotificationSheetViewController {
             // `handleDismiss` multiple times should be fine.
             self.handleDismiss()
         }
-    }
-
-    func toggleNoticeLock(_ locked: Bool) {
-        // only enable locking/unlocking notices on iPhone. Notices should always be shown in iPad since it's displayed in a popover view.
-        guard WPDeviceIdentification.isiPhone() else {
-            return
-        }
-
-        ActionDispatcher.dispatch(locked ? NoticeAction.lock : NoticeAction.unlock)
     }
 }
 
