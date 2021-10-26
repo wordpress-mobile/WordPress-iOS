@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "履歴を表示するには有効なインターネット接続が必要です";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "アカウントの閉鎖中にエラーが発生しました。";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "メニューを作成する際にエラーが発生しました。";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "このサイトにはまだ何も投稿されていません。後でもう一度チェックしてみてください。";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "未解決のチャージバックがある場合、このユーザーアカウントを閉鎖できません。";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "有効になっている購入があるため、このユーザーアカウントを閉鎖できません。";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "有効になっているサブスクリプションがあるため、このユーザーアカウントを閉鎖できません。";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "これは、Twitter ボタンを使って読者がシェアするときのツイートに含まれます。";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "投稿に写真または動画を追加する。";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "このアカウントをすぐにクローズする場合、弊社のサポートチームに連絡してください。";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "すべて最新版です。";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "アカウントを閉鎖する権限がありません。";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "この投稿に保存されていない変更が加えられました";

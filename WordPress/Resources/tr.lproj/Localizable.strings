@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Geçmişi görüntülemek için etkin bir internet bağlantısı gereklidir";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Hesap kapatılırken bir hata oluştu.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Menü oluşturulurken bir hata oluştu.";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Bu site henüz bir şey yayınlamamış. Sonra tekrar deneyin.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Çözülmemiş geri ödeme varsa bu kullanıcı hesabı kapatılamaz.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Aktif satın alımları olduğundan, bu kullanıcı hesabı kapatılamadı.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Aktif abonelikleri olduğundan, kullanıcı hesabı kapatılamadı.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Kullanıcılar Twitter tuşunu kullanarak paylaşım yaptıklarında bu da dahil edilecektir.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Yazılarınızda fotoğraf veya video eklemek için.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "Bu hesabı şimdi kapatmak için destek ekibimize başvurun.";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Tamamen güncelsiniz!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Hesabı kapatma yetkiniz yok.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Bu iletide kaydedilmeyen değişiklikler yaptınız";
