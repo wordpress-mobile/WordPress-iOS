@@ -221,6 +221,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)urlWithPath:(NSString *)path
 {
+    if (!path || !self.xmlrpc) {
+        DDLogError(@"Blog: Error creating urlWithPath.");
+        return nil;
+    }
+
     NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
