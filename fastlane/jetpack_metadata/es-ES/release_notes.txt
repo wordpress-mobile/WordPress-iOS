@@ -1,7 +1,0 @@
-Te facilitamos la vida con el editor de bloques. Hay bloques de incrustación específicos para YouTube, Twitter, WordPress y Vimeo, lo que agiliza la acción de añadir medios; puedes encontrarlos en la vista del selector de bloques. Incluso se pueden editar las URL después de seleccionarlas.
-
-Hemos corregido un problema con el bloque de la galería y ahora, tus imágenes se seguirán añadiendo aunque cierres la entrada mientras se están subiendo.
-
-Sin embargo, si continúas teniendo problemas, podrás pedir ayuda de manera sencilla. Puedes solicitarla directamente en la pantalla del editor: tan solo debes tocar el botón del menú con 3 puntos, seleccionar "Ayuda y soporte técnico" y después, "Ponte en contacto con el soporte técnico".
-
-Por último, hemos corregido un problema con la pantalla de avisos por el que, a veces, se mostraba un avatar equivocado cuando se te mencionaba en un comentario. Ahora, siempre aparecerá la imagen que hayas elegido.
