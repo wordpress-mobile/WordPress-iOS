@@ -1,6 +1,6 @@
 18.6
 -----
-* [*] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
+* [**] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
 
 18.5
 -----
