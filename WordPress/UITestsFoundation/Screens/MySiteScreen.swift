@@ -77,9 +77,15 @@ public class MySiteScreen: ScreenObject {
 
     public func removeSelfHostedSite() {
         app.cells[ElementStringIDs.removeSiteButton].tap()
-        // TODO: Wouldn't it be better to do this with an accessibility label?
-        let index = XCUIDevice.isPad ? 1 : 0
-        app.sheets.buttons.element(boundBy: index).tap()
+
+        let removeButton: XCUIElement
+        if XCUIDevice.isPad {
+            removeButton = app.alerts.buttons.element(boundBy: 1)
+        } else {
+            removeButton = app.sheets.buttons.element(boundBy: 0)
+        }
+
+        removeButton.tap()
     }
 
     public func goToActivityLog() throws -> ActivityLogScreen {
