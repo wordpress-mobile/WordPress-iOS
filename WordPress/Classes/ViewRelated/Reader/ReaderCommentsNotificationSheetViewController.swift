@@ -146,8 +146,8 @@ import WordPressFlux
         super.viewDidLoad()
         configureViews()
 
-        // prevent Notices from being shown while the bottom sheet is displayed.
-        ActionDispatcher.dispatch(NoticeAction.lock)
+        // prevent Notices from being shown while the bottom sheet is displayed in iPhone.
+        toggleNoticeLock(true)
     }
 
     override func viewDidLayoutSubviews() {
@@ -177,7 +177,7 @@ extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
     }
 
     func handleDismiss() {
-        ActionDispatcher.dispatch(NoticeAction.unlock)
+        toggleNoticeLock(false)
     }
 }
 
@@ -270,6 +270,15 @@ private extension ReaderCommentsNotificationSheetViewController {
             // `handleDismiss` multiple times should be fine.
             self.handleDismiss()
         }
+    }
+
+    func toggleNoticeLock(_ locked: Bool) {
+        // only enable locking/unlocking notices on iPhone. Notices should always be shown in iPad since it's displayed in a popover view.
+        guard WPDeviceIdentification.isiPhone() else {
+            return
+        }
+
+        ActionDispatcher.dispatch(locked ? NoticeAction.lock : NoticeAction.unlock)
     }
 }
 
