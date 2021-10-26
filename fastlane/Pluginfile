@@ -7,6 +7,9 @@ group :screenshots, optional: true do
 end
 
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 2.1'
+# Leaving this here to avoid typing to switch to a development version for
+# testing.
+# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: ''
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
