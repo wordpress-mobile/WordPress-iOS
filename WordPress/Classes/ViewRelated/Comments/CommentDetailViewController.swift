@@ -697,6 +697,7 @@ private extension CommentDetailViewController {
             return
         }
 
+        WPAnalytics.track(.commentSnackbarNext)
         delegate?.nextCommentSelected()
     }
 
