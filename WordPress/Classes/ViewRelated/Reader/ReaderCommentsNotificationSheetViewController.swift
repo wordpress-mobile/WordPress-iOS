@@ -193,6 +193,7 @@ private extension ReaderCommentsNotificationSheetViewController {
         static var switchContainerContentSpacing: CGFloat = 4
         static var switchLabelVerticalPadding: CGFloat = 6
         static var switchButtonTrailingPadding: CGFloat = 2
+        static var iPadAdditionalBottomPadding: CGFloat = 5
     }
 
     /// Returns the vertical padding outside the intrinsic height of the `containerStackView`, so the component is displayed properly.
@@ -205,7 +206,8 @@ private extension ReaderCommentsNotificationSheetViewController {
     /// Calculates the default top margin from the `BottomSheetViewController`, plus the bottom safe area inset.
     /// The 5pt is for an extra bottom padding on iPad, to make it look better.
     var additionalVerticalPadding: CGFloat {
-        WPDeviceIdentification.isiPad() ? 5 : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
+        WPDeviceIdentification.isiPad() ? Constants.iPadAdditionalBottomPadding
+            : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
     }
 
     func configureViews() {
