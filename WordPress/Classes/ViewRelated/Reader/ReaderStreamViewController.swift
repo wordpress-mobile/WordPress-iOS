@@ -369,8 +369,7 @@ import WordPressFlux
         }
 
         if isReaderDiscoverNudgeFlow {
-            isReaderDiscoverNudgeFlow = false
-            WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
+            resetReaderDiscoverNudgeFlow()
         }
 
         dismissNoNetworkAlert()
@@ -1249,7 +1248,6 @@ import WordPressFlux
                                                 delegate: postCellActions,
                                                 loggedInActionVisibility: .visible(enabled: isLoggedIn),
                                                 topicChipsDelegate: self,
-                                                commentActionDelegate: self,
                                                 displayTopics: displayTopics)
 
     }
@@ -1552,6 +1550,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             post.rendered = true
             WPAppAnalytics.track(.trainTracksRender, withProperties: railcar)
         }
+    }
+
+    func reloadReaderDiscoverNudgeFlow(at indexPath: IndexPath) {
+        resetReaderDiscoverNudgeFlow()
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
+    private func resetReaderDiscoverNudgeFlow() {
+        isReaderDiscoverNudgeFlow = false
+        WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -1969,19 +1977,5 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
     func didSelect(topic: String) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
-    }
-}
-
-extension ReaderStreamViewController: ReaderCommentActionDelegate {
-    func didTapComment(_ cell: ReaderPostCardCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else {
-            return
-        }
-
-        if isReaderDiscoverNudgeFlow {
-            isReaderDiscoverNudgeFlow = false
-            WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
-            tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-        }
     }
 }

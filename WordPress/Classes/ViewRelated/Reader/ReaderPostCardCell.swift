@@ -8,10 +8,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
     func heightDidChange()
 }
 
-protocol ReaderCommentActionDelegate: AnyObject {
-    func didTapComment(_ cell: ReaderPostCardCell)
-}
-
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
@@ -100,7 +96,6 @@ protocol ReaderCommentActionDelegate: AnyObject {
     }
 
     weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
-    weak var commentActionDelegate: ReaderCommentActionDelegate?
 
     var displayTopics: Bool = false
     var isP2Type: Bool = false
@@ -731,7 +726,6 @@ extension ReaderPostCardCell {
 
         switch tag {
         case .comment:
-            commentActionDelegate?.didTapComment(self)
             delegate?.readerCell(self, commentActionForProvider: contentProvider)
         case .like:
             delegate?.readerCell(self, likeActionForProvider: contentProvider)
