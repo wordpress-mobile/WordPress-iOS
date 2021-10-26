@@ -1,3 +1,7 @@
-- Mises à jour des blocs de contenu embarqué : les aperçus embarqués WordPress sont désormais disponibles ainsi que les intégrations de contenus Instagram et Vimeo. Pour certains médias, vous pouvez intégrer une URL, mais pas voir d’aperçu du contenu ; dans ce cas, le message « Aucun aperçu disponible » apparaîtra. Si vous ne parvenez pas à intégrer de média, vous verrez désormais une option « Réessayer » et vous aurez également la possibilité de convertir le média en lien.
+Nous avons simplifié le fonctionnement de l’éditeur de blocs. Il existe désormais des blocs de contenu embarqué dédiés pour YouTube, Twitter, WordPress et Vimeo, ce qui permet d’ajouter des médias très rapidement. Ces blocs se trouvent dans la vue du sélecteur de blocs. Vous pouvez même modifier les URL après les avoir sélectionnées.
 
-- Améliorations et correctifs variés : nous avons simplifié le menu Mon site, en remplaçant « Articles de blog » par « Articles » et « Pages du site » par « Pages ». (Le contenu de vos articles et pages n’est pas affecté, promis !) Nous avons également corrigé un bug qui empêchait de continuer une conversation par e-mail à partir des commentaires d’un article.
+Nous avons résolu un problème au niveau du bloc Galerie. Dorénavant, vos images seront bien ajoutées même si vous fermez l’article de blog pendant leur chargement.
+
+Toutefois, si vous rencontrez des problèmes, vous pouvez demander de l’aide encore plus facilement qu’auparavant. Vous pouvez le faire directement depuis l’écran de l’éditeur : il vous suffit d’appuyer sur le bouton de menu représenté par 3 points et de sélectionner « Aide et assistance », puis « Contacter l’assistance ».
+
+Enfin, nous avons résolu un problème au niveau de l’écran de notification, qui affichait parfois le mauvais avatar lorsque vous étiez mentionné dans un commentaire. Désormais, votre image s’affichera correctement.

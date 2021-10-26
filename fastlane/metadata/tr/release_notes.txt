@@ -1,5 +1,0 @@
-- Gömülü blok güncellemeleri: WordPress gömme önizlemelerinin yanı sıra Instagram ve Vimeo içeriği için de gömme işlevini etkinleştirdik. Bazı medyalarda bir URL'yi başarılı bir şekilde gömebilirsiniz ancak içeriği önizleyemezsiniz; bu durumlarda, "Önizleme yok" mesajını görürsünüz. Medyayı gömemediğiniz durumlarda, içeriği tekrar gömmek için artık bir “Yeniden Dene” seçeneği ve gömmek yerine bağlantıya dönüştürmek için de alternatif bir seçenek göreceksiniz.
-
-- Çeşitli iyileştirmeler: "Blog Gönderileri"ni "Gönderiler", "Site Sayfaları"nı "Sayfalar" olarak değiştirerek Sitem menünüzü modernleştirdik. (Bunun gönderiniz ve sayfa içeriğiniz üzerinde hiçbir etkisi olmayacak; söz veriyoruz!) Ayrıca artık uygulamanın Paylaşım Uzantısı'nı kullanarak bir sayfayı yayımlayabileceğinizi de fark edeceksiniz.
-
-- Hata düzeltmeleri: Okuyucu'da Kaydedilmiş gönderileri kaldırmanızı engelleyen bir sorunu, ayrıca bir gönderinin yorumları üzerinden bir konuşmayı e-postayla takip etmenizi engelleyen bir hatayı düzelttik.

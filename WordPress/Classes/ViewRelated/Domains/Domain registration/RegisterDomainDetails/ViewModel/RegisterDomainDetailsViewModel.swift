@@ -48,7 +48,7 @@ class RegisterDomainDetailsViewModel {
     var registerDomainDetailsService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()
 
     let domain: DomainSuggestion
-    let site: JetpackSiteRef
+    let siteID: Int
     let domainPurchasedCallback: ((String) -> Void)
 
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
@@ -68,8 +68,8 @@ class RegisterDomainDetailsViewModel {
         }
     }
 
-    init(site: JetpackSiteRef, domain: DomainSuggestion, domainPurchasedCallback: @escaping ((String) -> Void)) {
-        self.site = site
+    init(siteID: Int, domain: DomainSuggestion, domainPurchasedCallback: @escaping ((String) -> Void)) {
+        self.siteID = siteID
         self.domain = domain
         self.domainPurchasedCallback = domainPurchasedCallback
         manuallyTriggerValidation()
@@ -184,7 +184,7 @@ class RegisterDomainDetailsViewModel {
         let contactInformation = jsonRepresentation()
         let privacyEnabled = privacySectionSelectedItem() == CellIndex.PrivacyProtection.privately
         let registerDomainService = registerDomainDetailsService
-        let siteID = site.siteID
+        let siteID = siteID
         let onChange = onChange
 
         isLoading = true
@@ -486,7 +486,7 @@ extension RegisterDomainDetailsViewModel {
                     return
                 }
 
-                if response.success {
+                if response.success && !response.hasMessages {
                     strongSelf.clearValidationErrors()
                     strongSelf.onChange?(.remoteValidationFinished)
                     successCompletion()
@@ -580,8 +580,8 @@ extension ValidateDomainContactInformationResponse.Messages {
             return firstName?.first
         case .lastName:
             return lastName?.first
-        default:
-            return nil
+        case .organization:
+            return organization?.first
         }
     }
 

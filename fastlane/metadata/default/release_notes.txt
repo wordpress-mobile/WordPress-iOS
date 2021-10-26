@@ -1,5 +1,0 @@
-- Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.
-
-- Various improvements: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) You will also notice that you can now publish a page via the app’s Share Extension feature.
-
-- Bug fixes: We addressed an issue in the Reader that prevented you from removing Saved posts, and also fixed a bug that prevented you from following a conversation by email through a post’s comments.

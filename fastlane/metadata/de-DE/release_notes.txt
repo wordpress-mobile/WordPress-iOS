@@ -1,5 +1,0 @@
-- Updates am Embed-Block: Wir haben eine Vorschau für eingebettete Inhalte in WordPress hinzugefügt und ermöglichen jetzt das Einbetten von Instagram- und Vimeo-Inhalten. Bei manchen Medien kannst du eine URL einbetten, aber keine Vorschau anzeigen. In solchen Fällen wird die Meldung „Keine Vorschau erhältlich“ angezeigt. Falls sich Medien nicht einbetten lassen, kannst du mit der Option „Erneut versuchen“ die Inhalte noch einmal einbetten. Alternativ kannst du sie in einen Link konvertieren.
-
-- Verschiedene Verbesserungen: Wir haben im „Meine Website“-Menü „Blogbeiträge“ zu „Beiträge“ und „Website-Seiten“ zu „Seiten“ vereinheitlicht. (Doch keine Sorge, das beeinträchtigt die Inhalte deiner Beiträge und Seiten nicht!) Und du kannst jetzt über die Teilen-Erweiterung der App Seiten veröffentlichen.
-
-- Fehlerbehebungen: Wir haben einen Fehler im Reader behoben, aufgrund dessen gespeicherte Beiträge nicht entfernt werden konnten, sowie einen weiteren, der verhinderte, dass du einer E-Mail-Unterhaltung über die Kommentare eines Beitrags folgen konntest.

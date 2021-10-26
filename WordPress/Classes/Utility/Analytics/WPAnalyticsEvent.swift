@@ -90,6 +90,19 @@ import Foundation
     case readerRelatedPostFromOtherSiteClicked
     case readerRelatedPostFromSameSiteClicked
 
+    // Stats - Empty Stats nudges
+    case statsPublicizeNudgeShown
+    case statsPublicizeNudgeTapped
+    case statsPublicizeNudgeDismissed
+    case statsPublicizeNudgeCompleted
+    case statsBloggingRemindersNudgeShown
+    case statsBloggingRemindersNudgeTapped
+    case statsBloggingRemindersNudgeDismissed
+    case statsBloggingRemindersNudgeCompleted
+
+    // Stats - Customize card
+    case statsCustomizeInsightsShown
+
     // What's New - Feature announcements
     case featureAnnouncementShown
     case featureAnnouncementButtonTapped
@@ -335,6 +348,28 @@ import Foundation
             return "reader_related_post_from_other_site_clicked"
         case .readerRelatedPostFromSameSiteClicked:
             return "reader_related_post_from_same_site_clicked"
+
+        // Stats - Empty Stats nudges
+        case .statsPublicizeNudgeShown:
+            return "stats_publicize_nudge_shown"
+        case .statsPublicizeNudgeTapped:
+            return "stats_publicize_nudge_tapped"
+        case .statsPublicizeNudgeDismissed:
+            return "stats_publicize_nudge_dismissed"
+        case .statsPublicizeNudgeCompleted:
+            return "stats_publicize_nudge_completed"
+        case .statsBloggingRemindersNudgeShown:
+            return "stats_blogging_reminders_nudge_shown"
+        case .statsBloggingRemindersNudgeTapped:
+            return "stats_blogging_reminders_nudge_tapped"
+        case .statsBloggingRemindersNudgeDismissed:
+            return "stats_blogging_reminders_nudge_dismissed"
+        case .statsBloggingRemindersNudgeCompleted:
+            return "stats_blogging_reminders_nudge_completed"
+
+        // Stats - Customize card
+        case .statsCustomizeInsightsShown:
+            return "stats_customize_insights_shown"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:

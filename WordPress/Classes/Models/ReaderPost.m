@@ -58,6 +58,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic isSeenSupported;
 @dynamic isSubscribedComments;
 @dynamic canSubscribeComments;
+@dynamic receivesCommentNotifications;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
@@ -129,6 +130,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isSeenSupported = remotePost.isSeenSupported;
     post.isSubscribedComments = remotePost.isSubscribedComments;
     post.canSubscribeComments = remotePost.canSubscribeComments;
+    post.receivesCommentNotifications = remotePost.receivesCommentNotifications;
 
     if (existing && [topic isKindOfClass:[ReaderSearchTopic class]]) {
         // Failsafe.  The `read/search` endpoint might return the same post on
