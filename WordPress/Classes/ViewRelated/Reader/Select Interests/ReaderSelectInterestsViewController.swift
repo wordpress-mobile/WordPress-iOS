@@ -245,8 +245,6 @@ class ReaderSelectInterestsViewController: UIViewController {
     }
 
     @objc private func saveSelectedInterests() {
-        spotlightIsShown = false
-
         guard !dataSource.selectedInterests.isEmpty else {
             self.didSaveInterests?([])
             return
@@ -341,6 +339,11 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        if spotlightIsShown {
+            spotlightIsShown = false
+        }
+
         dataSource.interest(for: indexPath.row).toggleSelected()
         updateNextButtonState()
 
