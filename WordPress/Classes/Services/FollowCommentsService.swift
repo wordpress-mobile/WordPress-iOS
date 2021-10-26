@@ -113,6 +113,9 @@ class FollowCommentsService: NSObject {
             ContextManager.sharedInstance().saveContextAndWait(self.context)
             success()
 
+            WPAnalytics.trackReader(.readerToggleCommentNotifications,
+                                    properties: [WPAppAnalyticsKeyBlogID: self.siteID, AnalyticsKeys.enabled: isNotificationsEnabled])
+
         } failure: { error in
             DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
             failure(error)
@@ -122,5 +125,9 @@ class FollowCommentsService: NSObject {
     private enum FollowAction: String {
         case followed
         case unfollowed
+    }
+
+    private struct AnalyticsKeys {
+        static let enabled = "notifications_enabled"
     }
 }

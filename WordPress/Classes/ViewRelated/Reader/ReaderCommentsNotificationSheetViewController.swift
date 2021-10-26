@@ -12,16 +12,13 @@ import WordPressFlux
 
     private weak var delegate: ReaderCommentsNotificationSheetDelegate?
 
-    /// used to cache the "correct" height for the ContainerStackView.
-    private var contentHeight: CGFloat = .zero
-
     private var isNotificationEnabled: Bool {
         didSet {
             guard oldValue != isNotificationEnabled else {
                 return
             }
 
-            updateViews()
+            updateViews(updatesContentSize: true)
         }
     }
 
@@ -146,8 +143,8 @@ import WordPressFlux
         super.viewDidLoad()
         configureViews()
 
-        // prevent Notices from being shown while the bottom sheet is displayed.
-        ActionDispatcher.dispatch(NoticeAction.lock)
+        // prevent Notices from being shown while the bottom sheet is displayed in iPhone.
+        toggleNoticeLock(true)
     }
 
     override func viewDidLayoutSubviews() {
@@ -156,7 +153,7 @@ import WordPressFlux
     }
 }
 
-// MARK: Drawer Presentable
+// MARK: - Drawer Presentable
 
 extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
@@ -177,7 +174,7 @@ extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
     }
 
     func handleDismiss() {
-        ActionDispatcher.dispatch(NoticeAction.unlock)
+        toggleNoticeLock(false)
     }
 }
 
@@ -193,6 +190,7 @@ private extension ReaderCommentsNotificationSheetViewController {
         static var switchContainerContentSpacing: CGFloat = 4
         static var switchLabelVerticalPadding: CGFloat = 6
         static var switchButtonTrailingPadding: CGFloat = 2
+        static var iPadAdditionalBottomPadding: CGFloat = 5
     }
 
     /// Returns the vertical padding outside the intrinsic height of the `containerStackView`, so the component is displayed properly.
@@ -205,31 +203,48 @@ private extension ReaderCommentsNotificationSheetViewController {
     /// Calculates the default top margin from the `BottomSheetViewController`, plus the bottom safe area inset.
     /// The 5pt is for an extra bottom padding on iPad, to make it look better.
     var additionalVerticalPadding: CGFloat {
-        WPDeviceIdentification.isiPad() ? 5 : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
+        WPDeviceIdentification.isiPad() ? Constants.iPadAdditionalBottomPadding
+            : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
     }
 
     func configureViews() {
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView, insets: Constants.contentInsets)
 
-        updateViews()
+        // don't update the content size at this state, because the layout pass has not completed.
+        // doing so will cause the height to be incorrectly assigned to the preferredContentSize.
+        updateViews(updatesContentSize: false)
     }
 
-    func updateViews() {
+    func updateViews(updatesContentSize: Bool) {
         descriptionLabel.setText(isNotificationEnabled ? .descriptionTextForEnabledNotifications : .descriptionTextForDisabledNotifications)
         switchButton.isOn = isNotificationEnabled
 
-        // readjust drawer height on content size changes.
-        if let drawer = presentedVC {
+        if updatesContentSize {
             view.layoutIfNeeded()
             updatePreferredContentSize()
+        }
+
+        // readjust drawer height on content size changes.
+        if let drawer = presentedVC {
             drawer.transition(to: drawer.currentPosition)
         }
     }
 
     func updatePreferredContentSize() {
-        preferredContentSize = CGSize(width: preferredContentSize.width, height: containerStackView.frame.height + verticalPadding)
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: scrollView.contentSize.height + verticalPadding)
     }
+
+    func toggleNoticeLock(_ locked: Bool) {
+        // only enable locking/unlocking notices on iPhone. Notices should always be shown in iPad since it's displayed in a popover view.
+        guard WPDeviceIdentification.isiPhone() else {
+            return
+        }
+
+        ActionDispatcher.dispatch(locked ? NoticeAction.lock : NoticeAction.unlock)
+    }
+
+    // MARK: Actions
 
     func switchValueChanged(_ sender: UISwitch) {
         // nil delegate is most likely an implementation bug. For now, revert the changes on the switch button when this happens.
