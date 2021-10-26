@@ -1,4 +1,4 @@
-VERSION_SHORT=18.3.1
+VERSION_SHORT=18.4
 
 // Internal long version example: VERSION_LONG=9.9.0.20180423
 //
@@ -6,4 +6,4 @@ VERSION_SHORT=18.3.1
 // build for the day so I bumped it to 10/02. On 10/04 we'll code freeze 18.4
 // and this should be the very last build for 18.3, so we should be fine.
 // – Gio
-VERSION_LONG=18.3.1.20211007
+VERSION_LONG=18.4.0.20211015

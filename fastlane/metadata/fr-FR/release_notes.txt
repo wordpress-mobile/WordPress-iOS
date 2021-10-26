@@ -1,5 +1,7 @@
-- Mises à jour des blocs de contenu embarqué : les aperçus embarqués WordPress sont désormais disponibles ainsi que les intégrations de contenus Instagram et Vimeo. Pour certains médias, vous pouvez intégrer une URL, mais pas voir d’aperçu du contenu ; dans ce cas, le message « Aucun aperçu disponible » apparaîtra. Si vous ne parvenez pas à intégrer de média, vous verrez désormais une option « Réessayer » et vous aurez également la possibilité de convertir le média en lien.
+Nous avons rendu la vie plus facile dans l’éditeur de blocs ! Il existe des blocs d’intégration dédiés pour YouTube, Twitter, WordPress et Vimeo, ce qui rend l’ajout de médias super rapide. Vous pouvez les trouver dans la vue du sélecteur de blocs. Les URL peuvent même être modifiées après que vous les ayez sélectionnées.
 
-- Améliorations variées : nous avons simplifié le menu Mon site, en remplaçant « Articles de blog » par « Articles » et « Pages du site » par « Pages ». (Le contenu de vos articles et pages n’est pas affecté, promis !) Vous remarquez également que vous pouvez désormais publier une page à partir de l’extension Partage de l’application.
+Nous avons corrigé un problème avec le bloc galerie, donc maintenant vos images seront toujours ajoutées si vous fermez la publication pendant qu’elles sont en train de télécharger.
 
-- Correctifs : nous avons résolu un problème dans le Lecteur qui empêchait la suppression des articles enregistrés et corrigé un bug qui empêchait de continuer une conversation par e-mail à partir des commentaires d’un article.
+Mais, si vous avez encore des problèmes, demander de l’aide est encore plus facile. Vous pouvez le faire directement dans l’écran de l’éditeur : Il suffit de toucher le bouton de menu à 3 points, de sélectionner « Aide et assistance », puis « Contacter l’assistance »
+
+Enfin, nous avons corrigé un problème où l’écran de notifications affichait parfois le mauvais avatar lorsque vous étiez mentionné dans un commentaire. L’image que vous avez choisie s’affichera désormais fièrement !

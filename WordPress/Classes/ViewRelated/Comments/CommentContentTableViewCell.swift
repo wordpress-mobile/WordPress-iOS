@@ -16,6 +16,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var likeButtonAction: (() -> Void)? = nil
 
+    var contentLinkTapAction: ((URL) -> Void)? = nil
+
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
@@ -37,6 +39,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
+
+    @IBOutlet private weak var moderationBar: CommentModerationBar!
+
+    // MARK: Private Properties
 
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
@@ -61,6 +67,34 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
+
+    // MARK: Visibility Control
+
+    /// Controls the visibility of the reaction bar view. Setting this to false disables Reply and Likes functionality.
+    private var isReactionEnabled: Bool = false {
+        didSet {
+            reactionBarView.isHidden = !isReactionEnabled
+        }
+    }
+
+    private var isCommentLikesEnabled: Bool = false {
+        didSet {
+            likeButton.isHidden = !isCommentLikesEnabled
+        }
+    }
+
+    private var isAccessoryButtonEnabled: Bool = false {
+        didSet {
+            accessoryButton.isHidden = !isAccessoryButtonEnabled
+        }
+    }
+
+    /// Controls the visibility of the moderation bar view.
+    private var isModerationEnabled: Bool = false {
+        didSet {
+            moderationBar.isHidden = !isModerationEnabled
+        }
+    }
 
     // MARK: Lifecycle
 
@@ -93,12 +127,20 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
-        // configure comment content
+        // Configure feature availability.
+        isReactionEnabled = !comment.isReadOnly()
+        isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
+        isAccessoryButtonEnabled = comment.isApproved()
+        isModerationEnabled = comment.canModerate
+
+        if isModerationEnabled {
+            moderationBar.comment = comment
+        }
+
+        // Configure comment content.
         self.onContentLoaded = onContentLoaded
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
-
-        // TODO: Configure component visibility
     }
 }
 
@@ -131,13 +173,17 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        // TODO: Offload the decision making to the delegate.
-        // For now, all navigation requests will be rejected (except for loading local files).
         switch navigationAction.navigationType {
         case .other:
+            // allow local file requests.
             decisionHandler(.allow)
         default:
             decisionHandler(.cancel)
+            guard let destinationURL = navigationAction.request.url,
+                  let linkTapAction = contentLinkTapAction else {
+                      return
+                  }
+            linkTapAction(destinationURL)
         }
     }
 }
@@ -180,10 +226,12 @@ private extension CommentContentTableViewCell {
         replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         replyButton?.setImage(Style.replyIconImage, for: .normal)
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
+        replyButton?.flipInsetsForRightToLeftLayoutDirection()
 
         likeButton?.titleLabel?.font = Style.reactionButtonFont
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton?.flipInsetsForRightToLeftLayoutDirection()
         updateLikeButton(liked: false, numberOfLikes: 0)
     }
 

@@ -356,6 +356,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [self preloadDomains];
     [self preloadMetadata];
 
     if (self.blog.account && !self.blog.account.userID) {
@@ -1168,7 +1169,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.headerView.blog = blog;
     self.blog = blog;
-    
+    [self preloadDomains];
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
     [self preloadMetadata];
@@ -1574,6 +1575,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // only preload on wifi
     if (isOnWifi) {
+        [self preloadDomains];
         [self preloadPosts];
         [self preloadPages];
         [self preloadComments];
@@ -1676,6 +1678,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         }
         sectionCount++;
     }
+}
+
+- (void)preloadDomains
+{
+    __weak __typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        DomainsServiceAdapter *service = [[DomainsServiceAdapter alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        if (weakSelf.blog.dotComID != nil) {
+            NSInteger siteID = [weakSelf.blog.dotComID integerValue];
+            [service refreshDomainsFor:siteID completion:^(BOOL success) { }];
+        }
+    });
 }
 
 - (void)showCommentsFromSource:(BlogDetailsNavigationSource)source

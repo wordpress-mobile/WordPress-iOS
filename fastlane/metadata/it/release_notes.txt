@@ -1,5 +1,7 @@
-- Aggiornamenti al blocco Incorporamenti: abbiamo abilitato le anteprime degli incorporamenti di WordPress, nonché gli incorporamenti per i contenuti di Instagram e Vimeo. Per alcuni elementi multimediali, puoi incorporare correttamente un URL, ma non puoi visualizzare in anteprima il contenuto; in alcune istanze, visualizzerai un messaggio "Nessuna anteprima disponibile". Nei casi in cui non sei in grado di incorporare elementi multimediali, visualizzerai ora un'opzione "Riprova" per incorporare nuovamente il contenuto e un'opzione alternativa per convertirlo invece in un link.
+Abbiamo semplificato il lavoro con l'editor a blocchi. Esistono blocchi incorporati dedicati per YouTube, Twitter, WordPress e Vimeo, che permettono di aggiungere gli elementi multimediali in modo molto più rapido: puoi trovarli nella visualizzazione del selezionatore di blocchi. Gli URL possono perfino essere modificati dopo essere stati selezionati.
 
-- Vari miglioramenti: abbiamo semplificato il menu Il mio sito, modificando "Articoli del blog" con "Articoli" e "Pagine del sito" con "Pagine". (Ciò non ha interessato i contenuti del tuo articolo e della tua pagina, promesso!) Noterai anche che ora puoi pubblicare una pagina tramite la funzionalità Condividi estensione dell'app.
+Abbiamo risolto un problema con il blocco Galleria, quindi ora le tue immagini verranno comunque aggiunte anche se chiuderai un articolo durante il loro caricamento.
 
-- Correzioni di bug: abbiamo risolto un problema nel Reader che ti impediva di rimuovere Articoli salvati e abbiamo anche corretto un bug che ti impediva di seguire una conversazione via e-mail per i commenti di un articolo.
+Se, però, riscontri ancora problemi, chiedere aiuto è perfino più facile. Puoi farlo direttamente dall'interno della schermata dell'editor: tocca semplicemente il pulsante del menu con tre puntini, seleziona "Guida e supporto", quindi "Contatta il supporto":
+
+Infine, abbiamo risolto un problema a causa del quale la schermata delle notifiche mostrava occasionalmente l'avatar sbagliato quando venivi menzionato in un commento: l'immagine scelta sarà ora orgogliosamente visualizzata.
