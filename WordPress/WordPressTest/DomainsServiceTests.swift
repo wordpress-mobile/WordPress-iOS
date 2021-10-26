@@ -69,9 +69,9 @@ class DomainsServiceTests: XCTestCase {
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
         let service = DomainsService(managedObjectContext: context, remote: remote)
-        service.refreshDomainsForSite(testBlog.dotComID!.intValue, completion: { success in
+        service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
             expect.fulfill()
-        })
+        }
 
         waitForExpectations(timeout: 2, handler: nil)
     }

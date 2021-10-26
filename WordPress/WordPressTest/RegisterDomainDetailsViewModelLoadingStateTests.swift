@@ -117,9 +117,12 @@ class RegisterDomainDetailsViewModelLoadingStateTests: XCTestCase {
         viewModel.onChange = { [weak self] change in
             switch change {
             case .prefillError:
+                XCTFail()
+            case .domainIsPrimary:
+                XCTFail()
+            case .registerSucceeded:
                 XCTAssert(self?.viewModel.isLoading == false)
                 waitExpectation.fulfill()
-                return
             default:
                 break
             }
