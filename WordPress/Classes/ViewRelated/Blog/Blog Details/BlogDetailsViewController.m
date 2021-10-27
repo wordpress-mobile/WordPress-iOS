@@ -1168,7 +1168,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.headerView.blog = blog;
     self.blog = blog;
-    
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
     [self preloadMetadata];
@@ -1731,7 +1730,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPlugins
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
-    PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
+    PluginDirectoryViewController *controller = [self makePluginDirectoryViewControllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
@@ -1781,7 +1780,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
 
     } else {
-        controller = [[SharingViewController alloc] initWithBlog:self.blog];
+        controller = [[SharingViewController alloc] initWithBlog:self.blog delegate: nil];
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];

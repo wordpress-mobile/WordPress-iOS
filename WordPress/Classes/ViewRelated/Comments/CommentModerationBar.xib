@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="approvedButton" destination="LN1-7X-UXx" id="7pK-0f-GwO"/>
+                <outlet property="buttonStackViewLeadingConstraint" destination="zch-9z-raG" id="mVf-v5-lsa"/>
+                <outlet property="buttonStackViewTrailingConstraint" destination="aYU-Kb-BmX" id="SY8-T8-tH8"/>
+                <outlet property="contentView" destination="fad-ek-phg" id="hH2-yh-b2Q"/>
+                <outlet property="firstDivider" destination="hDr-cL-ID4" id="C4l-gw-gmt"/>
+                <outlet property="pendingButton" destination="2wQ-QH-nFG" id="fDp-PC-lKd"/>
+                <outlet property="secondDivider" destination="FN5-XD-9q2" id="aYi-f6-Lhj"/>
+                <outlet property="spamButton" destination="amj-pE-B3g" id="PdL-iS-0X2"/>
+                <outlet property="thirdDivider" destination="FJo-JA-CxT" id="Tts-NM-oCD"/>
+                <outlet property="trashButton" destination="Wss-Fs-Ja4" id="Lmy-GK-01S"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="83"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fad-ek-phg" userLabel="Content View">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="gwt-S6-iFM" userLabel="Divider Stack View">
+                            <rect key="frame" x="4" y="9" width="406" height="45"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7f8-jD-YJu" userLabel="Spacer">
+                                    <rect key="frame" x="0.0" y="0.0" width="1" height="45"/>
+                                    <viewLayoutGuide key="safeArea" id="dY1-Oo-Pki"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="1" id="Gwc-JP-ez1"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDr-cL-ID4" userLabel="First Divider">
+                                    <rect key="frame" x="101.5" y="0.0" width="1" height="45"/>
+                                    <viewLayoutGuide key="safeArea" id="L22-49-ute"/>
+                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="1" id="2ZI-sY-eMs"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FN5-XD-9q2" userLabel="Second Divider">
+                                    <rect key="frame" x="202.5" y="0.0" width="1" height="45"/>
+                                    <viewLayoutGuide key="safeArea" id="gqa-s3-Sh0"/>
+                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="1" id="Q9A-qW-yjr"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FJo-JA-CxT" userLabel="Third Divider">
+                                    <rect key="frame" x="304" y="0.0" width="1" height="45"/>
+                                    <viewLayoutGuide key="safeArea" id="Pw0-Rc-zvI"/>
+                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="1" id="uRU-KX-m19"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NlS-jo-IAA" userLabel="Spacer">
+                                    <rect key="frame" x="405" y="0.0" width="1" height="45"/>
+                                    <viewLayoutGuide key="safeArea" id="fBa-Mj-mfh"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="1" id="fZ3-v1-IfO"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="FN5-XD-9q2" firstAttribute="height" secondItem="hDr-cL-ID4" secondAttribute="height" id="ELx-OJ-EQq"/>
+                                <constraint firstItem="FJo-JA-CxT" firstAttribute="height" secondItem="hDr-cL-ID4" secondAttribute="height" id="rjW-WM-2pl"/>
+                            </constraints>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="au2-Qc-dqY" userLabel="Button Stack View">
+                            <rect key="frame" x="4" y="4" width="406" height="55"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wQ-QH-nFG">
+                                    <rect key="frame" x="0.0" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Pending">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="tray" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="pendingTapped" destination="-1" eventType="touchUpInside" id="abh-IY-oNX"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LN1-7X-UXx">
+                                    <rect key="frame" x="101.5" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Approved">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="checkmark.circle" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="approvedTapped" destination="-1" eventType="touchUpInside" id="B2l-HC-xk7"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amj-pE-B3g">
+                                    <rect key="frame" x="203" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Spam">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="exclamationmark.octagon" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="spamTapped" destination="-1" eventType="touchUpInside" id="kJJ-NH-Awv"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wss-Fs-Ja4">
+                                    <rect key="frame" x="304.5" y="0.0" width="101.5" height="55"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Trash">
+                                        <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <imageReference key="image" image="trash" catalog="system" symbolScale="large"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="trashTapped" destination="-1" eventType="touchUpInside" id="6fP-BE-5rs"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="au2-Qc-dqY" secondAttribute="bottom" constant="4" id="408-DG-9QK"/>
+                        <constraint firstItem="gwt-S6-iFM" firstAttribute="width" secondItem="au2-Qc-dqY" secondAttribute="width" id="5ce-k4-say"/>
+                        <constraint firstItem="gwt-S6-iFM" firstAttribute="trailing" secondItem="au2-Qc-dqY" secondAttribute="trailing" id="5nO-sm-GFn"/>
+                        <constraint firstItem="gwt-S6-iFM" firstAttribute="height" secondItem="au2-Qc-dqY" secondAttribute="height" constant="-10" id="XqC-B8-Z1K"/>
+                        <constraint firstAttribute="trailing" secondItem="au2-Qc-dqY" secondAttribute="trailing" constant="4" id="aYU-Kb-BmX"/>
+                        <constraint firstItem="gwt-S6-iFM" firstAttribute="leading" secondItem="au2-Qc-dqY" secondAttribute="leading" id="ehD-0z-ptY"/>
+                        <constraint firstItem="au2-Qc-dqY" firstAttribute="top" secondItem="fad-ek-phg" secondAttribute="top" constant="4" id="f8r-28-sxU"/>
+                        <constraint firstItem="au2-Qc-dqY" firstAttribute="centerX" secondItem="fad-ek-phg" secondAttribute="centerX" id="oPi-KA-gGJ"/>
+                        <constraint firstItem="gwt-S6-iFM" firstAttribute="centerY" secondItem="au2-Qc-dqY" secondAttribute="centerY" id="oTK-D0-x7I"/>
+                        <constraint firstItem="au2-Qc-dqY" firstAttribute="leading" secondItem="fad-ek-phg" secondAttribute="leading" constant="4" id="zch-9z-raG"/>
+                    </constraints>
+                    <variation key="widthClass=regular">
+                        <mask key="constraints">
+                            <exclude reference="aYU-Kb-BmX"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="fad-ek-phg" secondAttribute="bottom" constant="20" id="DUL-7E-nb8"/>
+                <constraint firstItem="fad-ek-phg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Rym-gJ-1VU"/>
+                <constraint firstAttribute="trailing" secondItem="fad-ek-phg" secondAttribute="trailing" id="YQ9-qW-sxc"/>
+                <constraint firstItem="fad-ek-phg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cfm-Ts-2j4"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="131.8840579710145" y="-130.24553571428572"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="checkmark.circle" catalog="system" width="128" height="121"/>
+        <image name="exclamationmark.octagon" catalog="system" width="128" height="112"/>
+        <image name="trash" catalog="system" width="121" height="128"/>
+        <image name="tray" catalog="system" width="128" height="88"/>
+    </resources>
+</document>

@@ -10,6 +10,10 @@ enum RegisterDomainDetails {
             "Please enter a valid Last Name",
             comment: "Register Domain - Domain contact information validation error message for an input field"
         )
+        static let validationErrorOrganization = NSLocalizedString(
+            "Please enter a valid Organization",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
         static let validationErrorEmail = NSLocalizedString(
             "Please enter a valid Email",
             comment: "Register Domain - Domain contact information validation error message for an input field"

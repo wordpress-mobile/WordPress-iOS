@@ -1,18 +1,18 @@
+import ScreenObject
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
 
-private struct ElementStringIDs {
-    static let emailSignupButton = "Sign up with Email Button"
-}
+public class WelcomeScreenSignupComponent: ScreenObject {
 
-public class WelcomeScreenSignupComponent: BaseScreen {
-    let emailSignupButton: XCUIElement
+    private let emailSignupButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Sign up with Email Button"]
+    }
 
-    init() {
-        emailSignupButton = XCUIApplication().buttons[ElementStringIDs.emailSignupButton]
+    var emailSignupButton: XCUIElement { emailSignupButtonGetter(app) }
 
-        super.init(element: emailSignupButton)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [emailSignupButtonGetter], app: app)
     }
 
     public func selectEmailSignup() -> SignupEmailScreen {
