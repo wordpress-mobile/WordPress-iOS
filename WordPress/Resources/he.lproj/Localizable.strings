@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "נדרש חיבור פעיל לאינטרנט כדי להציג את ההיסטוריה";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "אירעה שגיאה במהלך סגירת החשבון.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "אירעה שגיאה בעת יצירת התפריט.";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "אתר זה עדיין לא פרסם דבר. כדאי לנסות שוב מאוחר יותר.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו חיובים שלא שולמו.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו רכישות פעילות.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו מינויים פעילים.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "ייכלל בציוצים שאנשים משתפים באמצעות הלחצן 'טוויטר'.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "להוסיף תמונות או סרטוני וידאו לפוסטים.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "לסגירת חשבון זה כעת, עליך לפנות לצוות התמיכה שלנו.";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "הכול מעודכן!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "אין לך הרשאה לסגור את החשבון הזה.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "ביצעת שינויים שלא נשמרו בפוסט הזה";

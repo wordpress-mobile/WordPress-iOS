@@ -1,7 +1,7 @@
-Tornamos o uso do editor de blocos ainda mais fácil! Na visualização do seletor de blocos, você encontra blocos de mídia incorporada para YouTube, Twitter, WordPress e Vimeo, o que acelera bastante a inclusão de mídia. As URLs podem até ser editadas depois de você selecioná-las.
+Com esta atualização, ficou ainda mais fácil incorporar conteúdo externo aos seus sites! Apresentamos os novos blocos de mídia incorporada dedicados para Facebook, Instagram, Loom e SmartFrame. Além disso, o editor detecta automaticamente as URLs incorporáveis que você cola em um parágrafo vazio. Junto com essas funcionalidades, outra novidade é a correção de um erro que impedia as URLs incorporadas de serem editadas e o ajuste da visualização cortada para que você veja sempre o todo o conteúdo.
 
-Além disso, corrigimos um erro no bloco de galeria para que as imagens continuem sendo adicionadas se você fechar o post durante o upload.
+Falando em blocos, agora você pode personalizar o texto e a cor de fundo nos blocos de citação destacada e pré-formatado.
 
-Mas se você ainda estiver tendo problemas, solicitar ajuda é ainda mais fácil. Você pode fazer isso no próprio editor: basta tocar no botão de três pontos, selecionar "Ajuda e suporte" e tocar em "Contatar o suporte".
+Precisa de ajuda para atrair mais leitores? As novas funções Lembrete de publicação e Publicize ajudam você a manter um cronograma consistente de publicação.
 
-Por último, corrigimos um erro que fazia a tela de notificação mostrar o avatar errado às vezes quando você era mencionado em um comentário. Você escolheu a imagem e ela será exibida!
+Por fim, aprimoramos a compatibilidade com tamanhos de texto maiores na escolha de um layout de página, corrigimos a lista de comentários no site, que não estava atualizando em certas situações, e aperfeiçoamos o cabeçalho de pré-publicação no fim da página.

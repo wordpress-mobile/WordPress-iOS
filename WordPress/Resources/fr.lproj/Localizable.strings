@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-21 22:04:35+0000 */
+/* Translation-Revision-Date: 2021-10-23 21:16:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Une connexion Internet active est nécessaire pour afficher l’historique";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Une erreur est survenue lors de la clôture du compte.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Un erreur est survenue lors de la création du menu.";
 
@@ -936,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "Partagez automatiquement les nouveaux articles sur vos comptes de réseaux sociaux.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Partagez automatiquement les nouveaux articles sur vos médias sociaux pour attirer ce public sur votre site.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Mises à jour automatiques";
@@ -1533,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "Les « J'aime » du commentaire";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "Commentaire approuvé.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "Commentaire supprimé.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Le commentaire a été supprimé";
@@ -1545,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "Le commentaire a été marqué comme indésirable.";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "Commentaire marqué comme indésirable.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "Commentaire déplacé dans la corbeille.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "Commentaire sur";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "Commentaire mis en attente.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1679,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "Connectez un autre site";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "Connecter d’autres réseaux";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Connectez-vous pour partager automatiquement vos articles sur %@";
@@ -1965,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "Créer un fichier téléchargeable";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "Embarquer un contenu";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "Créer un lien";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Créez votre propre tableau de bord personnalisé et choisissez quel rapport afficher. Concentrez-vous sur les données qui vous intéressent le plus.";
@@ -2306,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "Domaines";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "Les domaines achetés sur ce site redirigeront vers %@";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "Les domaines achetés sur ce site redirigeront les utilisateurs vers";
@@ -2521,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "Modifier les nouveaux articles et pages avec le nouvel éditeur de block.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "Modifier les rappels";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Modifier les boutons de partage";
@@ -2628,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "Activer";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "Activer Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Activer le démarrage rapide pour le site";
@@ -2727,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "Erreur lors de l’approbation du commentaire";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "Erreur lors de l’approbation du commentaire.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2740,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "Erreur lors de la suppression du commentaire";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "Erreur lors de la suppression du commentaire.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Erreur lors de la désactivation des mises à jour automatiques pour %@.";
@@ -2770,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "Erreur lors du marquage du commentaire comme indésirable";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "Erreur lors du marquage du commentaire comme indésirable.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "Erreur de déplacement du commentaire vers la corbeille.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Une erreur est survenue\npendant le chargement";
@@ -2809,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "L’envoi de l’e-mail de vérification a échoué. Vérifiez votre connexion et essayez à nouveau.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "Erreur de mise en attente d’un commentaire.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Erreur lors de la désapprobation du commentaire";
@@ -3133,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "Bibliothèque de photos gratuites";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "Gratuit la première année ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Libérez de l’espace de stockage sur cet appareil en supprimant des fichiers multimédias temporaires. Cela n’aura aucune incidence sur le support de votre site.";
@@ -3499,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "Décrivez votre site en quelques mots.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Pour partager vos articles publiés sur vos réseaux sociaux, vous devez activer le module Publicize.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Inactive";
@@ -3738,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "Continuer d'écrire";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "Continuez à bloguer et revenez plus tard voir les visiteurs qui arrivent sur votre site.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Surveillez les performances de votre site.";
@@ -5103,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Veuillez saisir un nom de famille valide";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "Veuillez saisir une Organisation correcte";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Veuillez saisir un code postal valide";
@@ -5302,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "Calendrier des publications";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "La publication régulière d’articles peut vous ramener plus de lecteurs. Les rappels vous aident à rester sur la bonne voie.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Publier régulièrement peut aider à fidéliser vos lecteurs et attirer de nouveaux visiteurs sur votre site.";
@@ -6148,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "Sélectionnez une mise en page";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "Sélectionner un domaine";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Sélectionner un média.";
@@ -6266,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "Réglage de Jetpack";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "Définir vos rappels de blog";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Définissez vos rappels de blog les jours où vous souhaitez publier.";
@@ -6342,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "Erreur de partage";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "Le partagé est configuré !";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Afficher l'en-tête";
@@ -7040,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "Ce média n’a pas pu être ajouté à la médiathèque.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "Le module n’a pas pu être activé.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Le nombre d’articles à afficher par page.";
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Ce site n'a rien de publié pour le moment. Veuillez réessayer plus tard.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Ce compte utilisateur ne peut pas être clôturé s’il y a des contestations de paiement non résolues.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Impossible de clôturer ce compte utilisateur tant qu’il bénéficie d’achats activés.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Impossible de clôturer ce compte utilisateur tant qu’il bénéficie d’abonnements en cours.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Cela sera inclus dans les tweets quand les visiteurs feront un partage avec le bouton Twitter.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Pour ajouter des photos ou des vidéos à vos articles.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "Pour fermer ce compte maintenant, contactez notre équipe d’assistance.";
 
 /* Instructions for alert asking for email and name. */
@@ -8038,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "Voir plus";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "vue sur votre site jusqu’à présent";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Voir votre site";
@@ -8059,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "Vues";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "vues sur votre site jusqu’à présent";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8477,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "Quand vous faites des changements à votre site vous pourrez voir l’historique de votre activité ici.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "Lorsque vous publierez votre prochain article, il sera automatiquement partagé avec vos réseaux connectés.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Quelle version voulez-vous modifier ?";
@@ -8779,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Il semble que vous ayez installé une extension mobile à partir de DudaMobile qui empêche l'application de se connecter à votre blog";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "Vous avez défini vos rappels de blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Vous ne devriez pas ignorer un problème de sécurité, à moins d’avoir la certitude qu’il n’y a aucun danger. Si vous choisissez d’ignorer cette menace, elle restera présente sur votre site « %1$@ ».";
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Vous êtes à jour !";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Nous n’êtes pas autorisé à clôturer le compte.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Vous avez apporté des modifications non enregistrées à cet article.";
