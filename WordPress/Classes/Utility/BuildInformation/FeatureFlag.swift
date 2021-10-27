@@ -61,7 +61,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .domains:
             return BuildConfiguration.current == .localDeveloper
         case .followConversationViaNotifications:
-            return false
+            return true
         }
     }
 

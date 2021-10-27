@@ -13,11 +13,7 @@ class GutenbergSettings {
             return "kShowGutenbergPhase2Dialog-" + url
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
-        static let hasLaunchedGutenbergEditor = "kHasLaunchedGutenbergEditor"
         static let blockTypeImpressions = "kBlockTypeImpressions"
-
-        // Only generated and saved for non-WPcom logins
-        static let editorOnboardingAnonID = "kEditorOnboardingAnonID"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
@@ -170,30 +166,6 @@ class GutenbergSettings {
         }
         set {
             database.set(newValue, forKey: Key.focalPointPickerTooltipShown)
-        }
-    }
-
-    func canViewEditorOnboarding() -> Bool {
-        let uniqueRolloutId = getUniqueRolloutId()
-        let rollout = GutenbergOnboardingRollout()
-        return rollout.isRolloutIdInPhaseRolloutPercentage(uniqueRolloutId)
-    }
-
-    /// Temporary for the staged Editor Onboarding tooltip project. Generates a unique rollout ID for use in
-    /// determining if the user is in the percentage group that should see the Editor Onboarding Tooltip.
-    func getUniqueRolloutId() -> Int {
-        let anonId = database.object(forKey: Key.editorOnboardingAnonID) as? Int ?? UUID().hashValue
-        database.set(anonId, forKey: Key.editorOnboardingAnonID)
-        return anonId
-    }
-
-    /// True if the Gutenberg editor has previously launched from this app installation
-    var hasLaunchedGutenbergEditor: Bool {
-        get {
-            database.bool(forKey: Key.hasLaunchedGutenbergEditor)
-        }
-        set {
-            database.set(newValue, forKey: Key.hasLaunchedGutenbergEditor)
         }
     }
 

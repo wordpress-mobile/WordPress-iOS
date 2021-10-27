@@ -1,0 +1,7 @@
+Med denna uppdatering blir det ännu enklare att lägga in externt innehåll på dina webbplatser, med våra nya specialiserade inbäddningsblock för Facebook, Instagram, Loom och  Smartframe. Dessutom känner redigeraren automatiskt igen inbäddningsbara URL:er när du klistrar in dem i ett tomt stycke. Förutom dessa nya funktioner har vi även rättat till ett problem där det inte gick att redigera en inbäddad URL och anpassat förhandsvisningen så att du alltid kan se hela det inbäddade innehållet.
+
+På tal om block: nu kan du också anpassa färgen på text och bakgrund i blocken för framhävt citat och förformaterad text.
+
+Behöver du hjälp att nå fler läsare? Den nya påminnelsefunktionen för publicering och bloggning kan hjälpa dig att upprätthålla ett stabilt publiceringsschema.
+
+Slutligen har vi förbättrat stödet för stora textstorlekar när du väljer layout för startsidan eller andra sidor. Vi har rättat ett problem där kommentarslistan i vissa fall inte uppdaterades och snyggat till huvudet för sidans nedre område före publicering.
