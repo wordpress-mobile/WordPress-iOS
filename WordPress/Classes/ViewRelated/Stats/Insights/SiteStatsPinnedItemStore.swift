@@ -69,7 +69,7 @@ private extension SiteStatsPinnedItemStore {
         switch item {
         case is GrowAudienceCell.HintType:
             let item = item as! GrowAudienceCell.HintType
-            return "StatsInsights-\(siteId.intValue)-\(item.rawValue)-isHidden"
+            return "StatsInsights-\(siteId.intValue)-\(item.userDefaultsKey)-isHidden"
         case InsightType.customize:
             return "StatsInsightsHideCustomizeCard"
         default:

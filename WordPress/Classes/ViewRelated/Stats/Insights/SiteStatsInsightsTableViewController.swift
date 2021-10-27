@@ -217,7 +217,7 @@ private extension SiteStatsInsightsTableViewController {
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
         switch pinnedItemStore?.itemToDisplay(for: viewsCount ?? 0) {
         case .none:
-            insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
+            insightsToShow = insightsToShow.filter { $0 != .growAudience && $0 != .customize }
         case .some(let item):
             switch item {
             case let hintType as GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
@@ -254,14 +254,17 @@ private extension SiteStatsInsightsTableViewController {
 
     // MARK: - Grow Audience Card Management
 
-    func dismissGrowAudienceCard() {
+    func dismissGrowAudienceCard(_ hintType: GrowAudienceCell.HintType) {
         guard let item = pinnedItemStore?.currentItem as? GrowAudienceCell.HintType else {
             return
         }
 
         insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        pinnedItemStore?.markPinnedItemAsHidden(item)
 
+        guard item == hintType else {
+            return
+        }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
         trackNudgeDismissed(for: item)
     }
 
@@ -465,8 +468,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         showAddInsightView()
     }
 
-    func growAudienceDismissButtonTapped() {
-        dismissGrowAudienceCard()
+    func growAudienceDismissButtonTapped(_ hintType: GrowAudienceCell.HintType) {
+        dismissGrowAudienceCard(hintType)
         updateView()
     }
 
