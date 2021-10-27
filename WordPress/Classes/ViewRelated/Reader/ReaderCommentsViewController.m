@@ -1401,34 +1401,31 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo completion:(void (^ _Nullable)(BOOL))completion
 {
     BOOL desiredState = !self.post.receivesCommentNotifications;
-
-    NSString *successTitle = desiredState
-        ? NSLocalizedString(@"In-app notifications enabled", @"The app successfully enabled notifications for the subscription")
-        : NSLocalizedString(@"In-app notifications disabled", @"The app successfully disabled notifications for the subscription");
-
-    NSString *failureTitle = desiredState
-        ? NSLocalizedString(@"Could not enable notifications", @"The app failed to enable notifications for the subscription")
-        : NSLocalizedString(@"Could not disable notifications", @"The app failed to disable notifications for the subscription");
+    PostSubscriptionAction action = desiredState ? PostSubscriptionActionEnableNotification : PostSubscriptionActionDisableNotification;
 
     __weak __typeof(self) weakSelf = self;
+    NSString* (^noticeTitle)(BOOL) = ^NSString* (BOOL success) {
+        return [weakSelf noticeTitleForAction:action success:success];
+    };
+
     [self.followCommentsService toggleNotificationSettings:desiredState success:^{
         if (completion) {
             completion(YES);
         }
 
         if (!canUndo) {
-            [weakSelf displayNoticeWithTitle:successTitle message:nil];
+            [weakSelf displayNoticeWithTitle:noticeTitle(YES) message:nil];
             return;
         }
 
         // show the undo notice with action button.
         NSString *undoActionTitle = NSLocalizedString(@"Undo", @"Button title. Reverts the previous notification operation");
-        [weakSelf displayActionableNoticeWithTitle:successTitle message:nil actionTitle:undoActionTitle actionHandler:^(BOOL accepted) {
+        [weakSelf displayActionableNoticeWithTitle:noticeTitle(YES) message:nil actionTitle:undoActionTitle actionHandler:^(BOOL accepted) {
             [weakSelf handleNotificationsButtonTappedWithUndo:NO completion:nil];
         }];
 
     } failure:^(NSError * _Nullable error) {
-        [weakSelf displayNoticeWithTitle:failureTitle message:nil];
+        [weakSelf displayNoticeWithTitle:noticeTitle(NO) message:nil];
         if (completion) {
             completion(NO);
         }
