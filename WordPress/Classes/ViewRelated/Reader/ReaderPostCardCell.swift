@@ -263,7 +263,7 @@ private extension ReaderPostCardCell {
         menuButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    func setupSpotlightView() {
+    private func setupSpotlightView() {
         addSubview(spotlightView)
         bringSubviewToFront(spotlightView)
 
