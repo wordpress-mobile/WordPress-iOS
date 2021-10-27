@@ -684,8 +684,10 @@ extension WPAnalytics {
         default: event = nil
         }
 
-        if event != nil {
-             WPAnalytics.track(event!, properties: properties, blog: blog)
+        if event == nil {
+            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+        } else {
+            WPAnalytics.track(event!, properties: properties, blog: blog)
         }
     }
 
