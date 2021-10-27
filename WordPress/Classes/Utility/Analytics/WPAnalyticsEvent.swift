@@ -674,7 +674,7 @@ extension WPAnalytics {
 
     /// This will call each registered tracker and fire the given event.
     /// - Parameters:
-    ///   - eventName: a `String` that represents the event name
+    ///   - eventName: a `String` that represents the Block Editor event name
     ///   - properties: a `Hash` that represents the properties
     ///   - blog: a `Blog` asssociated with the event
     static func trackBlockEditorEvent(_ eventName: String, properties: [AnyHashable: Any], blog: Blog) {
