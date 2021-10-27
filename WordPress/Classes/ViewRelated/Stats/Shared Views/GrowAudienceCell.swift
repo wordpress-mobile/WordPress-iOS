@@ -224,7 +224,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
 extension GrowAudienceCell {
 
-    enum HintType: String, SiteStatsPinnable {
+    @objc enum HintType: Int, SiteStatsPinnable {
 
         case social
         case bloggingReminders
@@ -305,6 +305,17 @@ extension GrowAudienceCell {
                 return UIImage(named: "grow-audience-illustration-blogging-reminders")
             case .readerDiscover:
                 return UIImage(named: "grow-audience-illustration-reader")
+            }
+        }
+
+        var userDefaultsKey: String {
+            switch self {
+            case .social:
+                return "social"
+            case .bloggingReminders:
+                return "bloggingReminders"
+            case .readerDiscover:
+                return "readerDiscover"
             }
         }
     }
