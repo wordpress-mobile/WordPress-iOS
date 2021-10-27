@@ -678,10 +678,6 @@ extension WPAnalytics {
     ///   - properties: a `Hash` that represents the properties
     ///   - blog: a `Blog` asssociated with the event
     static func trackBlockEditorEvent(_ eventName: String, properties: [AnyHashable: Any], blog: Blog) {
-        var props = properties
-        props[WPAppAnalyticsKeyBlogID] = blog.dotComID
-        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
-
         var event: WPAnalyticsEvent?
         switch eventName {
         case "editor_block_inserted": event = .gutenbergEditorBlockInserted
@@ -689,7 +685,7 @@ extension WPAnalytics {
         }
 
         if event != nil {
-             WPAnalytics.track(event!, properties: props)
+             WPAnalytics.track(event!, properties: properties, blog: blog)
         }
     }
 
