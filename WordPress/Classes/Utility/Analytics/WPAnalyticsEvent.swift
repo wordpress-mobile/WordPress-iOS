@@ -78,6 +78,7 @@ import Foundation
     case readerBlogBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
+    case readerToggleCommentNotifications
     case readerPostReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
@@ -171,6 +172,7 @@ import Foundation
     case commentEdited
     case commentRepliedTo
     case commentFilterChanged
+    case commentSnackbarNext
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -329,6 +331,8 @@ import Foundation
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
             return "reader_toggle_follow_conversation"
+        case .readerToggleCommentNotifications:
+            return "reader_toggle_comment_notifications"
         case .readerPostReported:
             return "reader_post_reported"
         case .readerArticleDetailMoreTapped:
@@ -501,6 +505,8 @@ import Foundation
             return "comment_replied_to"
         case .commentFilterChanged:
             return "comment_filter_changed"
+        case .commentSnackbarNext:
+            return "comment_snackbar_next"
 
         // Invite Links
         case .inviteLinksGetStatus:

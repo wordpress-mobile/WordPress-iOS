@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-04 12:43:54+0000 */
+/* Translation-Revision-Date: 2021-10-20 17:31:58+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nВведите ваше имя пользователя для подтверждения закрытия.\n\n";
 
+/* No comment provided by engineer. */
+" \/ year" = " в год";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Ленивая загрузка\" изображений";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Кнопка «Ещё»";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ — выбранная точка для отката вашего сайта.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -353,6 +356,9 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Метка с именем '%@' уже существует.";
 
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "Совет по привлечению аудитории";
+
 /* Placeholder text for the title of a site */
 "A title for the site" = "Название сайта";
 
@@ -459,9 +465,6 @@ translators: Block name. %s: The localized block name */
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Добавить %@";
-
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "Добавьте новый домен";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Добавить блок после";
@@ -932,6 +935,9 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Автоматически делиться новыми записями с ваших аккаунтов в соцсетях.";
 
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Автоматически делиться новыми записями в социальных сетях для привлечения аудитории на ваш сайт.";
+
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Автообновления";
 
@@ -1383,9 +1389,6 @@ translators: Block name. %s: The localized block name */
 /* Title to choose date range in a calendar */
 "Choose date range" = "Выбор интервала дат";
 
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "Выберите домен";
-
 /* No comment provided by engineer. */
 "Choose file" = "Выбрать файл";
 
@@ -1529,15 +1532,30 @@ translators: Block name. %s: The localized block name */
 /* Title for the `comment likes` setting */
 "Comment Likes" = "Отметки «Нравится» для комментария";
 
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "Комментарий одобрен.";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "Комментарий удалён.";
+
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Комментарий удалён";
 
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Комментарий помечен как спам.";
 
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "Комментарий помечен как спам.";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "Комментарий помещен в корзину.";
+
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "Комментарий на";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "Статус комментария установлен как ожидающий одобрения.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1659,6 +1677,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link to connect another site, shown after logging in. */
 "Connect another site" = "Подключить еще сайт";
+
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "Подключить больше социальных сетей";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Подключитесь, чтобы ваши записи автоматически становились доступны учетной записи %@.";
@@ -1943,6 +1964,12 @@ translators: Block name. %s: The localized block name */
 /* Button title for download backup action */
 "Create downloadable file" = "Создать скачиваемый файл";
 
+/* No comment provided by engineer. */
+"Create embed" = "Создать встроенный объект";
+
+/* No comment provided by engineer. */
+"Create link" = "Создать ссылку";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Настройте вашу консоль и выберите отчеты, какие хотите видеть, фокусируясь на данных, которые вам наиболее важны.";
 
@@ -2113,7 +2140,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Удалить навсегда";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2235,6 +2263,7 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
@@ -2273,9 +2302,11 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Владельцы доменов должны делиться контактной информацией для публичной базы данных по всем доменам. С защитой персональных данных мы публикуем нашу информацию вместо вашей и перенаправляем вам все сообщения приватным образом.";
 
-/* Noun. Title. Links to the Domains screen.
-   Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "Домены";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "Домены зарегистрированные на этом сайте направят пользователей на %@";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "Домены зарегистрированные на этом сайте направят пользователей на ";
@@ -2489,6 +2520,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Редактировать новые записи и страницы в редаторе блоков.";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "Редактировать напоминания";
+
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Изменить кнопки «Поделиться»";
 
@@ -2589,8 +2623,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Пустой URL-адрес";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Title of button to enable publicize. */
 "Enable" = "Включить";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "Включить Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Включить быстрый старт для сайта";
@@ -2601,7 +2639,8 @@ translators: Block name. %s: The localized block name */
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Включите доступ к микрофону для записи звука к вашим видео.";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen.
+   Title of a Quick Start Tour */
 "Enable post sharing" = "Включить возможность делиться записями";
 
 /* Message prompting user to enable site notifications. */
@@ -2687,6 +2726,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "Ошибка при одобрении комментария";
 
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "Ошибка при одобрении комментария.";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Ошибка подключения к серверу, попробуйте еще раз";
@@ -2696,6 +2738,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "Ошибка при удалении комментария";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "Ошибка при удалении комментария.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Ошибка отключения автообновлеений для %@.";
@@ -2723,6 +2768,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "Ошибка отметки комментария как спам";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "Ошибка отметки комментария как спам.";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "Ошибка при перемещении комментария в корзину.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Возникла ошибка\nпри загрузке";
@@ -2756,6 +2807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "При отправке письма для подтверждения произошла ошибка. Проверьте подключение и повторите попытку.";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "Ошибка установки статуса комментария как ожидающего одобрения.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Ошибка отклонения комментария";
@@ -3077,6 +3131,9 @@ translators: Block name. %s: The localized block name */
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Свободная фототека";
+
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "Бесплатно за первый год ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Освободите место на этом устройстве, удалив временные мультимедиа файлы. Это не затронет медиафайлы на вашем сайте.";
@@ -3441,6 +3498,9 @@ translators: Block name. %s: The localized block name */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Объясните в нескольких словах, о чём этот сайт.";
 
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Для того, чтобы делиться опубликованными записями в социальных сетях, требуется включить модуль Publicize.";
+
 /* Describes a status of a plugin */
 "Inactive" = "Неактивен";
 
@@ -3676,6 +3736,9 @@ translators: Block name. %s: The localized block name */
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Продолжить редактирование";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "Продолжайте писать в блог и следите как посетители прибывают на вашем сайте.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Будьте в курсе жизни вашего сайта.";
@@ -4978,9 +5041,6 @@ translators: Block name. %s: The localized block name */
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Фото от Pexels";
 
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "Выберите доступный адрес";
-
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Выберите имя пользователя";
 
@@ -5041,6 +5101,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Last Name" = "Пожалуйста, введите правильную фамилию";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "Введите действительную организацию";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Пожалуйста, введите правильный почтовый индекс";
@@ -5237,6 +5300,9 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Частота публикаций";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Регулярный блоггинг увеличивает аудиторию. Напоминания позволят не забывать об этом.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Регулярное наполнение блога займёт ваших подписчиков и привлечет новых посетителей на сайт.";
@@ -5542,7 +5608,6 @@ translators: Block name. %s: The localized block name */
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "Зарегистрировать домен";
 
@@ -5972,6 +6037,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Кнопка поиска. Текущий текст кнопки -";
 
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Поиск доменов";
+
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Поиск домена";
 
@@ -6078,6 +6146,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Select a layout" = "Выберите макет";
+
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "Выберите домен";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Выберите медиафайл.";
@@ -6194,6 +6265,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Установить Jetpack";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "Установить напоминания о блоггинге";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Установить напоминания о необходимости написать в блог в те дни, в которые вы хотите это делать.";
 
@@ -6266,6 +6340,9 @@ translators: Block name. %s: The localized block name */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Ошибка поделиться";
+
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "Возможности поделиться в социальных сетях настроены!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Показывать заголовок";
@@ -6961,6 +7038,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Невозможно добавить медиафайл в «Библиотеку медиафайлов».";
+
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "Модуль не может быть активирован.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Число показываемых записей на страницу.";
@@ -7957,6 +8037,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more stats. */
 "View more" = "Больше информации";
 
+/* Description for view count. Singular. */
+"View to your site so far" = "Просмотров вашего сайта";
+
 /* Title of a Quick Start Tour */
 "View your site" = "Посмотрите ваш сайт";
 
@@ -7974,6 +8057,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "Просмотры";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "Просмотров вашего сайта";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8390,6 +8476,9 @@ translators: Block name. %s: The localized block name */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "При внесении изменений на сайт вы можете увидеть историю активности здесь.";
 
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "При публикации вашей следующей записи, вы автоматически поделитесь ею с подключёнными социальными сетями.";
+
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Какой вариант вы хотите отредактировать?";
 
@@ -8689,6 +8778,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Скорее всего, вы установили мобильный плагин DudaMobile, который не даёт приложению подключиться к вашему блогу";
 
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "Вы установили напоминания о блоггинге";
+
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Не игнорируйте предупреждения, если полностью не уверены в том, что опасности нет. Если пропустить угрозу, она останется на вашем сайте \"%1$@\".";
 
@@ -8706,9 +8798,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Вы внесли, но не сохранили изменения в эту запись";
-
-/* Header title for your domains section of Domains. */
-"Your Domains" = "Ваши домены";
 
 /* Header of the domains list section in the Domains Dashboard. */
 "Your Site Domains" = "Домены вашего сайта";

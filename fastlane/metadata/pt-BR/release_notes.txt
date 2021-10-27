@@ -1,7 +1,0 @@
-Tornamos o uso do editor de blocos ainda mais fácil! Na visualização do seletor de blocos, você encontra blocos de mídia incorporada para YouTube, Twitter, WordPress e Vimeo, o que acelera bastante a inclusão de mídia. As URLs podem até ser editadas depois de você selecioná-las.
-
-Além disso, corrigimos um erro no bloco de galeria para que as imagens continuem sendo adicionadas se você fechar o post durante o upload.
-
-Mas se você ainda estiver tendo problemas, solicitar ajuda é ainda mais fácil. Você pode fazer isso no próprio editor: basta tocar no botão de três pontos, selecionar "Ajuda e suporte" e tocar em "Contatar o suporte".
-
-Por último, corrigimos um erro que fazia a tela de notificação mostrar o avatar errado às vezes quando você era mencionado em um comentário. Você escolheu a imagem e ela será exibida!
