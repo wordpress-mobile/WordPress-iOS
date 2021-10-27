@@ -6,6 +6,13 @@ struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
 
+    // Property observer
+    private func showingDomainRegistrationFlow(to value: Bool) {
+        if value {
+            WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
+        }
+    }
+
     var body: some View {
         List {
             makeSiteAddressSection(blog: blog)
@@ -79,11 +86,6 @@ struct DomainsDashboardView: View {
                 }
             )
         }
-    }
-    
-    func showingDomainRegistrationFlow(to value: Bool) {
-        print("Showing domain registration flow")
-        WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
     }
 
     /// Builds the Get New Domain section when no othert domains are present for the given blog
