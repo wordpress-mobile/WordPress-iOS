@@ -114,7 +114,10 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     // MARK: - IBAction
 
     @IBAction private func dismissButtonTapped(_ sender: UIButton) {
-        insightsDelegate?.growAudienceDismissButtonTapped?()
+        guard let hintType = hintType else {
+            return
+        }
+        insightsDelegate?.growAudienceDismissButtonTapped?(hintType)
     }
 
     @IBAction private func actionButtonTapped(_ sender: UIButton) {

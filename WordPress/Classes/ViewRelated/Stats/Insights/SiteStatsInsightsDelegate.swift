@@ -11,7 +11,7 @@ import Foundation
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
-    @objc optional func growAudienceDismissButtonTapped()
+    @objc optional func growAudienceDismissButtonTapped(_ hintType: GrowAudienceCell.HintType)
     @objc optional func growAudienceEnablePostSharingButtonTapped()
     @objc optional func growAudienceBloggingRemindersButtonTapped()
     @objc optional func growAudienceReaderDiscoverButtonTapped()

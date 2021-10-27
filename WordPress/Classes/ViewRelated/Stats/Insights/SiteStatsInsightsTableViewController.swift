@@ -465,8 +465,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         showAddInsightView()
     }
 
-    func growAudienceDismissButtonTapped() {
-        dismissGrowAudienceCard()
+    func growAudienceDismissButtonTapped(_ hintType: GrowAudienceCell.HintType) {
+        dismissGrowAudienceCard(hintType)
         updateView()
     }
 
