@@ -254,14 +254,17 @@ private extension SiteStatsInsightsTableViewController {
 
     // MARK: - Grow Audience Card Management
 
-    func dismissGrowAudienceCard() {
+    func dismissGrowAudienceCard(_ hintType: GrowAudienceCell.HintType) {
         guard let item = pinnedItemStore?.currentItem as? GrowAudienceCell.HintType else {
             return
         }
 
         insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        pinnedItemStore?.markPinnedItemAsHidden(item)
 
+        guard item == hintType else {
+            return
+        }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
         trackNudgeDismissed(for: item)
     }
 
