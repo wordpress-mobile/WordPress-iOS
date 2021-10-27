@@ -380,8 +380,6 @@
 		2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */; };
 		2F09D134245223D300956257 /* HeaderDetailsContentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09D133245223D300956257 /* HeaderDetailsContentStyles.swift */; };
 		2F161B0622CC2DC70066A5C5 /* LoadingStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F161B0522CC2DC70066A5C5 /* LoadingStatusView.swift */; };
-		2F54D0A52633424E0045F409 /* GutenbergOnboardingRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F54D0A42633424E0045F409 /* GutenbergOnboardingRollout.swift */; };
-		2F54D0A62633424E0045F409 /* GutenbergOnboardingRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F54D0A42633424E0045F409 /* GutenbergOnboardingRollout.swift */; };
 		2F605FA8251430C200F99544 /* PostCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F605FA7251430C200F99544 /* PostCategoriesViewController.swift */; };
 		2F605FAA25145F7200F99544 /* WPCategoryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F605FA925145F7200F99544 /* WPCategoryTree.swift */; };
 		2F668B61255DD11400D0038A /* JetpackSpeedUpSiteSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F668B5E255DD11400D0038A /* JetpackSpeedUpSiteSettingsViewController.swift */; };
@@ -4982,7 +4980,6 @@
 		2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+UnattachedMedia.swift"; sourceTree = "<group>"; };
 		2F09D133245223D300956257 /* HeaderDetailsContentStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderDetailsContentStyles.swift; sourceTree = "<group>"; };
 		2F161B0522CC2DC70066A5C5 /* LoadingStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingStatusView.swift; sourceTree = "<group>"; };
-		2F54D0A42633424E0045F409 /* GutenbergOnboardingRollout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergOnboardingRollout.swift; sourceTree = "<group>"; };
 		2F605FA7251430C200F99544 /* PostCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCategoriesViewController.swift; sourceTree = "<group>"; };
 		2F605FA925145F7200F99544 /* WPCategoryTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCategoryTree.swift; sourceTree = "<group>"; };
 		2F668B5E255DD11400D0038A /* JetpackSpeedUpSiteSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackSpeedUpSiteSettingsViewController.swift; sourceTree = "<group>"; };
@@ -14098,7 +14095,6 @@
 				F115308021B17E65002F1D65 /* EditorFactory.swift */,
 				FF54D4631D6F3FA900A0DC4D /* GutenbergSettings.swift */,
 				1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */,
-				2F54D0A42633424E0045F409 /* GutenbergOnboardingRollout.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -17946,7 +17942,6 @@
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
-				2F54D0A52633424E0045F409 /* GutenbergOnboardingRollout.swift in Sources */,
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
@@ -19761,7 +19756,6 @@
 				FABB23172602FC2C00C8785C /* ShadowView.swift in Sources */,
 				FABB23182602FC2C00C8785C /* Wizard.swift in Sources */,
 				FABB23192602FC2C00C8785C /* Media+WPMediaAsset.m in Sources */,
-				2F54D0A62633424E0045F409 /* GutenbergOnboardingRollout.swift in Sources */,
 				FABB231A2602FC2C00C8785C /* GutenbergImgUploadProcessor.swift in Sources */,
 				FABB231B2602FC2C00C8785C /* PluginListViewModel.swift in Sources */,
 				FABB231C2602FC2C00C8785C /* WPStyleGuide+People.swift in Sources */,
@@ -25055,7 +25049,7 @@
 			repositoryURL = "https://github.com/Automattic/ScreenObject";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 0.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

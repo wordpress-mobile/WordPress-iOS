@@ -31,7 +31,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         super.tearDown()
     }
 
-    func testGenerateScreenshots() {
+    func testGenerateScreenshots() throws {
 
         // Get post editor screenshot
         let postList = MySiteScreen()
@@ -40,7 +40,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
+        let postEditorScreenshot = try postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
         if XCUIDevice.isPad {
             BlockEditorScreen()
@@ -55,7 +55,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get a screenshot of the editor with keyboard (iPad only)
         if XCUIDevice.isPad {
-            let ipadScreenshot = MySiteScreen()
+            let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
                 .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
                 .gotoPostsScreen()
@@ -99,7 +99,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
-        let notificationList = TabNavComponent()
+        let notificationList = try TabNavComponent()
             .gotoNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
