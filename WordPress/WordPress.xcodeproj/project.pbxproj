@@ -293,6 +293,8 @@
 		178DDD57266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */; };
 		1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */; };
 		1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1797373620EBAA4100377B4E /* RouteMatcherTests.swift */; };
+		179A70F02729834B006DAC0A /* Binding+OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179A70EF2729834B006DAC0A /* Binding+OnChange.swift */; };
+		179A70F12729834B006DAC0A /* Binding+OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179A70EF2729834B006DAC0A /* Binding+OnChange.swift */; };
 		17A09B99238FE13B0022AE0D /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
 		17A28DC3205001A900EA6D9E /* FilterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A28DC2205001A900EA6D9E /* FilterTabBar.swift */; };
 		17A28DC52050404C00EA6D9E /* AuthorFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A28DC42050404C00EA6D9E /* AuthorFilterButton.swift */; };
@@ -4858,6 +4860,7 @@
 		178DDD56266E4165006C68C4 /* CalendarDayToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayToggleButton.swift; sourceTree = "<group>"; };
 		1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Helpers.swift"; sourceTree = "<group>"; };
 		1797373620EBAA4100377B4E /* RouteMatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMatcherTests.swift; sourceTree = "<group>"; };
+		179A70EF2729834B006DAC0A /* Binding+OnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+OnChange.swift"; sourceTree = "<group>"; };
 		17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagOverrideStore.swift; sourceTree = "<group>"; };
 		17A28DC2205001A900EA6D9E /* FilterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTabBar.swift; sourceTree = "<group>"; };
 		17A28DC42050404C00EA6D9E /* AuthorFilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorFilterButton.swift; sourceTree = "<group>"; };
@@ -12669,6 +12672,7 @@
 				17C1D6902670E4A2006C8970 /* UIFont+Fitting.swift */,
 				FE02F95E269DC14A00752A44 /* Comment+Interface.swift */,
 				C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */,
+				179A70EF2729834B006DAC0A /* Binding+OnChange.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -17405,6 +17409,7 @@
 				32A218D8251109DB00D1AE6C /* ReaderReportPostAction.swift in Sources */,
 				FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */,
 				3F851415260D0A3300A4B938 /* UnifiedPrologueEditorContentView.swift in Sources */,
+				179A70F02729834B006DAC0A /* Binding+OnChange.swift in Sources */,
 				D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */,
 				436D56222117312700CEAA33 /* RegisterDomainDetailsViewModel.swift in Sources */,
 				C76F48DC25BA202600BFEC87 /* JetpackScanHistoryViewController.swift in Sources */,
@@ -20177,6 +20182,7 @@
 				FABB24922602FC2C00C8785C /* PingHubManager.swift in Sources */,
 				FABB24932602FC2C00C8785C /* MediaVideoExporter.swift in Sources */,
 				FABB24942602FC2C00C8785C /* PluginViewController.swift in Sources */,
+				179A70F12729834B006DAC0A /* Binding+OnChange.swift in Sources */,
 				17F11EDC268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
 				FABB24952602FC2C00C8785C /* ReaderSiteTopic.swift in Sources */,
 				FABB24962602FC2C00C8785C /* JetpackBackupCompleteViewController.swift in Sources */,
