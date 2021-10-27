@@ -217,7 +217,7 @@ private extension SiteStatsInsightsTableViewController {
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
         switch pinnedItemStore?.itemToDisplay(for: viewsCount ?? 0) {
         case .none:
-            insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
+            insightsToShow = insightsToShow.filter { $0 != .growAudience && $0 != .customize }
         case .some(let item):
             switch item {
             case let hintType as GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
