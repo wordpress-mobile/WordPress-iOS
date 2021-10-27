@@ -10,6 +10,7 @@ final class SiteStatsPinnedItemStore {
             return [
                 GrowAudienceCell.HintType.social,
                 GrowAudienceCell.HintType.bloggingReminders,
+                GrowAudienceCell.HintType.readerDiscover,
                 InsightType.customize
             ]
         } else {
@@ -17,6 +18,7 @@ final class SiteStatsPinnedItemStore {
             return [
                 GrowAudienceCell.HintType.bloggingReminders,
                 GrowAudienceCell.HintType.social,
+                GrowAudienceCell.HintType.readerDiscover,
                 InsightType.customize
             ]
         }
@@ -67,7 +69,7 @@ private extension SiteStatsPinnedItemStore {
         switch item {
         case is GrowAudienceCell.HintType:
             let item = item as! GrowAudienceCell.HintType
-            return "StatsInsights-\(siteId.intValue)-\(item.rawValue)-isHidden"
+            return "StatsInsights-\(siteId.intValue)-\(item.userDefaultsKey)-isHidden"
         case InsightType.customize:
             return "StatsInsightsHideCustomizeCard"
         default:

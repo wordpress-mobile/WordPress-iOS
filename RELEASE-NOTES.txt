@@ -1,7 +1,9 @@
 18.6
 -----
+* [**] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
 * [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
 * [*] Reader post comments: fixed an issue that prevented all comments from displaying. [#17373]
+* [**] Stats: added Reader Discover nudge for sites with low traffic in order to increase it. [#17349, #17352, #17354, #17377]
 
 18.5
 -----
@@ -15,6 +17,7 @@
 * [**] Block editor: Pullquote block - Added support for text and background color customization [https://github.com/WordPress/gutenberg/pull/34451]
 * [**] Block editor: Preformatted block - Added support for text and background color customization [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4071]
 * [**] Stats: added Publicize and Blogging Reminders nudges for sites with low traffic in order to increase it. [#17142, #17261, #17294, #17312, #17323]
+* [**] Fixed an issue that made it impossible to log in when emails had an apostrophe. [#17334]
 
 18.4
 -----
