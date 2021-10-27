@@ -34,7 +34,7 @@ import WordPressFlux
     }
 
     /// Spotlight
-    var isReaderDiscoverNudgeFlow: Bool = false
+    var shouldShowCommentSpotlight: Bool = false
 
     /// Settings
     private let settingsPresenter: ScenePresenter

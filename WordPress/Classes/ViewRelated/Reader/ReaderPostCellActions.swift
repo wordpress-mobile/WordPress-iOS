@@ -42,7 +42,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
            let indexPath = controller.tableView.indexPath(for: cell),
            let topic = controller.readerTopic,
            ReaderHelpers.topicIsDiscover(topic),
-           controller.isReaderDiscoverNudgeFlow {
+           controller.shouldShowCommentSpotlight {
             controller.reloadReaderDiscoverNudgeFlow(at: indexPath)
         }
 

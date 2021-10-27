@@ -103,7 +103,7 @@ class ReaderTabViewController: UIViewController {
     }
 
     func presentDiscoverTab() {
-        viewModel.isReaderDiscoverNudgeFlow = true
+        viewModel.shouldShowCommentSpotlight = true
         viewModel.fetchReaderMenu()
         viewModel.showTab(at: ReaderTabConstants.discoverIndex)
     }

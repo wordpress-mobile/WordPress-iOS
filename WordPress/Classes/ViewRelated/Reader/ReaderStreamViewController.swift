@@ -24,7 +24,7 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
-    var isReaderDiscoverNudgeFlow: Bool = false
+    var shouldShowCommentSpotlight: Bool = false
 
     var tableView: UITableView! {
         return tableViewController.tableView
@@ -368,7 +368,7 @@ import WordPressFlux
             postCellActions?.clearRemovedPosts()
         }
 
-        if isReaderDiscoverNudgeFlow {
+        if shouldShowCommentSpotlight {
             resetReaderDiscoverNudgeFlow()
         }
 
@@ -1507,7 +1507,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if let topic = readerTopic,
            ReaderHelpers.topicIsDiscover(topic),
            indexPath.row == 0,
-           isReaderDiscoverNudgeFlow {
+           shouldShowCommentSpotlight {
             cell.spotlightIsShown = true
         } else {
             cell.spotlightIsShown = false
@@ -1558,7 +1558,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     private func resetReaderDiscoverNudgeFlow() {
-        isReaderDiscoverNudgeFlow = false
+        shouldShowCommentSpotlight = false
         WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
     }
 

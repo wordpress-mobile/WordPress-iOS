@@ -42,7 +42,7 @@ extension WPTabBarController {
 
         if content.topicType == .discover, let topic = content.topic {
             let controller = ReaderCardsStreamViewController.controller(topic: topic)
-            controller.isReaderDiscoverNudgeFlow = readerTabViewModel.isReaderDiscoverNudgeFlow
+            controller.shouldShowCommentSpotlight = readerTabViewModel.shouldShowCommentSpotlight
             return controller
         } else if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
@@ -86,7 +86,7 @@ extension WPTabBarController {
     }
 
     func resetReaderDiscoverNudgeFlow() {
-        readerTabViewModel.isReaderDiscoverNudgeFlow = false
+        readerTabViewModel.shouldShowCommentSpotlight = false
     }
 
     /// methods to select one of the default Reader tabs
