@@ -36,7 +36,7 @@ public class PostsScreen: BaseScreen {
         return self
     }
 
-    public func selectPost(withSlug slug: String) -> EditorScreen {
+    public func selectPost(withSlug slug: String) throws -> EditorScreen {
 
         // Tap the current tab item to scroll the table to the top
         showOnly(currentlyFilteredPostStatus)
@@ -50,7 +50,7 @@ public class PostsScreen: BaseScreen {
         dismissAutosaveDialogIfNeeded()
 
         let editorScreen = EditorScreen()
-        editorScreen.dismissDialogsIfNeeded()
+        try editorScreen.dismissDialogsIfNeeded()
 
         return EditorScreen()
     }
@@ -85,9 +85,9 @@ public struct EditorScreen {
         return AztecEditorScreen(mode: .rich)
     }
 
-    func dismissDialogsIfNeeded() {
+    func dismissDialogsIfNeeded() throws {
         if self.isGutenbergEditor {
-            blockEditor.dismissNotificationAlertIfNeeded(.accept)
+            try blockEditor.dismissNotificationAlertIfNeeded(.accept)
         }
     }
 
