@@ -15,6 +15,7 @@
 * [**] Block editor: Pullquote block - Added support for text and background color customization [https://github.com/WordPress/gutenberg/pull/34451]
 * [**] Block editor: Preformatted block - Added support for text and background color customization [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4071]
 * [**] Stats: added Publicize and Blogging Reminders nudges for sites with low traffic in order to increase it. [#17142, #17261, #17294, #17312, #17323]
+* [**] Fixed an issue that made it impossible to log in when emails had an apostrophe. [#17334]
 
 18.4
 -----

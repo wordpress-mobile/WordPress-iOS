@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "기록을 보려면 인터넷에 연결되어야 합니다.";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "계정을 종료하는 동안 오류가 발생했습니다.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "메뉴를 만드는 중에 오류가 발생했습니다.";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "이 사이트에 게시된 글이 아직 없습니다. 나중에 다시 시도하세요.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "해결되지 않는 결제 승인 거부가 있는 경우 이 계정을 종료할 수 없습니다.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "활성 구매가 있는 동안에는 이 사용자 계정을 종료할 수 없습니다.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "활성 구독이 있는 동안에는 이 사용자 계정을 종료할 수 없습니다.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "이것은 사람들이 Twitter 버튼 사용을 공유할 때 트윗에 포함됩니다.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "글에 사진이나 비디오를 추가";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "이 계정을 지금 닫으려면, 지원 팀에 문의하세요.";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "항상 최신 상태를 유지하세요!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "계정을 종료할 권한이 없습니다.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "이 글에 저장되지 않은 변경 사항이 있습니다.";

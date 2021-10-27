@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "必须连接互联网才能查看历史记录";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "关闭账户时发生错误";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "创建菜单时出错。";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "此站点尚未发布任何内容。请稍后重试。";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "这个用户账户在未解决的退款时不能被关闭。";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "这个用户账户在有活动订阅时不能被关闭。";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "这个用户账户在有活动订阅时不能被关闭。";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "当人们使用“Twitter”按钮共享时会将其包含在推文中。";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "向您的文章内添加照片或视频。";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "要立即关闭此帐户，请联系我们的支持团队。";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "您已看完所有内容！";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "您不具备关闭此账户的权限";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "您对此文章所做的更改未保存";

@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "É necessária uma conexão à internet para ver o histórico";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Ocorreu um erro ao encerrar a conta.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Ocorreu um erro ao criar o menu.";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Ainda não há posts neste site. Tente novamente mais tarde.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "A conta não pode ser encerrada pois possui estornos não resolvidos.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "A conta não pode ser encerrada pois possui compras ativas.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "A conta não pode ser encerrada pois possui assinaturas ativas.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Isso será incluido nos tuítes quando os usuários utilizarem o botão de compartilhamento do Twitter.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Adicionar fotos ou vídeos aos seus posts.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "To close this account now, contact our support team.";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Tudo foi lido!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Sem autorização para encerrar a conta.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Há alterações não salvas neste post";
