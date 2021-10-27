@@ -99,6 +99,10 @@ import Foundation
     case statsBloggingRemindersNudgeTapped
     case statsBloggingRemindersNudgeDismissed
     case statsBloggingRemindersNudgeCompleted
+    case statsReaderDiscoverNudgeShown
+    case statsReaderDiscoverNudgeTapped
+    case statsReaderDiscoverNudgeDismissed
+    case statsReaderDiscoverNudgeCompleted
 
     // Stats - Customize card
     case statsCustomizeInsightsShown
@@ -367,6 +371,14 @@ import Foundation
             return "stats_blogging_reminders_nudge_dismissed"
         case .statsBloggingRemindersNudgeCompleted:
             return "stats_blogging_reminders_nudge_completed"
+        case .statsReaderDiscoverNudgeShown:
+            return "stats_reader_discover_nudge_shown"
+        case .statsReaderDiscoverNudgeTapped:
+            return "stats_reader_discover_nudge_tapped"
+        case .statsReaderDiscoverNudgeDismissed:
+            return "stats_reader_discover_nudge_dismissed"
+        case .statsReaderDiscoverNudgeCompleted:
+            return "stats_reader_discover_nudge_completed"
 
         // Stats - Customize card
         case .statsCustomizeInsightsShown:

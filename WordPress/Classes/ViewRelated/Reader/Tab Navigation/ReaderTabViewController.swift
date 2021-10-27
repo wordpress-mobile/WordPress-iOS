@@ -38,6 +38,8 @@ class ReaderTabViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        viewModel.fetchReaderMenu()
     }
 
     required init?(coder: NSCoder) {
@@ -98,6 +100,12 @@ class ReaderTabViewController: UIViewController {
         }
 
         ReaderTracker.shared.start(.main)
+    }
+
+    func presentDiscoverTab() {
+        viewModel.shouldShowCommentSpotlight = true
+        viewModel.fetchReaderMenu()
+        viewModel.showTab(at: ReaderTabConstants.discoverIndex)
     }
 }
 
@@ -161,5 +169,6 @@ extension ReaderTabViewController {
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
+        static let discoverIndex = 1
     }
 }
