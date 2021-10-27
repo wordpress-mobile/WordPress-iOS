@@ -168,6 +168,7 @@ import Foundation
     case commentEdited
     case commentRepliedTo
     case commentFilterChanged
+    case commentSnackbarNext
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -492,6 +493,8 @@ import Foundation
             return "comment_replied_to"
         case .commentFilterChanged:
             return "comment_filter_changed"
+        case .commentSnackbarNext:
+            return "comment_snackbar_next"
 
         // Invite Links
         case .inviteLinksGetStatus:

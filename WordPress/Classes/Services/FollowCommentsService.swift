@@ -103,6 +103,9 @@ class FollowCommentsService: NSObject {
     @objc func toggleNotificationSettings(_ isNotificationsEnabled: Bool,
                                           success: @escaping () -> Void,
                                           failure: @escaping (Error?) -> Void) {
+        WPAnalytics.trackReader(.readerToggleCommentNotifications,
+                                properties: [WPAppAnalyticsKeyBlogID: self.siteID, AnalyticsKeys.enabled: isNotificationsEnabled])
+
         remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
             guard let self = self else {
                 failure(nil)
@@ -112,9 +115,6 @@ class FollowCommentsService: NSObject {
             self.post.receivesCommentNotifications = isNotificationsEnabled
             ContextManager.sharedInstance().saveContextAndWait(self.context)
             success()
-
-            WPAnalytics.trackReader(.readerToggleCommentNotifications,
-                                    properties: [WPAppAnalyticsKeyBlogID: self.siteID, AnalyticsKeys.enabled: isNotificationsEnabled])
 
         } failure: { error in
             DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
