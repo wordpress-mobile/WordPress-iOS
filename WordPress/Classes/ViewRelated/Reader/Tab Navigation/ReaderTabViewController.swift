@@ -103,10 +103,9 @@ class ReaderTabViewController: UIViewController {
     }
 
     func presentDiscoverTab() {
-        let discoverIndex = 1
         viewModel.isReaderDiscoverNudgeFlow = true
         viewModel.fetchReaderMenu()
-        viewModel.showTab(at: discoverIndex)
+        viewModel.showTab(at: ReaderTabConstants.discoverIndex)
     }
 }
 
@@ -170,5 +169,6 @@ extension ReaderTabViewController {
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
+        static let discoverIndex = 1
     }
 }
