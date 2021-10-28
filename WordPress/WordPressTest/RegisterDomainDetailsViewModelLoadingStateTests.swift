@@ -7,7 +7,7 @@ class RegisterDomainDetailsViewModelLoadingStateTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
+        let domainSuggestion = try! FullyQuotedDomainSuggestion(json: ["domain_name": "" as AnyObject])
         let siteID = 9001
 
         viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domainSuggestion) { _ in return
