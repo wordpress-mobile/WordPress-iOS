@@ -49,8 +49,6 @@ class MockContext: NSManagedObjectContext {
              throw fetchError!
          }
          successExpectation?.fulfill()
-         return returnedObjects!
-
          return returnedObjects ?? []
     }
 #endif
