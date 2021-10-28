@@ -30,8 +30,8 @@ class MockContext: NSManagedObjectContext {
     var successExpectation: XCTestExpectation?
     var failureExpectation: XCTestExpectation?
 
-    override
-    open func execute(_ request: NSPersistentStoreRequest) throws -> NSPersistentStoreResult {
+#if compiler(>=5.5)
+    override open func execute(_ request: NSPersistentStoreRequest) throws -> NSPersistentStoreResult {
         fetchExpectation?.fulfill()
         guard success else {
             failureExpectation?.fulfill()
@@ -41,4 +41,20 @@ class MockContext: NSManagedObjectContext {
 
         return MockFetchResult(results: returnedObjects)
     }
+#else
+    override func fetch(_ request: NSFetchRequest<NSFetchRequestResult>) throws -> [Any] {
+         override
+         open func execute(_ request: NSPersistentStoreRequest) throws -> NSPersistentStoreResult {
+             fetchExpectation?.fulfill()
+             guard success else {
+                 failureExpectation?.fulfill()
+                 throw fetchError!
+             }
+             successExpectation?.fulfill()
+             return returnedObjects!
+
+             return MockFetchResult(results: returnedObjects)
+         }
+    }
+#endif
 }
