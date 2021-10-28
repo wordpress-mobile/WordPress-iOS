@@ -43,18 +43,15 @@ class MockContext: NSManagedObjectContext {
     }
 #else
     override func fetch(_ request: NSFetchRequest<NSFetchRequestResult>) throws -> [Any] {
-         override
-         open func execute(_ request: NSPersistentStoreRequest) throws -> NSPersistentStoreResult {
-             fetchExpectation?.fulfill()
-             guard success else {
-                 failureExpectation?.fulfill()
-                 throw fetchError!
-             }
-             successExpectation?.fulfill()
-             return returnedObjects!
-
-             return MockFetchResult(results: returnedObjects)
+         fetchExpectation?.fulfill()
+         guard success else {
+             failureExpectation?.fulfill()
+             throw fetchError!
          }
+         successExpectation?.fulfill()
+         return returnedObjects!
+
+         return returnedObjects ?? []
     }
 #endif
 }
