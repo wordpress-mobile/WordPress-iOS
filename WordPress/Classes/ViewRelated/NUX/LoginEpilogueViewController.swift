@@ -136,7 +136,6 @@ private extension LoginEpilogueViewController {
     func configureCreateANewSiteButton() {
         createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "A button title"), for: .normal)
         createANewSiteButton.accessibilityIdentifier = "Create a new site"
-        createANewSiteButton.backgroundColor = .clear
     }
 
     /// Setup: Button Panel
@@ -153,17 +152,15 @@ private extension LoginEpilogueViewController {
         let panelHeight = buttonPanel.frame.height
 
         if contentSize.height >= (screenHeight - panelHeight) {
+            buttonPanel.backgroundColor = .quaternaryBackground
             topLine.isHidden = false
             blurEffectView.effect = UIBlurEffect(style: blurEffect)
-            blurEffectView.isHidden = true
+            blurEffectView.isHidden = false
         } else {
             buttonPanel.backgroundColor = .basicBackground
             topLine.isHidden = true
             blurEffectView.isHidden = true
         }
-
-        buttonPanel.backgroundColor = WordPressAuthenticator.shared.style.buttonViewBackgroundColor
-        buttonPanel.backgroundColor = .quaternaryBackground
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
