@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
@@ -84,7 +84,7 @@
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="gKl-WT-Qzi"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="jN3-1W-Vzo"/>
-                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="mVQ-Dg-W4g"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="qDW-L0-z8a" secondAttribute="bottom" constant="84" id="mVQ-Dg-W4g"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" id="pOP-pd-DMR"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
                         </constraints>
@@ -110,7 +110,7 @@
             <objects>
                 <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bES-Rc-GFi">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
