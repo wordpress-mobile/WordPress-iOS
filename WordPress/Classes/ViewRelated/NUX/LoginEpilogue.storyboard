@@ -59,7 +59,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="8TV-5o-H50"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="Done">
+                                <state key="normal" title="Create a new site">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <state key="selected" backgroundImage="beveled-blue-button-down"/>
@@ -67,10 +67,10 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="dismissEpilogue" destination="FBE-8U-liw" eventType="touchUpInside" id="BG7-Nv-R8k"/>
+                                    <action selector="createANewSite" destination="FBE-8U-liw" eventType="touchUpInside" id="pVd-x6-7g4"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -94,7 +94,7 @@
                     <connections>
                         <outlet property="blurEffectView" destination="E7v-Xt-6uK" id="RIm-YT-MPx"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
-                        <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
+                        <outlet property="createANewSiteButton" destination="51h-er-sEL" id="703-qw-kKG"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
                         <outlet property="tableViewTrailingConstraint" destination="au1-yD-v4h" id="jYm-53-dls"/>
                         <outlet property="topLine" destination="aTr-q6-PbK" id="IR4-UV-gef"/>

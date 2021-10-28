@@ -17,9 +17,9 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var topLine: UIView!
     @IBOutlet var topLineHeightConstraint: NSLayoutConstraint!
 
-    /// Done Button.
+    /// Create a new site button.
     ///
-    @IBOutlet var doneButton: UIButton!
+    @IBOutlet var createANewSiteButton: UIButton!
 
     /// Constraints on the table view container.
     /// Used to adjust the width on iPad.
@@ -119,7 +119,6 @@ class LoginEpilogueViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         setTableViewMargins(forWidth: view.frame.width)
     }
-
 }
 
 // MARK: - Private Extension
@@ -129,14 +128,15 @@ private extension LoginEpilogueViewController {
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
     func refreshInterface(with credentials: AuthenticatorCredentials) {
-        configureDoneButton()
+        configureCreateANewSiteButton()
     }
 
     /// Setup: Buttons
     ///
-    func configureDoneButton() {
-        doneButton.setTitle(NSLocalizedString("Done", comment: "A button title"), for: .normal)
-        doneButton.accessibilityIdentifier = "Done"
+    func configureCreateANewSiteButton() {
+        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "A button title"), for: .normal)
+        createANewSiteButton.accessibilityIdentifier = "Create a new site"
+        createANewSiteButton.backgroundColor = .clear
     }
 
     /// Setup: Button Panel
@@ -155,12 +155,15 @@ private extension LoginEpilogueViewController {
         if contentSize.height >= (screenHeight - panelHeight) {
             topLine.isHidden = false
             blurEffectView.effect = UIBlurEffect(style: blurEffect)
-            blurEffectView.isHidden = false
+            blurEffectView.isHidden = true
         } else {
             buttonPanel.backgroundColor = .basicBackground
             topLine.isHidden = true
             blurEffectView.isHidden = true
         }
+
+        buttonPanel.backgroundColor = WordPressAuthenticator.shared.style.buttonViewBackgroundColor
+        buttonPanel.backgroundColor = .quaternaryBackground
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
@@ -188,7 +191,7 @@ private extension LoginEpilogueViewController {
 
     // MARK: - Actions
 
-    @IBAction func dismissEpilogue() {
+    @IBAction func createANewSite() {
         tracker.track(click: .continue)
         onDismiss?()
         navigationController?.dismiss(animated: true)
