@@ -105,7 +105,7 @@ extension LoginEpilogueTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == Sections.userInfoSection {
-            return 1
+            return 2
         }
 
         let correctedSection = section - 1
@@ -119,17 +119,24 @@ extension LoginEpilogueTableViewController {
 
         // User Info Row
         if indexPath.section == Sections.userInfoSection {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as? EpilogueUserInfoCell else {
-                return UITableViewCell()
-            }
-            if let info = epilogueUserInfo {
-                cell.stopSpinner()
-                cell.configure(userInfo: info)
-            } else {
-                cell.startSpinner()
-            }
+            if indexPath.row == 0 {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as? EpilogueUserInfoCell else {
+                    return UITableViewCell()
+                }
+                if let info = epilogueUserInfo {
+                    cell.stopSpinner()
+                    cell.configure(userInfo: info)
+                } else {
+                    cell.startSpinner()
+                }
 
-            return cell
+                return cell
+            } else if indexPath.row == 1 {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.chooseSiteReuseIdentifier, for: indexPath) as? LoginEpilogueChooseSiteTableViewCell else {
+                    return UITableViewCell()
+                }
+                return cell
+            }
         }
 
         // Connect Site Row
@@ -222,6 +229,7 @@ private extension LoginEpilogueTableViewController {
     enum Settings {
         static let headerReuseIdentifier = "SectionHeader"
         static let userCellReuseIdentifier = "userInfo"
+        static let chooseSiteReuseIdentifier = "chooseSite"
         static let profileRowHeight = CGFloat(180)
         static let blogRowHeight = CGFloat(60)
         static let headerHeight = CGFloat(50)
