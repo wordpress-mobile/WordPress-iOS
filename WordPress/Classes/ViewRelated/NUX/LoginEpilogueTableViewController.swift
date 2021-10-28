@@ -51,12 +51,9 @@ class LoginEpilogueTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let headerNib = UINib(nibName: "EpilogueSectionHeaderFooter", bundle: nil)
-        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: Settings.headerReuseIdentifier)
-
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
-
+        tableView.register(LoginEpilogueChooseSiteTableViewCell.self, forCellReuseIdentifier: Settings.chooseSiteReuseIdentifier)
         tableView.register(LoginEpilogueConnectSiteCell.defaultNib,
                            forCellReuseIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID)
 
@@ -157,35 +154,8 @@ extension LoginEpilogueTableViewController {
         return loginCell
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
-        // Don't show section header for User Info
-        guard section != Sections.userInfoSection,
-        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
-            return nil
-        }
-
-        // Don't show section header if there are no sites.
-        guard rowCount(forSection: section) > 0 else {
-            return nil
-        }
-
-        cell.titleLabel?.text = title(for: section)
-
-        cell.accessibilityIdentifier = "siteListHeaderCell"
-        cell.accessibilityLabel = cell.titleLabel?.text
-        cell.contentView.backgroundColor = .basicBackground
-        cell.accessibilityHint = NSLocalizedString("A list of sites on this account.", comment: "Accessibility hint for My Sites list.")
-
-        return cell
-    }
-
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return indexPath.section == Sections.userInfoSection ? Settings.profileRowHeight : Settings.blogRowHeight
-    }
-
-    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return Settings.headerHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -226,21 +196,6 @@ extension LoginEpilogueTableViewController {
 // MARK: - Private Extension
 //
 private extension LoginEpilogueTableViewController {
-
-    /// Returns the title for a given section.
-    ///
-    func title(for section: Int) -> String? {
-        guard section != Sections.userInfoSection else {
-            return nil
-        }
-
-        if rowCount(forSection: section) > 1 {
-            return NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after logging in").localizedUppercase
-        }
-
-        return NSLocalizedString("My Site", comment: "Header for a single site, shown after logging in").localizedUppercase
-    }
-
     /// Returns the last row index for a given section.
     ///
     func lastRowInSection(_ section: Int) -> Int {
