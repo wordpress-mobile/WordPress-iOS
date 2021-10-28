@@ -1,7 +1,0 @@
-Der Block-Editor ist jetzt benutzerfreundlicher! Es gibt jetzt dedizierte Embed-Blocks für YouTube, Twitter, WordPress und Vimeo, mit denen du Medien schneller denn je hinzufügen kannst. Du findest diese Blocks in der Ansicht „Blockauswahl“. Du kannst die URLs sogar noch bearbeiten, nachdem du sie ausgewählt hast.
-
-Wir haben das Problem mit dem Galerieblock behoben: Jetzt werden deine Bilder auch noch hinzugefügt, wenn du den Beitrag schließt, während sie hochgeladen werden.
-
-Falls du immer noch Probleme damit hast, kannst du uns jetzt noch einfacher um Hilfe bitten. Und zwar direkt im Bildschirm „Editor“: Klicke einfach auf den Menü-Button mit den drei Punkten, wähle „Hilfe & Support“ und dann „Support kontaktieren“.
-
-Zuletzt haben wir noch das Problem gelöst, bei dem der Bildschirm „Benachrichtigungen“ gelegentlich den falschen Avatar angezeigt hat, wenn du in einem Kommentar erwähnt wurdest – jetzt wird dein ausgewähltes Bild angezeigt!

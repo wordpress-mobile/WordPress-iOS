@@ -47,6 +47,7 @@ import Foundation
     case gutenbergSuggestionSessionFinished
     case gutenbergEditorSettingsFetched
     case gutenbergEditorHelpShown
+    case gutenbergEditorBlockInserted
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -78,6 +79,7 @@ import Foundation
     case readerBlogBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
+    case readerToggleCommentNotifications
     case readerPostReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
@@ -98,6 +100,10 @@ import Foundation
     case statsBloggingRemindersNudgeTapped
     case statsBloggingRemindersNudgeDismissed
     case statsBloggingRemindersNudgeCompleted
+    case statsReaderDiscoverNudgeShown
+    case statsReaderDiscoverNudgeTapped
+    case statsReaderDiscoverNudgeDismissed
+    case statsReaderDiscoverNudgeCompleted
 
     // Stats - Customize card
     case statsCustomizeInsightsShown
@@ -167,6 +173,7 @@ import Foundation
     case commentEdited
     case commentRepliedTo
     case commentFilterChanged
+    case commentSnackbarNext
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -269,6 +276,8 @@ import Foundation
             return "editor_settings_fetched"
         case .gutenbergEditorHelpShown:
             return "editor_help_shown"
+        case .gutenbergEditorBlockInserted:
+            return "editor_block_inserted"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -325,6 +334,8 @@ import Foundation
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
             return "reader_toggle_follow_conversation"
+        case .readerToggleCommentNotifications:
+            return "reader_toggle_comment_notifications"
         case .readerPostReported:
             return "reader_post_reported"
         case .readerArticleDetailMoreTapped:
@@ -363,6 +374,14 @@ import Foundation
             return "stats_blogging_reminders_nudge_dismissed"
         case .statsBloggingRemindersNudgeCompleted:
             return "stats_blogging_reminders_nudge_completed"
+        case .statsReaderDiscoverNudgeShown:
+            return "stats_reader_discover_nudge_shown"
+        case .statsReaderDiscoverNudgeTapped:
+            return "stats_reader_discover_nudge_tapped"
+        case .statsReaderDiscoverNudgeDismissed:
+            return "stats_reader_discover_nudge_dismissed"
+        case .statsReaderDiscoverNudgeCompleted:
+            return "stats_reader_discover_nudge_completed"
 
         // Stats - Customize card
         case .statsCustomizeInsightsShown:
@@ -489,6 +508,8 @@ import Foundation
             return "comment_replied_to"
         case .commentFilterChanged:
             return "comment_filter_changed"
+        case .commentSnackbarNext:
+            return "comment_snackbar_next"
 
         // Invite Links
         case .inviteLinksGetStatus:
@@ -664,6 +685,25 @@ extension WPAnalytics {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)
+    }
+
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - eventName: a `String` that represents the Block Editor event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    static func trackBlockEditorEvent(_ eventName: String, properties: [AnyHashable: Any], blog: Blog) {
+        var event: WPAnalyticsEvent?
+        switch eventName {
+        case "editor_block_inserted": event = .gutenbergEditorBlockInserted
+        default: event = nil
+        }
+
+        if event == nil {
+            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+        } else {
+            WPAnalytics.track(event!, properties: properties, blog: blog)
+        }
     }
 
 }

@@ -106,7 +106,7 @@ public class BlockEditorScreen: BaseScreen {
 
     public func publish() throws -> EditorNoticeComponent {
         publishButton.tap()
-        confirmPublish()
+        try confirmPublish()
 
         return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
     }
@@ -138,9 +138,9 @@ public class BlockEditorScreen: BaseScreen {
             .selectImage(atIndex: 0)
     }
 
-    private func confirmPublish() {
+    private func confirmPublish() throws {
         if FancyAlertComponent.isLoaded() {
-            FancyAlertComponent().acceptAlert()
+            try FancyAlertComponent().acceptAlert()
         } else {
             publishNowButton.tap()
         }
