@@ -47,6 +47,7 @@ import Foundation
     case gutenbergSuggestionSessionFinished
     case gutenbergEditorSettingsFetched
     case gutenbergEditorHelpShown
+    case gutenbergEditorBlockInserted
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -275,6 +276,8 @@ import Foundation
             return "editor_settings_fetched"
         case .gutenbergEditorHelpShown:
             return "editor_help_shown"
+        case .gutenbergEditorBlockInserted:
+            return "editor_block_inserted"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -682,6 +685,25 @@ extension WPAnalytics {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)
+    }
+
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - eventName: a `String` that represents the Block Editor event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    static func trackBlockEditorEvent(_ eventName: String, properties: [AnyHashable: Any], blog: Blog) {
+        var event: WPAnalyticsEvent?
+        switch eventName {
+        case "editor_block_inserted": event = .gutenbergEditorBlockInserted
+        default: event = nil
+        }
+
+        if event == nil {
+            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+        } else {
+            WPAnalytics.track(event!, properties: properties, blog: blog)
+        }
     }
 
 }
