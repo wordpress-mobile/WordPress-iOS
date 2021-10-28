@@ -203,6 +203,8 @@ class RegisterDomainDetailsViewModel {
                         success: {
                             self?.isLoading = false
 
+                            WPAnalytics.track(.automatedTransferCustomDomainPurchased)
+
                             onChange?(.registerSucceeded(domain))
                             onChange?(.domainIsPrimary(domain: domain))
                         }, failure: { _ in
