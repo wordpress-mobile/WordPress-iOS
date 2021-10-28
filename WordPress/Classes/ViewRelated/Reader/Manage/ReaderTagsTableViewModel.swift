@@ -132,7 +132,7 @@ extension ReaderTagsTableViewModel {
         let controller = ReaderSelectInterestsViewController(configuration: configuration,
                                                              topics: topics)
 
-        controller.didSaveInterests = { [weak self] in
+        controller.didSaveInterests = { [weak self] _ in
             self?.dismissModal()
         }
 

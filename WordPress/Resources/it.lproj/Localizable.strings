@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "È necessario avere una connessione Internet attiva per visualizzare le cronologia";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Si è verificato un errore durante la chiusura dell'account.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "C'è stato un errore nella creazione del menu.";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Questo sito non ha ancora pubblicato nulla. Riprova più tardi.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Questo account utente non può essere chiuso se sono presenti revoche non risolte.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Questo account utente ha acquisti attivi e non può essere chiuso.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Questo account utente ha abbonamenti attivi e non può essere chiuso.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Questo sarà incluso nei tweet quando si condivide utilizzando il pulsante Twitter.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Per aggiungere foto o video ai tuoi articoli.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "Per chiudere questo account ora, contatta il team di supporto.";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "È tutto aggiornato!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Non sei autorizzato a chiudere l'account.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Hai apportato modifiche non salvate a questo articolo";

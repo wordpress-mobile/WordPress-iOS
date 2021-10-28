@@ -715,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Internet-anslutning krävs för att kunna visa historiken";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "Ett fel inträffade när kontot skulle avslutas.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Ett fel uppstod vid skapandet av menyn.";
 
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Denna webbplats har inte publicerat något ännu. Försök igen senare.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Detta användarkonto kan inte avslutas eftersom det fortfarande finns någon oavslutad chargeback.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Detta användarkonto kan inte avslutas eftersom det har aktiva inköp.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Detta användarkonto kan inte avslutas eftersom det har aktiva abonnemang.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Detta tas med i tweets när användare delar med Twitter-knappen.";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "För att lägga till bilder eller videoklipp i dina inlägg.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "För att avsluta detta konto nu, kontakta vårt supportteam.";
 
 /* Instructions for alert asking for email and name. */
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Du har sett allt!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Du har inte behörighet att stänga kontot.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Du har gjort ändringar i detta inlägg som inte är sparade";

@@ -573,7 +573,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
 {
-    NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
+    NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = 0"]];
     CGFloat page = [topComments count] / WPTopLevelHierarchicalCommentsPerPage;
     return (NSInteger)page;
 }
@@ -1151,7 +1151,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // Retrieve the starting and ending comments for the specified page.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND parentID = NULL", post];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND parentID = 0", post];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
     fetchRequest.sortDescriptors = @[sortDescriptor];
     [fetchRequest setFetchLimit:WPTopLevelHierarchicalCommentsPerPage];

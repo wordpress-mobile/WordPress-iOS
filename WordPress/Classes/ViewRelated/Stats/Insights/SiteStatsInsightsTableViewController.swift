@@ -217,7 +217,7 @@ private extension SiteStatsInsightsTableViewController {
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
         switch pinnedItemStore?.itemToDisplay(for: viewsCount ?? 0) {
         case .none:
-            insightsToShow = insightsToShow.filter { $0 != .growAudience || $0 != .customize }
+            insightsToShow = insightsToShow.filter { $0 != .growAudience && $0 != .customize }
         case .some(let item):
             switch item {
             case let hintType as GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
@@ -254,14 +254,17 @@ private extension SiteStatsInsightsTableViewController {
 
     // MARK: - Grow Audience Card Management
 
-    func dismissGrowAudienceCard() {
+    func dismissGrowAudienceCard(_ hintType: GrowAudienceCell.HintType) {
         guard let item = pinnedItemStore?.currentItem as? GrowAudienceCell.HintType else {
             return
         }
 
         insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        pinnedItemStore?.markPinnedItemAsHidden(item)
 
+        guard item == hintType else {
+            return
+        }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
         trackNudgeDismissed(for: item)
     }
 
@@ -362,6 +365,13 @@ private extension SiteStatsInsightsTableViewController {
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
     }
 
+    // MARK: - Grow Audience Helpers
+
+    func markCurrentNudgeAsCompleted() {
+        viewModel?.markEmptyStatsNudgeAsCompleted()
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
+        refreshTableView()
+    }
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
@@ -458,8 +468,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         showAddInsightView()
     }
 
-    func growAudienceDismissButtonTapped() {
-        dismissGrowAudienceCard()
+    func growAudienceDismissButtonTapped(_ hintType: GrowAudienceCell.HintType) {
+        dismissGrowAudienceCard(hintType)
         updateView()
     }
 
@@ -496,6 +506,39 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         applyTableUpdates()
 
         trackNudgeEvent(.statsBloggingRemindersNudgeTapped)
+    }
+
+    func growAudienceReaderDiscoverButtonTapped() {
+        guard let vc = viewModel?.followTopicsViewController else {
+            return
+        }
+        vc.spotlightIsShown = true
+        vc.readerDiscoverFlowDelegate = self
+        vc.didSaveInterests = { [weak self] interests in
+            guard let self = self else {
+                return
+            }
+            self.dismiss(animated: true)
+            guard !interests.isEmpty else {
+                return
+            }
+
+            self.navigationController?.popToRootViewController(animated: false)
+            WPTabBarController.sharedInstance().showReaderTab()
+            if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
+               let vc = nc.topViewController as? ReaderTabViewController {
+                vc.presentDiscoverTab()
+            }
+        }
+
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .formSheet
+        present(nc, animated: true) { [weak self] in
+            let text = NSLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
+            self?.displayNotice(title: text)
+        }
+
+        trackNudgeEvent(.statsReaderDiscoverNudgeTapped)
     }
 
     func showAddInsight() {
@@ -563,10 +606,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
-        viewModel?.markEmptyStatsNudgeAsCompleted()
-        insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        refreshTableView()
-
+        markCurrentNudgeAsCompleted()
         trackNudgeEvent(.statsPublicizeNudgeCompleted)
     }
 }
@@ -575,11 +615,17 @@ extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
 
 extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
     func didSetUpBloggingReminders() {
-        viewModel?.markEmptyStatsNudgeAsCompleted()
-        insightsToShow = insightsToShow.filter { $0 != .growAudience }
-        refreshTableView()
-
+        markCurrentNudgeAsCompleted()
         trackNudgeEvent(.statsBloggingRemindersNudgeCompleted)
+    }
+}
+
+// MARK: - ReaderDiscoverFlowDelegate
+
+extension SiteStatsInsightsTableViewController: ReaderDiscoverFlowDelegate {
+    func didCompleteReaderDiscoverFlow() {
+        markCurrentNudgeAsCompleted()
+        trackNudgeEvent(.statsReaderDiscoverNudgeCompleted)
     }
 }
 
@@ -665,6 +711,8 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsPublicizeNudgeShown)
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeShown)
+        case .readerDiscover:
+            trackNudgeEvent(.statsReaderDiscoverNudgeShown)
         }
     }
 
@@ -674,6 +722,8 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsPublicizeNudgeDismissed)
         case .bloggingReminders:
             trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
+        case .readerDiscover:
+            trackNudgeEvent(.statsReaderDiscoverNudgeDismissed)
         }
     }
 }

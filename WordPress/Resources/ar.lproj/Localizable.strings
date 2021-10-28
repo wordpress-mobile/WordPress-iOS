@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-21 08:38:43+0000 */
+/* Translation-Revision-Date: 2021-10-23 16:48:40+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nللتأكيد، يرجى إعادة إدخال اسم المستخدم الخاص بك قبل الإغلاق.\n\n";
 
 /* No comment provided by engineer. */
-" \/ year" = " \/ year";
+" \/ year" = " \/ سنة";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "صور \"بطيئة التحميل\"";
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "يوجد وسم يحمل الاسم \"%@\" بالفعل.";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "نصيحة لتنمية جمهورك";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "عنوان قصير للموقع";
@@ -714,6 +714,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "هناك حاجة إلى وجود اتصال نشط بالإنترنت لعرض السجلّ";
+
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "حدث خطأ في أثناء إغلاق الحساب.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "حدث خطأ أثناء إنشاء القائمة.";
@@ -1533,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "إعجابات بالتعليق";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "تمت الموافقة على التعليق.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "تم حذف التعليق.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "تم حذف التعليق";
@@ -1545,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "تم وسم التعليق كتعليق مزعج";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "تم وضع علامة مزعج على التعليق.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "تم نقل التعليق إلى سلة المهملات.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "التعليق على";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "تم تعيين التعليق تحت المراجعة.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1679,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "الاتصال بموقع آخر";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "ربط المزيد من الشبكات";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "قم بالتوصيل لمشاركة مقالات المدونة تلقائيًا على %@";
@@ -1965,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "إنشاء ملف قابل للتنزيل";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "إنشاء تضمين";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "إنشاء رابط";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "إنشاء لوحة التحكم المخصصة الخاصة بك واختر ما تود رؤيته بالتقارير. ركّز على البيانات التي تُهمّك أكثر.";
@@ -2306,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "النطاقات";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "النطاقات التي تم شراؤها على هذا الموقع سيتم توجيهها إلى %@";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "النطاقات التي تم شراؤها على هذا الموقع ستعيد توجيه الزائرين إلى ";
@@ -2521,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "تحرير المقالات والصفحات الجديدة باستخدام مُحرّر المكوّنات.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "تحرير التذكيرات";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "تحرير أزرار المشاركة";
@@ -2628,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "تفعيل";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "تمكين النشر";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "تمكين البدء السريع للموقع";
@@ -2727,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "خطأ في الموافقة على التعليق";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "خطأ في الموافقة على التعليق.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2740,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "خطأ في حذف التعليق";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "خطأ في حذف التعليق.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "حدث خطأ أثناء تعطيل التحديثات التلقائية لـ %@.";
@@ -2770,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "خطأ أثناء وضع علامة على التعليق كمزعج";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "خطأ أثناء وضع علامة على التعليق كمزعج.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "خطأ أثناء نقل التعليق إلى سلة الهملات.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "حدث خطأ\nأثناء التحميل";
@@ -2809,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "خطأ في إرسال رسالة بريد إلكتروني للتحقق. تحقق من اتصالك وحاول مرة أخرى.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "خطأ أثناء تعيين التعليق تحت المراجعة.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "خطأ في عدم الموافقة على التعليق";
@@ -3133,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "مكتبة الصور المجانية";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "مجاني للسنة الأولى";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "يمكنك توفير مساحة تخزين على هذا الجهاز عن طريق حذف ملفات الوسائط المؤقتة. لن يؤثر هذا على الوسائط الموجودة على موقعك.";
@@ -6148,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "اختيار تخطيط";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "تحديد نطاق";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "تحديد الوسائط.";
@@ -6266,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "إعداد Jetpack";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "تعيين تذكيرات التدوين";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "قم بإعداد تذكيرات التدوين الخاصة بك في الأيام التي ترغب في النشر فيها.";
@@ -6342,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "خطأ في المشاركة";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "تم إعداد المشاركة!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "عرض الترويسة";
@@ -7040,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "تعذرت إضافة الوسائط إلى مكتبة الوسائط.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "لا يمكن تنشيط الوحدة.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "عدد المقالات المطلوب عرضها في كل صفحة.";
@@ -7276,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "لم ينشر هذا الموقع أي شيء بعد. حاول مرة أخرى لاحقًا.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "يتعذر إغلاق حساب المستخدم هذا إذا كانت هناك عمليات رد مبالغ مدفوعة لم يتم حلها.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "لا يمكن إغلاق حساب المستخدم هذا ومازالت عليه عمليات شراء نشطة.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "لا يمكن إغلاق حساب المستخدم هذا ومازالت عليه اشتراكات نشطة.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "سيكون هذا متضمنًا في التغريدات عندما يشارك الأفراد باستخدام زر \"تويتر\".";
@@ -7347,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "لإضافة صور أو مقاطع فيديو إلى مقالاتك.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "لإغلاق هذا الحساب الآن، اتصل بفريق الدعم.";
 
 /* Instructions for alert asking for email and name. */
@@ -8038,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "عرض المزيد";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "مشاهدة لموقعك حتى الآن";
 
 /* Title of a Quick Start Tour */
 "View your site" = "مشاهدة موقعك";
@@ -8059,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "مشاهدات";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "مشاهدات لموقعك حتى الآن";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8779,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "يبدو أنك قمت بتثبيت مكون إضافي للمحمول من DudaMobile الذي يمنع هذا التطبيق من الاتصال بالمدونة الخاصة بك";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "قمت بإعداد تذكيرات التدوين";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "لا ينبغي أن تتجاهل مشكلة أمنية إلا إذا كنت متأكدًا تمامًا من أنها غير ضارة. إذا اخترت تجاهل هذا التهديد، فسيبقى على موقعك \"%1$@\".";
@@ -8795,6 +8807,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "تم تحديثك!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "لست مخولاً لإغلاق الحساب.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "لقد أجريتَ تغييرات غير محفوظة على هذه المقالة";

@@ -50,14 +50,13 @@ struct DomainsDashboardView: View {
 
     @ViewBuilder
     private func makeDomainCell(domain: Blog.DomainRepresentation) -> some View {
-        if domain.domain.isPrimaryDomain {
-            VStack(alignment: .leading) {
-                Text(domain.domain.domainName)
+        VStack(alignment: .leading) {
+            Text(domain.domain.domainName)
+            if domain.domain.isPrimaryDomain {
                 ShapeWithTextView(title: TextContent.primaryAddressLabel)
                     .smallRoundedRectangle()
             }
-        } else {
-            Text(domain.domain.domainName)
+            makeExpiryRenewalLabel(domain: domain)
         }
     }
 
@@ -97,6 +96,14 @@ struct DomainsDashboardView: View {
 
     private var siteAddressForGetFirstDomainSection: String {
         blog.canRegisterDomainWithPaidPlan ? "" : blog.freeSiteAddress
+    }
+
+    private func makeExpiryRenewalLabel(domain: Blog.DomainRepresentation) -> some View {
+        let stringForDomain = DomainExpiryDateFormatter.expiryDate(for: domain.domain)
+
+        return Text(stringForDomain)
+                .font(.subheadline)
+                .foregroundColor(domain.domain.expirySoon || domain.domain.expired ? Color(UIColor.error) : Color(UIColor.textSubtle))
     }
 
     private func makeSiteAddressHeader() -> Divider? {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-21 16:25:04+0000 */
+/* Translation-Revision-Date: 2021-10-25 19:55:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -714,6 +714,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "Pentru a vedea istoricul, este necesară o conexiune activă la internet";
+
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "A apărut o eroare la închiderea contului.";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "A apărut o eroare la crearea meniului.";
@@ -1548,7 +1551,7 @@ translators: Block name. %s: The localized block name */
 "Comment marked as spam." = "Comentariu marcat ca spam.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comentariu mutat la gunoi.";
+"Comment moved to trash." = "Comentariul a fost aruncat la gunoi.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
@@ -1968,7 +1971,7 @@ translators: Block name. %s: The localized block name */
 "Create embed" = "Creează înglobare";
 
 /* No comment provided by engineer. */
-"Create link" = "Creează legătură";
+"Create link" = "Creează o legătură";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te asupra datelor care te interesează cel mai mult.";
@@ -5017,7 +5020,7 @@ translators: Block name. %s: The localized block name */
 /* Name for the status of a post pending review.
    Pending review
    Title of the Pending Review Badge */
-"Pending review" = "Revizie în așteptare";
+"Pending review" = "În curs de revizuire";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature. */
@@ -7279,6 +7282,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Acest site nu a publicat nimic până acum. Încearcă din nou mai târziu.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "Acest cont de utilizator nu poate fi închis dacă există restituiri nerezolvate.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "Acest cont de utilizator nu poate fi închis deoarece are cumpărături active.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "Acest cont de utilizator nu poate fi închis deoarece are abonamente active.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Acesta va fi inclus în tweet-uri când lumea va partaja folosind butonul de Twitter.";
@@ -7350,7 +7362,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Să adaugi poze sau videouri în articolele tale.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "Pentru a închide acest cont acum, contactează echipa noastră pentru suport.";
 
 /* Instructions for alert asking for email and name. */
@@ -8798,6 +8810,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Ești cu toate la zi!";
+
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "Nu ești autorizat să închizi contul.";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Ai modificări nesalvate la acest articol";
