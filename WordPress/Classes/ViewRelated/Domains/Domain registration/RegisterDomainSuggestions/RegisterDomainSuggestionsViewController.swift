@@ -13,7 +13,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var site: Blog!
     private var domainPurchasedCallback: ((String) -> Void)!
 
-    private var domain: DomainSuggestion?
+    private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
@@ -187,7 +187,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 // MARK: - DomainSuggestionsTableViewControllerDelegate
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: DomainSuggestion) {
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
         showButton(animated: true)
@@ -206,6 +206,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let domain = domain else {
             return
         }
+
+        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
         switch domainType {
         case .registered:
@@ -227,7 +229,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func pushRegisterDomainDetailsViewController(_ domain: DomainSuggestion) {
+    private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
         guard let siteID = site.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
@@ -238,7 +240,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCartAndPresentWebView(_ domain: DomainSuggestion) {
+    private func createCartAndPresentWebView(_ domain: FullyQuotedDomainSuggestion) {
         guard let siteID = site.dotComID?.intValue else {
             DDLogError("Cannot register domains for sites without a dotComID")
             return
@@ -246,7 +248,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
 
         let proxy = RegisterDomainDetailsServiceProxy()
         proxy.createPersistentDomainShoppingCart(siteID: siteID,
-                                                 domainSuggestion: domain,
+                                                 domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { [weak self] _ in
             self?.presentWebViewForCurrentSite(domainSuggestion: domain)
@@ -299,7 +301,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
+    private func presentWebViewForCurrentSite(domainSuggestion: FullyQuotedDomainSuggestion) {
         guard let homeURL = site.homeURL,
               let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
               let url = URL(string: Constants.checkoutWebAddress + host),
@@ -331,7 +333,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             }
         }
 
-        if let storeSandobxCookie = (HTTPCookieStorage.shared.cookies?.first {
+        WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+
+        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
 
             $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
             $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
@@ -342,7 +346,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             cookieStore.getAllCookies { [weak self] cookies in
 
                     var newCookies = cookies
-                    newCookies.append(storeSandobxCookie)
+                    newCookies.append(storeSandboxCookie)
 
                     cookieStore.setCookies(newCookies) {
                         self?.present(navController, animated: true)

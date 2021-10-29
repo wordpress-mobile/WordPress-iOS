@@ -6,6 +6,13 @@ struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
 
+    // Property observer
+    private func showingDomainRegistrationFlow(to value: Bool) {
+        if value {
+            WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
+        }
+    }
+
     var body: some View {
         List {
             makeSiteAddressSection(blog: blog)
@@ -67,7 +74,7 @@ struct DomainsDashboardView: View {
                 makeDomainCell(domain: $0)
             }
             PresentationButton(
-                isShowingDestination: $isShowingDomainRegistrationFlow,
+                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
                 appearance: {
                     HStack {
                         Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
@@ -87,7 +94,7 @@ struct DomainsDashboardView: View {
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
                 highlight: siteAddressForGetFirstDomainSection,
-                isShowingDestination: $isShowingDomainRegistrationFlow) {
+                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)) {
                     ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
                         .largeRoundedRectangle()
                 }
@@ -115,7 +122,7 @@ struct DomainsDashboardView: View {
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
     private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
-        DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
+        return DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
     }
 }
 

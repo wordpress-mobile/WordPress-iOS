@@ -1023,6 +1023,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let navController = UINavigationController(rootViewController: controller)
         self.topmostPresentedViewController.present(navController, animated: true)
     }
+
+    func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
+        WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: post.blog)
+    }
 }
 
 // MARK: - Suggestions implementation

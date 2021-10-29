@@ -47,6 +47,7 @@ import Foundation
     case gutenbergSuggestionSessionFinished
     case gutenbergEditorSettingsFetched
     case gutenbergEditorHelpShown
+    case gutenbergEditorBlockInserted
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -201,6 +202,14 @@ import Foundation
     case recommendAppEngaged
     case recommendAppContentFetchFailed
 
+    // Domains
+    case domainsDashboardViewed
+    case domainsDashboardAddDomainTapped
+    case domainsSearchSelectDomainTapped
+    case domainsRegistrationFormViewed
+    case domainsRegistrationFormSubmitted
+    case domainsPurchaseWebviewViewed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -275,6 +284,8 @@ import Foundation
             return "editor_settings_fetched"
         case .gutenbergEditorHelpShown:
             return "editor_help_shown"
+        case .gutenbergEditorBlockInserted:
+            return "editor_block_inserted"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -549,6 +560,20 @@ import Foundation
         // When the content fetching for the recommend app failed
         case .recommendAppContentFetchFailed:
             return "recommend_app_content_fetch_failed"
+
+        // Domains
+        case .domainsDashboardViewed:
+            return "domains_dashboard_viewed"
+        case .domainsDashboardAddDomainTapped:
+            return "domains_dashboard_add_domain_tapped"
+        case .domainsSearchSelectDomainTapped:
+            return "domains_dashboard_add_domain_tapped"
+        case .domainsRegistrationFormViewed:
+            return "domains_registration_form_viewed"
+        case .domainsRegistrationFormSubmitted:
+            return "domains_registration_form_submitted"
+        case .domainsPurchaseWebviewViewed:
+            return "domains_purchase_webview_viewed"
         }
     }
 
@@ -649,15 +674,22 @@ extension WPAnalytics {
     /// Track a event in Obj-C
     ///
     /// This will call each registered tracker and fire the given event
-    /// - Parameter event: a `String` that represents the event name
+    /// - Parameter event: a `WPAnalyticsEvent` that represents the event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
     @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
-        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
-        mergedProperties.merge(properties) { (_, new) in new }
+        track(event, properties: properties)
+    }
 
-
-        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    /// Track an event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - event: a `WPAnalyticsEvent` that represents the event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
+        track(event, properties: properties, blog: blog)
     }
 
     /// Track a Reader event in Obj-C
@@ -682,6 +714,25 @@ extension WPAnalytics {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)
+    }
+
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - eventName: a `String` that represents the Block Editor event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    static func trackBlockEditorEvent(_ eventName: String, properties: [AnyHashable: Any], blog: Blog) {
+        var event: WPAnalyticsEvent?
+        switch eventName {
+        case "editor_block_inserted": event = .gutenbergEditorBlockInserted
+        default: event = nil
+        }
+
+        if event == nil {
+            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+        } else {
+            WPAnalytics.track(event!, properties: properties, blog: blog)
+        }
     }
 
 }
