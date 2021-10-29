@@ -33,6 +33,8 @@ class LoginEpilogueViewController: UIViewController {
         return .systemChromeMaterial
     }
 
+    private var dividerView: LoginEpilogueDividerView?
+
     /// Links to the Epilogue TableViewController
     ///
     private var tableViewController: LoginEpilogueTableViewController?
@@ -161,6 +163,18 @@ private extension LoginEpilogueViewController {
             topLine.isHidden = true
             blurEffectView.isHidden = true
         }
+
+        guard dividerView == nil else { return }
+        dividerView = LoginEpilogueDividerView()
+        guard let dividerView = dividerView else { return }
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        buttonPanel.addSubview(dividerView)
+        NSLayoutConstraint.activate([
+            dividerView.leadingAnchor.constraint(equalTo: buttonPanel.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: buttonPanel.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: buttonPanel.topAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
