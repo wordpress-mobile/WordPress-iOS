@@ -845,6 +845,9 @@ platform :ios do
       UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
     end
 
+    all_tests = tests_from_xctestrun(xctestrun: test_plan_path)
+    only_testing = all_tests["WordPressTest"].reject { |t| t.include?("ContextManagerMock") || t.include?("TestContextManager") || t.include?("OCMLocation") || t.include?("HTTPStubsDescriptor") }
+
     multi_scan(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
@@ -852,6 +855,7 @@ platform :ios do
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
       test_without_building: true,
+      only_testing: only_testing,
       xctestrun: test_plan_path,
       try_count: options[:try_count],
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
