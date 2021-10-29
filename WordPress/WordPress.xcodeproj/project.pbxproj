@@ -1536,6 +1536,8 @@
 		93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
 		93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E63368272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift */; };
 		93E6336A272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E63368272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift */; };
+		93E6336C272AF504009DACF8 /* LoginEpilogueDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E6336B272AF504009DACF8 /* LoginEpilogueDividerView.swift */; };
+		93E6336D272AF504009DACF8 /* LoginEpilogueDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E6336B272AF504009DACF8 /* LoginEpilogueDividerView.swift */; };
 		93E9050719E6F3D8005513C9 /* ContextManagerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 93E9050619E6F3D8005513C9 /* ContextManagerMock.m */; };
 		93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E9050319E6F242005513C9 /* ContextManagerTests.swift */; };
 		93F2E53E1E9E5A010050D489 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
@@ -6198,6 +6200,7 @@
 		93E5284F19A77824003A1A9C /* WordPressTodayWidget-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTodayWidget-Bridging-Header.h"; sourceTree = "<group>"; };
 		93E5285719A7AA5C003A1A9C /* WordPressTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WordPressTodayWidget.entitlements; sourceTree = "<group>"; };
 		93E63368272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEpilogueChooseSiteTableViewCell.swift; sourceTree = "<group>"; };
+		93E6336B272AF504009DACF8 /* LoginEpilogueDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEpilogueDividerView.swift; sourceTree = "<group>"; };
 		93E9050219E6F240005513C9 /* WordPressTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTest-Bridging-Header.h"; sourceTree = "<group>"; };
 		93E9050319E6F242005513C9 /* ContextManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManagerTests.swift; sourceTree = "<group>"; };
 		93E9050519E6F3D8005513C9 /* ContextManagerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextManagerMock.h; sourceTree = "<group>"; };
@@ -14055,6 +14058,7 @@
 			children = (
 				433432511E9ED18900915988 /* LoginEpilogueViewController.swift */,
 				93E63368272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift */,
+				93E6336B272AF504009DACF8 /* LoginEpilogueDividerView.swift */,
 				43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift */,
 			);
 			name = Epilogue;
@@ -18254,6 +18258,7 @@
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				C81CCD7E243BF7A600A83E27 /* TenorMedia.swift in Sources */,
 				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
+				93E6336C272AF504009DACF8 /* LoginEpilogueDividerView.swift in Sources */,
 				3F73BE5D24EB38E200BE99FF /* WhatIsNewScenePresenter.swift in Sources */,
 				8B69F19F255D67E7006B1CEF /* CalendarViewController.swift in Sources */,
 				912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */,
@@ -20065,6 +20070,7 @@
 				FABB23DE2602FC2C00C8785C /* SharingConnectionsViewController.m in Sources */,
 				FABB23DF2602FC2C00C8785C /* BlogSelectorViewController.m in Sources */,
 				FABB23E02602FC2C00C8785C /* HomepageSettingsViewController.swift in Sources */,
+				93E6336D272AF504009DACF8 /* LoginEpilogueDividerView.swift in Sources */,
 				FABB23E12602FC2C00C8785C /* TenorMediaGroup.swift in Sources */,
 				FABB23E22602FC2C00C8785C /* SiteSuggestionService.swift in Sources */,
 				FABB23E32602FC2C00C8785C /* NotificationsViewController+PushPrimer.swift in Sources */,
