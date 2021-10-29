@@ -155,7 +155,6 @@ extension LoginEpilogueTableViewController {
 extension LoginEpilogueTableViewController: LoginEpilogueCreateNewSiteCellDelegate {
     func didTapCreateNewSite() {
         // TODO: implement
-        print("mika")
     }
 }
 
@@ -168,26 +167,9 @@ private extension LoginEpilogueTableViewController {
         return (tableView.numberOfRows(inSection: section) - 1)
     }
 
-    /// Returns the number of WordPress.com sites.
-    ///
-    /*
-    var numberOfWordPressComBlogs: Int {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()?.blogs.count ?? 0
-    }
-    */
-
     func removeSeparatorFor(_ cell: UITableViewCell) {
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
     }
-
-    /*
-    func rowCount(forSection section: Int) -> Int {
-        return blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
-    }
-    */
 
     enum Sections {
         static let userInfoSection = 0
