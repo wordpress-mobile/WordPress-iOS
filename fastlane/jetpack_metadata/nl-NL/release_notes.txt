@@ -1,0 +1,7 @@
+Deze update maakt het nog eenvoudiger om externe content in te sluiten op je sites! Maak kennis met de nieuwe speciale insluitblokken voor Facebook, Instagram, Loom en Smartframe. Daarbij detecteert de editor automatisch insluitbare URL's die je in lege paragrafen plakt. Naast het toevoegen van deze nieuwe functies, hebben we een probleem opgelost met het niet kunnen bewerken van sommige ingesloten URL's. Ook hebben we het bijsnijden van de voorbeeldweergave aangepast, zodat je altijd de volledige ingesloten content ziet.
+
+Over blokken gesproken; je kunt nu de tekst en de achtergrondkleur aanpassen in de Pullquote- en vooraf ingestelde blokken.
+
+Wil je meer lezers bereiken? De nieuwe Publiceren- en Blog-herinneringsmeldingen zorgen ervoor dat je volgens een consistent schema publiceert.
+
+Ten slotte hebben we de ondersteuning van grotere lettertypen verbeterd tijdens het kiezen van een startpagina of pagina-lay-out, ervoor gezorgd dat de opmerkingenlijst op de site nu altijd wordt vernieuwd en de pre-publiceren-footer van de sheet wat opgepoetst.
