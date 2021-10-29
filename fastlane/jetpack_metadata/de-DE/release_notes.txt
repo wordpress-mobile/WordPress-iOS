@@ -1,0 +1,7 @@
+Mit diesem Update wird das Einbetten externer Inhalte auf deinen Websites noch einfacher! Neu: die eigenen Embed-Blöcke für Facebook, Instagram, Loom und Smartframe. Außerdem erkennt der Editor einbettbare URLs, die du in einen leeren Absatz einfügst. Abgesehen von diesen neuen Features haben wir ein Problem behoben, bei dem einige eingebettete URLs nicht bearbeitet werden konnten, und das Abschneiden der Vorschau angepasst, damit du immer den vollständigen eingebetteten Inhalt siehst.
+
+Apropos Blöcke: Du kannst jetzt in den Pullquote- und Vorformatiert-Blöcken den Text und die Hintergrundfarbe anpassen.
+
+Brauchst du Unterstützung dabei, mehr Leser zu erreichen? Die neuen Publicize- und Blog-Erinnerungen helfen dir, einen konsistenten Veröffentlichungsplan einzuhalten.
+
+Und schließlich haben wir die Unterstützung für größere Textgrößen bei der Auswahl einer Startseite oder eines Seitenlayouts verbessert, einen Fehler behoben, durch den die Liste der Website-Kommentare in bestimmten Fällen nicht aktualisiert wurde, und den Header des Vorveröffentlichungs-Bottom-Sheets überarbeitet.
