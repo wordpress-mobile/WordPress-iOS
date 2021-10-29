@@ -66,6 +66,10 @@ extension UserProfileSheetViewController: DrawerPresentable {
         return tableView
     }
 
+    var allowsUserTransition: Bool {
+        false
+    }
+
 }
 
 // MARK: - UITableViewDataSource methods
