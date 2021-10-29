@@ -95,6 +95,7 @@
                         <outlet property="blurEffectView" destination="E7v-Xt-6uK" id="RIm-YT-MPx"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
                         <outlet property="createANewSiteButton" destination="51h-er-sEL" id="703-qw-kKG"/>
+                        <outlet property="tableViewBottomContraint" destination="mVQ-Dg-W4g" id="IbU-ct-ltZ"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
                         <outlet property="tableViewTrailingConstraint" destination="au1-yD-v4h" id="jYm-53-dls"/>
                         <outlet property="topLine" destination="aTr-q6-PbK" id="IR4-UV-gef"/>

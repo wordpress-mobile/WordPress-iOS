@@ -79,6 +79,11 @@ extension LoginEpilogueTableViewController {
 
         let correctedSection = section - 1
         let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
+
+        if siteRows < 4, let parent = parent as? LoginEpilogueViewController {
+            parent.hideButtonPanel()
+        }
+
         return siteRows
     }
 
