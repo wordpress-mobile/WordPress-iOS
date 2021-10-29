@@ -24,15 +24,14 @@ final class LoginEpilogueCreateNewSiteCell: UITableViewCell {
 // MARK: - Private Methods
 private extension LoginEpilogueCreateNewSiteCell {
     func setupViews() {
-//        selectionStyle = .none
+        selectionStyle = .none
         setupDividerView()
         setupCreateNewSiteButton()
-        contentView.isUserInteractionEnabled = true
     }
 
     func setupDividerView() {
         dividerView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(dividerView)
+        addSubview(dividerView)
         NSLayoutConstraint.activate([
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
