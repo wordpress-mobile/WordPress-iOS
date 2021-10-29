@@ -67,6 +67,10 @@ extension UserProfileSheetViewController: DrawerPresentable {
         return tableView
     }
 
+    var allowsUserTransition: Bool {
+        false
+    }
+
 }
 
 // MARK: - UITableViewDataSource methods
@@ -171,6 +175,7 @@ private extension UserProfileSheetViewController {
     func configureTable() {
         tableView.backgroundColor = .basicBackground
         tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
     }
 
     func registerTableCells() {
