@@ -25,6 +25,8 @@ class LoginEpilogueViewController: UIViewController {
     /// Used to adjust the width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomContraint: NSLayoutConstraint!
+
     private var defaultTableViewMargin: CGFloat = 0
 
     /// Blur effect on button panel
@@ -118,6 +120,12 @@ class LoginEpilogueViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         setTableViewMargins(forWidth: view.frame.width)
     }
+
+    func hideButtonPanel() {
+        buttonPanel.isHidden = true
+        createANewSiteButton.isHidden = true
+        tableViewBottomContraint.constant = 0
+    }
 }
 
 // MARK: - Private Extension
@@ -161,17 +169,7 @@ private extension LoginEpilogueViewController {
             blurEffectView.isHidden = true
         }
 
-        guard dividerView == nil else { return }
-        dividerView = LoginEpilogueDividerView()
-        guard let dividerView = dividerView else { return }
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        buttonPanel.addSubview(dividerView)
-        NSLayoutConstraint.activate([
-            dividerView.leadingAnchor.constraint(equalTo: buttonPanel.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: buttonPanel.trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: buttonPanel.topAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: 40)
-        ])
+        setupDividerLineIfNeeded()
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
@@ -192,6 +190,20 @@ private extension LoginEpilogueViewController {
         tableViewTrailingConstraint.constant = margin
     }
 
+    func setupDividerLineIfNeeded() {
+        guard dividerView == nil else { return }
+        dividerView = LoginEpilogueDividerView()
+        guard let dividerView = dividerView else { return }
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        buttonPanel.addSubview(dividerView)
+        NSLayoutConstraint.activate([
+            dividerView.leadingAnchor.constraint(equalTo: buttonPanel.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: buttonPanel.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: buttonPanel.topAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
     enum TableViewMarginMultipliers {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
@@ -200,8 +212,6 @@ private extension LoginEpilogueViewController {
     // MARK: - Actions
 
     @IBAction func createANewSite() {
-        tracker.track(click: .continue)
-        onDismiss?()
-        navigationController?.dismiss(animated: true)
+        // TODO: implement
     }
 }
