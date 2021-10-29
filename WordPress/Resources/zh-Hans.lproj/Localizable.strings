@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-12 11:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-26 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n如果您确认关闭账户，请在关闭之前重新输入您的用户名。\n";
 
 /* No comment provided by engineer. */
-" \/ year" = " \/ year";
+" \/ year" = " \/年";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "“延迟加载”图片";
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "名为“%@”的标签已存在。";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "增加受众的技巧";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "站点标题";
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "自动将新文章共享到社交媒体账户。";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "自动将新文章分享到您的社交媒体，让这些受众流向您的站点。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
@@ -1536,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "评论点赞";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "已批准评论。";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "已删除评论。";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "评论已删除";
@@ -1548,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "评论已被标记为垃圾评论";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "已将评论标记为垃圾评论。";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "已将评论移动到回收站。";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "评论于";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "已将评论设置为待处理。";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1682,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "连接其他站点";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "连接更多网络";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "连接以自动将您的博客文章分享至 %@";
@@ -1968,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "创建可下载的文件";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "创建嵌入";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "创建链接";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "创建专属于您的自定义控制面板并选择查看哪些报告。重点关注您最关心的数据。";
@@ -2309,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "域";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "在此站点上购买的域会将用户重定向至 %@";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "在此站点上购买的域名会将用户重定向至 ";
@@ -2524,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "编辑提醒";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "编辑共享按钮";
@@ -2631,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "启用";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "启用 Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "为站点启用快速入门";
@@ -2730,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "批准评论时出错";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "批准评论时出错。";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "删除评论时出错";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "删除评论时出错。";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "禁用 %@ 的自动更新时出错。";
@@ -2773,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "将评论标记为垃圾时出错";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "将评论标记为垃圾时出错。";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "将评论移至回收站时出错。";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "发生错误\n在加载中";
@@ -2812,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "发送验证电子邮件时发生错误。请检查连接并重试。";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "将评论设置为待处理时出错。";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "取消批准评论时出错";
@@ -3136,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "免费照片库";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "第一年免费 ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "删除临时媒体文件，释放此设备的存储空间。此操作不会影响您站点上的媒体。";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "简要描述该站点。";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "要将您发布的文章分享到您的社交媒体，需要启用 Publicize 模块。";
 
 /* Describes a status of a plugin */
 "Inactive" = "未激活";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "保存编辑";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "继续发布博客，并查看您站点的访客。";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "使您站点的性能始终不会落伍。";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "请输入有效的姓氏";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "请输入一个有效组织";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "请输入有效的邮政编码";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "博文发布情况";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "定期发布可帮助吸引受众。 提醒可帮助您按计划执行。";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期发布文章有助于留住读者以及吸引新访客访问您的站点。";
@@ -6151,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "选择布局";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "选择域";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "选择媒体。";
@@ -6269,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "设置 Jetpack";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "设置博客发布提醒";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "在希望发布文章的日期设置博客发布提醒。";
@@ -6345,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "共享错误";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "已设置共享！";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "显示标题";
@@ -7043,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "无法将媒体添加到媒体库。";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "无法激活模块。";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "每页显示的文章数。";
@@ -8050,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "查看更多信息";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "到目前为止您站点的浏览次数";
 
 /* Title of a Quick Start Tour */
 "View your site" = "查看您的站点";
@@ -8071,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "查看数";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "到目前为止您站点的浏览次数";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "在对站点进行更改时，您可在此处查看您的活动历史记录。";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "当您发布下一篇文章时，它将自动共享到您连接的网络。";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "您想要编辑哪个版本？";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "您似乎安装了来自 DudaMobile 的移动插件，该插件会阻止应用程序连接到您的博客";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "您已设置博客发布提醒";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "您不应忽视安全性问题，除非您确信该问题不会带来负面影响。如果您选择忽略此威胁，它将继续存留在您的站点“%1$@”。";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-22 11:57:43+0000 */
+/* Translation-Revision-Date: 2021-10-26 11:14:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nQë ta ripohoni, ju lutemi, rijepni emrin tuaj të përdoruesit para mbylljes.\n\n";
 
 /* No comment provided by engineer. */
-" \/ year" = " \/ year";
+" \/ year" = " \/ vit";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Figura “Lazy-load”";
@@ -233,7 +233,7 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "%s u shndërrua në blloqe të rregullt";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+"%s embed block previews are coming soon" = "Paraparjet e blloqeve %s vijnë së shpejti";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "%s ka të caktuar URL";
@@ -242,7 +242,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s s’ka të caktuar URL";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "%s lidhje";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Paraparjet %s s’janë ende të mundshme";
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "Ka tashmë një etiketë të quajtur '%@'.";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "Një ndihmëz si të shtoni publikun tuaj";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Titull për këtë sajt";
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "Ndani vetvetiu me të tjerët në rrjetet tuaja shoqërore postime të reja.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Ndani automatikisht me të tjerë postime të reja në media shoqërore, që të filloni ta sillni atë publik te sajti juaj.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Vetëpërditësime";
@@ -1435,7 +1435,7 @@ translators: Block name. %s: The localized block name */
 "City" = "Qytet";
 
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Claim your free domain" = "Claim your free domain";
+"Claim your free domain" = "Kërkoni përkatësinë tuaj falas";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog Klasik";
@@ -1536,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "Pëlqime Komenti";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "Komenti u miratua.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "Koment u fshi.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Komenti u fshi";
@@ -1548,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "Komenti u shënua si i Padëshiruar";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "Komentit iu vu shenjë si i padëshiruar.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "Komenti u shpu te hedhurinat.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "Koment te";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "Komentit iu vu shenjë si në pritje të miratimit.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1682,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "Lidhni një sajt tjetër";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "Lidhni më shumë rrjete";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Lidheni, që postimet e blogut tuaj të ndahen vetvetiu në %@";
@@ -1968,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "Krijoni kartelë të shkarkueshme";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "Krijoni trupëzim";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "Krijo lidhje";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Krijoni pultin tuaj të personalizuar dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
@@ -2309,10 +2309,10 @@ translators: Block name. %s: The localized block name */
 "Domains" = "Përkatësi";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "Përkatësitë e blera në këtë sajt do t’i ridrejtojnë vizitorët te %@";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domains purchased on this site will redirect users to ";
+"Domains purchased on this site will redirect users to " = "Përkatësitë e blera në këtë sajt do t’i ridrejtojnë vizitorët te ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "S’keni llogari? _Regjistrohuni_";
@@ -2524,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "Përpunoni postime dhe faqe të reja me përpunuesin me blloqe.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "Përpunoni kujtues";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Përpunoni butona ndarjesh me të tjerë";
@@ -2631,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "Aktivizoje";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "Aktivizoni Publicize-in";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Aktivizo Nisjeje të Shpejtë për Sajtin";
@@ -2730,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "Gabim në miratim komenti";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "Gabim në miratim komenti.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "Gabim në fshirje komenti";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "Gabim në fshirje komenti.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Gabim në çaktivizimin e vetëpërditësimeve për %@.";
@@ -2773,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "Gabim në vënie shenje komenti si i padëshiruar";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "Gabim në vënie shenje komenti si i padëshiruar.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "Gabim gjatë kalimit të komentit te hedhurinat.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Ndodhi një gabim\ngjatë ngarkimit";
@@ -2812,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "Gabim në dërgimin e email-it të verifikimit. Kontrolloni lidhjen tuaj dhe riprovoni.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "Gabim në caktimin e komentit si në pritje të miratimit.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Gabim në shmiratim komenti";
@@ -3136,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "Fototekë e Lirë";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "Falas për vitin e parë";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Lironi ca hapësirë depozitimi në këtë pajisje duke fshirë kartela të përkohshme mediash. Kjo nuk do të prekë mediat në sajtin tuaj.";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "Shpjegoni, me pak fjalë, se për çfarë është ky sajt.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Që të mund të ndahen me të tjerë postimet tuaja të botuara në median tuaj shoqërore duhet të aktivizoni modulin Publicize.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Jo aktive";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "Vazhdoni Përpunimin";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "Vazhdoni blogimin dhe rikontrolloni për të parë vizitorët që vijnë në sajtin tuaj.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Mbajeni të përditësuar funksionimin e sajtit tuaj.";
@@ -4088,7 +4088,7 @@ translators: Block name. %s: The localized block name */
 "Mark as seen" = "Vëri shenjë si i parë";
 
 /* Action title for marking referrer as spam */
-"Mark as spam" = "Mark as spam";
+"Mark as spam" = "Vëri shenjë si të padëshiruar";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Vëri shenjë si i padëshiruar.";
@@ -4612,7 +4612,7 @@ translators: Block name. %s: The localized block name */
 "No preview available" = "S’ka paraparje gati";
 
 /* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "No primary site address found";
+"No primary site address found" = "S’u gjet adresë parësore sajti";
 
 /* A message title */
 "No recent posts" = "Pa postime së fundi";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Ju lutemi, jepni një Mbiemër të vlefshëm";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "Ju lutemi, jepni një Ent të vlefshëm";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Ju lutemi, jepni Kod Postar të vlefshëm";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "Veprimtari Postimi";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Postimi rregullisht mund të ndihmojë të krijoni një publik. Kujtuesit ju ndihmojnë të ndiqni këtë qëllim.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Postimi rregullisht mund të ndihmojë t’i mbani lexuesit tuaj të angazhuar, dhe të tërhiqni vizitorë të rinj te sajti juaj.";
@@ -5392,7 +5392,7 @@ translators: Block name. %s: The localized block name */
 "Primary Site" = "Sajti Parësor";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "Adresë parësore sajti";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5745,7 +5745,7 @@ translators: Block name. %s: The localized block name */
 "Reply Text" = "Tekst Përgjigjeje";
 
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
-"Reply to %1$@" = "Reply to %1$@";
+"Reply to %1$@" = "Përgjigje për %1$@";
 
 /* Placeholder text for replying to a comment */
 "Reply to comment…" = "Përgjigjjuni komentit…";
@@ -6041,10 +6041,10 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "Buton kërkimi. Butoni i tanishëm tekst është";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "Kërkoni te përkatësitë";
 
 /* title of the button that searches the first domain. */
-"Search for a domain" = "Search for a domain";
+"Search for a domain" = "Kërkoni për një përkatësi";
 
 /* No comment provided by engineer. */
 "Search input field." = "Fushë dhëniesh kërkimi.";
@@ -6151,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "Përzgjidhni një skemë";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "Përzgjidhni një përkatësi";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Përzgjidhni media.";
@@ -6269,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "Rregulloni Jetpack-un";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "Ujdisni kujtues blogimi";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Ujdisni kujtues blogimi për ditë kur doni të postoni.";
@@ -6345,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "Gabim në ndarje me të tjerët";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "Ndarje me të tjerë është ujdisur!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Shfaq Kryet";
@@ -6451,7 +6451,7 @@ translators: Block name. %s: The localized block name */
 "Site" = "Sajt";
 
 /* Title of the Domains Dashboard. */
-"Site Domains" = "Site Domains";
+"Site Domains" = "Përkatësi Sajti";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Ikonë Sajti";
@@ -7043,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "Media s’u shtua dot te Mediateka.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "Moduli s’u aktivizua dot.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Numër postimesh për t’u shfaqur për faqe.";
@@ -8050,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "Shihni më tepër";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "Parje për sajtin tuaj deri këtu";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Shihni sajtin tuaj";
@@ -8071,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "Parje";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "Parje për sajtin tuaj deri këtu";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "Kur bëni ndryshime te sajti juaj, këtu do të jeni në gjendje të shihni historikun e veprimtarisë tuaj.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "Kur të botoni postimin tuaj pasues, do të ndahet automatikisht në rrjetet që keni lidhur.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Cilin version do të donit të përpunonit?";
@@ -8733,7 +8733,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "Keni 1 sajt WordPress të fshehur.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+"You have a free one-year domain registration with your plan" = "Me planin tuaj keni të përfshirë një regjistrim përkatësie falas për një vit";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Keni përmirësime me pagesë aktive në sajtin tuaj. Ju lutemi, para se të fshini sajtin, anulojini përmirësimet tuaja.";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Duket se keni instaluar një shtojcë celulari nga DudaMobile që e pengon aplikacionin të lidhet te blogu juaj";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "Ujdisni kujtues blogimi";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "S’duhet ta shpërfillni një çështje sigurie, veç në qofshi absolutisht i sigurt se është e padëmshme. Nëse zgjidhni të shpërfillet ky kërcënim, do të mbetet në sajtin tuaj \"%1$@\".";
@@ -8815,7 +8815,7 @@ translators: Block name. %s: The localized block name */
 "You've made unsaved changes to this post" = "Keni bërë ndryshime të paruajtura në këtë postim";
 
 /* Header of the domains list section in the Domains Dashboard. */
-"Your Site Domains" = "Your Site Domains";
+"Your Site Domains" = "Përkatësitë e Sajtit Tuaj";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikona e Sajtit Tuaj";
@@ -8848,7 +8848,7 @@ translators: Block name. %s: The localized block name */
 "Your first backup will be ready soon" = "Kopjeruajtja juaj e parë do të jetë gati së shpejti";
 
 /* Title of the site address section in the Domains Dashboard. */
-"Your free WordPress.com address is" = "Your free WordPress.com address is";
+"Your free WordPress.com address is" = "Adresa juaj falas WordPress.com është";
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media juaj s’u eksportua dot. Nëse problemi vazhdon, mund të lidheni me ne që nga skena Unë > Ndihmë & Asistencë.";
