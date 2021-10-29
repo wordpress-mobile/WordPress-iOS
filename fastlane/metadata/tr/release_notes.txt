@@ -1,0 +1,7 @@
+Bu güncelleme sitelerinize harici içerik gömmeyi daha da kolaylaştırıyor! Facebook, Instagram, Loom ve Smartframe'e yönelik yeni ve özel gömülü bloklarla tanışın. Ayrıca düzenleyici boş bir paragrafa yapıştırdığınız gömülebilir URL'leri otomatik olarak algılar. Bu yeni özelliklerin yanı sıra, bazı gömülü URL'lerin düzenlenememesine neden olan sorunu düzelttik ve her zaman gömülü içeriğin tamamını görebilmeniz için önizleme kırpmasını ayarladık.
+
+Bloklardan bahsetmişken, şimdi artık Alıntı ve Önceden Biçimlendirilmiş bloklardaki metni ve arka plan rengini özelleştirebilirsiniz.
+
+Daha fazla okuyucuya ulaşmak için yardıma mı ihtiyacınız var? Yeni Duyuru ve Blog Oluşturma Hatırlatıcısı öğeleri tutarlı bir yayın planına bağlı kalmanıza yardımcı olacaktır.
+
+Son olarak, bir ana sayfa veya sayfa düzeni seçerken daha büyük metin boyutları için desteği iyileştirdik, site yorumları listesinin belirli durumlarda yenilenmemesi ile ilgili hatayı düzelttik ve yayın öncesi alt sayfa üst bilgisini yeniledik.

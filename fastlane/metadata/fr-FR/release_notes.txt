@@ -1,7 +1,7 @@
-Cette mise à jour permet d’intégrer encore plus facilement du contenu externe sur vos sites ! Voici les nouveaux blocs d’intégration dédiés pour Facebook, Instagram, Loom et Smartframe. De plus, l’éditeur détecte automatiquement les URL embarquables que vous collez dans un paragraphe vide. En plus de ces nouvelles fonctionnalités, nous avons corrigé un problème où certaines URL embarquées ne pouvaient pas être modifiées et ajusté la coupure de l’aperçu afin que vous puissiez toujours voir l’intégralité du contenu embarqué.
+Cette mise à jour permet d’intégrer encore plus facilement du contenu externe sur vos sites ! Voici les nouveaux blocs d’intégration dédiés pour Facebook, Instagram, Loom et Smartframe. De plus, l’éditeur détecte automatiquement les URL embarquables que vous collez dans un paragraphe vide. En plus de ces nouvelles fonctionnalités, nous avons corrigé un problème où certaines URL embarquées ne pouvaient pas être modifiées et ajusté la coupure de l’aperçu afin que vous puissiez toujours voir l’intégralité du contenu embarqué.
 
 En ce qui concerne les blocs, vous pouvez désormais personnaliser le texte et la couleur d’arrière-plan dans les blocs Citation et Préformaté.
 
- Avez-vous besoin d’aide pour atteindre davantage de lecteurs ? Les nouveaux assistants Publicize et Rappels vous aideront à respecter un calendrier de publication régulier.
+Avez-vous besoin d’aide pour atteindre davantage de public ? Les nouveaux assistants Publicize et Rappels vous aideront à respecter un calendrier de publication régulier.
 
 Enfin, nous avons amélioré la prise en charge des tailles de texte plus grandes lors du choix de la page d’accueil ou de la mise en page, corrigé le problème de rafraîchissement de la liste des commentaires du site à certaines occasions et amélioré l’en-tête de la feuille de bas de page avant publication.
