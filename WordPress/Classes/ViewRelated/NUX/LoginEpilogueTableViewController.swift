@@ -35,10 +35,6 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
         tableView.register(LoginEpilogueChooseSiteTableViewCell.self, forCellReuseIdentifier: Settings.chooseSiteReuseIdentifier)
-
-        // Remove separator line on last row
-        tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1)))
-
         view.backgroundColor = .basicBackground
         tableView.backgroundColor = .basicBackground
     }
@@ -95,6 +91,7 @@ extension LoginEpilogueTableViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as? EpilogueUserInfoCell else {
                     return UITableViewCell()
                 }
+                removeSeparatorFor(cell)
                 if let info = epilogueUserInfo {
                     cell.stopSpinner()
                     cell.configure(userInfo: info)
@@ -107,6 +104,7 @@ extension LoginEpilogueTableViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.chooseSiteReuseIdentifier, for: indexPath) as? LoginEpilogueChooseSiteTableViewCell else {
                     return UITableViewCell()
                 }
+                removeSeparatorFor(cell)
                 return cell
             }
         }
@@ -118,31 +116,15 @@ extension LoginEpilogueTableViewController {
         guard let loginCell = cell as? LoginEpilogueBlogCell else {
             return cell
         }
-
+        if indexPath.row == lastRowInSection(indexPath.section) {
+            removeSeparatorFor(cell)
+        }
         loginCell.adjustSiteNameConstraint()
         return loginCell
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return indexPath.section == Sections.userInfoSection ? Settings.profileRowHeight : Settings.blogRowHeight
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
-        if section == Sections.userInfoSection {
-            return 0
-        }
-
-        if rowCount(forSection: section) == 0 {
-            tableView.separatorStyle = .none
-            return 0
-        }
-
-        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -170,9 +152,15 @@ private extension LoginEpilogueTableViewController {
     }
     */
 
+    func removeSeparatorFor(_ cell: UITableViewCell) {
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+    }
+
+    /*
     func rowCount(forSection section: Int) -> Int {
         return blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
     }
+    */
 
     enum Sections {
         static let userInfoSection = 0
