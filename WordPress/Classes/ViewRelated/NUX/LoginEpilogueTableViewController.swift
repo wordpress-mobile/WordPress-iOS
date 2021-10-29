@@ -23,28 +23,9 @@ class LoginEpilogueTableViewController: UITableViewController {
     ///
     private var credentials: AuthenticatorCredentials?
 
-    /// Closure to be executed when Connect Site is selected.
-    ///
-    private var onConnectSite: (() -> Void)?
-
-    /// Flag indicating if the Connect Site option should be displayed.
-    ///
-    private var showConnectSite: Bool {
-        guard AppConfiguration.allowsConnectSite else {
-            return false
-        }
-
-        guard let wpcom = credentials?.wpcom else {
-            return true
-        }
-
-        return !wpcom.isJetpackLogin
-    }
-
     private var tracker: AuthenticatorAnalyticsTracker {
         AuthenticatorAnalyticsTracker.shared
     }
-
 
     // MARK: - Lifecycle
 
@@ -54,8 +35,6 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
         tableView.register(LoginEpilogueChooseSiteTableViewCell.self, forCellReuseIdentifier: Settings.chooseSiteReuseIdentifier)
-        tableView.register(LoginEpilogueConnectSiteCell.defaultNib,
-                           forCellReuseIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID)
 
         // Remove separator line on last row
         tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1)))
@@ -66,9 +45,8 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
     ///
-    func setup(with credentials: AuthenticatorCredentials, onConnectSite: (() -> Void)? = nil) {
+    func setup(with credentials: AuthenticatorCredentials) {
         self.credentials = credentials
-        self.onConnectSite = onConnectSite
         refreshInterface(for: credentials)
     }
 }
@@ -90,11 +68,6 @@ extension LoginEpilogueTableViewController {
             }
         }
 
-        // Add one for Connect Site if there are no sites from blogDataSource.
-        if adjustedNumberOfSections == 0 && showConnectSite {
-            adjustedNumberOfSections += 1
-        }
-
         // Add one for User Info
         return adjustedNumberOfSections + 1
     }
@@ -106,9 +79,7 @@ extension LoginEpilogueTableViewController {
 
         let correctedSection = section - 1
         let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
-
-        // Add one for the Connect Site row if shown.
-        return showConnectSite ? siteRows + 1 : siteRows
+        return siteRows
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -133,16 +104,6 @@ extension LoginEpilogueTableViewController {
                 }
                 return cell
             }
-        }
-
-        // Connect Site Row
-        if indexPath.row == lastRowInSection(indexPath.section) && showConnectSite {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID) as? LoginEpilogueConnectSiteCell else {
-                return UITableViewCell()
-            }
-
-            cell.configure(numberOfSites: numberOfWordPressComBlogs)
-            return cell
         }
 
         // Site Rows
@@ -182,18 +143,6 @@ extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard showConnectSite,
-              indexPath.section != Sections.userInfoSection,
-              indexPath.row == lastRowInSection(indexPath.section) else {
-            return
-        }
-
-        tracker.track(click: .connectSite)
-        tracker.set(flow: .loginWithSiteAddress)
-        onConnectSite?()
-    }
 }
 
 // MARK: - Private Extension
@@ -207,12 +156,14 @@ private extension LoginEpilogueTableViewController {
 
     /// Returns the number of WordPress.com sites.
     ///
+    /*
     var numberOfWordPressComBlogs: Int {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
 
         return service.defaultWordPressComAccount()?.blogs.count ?? 0
     }
+    */
 
     func rowCount(forSection section: Int) -> Int {
         return blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
