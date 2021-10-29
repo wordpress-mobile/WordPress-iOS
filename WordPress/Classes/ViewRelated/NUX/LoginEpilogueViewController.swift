@@ -96,10 +96,7 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
-        epilogueTableViewController.setup(with: credentials, onConnectSite: { [weak self] in
-            self?.handleConnectAnotherButton()
-        })
-
+        epilogueTableViewController.setup(with: credentials)
         tableViewController = epilogueTableViewController
     }
 
@@ -206,13 +203,5 @@ private extension LoginEpilogueViewController {
         tracker.track(click: .continue)
         onDismiss?()
         navigationController?.dismiss(animated: true)
-    }
-
-    func handleConnectAnotherButton() {
-        guard let controller = WordPressAuthenticator.signinForWPOrg() else {
-            return
-        }
-
-        navigationController?.setViewControllers([controller], animated: true)
     }
 }
