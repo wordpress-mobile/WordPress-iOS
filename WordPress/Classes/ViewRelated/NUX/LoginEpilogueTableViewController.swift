@@ -35,6 +35,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
         tableView.register(LoginEpilogueChooseSiteTableViewCell.self, forCellReuseIdentifier: Settings.chooseSiteReuseIdentifier)
+        tableView.register(LoginEpilogueCreateNewSiteCell.self, forCellReuseIdentifier: Settings.createNewSiteReuseIdentifier)
         view.backgroundColor = .basicBackground
         tableView.backgroundColor = .basicBackground
     }
@@ -76,11 +77,13 @@ extension LoginEpilogueTableViewController {
         let correctedSection = section - 1
         let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
 
-        if siteRows < 4, let parent = parent as? LoginEpilogueViewController {
+        // Add one for Create new site cell
+        if siteRows <= 3, let parent = parent as? LoginEpilogueViewController {
             parent.hideButtonPanel()
+            return siteRows + 1
+        } else {
+            return siteRows
         }
-
-        return siteRows
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,6 +112,18 @@ extension LoginEpilogueTableViewController {
             }
         }
 
+        // Create new site row
+        let siteRows = tableView.numberOfRows(inSection: indexPath.section)
+        let threshold = 4 // 3 site rows + 1 create site row
+        if siteRows <= threshold && indexPath.row == lastRowInSection(indexPath.section) {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.createNewSiteReuseIdentifier, for: indexPath) as? LoginEpilogueCreateNewSiteCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
+            removeSeparatorFor(cell)
+            return cell
+        }
+
         // Site Rows
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         let cell = blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
@@ -129,6 +144,18 @@ extension LoginEpilogueTableViewController {
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: implement
+    }
+}
+
+// MARK: - LoginEpilogueCreateNewSiteCellDelegate
+extension LoginEpilogueTableViewController: LoginEpilogueCreateNewSiteCellDelegate {
+    func didTapCreateNewSite() {
+        // TODO: implement
+        print("mika")
     }
 }
 
@@ -170,6 +197,7 @@ private extension LoginEpilogueTableViewController {
         static let headerReuseIdentifier = "SectionHeader"
         static let userCellReuseIdentifier = "userInfo"
         static let chooseSiteReuseIdentifier = "chooseSite"
+        static let createNewSiteReuseIdentifier = "createNewSite"
         static let profileRowHeight = CGFloat(180)
         static let blogRowHeight = CGFloat(60)
         static let headerHeight = CGFloat(50)
