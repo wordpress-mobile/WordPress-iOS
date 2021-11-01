@@ -26,7 +26,7 @@ private extension LoginEpilogueDividerView {
     }
 
     func setupTitleLabel() {
-        dividerLabel.textColor = color
+        dividerLabel.textColor = .divider
         dividerLabel.font = .preferredFont(forTextStyle: .footnote)
         dividerLabel.text = NSLocalizedString("Or", comment: "Divider on initial auth view separating auth options.").localizedUppercase
         dividerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +38,7 @@ private extension LoginEpilogueDividerView {
     }
 
     func setupLeadingDividerLine() {
-        leadingDividerLine.backgroundColor = color
+        leadingDividerLine.backgroundColor = .divider
         leadingDividerLine.translatesAutoresizingMaskIntoConstraints = false
         addSubview(leadingDividerLine)
         NSLayoutConstraint.activate([
@@ -50,7 +50,7 @@ private extension LoginEpilogueDividerView {
     }
 
     func setupTrailingDividerLine() {
-        trailingDividerLine.backgroundColor = color
+        trailingDividerLine.backgroundColor = .divider
         trailingDividerLine.translatesAutoresizingMaskIntoConstraints = false
         addSubview(trailingDividerLine)
         NSLayoutConstraint.activate([
@@ -59,12 +59,5 @@ private extension LoginEpilogueDividerView {
             trailingDividerLine.trailingAnchor.constraint(equalTo: trailingAnchor),
             trailingDividerLine.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
         ])
-    }
-}
-
-// MARK: - Private Computed Properties
-private extension LoginEpilogueDividerView {
-    var color: UIColor? {
-        WordPressAuthenticator.shared.unifiedStyle?.borderColor ?? WordPressAuthenticator.shared.style.primaryNormalBorderColor
     }
 }
