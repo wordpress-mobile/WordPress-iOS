@@ -39,6 +39,9 @@ class LoginEpilogueTableViewController: UITableViewController {
         view.backgroundColor = .basicBackground
         tableView.backgroundColor = .basicBackground
         tableView.rowHeight = UITableView.automaticDimension
+
+        //  Remove separator line on last row
+        tableView.tableFooterView = UIView()
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
