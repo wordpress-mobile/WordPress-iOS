@@ -31,11 +31,11 @@ private extension LoginEpilogueCreateNewSiteCell {
 
     func setupDividerView() {
         dividerView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(dividerView)
+        contentView.addSubview(dividerView)
         NSLayoutConstraint.activate([
-            dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             dividerView.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
@@ -48,10 +48,11 @@ private extension LoginEpilogueCreateNewSiteCell {
         createNewSiteButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(createNewSiteButton)
         NSLayoutConstraint.activate([
-            createNewSiteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            createNewSiteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            createNewSiteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            createNewSiteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             createNewSiteButton.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
-            createNewSiteButton.heightAnchor.constraint(equalToConstant: 42)
+            createNewSiteButton.heightAnchor.constraint(equalToConstant: 42),
+            createNewSiteButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
