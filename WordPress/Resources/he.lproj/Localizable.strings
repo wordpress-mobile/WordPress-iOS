@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-12 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-26 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nלאישור, עליך להזין שוב את שם המשתמש שלך לפני הסגירה.\n\n";
 
 /* No comment provided by engineer. */
-" \/ year" = " \/ year";
+" \/ year" = " לשנה";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "'טעינה עצלה' של תמונות";
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "תגית בשם '%@' כבר קיימת.";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "עצה להגדלת הקהל שלך";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "כותרת אתר";
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "שיתוף אוטומטי של פוסטים חדשים בחשבונות שלך ברשתות החברתיות.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "ניתן לשתף באופן אוטומטי פוסטים חדשים ברשתות החברתיות כדי להביא עוד קהל לאתר שלך.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "עדכונים אוטומטיים";
@@ -1536,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "'לייקים' לתגובה";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "התגובה אושרה.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "התגובה נמחקה.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "תגובה נמחקה";
@@ -1548,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "התגובה סומנה כתגובת זבל";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "התגובה סומנה כתגובת זבל.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "התגובה הועברה לפח.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "תגובה על";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "התגובה הוגדרה ל'בהמתנה'.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1682,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "חיבור אתר נוסף";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "לחבר רשתות נוספות";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "יש להתחבר כדי לשתף את הפוסטים בבלוג שלך אוטומטית עם %@";
@@ -1968,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "ליצור קובץ להורדה";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "ליצור תוכן מוטמע";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "ליצור קישור";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.";
@@ -2309,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "דומיינים";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "רכישות דומיין באתר זה ינתבו את המבקרים אל %@";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "דומיינים שנרכשו באתר זה ינתבו את המשתמשים אל ";
@@ -2524,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "לערוך תזכורות";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "עריכת כפתורי שיתוף";
@@ -2631,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "הפעלה";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "להפעיל את השיתוף האוטומטי";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "להפעיל התחלה מהירה לאתר";
@@ -2730,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "שגיאה באישור התגובה";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "שגיאה באישור התגובה.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "שגיאה במחיקת התגובה";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "שגיאה במחיקת התגובה.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "שגיאה בעת השבתת העדכונים האוטומטיים של %@.";
@@ -2773,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "שגיאה בסימון התגובה כתגובת זבל";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "שגיאה בסימון התגובה כתגובת זבל.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "שגיאת בהעברת התגובה לפח.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
@@ -2812,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "שגיאה בשליחה האימייל לאימות. יש לבדוק את החיבור ולנסות שוב.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "שגיאה בהגדרת התגובה ל'בהמתנה'.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "שגיאה בביטול האישור של התגובה";
@@ -3136,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "ספריית תמונות בחינם";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "ניתן בחינם לשנה הראשונה ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "פינוי שטח אחסון במכשיר באמצעות מחיקה של קובצי מדיה זמניים. הפעולה לא תשפיע על המדיה באתר שלך.";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "במספר מילים, הסבר במה עוסק האתר.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "כדי לשתף את הפוסטים שפרסמת ברשתות החברתיות, עליך להפעיל את המודל 'שיתוף אוטומטי'.";
 
 /* Describes a status of a plugin */
 "Inactive" = "לא פעיל";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "המשך לערוך";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "כדאי להמשיך לכתוב בבלוג ולבדוק כאן שוב כדי לראות את המבקרים שנכנסים לאתר שלך.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "קבלת עדכונים על הביצועים של האתר שלך.";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "יש להזין שם משפחה תקף";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "יש להזין ארגון תקף";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "יש להזין מיקוד תקף";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "פעילות פרסום";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "פרסום באופן קבוע יכול לעזור לך להגדיל את הקהל. התזכורות יעזרו לך לשמור על הקצב.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "פרסום באופן שגרתי יכול לעזור בשילוב הקוראים שלך, ולמשוך מבקרים חדשים לאתר שלך.";
@@ -6041,7 +6041,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "הכפתור 'חיפוש'. הטקסט הנוכחי של הכפתור הוא";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "לחפש דומיינים";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "לחפש דומיין";
@@ -6151,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "לבחור פריסה";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "לבחור דומיין";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "בחירת מדיה.";
@@ -6269,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "הגדרת Jetpack";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "להגדיר תזכורת לכתיבת בלוג";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "להגדיר את התזכורות שלך לכתוב בלוג בימים שבחרת לפרסם.";
@@ -6345,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "שגיאה בשיתוף";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "השיתוף הוגדר!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "הצגת כותרת";
@@ -7043,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "לא ניתן להוסיף את הקובץ לספריית המדיה.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "לא ניתן היה להפעיל את המודול.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "מספר הפוסטים שניתן להציג בכל עמוד.";
@@ -8050,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "הצגת פריטים נוספים";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "צפייה באתר שלך עד כה";
 
 /* Title of a Quick Start Tour */
 "View your site" = "הצגת האתר שלך";
@@ -8071,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "דפים נצפים";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "צפיות באתר שלך עד כה";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "בעת ביצוע שינויים באתר שלך, אפשר לראות את היסטוריית הפעילות כאן.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "כאשר הפוסט הבא שלך יפורסם, הוא ישותף באופן אוטומטי ברשתות המחוברות שלך.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "איזו גרסה ברצונך לערוך?";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "נראה שהתקנת תוסף למכשירים ניידים מ-DudaMobile שמונע מהאפליקציה להתחבר לבלוג שלך";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "הגדרת תזכורת לכתיבת בלוג";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "לא כדאי להתעלם מבעיות אבטחה אלא אם אין לך ספק שהתוכן בטוח. אם ברצונך להתעלם מהאיום הזה, הוא יישאר באתר \"%1$@\".";

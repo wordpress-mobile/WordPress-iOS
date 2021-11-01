@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-23 16:48:40+0000 */
+/* Translation-Revision-Date: 2021-10-26 15:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "شارك المقالات الجديدة تلقائيًّا على حساباتك على وسائل التواصل الاجتماعي.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "قم بمشاركة المقالات الجديدة تلقائيًا على شبكات التواصل الاجتماعي الخاصة بك لبدء لجلب ذلك الجمهور مباشرةً إلى موقعك.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "تحديثات تلقائية";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "بكلمات قليلة، اكتب نبذة قصيرة عن الموقع.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "لمشاركة مقالاتك المنشورة على شبكات التواصل الاجتماعي الخاصة بك، سيتعيَّن عليك تمكين وحدة الإشهار النمطية.";
 
 /* Describes a status of a plugin */
 "Inactive" = "غير مفعل";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "متابعة التحرير";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "استمر في التدوين وتحقَّق مرة أخرى للاطلاع على الزائرين الذين يصلون إلى موقعك.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "واكب التحديثات المتعلقة بأداء موقعك.";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "يرجى إدخال اسم عائلة صالح";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "يرجى إدخال مؤسسة صالحة";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "يرجى إدخال رمز بريدي صالح";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "نشاط النشر";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "يمكن أن يساعد النشر بانتظام على بناء جمهور. يمكن أن تساعد التذكيرات على إبقائك في المسار الصحيح.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "يمكن أن يساعد النشر بشكل منتظم على الحفاظ على انشغال القراء وجذب زائرين جدد إلى موقعك.";
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "عندما تُجري تغييرات على موقعك، ستتمكن من رؤية تاريخ النشاط الخاص بك هنا.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "عندما تنشر مقالتك التالية، ستتم مشاركتها تلقائيًا على شبكاتك المتصلة.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "ما الإصدار الذي ترغب في تحريره؟";

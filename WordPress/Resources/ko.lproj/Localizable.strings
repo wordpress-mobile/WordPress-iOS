@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-12 11:42:51+0000 */
+/* Translation-Revision-Date: 2021-10-27 14:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n확인하려면 종료하기 전에 사용자명을 다시 입력하십시오.\n\n";
 
 /* No comment provided by engineer. */
-" \/ year" = " \/ year";
+" \/ year" = " \/년";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "이미지 \"느리게 로드\"";
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "'%@' 태그가 이미 존재합니다.";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "방문자 늘리기 팁";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "사이트 제목";
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "새 글을 소셜 미디어 계정에 자동으로 공유합니다.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "자동으로 새 글을 소셜 미디어와 공유하여 해당 방문자를 사이트에 유치하기 시작합니다.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "자동 업데이트";
@@ -1536,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "댓글 좋아요";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "댓글이 승인되었습니다.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "댓글이 삭제되었습니다.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "댓글이 삭제되었습니다.";
@@ -1548,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "댓글이 스팸으로 표시되었습니다.";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "댓글이 스팸으로 표시되었습니다.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "댓글이 휴지통으로 이동했습니다.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "댓글";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "댓글이 대기 중으로 설정되었습니다.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1682,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "다른 사이트 연결";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "추가 네트워크 연결";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "블로그 글을 %@(으)로 자동 공유하려면 연결하세요.";
@@ -1968,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "다운로드할 수 있는 파일 만들기";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "임베드 생성";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "링크 생성";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
@@ -2309,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "도메인";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "이 사이트에서 구매한 도메인은 %@(으)로 리디렉팅됨";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "이 사이트에서 구매한 도메인에서는 사용자가 다음 위치로 리디렉팅됨 ";
@@ -2524,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "블록 편집기에서 새 글과 페이지를 편집하세요.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "알림 편집";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "공유 버튼 편집";
@@ -2631,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "활성화";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "배포 기능 활성화";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "사이트에 대한 빠른 시작 사용 설정";
@@ -2730,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "댓글 증인 중 오류 발생";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "댓글 승인 중 오류가 발생했습니다.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "댓글 삭제 중 오류 발생";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "댓글 삭제 중 오류가 발생했습니다.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "%@의 자동 업데이트를 사용 중지하는 중 오류가 발생했습니다.";
@@ -2773,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "댓글을 스팸으로 표시 중 오류 발생";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "댓글을 스팸으로 표시하는 중 오류가 발생했습니다.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "댓글을 휴지통으로 이동하는 중 오류가 발생했습니다.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "로딩 중\n오류 발생";
@@ -2812,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "확인 이메일을 보내는 중 오류가 발생했습니다. 연결을 확인하고 다시 시도하세요.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "댓글을 대기 중으로 설정하는 중 오류가 발생했습니다.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "댓글 승인 취소 중 오류 발생";
@@ -3136,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "무료 사진 라이브러리";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "첫해 무료 ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "임시 미디어 파일을 삭제하여 이 기기의 저장 공간을 확보합니다. 이 작업은 사이트의 미디어에는 영향을 주지 않습니다.";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "이 사이트의 주제를 간략히 소개하세요.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "발행한 글을 소셜 미디어와 공유하려면 배포 기능 모듈을 활성화해야 합니다.";
 
 /* Describes a status of a plugin */
 "Inactive" = "비활성";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "계속 편집하기";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "블로깅을 계속하고 방문자가 회원님의 사이트를 찾아오는지 다시 확인하세요.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "사이트 성능을 최신 상태로 유지합니다.";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "유효한 성을 입력하세요";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "유효한 조직을 입력하세요.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "유효한 우편번호를 입력하세요";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "게시 활동";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "정기적으로 글을 작성하면 방문자 유치에 도움이 될 수 있습니다. 알림은 회원님을 추적하는 데 도움이 됩니다.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "정기적으로 게시하면 독자의 참여도를 높이고 새 방문자를 사이트로 유도하는 데 도움이 됩니다.";
@@ -6151,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "레이아웃 선택하기";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "도메인 선택";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "미디어를 선택합니다.";
@@ -6269,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "젯팩 설정";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "블로깅 알림 설정";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "게시하려는 일자의 블로깅 알림을 설정하세요.";
@@ -6345,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "공유 오류";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "공유가 설정되었습니다!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "헤더 표시";
@@ -7043,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "미디어를 미디어 라이브러리에 추가할 수 없었습니다.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "모듈을 활성화할 수 없습니다.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "페이지당 표시할 글 수입니다.";
@@ -8050,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "더 보기";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "지금까지 사이트 조회수";
 
 /* Title of a Quick Start Tour */
 "View your site" = "사이트 보기";
@@ -8071,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "뷰";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "지금까지 사이트 조회수";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "사이트를 변경하면 여기서 활동 내역을 볼 수 있습니다.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "다음 글을 발행하면 연결된 네트워크와 자동으로 공유됩니다.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "어떤 버전을 편집하시겠어요?";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobile에서 설치한 모바일 플러그인으로 인해 앱이 블로그에 연결할 수 없습니다.";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "블로깅 알림 설정 완료";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "안전한 것이 확실하지 않은 한 보안 문제를 무시해서는 안 됩니다. 이 위협 무시를 선택하면 사이트 \"%1$@\"에서 위협이 유지됩니다.";
