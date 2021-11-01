@@ -1,8 +1,7 @@
-- ¡No te pierdas nada! Ahora puedes recibir un resumen semanal de la actividad de tus sitios más populares.
+Con esta actualización, será incluso más fácil incrustar contenido externo en tus sitios. Te presentamos los nuevos bloques de incrustar específicos para Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL que se puedan incrustar cuando las pegues en un párrafo vacío. Junto con estas funciones nuevas, también hemos solucionado un problema por el que algunas URL incrustadas no se podían editar y hemos ajustado el área que se recorta de la vista previa para que veas siempre el contenido incrustado completo.
 
-- Ahora tienes aún más control de los comentarios de tu sitio: al editarlos, también puedes cambiar el nombre del autor, la dirección de correo electrónico y la dirección web.
-Hemos realizado un par de mejoras al Editor de bloques. Ahora el bloque de incrustar te muestra una vista previa cuando añades contenido de YouTube o de Twitter (próximamente se añadirán más proveedores). Además, cuando quieres insertar un bloque pero no se encuentra nada, ahora aparece una vista sin resultados.
+Por cierto, hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques Párrafo de cita y Preformateados.
 
-- Si vas a Ajustes de la entrada > Formato de entrada, verás que la opción "Estándar" sigue en cabeza, pero que el resto de opciones ahora se enumeran debajo por orden alfabético. (¡Las opciones pueden variar según los temas!)
+¿Necesitas ayuda para llegar a más lectores? Los nuevos avisos de recordatorios de blogueo y de difundir te ayudarán a ceñirte a una programación de publicaciones continua.
 
-- Y otra mejora rápida: ahora es muy fácil refrescar tu sitio, ¡solo tienes que refrescar la página desde Mi sitio!
+Para terminar, hemos mejorado la asistencia para los tamaños de texto grandes al elegir una página de inicio o un diseño de página, hemos arreglado el problema por el que la lista de comentarios a veces no se actualizaba y hemos mejorado el encabezado de la hoja inferior previa a la publicación.

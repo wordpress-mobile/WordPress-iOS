@@ -11,6 +11,12 @@ extension StatsRowGhostable {
     }
 }
 
+struct StatsGhostGrowAudienceImmutableRow: StatsRowGhostable {
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsGhostGrowAudienceCell.defaultNib, StatsGhostGrowAudienceCell.self)
+    }()
+}
+
 struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostTwoColumnCell.defaultNib, StatsGhostTwoColumnCell.self)

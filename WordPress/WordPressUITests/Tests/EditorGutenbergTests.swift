@@ -1,3 +1,4 @@
+import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
@@ -7,7 +8,7 @@ class EditorGutenbergTests: XCTestCase {
         setUpTestSuite()
 
         _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        editorScreen = EditorFlow
+        editorScreen = try EditorFlow
             .gotoMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
     }
@@ -27,7 +28,7 @@ class EditorGutenbergTests: XCTestCase {
 
         let title = getRandomPhrase()
         let content = getRandomContent()
-        editorScreen
+        try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
@@ -44,7 +45,7 @@ class EditorGutenbergTests: XCTestCase {
         let content = getRandomContent()
         let category = getCategory()
         let tag = getTag()
-        editorScreen
+        try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
@@ -59,7 +60,7 @@ class EditorGutenbergTests: XCTestCase {
             .setFeaturedImage()
             .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
             .closePostSettings()
-        BlockEditorScreen().publish()
+        try BlockEditorScreen().publish()
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()

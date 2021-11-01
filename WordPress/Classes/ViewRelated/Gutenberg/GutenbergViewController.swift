@@ -368,7 +368,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        gutenbergSettings.hasLaunchedGutenbergEditor = true
     }
 
     override func viewLayoutMarginsDidChange() {
@@ -901,7 +900,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames, canViewEditorOnboarding: canViewEditorOnboarding(), galleryWithImageBlocks: galleryWithImageBlocks)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, galleryWithImageBlocks: galleryWithImageBlocks)
         }
     }
 
@@ -1013,6 +1012,20 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
         gutenbergSettings.blockTypeImpressions = impressions
+    }
+
+    func gutenbergDidRequestContactCustomerSupport() {
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+    }
+
+    func gutenbergDidRequestGotoCustomerSupportOptions() {
+        let controller = SupportTableViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        self.topmostPresentedViewController.present(navController, animated: true)
+    }
+
+    func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
+        WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: post.blog)
     }
 }
 
@@ -1141,13 +1154,12 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .editorOnboarding: canViewEditorOnboarding(),
-            .firstGutenbergEditorSession: !gutenbergSettings.hasLaunchedGutenbergEditor
+            // Jetpack embeds
+            .facebookEmbed: post.blog.supports(.facebookEmbed),
+            .instagramEmbed: post.blog.supports(.instagramEmbed),
+            .loomEmbed: post.blog.supports(.loomEmbed),
+            .smartframeEmbed: post.blog.supports(.smartframeEmbed)
         ]
-    }
-
-    func canViewEditorOnboarding() -> Bool {
-        gutenbergSettings.canViewEditorOnboarding()
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {

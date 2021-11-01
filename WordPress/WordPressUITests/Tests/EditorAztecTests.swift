@@ -1,3 +1,4 @@
+import UITestsFoundation
 import XCTest
 
 class EditorAztecTests: XCTestCase {
@@ -7,7 +8,7 @@ class EditorAztecTests: XCTestCase {
         setUpTestSuite()
 
         _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        editorScreen = EditorFlow
+        editorScreen = try EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()
             .tabBar.gotoAztecEditorScreen()

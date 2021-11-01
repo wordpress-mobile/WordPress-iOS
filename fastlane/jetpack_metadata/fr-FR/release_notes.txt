@@ -1,8 +1,7 @@
-- Restez au courant ! Vous pouvez désormais recevoir un récapitulatif hebdomadaire des activités sur vos sites les plus populaires.
+Cette mise à jour facilite encore plus l’intégration de contenu externe sur vos sites ! Présentation des nouveaux blocs de contenu embarqué dédiés pour Facebook, Instagram, Loom et Smartframe. De plus, l’éditeur détecte automatiquement les URL intégrables que vous collez dans un paragraphe vide. En plus de ces nouvelles fonctionnalités, nous avons corrigé un problème d’impossibilité de modifier certaines URL intégrées et nous avons réglé la coupure aléatoire de l’aperçu afin que vous puissiez toujours voir l’ensemble du contenu embarqué.
 
-- Vous contrôlez davantage les commentaires sur vos sites : lorsque vous les modifiez, vous pouvez désormais également changer le nom de l’auteur, l’adresse e-mail et l’adresse Web.
-Nous avons apporté quelques modifications pratiques à l’éditeur de blocs. Le bloc de contenu embarqué vous donne désormais un premier aperçu lorsque vous effectuez un ajout depuis YouTube ou Twitter (plus de fournisseurs prochainement). De plus, lorsque vous essayez d’insérer un bloc introuvable, un message indique qu’aucun résultat n’est disponible.
+Concernant les blocs, vous pouvez désormais personnaliser le texte et la couleur d’arrière-plan dans les blocs de citation en exergue et préformatés.
 
-- Si vous accédez à Paramètres d’article > Format d’article, vous verrez que l’option « Standard » apparaît toujours dans la partie supérieure, mais que les autres options s’affichent désormais clairement par ordre alphabétique en dessous. (Les options varient en fonction des thèmes !)
+Besoin d’aide pour toucher plus de lecteurs ? Les nouveaux coups de pouce Publicize et Rappel de blog vous aideront à respecter un planning de publication cohérent.
 
-- Et enfin : vous pouvez désormais actualiser votre site très facilement en faisant simplement glisser vers le bas à partir de l’écran Mon site !
+Enfin, nous avons amélioré la prise en charge des tailles de texte plus grandes lors du choix d’une page d’accueil ou d’une mise en page, corrigé la liste des commentaires du site qui ne s’actualisait pas à certaines occasions et peaufiné l’en-tête de la feuille du bas avant la publication.

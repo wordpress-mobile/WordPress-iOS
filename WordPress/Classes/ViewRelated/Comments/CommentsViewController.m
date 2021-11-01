@@ -15,7 +15,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
@@ -28,6 +28,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 @property (nonatomic) CommentStatusFilter cachedStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+// Keep track of the index path of the Comment displayed in comment details.
+// Used to advance the displayed Comment when Next is selected on the moderation confirmation snackbar.
+@property (nonatomic, strong) NSIndexPath *displayedCommentIndexPath;
+@property (nonatomic, strong) CommentDetailViewController *commentDetailViewController;
 
 @end
 
@@ -252,24 +257,21 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectSelectedRowWithAnimation:YES];
-    
-    // Failsafe: Make sure that the Comment (still) exists
-    NSArray *sections = self.tableViewHandler.resultsController.sections;
-    if (indexPath.section >= sections.count) {
-        return;
-    }
-    
-    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
-    if (indexPath.row >= sectionInfo.numberOfObjects) {
+
+    if (![self indexPathIsValid:indexPath]) {
         return;
     }
 
-    // At last, push the details
+    self.displayedCommentIndexPath = indexPath;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     UIViewController *detailViewController;
 
     if ([Feature enabled:FeatureFlagNewCommentDetail]) {
-        detailViewController = [[CommentDetailViewController alloc] initWithComment:comment];
+        self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
+                                                                                   isLastInList:[self isLastRow:indexPath]
+                                                                           managedObjectContext:[ContextManager sharedInstance].mainContext];
+        self.commentDetailViewController.delegate = self;
+         detailViewController = self.commentDetailViewController;
     } else {
         CommentViewController *vc   = [CommentViewController new];
         vc.comment                  = comment;
@@ -283,6 +285,29 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0;
+}
+
+- (BOOL)indexPathIsValid:(NSIndexPath *)indexPath
+{
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        return NO;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)isLastRow:(NSIndexPath *)indexPath
+{
+    NSInteger lastSectionIndex = [self.tableView numberOfSections] - 1;
+    NSInteger lastRowIndex = [self.tableView numberOfRowsInSection:lastSectionIndex] - 1;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+    return lastIndexPath == indexPath;
 }
 
 #pragma mark - Comment Actions
@@ -378,6 +403,31 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     }];
 }
 
+// When `Next` is tapped on the comment moderation confirmation snackbar,
+// find the next comment in the list and update comment details with it.
+- (void)showNextComment
+{
+    NSIndexPath *nextIndexPath;
+    BOOL showingLastRowInSection = [self.tableViewHandler.resultsController isLastIndexPathInSection:self.displayedCommentIndexPath];
+
+    if (showingLastRowInSection) {
+        // Move to the first row in the next section.
+        nextIndexPath = [NSIndexPath indexPathForRow:0
+                                           inSection:self.displayedCommentIndexPath.section + 1];
+    } else {
+        // Move to the next row in the current section.
+        nextIndexPath = [NSIndexPath indexPathForRow:self.displayedCommentIndexPath.row + 1
+                                           inSection:self.displayedCommentIndexPath.section];
+    }
+    
+    if (![self indexPathIsValid:nextIndexPath] || !self.commentDetailViewController) {
+        return;
+    }
+    
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
+    [self.commentDetailViewController displayComment:comment isLastInList:[self isLastRow:nextIndexPath]];
+    self.displayedCommentIndexPath = nextIndexPath;
+}
 
 #pragma mark - WPTableViewHandlerDelegate Methods
 
@@ -660,6 +710,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)adjustNoResultViewPlacement
 {
+    // calling this too early results in wrong tableView frame used for initial state
+    if(self.noResultsViewController.view.window == nil) {
+        return;
+    }
+
     // Adjust the NRV placement to accommodate for the filterTabBar.
     CGRect noResultsFrame = self.tableView.frame;
     noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
@@ -731,9 +786,17 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 #pragma mark - NoResultsViewControllerDelegate
 
-- (void)actionButtonPressed {
+- (void)actionButtonPressed
+{
     // The action button is only shown on the No Connection view.
     [self refreshNoConnectionView];
+}
+
+#pragma mark - CommentDetailsDelegate
+
+- (void)nextCommentSelected
+{
+    [self showNextComment];
 }
 
 #pragma mark - State Restoration

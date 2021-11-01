@@ -1,8 +1,7 @@
-- Håll dig uppdaterad! Du kan nu få en veckovis sammanfattning av aktiviteten på dina mest populära webbplatser.
+Den här uppdateringen gör det ännu enklare att bädda in externt innehåll på dina webbplatser! Vi introducerar nya dedikerade inbäddningsblock för Facebook, Instagram, Loom och Smartframe. Dessutom detekterar redigeraren nu automatiskt inbäddningsbara URL:er som klistras in i ett tomt stycke. Utöver dessa nya funktioner har vi även åtgärdat ett problem som gjorde att vissa inbäddade URL:er inte gick att redigera och justerat beskärningen på förhandsgranskningar, så att du alltid kommer att kunna se hela det inbäddade innehållet.
 
-- Du har ännu mer kontroll över dina webbplatskommentarer – när du redigerar dem kan du nu även justera författarens namn, e-postadress och webbadress.
-Vi har gjort ett par praktiska ändringar i blockredigeraren. Inbäddningsblocket ger dig nu en förhandsvisning när du lägger till något från YouTube eller Twitter (fler leverantörer kommer). Dessutom visas nu en vy utan resultat när du ska infoga ett block och ingenting hittas.
+På tal om block kan du nu anpassa texten och bakgrundsfärgen i markerat citat-block och förformaterade block.
 
-- Om du går till Inläggsinställningar > Inläggsformat kan du se att alternativet "Standard" fortfarande visas högst upp, men att de andra alternativen nu visas i alfabetisk ordning nedanför.  (Alternativen varierar beroende på tema!)
+Behöver du hjälp med att nå fler läsare? De nya Offentliggör- och Blogga-påminnelseknuffarna hjälper dig att hålla dig till ett konsekvent publiceringsschema.
 
-- Och en sak till: Det är nu superenkelt att uppdatera din webbplats – det är bara att uppdatera på skärmen Min webbplats!
+Slutligen har vi förbättrat stödet för större textstorlekar när du väljer en startsides- eller sidlayout, åtgärdat ett problem som gjorde att listan över webbplatskommentarer inte alltid uppdaterades samt snyggat till rubriken för det nedre bladet vid förpublicering.

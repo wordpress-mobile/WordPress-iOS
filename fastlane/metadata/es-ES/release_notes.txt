@@ -1,8 +1,7 @@
-- ¡Mantente informado! Ahora puedes recibir un resumen semanal de la actividad en tus sitios más populares.
+¡Esta actualización hace que sea todavía más fácil incrustar contenido externo en tus sitios! Presentamos los nuevos bloques de incrustación dedicados a Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL incrustables que pegas en un párrafo vacío. Junto con estas nuevas características, hemos corregido un problema por el que algunas URL incrustadas no podían ser editadas y ajustado el corte de la vista previa para que siempre veas el contenido incrustado completo.
 
-- Tienes aún más control sobre los comentarios de tu sitio — cuando los editas, ahora también puedes ajustar el nombre, la dirección de correo electrónico y la dirección web del autor.
-Hemos hecho un par de prácticos retoques en el editor de bloques. El bloque de incrustación ahora te da una vista previa cuando añades algo de YouTube o Twitter (habrá más proveedores). Además, cuando vas a insertar un bloque y no se encuentra nada, ahora hay una vista sin resultados.
+Hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques del párrafo de cita y preformateado.
 
-- Si vas a «Ajustes de la entrada > Formato de la entrada», aún encontrarás la opción «Estándar» en la parte superior, pero las otras opciones ahora están ordenadas alfabéticamente debajo. (¡Las opciones variarán con los temas!)
+¿Necesitas ayuda para llegar a más lectores? Los nuevos recoradorios de divulgar y de bloguear te ayudarán a mantener un calendario de publicación coherente.
 
-- Y algo rápido: Ahora, actualizar tu sitio es superfácil — ¡solo tienes que pulsar para actualizar desde la pantalla «Mi sitio»!
+Por último, hemos mejorado la compatibilidad para tamaños de texto más grandes al elegir una página de inicio o un diseño de página, corregido el problema por el que la lista de comentarios del sitio no se actualiza en ciertas ocasiones y pulido la cabecera de la hoja inferior de prepublicación.

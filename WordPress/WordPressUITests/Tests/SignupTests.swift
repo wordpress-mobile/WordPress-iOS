@@ -1,3 +1,4 @@
+import UITestsFoundation
 import XCTest
 
 class SignupTests: XCTestCase {
@@ -15,8 +16,8 @@ class SignupTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testEmailSignup() {
-        let mySiteScreen = WelcomeScreen().selectSignup()
+    func testEmailSignup() throws {
+        let mySiteScreen = try WelcomeScreen().selectSignup()
             .selectEmailSignup()
             .proceedWith(email: WPUITestCredentials.signupEmail)
             .openMagicSignupLink()
