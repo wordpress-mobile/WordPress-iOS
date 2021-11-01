@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newCommentDetail
     case domains
     case followConversationViaNotifications
+    case onboardingImprovements
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -62,6 +63,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .followConversationViaNotifications:
             return true
+        case .onboardingImprovements:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -122,6 +125,8 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .followConversationViaNotifications:
             return "Follow Conversation via Notifications"
+        case .onboardingImprovements:
+            return "Onboarding Improvements"
         }
     }
 
