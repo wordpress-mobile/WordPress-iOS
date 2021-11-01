@@ -15,4 +15,5 @@ import Foundation
     @objc static let showsQuickActions: Bool = false
     @objc static let showsFollowedSitesSettings: Bool = false
     @objc static let showsWhatIsNew: Bool = false
+    static let showsNewAboutScreen: Bool = false
 }
