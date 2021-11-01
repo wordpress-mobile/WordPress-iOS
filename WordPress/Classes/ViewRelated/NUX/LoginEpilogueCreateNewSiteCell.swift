@@ -35,8 +35,8 @@ private extension LoginEpilogueCreateNewSiteCell {
         NSLayoutConstraint.activate([
             dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            dividerView.heightAnchor.constraint(equalToConstant: 48)
+            dividerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.dividerViewTopMargin),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight)
         ])
     }
 
@@ -48,15 +48,22 @@ private extension LoginEpilogueCreateNewSiteCell {
         createNewSiteButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(createNewSiteButton)
         NSLayoutConstraint.activate([
-            createNewSiteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            createNewSiteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            createNewSiteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.createNewSiteButtonHorizontalMargin),
+            createNewSiteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.createNewSiteButtonHorizontalMargin),
             createNewSiteButton.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
-            createNewSiteButton.heightAnchor.constraint(equalToConstant: 42),
+            createNewSiteButton.heightAnchor.constraint(equalToConstant: Constants.createNewSiteButtonHeight),
             createNewSiteButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
     @objc func didTapCreateNewSiteButton() {
         delegate?.didTapCreateNewSite()
+    }
+
+    private enum Constants {
+        static let dividerViewTopMargin: CGFloat = 20.0
+        static let dividerViewHeight: CGFloat = 48.0
+        static let createNewSiteButtonHorizontalMargin: CGFloat = 20.0
+        static let createNewSiteButtonHeight: CGFloat = 44.0
     }
 }
