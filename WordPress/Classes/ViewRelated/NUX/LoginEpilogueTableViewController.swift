@@ -23,6 +23,20 @@ class LoginEpilogueTableViewController: UITableViewController {
     ///
     private var credentials: AuthenticatorCredentials?
 
+    /// Flag indicating if the Create A New Site button should be displayed.
+    ///
+    private var showCreateNewSite: Bool {
+        guard AppConfiguration.allowsConnectSite else {
+            return false
+        }
+
+        guard let wpcom = credentials?.wpcom else {
+            return true
+        }
+
+        return !wpcom.isJetpackLogin
+    }
+
     private var tracker: AuthenticatorAnalyticsTracker {
         AuthenticatorAnalyticsTracker.shared
     }
@@ -69,6 +83,11 @@ extension LoginEpilogueTableViewController {
             }
         }
 
+        // Add one for Connect Site if there are no sites from blogDataSource.
+        if adjustedNumberOfSections == 0 && showCreateNewSite {
+            adjustedNumberOfSections += 1
+        }
+
         // Add one for User Info
         return adjustedNumberOfSections + 1
     }
@@ -82,10 +101,18 @@ extension LoginEpilogueTableViewController {
         let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
 
         // Add one for Create new site cell
-        if siteRows <= 3, let parent = parent as? LoginEpilogueViewController {
+
+        guard let parent = parent as? LoginEpilogueViewController else {
+            return siteRows
+        }
+
+        if siteRows <= 3 {
             parent.hideButtonPanel()
-            return siteRows + 1
+            return showCreateNewSite ? siteRows + 1 : siteRows
         } else {
+            if !showCreateNewSite {
+                parent.hideButtonPanel()
+            }
             return siteRows
         }
     }
@@ -119,7 +146,7 @@ extension LoginEpilogueTableViewController {
         // Create new site row
         let siteRows = tableView.numberOfRows(inSection: indexPath.section)
         let threshold = 4 // 3 site rows + 1 create site row
-        if siteRows <= threshold && indexPath.row == lastRowInSection(indexPath.section) {
+        if siteRows <= threshold && indexPath.row == lastRowInSection(indexPath.section) && showCreateNewSite {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.createNewSiteReuseIdentifier, for: indexPath) as? LoginEpilogueCreateNewSiteCell else {
                 return UITableViewCell()
             }
