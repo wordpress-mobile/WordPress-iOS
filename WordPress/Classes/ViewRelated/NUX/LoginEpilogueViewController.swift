@@ -200,13 +200,17 @@ private extension LoginEpilogueViewController {
             dividerView.leadingAnchor.constraint(equalTo: buttonPanel.leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: buttonPanel.trailingAnchor),
             dividerView.topAnchor.constraint(equalTo: buttonPanel.topAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: 40)
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight)
         ])
     }
 
     enum TableViewMarginMultipliers {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
+    }
+
+    private enum Constants {
+        static let dividerViewHeight: CGFloat = 40.0
     }
 
     // MARK: - Actions
