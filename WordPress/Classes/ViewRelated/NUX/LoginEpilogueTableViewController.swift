@@ -38,6 +38,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         tableView.register(LoginEpilogueCreateNewSiteCell.self, forCellReuseIdentifier: Settings.createNewSiteReuseIdentifier)
         view.backgroundColor = .basicBackground
         tableView.backgroundColor = .basicBackground
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
