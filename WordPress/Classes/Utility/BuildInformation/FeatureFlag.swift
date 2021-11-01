@@ -13,7 +13,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteIconCreator
     case unifiedCommentsAndNotificationsList
     case recommendAppToOthers
-    case newCommentEdit
     case weeklyRoundup
     case weeklyRoundupStaticNotification
     case newCommentDetail
@@ -48,8 +47,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .unifiedCommentsAndNotificationsList:
             return true
         case .recommendAppToOthers:
-            return true
-        case .newCommentEdit:
             return true
         case .weeklyRoundup:
             return true
@@ -110,8 +107,6 @@ extension FeatureFlag {
             return "Unified List for Comments and Notifications"
         case .recommendAppToOthers:
             return "Recommend App to Others"
-        case .newCommentEdit:
-            return "New Comment Edit"
         case .weeklyRoundup:
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
