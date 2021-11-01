@@ -2,8 +2,6 @@ import XCTest
 import XCUITestHelpers
 
 private struct ElementStringIDs {
-    static let navBar = "WordPressAuthenticator.LoginSelfHostedView"
-
     // TODO: clean up comments when unifiedSiteAddress is permanently enabled.
 
     // For original Site Address. These match accessibilityIdentifier in Login.storyboard.
@@ -19,14 +17,12 @@ private struct ElementStringIDs {
 }
 
 public class LoginUsernamePasswordScreen: BaseScreen {
-    let navBar: XCUIElement
     let usernameTextField: XCUIElement
     let passwordTextField: XCUIElement
     let nextButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars[ElementStringIDs.navBar]
         usernameTextField = app.textFields[ElementStringIDs.usernameTextField]
         passwordTextField = app.secureTextFields[ElementStringIDs.passwordTextField]
         nextButton = app.buttons[ElementStringIDs.nextButton]

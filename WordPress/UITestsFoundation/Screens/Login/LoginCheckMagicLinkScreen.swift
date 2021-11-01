@@ -8,13 +8,11 @@ private struct ElementStringIDs {
 public class LoginCheckMagicLinkScreen: BaseScreen {
     let passwordOption: XCUIElement
     let mailButton: XCUIElement
-    let mailAlert: XCUIElement
 
     init() {
         let app = XCUIApplication()
         passwordOption = app.buttons[ElementStringIDs.passwordOption]
         mailButton = app.buttons[ElementStringIDs.mailButton]
-        mailAlert = app.alerts.element(boundBy: 0)
 
         super.init(element: mailButton)
     }

@@ -21,4 +21,4 @@ bundle exec fastlane build_for_testing
 
 echo "--- :arrow_up: Upload Build Products"
 tar -cf build-products.tar DerivedData/Build/Products/
-buildkite-agent artifact upload build-products.tar
+upload_artifact build-products.tar

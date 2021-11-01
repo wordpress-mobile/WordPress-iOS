@@ -94,8 +94,40 @@ class FollowCommentsService: NSObject {
         }
     }
 
+    /// Toggles the notification setting for a specified post.
+    ///
+    /// - Parameters:
+    ///   - isNotificationsEnabled: Determines whether the user should receive notifications for new comments on the specified post.
+    ///   - success: Block called after the operation completes successfully.
+    ///   - failure: Block called when the operation fails.
+    @objc func toggleNotificationSettings(_ isNotificationsEnabled: Bool,
+                                          success: @escaping () -> Void,
+                                          failure: @escaping (Error?) -> Void) {
+        WPAnalytics.trackReader(.readerToggleCommentNotifications,
+                                properties: [WPAppAnalyticsKeyBlogID: self.siteID, AnalyticsKeys.enabled: isNotificationsEnabled])
+
+        remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
+            guard let self = self else {
+                failure(nil)
+                return
+            }
+
+            self.post.receivesCommentNotifications = isNotificationsEnabled
+            ContextManager.sharedInstance().saveContextAndWait(self.context)
+            success()
+
+        } failure: { error in
+            DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
+            failure(error)
+        }
+    }
+
     private enum FollowAction: String {
         case followed
         case unfollowed
+    }
+
+    private struct AnalyticsKeys {
+        static let enabled = "notifications_enabled"
     }
 }

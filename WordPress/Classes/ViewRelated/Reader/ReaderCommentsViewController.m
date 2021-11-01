@@ -25,13 +25,15 @@ static CGFloat const CommentIndentationWidth = 40.0;
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
+
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             ReaderCommentCellDelegate,
                                             ReplyTextViewDelegate,
                                             UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
-                                            SuggestionsTableViewDelegate>
+                                            SuggestionsTableViewDelegate,
+                                            ReaderCommentsNotificationSheetDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -58,6 +60,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
+
+@property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
 
 @end
 
@@ -273,6 +278,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+
+    [self refreshFollowButton];
 }
 
 - (void)configurePostHeader
@@ -521,6 +528,38 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
+- (BOOL)followViaNotificationsEnabled
+{
+    return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
+}
+
+- (UIBarButtonItem *)followBarButtonItem
+{
+    if (!_followBarButtonItem) {
+        _followBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Follow", @"Button title. Follow the comments on a post.")
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(handleFollowConversationButtonTapped)];
+    }
+
+    return _followBarButtonItem;
+}
+
+- (UIBarButtonItem *)subscriptionSettingsBarButtonItem
+{
+    if (!_subscriptionSettingsBarButtonItem) {
+        _subscriptionSettingsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"bell"]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(subscriptionSettingsButtonTapped)];
+        _subscriptionSettingsBarButtonItem.accessibilityHint = NSLocalizedString(@"Open subscription settings for the post",
+                                                                                 @"VoiceOver hint. Informs the user that the button allows the user to access "
+                                                                                 + "post subscription settings.");
+    }
+
+    return _subscriptionSettingsBarButtonItem;
+}
+
 #pragma mark - Accessor methods
 
 - (void)setPost:(ReaderPost *)post
@@ -622,19 +661,34 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
-    
-    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
+
+    // when the "follow via notifications" flag is enabled, the Follow button is moved into the navigation bar as a UIButtonBarItem.
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation && ![self followViaNotificationsEnabled];
 }
 
-- (void)refreshSubscriptionStatusIfNeeded
+- (void)refreshFollowButton
 {
-    if (!self.canFollowConversation) {
+    if (!self.canFollowConversation || ![self followViaNotificationsEnabled]) {
         return;
     }
-    
+
+    self.navigationItem.rightBarButtonItem = self.post.isSubscribedComments ? self.subscriptionSettingsBarButtonItem : self.followBarButtonItem;
+}
+
+// NOTE: Remove this method once "follow via notifications" feature flag can be removed.
+// Subscription status is now available through ReaderPost's `isSubscribedComments` Boolean property.
+- (void)refreshSubscriptionStatusIfNeeded
+{
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+
+        if ([self followViaNotificationsEnabled]) {
+            // update the ReaderPost button to keep it in-sync.
+            self.post.isSubscribedComments = isSubscribed;
+            [ContextManager.sharedInstance saveContext:self.post.managedObjectContext];
+        }
+
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
     }];
@@ -862,6 +916,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                      failure:failureBlock];
     }
     self.indexPathForCommentRepliedTo = nil;
+}
+
+- (void)subscriptionSettingsButtonTapped
+{
+    [self showNotificationSheetWithNotificationsEnabled:self.post.receivesCommentNotifications
+                                               delegate:self
+                                    sourceBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
 
 
@@ -1234,6 +1295,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 }
 
 
+#pragma mark - ReaderCommentsNotificationSheet Delegate Methods
+
+- (void)didToggleNotificationSwitch:(BOOL)isOn completion:(void (^)(BOOL))completion
+{
+    [self handleNotificationsButtonTappedWithUndo:NO completion:completion];
+}
+
+- (void)didTapUnfollowConversation
+{
+    [self handleFollowConversationButtonTapped];
+}
+
 #pragma mark - PostHeaderView helpers
 
 - (void)handleFollowConversationButtonTapped
@@ -1269,9 +1342,31 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 ? NSLocalizedString(@"Successfully followed conversation", @"The app successfully subscribed to the comments for the post")
                 : NSLocalizedString(@"Successfully unfollowed conversation", @"The app successfully unsubscribed from the comments for the post");
 
-
             dispatch_async(dispatch_get_main_queue(), ^{
+                // update ReaderPost when the subscription process has succeeded.
+                weakSelf.post.isSubscribedComments = newIsSubscribed;
+                [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
+
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+
+                if ([self followViaNotificationsEnabled]) {
+                    [weakSelf refreshFollowButton];
+
+                    // only show the new notice with undo option when the user intends to subscribe.
+                    if (newIsSubscribed) {
+                        [weakSelf displayActionableNoticeWithTitle:NSLocalizedString(@"Following this conversation",
+                                                                                     @"The app successfully subscribed to the comments for the post")
+                                                           message:NSLocalizedString(@"Enable in-app notifications?",
+                                                                                     @"Hint for the action button that enables notification for new comments")
+                                                       actionTitle:NSLocalizedString(@"Enable",
+                                                                                     @"Button title to enable notifications for new comments")
+                                                     actionHandler:^(BOOL accepted) {
+                            [weakSelf handleNotificationsButtonTappedWithUndo:YES completion:nil];
+                        }];
+                        return;
+                    }
+                }
+
                 [weakSelf displayNoticeWithTitle:title message:nil];
             });
         }
@@ -1298,6 +1393,43 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.followCommentsService toggleSubscribed:oldIsSubscribed
                                          success:successBlock
                                          failure:failureBlock];
+}
+
+/// Toggles the state of comment subscription notifications. When enabled, the user will receive in-app notifications for new comments.
+///
+/// @param canUndo Boolean. When true, this provides a way for the user to revert their actions.
+- (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo completion:(void (^ _Nullable)(BOOL))completion
+{
+    BOOL desiredState = !self.post.receivesCommentNotifications;
+    PostSubscriptionAction action = desiredState ? PostSubscriptionActionEnableNotification : PostSubscriptionActionDisableNotification;
+
+    __weak __typeof(self) weakSelf = self;
+    NSString* (^noticeTitle)(BOOL) = ^NSString* (BOOL success) {
+        return [weakSelf noticeTitleForAction:action success:success];
+    };
+
+    [self.followCommentsService toggleNotificationSettings:desiredState success:^{
+        if (completion) {
+            completion(YES);
+        }
+
+        if (!canUndo) {
+            [weakSelf displayNoticeWithTitle:noticeTitle(YES) message:nil];
+            return;
+        }
+
+        // show the undo notice with action button.
+        NSString *undoActionTitle = NSLocalizedString(@"Undo", @"Button title. Reverts the previous notification operation");
+        [weakSelf displayActionableNoticeWithTitle:noticeTitle(YES) message:nil actionTitle:undoActionTitle actionHandler:^(BOOL accepted) {
+            [weakSelf handleNotificationsButtonTappedWithUndo:NO completion:nil];
+        }];
+
+    } failure:^(NSError * _Nullable error) {
+        [weakSelf displayNoticeWithTitle:noticeTitle(NO) message:nil];
+        if (completion) {
+            completion(NO);
+        }
+    }];
 }
 
 - (void)handleHeaderTapped

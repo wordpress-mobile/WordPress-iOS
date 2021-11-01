@@ -991,7 +991,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                    accessibilityIdentifier:@"Domains Row"
                                                                      image:[UIImage gridiconOfType:GridiconTypeDomains]
                                                                   callback:^{
-                                                                    [weakSelf showDomains];
+                                                                    [weakSelf showDomainsFromSource:BlogDetailsNavigationSourceRow];
                                                       }];
         [rows addObject:domainsRow];
     }
@@ -1168,7 +1168,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.headerView.blog = blog;
     self.blog = blog;
-    
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
     [self preloadMetadata];
@@ -1545,26 +1544,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)trackEvent:(WPAnalyticsStat)event fromSource:(BlogDetailsNavigationSource)source {
     
-    NSString *sourceString;
-    
-    switch (source) {
-        case BlogDetailsNavigationSourceRow:
-            sourceString = @"row";
-            break;
-            
-        case BlogDetailsNavigationSourceLink:
-            sourceString = @"link";
-            break;
-            
-        case BlogDetailsNavigationSourceButton:
-            sourceString = @"button";
-            break;
-            
-        default:
-            break;
-    }
+    NSString *sourceString = [self propertiesStringForSource:source];
     
     [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
+}
+
+- (NSString *)propertiesStringForSource:(BlogDetailsNavigationSource)source {
+    switch (source) {
+        case BlogDetailsNavigationSourceRow:
+            return @"row";
+        case BlogDetailsNavigationSourceLink:
+            return @"link";
+        case BlogDetailsNavigationSourceButton:
+            return @"button";
+        default:
+            return @"";
+    }
 }
 
 - (void)preloadBlogData
@@ -1731,7 +1726,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPlugins
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
-    PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
+    PluginDirectoryViewController *controller = [self makePluginDirectoryViewControllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
 
@@ -1758,9 +1753,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showDomains
+- (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
 {
-    /// - TODO: DOMAINS - Add tracking  here
+    [WPAnalytics trackEvent:WPAnalyticsEventDomainsDashboardViewed
+                 properties:@{WPAppAnalyticsKeyTapSource: [self propertiesStringForSource:source]}
+                       blog:self.blog];
+
     UIViewController *controller = [self makeDomainsDashboardViewController];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
@@ -1781,7 +1779,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
 
     } else {
-        controller = [[SharingViewController alloc] initWithBlog:self.blog];
+        controller = [[SharingViewController alloc] initWithBlog:self.blog delegate: nil];
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];

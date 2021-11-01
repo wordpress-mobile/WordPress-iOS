@@ -34,6 +34,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 - (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
 
+- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog;
+
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
                     success:(void (^)(BOOL hasMore))success
@@ -73,7 +75,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                success:(void (^)(void))success
                failure:(void (^)(NSError *error))failure;
 
-// Unapprove comment
+// Unapprove (Pending) comment
 - (void)unapproveComment:(Comment *)comment
                  success:(void (^)(void))success
                  failure:(void (^)(NSError *error))failure;
@@ -84,6 +86,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
             failure:(void (^)(NSError *error))failure;
 
 // Trash comment
+- (void)trashComment:(Comment *)comment
+             success:(void (^)(void))success
+             failure:(void (^)(NSError *error))failure;
+
+// Delete comment
 - (void)deleteComment:(Comment *)comment
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure;

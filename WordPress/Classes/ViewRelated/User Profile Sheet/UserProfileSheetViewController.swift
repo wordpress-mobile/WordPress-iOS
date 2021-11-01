@@ -45,7 +45,6 @@ class UserProfileSheetViewController: UITableViewController {
         size.height += bottomPadding
 
         preferredContentSize = size
-        presentedVC?.presentedView?.layoutIfNeeded()
     }
 }
 
@@ -65,6 +64,10 @@ extension UserProfileSheetViewController: DrawerPresentable {
 
     var scrollableView: UIScrollView? {
         return tableView
+    }
+
+    var allowsUserTransition: Bool {
+        false
     }
 
 }
@@ -171,6 +174,7 @@ private extension UserProfileSheetViewController {
     func configureTable() {
         tableView.backgroundColor = .basicBackground
         tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
     }
 
     func registerTableCells() {

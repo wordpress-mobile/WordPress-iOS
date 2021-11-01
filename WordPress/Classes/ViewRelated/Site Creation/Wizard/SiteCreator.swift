@@ -1,5 +1,6 @@
 
 import Foundation
+import WordPressKit
 
 extension DomainSuggestion {
     var subdomain: String {

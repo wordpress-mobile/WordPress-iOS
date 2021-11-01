@@ -1,6 +1,5 @@
 import UIKit
 
-
 class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - Subviews
@@ -51,35 +50,32 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return button
     }()
 
-    private let dismissButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(.gridicon(.cross), for: .normal)
-        button.tintColor = .secondaryLabel
-        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
-        return button
-    }()
-
     // MARK: - Initializers
 
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
     private let source: BloggingRemindersTracker.FlowStartSource
+    private weak var delegate: BloggingRemindersFlowDelegate?
 
     private var introDescription: String {
         switch source {
         case .publishFlow:
             return TextContent.postPublishingintroDescription
-        case .blogSettings:
+        case .blogSettings,
+             .notificationSettings,
+             .statsInsights:
             return TextContent.siteSettingsIntroDescription
-
         }
     }
 
-    init(for blog: Blog, tracker: BloggingRemindersTracker, source: BloggingRemindersTracker.FlowStartSource) {
+    init(for blog: Blog,
+         tracker: BloggingRemindersTracker,
+         source: BloggingRemindersTracker.FlowStartSource,
+         delegate: BloggingRemindersFlowDelegate? = nil) {
         self.blog = blog
         self.tracker = tracker
         self.source = source
+        self.delegate = delegate
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -97,7 +93,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
-        view.addSubview(dismissButton)
 
         configureStackView()
         configureConstraints()
@@ -158,9 +153,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
             getStartedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
             getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right)
         ])
     }
 
@@ -168,7 +160,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         tracker.buttonPressed(button: .continue, screen: .main)
 
         do {
-            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker)
+            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker, delegate: delegate)
 
             navigationController?.pushViewController(flowSettingsViewController, animated: true)
         } catch {

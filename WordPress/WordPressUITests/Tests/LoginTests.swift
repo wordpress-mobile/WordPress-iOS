@@ -27,7 +27,7 @@ class LoginTests: XCTestCase {
             .tabBar.gotoMeScreen()
             .logoutToPrologue()
 
-        XCTAssert(prologueScreen.isLoaded())
+        XCTAssert(prologueScreen.isLoaded)
     }
 
     /**
@@ -48,20 +48,23 @@ class LoginTests: XCTestCase {
     }
 
     // Unified self hosted login/out
-    func testSelfHostedLoginLogout() {
-        PrologueScreen().selectSiteAddress()
+    func testSelfHostedLoginLogout() throws {
+        let prologueScreen = try PrologueScreen()
+
+        prologueScreen
+            .selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelectedSite()
             .removeSelfHostedSite()
 
-        XCTAssert(PrologueScreen().isLoaded())
+        XCTAssert(prologueScreen.isLoaded)
     }
 
     // Unified WordPress.com email login failure due to incorrect password
-    func testWPcomInvalidPassword() {
-        _ = PrologueScreen().selectContinue()
+    func testWPcomInvalidPassword() throws {
+        _ = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()
@@ -69,8 +72,8 @@ class LoginTests: XCTestCase {
 
     // Self-Hosted after WordPress.com login.
     // Login to a WordPress.com account, open site switcher, then add a self-hosted site.
-    func testAddSelfHostedSiteAfterWPcomLogin() {
-        PrologueScreen().selectContinue()
+    func testAddSelfHostedSiteAfterWPcomLogin() throws {
+        try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
