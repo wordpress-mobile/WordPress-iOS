@@ -1,7 +1,7 @@
-Der Block-Editor ist jetzt benutzerfreundlicher! Es gibt jetzt dedizierte Embed-Blocks für YouTube, Twitter, WordPress und Vimeo, mit denen du Medien schneller denn je hinzufügen kannst. Du findest diese Blocks in der Ansicht „Blockauswahl“. Du kannst die URLs sogar noch bearbeiten, nachdem du sie ausgewählt hast.
+Mit diesem Update wird das Einbetten externer Inhalte auf deinen Websites noch einfacher! Neu: die eigenen Embed-Blöcke für Facebook, Instagram, Loom und Smartframe. Außerdem erkennt der Editor einbettbare URLs, die du in einen leeren Absatz einfügst. Abgesehen von diesen neuen Features haben wir ein Problem behoben, bei dem einige eingebettete URLs nicht bearbeitet werden konnten, und das Abschneiden der Vorschau angepasst, damit du immer den vollständigen eingebetteten Inhalt siehst.
 
-Wir haben das Problem mit dem Galerieblock behoben: Jetzt werden deine Bilder auch noch hinzugefügt, wenn du den Beitrag schließt, während sie hochgeladen werden.
+Apropos Blöcke: Du kannst jetzt in den Pullquote- und Vorformatiert-Blöcken den Text und die Hintergrundfarbe anpassen.
 
-Falls du immer noch Probleme damit hast, kannst du uns jetzt noch einfacher um Hilfe bitten. Und zwar direkt im Bildschirm „Editor“: Klicke einfach auf den Menü-Button mit den drei Punkten, wähle „Hilfe & Support“ und dann „Support kontaktieren“.
+Brauchst du Unterstützung dabei, mehr Leser zu erreichen? Die neuen Publicize- und Blog-Erinnerungen helfen dir, einen konsistenten Veröffentlichungsplan einzuhalten.
 
-Zuletzt haben wir noch das Problem gelöst, bei dem der Bildschirm „Benachrichtigungen“ gelegentlich den falschen Avatar angezeigt hat, wenn du in einem Kommentar erwähnt wurdest – jetzt wird dein ausgewähltes Bild angezeigt!
+Und schließlich haben wir die Unterstützung für größere Textgrößen bei der Auswahl einer Startseite oder eines Seitenlayouts verbessert, einen Fehler behoben, durch den die Liste der Website-Kommentare in bestimmten Fällen nicht aktualisiert wurde, und den Header des Vorveröffentlichungs-Bottom-Sheets überarbeitet.

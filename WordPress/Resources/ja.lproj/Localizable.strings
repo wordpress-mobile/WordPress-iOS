@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-13 11:54:09+0000 */
+/* Translation-Revision-Date: 2021-10-27 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n確認するには、閉鎖する前のユーザーアカウントをもう一度入力してください。\n\n";
 
+/* No comment provided by engineer. */
+" \/ year" = " \/ 年";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "画像の「遅延読み込み」";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "「その他」ボタン";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "復元の巻き戻し点として、%1$@ が選択されています。";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -353,6 +356,9 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "「%@」という名前のタグはすでに存在しています。";
 
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "読者を増やすためのヒント";
+
 /* Placeholder text for the title of a site */
 "A title for the site" = "サイトのタイトル";
 
@@ -459,9 +465,6 @@ translators: Block name. %s: The localized block name */
 
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "%@ を追加";
-
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "新しいドメインを追加";
 
 /* No comment provided by engineer. */
 "Add Block After" = "後にブロックを追加";
@@ -712,6 +715,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "履歴を表示するには有効なインターネット接続が必要です";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "アカウントの閉鎖中にエラーが発生しました。";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "メニューを作成する際にエラーが発生しました。";
 
@@ -931,6 +937,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "新しい投稿を自分のソーシャルメディアアカウントと自動的に共有しましょう。";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "新しい投稿をソーシャルメディアに自動的に共有し、読者をサイトに誘導します。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
@@ -1383,9 +1392,6 @@ translators: Block name. %s: The localized block name */
 /* Title to choose date range in a calendar */
 "Choose date range" = "日付を選択";
 
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "ドメインを選択";
-
 /* No comment provided by engineer. */
 "Choose file" = "ファイルを選択";
 
@@ -1529,15 +1535,30 @@ translators: Block name. %s: The localized block name */
 /* Title for the `comment likes` setting */
 "Comment Likes" = "コメントへのいいね";
 
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "コメントを承認しました。";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "コメントを削除しました。";
+
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "コメントを削除しました";
 
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "コメントはスパムとしてマークされました";
 
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "コメントをスパムとしてマークしました";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "コメントをゴミ箱へ移動しました。";
+
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "コメントする";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "コメントを保留中に設定しました。";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1659,6 +1680,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link to connect another site, shown after logging in. */
 "Connect another site" = "別のサイトと連携";
+
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "さらにネットワークと連携";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "連携して自動的にブログ投稿を %@ で共有";
@@ -1943,6 +1967,12 @@ translators: Block name. %s: The localized block name */
 /* Button title for download backup action */
 "Create downloadable file" = "ダウンロード可能なファイルを作成";
 
+/* No comment provided by engineer. */
+"Create embed" = "埋め込みを作成";
+
+/* No comment provided by engineer. */
+"Create link" = "リンクを作成";
+
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "カスタマイズされたダッシュボードを作成して、表示するレポートを選択します。最も重視するデータに集中できます。";
 
@@ -2113,7 +2143,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "完全に削除する";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2235,6 +2266,7 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
@@ -2273,9 +2305,11 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "ドメイン所有者は、すべてのドメインのパブリックデータベースで連絡先情報を共有する必要があります。プライバシー保護では、お客様に関する情報の代わりに弊社に関する情報を公開し、お客様にはプライベートにコミュニケーションを転送します。";
 
-/* Noun. Title. Links to the Domains screen.
-   Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "ドメイン";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "このサイトで購入したドメインにアクセスすると %@ に転送されます";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "このサイトで購入したドメインにアクセスするとこちらに転送されます:  ";
@@ -2489,6 +2523,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "ブロックエディターで新しい投稿やページを編集します。";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "リマインダーを編集";
+
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "共有ボタンを編集";
 
@@ -2589,8 +2626,12 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "空の URL";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Title of button to enable publicize. */
 "Enable" = "有効化する";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "パブリサイズを有効化";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "サイトのクイックスタートを有効にする";
@@ -2601,7 +2642,8 @@ translators: Block name. %s: The localized block name */
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "動画の音を録音するためにマイクを有効にしてください。";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen.
+   Title of a Quick Start Tour */
 "Enable post sharing" = "投稿の共有を有効にする";
 
 /* Message prompting user to enable site notifications. */
@@ -2687,6 +2729,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "コメント承認エラー";
 
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "コメントの承認中にエラーが発生しました。";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "サーバーエラーです。もう一度お試しください";
@@ -2696,6 +2741,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "コメント削除エラー";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "コメントの削除中にエラーが発生しました。";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "%@ の自動更新を無効化する際にエラーが発生しました。";
@@ -2723,6 +2771,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "コメントにスパムとマークする際のエラー";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "コメントをスパムとしてマーク中にエラーが発生しました。";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "コメントのゴミ箱への移動中にエラーが発生しました。";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "読み込み中にエラーが\n発生しました";
@@ -2756,6 +2810,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "認証メールの送信中にエラーが発生しました。接続を確認して、もう一度お試しください。";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "コメントを保留中に設定する際にエラーが発生しました。";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "コメント承認解除エラー";
@@ -3077,6 +3134,9 @@ translators: Block name. %s: The localized block name */
 
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "無料の写真ギャラリー";
+
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "1年目は無料 ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "一時メディアファイルを削除してこの端末の保存スペースを空けてください。この操作はサイトのメディアには影響しません。";
@@ -3441,6 +3501,9 @@ translators: Block name. %s: The localized block name */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "このサイトを短い文章で説明してください。";
 
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "公開済みの投稿をソーシャルメディアに共有するには、パブリサイズモジュールを有効にする必要があります。";
+
 /* Describes a status of a plugin */
 "Inactive" = "停止中";
 
@@ -3676,6 +3739,9 @@ translators: Block name. %s: The localized block name */
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "編集を継続";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "ブログ投稿を継続し、サイトの訪問者を調べましょう。";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "サイトのパフォーマンスを把握しましょう。";
@@ -4978,9 +5044,6 @@ translators: Block name. %s: The localized block name */
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "写真提供元: Pexels";
 
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "利用可能なアドレスを選択してください";
-
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "ユーザー名を選択";
 
@@ -5041,6 +5104,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Last Name" = "有効な姓を入力してください";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "有効な組織を入力してください";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "有効な郵便番号を入力してください";
@@ -5237,6 +5303,9 @@ translators: Block name. %s: The localized block name */
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "投稿アクティビティ";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "定期的に投稿すれば、読者を集めるのに役立ちます。 リマインダーにより常に情報を把握できます。";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "定期的に投稿することで読者の興味を引きつけ、新たなサイト訪問者を獲得できます。";
@@ -5542,7 +5611,6 @@ translators: Block name. %s: The localized block name */
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "ドメインの登録";
 
@@ -5972,6 +6040,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "検索ボタンです。現在のボタンテキストは";
 
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Search domains";
+
 /* title of the button that searches the first domain. */
 "Search for a domain" = "ドメインを検索";
 
@@ -6078,6 +6149,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Select a layout" = "レイアウトを選択";
+
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "ドメインを選択";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "メディアを選択。";
@@ -6194,6 +6268,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack のセットアップ";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "ブログ投稿のリマインダーを設定";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "投稿する予定の日にブログ投稿のリマインダーを設定します。";
 
@@ -6266,6 +6343,9 @@ translators: Block name. %s: The localized block name */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "共有エラー";
+
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "共有を設定済みです !";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "ヘッダーを表示";
@@ -6962,6 +7042,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "メディアをメディアライブラリに追加できませんでした。";
 
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "モジュールを有効化できませんでした。";
+
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "1ページに表示する投稿の数。";
 
@@ -7196,6 +7279,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "このサイトにはまだ何も投稿されていません。後でもう一度チェックしてみてください。";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "未解決のチャージバックがある場合、このユーザーアカウントを閉鎖できません。";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "有効になっている購入があるため、このユーザーアカウントを閉鎖できません。";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "有効になっているサブスクリプションがあるため、このユーザーアカウントを閉鎖できません。";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "これは、Twitter ボタンを使って読者がシェアするときのツイートに含まれます。";
@@ -7267,7 +7359,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "投稿に写真または動画を追加する。";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "このアカウントをすぐにクローズする場合、弊社のサポートチームに連絡してください。";
 
 /* Instructions for alert asking for email and name. */
@@ -7957,6 +8049,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more stats. */
 "View more" = "さらに表示";
 
+/* Description for view count. Singular. */
+"View to your site so far" = "件のこれまでのサイトの閲覧数";
+
 /* Title of a Quick Start Tour */
 "View your site" = "サイトを表示";
 
@@ -7974,6 +8069,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "表示数";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "件のこれまでのサイトの閲覧数";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8390,6 +8488,9 @@ translators: Block name. %s: The localized block name */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "サイトに変更を加えた後は、ここでそのアクティビティ履歴を確認できます。";
 
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "次の投稿を公開する際に、連携済みのネットワークに自動的に共有されます。";
+
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "どのバージョンを編集しますか ?";
 
@@ -8689,6 +8790,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "アプリがブログに接続するのを防止するモバイルプラグインが DudaMobile からインストールされたようです";
 
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "ブログ投稿のリマインダーを設定済みです";
+
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "安全であるという確信がない限り、セキュリティの問題を無視しないでください。 この脅威を無視した場合、この脅威はサイト「%1$@」に残ります。";
 
@@ -8704,11 +8808,11 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "すべて最新版です。";
 
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "アカウントを閉鎖する権限がありません。";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "この投稿に保存されていない変更が加えられました";
-
-/* Header title for your domains section of Domains. */
-"Your Domains" = "独自ドメイン";
 
 /* Header of the domains list section in the Domains Dashboard. */
 "Your Site Domains" = "あなたのサイトドメイン";

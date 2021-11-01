@@ -1,7 +1,7 @@
-Kami telah mempermudah penggunaan editor Blok! Ada blok sematan khusus untuk YouTube, Twitter, WordPress, dan Vimeo, yang mempercepat penambahan media — Anda bisa menemukannya di tampilan pemilih blok. URL bahkan dapat disunting setelah Anda menentukannya.
+Pembaruan ini mempermudah penyematan konten eksternal pada situs Anda! Memperkenalkan blok sematan khusus baru untuk Facebook, Instagram, Loom, dan Smartframe. Selain itu, editor secara otomatis mendeteksi URL yang dapat disematkan dan Anda tempelkan pada paragraf kosong. Bersama fitur-fitur baru ini, kami memperbaiki masalah terkait sejumlah sematan URL yang tidak dapat disunting dan disesuaikan batas pratinjaunya sehingga Anda akan selalu melihat konten yang disematkan secara penuh.
 
-Kami telah memperbaiki masalah pada blok galeri sehingga sekarang gambar tetap akan ditambahkan meski Anda menutup pos setelah melakukan pengunggahan. 
+Mengenai blok, sekarang Anda dapat menyesuaikan teks dan warna latar belakang di blok Kutipan Besar dan blok Praformat.
 
-Namun, jika masih mengalami masalah, mintalah bantuan untuk lebih memudahkan hidup Anda. Anda dapat meminta bantuan langsung dari layar editor: Cukup ketuk tombol menu 3 titik, pilih "Bantuan & Dukungan", lalu "Hubungi Dukungan."
+Butuh bantuan untuk menjangkau lebih banyak pembaca? Peningkatan Pengingat Publikasikan dan Blogging akan membantu Anda menjalankan jadwal pos yang konsisten.
 
-Terakhir, kami telah memperbaiki masalah terkait layar pemberitahuan yang terkadang menampilkan avatar yang salah saat Anda disebutkan di komentar — sekarang gambar yang Anda pilih akan ditampilkan dengan benar!
+Terakhir, kami meningkatkan dukungan untuk ukuran teks yang lebih besar saat menentukan beranda atau tata letak halaman, memperbaiki daftar komentar situs yang tidak disegarkan pada kesempatan tertentu, dan mempercantik header lembar bawah prapublikasi.

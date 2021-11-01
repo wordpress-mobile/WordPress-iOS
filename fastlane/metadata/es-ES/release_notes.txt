@@ -1,7 +1,7 @@
-¡Hemos hecho más fácil la vida en el editor de bloques! Hay bloques de incrustación dedicados para YouTube, Twitter, WordPress y Vimeo, lo que hace que sea muy rápido añadir medios — puedes encontrarlos en la vista del selector de bloques. Las URL pueden ser editadas incluso después de que las hayas seleccionado.
+¡Esta actualización hace que sea todavía más fácil incrustar contenido externo en tus sitios! Presentamos los nuevos bloques de incrustación dedicados a Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL incrustables que pegas en un párrafo vacío. Junto con estas nuevas características, hemos corregido un problema por el que algunas URL incrustadas no podían ser editadas y ajustado el corte de la vista previa para que siempre veas el contenido incrustado completo.
 
-Hemos corregido un problema con el bloque de galería, por lo que ahora tus imágenes se seguirán añadiendo si cierras la entrada mientras se están subiendo.
+Hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques del párrafo de cita y preformateado.
 
-Pero, si sigues teniendo problemas, pedir ayuda es aún más fácil. Puedes hacerlo directamente desde dentro de la pantalla del editor: Solo tienes que tocar el botón del menú de 3 puntos, seleccionar «Ayuda y soporte» y, después, «Contactar con el soporte».
+¿Necesitas ayuda para llegar a más lectores? Los nuevos recoradorios de divulgar y de bloguear te ayudarán a mantener un calendario de publicación coherente.
 
-Por último, hemos corregido un problema por el que la pantalla de avisos mostraba ocasionalmente el avatar erróneo cuando eras mencionado en un comentario — ¡ahora se mostrará con orgullo la imagen que hayas elegido!
+Por último, hemos mejorado la compatibilidad para tamaños de texto más grandes al elegir una página de inicio o un diseño de página, corregido el problema por el que la lista de comentarios del sitio no se actualiza en ciertas ocasiones y pulido la cabecera de la hoja inferior de prepublicación.

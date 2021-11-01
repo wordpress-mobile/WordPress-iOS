@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
 echo "--- 📦 Downloading Build Artifacts"
-buildkite-agent artifact download build-products.tar .
+download_artifact build-products.tar
 tar -xf build-products.tar
 
 echo "--- :rubygems: Setting up Gems"

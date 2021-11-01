@@ -1,7 +1,7 @@
-We hebben alles wat gemakkelijker gemaakt in de blokeditor! Er zijn insluitblokken speciaal voor YouTube, Twitter, WordPress en Vimeo, wat toevoegen van media een fluitje van een cent maakt. Je vindt de blokken in de weergave met de blokkiezer. De URL's kunnen zelfs worden bewerkt nadat je ze hebt geselecteerd.
+Deze update maakt het nog eenvoudiger om externe content in te sluiten op je sites! Maak kennis met de nieuwe speciale insluitblokken voor Facebook, Instagram, Loom en Smartframe. Daarbij detecteert de editor automatisch insluitbare URL's die je in lege paragrafen plakt. Naast het toevoegen van deze nieuwe functies, hebben we een probleem opgelost met het niet kunnen bewerken van sommige ingesloten URL's. Ook hebben we het bijsnijden van de voorbeeldweergave aangepast, zodat je altijd de volledige ingesloten content ziet.
 
-We hebben een probleem met het galerijblok verholpen. Je afbeeldingen worden ook toegevoegd als je het bericht sluit terwijl ze worden geüpload.
+Over blokken gesproken; je kunt nu de tekst en de achtergrondkleur aanpassen in de Pullquote- en vooraf ingestelde blokken.
 
-Maar loop je toch nog tegen problemen aan? Dan is vragen om hulp nu nog gemakkelijker. Je kunt dit nu doen vanuit het editorscherm: Tik simpelweg op het menu met de drie puntjes, selecteer 'Hulp en ondersteuning' en vervolgens 'Contact opnemen met ondersteuning'.
+Wil je meer lezers bereiken? De nieuwe Publiceren- en Blog-herinneringsmeldingen zorgen ervoor dat je volgens een consistent schema publiceert.
 
-Ten slotte hebben we een probleem verholpen waarbij het notificatiescherm soms de verkeerde avatar weergaf als je werd genoemd in een reactie. Je gekozen afbeelding wordt nu netjes weergegeven.
+Ten slotte hebben we de ondersteuning van grotere lettertypen verbeterd tijdens het kiezen van een startpagina of pagina-lay-out, ervoor gezorgd dat de opmerkingenlijst op de site nu altijd wordt vernieuwd en de pre-publiceren-footer van de sheet wat opgepoetst.

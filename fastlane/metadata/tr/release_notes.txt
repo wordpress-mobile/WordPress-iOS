@@ -1,7 +1,7 @@
-Blok düzenleyicide hayatı kolaylaştırdık! Ortam eklemeyi süper hızlı hale getiren, YouTube, Twitter, WordPress ve Vimeo özel gömme blokları kullanıma sunuldu; bunları blok seçici görünümünde bulabilirsiniz. URL'leri seçtikten sonra dahi düzenleyebilirsiniz.
+Bu güncelleme sitelerinize harici içerik gömmeyi daha da kolaylaştırıyor! Facebook, Instagram, Loom ve Smartframe'e yönelik yeni ve özel gömülü bloklarla tanışın. Ayrıca düzenleyici boş bir paragrafa yapıştırdığınız gömülebilir URL'leri otomatik olarak algılar. Bu yeni özelliklerin yanı sıra, bazı gömülü URL'lerin düzenlenememesine neden olan sorunu düzelttik ve her zaman gömülü içeriğin tamamını görebilmeniz için önizleme kırpmasını ayarladık.
 
-Galeri blokuyla ilgili bir sorunu düzelttik, bu nedenle artık yükleme sırasında gönderiyi kapatsanız dahi resimleriniz eklenebilecek.
+Bloklardan bahsetmişken, şimdi artık Alıntı ve Önceden Biçimlendirilmiş bloklardaki metni ve arka plan rengini özelleştirebilirsiniz.
 
-Ancak hala sorun yaşıyorsanız, yardım istemek daha da kolaydır. Bunu doğrudan düzenleyici ekranının içinden yapabilirsiniz: 3 nokta menü düğmesine dokunun, "Yardım ve Destek"i seçin, ardından "Destek ile İletişime Geçin"i seçin.
+Daha fazla okuyucuya ulaşmak için yardıma mı ihtiyacınız var? Yeni Duyuru ve Blog Oluşturma Hatırlatıcısı öğeleri tutarlı bir yayın planına bağlı kalmanıza yardımcı olacaktır.
 
-Son olarak, bir yorumda sizden bahsedildiğinde bildirim ekranının ara sıra yanlış avatar göstermesine neden olan bir sorunu düzelttik; seçtiğiniz resim şimdi gururla görüntülenecek!
+Son olarak, bir ana sayfa veya sayfa düzeni seçerken daha büyük metin boyutları için desteği iyileştirdik, site yorumları listesinin belirli durumlarda yenilenmemesi ile ilgili hatayı düzelttik ve yayın öncesi alt sayfa üst bilgisini yeniledik.

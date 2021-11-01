@@ -1,7 +1,7 @@
-Vi har gjort livet enklare i blockredigeraren! Det finns dedikerade inbäddningsblock för YouTube, Twitter, WordPress och Vimeo, vilket gör att det går supersnabbt att lägga till media – du kan hitta dem i blockväljarvyn. URL:erna kan till och med redigeras efter att du har valt dem.
+Den här uppdateringen gör det ännu enklare att bädda in externt innehåll på dina webbplatser! Vi introducerar nya dedikerade inbäddningsblock för Facebook, Instagram, Loom och Smartframe. Dessutom detekterar redigeraren nu automatiskt inbäddningsbara URL:er som klistras in i ett tomt stycke. Utöver dessa nya funktioner har vi även åtgärdat ett problem som gjorde att vissa inbäddade URL:er inte gick att redigera och justerat beskärningen på förhandsgranskningar, så att du alltid kommer att kunna se hela det inbäddade innehållet.
 
-Vi har åtgärdat ett problem med galleriblocket, så nu läggs dina bilder till även om du stänger inlägget medan de laddas upp.
+På tal om block kan du nu anpassa texten och bakgrundsfärgen i markerat citat-block och förformaterade block.
 
-Om du fortfarande har problem är det nu ännu enklare att be om hjälp. Du kan göra det direkt från redigerarens skärm: Tryck bara på menyknappen med tre punkter och välj sedan "Hjälp och support" följt av "Kontakta supporten".
+Behöver du hjälp med att nå fler läsare? De nya Offentliggör- och Blogga-påminnelseknuffarna hjälper dig att hålla dig till ett konsekvent publiceringsschema.
 
-Slutligen har vi åtgärdat ett problem som gjorde att aviseringsskärmen ibland visade fel profilbild när man blev omnämnd i en kommentar – din valda bild kommer nu att visas!
+Slutligen har vi förbättrat stödet för större textstorlekar när du väljer en startsides- eller sidlayout, åtgärdat ett problem som gjorde att listan över webbplatskommentarer inte alltid uppdaterades samt snyggat till rubriken för det nedre bladet vid förpublicering.
