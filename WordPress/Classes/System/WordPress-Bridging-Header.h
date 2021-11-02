@@ -36,7 +36,6 @@
 #import "MeHeaderView.h"
 
 #import "NavBarTitleDropdownButton.h"
-#import "NSAttributedString+Util.h"
 #import "NSObject+Helpers.h"
 
 #import "PageListTableViewCell.h"

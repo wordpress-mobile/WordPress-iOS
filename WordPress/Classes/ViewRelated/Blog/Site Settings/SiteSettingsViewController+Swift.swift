@@ -194,7 +194,7 @@ extension SiteSettingsViewController {
             rows.append(.timezone)
         }
 
-        if Feature.enabled(.bloggingReminders) && blog.isUserCapableOf(.EditPosts) {
+        if blog.areBloggingRemindersAllowed() {
             rows.append(.bloggingReminders)
         }
 

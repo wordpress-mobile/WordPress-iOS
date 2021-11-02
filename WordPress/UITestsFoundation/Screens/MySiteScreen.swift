@@ -75,19 +75,19 @@ public class MySiteScreen: BaseScreen {
         }
     }
 
-    public func gotoActivityLog() -> ActivityLogScreen {
+    public func goToActivityLog() throws -> ActivityLogScreen {
         activityLogButton.tap()
-        return ActivityLogScreen()
+        return try ActivityLogScreen()
     }
 
-    public func gotoJetpackScan() -> JetpackScanScreen {
+    public func goToJetpackScan() throws -> JetpackScanScreen {
         jetpackScanButton.tap()
-        return JetpackScanScreen()
+        return try JetpackScanScreen()
     }
 
-    public func gotoJetpackBackup() -> JetpackBackupScreen {
+    public func goToJetpackBackup() throws -> JetpackBackupScreen {
         jetpackBackupButton.tap()
-        return JetpackBackupScreen()
+        return try JetpackBackupScreen()
     }
 
     public func gotoPostsScreen() -> PostsScreen {
@@ -115,9 +115,9 @@ public class MySiteScreen: BaseScreen {
         return SiteSettingsScreen()
     }
 
-    func gotoCreateSheet() -> ActionSheetComponent {
+    func gotoCreateSheet() throws -> ActionSheetComponent {
         createButton.tap()
-        return ActionSheetComponent()
+        return try ActionSheetComponent()
     }
 
     public static func isLoaded() -> Bool {

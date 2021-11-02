@@ -129,7 +129,11 @@ class MySitesCoordinator: NSObject {
             UserDefaults.standard.set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
         }
 
-        UserDefaults.standard.set(timePeriod.rawValue, forKey: SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey)
+        guard let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey else {
+            return
+        }
+
+        UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
 
         mySiteViewController.showDetailView(for: .stats)
     }

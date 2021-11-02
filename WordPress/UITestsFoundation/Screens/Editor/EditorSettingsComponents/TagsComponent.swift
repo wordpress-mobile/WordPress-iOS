@@ -1,13 +1,13 @@
+import ScreenObject
 import XCTest
 
-public class TagsComponent: BaseScreen {
-    let tagsField: XCUIElement
+public class TagsComponent: ScreenObject {
 
-    init() {
-        let app = XCUIApplication()
-        tagsField = app.textViews["add-tags"]
+    // expectedElement comes from the superclass and gets the first expectedElementGetters result
+    var tagsField: XCUIElement { expectedElement }
 
-        super.init(element: tagsField)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [ { $0.textViews["add-tags"] } ], app: app)
     }
 
     func addTag(name: String) -> TagsComponent {
@@ -16,13 +16,13 @@ public class TagsComponent: BaseScreen {
         return self
     }
 
-    func goBackToSettings() -> EditorPostSettings {
+    func goBackToSettings() throws -> EditorPostSettings {
         navBackButton.tap()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().textViews["add-tags"].exists
+        (try? TagsComponent().isLoaded) ?? false
     }
 }

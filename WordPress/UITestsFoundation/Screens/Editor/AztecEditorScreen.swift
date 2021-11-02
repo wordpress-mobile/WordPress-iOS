@@ -260,27 +260,27 @@ public class AztecEditorScreen: BaseScreen {
         }
     }
 
-    func publish() -> EditorNoticeComponent {
+    func publish() throws -> EditorNoticeComponent {
         publishButton.tap()
 
-        confirmPublish()
+        try confirmPublish()
 
-        return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+        return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
     }
 
-    private func confirmPublish() {
+    private func confirmPublish() throws {
         if FancyAlertComponent.isLoaded() {
-            FancyAlertComponent().acceptAlert()
+            try FancyAlertComponent().acceptAlert()
         } else {
             publishNowButton.tap()
         }
     }
 
-    public func openPostSettings() -> EditorPostSettings {
+    public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
         postSettingsButton.tap()
 
-        return EditorPostSettings()
+        return try EditorPostSettings()
     }
 
     private func getHTMLContent() -> String {

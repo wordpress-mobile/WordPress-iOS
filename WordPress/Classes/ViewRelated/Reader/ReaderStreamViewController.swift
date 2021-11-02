@@ -24,6 +24,8 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
+    var shouldShowCommentSpotlight: Bool = false
+
     var tableView: UITableView! {
         return tableViewController.tableView
     }
@@ -364,6 +366,10 @@ import WordPressFlux
 
         if contentType == .saved {
             postCellActions?.clearRemovedPosts()
+        }
+
+        if shouldShowCommentSpotlight {
+            resetReaderDiscoverNudgeFlow()
         }
 
         dismissNoNetworkAlert()
@@ -1497,6 +1503,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
+
+        if let topic = readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           indexPath.row == 0,
+           shouldShowCommentSpotlight {
+            cell.spotlightIsShown = true
+        } else {
+            cell.spotlightIsShown = false
+        }
+
         return cell
     }
 
@@ -1534,6 +1550,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             post.rendered = true
             WPAppAnalytics.track(.trainTracksRender, withProperties: railcar)
         }
+    }
+
+    func reloadReaderDiscoverNudgeFlow(at indexPath: IndexPath) {
+        resetReaderDiscoverNudgeFlow()
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
+    private func resetReaderDiscoverNudgeFlow() {
+        shouldShowCommentSpotlight = false
+        WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
