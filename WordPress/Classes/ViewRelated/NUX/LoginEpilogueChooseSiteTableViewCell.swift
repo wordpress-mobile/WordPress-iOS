@@ -40,15 +40,22 @@ private extension LoginEpilogueChooseSiteTableViewCell {
     func setupStackView() {
         stackView.axis = .vertical
         stackView.alignment = .leading
-        stackView.spacing = 6
+        stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubviews([titleLabel, subtitleLabel])
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26)
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.stackViewHorizontalMargin),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.stackViewHorizontalMargin),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewTopMargin),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.stackViewBottomMargin)
         ])
+    }
+
+    private enum Constants {
+        static let stackViewSpacing: CGFloat = 8.0
+        static let stackViewHorizontalMargin: CGFloat = 20.0
+        static let stackViewTopMargin: CGFloat = 16.0
+        static let stackViewBottomMargin: CGFloat = 26.0
     }
 }
