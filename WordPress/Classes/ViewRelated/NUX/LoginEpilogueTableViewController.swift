@@ -83,7 +83,7 @@ extension LoginEpilogueTableViewController {
             }
         }
 
-        // Add one for Connect Site if there are no sites from blogDataSource.
+        // Add one for Create A New Site if there are no sites from blogDataSource.
         if adjustedNumberOfSections == 0 && showCreateNewSite {
             adjustedNumberOfSections += 1
         }
