@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G165" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -314,6 +314,7 @@
         <attribute name="postID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
         <attribute name="postTitle" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="rawContent" optional="YES" attributeType="String" defaultValueString="" syncable="YES"/>
+        <attribute name="replyID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="type" optional="YES" attributeType="String" defaultValueString="comment"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
@@ -985,7 +986,7 @@
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
         <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
         <element name="ClicksStatsRecordValue" positionX="493.99609375" positionY="1741.6171875" width="128" height="133"/>
-        <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="359"/>
+        <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="374"/>
         <element name="CountryStatsRecordValue" positionX="321.078125" positionY="2037.06640625" width="128" height="88"/>
         <element name="DiffAbstractValue" positionX="-1074.79296875" positionY="1237.0859375" width="128" height="88"/>
         <element name="DiffContentValue" positionX="-1280.3125" positionY="1246.609375" width="128" height="60"/>
