@@ -47,7 +47,7 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Closure to be executed upon dismissal.
     ///
-    var onDismiss: (() -> Void)?
+    var onDismiss: ((Blog) -> Void)?
 
     /// Site that was just connected to our awesome app.
     ///
