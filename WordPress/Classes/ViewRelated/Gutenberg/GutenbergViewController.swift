@@ -7,6 +7,8 @@ import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
 
+    
+
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
@@ -15,6 +17,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case more
         case switchBlog
         case autoSave
+        case continueFromHomepageEditing
     }
 
     private lazy var stockPhotos: GutenbergStockPhotos = {
@@ -223,7 +226,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     ///
     var loadAutosaveRevision: Bool
 
-    let navigationBarManager = PostEditorNavigationBarManager()
+    let navigationBarManager: PostEditorNavigationBarManager
 
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
@@ -299,11 +302,17 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }()
 
     // MARK: - Initializers
+    required convenience init(post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorCallback, editorSession: PostEditorAnalyticsSession?) {
+        self.init(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor, editorSession: editorSession)
+    }
+
     required init(
         post: AbstractPost,
         loadAutosaveRevision: Bool = false,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
-        editorSession: PostEditorAnalyticsSession? = nil) {
+        replaceEditor: @escaping ReplaceEditorCallback,
+        editorSession: PostEditorAnalyticsSession? = nil,
+        navigationBarManager: PostEditorNavigationBarManager? = nil
+    ) {
 
         self.post = post
         self.loadAutosaveRevision = loadAutosaveRevision
@@ -311,13 +320,14 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         super.init(nibName: nil, bundle: nil)
 
         addObservers(toPost: post)
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
-        navigationBarManager.delegate = self
+        self.navigationBarManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -875,8 +885,17 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 blogPickerWasPressed()
             case .autoSave:
                 break
+                // Inelegant :(
+            case .continueFromHomepageEditing:
+                continueFromHomepageEditing()
+                break
             }
         }
+    }
+    
+    // Not ideal, but seems the least bad of the alternatives
+    @objc func continueFromHomepageEditing() {
+        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {

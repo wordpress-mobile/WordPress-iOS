@@ -18,8 +18,7 @@ extension WPTabBarController {
             return
         }
         if let homepage = blog.homepage {
-            // TODO: Use make a custom EditPage for the site creation flow
-            let editorViewController = EditPageViewController(page: homepage)
+            let editorViewController = EditPageViewController(homepage: homepage)
             present(editorViewController, animated: false)
         }
     }

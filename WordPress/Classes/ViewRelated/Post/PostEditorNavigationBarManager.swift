@@ -96,7 +96,7 @@ class PostEditorNavigationBarManager {
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
     ///
-    private lazy var separatorButtonItem: UIBarButtonItem = {
+    internal lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         return separator
     }()
