@@ -514,7 +514,6 @@
 		3F46AAFE25BF5D6300CE2E98 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		3F46AB0025BF5D6300CE2E98 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */; };
-		3F50945D2455280300C4470B /* MockContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945C2455280300C4470B /* MockContext.swift */; };
 		3F50945F245537A700C4470B /* ReaderTabViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */; };
 		3F526C4E2538CF2A0069706C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4D2538CF2A0069706C /* WidgetKit.framework */; };
 		3F526C502538CF2A0069706C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4F2538CF2A0069706C /* SwiftUI.framework */; };
@@ -5109,7 +5108,6 @@
 		3F43603223F36515001DEE70 /* BlogListViewController+BlogDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+BlogDetailsFactory.swift"; sourceTree = "<group>"; };
 		3F46AB0125BF5D6300CE2E98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Sites.intentdefinition; sourceTree = "<group>"; };
 		3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStoreTests.swift; sourceTree = "<group>"; };
-		3F50945C2455280300C4470B /* MockContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContext.swift; sourceTree = "<group>"; };
 		3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModelTests.swift; sourceTree = "<group>"; };
 		3F526C4C2538CF2A0069706C /* WordPressStatsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressStatsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F526C4D2538CF2A0069706C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -13598,7 +13596,6 @@
 			isa = PBXGroup;
 			children = (
 				E180BD4D1FB4681E00D0D781 /* MockCookieJar.swift */,
-				3F50945C2455280300C4470B /* MockContext.swift */,
 				E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */,
 				93E9050519E6F3D8005513C9 /* ContextManagerMock.h */,
 				93E9050619E6F3D8005513C9 /* ContextManagerMock.m */,
@@ -18955,7 +18952,6 @@
 				D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				FF8032661EE9E22200861F28 /* MediaProgressCoordinatorTests.swift in Sources */,
-				3F50945D2455280300C4470B /* MockContext.swift in Sources */,
 				173D82E7238EE2A7008432DA /* FeatureFlagTests.swift in Sources */,
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
 				FF2EC3C22209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift in Sources */,
