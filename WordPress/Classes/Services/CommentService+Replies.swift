@@ -1,36 +1,6 @@
 /// Encapsulates actions related to fetching reply comments.
 ///
 extension CommentService {
-    /// Fetches a list of reply comments for the specified `commentID`.
-    /// When the `authorID` parameter is specified, the result will only return reply comments authored by the specified `authorID`.
-    /// In case if there are no replies found, the success block will still be called with an empty array as result.
-    ///
-    /// - Parameters:
-    ///   - commentID: The ID of the parent comment.
-    ///   - siteID: The ID of the site containing the parent comment.
-    ///   - authorID: The dotcom user ID to be used as filter parameter. Optional.
-    ///   - success: Closure called when the fetch succeeds.
-    ///   - failure: Closure that will be called when the fetch fails.
-    func getReplies(for commentID: Int,
-                    siteID: Int,
-                    authorID: Int? = nil,
-                    success: @escaping ([RemoteCommentV2]) -> Void,
-                    failure: @escaping (Error?) -> Void) {
-        guard let remote = restRemote(forSite: NSNumber(value: siteID)) else {
-            DDLogError("Unable to create a REST remote for comments.")
-            failure(nil)
-            return
-        }
-
-        var parameters = [CommentServiceRemoteREST.RequestKeys.parent: commentID]
-        if let authorID = authorID, authorID > 0 {
-            parameters[.author] = authorID
-        }
-
-        remote.getCommentsV2(for: siteID, parameters: parameters, success: success, failure: failure)
-
-    }
-
     /// Fetches the current user's latest reply ID for the specified `commentID`.
     /// In case if there are no replies found, the success block will still be called with value 0.
     ///
