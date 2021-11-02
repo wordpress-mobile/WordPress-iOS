@@ -253,10 +253,8 @@ class MeViewController: UITableViewController {
 
     private func pushAbout() -> ImmuTableAction {
         return { [unowned self] _ in
-            let controller = AboutViewController()
-            self.navigationController?.pushViewController(controller,
-                                                          animated: true,
-                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
+            let controller = UnifiedAboutViewController()
+            self.present(controller, animated: true, completion: nil)
         }
     }
 
