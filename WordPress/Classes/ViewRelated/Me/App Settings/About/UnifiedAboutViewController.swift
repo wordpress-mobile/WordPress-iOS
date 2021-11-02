@@ -59,26 +59,72 @@ class UnifiedAboutViewController: UIViewController {
         ]
     ]
 
+    // MARK: - Views
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableView.dataSource = self
+        tableView.delegate = self
+
+        return tableView
+    }()
+
+    private lazy var footerView: UIView = {
+        let footerView = UIView()
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.backgroundColor = .systemGroupedBackground
+
+        let logo = UIImageView(image: UIImage(named: Images.automatticLogo))
+        logo.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(logo)
+
+        NSLayoutConstraint.activate([
+            logo.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            logo.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+        ])
+
+        return footerView
+    }()
+
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGroupedBackground
+
         view.addSubview(tableView)
+        view.addSubview(footerView)
 
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            footerView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Metrics.footerVerticalOffset),
+            footerView.heightAnchor.constraint(equalToConstant: Metrics.footerHeight),
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
-        tableView.dataSource = self
-        tableView.delegate = self
 
         tableView.reloadData()
     }
+
+    // MARK: - Constants
+
+    enum Metrics {
+        static let footerHeight: CGFloat = 58.0
+        static let footerVerticalOffset: CGFloat = 20.0
+    }
+
+    enum Images {
+        static let automatticLogo = "automattic-logo"
+    }
 }
+
+// MARK: - Table view data source
 
 extension UnifiedAboutViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -102,6 +148,8 @@ extension UnifiedAboutViewController: UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - Table view delegate
 
 extension UnifiedAboutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
