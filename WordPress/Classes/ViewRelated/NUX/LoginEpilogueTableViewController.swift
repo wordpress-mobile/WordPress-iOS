@@ -146,7 +146,13 @@ extension LoginEpilogueTableViewController {
         // Create new site row
         let siteRows = tableView.numberOfRows(inSection: indexPath.section)
         let threshold = 4 // 3 site rows + 1 create site row
-        if siteRows <= threshold && indexPath.row == lastRowInSection(indexPath.section) && showCreateNewSite {
+
+        let isCreateNewSiteRow =
+            showCreateNewSite &&
+            siteRows <= threshold &&
+            indexPath.row == lastRowInSection(indexPath.section)
+
+        if isCreateNewSiteRow {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.createNewSiteReuseIdentifier, for: indexPath) as? LoginEpilogueCreateNewSiteCell else {
                 return UITableViewCell()
             }
