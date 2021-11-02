@@ -20,6 +20,38 @@ class CommentDetailViewController: UITableViewController {
         return navigationController?.visibleViewController == self
     }
 
+    private var replyID: Int32 {
+        didSet {
+            // toggle reply indicator cell visibility as needed.
+            // to prevent the content cell from reloading its web content, only the specific index path is targeted.
+            switch (oldValue, replyID) {
+            case (.zero, 1...Int32.max):
+                // update the rows first so replyIndicator is present in `rows`.
+                configureRows()
+                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                    tableView.reloadData()
+                    return
+                }
+                tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+
+            case (1...Int32.max, .zero):
+                // get the reply indicator row first before it is removed via `configureRows`.
+                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                    return
+                }
+                configureRows()
+                tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+
+            default:
+                break
+            }
+        }
+    }
+
+    private var isCommentReplied: Bool {
+        replyID > 0
+    }
+
     // MARK: Views
 
     private var headerCell = CommentHeaderTableViewCell()
@@ -154,6 +186,7 @@ class CommentDetailViewController: UITableViewController {
         self.comment = comment
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
+        self.replyID = comment.replyID
         super.init(style: .plain)
     }
 
@@ -168,6 +201,7 @@ class CommentDetailViewController: UITableViewController {
         configureNavigationBar()
         configureTable()
         configureRows()
+        refreshCommentReplyIfNeeded()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -244,8 +278,7 @@ class CommentDetailViewController: UITableViewController {
             comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
 
         case .replyIndicator:
-            // TODO: Navigate to the comment reply.
-            break
+            navigateToReplyComment()
 
         case .text(let title, _, _) where title == .webAddressLabelText:
             visitAuthorURL()
@@ -351,8 +384,9 @@ private extension CommentDetailViewController {
         // Header and content cells should always be visible, regardless of user roles.
         var rows: [RowType] = [.header, .content]
 
-        // TODO: Detect if the comment has been replied.
-        rows.append(.replyIndicator)
+        if isCommentReplied {
+            rows.append(.replyIndicator)
+        }
 
         // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
         if comment.authorURL() != nil {
@@ -457,6 +491,36 @@ private extension CommentDetailViewController {
         return cell
     }
 
+    // MARK: Data Sync
+
+    func refreshCommentReplyIfNeeded() {
+        guard let siteID = comment.blog?.dotComID?.intValue else {
+            return
+        }
+
+        commentService.getLatestReplyID(for: Int(comment.commentID), siteID: siteID) { [weak self] replyID in
+            guard let self = self else {
+                return
+            }
+
+            // only perform Core Data updates when the replyID differs.
+            guard replyID != self.comment.replyID else {
+                return
+            }
+
+            let context = self.comment.managedObjectContext ?? ContextManager.sharedInstance().mainContext
+            self.comment.replyID = Int32(replyID)
+            ContextManager.sharedInstance().saveContextAndWait(context)
+
+            // update local replyID to trigger table view updates.
+            self.replyID = self.comment.replyID
+
+        } failure: { error in
+            DDLogError("Failed fetching latest comment reply ID: \(String(describing: error))")
+        }
+
+    }
+
     // MARK: Actions and navigations
 
     // Shows the comment thread with the parent comment highlighted.
@@ -470,6 +534,17 @@ private extension CommentDetailViewController {
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: blog.dotComID,
                                                           commentID: NSNumber(value: parentComment.commentID))
+    }
+
+    func navigateToReplyComment() {
+        guard let blog = comment.blog,
+              isCommentReplied else {
+            return
+        }
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: blog.dotComID,
+                                                          commentID: NSNumber(value: replyID))
     }
 
     func navigateToPost() {
