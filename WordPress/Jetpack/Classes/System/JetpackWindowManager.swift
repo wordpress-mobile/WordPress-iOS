@@ -1,10 +1,10 @@
 import Foundation
 
 class JetpackWindowManager: WindowManager {
-    override func showUI() {
+    override func showUI(for blog: Blog?) {
         // If the user is logged in and has blogs sync'd to their account
         if AccountHelper.isLoggedIn && AccountHelper.hasBlogs {
-            showAppUI()
+            showAppUI(for: blog)
             return
         }
 

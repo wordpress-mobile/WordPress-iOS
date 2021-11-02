@@ -26,9 +26,9 @@ class WindowManager: NSObject {
     /// Shows the initial UI for the App to be shown right after launch.  This method will present the sign-in flow if the user is not
     /// authenticated, or the actuall App UI if the user is already authenticated.
     ///
-    public func showUI() {
+    public func showUI(for blog: Blog? = nil) {
         if AccountHelper.isLoggedIn {
-            showAppUI()
+            showAppUI(for: blog)
         } else {
             showSignInUI()
         }
@@ -45,20 +45,25 @@ class WindowManager: NSObject {
         showSignInUI()
     }
 
-    func dismissFullscreenSignIn(completion: Completion? = nil) {
+    func dismissFullscreenSignIn(with blog: Blog? = nil, completion: Completion? = nil) {
         guard isShowingFullscreenSignIn == true && AccountHelper.isLoggedIn == true else {
             return
         }
 
-        showAppUI(completion: completion)
+        showAppUI(for: blog, completion: completion)
     }
 
     /// Shows the UI for authenticated users.
     ///
-    func showAppUI(completion: Completion? = nil) {
+    func showAppUI(for blog: Blog? = nil, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
-
         show(WPTabBarController.sharedInstance(), completion: completion)
+
+        guard let blog = blog else {
+            return
+        }
+
+        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
     }
 
     /// Shows the initial UI for unauthenticated users.
