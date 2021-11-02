@@ -184,7 +184,13 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: implement
+        guard let parent = parent as? LoginEpilogueViewController,
+              tableView.cellForRow(at: indexPath) is LoginEpilogueBlogCell else {
+            return
+        }
+        
+        parent.onDismiss?()
+        navigationController?.dismiss(animated: true)
     }
 }
 
