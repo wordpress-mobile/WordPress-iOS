@@ -120,7 +120,5 @@ final class UnifiedAboutHeaderView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: spacing.aboveAndBelowHeaderView),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -spacing.aboveAndBelowHeaderView),
         ])
-
-        frame.size = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }

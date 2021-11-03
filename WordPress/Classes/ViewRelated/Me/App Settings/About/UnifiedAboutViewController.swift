@@ -72,7 +72,13 @@ class UnifiedAboutViewController: UIViewController {
             appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
             appVersion: WPStyleGuide.tableviewTextFont())
 
-        return UnifiedAboutHeaderView(appInfo: appInfo, fonts: fonts)
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: fonts)
+
+        // Setting the frame once is needed so that the table view header will show.
+        // This seems to be a table view bug although I'm not entirely sure.
+        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        return headerView
     }()
 
     override func viewDidLoad() {
