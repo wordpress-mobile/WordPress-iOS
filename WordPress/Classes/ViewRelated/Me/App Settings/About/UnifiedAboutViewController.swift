@@ -193,6 +193,3 @@ extension UnifiedAboutViewController: UITableViewDelegate {
         row.action?()
     }
 }
-
-class AutomatticAppLogosCell: UITableViewCell {
-}
