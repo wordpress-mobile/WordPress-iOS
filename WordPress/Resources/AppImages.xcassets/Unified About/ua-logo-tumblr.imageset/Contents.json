@@ -3,6 +3,16 @@
     {
       "filename" : "ua-logo-tumblr.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "tumblr-white.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

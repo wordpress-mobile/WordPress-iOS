@@ -6,7 +6,7 @@ import CoreMotion
 /// of the various apps from Automattic.
 ///
 class AutomatticAppLogosCell: UITableViewCell {
-    private var logosScene: SKScene!
+    private var logosScene: AppLogosScene!
     private var spriteKitView: SKView!
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -91,7 +91,7 @@ private class AppLogosScene: SKScene {
     // MARK: - Scene creation
 
     private func generateScene() {
-        backgroundColor = .white
+        backgroundColor = .secondarySystemGroupedBackground
 
         let edge = SKPhysicsBody(edgeLoopFrom: frame)
         edge.categoryBitMask = edgeCategory
