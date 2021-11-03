@@ -330,10 +330,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.onDismiss = { [weak self] blog in
-            onDismiss()
 
-            self?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+        epilogueViewController.onBlogSelected = { [weak self] blog in
+
+            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+            quickstartPrompt.onDismiss = { blog in
+                onDismiss()
+                self?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            }
+
+            navigationController.pushViewController(quickstartPrompt, animated: true)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
