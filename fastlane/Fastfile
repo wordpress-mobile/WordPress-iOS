@@ -844,6 +844,12 @@ platform :ios do
       UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
     end
 
+    # Because of what is likely a bug in `multi_scan`, we need to exclude
+    # certain tests from the execution.
+    #
+    # See more details at:
+    # - https://github.com/wordpress-mobile/WordPress-iOS/pull/17233#issuecomment-954897098
+    # - https://github.com/lyndsey-ferguson/fastlane-plugin-test_center/issues/358
     all_tests = tests_from_xctestrun(xctestrun: test_plan_path)
     only_testing = all_tests["WordPressTest"].reject { |t| t.include?("ContextManagerMock") || t.include?("TestContextManager") || t.include?("OCMLocation") || t.include?("HTTPStubsDescriptor") }
 
