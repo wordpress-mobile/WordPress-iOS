@@ -89,7 +89,7 @@ final class UnifiedAboutHeaderView: UIView {
         appVersionLabel.lineBreakMode = .byWordWrapping
         appVersionLabel.numberOfLines = 1
         appVersionLabel.font = fonts.appVersion
-        appVersionLabel.textColor = UIColor.colorFromHex("8A898E")
+        appVersionLabel.textColor = .secondaryLabel
 
         iconView.image = appInfo.icon
         iconView.layer.cornerRadius = sizing.appIconCornerRadius
