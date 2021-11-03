@@ -789,8 +789,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
             comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
 
         case .replyIndicator:
-            // TODO: Navigate to the comment reply.
-            break
+            navigateToReplyComment()
 
         case .text(let title, _, _) where title == .webAddressLabelText:
             visitAuthorURL()
@@ -809,4 +808,5 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
         isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
     }
+
 }
