@@ -63,7 +63,7 @@ class WindowManager: NSObject {
             return
         }
 
-        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+        WPTabBarController.sharedInstance()?.showBlogDetails(for: blog)
     }
 
     /// Shows the initial UI for unauthenticated users.
