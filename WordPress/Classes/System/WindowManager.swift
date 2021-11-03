@@ -45,12 +45,12 @@ class WindowManager: NSObject {
         showSignInUI()
     }
 
-    func dismissFullscreenSignIn(with blog: Blog? = nil, completion: Completion? = nil) {
+    func dismissFullscreenSignIn(blogToShow: Blog? = nil, completion: Completion? = nil) {
         guard isShowingFullscreenSignIn == true && AccountHelper.isLoggedIn == true else {
             return
         }
 
-        showAppUI(for: blog, completion: completion)
+        showAppUI(for: blogToShow, completion: completion)
     }
 
     /// Shows the UI for authenticated users.
