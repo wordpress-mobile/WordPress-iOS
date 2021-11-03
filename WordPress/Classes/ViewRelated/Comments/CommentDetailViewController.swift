@@ -22,10 +22,9 @@ class CommentDetailViewController: UITableViewController {
 
     private var replyID: Int32 {
         didSet {
-            // toggle reply indicator cell visibility as needed.
-            // to prevent the content cell from reloading its web content, only the specific index path is targeted.
-            switch (oldValue, replyID) {
-            case (.zero, 1...Int32.max):
+            // toggle reply indicator cell visibility only when the value changes from 0 to any positive number, or vice versa.
+            if oldValue == 0 && replyID > 0 {
+                // show the reply indicator row.
                 // update the rows first so replyIndicator is present in `rows`.
                 configureRows()
                 guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
@@ -34,16 +33,14 @@ class CommentDetailViewController: UITableViewController {
                 }
                 tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
 
-            case (1...Int32.max, .zero):
+            } else if oldValue > 0 && replyID == 0 {
+                // hide the reply indicator row.
                 // get the reply indicator row first before it is removed via `configureRows`.
                 guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
                     return
                 }
                 configureRows()
                 tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
-
-            default:
-                break
             }
         }
     }
