@@ -21,6 +21,10 @@ final class QuickStartPromptViewController: UIViewController {
 
     private let blog: Blog
 
+    /// Closure to be executed upon dismissal.
+    ///
+    var onDismiss: ((Blog) -> Void)?
+
     // MARK: - Init
 
     init(blog: Blog) {
@@ -97,11 +101,14 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+        let controller = QuickStartChecklistViewController(blog: blog, type: .customize)
+        let navigationController = UINavigationController(rootViewController: controller)
+        present(navigationController, animated: true)
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
+        onDismiss?(blog)
+        navigationController?.dismiss(animated: true)
     }
 }
 

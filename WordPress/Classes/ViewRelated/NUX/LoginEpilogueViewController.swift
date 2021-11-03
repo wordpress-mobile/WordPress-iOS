@@ -45,9 +45,9 @@ class LoginEpilogueViewController: UIViewController {
     ///
     private let tracker = AuthenticatorAnalyticsTracker.shared
 
-    /// Closure to be executed upon dismissal.
+    /// Closure to be executed upon blog selection.
     ///
-    var onDismiss: ((Blog) -> Void)?
+    var onBlogSelected: ((Blog) -> Void)?
 
     /// Site that was just connected to our awesome app.
     ///

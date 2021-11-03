@@ -192,8 +192,7 @@ extension LoginEpilogueTableViewController {
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         let blog = blogDataSource.blog(at: wrappedPath)
 
-        parent.onDismiss?(blog)
-        navigationController?.dismiss(animated: true)
+        parent.onBlogSelected?(blog)
     }
 }
 
