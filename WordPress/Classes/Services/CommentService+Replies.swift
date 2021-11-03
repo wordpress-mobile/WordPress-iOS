@@ -1,7 +1,7 @@
 /// Encapsulates actions related to fetching reply comments.
 ///
 extension CommentService {
-    /// Fetches the current user's latest reply ID for the specified `commentID`.
+    /// Fetches the current user's latest reply ID for the specified `parentID`.
     /// In case if there are no replies found, the success block will still be called with value 0.
     ///
     /// - Parameters:
