@@ -112,14 +112,10 @@ final class UnifiedAboutHeaderView: UIView {
             iconView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             iconView.heightAnchor.constraint(equalToConstant: sizing.appIconWidthAndHeight),
             iconView.widthAnchor.constraint(equalToConstant: sizing.appIconWidthAndHeight),
-        ])
 
-        NSLayoutConstraint.activate([
             appNameLabel.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             appVersionLabel.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-        ])
 
-        NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: spacing.aboveAndBelowHeaderView),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -spacing.aboveAndBelowHeaderView),
