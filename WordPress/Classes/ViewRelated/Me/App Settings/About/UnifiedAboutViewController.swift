@@ -80,10 +80,6 @@ class UnifiedAboutViewController: UIViewController {
 
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        headerView.frame.size = headerView.systemLayoutSizeFitting(
-            CGSize(width: .greatestFiniteMagnitude,
-                   height: headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height))
         tableView.tableHeaderView = headerView
 
         view.addSubview(tableView)
