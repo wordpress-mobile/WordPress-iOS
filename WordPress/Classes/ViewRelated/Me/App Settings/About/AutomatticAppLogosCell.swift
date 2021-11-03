@@ -1,5 +1,6 @@
 import UIKit
 import SpriteKit
+import CoreMotion
 
 /// A table view cell that contains a SpriteKit game scene which shows logos
 /// of the various apps from Automattic.
@@ -53,13 +54,6 @@ private class AppLogosScene: SKScene {
         let image: String
     }
 
-    // Collision categories
-    private let ballCategory: UInt32 = 0b0010
-    private let edgeCategory: UInt32 = 0b0001
-
-    // Stores a reference to each of the balls in the scene
-    private var balls: [SKNode] = []
-
     private let apps: [App] = [
         App(color: "#7d57a4", image: "woo"),
         App(color: "#001935", image: "tumblr"),
@@ -70,10 +64,19 @@ private class AppLogosScene: SKScene {
         App(color: "#0675c4", image: "wp")
     ]
 
+    // Collision categories
+    private let ballCategory: UInt32 = 0b0010
+    private let edgeCategory: UInt32 = 0b0001
+
+    // Stores a reference to each of the balls in the scene
+    private var balls: [SKNode] = []
+
+    private let motionManager = CMMotionManager()
+
     // MARK: - Scene lifecycle
 
     override func didMove(to view: SKView) {
-//        motionManager.startAccelerometerUpdates()
+        motionManager.startAccelerometerUpdates()
         generateScene()
     }
 
@@ -163,9 +166,9 @@ private class AppLogosScene: SKScene {
         static let appLogoPrefix = "ua-logo-"
     }
 
-//    override func update(_ currentTime: TimeInterval) {
-//        if let accelerometerData = motionManager.accelerometerData {
-//            physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 9.8, dy: accelerometerData.acceleration.y * 9.8)
-//        }
-//    }
+    override func update(_ currentTime: TimeInterval) {
+        if let accelerometerData = motionManager.accelerometerData {
+            physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 9.8, dy: accelerometerData.acceleration.y * 9.8)
+        }
+    }
 }
