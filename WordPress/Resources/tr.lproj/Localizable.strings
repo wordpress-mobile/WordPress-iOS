@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-04 12:15:54+0000 */
+/* Translation-Revision-Date: 2021-10-27 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "'%@' isminde bir etiket zaten mevcut.";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "Kitlenizi büyütmek için bir ipucu";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Site için başlık";
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "Yeni yazıları sosyal medya hesaplarınızda otomatik olarak paylaşın.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Bir kitleyi sitenize çekmeye başlamak için yeni gönderileri otomatik olarak sosyal medyanızda paylaşın.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Otomatik güncellemeler";
@@ -1536,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "Yorum beğenileri";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "Yorum onaylandı.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "Yorum silindi.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Yorum silindi";
@@ -1548,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "Yorum istenmeyen olarak işaretlendi";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "Yorum istenmeyen olarak işaretlendi.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "Yorum çöpe taşındı.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "Şununla ilgili yorum:";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "Yorum \"beklemede\" olarak ayarlandı.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1682,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "Başka bir site bağla";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "Daha fazla ağ bağlayın";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Blog yazılarınızı %@ ile otomatik olarak paylaşmak için bağlanın";
@@ -1968,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "İndirilebilir dosya oluştur";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "Gömülü içerik oluştur";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "Bağlantı oluştur";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -2309,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "Alan adları";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "Bu siteden satın alınan alan adları %@ adresine yönlendirilecek";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "Bu site için satın alınmış alan adları kullanıcıları şuraya yönlendirecek";
@@ -2524,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "Blok düzenleyici ile yeni gönderi ve sayfaları düzenleyin.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "Hatırlatıcıları düzenle";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Paylaşım tuşlarını düzenle";
@@ -2631,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "Etkinleştir";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "Duyuruyu Etkinleştir";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Site için hızlı başlatmayı etkinleştir";
@@ -2730,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "Yorum onaylanırken hata oluştu";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "Yorum onaylanırken hata oluştu.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "Yorum silinirken hata oluştu";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "Yorum silinirken hata oluştu.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "%@ için otomatik güncellemeler devre dışı bırakılırken hata oluştu.";
@@ -2773,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "Yorum spam olarak işaretlenirken hata oluştu";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "Yorum spam olarak işaretlenirken hata oluştu.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "Yorum çöp kutusuna taşınırken hata oluştu.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Yükleme sırasında\nhata oluştu";
@@ -2812,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "Doğrulama e-postası gönderilirken hata oluştu. Bağlantınızı kontrol edin ve tekrar deneyin.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "Yorum beklemeye alınırken hata oluştu.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Yorumun onayı kaldırılırken hata oluştu ";
@@ -3136,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "Ücretsiz fotoğraf kütüphanesi";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "İlk yıl ücretsiz ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Geçici ortam dosyalarını silerek bu cihazda depolama alanı boşaltın. Bu, sitenizdeki ortam dosyalarını etkilemez.";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "Bir kaç kelime ile bu sitenin ne ile ilgili olduğunu anlatın.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Yayınladığınız gönderilerinizi sosyal medyanızda paylaşabilmeniz için Duyuru modülünü etkinleştirmeniz gerekmektedir.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Pasif";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "Düzenlemeye devam et";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "Blog yazmaya devam edin ve sitenize gelen ziyaretçileri görmek için tekrar kontrol edin.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Sitenizin performansıyla ilgili güncel bilgiler edinin.";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Lütfen geçerli bir soyad girin";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "Lütfen geçerli bir Organizasyon girin";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Lütfen geçerli bir posta kodu girin";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "Yazım etkinliği";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Düzenli olarak paylaşım yapmak, bir kitle oluşturmaya yardımcı olabilir. Hatırlatıcılar her şeyi takip etmenize yardımcı olur.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Düzenli olarak paylaşım yapmak, okuyucularınızın ilgisini ve sitenize de yeni ziyaretçileri çekmenize yardımcı olabilir.";
@@ -6151,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "Düzen seç";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "Alan adı seç";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Ortam dosyası seçin.";
@@ -6269,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "Jetpack'i yapılandır";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "Blog hatırlatıcıları ayarlayın";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Gönderi paylaşmak istediğiniz günler için blog hatırlatıcılarınızı ayarlayın.";
@@ -6345,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "Paylaşım hatası";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "Paylaşım ayarlandı.";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Başlığı göster";
@@ -7043,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "Ortam dosyası ortam kütüphanesine eklenemez.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "Modül etkinleştirilemedi.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Sayfa başına gösterilecek yazı sayısı.";
@@ -8050,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "Daha fazlasını görüntüle";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "Şimdiye kadar sitenizdeki görüntüleme";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Sitenizi görüntüleyin";
@@ -8071,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "Gösterimler";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "Şimdiye kadar sitenizdeki görüntüleme sayısı";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "Sitenizde değişiklik yaptığınızda etkinlik geçmişinizi burada görebileceksiniz.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "Bir sonraki gönderinizi yayınladığınızda, otomatik olarak bağlı ağlarınızla paylaşılacaktır.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Hangi sürümü düzenlemek istersiniz?";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobilden uygulamanın bloğunuza bağlanmasını engelleyen bir eklenti yüklemiş görünüyorsunuz";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "Blog hatırlatıcıları ayarladınız";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Zararsız olduğundan kesinlikle emin değilseniz bir güvenlik sorununu görmezden gelmemelisiniz. Bu tehdidi görmezden gelmeyi seçerseniz \"%1$@\" sitenizde kalacaktır.";

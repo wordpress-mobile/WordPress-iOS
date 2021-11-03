@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-11 19:54:08+0000 */
+/* Translation-Revision-Date: 2021-10-26 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nUntuk mengonfirmasi, silakan masukkan lagi nama pengguna Anda sebelum menutup.\n\n";
 
 /* No comment provided by engineer. */
-" \/ year" = " \/ year";
+" \/ year" = " \/ tahu";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Gambar \"Lazy-load\"";
@@ -357,7 +357,7 @@ translators: Block name. %s: The localized block name */
 "A tag named '%@' already exists." = "Tag dengan nama '%@' sudah ada.";
 
 /* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "A tip to grow your audience";
+"A tip to grow your audience" = "Tips memperbanyak audiens Anda";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Judul untuk situs";
@@ -939,7 +939,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "Bagikan pos baru secara otomatis ke akun media sosial Anda.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Secara otomatis bagikan pos baru ke media sosial Anda untuk menarik perhatian audiens di media sosial ke situs Anda.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Pembaruan otomatis";
@@ -1536,10 +1536,10 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "Suka Komentar";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comment approved.";
+"Comment approved." = "Komentar disetujui.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comment deleted.";
+"Comment deleted." = "Komentar dihapus.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Komentar telah dihapus";
@@ -1548,17 +1548,17 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "Komentar telah ditandai sebagai Spam";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comment marked as spam.";
+"Comment marked as spam." = "Komentar ditandai sebagai spam.";
 
 /* Message displayed when trashing a comment succeeds. */
-"Comment moved to trash." = "Comment moved to trash.";
+"Comment moved to trash." = "Komentar dipindahkan ke sampah.";
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "Komentar di";
 
 /* Message displayed when pending a comment succeeds. */
-"Comment set to pending." = "Comment set to pending.";
+"Comment set to pending." = "Komentar diatur menjadi tertunda.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1682,7 +1682,7 @@ translators: Block name. %s: The localized block name */
 "Connect another site" = "Hubungkan situs lainnya";
 
 /* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connect more networks";
+"Connect more networks" = "Hubungkan lebih banyak jaringan";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Hubungkan untuk otomatis bagikan pos blog Anda ke %@";
@@ -1968,10 +1968,10 @@ translators: Block name. %s: The localized block name */
 "Create downloadable file" = "Buat file yang dapat diunduh";
 
 /* No comment provided by engineer. */
-"Create embed" = "Create embed";
+"Create embed" = "Buat sematan";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "Buat tautan";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling Anda pedulikan.";
@@ -2309,7 +2309,7 @@ translators: Block name. %s: The localized block name */
 "Domains" = "Domain";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+"Domains purchased on this site will redirect to %@" = "Domain yang dibeli di situs ini akan mengalihkan ke %@";
 
 /* Description for the first domain purchased with a free plan. */
 "Domains purchased on this site will redirect users to " = "Domain yang dibeli di situs ini akan mengalihkan pengguna ke ";
@@ -2524,7 +2524,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "Sunting pos dan halaman baru dengan penyunting blok.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "Sunting pengingat";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Sunting tombol berbagi";
@@ -2631,7 +2631,7 @@ translators: Block name. %s: The localized block name */
 "Enable" = "Aktifkan";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "Aktifkan Publikasikan";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Aktifkan Mulai Cepat untuk Situs";
@@ -2730,7 +2730,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "Error menyetujui komentar";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "Error menyetujui komentar.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2743,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "Error menghapus komentar";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "Error menghapus komentar.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Terjadi error saat menonaktifkan pembaruan otomatis untuk %@.";
@@ -2773,10 +2773,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "Error menandai komentar sebagai spam";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "Error menandai komentar sebagai spam.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "Error memindahkan komentar ke tong sampah.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Terjadi eror\nsaat memuat";
@@ -2812,7 +2812,7 @@ translators: Block name. %s: The localized block name */
 "Error sending verification email. Check your connection and try again." = "Terjadi error saat mengirim email verifikasi. Periksa sambungan Anda dan coba lagi.";
 
 /* Message displayed when pending a comment fails. */
-"Error setting comment to pending." = "Error setting comment to pending.";
+"Error setting comment to pending." = "Error mengatur komentar tertunda.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Error menolak komentar";
@@ -3136,7 +3136,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "Pustaka Foto Gratis";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Free for the first year ";
+"Free for the first year " = "Gratis untuk tahun pertama ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Kosongkan sebagian ruang penyimpanan di perangkat ini dengan menghapus file media sementara. Tindakan ini tidak akan memengaruhi media di situs Anda.";
@@ -3502,7 +3502,7 @@ translators: Block name. %s: The localized block name */
 "In a few words, explain what this site is about." = "Dalam beberapa kata, jelaskan tentang apa situs ini.";
 
 /* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Untuk membagikan pos yang telah diposkan ke media sosial, Anda perlu mengaktifkan modul Publikasikan.";
 
 /* Describes a status of a plugin */
 "Inactive" = "Nonaktif";
@@ -3741,7 +3741,7 @@ translators: Block name. %s: The localized block name */
 "Keep Editing" = "Lanjutkan Menyunting";
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+"Keep blogging and check back to see visitors arriving at your site." = "Teruskan blogging dan lihat jumlah pengunjung situs Anda.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Ketahui info terbaru mengenai performa situs Anda.";
@@ -5106,7 +5106,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Masukkan Nama Belakang yang valid";
 
 /* Register Domain - Domain contact information validation error message for an input field */
-"Please enter a valid Organization" = "Please enter a valid Organization";
+"Please enter a valid Organization" = "Harap masukkan Organisasi yang valid";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Masukkan Kode Pos yang valid";
@@ -5305,7 +5305,7 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "Aktivitas Posting";
 
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Memposkan secara reguler dapat membantu memperbanyak audiens. Pengingat membantu Anda melangkah sesuai rencana.";
 
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Dengan rutin membuat pos, Anda bisa terus berinteraksi dengan para pembaca dan menarik pengunjung baru ke situs Anda.";
@@ -6041,7 +6041,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "Tombol cari. Teks tombol saat ini adalah";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "Cari domain";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Cari domain";
@@ -6151,7 +6151,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "Pilih Tata Letak";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "Pilih domain";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Pilih media.";
@@ -6269,7 +6269,7 @@ translators: Block name. %s: The localized block name */
 "Set up Jetpack" = "Siapkan Jetpack";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Set up blogging reminders";
+"Set up blogging reminders" = "Siapkan pengingat blogging";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Siapkan pengingat blogging pada hari Anda ingin menerbitkan pos.";
@@ -6345,7 +6345,7 @@ translators: Block name. %s: The localized block name */
 "Sharing error" = "Error saat berbagi";
 
 /* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sharing is set up!";
+"Sharing is set up!" = "Pengaturan bagikan telah siap!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Tampilkan Header";
@@ -7043,7 +7043,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "Media tidak bisa ditambahkan ke Pustaka Media.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "Modul tidak dapat diaktifkan.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Jumlah pos yang akan ditampilkan per halaman.";
@@ -8050,7 +8050,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "Lihat selengkapnya";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "Kunjungan ke situs Anda hingga saat ini";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Lihat situs Anda";
@@ -8071,7 +8071,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "Kunjungan";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "Kunjungan ke situs Anda hingga saat ini";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8489,7 +8489,7 @@ translators: Block name. %s: The localized block name */
 "When you make changes to your site you'll be able to see your activity history here." = "Saat membuat perubahan pada situs, Anda akan dapat melihat riwayat aktivitas di sini.";
 
 /* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
+"When you publish your next post it will be automatically shared to your connected networks." = "Ketika Anda memposkan pos berikutnya, pos tersebut akan dibagikan secara otomatis ke jaringan Anda yang terhubung.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Versi apa yang ingin Anda edit?";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Tampaknya Anda telah menginstal plugin seluler dari DudaMobile yang membuat aplikasi tidak dapat tersambung ke blog Anda";
 
 /* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "You set up blogging reminders";
+"You set up blogging reminders" = "Anda menyiapkan pengingat blogging";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Sebaiknya jangan abaikan masalah keamanan, kecuali Anda benar-benar yakin ini tidak berbahaya. Jika Anda memilih untuk mengabaikannya, ancaman ini akan tetap ada di situs Anda \"%1$@\".";

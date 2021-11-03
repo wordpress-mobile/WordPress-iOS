@@ -3,14 +3,34 @@ import CocoaLumberjack
 import WordPressKit
 import CoreData
 
+struct FullyQuotedDomainSuggestion {
+    public let domainName: String
+    public let productID: Int?
+    public let supportsPrivacy: Bool?
+    public let costString: String
+    public let saleCostString: String?
+
+    /// Maps the suggestion to a DomainSuggestion we can use with out APIs.
+    func remoteSuggestion() -> DomainSuggestion {
+        DomainSuggestion(domainName: domainName,
+                         productID: productID,
+                         supportsPrivacy: supportsPrivacy,
+                         costString: costString)
+    }
+}
+
 struct DomainsService {
+    typealias RemoteDomainSuggestion = DomainSuggestion
+
     let remote: DomainsServiceRemote
+    let productsRemote: ProductServiceRemote
 
     fileprivate let context: NSManagedObjectContext
 
     init(managedObjectContext context: NSManagedObjectContext, remote: DomainsServiceRemote) {
         self.context = context
         self.remote = remote
+        self.productsRemote = ProductServiceRemote(restAPI: remote.wordPressComRestApi)
     }
 
     /// Refreshes the domains for the specified site.  Since this method takes care of merging the new data into our local
@@ -29,27 +49,61 @@ struct DomainsService {
         })
     }
 
-    func getDomainSuggestions(base: String,
-                              segmentID: Int64,
+    func getDomainSuggestions(query: String,
+                              segmentID: Int64? = nil,
                               quantity: Int? = nil,
+                              domainSuggestionType: DomainsServiceRemote.DomainSuggestionType? = nil,
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {
-        let request = DomainSuggestionRequest(query: base, segmentID: segmentID, quantity: quantity)
+        let request = DomainSuggestionRequest(query: query, segmentID: segmentID, quantity: quantity, suggestionType: domainSuggestionType)
 
         remote.getDomainSuggestions(request: request,
                                     success: { suggestions in
-                                        let sorted = self.sortedSuggestions(suggestions, forBase: base)
-                                        success(sorted)
+            let sorted = self.sortedSuggestions(suggestions, query: query)
+            success(sorted)
         }) { error in
             failure(error)
         }
     }
 
-    func getDomainSuggestions(base: String,
+    func getFullyQuotedDomainSuggestions(query: String,
+                                         segmentID: Int64? = nil,
+                                         quantity: Int? = nil,
+                                         domainSuggestionType: DomainsServiceRemote.DomainSuggestionType? = nil,
+                                         success: @escaping ([FullyQuotedDomainSuggestion]) -> Void,
+                                         failure: @escaping (Error) -> Void) {
+
+        productsRemote.getProducts { result in
+            switch result {
+            case .failure(let error):
+                failure(error)
+            case .success(let products):
+                getDomainSuggestions(query: query, segmentID: segmentID, quantity: quantity, domainSuggestionType: domainSuggestionType, success: { domainSuggestions in
+
+                    success(domainSuggestions.map { remoteSuggestion in
+                        let saleCostString = products.first() {
+                            $0.id == remoteSuggestion.productID
+                        }?.saleCostForDisplay()
+
+                        return FullyQuotedDomainSuggestion(
+                            domainName: remoteSuggestion.domainName,
+                            productID: remoteSuggestion.productID,
+                            supportsPrivacy: remoteSuggestion.supportsPrivacy,
+                            costString: remoteSuggestion.costString,
+                            saleCostString: saleCostString)
+                    })
+                }, failure: failure)
+            }
+        }
+    }
+/*
+    func getDomainSuggestions(query: String,
                               quantity: Int? = nil,
-                              domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom,
+                              domainSuggestionType: DomainSuggestionType = .onlyWordPressDotCom,
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {
+        let request = DomainSuggestionRequest(query: query, quantity: quantity)
+        
         remote.getDomainSuggestions(base: base,
                                     quantity: quantity,
                                     domainSuggestionType: domainSuggestionType,
@@ -59,15 +113,15 @@ struct DomainsService {
         }) { error in
             failure(error)
         }
-    }
+    }*/
 
     // If any of the suggestions matches the base exactly,
     // then sort that suggestion up to the top of the list.
-    fileprivate func sortedSuggestions(_ suggestions: [DomainSuggestion], forBase base: String) -> [DomainSuggestion] {
-        let normalizedBase = base.lowercased().replacingMatches(of: " ", with: "")
+    fileprivate func sortedSuggestions(_ suggestions: [RemoteDomainSuggestion], query: String) -> [RemoteDomainSuggestion] {
+        let normalizedQuery = query.lowercased().replacingMatches(of: " ", with: "")
 
         var filteredSuggestions = suggestions
-        if let matchedSuggestionIndex = suggestions.firstIndex(where: { $0.subdomain == base || $0.subdomain == normalizedBase }) {
+        if let matchedSuggestionIndex = suggestions.firstIndex(where: { $0.subdomain == query || $0.subdomain == normalizedQuery }) {
             let matchedSuggestion = filteredSuggestions.remove(at: matchedSuggestionIndex)
             filteredSuggestions.insert(matchedSuggestion, at: 0)
         }
