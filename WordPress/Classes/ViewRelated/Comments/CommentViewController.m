@@ -650,39 +650,19 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)editComment
 {
-    UINavigationController *navController;
+    EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
+    __typeof(self) __weak weakSelf = self;
+    editViewController.completion = ^(Comment *comment, BOOL commentChanged) {
+        if (commentChanged) {
+            weakSelf.comment = comment;
+            [weakSelf updateComment];
+        }
+    };
     
-    if ([Feature enabled:FeatureFlagNewCommentEdit]) {
-        EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
-        
-        __typeof(self) __weak weakSelf = self;
-        editViewController.completion = ^(Comment *comment, BOOL commentChanged) {
-            if (commentChanged) {
-                weakSelf.comment = comment;
-                [weakSelf updateComment];
-            }
-        };
-
-        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    } else {
-        EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-        editViewController.content = [self.comment contentForEdit];
-        
-        __typeof(self) __weak weakSelf = self;
-        editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
-            [self dismissViewControllerAnimated:YES completion:^{
-                if (hasNewContent) {
-                    weakSelf.comment.content = newContent;
-                    [weakSelf updateComment];
-                }
-            }];
-        };
-        
-        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-        navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    }
-
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
 
