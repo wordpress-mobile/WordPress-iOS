@@ -8,7 +8,7 @@ common_params:
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
-    IMAGE_ID: xcode-12.5.1
+    IMAGE_ID: xcode-13
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -45,7 +45,7 @@ steps:
   # UI Tests
   #################
   - label: "🧪 UI Tests (iPhone)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 11' 14.1
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins
@@ -54,7 +54,7 @@ steps:
 
 
   - label: "🧪 UI Tests (iPad)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 14.1
+    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 15.0
     depends_on: "build"
     env: *common_env
     plugins: *common_plugins

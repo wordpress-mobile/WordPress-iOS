@@ -1,6 +1,7 @@
 @testable import WordPress
 import XCTest
 import WordPressFlux
+import CoreData
 
 
 class MockItemsStore: ItemsStore {
@@ -48,7 +49,7 @@ class ReaderTabViewModelTests: XCTestCase {
     var settingsPresenter: MockSettingsPresenter!
 
     var contextManager: TestContextManager!
-    var context: MockContext!
+    var context: NSManagedObjectContext!
 
     override func setUp() {
         store = MockItemsStore()
@@ -59,7 +60,7 @@ class ReaderTabViewModelTests: XCTestCase {
                                        settingsPresenter: settingsPresenter)
 
         contextManager = TestContextManager()
-        context = contextManager.getMockContext()
+        context = contextManager.mainContext
     }
 
     override func tearDown() {
@@ -173,29 +174,5 @@ extension ReaderTabViewModelTests {
         let controller = MockContentController()
         controller.setContentExpectation = expectation(description: "Topic was set")
         return controller
-    }
-
-    private func switchToTabSetup(_ context: MockContext) {
-        let showTabExpectation = expectation(description: "tab was shown")
-        let selectIndexExpectation = expectation(description: "index was selected")
-
-        let topicOne = ReaderAbstractTopic(context: context)
-        topicOne.title = "first topic"
-        topicOne.path = "myPath/read/following"
-
-        let topicTwo = ReaderAbstractTopic(context: context)
-        topicTwo.title = "second topic"
-
-        store.items = [ReaderTabItem(ReaderContent(topic: topicOne)), ReaderTabItem(ReaderContent(topic: topicTwo))]
-
-        viewModel.setContent = { content in
-            showTabExpectation.fulfill()
-            XCTAssertNotNil(content.topic)
-            XCTAssertEqual("first topic", content.topic!.title)
-        }
-        viewModel.didSelectIndex = { index in
-            selectIndexExpectation.fulfill()
-            XCTAssertEqual(0, index)
-        }
     }
 }
