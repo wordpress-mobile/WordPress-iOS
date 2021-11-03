@@ -191,7 +191,6 @@ class CommentDetailViewController: UIViewController {
         self.managedObjectContext = managedObjectContext
         self.replyID = comment.replyID
         super.init(nibName: nil, bundle: nil)
-        configureView()
     }
 
     required init?(coder: NSCoder) {
@@ -202,6 +201,7 @@ class CommentDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureView()
         configureNavigationBar()
         configureTable()
         configureRows()
