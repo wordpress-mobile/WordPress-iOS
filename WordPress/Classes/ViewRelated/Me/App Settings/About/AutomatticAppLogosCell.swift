@@ -31,15 +31,18 @@ class AutomatticAppLogosCell: UITableViewCell {
         spriteKitView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: spriteKitView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: spriteKitView.trailingAnchor),
+            contentView.leadingAnchor.constraint(lessThanOrEqualTo: spriteKitView.leadingAnchor),
+            contentView.trailingAnchor.constraint(greaterThanOrEqualTo: spriteKitView.trailingAnchor),
             contentView.topAnchor.constraint(equalTo: spriteKitView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: spriteKitView.bottomAnchor)
+            contentView.bottomAnchor.constraint(equalTo: spriteKitView.bottomAnchor),
+            spriteKitView.widthAnchor.constraint(lessThanOrEqualToConstant: Metrics.maxWidth),
+            spriteKitView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
 
     enum Metrics {
         static let sceneFrame = CGRect(x:0 , y:0, width: 350.0, height: 150.0)
+        static let maxWidth: CGFloat = 388.0 // Standard cell width on Max phone
     }
 }
 
