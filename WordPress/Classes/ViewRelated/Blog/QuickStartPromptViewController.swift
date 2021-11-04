@@ -135,3 +135,27 @@ extension QuickStartPromptViewController {
         static let quickStartDelay: DispatchTimeInterval = DispatchTimeInterval.milliseconds(1000)
     }
 }
+
+extension UserDefaults {
+
+    func quickStartWasDismissed(for blog: Blog) -> Bool {
+        guard let key = quickStartWasDismissedKey(for: blog) else {
+            return false
+        }
+        return bool(forKey: key)
+    }
+
+    func setQuickStartWasDismissed(_ value: Bool, for blog: Blog) {
+        guard let key = quickStartWasDismissedKey(for: blog) else {
+            return
+        }
+        set(value, forKey: key)
+    }
+
+    private func quickStartWasDismissedKey(for blog: Blog) -> String? {
+        guard let siteID = blog.dotComID?.intValue else {
+            return nil
+        }
+        return "QuickStartWasDismissed-\(siteID)"
+    }
+}
