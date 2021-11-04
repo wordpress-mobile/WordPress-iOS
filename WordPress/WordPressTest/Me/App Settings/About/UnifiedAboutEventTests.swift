@@ -1,7 +1,7 @@
 import Foundation
 @testable import WordPress
 
-fileprivate extension UnifiedAboutTracker.ButtonPressedEvent.Button {
+fileprivate extension UnifiedAboutEvent.Button {
     /// This method is useful to prevent the button names from being changed by mistake in our sources.
     /// It's also useful because if cases are added or removed, the tests wont build until they're added here,
     /// which helps us guarantee 100% testing coverage for this type of event.
@@ -40,33 +40,27 @@ fileprivate extension UnifiedAboutTracker.ButtonPressedEvent.Button {
     }
 }
 
-class UnifiedAboutTrackerTests: XCTestCase {
+class UnifiedAboutEventTests: XCTestCase {
     func testTrackingScreenShown() {
-        let tracker = UnifiedAboutTracker() { (eventName, properties) in
-            XCTAssertEqual(eventName, "about_screen_shown")
-            XCTAssert(properties.isEmpty)
-        }
+        let event: UnifiedAboutEvent = .screenShown
 
-        tracker.track(UnifiedAboutTracker.ScreenShownEvent())
+        XCTAssertEqual(event.name, "about_screen_shown")
+        XCTAssert(event.properties.isEmpty)
     }
 
     func testTrackingScreenDismissed() {
-        let tracker = UnifiedAboutTracker() { (eventName, properties) in
-            XCTAssertEqual(eventName, "about_screen_dismissed")
-            XCTAssert(properties.isEmpty)
-        }
+        let event: UnifiedAboutEvent = .screenDismissed
 
-        tracker.track(UnifiedAboutTracker.ScreenDismissedEvent())
+        XCTAssertEqual(event.name, "about_screen_dismissed")
+        XCTAssert(event.properties.isEmpty)
     }
 
     func testTrackingButtonPressed() {
-        for button in UnifiedAboutTracker.ButtonPressedEvent.Button.allCases {
-            let tracker = UnifiedAboutTracker() { (eventName, properties) in
-                XCTAssertEqual(eventName, "about_screen_button_tapped")
-                XCTAssertEqual(properties, ["button": button.expectedButtonName()])
-            }
+        for button in UnifiedAboutEvent.Button.allCases {
+            let event: UnifiedAboutEvent = .buttonPressed(button: button)
 
-            tracker.track(UnifiedAboutTracker.ButtonPressedEvent(button: button))
+            XCTAssertEqual(event.name, "about_screen_button_tapped")
+            XCTAssertEqual(event.properties, ["button": button.expectedButtonName()])
         }
     }
 }

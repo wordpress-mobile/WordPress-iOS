@@ -6,12 +6,14 @@ struct AboutItem {
     let title: String
     let subtitle: String?
     let cellStyle: AboutItemCellStyle
+    let eventButton: UnifiedAboutEvent.Button
     let action: (() -> Void)?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, action: (() -> Void)? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, eventButton: UnifiedAboutEvent.Button, action: (() -> Void)? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
+        self.eventButton = eventButton
         self.action = action
     }
 
@@ -43,25 +45,26 @@ struct AboutItem {
 class UnifiedAboutViewController: UIViewController {
     static let sections: [[AboutItem]] = [
         [
-            AboutItem(title: "Rate Us"),
-            AboutItem(title: "Share with Friends"),
-            AboutItem(title: "Twitter", cellStyle: .value1)
+            AboutItem(title: "Rate Us", eventButton: .rateUs),
+            AboutItem(title: "Share with Friends", eventButton: .share),
+            AboutItem(title: "Twitter", cellStyle: .value1, eventButton: .twitter)
         ],
         [
-            AboutItem(title: "Legal and More")
+            AboutItem(title: "Legal and More", eventButton: .legal)
         ],
         [
-            AboutItem(title: "Automattic Family"),
-            AboutItem(title: "", cellStyle: .appLogos)
+            AboutItem(title: "Automattic Family", eventButton: .automatticFamily),
+            AboutItem(title: "", cellStyle: .appLogos, eventButton: .automatticFamily)
         ],
         [
-            AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
+            AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle, eventButton: .workWithUs)
         ]
     ]
 
     // MARK: - Analytics
 
-    private let tracker = UnifiedAboutTracker() { eventName, properties in
+    typealias TrackEvent = ((UnifiedAboutEvent) -> Void)
+    public let trackEvent: TrackEvent = { event in
         // Part of this customization should happen in the App, so that we don't need to add analytics
         // dependencies into unified-about (and it remains tracker agnostic).
         //
@@ -70,7 +73,7 @@ class UnifiedAboutViewController: UIViewController {
         //
         // I'm leaving these customizations here for now until we decide the concrete solution we want
         //
-        let event = AnalyticsEvent(name: eventName, properties: properties)
+        let event = AnalyticsEvent(name: event.name, properties: event.properties)
 
         WPAnalytics.track(event)
     }
@@ -128,6 +131,24 @@ class UnifiedAboutViewController: UIViewController {
         tableView.reloadData()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if isBeingPresented {
+            trackEvent(.screenShown)
+            //tracker.track(UnifiedAboutScreenShownEvent())
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isBeingDismissed {
+            trackEvent(.screenDismissed)
+            //tracker.track(UnifiedAboutScreenDismissedEvent())
+        }
+    }
+
     // MARK: - Constants
 
     enum Metrics {
@@ -171,6 +192,9 @@ extension UnifiedAboutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = Self.sections[indexPath.section]
         let row = section[indexPath.row]
+
+        trackEvent(.buttonPressed(button: row.eventButton))
+        //tracker.track(UnifiedAboutButtonPressedEvent(button: row.eventButton))
         row.action?()
     }
 }
