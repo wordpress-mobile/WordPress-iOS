@@ -6,10 +6,10 @@ struct AboutItem {
     let title: String
     let subtitle: String?
     let cellStyle: AboutItemCellStyle
-    let eventButton: UnifiedAboutEvent.Button
+    let eventButton: UnifiedAboutEvent.Button?
     let action: (() -> Void)?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, eventButton: UnifiedAboutEvent.Button, action: (() -> Void)? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, eventButton: UnifiedAboutEvent.Button?, action: (() -> Void)? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
@@ -54,7 +54,7 @@ class UnifiedAboutViewController: UIViewController {
         ],
         [
             AboutItem(title: "Automattic Family", eventButton: .automatticFamily),
-            AboutItem(title: "", cellStyle: .appLogos, eventButton: .automatticFamily)
+            AboutItem(title: "", cellStyle: .appLogos, eventButton: nil)
         ],
         [
             AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle, eventButton: .workWithUs)
@@ -136,7 +136,6 @@ class UnifiedAboutViewController: UIViewController {
 
         if isBeingPresented {
             trackEvent(.screenShown)
-            //tracker.track(UnifiedAboutScreenShownEvent())
         }
     }
 
@@ -145,7 +144,6 @@ class UnifiedAboutViewController: UIViewController {
 
         if isBeingDismissed {
             trackEvent(.screenDismissed)
-            //tracker.track(UnifiedAboutScreenDismissedEvent())
         }
     }
 
@@ -193,8 +191,10 @@ extension UnifiedAboutViewController: UITableViewDelegate {
         let section = Self.sections[indexPath.section]
         let row = section[indexPath.row]
 
-        trackEvent(.buttonPressed(button: row.eventButton))
-        //tracker.track(UnifiedAboutButtonPressedEvent(button: row.eventButton))
+        if let eventButton = row.eventButton {
+            trackEvent(.buttonPressed(button: eventButton))
+        }
+
         row.action?()
     }
 }
