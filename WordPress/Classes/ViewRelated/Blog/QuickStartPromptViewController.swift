@@ -101,9 +101,16 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
-        let controller = QuickStartChecklistViewController(blog: blog, type: .customize)
-        let navigationController = UINavigationController(rootViewController: controller)
-        present(navigationController, animated: true)
+        onDismiss?(blog)
+        navigationController?.dismiss(animated: true, completion: { [weak self] in
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+                guard let self = self else {
+                    return
+                }
+                QuickStartTourGuide.shared.setup(for: self.blog)
+            }
+        })
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
@@ -119,5 +126,9 @@ extension QuickStartPromptViewController {
         static let promptDescription = NSLocalizedString("Learn the basics with a quick walk through.", comment: "Description for a prompt asking if users want to try out the quick start checklist.")
         static let showMeAroundButtonTitle = NSLocalizedString("Show me around", comment: "Button title. When tapped, the quick start checklist will be shown.")
         static let noThanksButtonTitle = NSLocalizedString("No thanks", comment: "Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed.")
+    }
+
+    private enum Constants {
+        static let quickStartDelay: DispatchTimeInterval = DispatchTimeInterval.milliseconds(1000)
     }
 }
