@@ -113,6 +113,7 @@ final class QuickStartPromptViewController: UIViewController {
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
+        UserDefaults.standard.setQuickStartWasDismissed(true, for: blog)
         dismissPrompt()
     }
 
