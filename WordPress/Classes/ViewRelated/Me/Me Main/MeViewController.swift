@@ -256,7 +256,7 @@ class MeViewController: UITableViewController {
             defer {
                 self.tableView.deselectSelectedRowWithAnimation(true)
             }
-            
+
             let controller = UnifiedAboutViewController()
             controller.modalPresentationStyle = .formSheet
             self.present(controller, animated: true, completion: nil)
