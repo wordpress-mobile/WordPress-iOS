@@ -39,6 +39,12 @@ class AutomatticAppLogosCell: UITableViewCell {
         ])
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        logosScene.updateForTraitCollection(traitCollection)
+    }
+
     enum Metrics {
         static let sceneFrame = CGRect(x:0 , y:0, width: 350.0, height: 150.0)
         static let maxWidth: CGFloat = 388.0 // Standard cell width on Max phone
@@ -92,6 +98,15 @@ private class AppLogosScene: SKScene {
         }
     }
 
+    func updateForTraitCollection(_ traitCollection: UITraitCollection) {
+        self.traitCollection = traitCollection
+
+        // We need to manually update the scene for dark mode / light mode.
+        // We'll also regenerate the balls to ensure they use the correct image.
+        backgroundColor = .secondarySystemGroupedBackground.resolvedColor(with: traitCollection)
+        generateBalls()
+    }
+
     // MARK: - Scene creation
 
     private func generateScene() {
@@ -115,22 +130,37 @@ private class AppLogosScene: SKScene {
             return
         }
 
-        balls = apps.map({ makeBall(for: $0) })
+        balls = apps.compactMap({ makeBall(for: $0) })
         balls.forEach({ addChild($0) })
     }
 
-    private func makeBall(for app: App) -> SKNode {
+    private func makeBall(for app: App) -> SKNode? {
+        guard let view = view,
+              let image = UIImage(named: Constants.appLogoPrefix + app.image, in: .main, compatibleWith: traitCollection) else {
+            return nil
+        }
+
+        // Container for the various parts of the ball
         let ball = SKShapeNode(circleOfRadius: Metrics.ballRadius)
         ball.fillColor = .secondarySystemGroupedBackground
+        ball.strokeColor = .secondarySystemGroupedBackground
 
-        // Background has to be a separate node as it has an alpha value applied.
-        // If we just set this on the main node, the icon image would also be translucent.
+        // For the background, we first draw a shape node at full opacity...
         let background = SKShapeNode(circleOfRadius: Metrics.ballRadius)
+        background.strokeColor = UIColor(hex: app.color)
         background.fillColor = UIColor(hex: app.color)
-        background.alpha = Metrics.backgroundAlpha
-        ball.addChild(background)
 
-        let logo = SKSpriteNode(imageNamed: Constants.appLogoPrefix + app.image)
+        // ... Then turn that into a sprite with the correct alpha.
+        // We can't just apply an alpha to the background shape node, as the
+        // fill covers the stroke and their values are added together resulting
+        // in a darker stroke. We also can't just set a clear stroke,
+        // otherwise the fill won't be antialiased.
+        let backgroundSprite = SKSpriteNode(texture: view.texture(from: background))
+        backgroundSprite.alpha = Metrics.backgroundAlpha
+        ball.addChild(backgroundSprite)
+
+        // Add the logo, taking into account the current trait collection for dark mode
+        let logo = SKSpriteNode(texture: SKTexture(image: image))
         logo.size = CGSize(width: Metrics.ballWidth, height: Metrics.ballWidth)
         ball.addChild(logo)
 
@@ -138,7 +168,7 @@ private class AppLogosScene: SKScene {
         physicsBody.categoryBitMask = ballCategory
         physicsBody.collisionBitMask = ballCategory | edgeCategory
         physicsBody.affectedByGravity = true
-        physicsBody.restitution = 0.5
+        physicsBody.restitution = Constants.physicsRestitution
         ball.physicsBody = physicsBody
 
         // Ensure we only spawn balls in an area in the center that's inset
@@ -168,5 +198,6 @@ private class AppLogosScene: SKScene {
 
     enum Constants {
         static let appLogoPrefix = "ua-logo-"
+        static let physicsRestitution: CGFloat = 0.5
     }
 }
