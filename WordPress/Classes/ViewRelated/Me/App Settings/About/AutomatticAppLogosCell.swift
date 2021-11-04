@@ -181,6 +181,26 @@ private class AppLogosScene: SKScene {
         return ball
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.randomElement() else {
+            return
+        }
+
+        let location = touch.location(in: self)
+        let touchedNodes = nodes(at: location)
+
+        for node in touchedNodes {
+            if node is SKShapeNode {
+                let actions = SKAction.sequence([
+                    SKAction.scale(to: Metrics.tapScaleUpValue, duration: Metrics.tapScaleUpDuration),
+                    SKAction.scale(to: Metrics.tapDefaultScaleValue, duration: Metrics.tapDefaultScaleDuration)
+                ])
+
+                node.run(actions)
+            }
+        }
+    }
+
     private var bounds: CGRect {
         view?.bounds ?? .zero
     }
@@ -190,6 +210,11 @@ private class AppLogosScene: SKScene {
         static let logoSize: CGFloat = 40.0
         static let backgroundAlpha: CGFloat = 0.16
         static let edgePadding: CGFloat = 4.0 // So we don't spawn balls too close to the edges
+
+        static let tapScaleUpValue: CGFloat = 1.4
+        static let tapScaleUpDuration: TimeInterval = 0.05
+        static let tapDefaultScaleValue: CGFloat = 1.0
+        static let tapDefaultScaleDuration: TimeInterval = 0.1
 
         static var ballWidth: CGFloat {
             ballRadius * 2.0
