@@ -1,11 +1,8 @@
-* [**] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
-* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
-* [*] Reader post comments: fixed an issue that prevented all comments from displaying. [#17373]
-* [**] Stats: added Reader Discover nudge for sites with low traffic in order to increase it. [#17349, #17352, #17354, #17377]
-* [**] Block editor: Search block - Text and background color support [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4127]
-* [*] Block editor: Fix Embed Block loading glitch with resolver resolution approach [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4146]
-* [*] Block editor: Fixed an issue where the Help screens may not respect an iOS device's notch. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4110]
-* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
-* [*] Block editor: Add support for the Mark HTML tag [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4162]
-* [*] Stats Insights: HTML tags no longer display in post titles. [#17380]
-
+- We've made it easier to see when there are new blocks available for use on your site
+- You can now highlight text using the <mark> HTML tag, as well as change the text and background color of the Search block button. Shiny!
+- We've hidden HTML tags in post titles when you're checking out your stats.
+- We've improved Reader Discovery – showing you new things to read, while lending a helping hand to sites with low traffic. Win-win.
+- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
+- Speaking of comments, we heard that some might be missing when viewing comments from the Reader. Don't worry – we found and fixed the problem.
+- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
+- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
