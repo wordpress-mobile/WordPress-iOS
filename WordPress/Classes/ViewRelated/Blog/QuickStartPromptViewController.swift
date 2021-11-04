@@ -101,8 +101,7 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
-        onDismiss?(blog)
-        navigationController?.dismiss(animated: true, completion: { [weak self] in
+        dismissPrompt { [weak self] in
 
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
                 guard let self = self else {
@@ -110,12 +109,16 @@ final class QuickStartPromptViewController: UIViewController {
                 }
                 QuickStartTourGuide.shared.setup(for: self.blog)
             }
-        })
+        }
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
+        dismissPrompt()
+    }
+
+    private func dismissPrompt(completion: (() -> Void)? = nil) {
         onDismiss?(blog)
-        navigationController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true, completion: completion)
     }
 }
 
