@@ -2511,6 +2511,7 @@
 		F1450CF92437EEBB00A28BFE /* MediaRequestAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1450CF82437EEBB00A28BFE /* MediaRequestAuthenticatorTests.swift */; };
 		F1482CE02575BDA4007E4DD6 /* SitesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1482CDF2575BDA4007E4DD6 /* SitesDataProvider.swift */; };
 		F151EC832665271200AEA89E /* BloggingRemindersSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151EC822665271200AEA89E /* BloggingRemindersSchedulerTests.swift */; };
+		F1521A022733F0690041DEC7 /* UnifiedAboutTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1521A012733F0690041DEC7 /* UnifiedAboutTrackerTests.swift */; };
 		F15272FD243B27BC00C8DC7A /* AbstractPost+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */; };
 		F15272FF243B28B700C8DC7A /* RequestAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */; };
 		F1527301243B290E00C8DC7A /* AbstractPost+Autosave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */; };
@@ -2547,6 +2548,8 @@
 		F198FF5D256D4877001266EB /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
 		F1A38F212678C4DA00849843 /* BloggingRemindersFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A38F202678C4DA00849843 /* BloggingRemindersFlow.swift */; };
 		F1A38F222678C4DA00849843 /* BloggingRemindersFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A38F202678C4DA00849843 /* BloggingRemindersFlow.swift */; };
+		F1A75B9B2732EF3700784A70 /* UnifiedAboutTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A75B9A2732EF3700784A70 /* UnifiedAboutTracker.swift */; };
+		F1A75B9C2732EF3700784A70 /* UnifiedAboutTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A75B9A2732EF3700784A70 /* UnifiedAboutTracker.swift */; };
 		F1ACDF6B256D6C120005AE9B /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
 		F1ACDF7C256D6C290005AE9B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		F1ADCAF7241FEF0C00F150D2 /* AtomicAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */; };
@@ -7364,6 +7367,7 @@
 		F14B5F75208E64F900439554 /* Version.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.internal.xcconfig; sourceTree = "<group>"; };
 		F14E844C2317252200D0C63E /* WordPress 90.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 90.xcdatamodel"; sourceTree = "<group>"; };
 		F151EC822665271200AEA89E /* BloggingRemindersSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersSchedulerTests.swift; sourceTree = "<group>"; };
+		F1521A012733F0690041DEC7 /* UnifiedAboutTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedAboutTrackerTests.swift; sourceTree = "<group>"; };
 		F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Local.swift"; sourceTree = "<group>"; };
 		F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthenticator.swift; sourceTree = "<group>"; };
 		F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Autosave.swift"; sourceTree = "<group>"; };
@@ -7385,6 +7389,7 @@
 		F198FF7F256D498A001266EB /* WordPressIntentsRelease-Internal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WordPressIntentsRelease-Internal.entitlements"; sourceTree = "<group>"; };
 		F198FFB1256D4AB2001266EB /* WordPressIntentsRelease-Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WordPressIntentsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
 		F1A38F202678C4DA00849843 /* BloggingRemindersFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersFlow.swift; sourceTree = "<group>"; };
+		F1A75B9A2732EF3700784A70 /* UnifiedAboutTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnifiedAboutTracker.swift; sourceTree = "<group>"; };
 		F1ACDF4A256D6B2B0005AE9B /* WordPressIntents-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressIntents-Bridging-Header.h"; sourceTree = "<group>"; };
 		F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicAuthenticationService.swift; sourceTree = "<group>"; };
 		F1B1E7A224098FA100549E2A /* BlogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogTests.swift; sourceTree = "<group>"; };
@@ -9028,6 +9033,7 @@
 				FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */,
 				FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */,
 				17017EF12730508B0023A674 /* UnifiedAboutViewController.swift */,
+				F1A75B9A2732EF3700784A70 /* UnifiedAboutTracker.swift */,
 			);
 			path = About;
 			sourceTree = "<group>";
@@ -13023,6 +13029,7 @@
 			isa = PBXGroup;
 			children = (
 				8B69F0E2255C2BC0006B1CEF /* Activity */,
+				F15219FE2733F02A0041DEC7 /* Me */,
 				32F1A6D123F710A300AB8CA9 /* NUX */,
 				8BD36E042395CC2F00EFFF1C /* Aztec */,
 				325D3B3A23A8372500766DF6 /* Comments */,
@@ -14100,6 +14107,30 @@
 			);
 			name = config;
 			path = ../config;
+			sourceTree = "<group>";
+		};
+		F15219FE2733F02A0041DEC7 /* Me */ = {
+			isa = PBXGroup;
+			children = (
+				F15219FF2733F03E0041DEC7 /* App Settings */,
+			);
+			path = Me;
+			sourceTree = "<group>";
+		};
+		F15219FF2733F03E0041DEC7 /* App Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F1521A002733F0460041DEC7 /* About */,
+			);
+			path = "App Settings";
+			sourceTree = "<group>";
+		};
+		F1521A002733F0460041DEC7 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				F1521A012733F0690041DEC7 /* UnifiedAboutTrackerTests.swift */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 		F15D1FB7265C40C300854EE5 /* Blogging Reminders */ = {
@@ -18082,6 +18113,7 @@
 				E1F47D4D1FE0290C00C1D44E /* PluginListCell.swift in Sources */,
 				3F5C865D25C9EBEF00BABE64 /* HomeWidgetAllTimeData.swift in Sources */,
 				D829C33B21B12EFE00B09F12 /* UIView+Borders.swift in Sources */,
+				F1A75B9B2732EF3700784A70 /* UnifiedAboutTracker.swift in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				17F7C24922770B68002E5C2E /* main.swift in Sources */,
 				9A4E939F2268D9B400E14823 /* UIViewController+NoResults.swift in Sources */,
@@ -18901,6 +18933,7 @@
 				4054F4592214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift in Sources */,
 				C8567496243F3D37001A995E /* TenorResultsPageTests.swift in Sources */,
 				B0A6DEBF2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift in Sources */,
+				F1521A022733F0690041DEC7 /* UnifiedAboutTrackerTests.swift in Sources */,
 				4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
 				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
@@ -19415,6 +19448,7 @@
 				FABB21A92602FC2C00C8785C /* HomeWidgetData.swift in Sources */,
 				FABB21AA2602FC2C00C8785C /* WPStyleGuide+Activity.swift in Sources */,
 				FABB21AB2602FC2C00C8785C /* AllTimeWidgetStats.swift in Sources */,
+				F1A75B9C2732EF3700784A70 /* UnifiedAboutTracker.swift in Sources */,
 				FABB21AC2602FC2C00C8785C /* GutenbergFilesAppMediaSource.swift in Sources */,
 				FABB21AD2602FC2C00C8785C /* NoteBlockTextTableViewCell.swift in Sources */,
 				FABB21AE2602FC2C00C8785C /* NotificationSettingStreamsViewController.swift in Sources */,

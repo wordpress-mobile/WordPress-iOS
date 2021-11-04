@@ -59,6 +59,22 @@ class UnifiedAboutViewController: UIViewController {
         ]
     ]
 
+    // MARK: - Analytics
+
+    private let tracker = UnifiedAboutTracker() { eventName, properties in
+        // Part of this customization should happen in the App, so that we don't need to add analytics
+        // dependencies into unified-about (and it remains tracker agnostic).
+        //
+        // We could decide to let the app create the tracker and pass it to the VC, or maybe
+        // a simpler approach where the app can set a delegate / callback in the VC for tracking.
+        //
+        // I'm leaving these customizations here for now until we decide the concrete solution we want
+        //
+        let event = AnalyticsEvent(name: eventName, properties: properties)
+
+        WPAnalytics.track(event)
+    }
+
     // MARK: - Views
 
     private lazy var tableView: UITableView = {
