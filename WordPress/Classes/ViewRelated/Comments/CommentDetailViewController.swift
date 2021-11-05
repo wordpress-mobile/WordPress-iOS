@@ -911,7 +911,6 @@ private extension CommentDetailViewController {
         ])
 
         suggestionsTableView = suggestionsView
-
     }
 
     var shouldShowSuggestions: Bool {
