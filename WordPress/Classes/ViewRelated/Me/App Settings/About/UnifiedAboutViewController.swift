@@ -108,7 +108,7 @@ class UnifiedAboutViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Occasionally our hidden separator insets can cause the horizontal
         // scrollbar to appear on rotation
         tableView.showsHorizontalScrollIndicator = false
