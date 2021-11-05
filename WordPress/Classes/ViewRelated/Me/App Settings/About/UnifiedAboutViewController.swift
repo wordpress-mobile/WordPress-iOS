@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Defines a single row in the unified about screen.
 ///
@@ -81,6 +82,27 @@ class UnifiedAboutViewController: UIViewController {
         ]
     ]
 
+    let headerView: UIView = {
+        // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
+        // into the main App.
+        let appInfo = UnifiedAboutHeaderView.AppInfo(
+            icon: UIImage(named: AppIcon.currentOrDefault.imageName) ?? UIImage(),
+            name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
+            version: Bundle.main.detailedVersionNumber() ?? "")
+
+        let fonts = UnifiedAboutHeaderView.Fonts(
+            appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
+            appVersion: WPStyleGuide.tableviewTextFont())
+
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: fonts)
+
+        // Setting the frame once is needed so that the table view header will show.
+        // This seems to be a table view bug although I'm not entirely sure.
+        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        return headerView
+    }()
+
     // MARK: - Views
 
     private lazy var tableView: UITableView = {
@@ -90,6 +112,8 @@ class UnifiedAboutViewController: UIViewController {
         // Occasionally our hidden separator insets can cause the horizontal
         // scrollbar to appear on rotation
         tableView.showsHorizontalScrollIndicator = false
+
+        tableView.tableHeaderView = headerView
 
         tableView.dataSource = self
         tableView.delegate = self
