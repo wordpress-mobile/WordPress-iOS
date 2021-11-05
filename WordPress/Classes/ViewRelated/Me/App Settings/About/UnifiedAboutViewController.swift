@@ -6,12 +6,16 @@ struct AboutItem {
     let title: String
     let subtitle: String?
     let cellStyle: AboutItemCellStyle
+    let accessoryType: UITableViewCell.AccessoryType
+    let hidesSeparator: Bool
     let action: (() -> Void)?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, action: (() -> Void)? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, action: (() -> Void)? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
+        self.accessoryType = accessoryType
+        self.hidesSeparator = hidesSeparator
         self.action = action
     }
 
@@ -34,15 +38,6 @@ struct AboutItem {
             return AutomatticAppLogosCell.Metrics.cellHeight
         default:
             return UITableView.automaticDimension
-        }
-    }
-
-    var cellAccessoryType: UITableViewCell.AccessoryType {
-        switch cellStyle {
-        case .appLogos:
-            return .none
-        default:
-            return .disclosureIndicator
         }
     }
 
@@ -70,16 +65,16 @@ struct AboutItem {
 class UnifiedAboutViewController: UIViewController {
     static let sections: [[AboutItem]] = [
         [
-            AboutItem(title: "Rate Us"),
-            AboutItem(title: "Share with Friends"),
-            AboutItem(title: "Twitter", cellStyle: .value1)
+            AboutItem(title: "Rate Us", accessoryType: .none),
+            AboutItem(title: "Share with Friends", accessoryType: .none),
+            AboutItem(title: "Twitter", subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none)
         ],
         [
             AboutItem(title: "Legal and More")
         ],
         [
-            AboutItem(title: "Automattic Family"),
-            AboutItem(title: "", cellStyle: .appLogos)
+            AboutItem(title: "Automattic Family", hidesSeparator: true),
+            AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
         ],
         [
             AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
@@ -91,6 +86,10 @@ class UnifiedAboutViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Occasionally our hidden separator insets can cause the horizontal
+        // scrollbar to appear on rotation
+        tableView.showsHorizontalScrollIndicator = false
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -139,6 +138,7 @@ class UnifiedAboutViewController: UIViewController {
         tableView.reloadData()
     }
 
+
     // MARK: - Constants
 
     enum Metrics {
@@ -170,10 +170,18 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
         cell.textLabel?.text = row.title
         cell.detailTextLabel?.text = row.subtitle
-        cell.accessoryType = row.cellAccessoryType
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.accessoryType = row.accessoryType
         cell.selectionStyle = row.cellSelectionStyle
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let section = Self.sections[indexPath.section]
+        let row = section[indexPath.row]
+
+        cell.separatorInset = row.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
