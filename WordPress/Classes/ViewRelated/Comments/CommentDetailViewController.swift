@@ -12,7 +12,9 @@ class CommentDetailViewController: UIViewController {
     private let containerStackView = UIStackView()
     private let tableView = UITableView(frame: .zero, style: .plain)
 
+    // Reply properties
     private var replyTextView: ReplyTextView?
+    private var suggestionsTableView: SuggestionsTableView?
     private var keyboardManager: KeyboardDismissHelper?
     private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
@@ -25,6 +27,10 @@ class CommentDetailViewController: UIViewController {
 
     private var viewIsVisible: Bool {
         return navigationController?.visibleViewController == self
+    }
+
+    private var siteID: NSNumber? {
+        return comment.blog?.dotComID
     }
 
     private var replyID: Int32 {
@@ -205,6 +211,7 @@ class CommentDetailViewController: UIViewController {
         configureView()
         configureReplyView()
         setupKeyboardManager()
+        configureSuggestionsView()
         configureNavigationBar()
         configureTable()
         configureRows()
@@ -450,7 +457,7 @@ private extension CommentDetailViewController {
     // MARK: Data Sync
 
     func refreshCommentReplyIfNeeded() {
-        guard let siteID = comment.blog?.dotComID?.intValue else {
+        guard let siteID = siteID?.intValue else {
             return
         }
 
@@ -482,30 +489,30 @@ private extension CommentDetailViewController {
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
         guard let parentComment = parentComment,
-              let blog = comment.blog else {
+              let siteID = siteID else {
                   navigateToPost()
                   return
               }
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: blog.dotComID,
+                                                          siteID: siteID,
                                                           commentID: NSNumber(value: parentComment.commentID))
     }
 
     func navigateToReplyComment() {
-        guard let blog = comment.blog,
+        guard let siteID = siteID,
               isCommentReplied else {
             return
         }
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: blog.dotComID,
+                                                          siteID: siteID,
                                                           commentID: NSNumber(value: replyID))
     }
 
     func navigateToPost() {
         guard let blog = comment.blog,
-              let siteID = blog.dotComID,
+              let siteID = siteID,
               blog.supports(.wpComRESTAPI) else {
             let postPermalinkURL = URL(string: comment.post?.permaLink ?? "")
             openWebView(for: postPermalinkURL)
@@ -570,7 +577,7 @@ private extension CommentDetailViewController {
     }
 
     func toggleCommentLike() {
-        guard let siteID = comment.blog?.dotComID else {
+        guard let siteID = siteID else {
             refreshData() // revert the like button state.
             return
         }
@@ -839,6 +846,7 @@ private extension CommentDetailViewController {
         // TODO: update placeholder per design
         replyView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
         replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyView.delegate = self
         replyView.onReply = { [weak self] content in
             self?.createReply(content: content)
         }
@@ -882,6 +890,66 @@ private extension CommentDetailViewController {
 
     @objc func createReply(content: String) {
         // TODO: create reply
+    }
+
+    func configureSuggestionsView() {
+        guard shouldShowSuggestions,
+              let siteID = siteID,
+        let replyTextView = replyTextView else {
+            return
+        }
+
+        let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
+        suggestionsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(suggestionsView)
+
+        NSLayoutConstraint.activate([
+            suggestionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            suggestionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            suggestionsView.topAnchor.constraint(equalTo: view.topAnchor),
+            suggestionsView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
+        ])
+
+        suggestionsTableView = suggestionsView
+
+    }
+
+    var shouldShowSuggestions: Bool {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+                  return false
+              }
+
+        return SuggestionService.shared.shouldShowSuggestions(for: blog)
+    }
+
+}
+
+// MARK: - ReplyTextViewDelegate
+
+extension CommentDetailViewController: ReplyTextViewDelegate {
+
+    func textView(_ textView: UITextView, didTypeWord word: String) {
+        suggestionsTableView?.showSuggestions(forWord: word)
+    }
+
+    func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
+        suggestionsTableView?.hideSuggestions()
+
+        if let siteID = siteID {
+            controller.enableSuggestions(with: siteID)
+        }
+    }
+
+}
+
+// MARK: - SuggestionsTableViewDelegate
+
+extension CommentDetailViewController: SuggestionsTableViewDelegate {
+
+    func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
+        replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
+        suggestionsTableView.showSuggestions(forWord: String())
     }
 
 }
