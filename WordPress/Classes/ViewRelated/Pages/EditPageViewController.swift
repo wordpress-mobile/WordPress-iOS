@@ -7,14 +7,16 @@ class EditPageViewController: UIViewController {
     fileprivate var content: String?
     fileprivate var hasShownEditor = false
     fileprivate var isHomePageEditor = false
+    private var homepageEditorCompletion: HomepageEditorCompletion?
 
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
     }
     
-    convenience init(homepage: Page) {
+    convenience init(homepage: Page, completion: @escaping HomepageEditorCompletion) {
         self.init(page: homepage)
         isHomePageEditor = true
+        homepageEditorCompletion = completion
     }
 
     convenience init(blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
@@ -95,7 +97,10 @@ class EditPageViewController: UIViewController {
             // Dismiss navigation controller
             self?.dismiss(animated: true) {
                 // Dismiss self
-                self?.dismiss(animated: false)
+                self?.dismiss(animated: false) {
+                    // Invoke completion
+                    self?.homepageEditorCompletion?()
+                }
             }
         }
 

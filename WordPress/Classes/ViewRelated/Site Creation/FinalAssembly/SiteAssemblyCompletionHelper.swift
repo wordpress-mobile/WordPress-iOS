@@ -1,8 +1,13 @@
+typealias HomepageEditorCompletion = () -> Void
+
 class SiteAssemblyCompletionHelper {
     static func completeSiteCreation(for blog: Blog) {
         fetchAllPages(for: blog, success: { _ in
             DispatchQueue.main.async {
-                WPTabBarController.sharedInstance()?.showHomePageEditor(forBlog: blog)
+                WPTabBarController.sharedInstance()?.showHomePageEditor(forBlog: blog) {
+                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+                    showQuickStartAlert(for: blog)
+                }
             }
         }, failure: { _ in
             NSLog("Fetching all pages failed after site creation!")

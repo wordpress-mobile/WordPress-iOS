@@ -1,3 +1,4 @@
+import WordPressKit
 extension WPTabBarController {
 
     @objc func showPageEditor(forBlog: Blog? = nil) {
@@ -10,15 +11,15 @@ extension WPTabBarController {
     
     /// Show the home page editor - Used just after site creation
     /// - Parameter blog: Blog (which was just created) for which to show the home page editor
-    func showHomePageEditor(forBlog blog: Blog) {
+    func showHomePageEditor(forBlog blog: Blog, completion: @escaping HomepageEditorCompletion) {
         guard presentedViewController == nil else {
             dismiss(animated: true) { [weak self] in
-                self?.showHomePageEditor(forBlog: blog)
+                self?.showHomePageEditor(forBlog: blog, completion: completion)
             }
             return
         }
         if let homepage = blog.homepage {
-            let editorViewController = EditPageViewController(homepage: homepage)
+            let editorViewController = EditPageViewController(homepage: homepage, completion: completion)
             present(editorViewController, animated: false)
         }
     }
