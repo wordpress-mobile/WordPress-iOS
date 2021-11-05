@@ -5,9 +5,12 @@ import CoreData
     func nextCommentSelected()
 }
 
-class CommentDetailViewController: UITableViewController {
+class CommentDetailViewController: UIViewController {
 
     // MARK: Properties
+
+    private let containerStackView = UIStackView()
+    private let tableView = UITableView(frame: .zero, style: .plain)
 
     @objc weak var delegate: CommentDetailsDelegate?
     private var comment: Comment
@@ -18,6 +21,35 @@ class CommentDetailViewController: UITableViewController {
 
     private var viewIsVisible: Bool {
         return navigationController?.visibleViewController == self
+    }
+
+    private var replyID: Int32 {
+        didSet {
+            // toggle reply indicator cell visibility only when the value changes from 0 to any positive number, or vice versa.
+            if oldValue == 0 && replyID > 0 {
+                // show the reply indicator row.
+                // update the rows first so replyIndicator is present in `rows`.
+                configureRows()
+                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                    tableView.reloadData()
+                    return
+                }
+                tableView.insertRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+
+            } else if oldValue > 0 && replyID == 0 {
+                // hide the reply indicator row.
+                // get the reply indicator row first before it is removed via `configureRows`.
+                guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
+                    return
+                }
+                configureRows()
+                tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
+            }
+        }
+    }
+
+    private var isCommentReplied: Bool {
+        replyID > 0
     }
 
     // MARK: Views
@@ -154,7 +186,8 @@ class CommentDetailViewController: UITableViewController {
         self.comment = comment
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
-        super.init(style: .plain)
+        self.replyID = comment.replyID
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -165,9 +198,11 @@ class CommentDetailViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureView()
         configureNavigationBar()
         configureTable()
         configureRows()
+        refreshCommentReplyIfNeeded()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -185,84 +220,6 @@ class CommentDetailViewController: UITableViewController {
         self.comment = comment
         self.isLastInList = isLastInList
         refreshData()
-    }
-
-    // MARK: Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = rows[indexPath.row]
-        let cell: UITableViewCell = {
-            switch row {
-            case .header:
-                configureHeaderCell()
-                return headerCell
-
-            case .content:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
-                    return .init()
-                }
-
-                configureContentCell(cell, comment: comment)
-                cell.moderationBar.delegate = self
-                moderationBar = cell.moderationBar
-                return cell
-
-            case .replyIndicator:
-                return replyIndicatorCell
-
-            case .text:
-                return configuredTextCell(for: row)
-
-            case .deleteComment:
-                return deleteButtonCell
-            }
-        }()
-
-        // hide cell separator if it's positioned before the delete button cell.
-        cell.separatorInset = shouldHideCellSeparator(for: indexPath) ? insetsForHiddenCellSeparator : tableView.separatorInset
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-
-        switch rows[indexPath.row] {
-        case .header:
-            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
-
-        case .replyIndicator:
-            // TODO: Navigate to the comment reply.
-            break
-
-        case .text(let title, _, _) where title == .webAddressLabelText:
-            visitAuthorURL()
-
-        default:
-            break
-        }
-    }
-
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
-        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
-        if #available(iOS 15, *) {
-            return
-        }
-
-        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
     }
 }
 
@@ -306,6 +263,14 @@ private extension CommentDetailViewController {
         (navigationController?.navigationBar.isTranslucent ?? false) ? -topBarHeight : 0
     }
 
+    func configureView() {
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(containerStackView)
+        containerStackView.axis = .vertical
+        containerStackView.addArrangedSubview(tableView)
+        view.pinSubviewToAllEdges(containerStackView)
+    }
+
     func configureNavigationBar() {
         if #available(iOS 15, *) {
             // In iOS 15, to apply visual blur only when content is scrolled, keep the scrollEdgeAppearance unchanged as it applies to ALL navigation bars.
@@ -335,6 +300,9 @@ private extension CommentDetailViewController {
     }
 
     func configureTable() {
+        tableView.delegate = self
+        tableView.dataSource = self
+
         // get rid of the separator line for the last cell.
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
@@ -351,8 +319,9 @@ private extension CommentDetailViewController {
         // Header and content cells should always be visible, regardless of user roles.
         var rows: [RowType] = [.header, .content]
 
-        // TODO: Detect if the comment has been replied.
-        rows.append(.replyIndicator)
+        if isCommentReplied {
+            rows.append(.replyIndicator)
+        }
 
         // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
         if comment.authorURL() != nil {
@@ -457,6 +426,36 @@ private extension CommentDetailViewController {
         return cell
     }
 
+    // MARK: Data Sync
+
+    func refreshCommentReplyIfNeeded() {
+        guard let siteID = comment.blog?.dotComID?.intValue else {
+            return
+        }
+
+        commentService.getLatestReplyID(for: Int(comment.commentID), siteID: siteID) { [weak self] replyID in
+            guard let self = self else {
+                return
+            }
+
+            // only perform Core Data updates when the replyID differs.
+            guard replyID != self.comment.replyID else {
+                return
+            }
+
+            let context = self.comment.managedObjectContext ?? ContextManager.sharedInstance().mainContext
+            self.comment.replyID = Int32(replyID)
+            ContextManager.sharedInstance().saveContextAndWait(context)
+
+            // update local replyID to trigger table view updates.
+            self.replyID = self.comment.replyID
+
+        } failure: { error in
+            DDLogError("Failed fetching latest comment reply ID: \(String(describing: error))")
+        }
+
+    }
+
     // MARK: Actions and navigations
 
     // Shows the comment thread with the parent comment highlighted.
@@ -470,6 +469,17 @@ private extension CommentDetailViewController {
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: blog.dotComID,
                                                           commentID: NSNumber(value: parentComment.commentID))
+    }
+
+    func navigateToReplyComment() {
+        guard let blog = comment.blog,
+              isCommentReplied else {
+            return
+        }
+
+        try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
+                                                          siteID: blog.dotComID,
+                                                          commentID: NSNumber(value: replyID))
     }
 
     func navigateToPost() {
@@ -713,6 +723,87 @@ private extension CommentDetailViewController {
         static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
         static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
         static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
+    }
+
+}
+
+// MARK: - UITableView Methods
+
+extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return rows.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = rows[indexPath.row]
+        let cell: UITableViewCell = {
+            switch row {
+            case .header:
+                configureHeaderCell()
+                return headerCell
+
+            case .content:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                    return .init()
+                }
+
+                configureContentCell(cell, comment: comment)
+                cell.moderationBar.delegate = self
+                moderationBar = cell.moderationBar
+                return cell
+
+            case .replyIndicator:
+                return replyIndicatorCell
+
+            case .text:
+                return configuredTextCell(for: row)
+
+            case .deleteComment:
+                return deleteButtonCell
+            }
+        }()
+
+        // hide cell separator if it's positioned before the delete button cell.
+        cell.separatorInset = shouldHideCellSeparator(for: indexPath) ? insetsForHiddenCellSeparator : tableView.separatorInset
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        switch rows[indexPath.row] {
+        case .header:
+            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+
+        case .replyIndicator:
+            navigateToReplyComment()
+
+        case .text(let title, _, _) where title == .webAddressLabelText:
+            visitAuthorURL()
+
+        default:
+            break
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
+        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
+        if #available(iOS 15, *) {
+            return
+        }
+
+        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
     }
 
 }
