@@ -2,19 +2,29 @@ typealias HomepageEditorCompletion = () -> Void
 
 class SiteAssemblyCompletionHelper {
     static func completeSiteCreation(for blog: Blog) {
+        // branch here for explat variation
+        if ABTest.landInTheEditorPhase1.variation == .control {
+            showMySitesScreen(for: blog)
+        } else {
+            landInTheEditor(for: blog)
+        }
+    }
+    
+    private static func landInTheEditor(for blog: Blog) {
         fetchAllPages(for: blog, success: { _ in
             DispatchQueue.main.async {
                 WPTabBarController.sharedInstance()?.showHomePageEditor(forBlog: blog) {
-                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
-                    showQuickStartAlert(for: blog)
+                    showMySitesScreen(for: blog)
                 }
             }
         }, failure: { _ in
             NSLog("Fetching all pages failed after site creation!")
         })
-        // TODO: Branch on ExPlat flag, conditionally showing MySites page, or deferring these to completion of EditHomePage
-//        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
-//        showQuickStartAlert(for: blog)
+    }
+    
+    private static func showMySitesScreen(for blog: Blog) {
+        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+        showQuickStartAlert(for: blog)
     }
 
     // This seems to be necessary before casting `AbstractPost` to `Page`.
