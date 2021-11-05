@@ -29,6 +29,33 @@ struct AboutItem {
         }
     }
 
+    var cellHeight: CGFloat {
+        switch cellStyle {
+        case .appLogos:
+            return AutomatticAppLogosCell.Metrics.cellHeight
+        default:
+            return UITableView.automaticDimension
+        }
+    }
+
+    var cellAccessoryType: UITableViewCell.AccessoryType {
+        switch cellStyle {
+        case .appLogos:
+            return .none
+        default:
+            return .disclosureIndicator
+        }
+    }
+
+    var cellSelectionStyle: UITableViewCell.SelectionStyle {
+        switch cellStyle {
+        case .appLogos:
+            return .none
+        default:
+            return .default
+        }
+    }
+
     enum AboutItemCellStyle: String {
         // Displays only a title
         case `default`
@@ -166,9 +193,17 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
         cell.textLabel?.text = row.title
         cell.detailTextLabel?.text = row.subtitle
-        cell.accessoryType = .disclosureIndicator
+        cell.accessoryType = row.cellAccessoryType
+        cell.selectionStyle = row.cellSelectionStyle
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = Self.sections[indexPath.section]
+        let row = section[indexPath.row]
+
+        return row.cellHeight
     }
 }
 
@@ -180,7 +215,4 @@ extension UnifiedAboutViewController: UITableViewDelegate {
         let row = section[indexPath.row]
         row.action?()
     }
-}
-
-class AutomatticAppLogosCell: UITableViewCell {
 }

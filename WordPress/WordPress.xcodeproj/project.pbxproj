@@ -140,6 +140,8 @@
 		08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */; };
 		17017EF22730508B0023A674 /* UnifiedAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17017EF12730508B0023A674 /* UnifiedAboutViewController.swift */; };
 		17017EF32730508B0023A674 /* UnifiedAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17017EF12730508B0023A674 /* UnifiedAboutViewController.swift */; };
+		17017EF52731983B0023A674 /* AutomatticAppLogosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17017EF42731983B0023A674 /* AutomatticAppLogosCell.swift */; };
+		17017EF62731983B0023A674 /* AutomatticAppLogosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17017EF42731983B0023A674 /* AutomatticAppLogosCell.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
@@ -4738,6 +4740,7 @@
 		150B6590614A28DF9AD25491 /* Pods-Apps-Jetpack.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		152F25D5C232985E30F56CAC /* Pods-Apps-Jetpack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.debug.xcconfig"; sourceTree = "<group>"; };
 		17017EF12730508B0023A674 /* UnifiedAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedAboutViewController.swift; sourceTree = "<group>"; };
+		17017EF42731983B0023A674 /* AutomatticAppLogosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomatticAppLogosCell.swift; sourceTree = "<group>"; };
 		1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		1702BBDF1CF3034E00766A33 /* DomainsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsService.swift; sourceTree = "<group>"; };
 		1703D04B20ECD93800D292E9 /* Routes+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Post.swift"; sourceTree = "<group>"; };
@@ -9031,6 +9034,7 @@
 				FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */,
 				FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */,
 				17017EF12730508B0023A674 /* UnifiedAboutViewController.swift */,
+				17017EF42731983B0023A674 /* AutomatticAppLogosCell.swift */,
 				F15EEF802731FF9000B73E38 /* UnifiedAboutHeaderView.swift */,
 			);
 			path = About;
@@ -17976,6 +17980,7 @@
 				3F6A7E92251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift in Sources */,
 				FF8A04E01D9BFE7400523BC4 /* CachedAnimatedImageView.swift in Sources */,
 				B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */,
+				17017EF52731983B0023A674 /* AutomatticAppLogosCell.swift in Sources */,
 				F16C35DC23F3F78E00C81331 /* AutoUploadMessageProvider.swift in Sources */,
 				08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */,
 				984F86FB21DEDB070070E0E3 /* TopTotalsCell.swift in Sources */,
@@ -19185,6 +19190,7 @@
 				FABB20D32602FC2C00C8785C /* Notification+Interface.swift in Sources */,
 				FABB20D42602FC2C00C8785C /* ReaderSaveForLater+Analytics.swift in Sources */,
 				FABB20D52602FC2C00C8785C /* TagsCategoriesStatsRecordValue+CoreDataProperties.swift in Sources */,
+				17017EF62731983B0023A674 /* AutomatticAppLogosCell.swift in Sources */,
 				FABB20D62602FC2C00C8785C /* RevisionOperation.swift in Sources */,
 				FABB20D72602FC2C00C8785C /* ZendeskUtils.swift in Sources */,
 				FABB20D82602FC2C00C8785C /* AbstractPost+Dates.swift in Sources */,
