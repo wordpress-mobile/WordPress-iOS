@@ -9,7 +9,7 @@ class SiteAssemblyCompletionHelper {
             landInTheEditor(for: blog)
         }
     }
-    
+
     private static func landInTheEditor(for blog: Blog) {
         fetchAllPages(for: blog, success: { _ in
             DispatchQueue.main.async {
@@ -21,7 +21,7 @@ class SiteAssemblyCompletionHelper {
             NSLog("Fetching all pages failed after site creation!")
         })
     }
-    
+
     private static func showMySitesScreen(for blog: Blog) {
         WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
         showQuickStartAlert(for: blog)

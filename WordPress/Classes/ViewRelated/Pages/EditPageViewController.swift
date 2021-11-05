@@ -70,7 +70,6 @@ class EditPageViewController: UIViewController {
         }
     }
 
-    // TODO: Add EditHomepageCompletion callback
     fileprivate func showHomepageEditor() {
         let editorFactory = EditorFactory()
         let gutenbergVC = editorFactory.createHomepageGutenbergVC(with: self.pageToEdit(), loadAutosaveRevision: false, replaceEditor: { [weak self] (editor, replacement) in

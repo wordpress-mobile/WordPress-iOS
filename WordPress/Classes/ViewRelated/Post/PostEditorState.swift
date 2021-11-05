@@ -224,7 +224,7 @@ public class PostEditorStateContext {
                   userCanPublish: userCanPublish,
                   publishDate: post.dateCreated,
                   delegate: delegate)
-        
+
         if let action = action {
             self.action = action
         }

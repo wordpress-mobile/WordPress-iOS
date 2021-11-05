@@ -2,7 +2,7 @@ import Foundation
 
 protocol HomepageEditorNavigationBarManagerDelegate: PostEditorNavigationBarManagerDelegate {
     var continueButtonText: String { get }
-    
+
     func navigationBarManager(_ manager: HomepageEditorNavigationBarManager, continueWasPressed sender: UIButton)
 }
 
