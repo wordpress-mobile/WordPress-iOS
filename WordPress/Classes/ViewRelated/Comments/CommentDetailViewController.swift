@@ -889,7 +889,26 @@ private extension CommentDetailViewController {
     }
 
     @objc func createReply(content: String) {
-        // TODO: create reply
+        CommentAnalytics.trackCommentRepliedTo(comment: comment)
+
+        guard let reply = commentService.createReply(for: comment) else {
+            DDLogError("Failed creating comment reply.")
+            return
+        }
+
+        reply.content = content
+
+        commentService.uploadComment(reply, success: { [weak self] in
+            self?.displayReplyNotice(success: true)
+            self?.refreshCommentReplyIfNeeded()
+        }, failure: { [weak self] error in
+            self?.displayReplyNotice(success: false)
+        })
+    }
+
+    func displayReplyNotice(success: Bool) {
+        let message = success ? ReplyMessages.successMessage : ReplyMessages.failureMessage
+        displayNotice(title: message)
     }
 
     func configureSuggestionsView() {
@@ -920,6 +939,11 @@ private extension CommentDetailViewController {
               }
 
         return SuggestionService.shared.shouldShowSuggestions(for: blog)
+    }
+
+    struct ReplyMessages {
+        static let successMessage = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+        static let failureMessage = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
     }
 
 }
