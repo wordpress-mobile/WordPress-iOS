@@ -99,7 +99,7 @@ extension Blog {
             setValue(number as Any, forOption: OptionsKeys.homepageID)
         }
     }
-    
+
     /// Getter which returns the current homepage (or nil)
     /// Note: It seems to be necessary to first sync pages (otherwise the `findPost` result fails to cast to `Page`)
     var homepage: Page? {

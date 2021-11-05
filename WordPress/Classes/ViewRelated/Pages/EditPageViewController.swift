@@ -12,7 +12,7 @@ class EditPageViewController: UIViewController {
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
     }
-    
+
     convenience init(homepage: Page, completion: @escaping HomepageEditorCompletion) {
         self.init(page: homepage)
         isHomePageEditor = true
@@ -76,7 +76,7 @@ class EditPageViewController: UIViewController {
         let gutenbergVC = editorFactory.createHomepageGutenbergVC(with: self.pageToEdit(), loadAutosaveRevision: false, replaceEditor: { [weak self] (editor, replacement) in
             self?.replaceEditor(editor: editor, replacement: replacement)
         })
-                
+
         show(gutenbergVC)
     }
 

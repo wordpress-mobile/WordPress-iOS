@@ -8,7 +8,7 @@ protocol HomepageEditorNavigationBarManagerDelegate: PostEditorNavigationBarMana
 
 class HomepageEditorNavigationBarManager: PostEditorNavigationBarManager {
     weak var homepageEditorNavigationBarManagerDelegate: HomepageEditorNavigationBarManagerDelegate?
-    
+
     override weak var delegate: PostEditorNavigationBarManagerDelegate? {
         get {
             return homepageEditorNavigationBarManagerDelegate
@@ -26,7 +26,7 @@ class HomepageEditorNavigationBarManager: PostEditorNavigationBarManager {
             }
         }
     }
-    
+
     /// Continue Button
     private(set) lazy var continueButton: UIButton = {
         let button = UIButton(type: .system)
@@ -37,22 +37,21 @@ class HomepageEditorNavigationBarManager: PostEditorNavigationBarManager {
         button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
-    
+
     /// Continue Button
     private(set) lazy var continueBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(customView: self.continueButton)
         return button
     }()
-    
-    
+
     @objc private func continueButtonTapped(sender: UIButton) {
         homepageEditorNavigationBarManagerDelegate?.navigationBarManager(self, continueWasPressed: sender)
     }
-    
+
     override var leftBarButtonItems: [UIBarButtonItem] {
         return []
     }
-    
+
     override var rightBarButtonItems: [UIBarButtonItem] {
         return [moreBarButtonItem, continueBarButtonItem, separatorButtonItem]
     }

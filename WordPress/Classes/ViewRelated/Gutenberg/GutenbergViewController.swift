@@ -7,7 +7,7 @@ import Kanvas
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
 
-    
+
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
@@ -891,7 +891,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         }
     }
-    
+
     // Not ideal, but seems the least bad of the alternatives
     @objc func continueFromHomepageEditing() {
         fatalError("This method must be overriden by the extending class")
