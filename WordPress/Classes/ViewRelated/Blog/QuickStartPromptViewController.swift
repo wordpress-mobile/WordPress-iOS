@@ -133,7 +133,7 @@ extension QuickStartPromptViewController {
     }
 
     private enum Constants {
-        static let quickStartDelay: DispatchTimeInterval = DispatchTimeInterval.milliseconds(1000)
+        static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
     }
 }
 
