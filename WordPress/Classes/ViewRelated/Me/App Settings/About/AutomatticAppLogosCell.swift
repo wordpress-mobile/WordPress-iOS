@@ -48,6 +48,9 @@ class AutomatticAppLogosCell: UITableViewCell {
     enum Metrics {
         static let sceneFrame = CGRect(x: 0, y: 0, width: 350.0, height: 150.0)
         static let maxWidth: CGFloat = 388.0 // Standard cell width on Max phone
+        static var cellHeight: CGFloat {
+            sceneFrame.height
+        }
     }
 }
 

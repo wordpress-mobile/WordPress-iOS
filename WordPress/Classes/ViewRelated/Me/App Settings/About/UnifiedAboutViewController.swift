@@ -31,7 +31,7 @@ struct AboutItem {
     var cellHeight: CGFloat {
         switch cellStyle {
         case .appLogos:
-            return 150.0
+            return AutomatticAppLogosCell.Metrics.cellHeight
         default:
             return UITableView.automaticDimension
         }
