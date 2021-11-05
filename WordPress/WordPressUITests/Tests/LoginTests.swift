@@ -24,7 +24,7 @@ class LoginTests: XCTestCase {
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-            .tabBar.gotoMeScreen()
+            .tabBar.goToMeScreen()
             .logoutToPrologue()
 
         XCTAssert(prologueScreen.isLoaded)
@@ -41,17 +41,17 @@ class LoginTests: XCTestCase {
             .openMagicLoginLink()
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-            .tabBar.gotoMeScreen()
+            .tabBar.goToMeScreen()
             .logout()
 
-        XCTAssert(welcomeScreen.isLoaded())
+        XCTAssert(welcomeScreen.isLoaded)
     }
 
     // Unified self hosted login/out
     func testSelfHostedLoginLogout() throws {
         let prologueScreen = try PrologueScreen()
 
-        prologueScreen
+        try prologueScreen
             .selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
@@ -97,6 +97,6 @@ class LoginTests: XCTestCase {
             // So, we remove the self-hosted site before tearDown() starts.
             .removeSelfHostedSite()
 
-        XCTAssert(MySiteScreen().isLoaded())
+        XCTAssert(MySiteScreen.isLoaded())
     }
 }
