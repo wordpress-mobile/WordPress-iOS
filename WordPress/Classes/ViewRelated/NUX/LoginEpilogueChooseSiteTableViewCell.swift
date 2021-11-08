@@ -43,12 +43,12 @@ private extension LoginEpilogueChooseSiteTableViewCell {
         stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubviews([titleLabel, subtitleLabel])
-        addSubview(stackView)
+        contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.stackViewHorizontalMargin),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.stackViewHorizontalMargin),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewTopMargin),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.stackViewBottomMargin)
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.stackViewHorizontalMargin),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.stackViewHorizontalMargin),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.stackViewTopMargin),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.stackViewBottomMargin)
         ])
     }
 
