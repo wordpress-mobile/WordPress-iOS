@@ -12,6 +12,10 @@ class CommentDetailViewController: UIViewController {
     private let containerStackView = UIStackView()
     private let tableView = UITableView(frame: .zero, style: .plain)
 
+    private var replyTextView: ReplyTextView?
+    private var keyboardManager: KeyboardDismissHelper?
+    private var dismissKeyboardTapGesture = UITapGestureRecognizer()
+
     @objc weak var delegate: CommentDetailsDelegate?
     private var comment: Comment
     private var isLastInList: Bool
@@ -199,10 +203,22 @@ class CommentDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        configureReplyView()
+        setupKeyboardManager()
         configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        keyboardManager?.startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -396,6 +412,10 @@ private extension CommentDetailViewController {
         cell.likeButtonAction = {
             self.toggleCommentLike()
         }
+
+        cell.replyButtonAction = {
+            self.showReplyView()
+        }
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
@@ -405,6 +425,7 @@ private extension CommentDetailViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
 
+        cell.selectionStyle = .none
         cell.tintColor = Style.tintColor
 
         cell.textLabel?.font = Style.secondaryTextFont
@@ -804,6 +825,63 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
 
         isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
+    }
+
+}
+
+// MARK: - Reply Handling
+
+private extension CommentDetailViewController {
+
+    func configureReplyView() {
+        let replyView = ReplyTextView(width: view.frame.width)
+
+        // TODO: update placeholder per design
+        replyView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
+        replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyView.onReply = { [weak self] content in
+            self?.createReply(content: content)
+        }
+
+        replyView.isHidden = true
+        containerStackView.addArrangedSubview(replyView)
+        replyTextView = replyView
+    }
+
+    func showReplyView() {
+        guard replyTextView?.isFirstResponder == false else {
+            return
+        }
+
+        replyTextView?.isHidden = false
+        replyTextView?.becomeFirstResponder()
+        addDismissKeyboardTapGesture()
+    }
+
+    func setupKeyboardManager() {
+        guard let replyTextView = replyTextView,
+              let bottomLayoutConstraint = view.constraints.first(where: { $0.firstAttribute == .bottom }) else {
+                  return
+              }
+
+        keyboardManager = KeyboardDismissHelper(parentView: view,
+                                                scrollView: tableView,
+                                                dismissableControl: replyTextView,
+                                                bottomLayoutConstraint: bottomLayoutConstraint)
+    }
+
+    func addDismissKeyboardTapGesture() {
+        dismissKeyboardTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tableView.addGestureRecognizer(dismissKeyboardTapGesture)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        tableView.removeGestureRecognizer(dismissKeyboardTapGesture)
+    }
+
+    @objc func createReply(content: String) {
+        // TODO: create reply
     }
 
 }
