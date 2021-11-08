@@ -53,7 +53,7 @@ private extension LoginEpilogueChooseSiteTableViewCell {
     }
 
     private enum Constants {
-        static let stackViewSpacing: CGFloat = 8.0
+        static let stackViewSpacing: CGFloat = 4.0
         static let stackViewHorizontalMargin: CGFloat = 20.0
         static let stackViewTopMargin: CGFloat = 16.0
         static let stackViewBottomMargin: CGFloat = 26.0
