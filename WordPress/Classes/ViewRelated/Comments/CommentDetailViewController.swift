@@ -948,7 +948,7 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
 
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
-        suggestionsTableView.showSuggestions(forWord: String())
+        suggestionsTableView.hideSuggestions()
     }
 
 }
