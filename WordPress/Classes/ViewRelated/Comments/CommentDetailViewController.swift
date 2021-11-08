@@ -895,9 +895,9 @@ private extension CommentDetailViewController {
     func configureSuggestionsView() {
         guard shouldShowSuggestions,
               let siteID = siteID,
-        let replyTextView = replyTextView else {
-            return
-        }
+              let replyTextView = replyTextView else {
+                  return
+              }
 
         let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
