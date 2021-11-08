@@ -150,6 +150,17 @@ public class BlockEditorScreen: ScreenObject {
         } else {
             let publishNowButton = app.buttons["Publish Now"]
             publishNowButton.tap()
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+    }
+
+    public func dismissBloggingRemindersAlertIfNeeded() {
+        let bloggingRemindersAlertIsLoaded = app.buttons["Set reminders"].waitForExistence(timeout: 3)
+
+        if bloggingRemindersAlertIsLoaded {
+            let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
+
+            dismissBloggingRemindersAlertButton.tap()
         }
     }
 
