@@ -143,6 +143,17 @@ public class BlockEditorScreen: BaseScreen {
             try FancyAlertComponent().acceptAlert()
         } else {
             publishNowButton.tap()
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+    }
+
+    public func dismissBloggingRemindersAlertIfNeeded() {
+        let bloggingRemindersAlertIsLoaded = app.buttons["Set reminders"].waitForExistence(timeout: 3)
+
+        if bloggingRemindersAlertIsLoaded {
+            let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
+
+            dismissBloggingRemindersAlertButton.tap()
         }
     }
 

@@ -24,7 +24,6 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testTextPostPublish() throws {
-        try skipTillBloggingRemindersAreHandled()
 
         let title = getRandomPhrase()
         let content = getRandomContent()
@@ -39,7 +38,6 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testBasicPostPublish() throws {
-        try skipTillBloggingRemindersAreHandled()
 
         let title = getRandomPhrase()
         let content = getRandomContent()
@@ -64,9 +62,5 @@ class EditorGutenbergTests: XCTestCase {
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
-    }
-
-    func skipTillBloggingRemindersAreHandled(file: StaticString = #file, line: UInt = #line) throws {
-        try XCTSkipIf(true, "Skipping test because we haven't added support for Blogging Reminders. See https://github.com/wordpress-mobile/WordPress-iOS/issues/16797.", file: file, line: line)
     }
 }
