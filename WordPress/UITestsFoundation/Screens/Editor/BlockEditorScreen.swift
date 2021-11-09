@@ -151,9 +151,13 @@ public class BlockEditorScreen: BaseScreen {
         let bloggingRemindersAlertIsLoaded = app.buttons["Set reminders"].waitForExistence(timeout: 3)
 
         if bloggingRemindersAlertIsLoaded {
-            let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
+            if XCUIDevice.isPad {
+                app.swipeDown(velocity: .fast)
+            } else {
+                let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
 
-            dismissBloggingRemindersAlertButton.tap()
+                dismissBloggingRemindersAlertButton.tap()
+            }
         }
     }
 
