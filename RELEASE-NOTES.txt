@@ -1,6 +1,19 @@
-18.6
+18.7
 -----
 
+
+18.6
+-----
+* [**] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
+* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
+* [*] Reader post comments: fixed an issue that prevented all comments from displaying. [#17373]
+* [**] Stats: added Reader Discover nudge for sites with low traffic in order to increase it. [#17349, #17352, #17354, #17377]
+* [**] Block editor: Search block - Text and background color support [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4127]
+* [*] Block editor: Fix Embed Block loading glitch with resolver resolution approach [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4146]
+* [*] Block editor: Fixed an issue where the Help screens may not respect an iOS device's notch. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4110]
+* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
+* [*] Block editor: Add support for the Mark HTML tag [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4162]
+* [*] Stats Insights: HTML tags no longer display in post titles. [#17380]
 
 18.5
 -----

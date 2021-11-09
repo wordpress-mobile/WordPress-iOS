@@ -141,7 +141,7 @@ class DomainsServiceTests: XCTestCase {
         fetchDomains()
 
         let domains = findAllDomains()
-        XCTAssert(domains.count == 4, "Expecting 4 domains initially")
+        XCTAssert(domains.count == 5, "Expecting 5 domains initially")
 
         stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()
@@ -153,5 +153,36 @@ class DomainsServiceTests: XCTestCase {
         let domainNames = updatedDomains.map { $0.domainName }
         XCTAssert(domainNames.contains("example.com"), "Expecting domain 'example.com' to be present")
         XCTAssert(domainNames.contains("example2.com"), "Expecting domain 'example2.com' to be present")
+    }
+
+    func testDomainServiceParsesExpiryAndRenewalProperties() {
+        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
+        fetchDomains()
+
+        let updatedDomains = findAllDomains()
+
+        let domain = updatedDomains[4]
+
+        XCTAssertEqual(domain.autoRenewalDate, "October 30, 2016")
+        XCTAssertEqual(domain.autoRenewing, true)
+        XCTAssertEqual(domain.expiryDate, "October 21st, 2021")
+        XCTAssertEqual(domain.expired, true)
+        XCTAssertEqual(domain.expirySoon, true)
+    }
+
+    func testDomainServiceUpdatesDomainIfExpiryPropertiesChange() {
+        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
+        fetchDomains()
+
+        let domains = findAllDomains()
+        XCTAssert(domains.count == 5, "Expecting 5 domains initially")
+        XCTAssertEqual(domains[4].expiryDate, "October 21st, 2021")
+
+        stubDomainsResponseWithFile("domain-service-updated-domains.json")
+        fetchDomains()
+
+        let updatedDomains = findAllDomains()
+        XCTAssert(updatedDomains.count == 3, "Expecting 3 domains to be parsed")
+        XCTAssertEqual(updatedDomains[2].expiryDate, "October 21st, 2022")
     }
 }

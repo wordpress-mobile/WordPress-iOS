@@ -10,10 +10,10 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 
     private var constraintsInitialized = false
 
-    private var site: JetpackSiteRef!
+    private var site: Blog!
     private var domainPurchasedCallback: ((String) -> Void)!
 
-    private var domain: DomainSuggestion?
+    private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: DomainSuggestionsTableViewController?
     private var domainType: DomainType = .registered
@@ -43,7 +43,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return buttonViewController
     }()
 
-    static func instance(site: JetpackSiteRef,
+    static func instance(site: Blog,
                          domainType: DomainType = .registered,
                          includeSupportButton: Bool = true,
                          domainPurchasedCallback: @escaping ((String) -> Void)) -> RegisterDomainSuggestionsViewController {
@@ -58,12 +58,12 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         return controller
     }
 
-    private static func siteNameForSuggestions(for site: JetpackSiteRef) -> String? {
-        if let siteTitle = BlogService.blog(with: site)?.settings?.name?.nonEmptyString() {
+    private static func siteNameForSuggestions(for site: Blog) -> String? {
+        if let siteTitle = site.settings?.name?.nonEmptyString() {
             return siteTitle
         }
 
-        if let siteUrl = BlogService.blog(with: site)?.url {
+        if let siteUrl = site.url {
             let components = URLComponents(string: siteUrl)
             if let firstComponent = components?.host?.split(separator: ".").first {
                 return String(firstComponent)
@@ -159,15 +159,12 @@ class RegisterDomainSuggestionsViewController: UIViewController {
         if let vc = segue.destination as? DomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
-            vc.blog = BlogService.blog(with: site)
+            vc.blog = site
+            vc.domainType = domainType
+            vc.freeSiteAddress = site.freeSiteAddress
 
-            if let blog = BlogService.blog(with: site) {
-                vc.domainType = domainType
-                vc.freeSiteAddress = blog.freeSiteAddress
-
-                if blog.hasBloggerPlan == true {
-                    vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
-                }
+            if site.hasBloggerPlan {
+                vc.domainSuggestionType = .allowlistedTopLevelDomains(["blog"])
             }
 
             domainsTableViewController = vc
@@ -190,7 +187,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
 // MARK: - DomainSuggestionsTableViewControllerDelegate
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: DomainSuggestion) {
+    func domainSelected(_ domain: FullyQuotedDomainSuggestion) {
         WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
         showButton(animated: true)
@@ -209,6 +206,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         guard let domain = domain else {
             return
         }
+
+        WPAnalytics.track(.domainsSearchSelectDomainTapped, properties: WPAnalytics.domainsProperties(for: site), blog: site)
 
         switch domainType {
         case .registered:
@@ -230,16 +229,26 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func pushRegisterDomainDetailsViewController(_ domain: DomainSuggestion) {
+    private func pushRegisterDomainDetailsViewController(_ domain: FullyQuotedDomainSuggestion) {
+        guard let siteID = site.dotComID?.intValue else {
+            DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
         let controller = RegisterDomainDetailsViewController()
-        controller.viewModel = RegisterDomainDetailsViewModel(site: site, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
+        controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func createCartAndPresentWebView(_ domain: DomainSuggestion) {
+    private func createCartAndPresentWebView(_ domain: FullyQuotedDomainSuggestion) {
+        guard let siteID = site.dotComID?.intValue else {
+            DDLogError("Cannot register domains for sites without a dotComID")
+            return
+        }
+
         let proxy = RegisterDomainDetailsServiceProxy()
-        proxy.createPersistentDomainShoppingCart(siteID: site.siteID,
-                                                 domainSuggestion: domain,
+        proxy.createPersistentDomainShoppingCart(siteID: siteID,
+                                                 domainSuggestion: domain.remoteSuggestion(),
                                                  privacyProtectionEnabled: domain.supportsPrivacy ?? false,
                                                  success: { [weak self] _ in
             self?.presentWebViewForCurrentSite(domainSuggestion: domain)
@@ -292,12 +301,13 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         }
     }
 
-    private func presentWebViewForCurrentSite(domainSuggestion: DomainSuggestion) {
-        guard let siteUrl = URL(string: "\(site.homeURL)"), let host = siteUrl.host,
-              let url = URL(string: Constants.checkoutWebAddress + host) else {
+    private func presentWebViewForCurrentSite(domainSuggestion: FullyQuotedDomainSuggestion) {
+        guard let homeURL = site.homeURL,
+              let siteUrl = URL(string: homeURL as String), let host = siteUrl.host,
+              let url = URL(string: Constants.checkoutWebAddress + host),
+              let siteID = site.dotComID?.intValue else {
             return
         }
-        let siteID = site.siteID
 
         let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
         let navController = LightNavigationController(rootViewController: webViewController)
@@ -323,7 +333,9 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             }
         }
 
-        if let storeSandobxCookie = (HTTPCookieStorage.shared.cookies?.first {
+        WPAnalytics.track(.domainsPurchaseWebviewViewed, properties: WPAnalytics.domainsProperties(for: site), blog: site)
+
+        if let storeSandboxCookie = (HTTPCookieStorage.shared.cookies?.first {
 
             $0.properties?[.name] as? String == Constants.storeSandboxCookieName &&
             $0.properties?[.domain] as? String == Constants.storeSandboxCookieDomain
@@ -334,7 +346,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             cookieStore.getAllCookies { [weak self] cookies in
 
                     var newCookies = cookies
-                    newCookies.append(storeSandobxCookie)
+                    newCookies.append(storeSandboxCookie)
 
                     cookieStore.setCookies(newCookies) {
                         self?.present(navController, animated: true)

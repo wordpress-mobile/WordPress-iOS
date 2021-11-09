@@ -1,7 +1,8 @@
-This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.
-
-Speaking of blocks, you can now customize the text and background color in the Pullquote and Preformatted blocks.
-
-Need help reaching more readers? The new Publicize and Blogging Reminder nudges will help you stick to a consistent publishing schedule.
-
-Finally, we improved support for larger text sizes when choosing a homepage or page layout, fixed the site comments list not refreshing on certain occasions, and polished the pre-publishing bottom sheet header.
+- We've made it easier to see when there are new blocks available for use on your site
+- You can now highlight text using the <mark> HTML tag, as well as change the text and background color of the Search block button. Shiny!
+- We've hidden HTML tags in post titles when you're checking out your stats.
+- We've improved Reader Discovery – showing you new things to read, while lending a helping hand to sites with low traffic. Win-win.
+- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
+- Speaking of comments, we heard that some might be missing when viewing comments from the Reader. Don't worry – we found and fixed the problem.
+- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
+- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
