@@ -489,10 +489,13 @@ private extension CommentDetailViewController {
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
         guard let parentComment = parentComment,
-              let siteID = siteID else {
-                  navigateToPost()
-                  return
-              }
+              let siteID = siteID,
+              let blog = comment.blog,
+              blog.supports(.wpComRESTAPI) else {
+            let parentCommentURL = URL(string: parentComment?.link ?? "")
+            openWebView(for: parentCommentURL)
+            return
+        }
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
