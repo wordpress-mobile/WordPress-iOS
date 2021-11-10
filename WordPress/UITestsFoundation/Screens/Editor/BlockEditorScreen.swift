@@ -148,16 +148,14 @@ public class BlockEditorScreen: BaseScreen {
     }
 
     public func dismissBloggingRemindersAlertIfNeeded() {
-        let bloggingRemindersAlertIsLoaded = app.buttons["Set reminders"].waitForExistence(timeout: 3)
+        guard app.buttons["Set reminders"].waitForExistence(timeout: 3) else { return }
 
-        if bloggingRemindersAlertIsLoaded {
-            if XCUIDevice.isPad {
-                app.swipeDown(velocity: .fast)
-            } else {
-                let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
-
-                dismissBloggingRemindersAlertButton.tap()
-            }
+        if XCUIDevice.isPad {
+            app.swipeDown(velocity: .fast)
+        } else {
+            let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
+            dismissBloggingRemindersAlertButton.tap()
+        }
         }
     }
 
