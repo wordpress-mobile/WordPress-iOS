@@ -348,6 +348,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             navigationController.pushViewController(quickstartPrompt, animated: true)
         }
 
+        epilogueViewController.onCreateNewSite = {
+
+            let wizardLauncher = SiteCreationWizardLauncher()
+            guard let wizard = wizardLauncher.ui else {
+                return
+            }
+
+            navigationController.present(wizard, animated: true)
+        }
+
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
