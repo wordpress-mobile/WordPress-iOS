@@ -163,7 +163,6 @@ public class BlockEditorScreen: ScreenObject {
             let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
             dismissBloggingRemindersAlertButton.tap()
         }
-        }
     }
 
     static func isLoaded() -> Bool {
