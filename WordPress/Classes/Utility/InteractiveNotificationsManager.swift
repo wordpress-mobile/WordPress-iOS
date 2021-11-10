@@ -478,7 +478,7 @@ extension InteractiveNotificationsManager {
 
         var requiresAuthentication: Bool {
             switch self {
-            case .approveLogin:
+            case .approveLogin, .denyLogin:
                 return true
             default:
                 return false
