@@ -32,6 +32,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
+    /// Closure to be executed upon dismissing the quick start prompt
+    private let onDismissQuickStart: ((Blog) -> Void)?
+
     // MARK: SiteAssemblyWizardContent
 
     /// The designated initializer.
@@ -39,9 +42,10 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// - Parameters:
     ///   - creator: the in-flight creation instance
     ///   - service: the service to use for initiating site creation
-    init(creator: SiteCreator, service: SiteAssemblyService) {
+    init(creator: SiteCreator, service: SiteAssemblyService, onDismissQuickStart: ((Blog) -> Void)? = nil) {
         self.siteCreator = creator
         self.service = service
+        self.onDismissQuickStart = onDismissQuickStart
         self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
@@ -215,10 +219,19 @@ extension SiteAssemblyWizardContent: NetworkStatusDelegate {
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        dismissTapped(viaDone: true) { [createdBlog, weak self] in
-            guard let blog = createdBlog else {
-                return
-            }
+
+        guard let blog = createdBlog else {
+            return
+        }
+
+        if let onDismissQuickStart = onDismissQuickStart {
+            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+            quickstartPrompt.onDismiss = onDismissQuickStart
+            navigationController?.pushViewController(quickstartPrompt, animated: true)
+            return
+        }
+
+        dismissTapped(viaDone: true) { [blog, weak self] in
             SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
             WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
