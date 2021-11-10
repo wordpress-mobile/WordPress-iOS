@@ -714,9 +714,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshReplyTextViewPlaceholder
 {
     if (self.tableView.indexPathForSelectedRow) {
-        self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
+        Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
+        NSString *placeholderFormat = NSLocalizedString(@"Reply to %1$@", @"Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.");
+        self.replyTextView.placeholder = [NSString stringWithFormat:placeholderFormat, [comment authorForDisplay]];
     } else {
-        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
+        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post", @"Placeholder text for replying to a post");
     }
 }
 
