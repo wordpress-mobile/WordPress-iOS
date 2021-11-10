@@ -1,6 +1,6 @@
 18.7
 -----
-
+* [***] Two-step Authentication notifications now require an unlocked device to approve or deny them.
 
 18.6
 -----
