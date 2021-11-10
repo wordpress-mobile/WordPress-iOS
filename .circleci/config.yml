@@ -15,15 +15,15 @@ parameters:
     default: false
 
 xcode_version: &xcode_version
-  xcode-version: "12.5.0"
+  xcode-version: "13.0.0"
 
 iphone_test_device: &iphone_test_device
-  device: iPhone 11
-  ios-version: "14.4"
+  device: iPhone 12
+  ios-version: "15.0"
 
 ipad_test_device: &ipad_test_device
   device: iPad Air (4th generation)
-  ios-version: "14.4"
+  ios-version: "15.0"
 
 commands:
   fix-image:
@@ -39,7 +39,7 @@ commands:
               echo $PATH
             fi
 
-            chruby ruby-2.6.6
+            chruby ruby-$(cat .ruby-version)
             gem install bundler
 
             # Prevent fastlane from checking for updates, also removing the verbose fastlane changelog at the end of each invocation.
