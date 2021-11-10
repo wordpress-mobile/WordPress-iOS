@@ -49,6 +49,10 @@ class LoginEpilogueViewController: UIViewController {
     ///
     var onBlogSelected: ((Blog) -> Void)?
 
+    /// Closure to be executed upon a new site creation.
+    ///
+    var onCreateNewSite: (() -> Void)?
+
     /// Site that was just connected to our awesome app.
     ///
     var credentials: AuthenticatorCredentials? {
@@ -216,6 +220,6 @@ private extension LoginEpilogueViewController {
     // MARK: - Actions
 
     @IBAction func createANewSite() {
-        // TODO: implement
+        onCreateNewSite?()
     }
 }

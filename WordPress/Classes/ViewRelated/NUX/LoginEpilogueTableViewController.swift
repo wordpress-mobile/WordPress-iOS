@@ -199,7 +199,10 @@ extension LoginEpilogueTableViewController {
 // MARK: - LoginEpilogueCreateNewSiteCellDelegate
 extension LoginEpilogueTableViewController: LoginEpilogueCreateNewSiteCellDelegate {
     func didTapCreateNewSite() {
-        // TODO: implement
+        guard let parent = parent as? LoginEpilogueViewController else {
+            return
+        }
+        parent.onCreateNewSite?()
     }
 }
 
