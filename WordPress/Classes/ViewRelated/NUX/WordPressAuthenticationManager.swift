@@ -350,7 +350,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.onCreateNewSite = {
 
-            let wizardLauncher = SiteCreationWizardLauncher()
+            let wizardLauncher = SiteCreationWizardLauncher(onDismissQuickStart: dismissAndShowBlog)
             guard let wizard = wizardLauncher.ui else {
                 return
             }

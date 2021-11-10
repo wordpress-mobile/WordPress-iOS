@@ -25,9 +25,9 @@ final class SiteAssemblyStep: WizardStep {
     /// - Parameters:
     ///   - creator: the in-flight creation instance
     ///   - service: the service to use for initiating site creation
-    init(creator: SiteCreator, service: SiteAssemblyService) {
+    init(creator: SiteCreator, service: SiteAssemblyService, onDismissQuickStart: ((Blog) -> Void)? = nil) {
         self.creator = creator
         self.service = service
-        self.content = SiteAssemblyWizardContent(creator: creator, service: service)
+        self.content = SiteAssemblyWizardContent(creator: creator, service: service, onDismissQuickStart: onDismissQuickStart)
     }
 }
