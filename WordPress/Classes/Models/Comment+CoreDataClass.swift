@@ -104,7 +104,7 @@ extension Comment: PostContentProvider {
         return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
-    public func authorForDisplay() -> String {
+    @objc public func authorForDisplay() -> String {
         let displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
         return !displayAuthor.isEmpty ? displayAuthor : gravatarEmailForDisplay()
     }

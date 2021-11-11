@@ -846,8 +846,7 @@ private extension CommentDetailViewController {
     func configureReplyView() {
         let replyView = ReplyTextView(width: view.frame.width)
 
-        // TODO: update placeholder per design
-        replyView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
+        replyView.placeholder = String(format: .replyCommentTitleFormat, comment.authorForDisplay())
         replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyView.delegate = self
         replyView.onReply = { [weak self] content in

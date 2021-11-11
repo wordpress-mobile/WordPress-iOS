@@ -114,9 +114,11 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
     
     __typeof(self) __weak weakSelf = self;
-
+    
+    NSString *placeholderFormat = NSLocalizedString(@"Reply to %1$@", @"Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.");
+    
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.placeholder = [NSString stringWithFormat:placeholderFormat, [self.comment authorForDisplay]];
     replyTextView.onReply = ^(NSString *content) {
         [weakSelf sendReplyWithNewContent:content];
     };
