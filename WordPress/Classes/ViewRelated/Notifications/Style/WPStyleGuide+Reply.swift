@@ -10,9 +10,5 @@ extension WPStyleGuide {
         public static let separatorColor    = UIColor.divider
         public static let backgroundColor   = UIColor.basicBackground
         public static let replyButtonColor  = UIColor.primary
-
-        // TODO: remove these after FullscreenCommentReplyViewController UI is updated.
-        public static let enabledColor       = UIColor.primary
-        public static let disabledColor      = UIColor.listSmallIcon
     }
 }

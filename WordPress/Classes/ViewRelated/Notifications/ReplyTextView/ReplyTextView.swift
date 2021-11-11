@@ -287,6 +287,7 @@ import Gridicons
 
         // Reply button
         replyButton.setTitleColor(Style.replyButtonColor, for: .normal)
+        replyButton.titleLabel?.text = NSLocalizedString("Reply", comment: "Reply to a comment.")
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
         refreshReplyButton()
 

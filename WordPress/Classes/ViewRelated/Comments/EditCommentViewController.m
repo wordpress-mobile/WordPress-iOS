@@ -7,15 +7,6 @@
 #import "WordPress-Swift.h"
 
 
-
-#pragma mark ==========================================================================================
-#pragma mark Constants
-#pragma mark ==========================================================================================
-
-static UIEdgeInsets EditCommentInsetsPad = {5, 15, 5, 13};
-static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
-
-
 #pragma mark ==========================================================================================
 #pragma mark Private Methods
 #pragma mark ==========================================================================================
@@ -76,11 +67,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Edit Comment", @"");
-    
     self.view.backgroundColor = [UIColor murielBasicBackground];
-
-    self.textView.font = [WPStyleGuide regularTextFont];
-    self.textView.textContainerInset = [UIDevice isPad] ? EditCommentInsetsPad : EditCommentInsetsPhone;
     self.textView.backgroundColor = [UIColor murielBasicBackground];
     self.textView.textColor = [UIColor murielText];
     
