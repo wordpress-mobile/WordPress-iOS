@@ -12,7 +12,8 @@
 #pragma mark ==========================================================================================
 
 @interface EditCommentViewController()
-@property (readwrite, nonatomic, weak) IBOutlet UITextView     *textView;
+@property (readwrite, nonatomic, weak) IBOutlet UITextView *textView;
+@property (readwrite, nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 @property (nonatomic, strong) NSString *pristineText;
 @property (readwrite, nonatomic, assign) CGRect keyboardFrame;
 
@@ -70,6 +71,7 @@
     self.view.backgroundColor = [UIColor murielBasicBackground];
     self.textView.backgroundColor = [UIColor murielBasicBackground];
     self.textView.textColor = [UIColor murielText];
+    self.placeholderLabel.textColor = [UIColor murielTextPlaceholder];
     
     [self showCancelBarButton];
     [self showSaveBarButton];

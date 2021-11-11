@@ -191,6 +191,7 @@ import Gridicons
         let didHaveFirstResponder = textView.isFirstResponder
 
         editViewController.content = textView.text
+        editViewController.placeholder = placeholder
         editViewController.isModalInPresentation = true
         editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
             self.text = updatedContent
