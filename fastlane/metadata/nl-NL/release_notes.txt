@@ -1,7 +1,8 @@
-Deze update maakt het nog makkelijker om externe inhoud in te sluiten op je sites! Maak kennis met de nieuwe speciale insluit blokken voor Facebook, Instagram, Loom en Smartframe. Bovendien detecteert de editor automatisch insluitbare URL's die je in een lege alinea plakt. Naast deze nieuwe functies hebben we een probleem opgelost waarbij sommige ingesloten URL's niet konden worden bewerkt en de voorvertoning afsnijding aangepast, zodat je altijd de volledige ingesloten inhoud ziet.
-
-Over blokken gesproken, je kunt nu de tekst en achtergrondkleur aanpassen in de Pullquote en Preformatted blokken.
-
-Hulp nodig om meer lezers te bereiken? De nieuwe publicatie en blog herinnering duwtjes helpen je om vast te houden aan een consistent publicatieschema.
-
-Ten slotte hebben we de ondersteuning voor grotere tekstformaten verbeterd bij het kiezen van een startpagina of pagina lay-out, probleem waarbij de lijst met site reacties die bij bepaalde gelegenheden niet werd vernieuwd opgelost, en de header van de voorpublicatie van het onderste blad opgepoetst.
+- We hebben het gemakkelijker gemaakt om te zien wanneer er nieuwe blokken beschikbaar zijn voor gebruik op je site
+- Je kunt nu tekst markeren met behulp van de <mark>HTML tag, evenals de tekst en achtergrondkleur wijzigen van de knop Zoekblok. Schitterend!
+- We hebben HTML tags verborgen in berichttitels wanneer je je statistieken bekijkt.
+- We hebben Reader Discovery verbeterd - je nieuwe dingen laten zien om te lezen, terwijl we een helpende hand helpen aan sites met weinig verkeer. Win-win dus.
+- Als je deel uitmaakt van een reactie thread, kun je deze bijhouden via in-app meldingen, niet alleen via je e-mail inbox.
+- Over reacties gesproken, we hebben gehoord dat sommige mogelijk ontbreken bij het bekijken van reacties vanaf de Reader. Maak je geen zorgen - we hebben het probleem gevonden en opgelost.
+- Het hulpscherm liep vroeger uit zijn box wanneer het van portret naar landschap en terug naar portret werd gedraaid, maar nu blijft het zitten.
+- We hebben meer gevallen opgelost waarin insluit blokken "niet in staat om inhoud weer te geven" zouden tonen, waardoor je alle inhoud van jezelf kon zien.
