@@ -331,26 +331,22 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
 
-        let dismissAndShowBlog: ((Blog) -> Void) = { [weak self] blog in
-            onDismiss()
-            self?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-        }
-
-        epilogueViewController.onBlogSelected = { blog in
+        epilogueViewController.onBlogSelected = { [weak self] blog in
 
             guard !UserDefaults.standard.quickStartWasDismissed(for: blog) else {
-                dismissAndShowBlog(blog)
+                onDismiss()
+                self?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
                 return
             }
 
             let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismiss = dismissAndShowBlog
+            quickstartPrompt.onDismissEpilogue = onDismiss
             navigationController.pushViewController(quickstartPrompt, animated: true)
         }
 
         epilogueViewController.onCreateNewSite = {
 
-            let wizardLauncher = SiteCreationWizardLauncher(onDismissQuickStart: dismissAndShowBlog)
+            let wizardLauncher = SiteCreationWizardLauncher(onDismissEpilogue: onDismiss)
             guard let wizard = wizardLauncher.ui else {
                 return
             }

@@ -21,9 +21,9 @@ final class QuickStartPromptViewController: UIViewController {
 
     private let blog: Blog
 
-    /// Closure to be executed upon dismissal.
+    /// Closure to be executed upon dismissing the Login Epilogue.
     ///
-    var onDismiss: ((Blog) -> Void)?
+    var onDismissEpilogue: (() -> Void)?
 
     // MARK: - Init
 
@@ -101,25 +101,34 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
-        dismissPrompt { [weak self] in
+        if let onDismissEpilogue = onDismissEpilogue {
+            onDismissEpilogue()
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
-                guard let self = self else {
-                    return
+            // Show the My Site screen for the specified blog
+            WordPressAppDelegate.shared?.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
+                // After a short delay, trigger the Quick Start tour
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+                    QuickStartTourGuide.shared.setup(for: self.blog)
                 }
-                QuickStartTourGuide.shared.setup(for: self.blog)
-            }
+            })
+
+            return
         }
+
+        dismiss(animated: true)
+        QuickStartTourGuide.shared.setup(for: blog)
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
         UserDefaults.standard.setQuickStartWasDismissed(true, for: blog)
-        dismissPrompt()
-    }
 
-    private func dismissPrompt(completion: (() -> Void)? = nil) {
-        onDismiss?(blog)
-        navigationController?.dismiss(animated: true, completion: completion)
+        if let onDismissEpilogue = onDismissEpilogue {
+            onDismissEpilogue()
+            WordPressAppDelegate.shared?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            return
+        }
+
+        dismiss(animated: true)
     }
 }
 
