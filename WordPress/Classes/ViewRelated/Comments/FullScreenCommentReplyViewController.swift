@@ -31,16 +31,24 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     // Static margin between the suggestions view and the text cursor position
     private let suggestionViewMargin: CGFloat = 5
 
+    public var placeholder = String()
+
     // MARK: - View Methods
     public override func viewDidLoad() {
         super.viewDidLoad()
+        placeholderLabel.text = placeholder
         setupNavigationItems()
         configureNavigationAppearance()
     }
 
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshPlaceholder()
+        refreshReplyButton()
+    }
+
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        refreshReplyButton()
         setupSuggestionsTableViewIfNeeded()
     }
 
@@ -73,6 +81,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public override func textViewDidEndEditing(_ textView: UITextView) { }
 
     public override func contentDidChange() {
+        refreshPlaceholder()
         refreshReplyButton()
     }
 
@@ -167,6 +176,10 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     /// Changes the `refreshButton` enabled state
     private func refreshReplyButton() {
         replyButton.isEnabled = !(textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
+
+    private func refreshPlaceholder() {
+        placeholderLabel.isHidden = !textView.text.isEmpty
     }
 
     /// Triggers the `onExitFullscreen` completion handler
