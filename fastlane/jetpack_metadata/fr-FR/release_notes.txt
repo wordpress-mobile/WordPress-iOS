@@ -1,7 +1,6 @@
-Cette mise à jour facilite encore plus l’intégration de contenu externe sur vos sites ! Présentation des nouveaux blocs de contenu embarqué dédiés pour Facebook, Instagram, Loom et Smartframe. De plus, l’éditeur détecte automatiquement les URL intégrables que vous collez dans un paragraphe vide. En plus de ces nouvelles fonctionnalités, nous avons corrigé un problème d’impossibilité de modifier certaines URL intégrées et nous avons réglé la coupure aléatoire de l’aperçu afin que vous puissiez toujours voir l’ensemble du contenu embarqué.
-
-Concernant les blocs, vous pouvez désormais personnaliser le texte et la couleur d’arrière-plan dans les blocs de citation en exergue et préformatés.
-
-Besoin d’aide pour toucher plus de lecteurs ? Les nouveaux coups de pouce Publicize et Rappel de blog vous aideront à respecter un planning de publication cohérent.
-
-Enfin, nous avons amélioré la prise en charge des tailles de texte plus grandes lors du choix d’une page d’accueil ou d’une mise en page, corrigé la liste des commentaires du site qui ne s’actualisait pas à certaines occasions et peaufiné l’en-tête de la feuille du bas avant la publication.
+- Vous pouvez désormais voir plus facilement les nouveaux blocs qui sont prêts à être utilisés sur votre site.
+- Vous avez à présent la possibilité de mettre du texte en surbrillance à l’aide du tag HTML <mark>, ainsi que de modifier le texte et la couleur d’arrière-plan du bouton Rechercher un bloc. Brillant !
+- Nous avons masqué les tags HTML dans les titres des articles lorsque vous consultez vos statistiques.
+- Si vous faites partie d’un fil de commentaires, vous pouvez le suivre via les notifications dans l’application, et pas seulement dans votre boîte de réception.
+- Auparavant, l’écran d’aide sortait du cadre lorsqu’on le faisait pivoter pour passer de l’orientation portrait à paysage, puis de nouveau à l’orientation portait, mais il reste à présent en place.
+- Nous avons résolu davantage de problèmes d’affichage du message « Impossible d’afficher le contenu » dans les blocs de contenu embarqué, ce qui vous permet d’afficher la totalité de votre contenu.

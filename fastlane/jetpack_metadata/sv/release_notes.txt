@@ -1,7 +1,6 @@
-Den här uppdateringen gör det ännu enklare att bädda in externt innehåll på dina webbplatser! Vi introducerar nya dedikerade inbäddningsblock för Facebook, Instagram, Loom och Smartframe. Dessutom detekterar redigeraren nu automatiskt inbäddningsbara URL:er som klistras in i ett tomt stycke. Utöver dessa nya funktioner har vi även åtgärdat ett problem som gjorde att vissa inbäddade URL:er inte gick att redigera och justerat beskärningen på förhandsgranskningar, så att du alltid kommer att kunna se hela det inbäddade innehållet.
-
-På tal om block kan du nu anpassa texten och bakgrundsfärgen i markerat citat-block och förformaterade block.
-
-Behöver du hjälp med att nå fler läsare? De nya Offentliggör- och Blogga-påminnelseknuffarna hjälper dig att hålla dig till ett konsekvent publiceringsschema.
-
-Slutligen har vi förbättrat stödet för större textstorlekar när du väljer en startsides- eller sidlayout, åtgärdat ett problem som gjorde att listan över webbplatskommentarer inte alltid uppdaterades samt snyggat till rubriken för det nedre bladet vid förpublicering.
+- Vi har gjort det enklare att se när det finns nya block tillgängliga för användning på din webbplats
+- Du kan nu markera text med hjälp av HTML-taggen <mark>, samt ändra text- och bakgrundsfärg på knappen i sökblocket. Snyggt!
+- Vi har dolt HTML-taggar i inläggsrubriker när du kollar din statistik.
+- Om du är med i en kommentarstråd kan du hålla koll på den med hjälp av notiser i appen, inte bara via e-postmeddelanden till din inkorg.
+- Hjälpskärmen brukade lämna sin ruta vid rotering från stående till liggande läge och vice versa, men nu stannar den kvar.
+- Vi har åtgärdat ett antal instanser där inbäddningsblock visade texten "Kan inte visa innehåll", så du ska nu kunna se allt ditt innehåll.

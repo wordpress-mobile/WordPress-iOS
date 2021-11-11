@@ -1,7 +1,6 @@
-Con esta actualización, será incluso más fácil incrustar contenido externo en tus sitios. Te presentamos los nuevos bloques de incrustar específicos para Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL que se puedan incrustar cuando las pegues en un párrafo vacío. Junto con estas funciones nuevas, también hemos solucionado un problema por el que algunas URL incrustadas no se podían editar y hemos ajustado el área que se recorta de la vista previa para que veas siempre el contenido incrustado completo.
-
-Por cierto, hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques Párrafo de cita y Preformateados.
-
-¿Necesitas ayuda para llegar a más lectores? Los nuevos avisos de recordatorios de blogueo y de difundir te ayudarán a ceñirte a una programación de publicaciones continua.
-
-Para terminar, hemos mejorado la asistencia para los tamaños de texto grandes al elegir una página de inicio o un diseño de página, hemos arreglado el problema por el que la lista de comentarios a veces no se actualizaba y hemos mejorado el encabezado de la hoja inferior previa a la publicación.
+- Hemos facilitado la visualización de los nuevos bloques disponibles para que los uses en tu sitio.
+- Ahora puedes destacar el texto con la etiqueta HTML <mark>, así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Perfecto!
+- Hemos ocultado las etiquetas HTML en los títulos de las entradas cuando consultas las estadísticas.
+- Si formas parte de un hilo de comentarios, puedes seguirlo a través de las notificaciones de la aplicación, no solo en tu bandeja de entrada.
+- La pantalla de ayuda sobresalía de su recuadro cuando se giraba y pasaba del formato vertical al horizontal y de nuevo al vertical, pero ahora se mantiene.
+- Hemos corregido más errores en los que los bloques de incrustar mostraban el mensaje siguiente: "no se puede mostrar el contenido", para que ahora puedas verlo todo.
