@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-23 10:55:39+0000 */
+/* Translation-Revision-Date: 2021-11-05 09:03:50+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: cs_CZ */
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Automaticky spravováno na tomto webu";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Auto-renew enabled";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Schválit automaticky";
@@ -1560,6 +1563,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Comment set to pending.";
 
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Comment to start making connections.";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Gratulujeme k dokončení rychlého startu 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Gratulace!";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Gratulujeme k dokončení vašeho seznamu. Dobře odvedená práce.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Congratulations on your purchase!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Automaticky připojit ke sdílení příspěvků na blogu %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Connect with other bloggers by following, liking and commenting on their posts.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Připojte své oblíbené sociální služby, aby automaticky sdílet nová příspěvky s přáteli.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struktura obsahu\nBloky: %1$li, Slova: %2$li, Znaky: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Nepodařilo se zjistit nákupy na webu.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Could not disable notifications";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Could not enable notifications";
 
 /* Title of a prompt. */
 "Could not follow site" = "Nemůžu sledovat web";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Objevujte a sledujte své oblíbené blogy";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Discover blogs to follow";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Objevte další témata";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Odmítnout oznámení";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Dismiss screen";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Zde zobrazte statistiky svého webu pro dnešek. Nakonfigurujte v aplikaci WordPress ve statistikách svého webu.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Do it again";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
@@ -2627,6 +2650,7 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "Prázdná URL";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivovat";
 
@@ -2638,6 +2662,12 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Enable Site Stats";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "Enable in-app notifications";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "Enable in-app notifications?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Povolte přístup k mikrofonům pro záznam zvuku ve videích.";
@@ -2881,8 +2911,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Rozbalí se a vybere jinou oblast nabídky";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Expired";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Vyprší za";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Expires on %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Několika slovy popište, čím se budete na webu zabývat";
@@ -3044,7 +3080,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Oprava hrozby";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Sledovat";
 
@@ -3059,6 +3096,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Sledujte témata";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Follow topics you're interested in and we'll find some blogs you might like.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3101,6 +3141,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Sledování nových témat...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Following this conversation";
 
 /* Filters Follows Notifications */
 "Follows" = "Sledovat";
@@ -3504,6 +3547,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "In-app notifications disabled";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "In-app notifications enabled";
+
 /* Describes a status of a plugin */
 "Inactive" = "Neaktivní";
 
@@ -3742,6 +3791,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Mějte aktuální informace o výkonu svého webu.";
@@ -4373,6 +4425,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Vyžaduje aktualizaci";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Never expires";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nový";
 
@@ -4409,7 +4464,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Nejnovější první";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Otevřít odkaz v novém okně\/tabu";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Open subscription settings for the post";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Otevřít mou sekci";
@@ -5707,6 +5766,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Odebráním dalších kroků skryjete všechny prohlídky na tomto webu. Tuto akci nelze vrátit zpět.";
 
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Renews on %@";
+
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Nahradit";
 
@@ -6041,7 +6103,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "Search button. Current button text is";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "Vyhledat domény";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Search for a domain";
@@ -6558,9 +6620,6 @@ translators: Block name. %s: The localized block name */
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Něco se pokazilo";
 
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Něco se pokazilo. Prosím zkuste to znovu.";
-
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Něco se pokazilo. Zkontrolujte připojení a zkuste to znovu.";
 
@@ -6862,9 +6921,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Klepnutím sem zobrazíte nápovědu";
-
-/* No comment provided by engineer. */
-"Tap to add content" = "Přidejte obsah kliknutím";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Klepněte zde pro zrušení nahrávání.";
@@ -7655,9 +7711,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Na dané URL adrese se nepodařilo nalézt WordPress. Pro zobrazení častých dotazů, klepněte na 'Potřebujete pomoc?'";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Nelze zaregistrovat doménu";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Web nelze obnovit";
 
@@ -7738,6 +7791,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Zdůraznit";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7750,6 +7804,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Zrušit sledování %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Sledujte konverzaci";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Unfollow conversation by email";
@@ -8811,6 +8868,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "You're not authorized to close the account.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "You've connected with other blogs";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "V tomto příspěvku jste provedli neuložené změny";
 
@@ -8852,6 +8912,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Vaše média se nepodařilo exportovat. Pokud problém přetrvává, můžete nás kontaktovat prostřednictvím obrazovky Já > Nápověda a podpora.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Vaše oznámení jsou vždy s vámi - komentáře a liky uvidíte vždy v reálném čase.";
@@ -8918,6 +8981,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Pověření na vašem webu nebudou uložena a budou použita pouze za účelem instalace Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "You’re following this conversation. You will receive an email and a notification whenever a new comment is made.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "You’re following this conversation. You will receive an email whenever a new comment is made.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Nyní používáte editor bloků pro nové stránky - skvělé! Chcete-li přejít na klasický editor, přejděte do části „Můj web“> „Nastavení webu“.";
@@ -9067,9 +9136,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, stránky, stránka, blogy, blog";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "nastavuje se vaše nová doména %@. Váš web vzrušeně dělá kotrmelce!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "váš web";

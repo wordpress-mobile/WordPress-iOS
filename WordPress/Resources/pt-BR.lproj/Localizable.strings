@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-09 21:06:35+0000 */
+/* Translation-Revision-Date: 2021-10-30 11:57:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Gerenciado automaticamente neste site";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Auto-renew enabled";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Aprovar automaticamente";
@@ -1560,6 +1563,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Comment set to pending.";
 
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Comment to start making connections.";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Parabéns por finalizar o início rápido 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Parabéns!";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Parabéns por concluir sua lista. Ótimo trabalho!";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Congratulations on your purchase!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Conecte-se para compartilhar posts automaticamente no %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Connect with other bloggers by following, liking and commenting on their posts.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Conecte suas redes sociais favoritas para compartilhar automaticamente novos posts com amigos.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Estrutura do conteúdo\nBlocos: %1$li, Palavras: %2$li, Caracteres: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Não foi possível verificar as compras do site.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Could not disable notifications";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Could not enable notifications";
 
 /* Title of a prompt. */
 "Could not follow site" = "Não foi possível seguir o site";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descubra e siga blogs que você ama";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Discover blogs to follow";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Descobrir mais tópicos";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Dispensar anúncios";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Dismiss screen";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Mostrar as estatísticas de hoje de seu site aqui. Configure no aplicativo do WordPress nas estatísticas do site.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Do it again";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Documento: %@";
@@ -2524,7 +2547,7 @@ translators: Block name. %s: The localized block name */
 "Edit new posts and pages with the block editor." = "Editar novos posts e páginas com o editor de blocos.";
 
 /* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Edit reminders";
+"Edit reminders" = "Editar lembretes";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editar botões de compartilhamento";
@@ -2627,17 +2650,24 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "URL vazia";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Ativar";
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
+"Enable Publicize" = "Ativar Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Habilitar o início rápido para este site";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Ativar estatísticas do site";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "Enable in-app notifications";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "Enable in-app notifications?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Ative o acesso ao microfone para gravar áudio em seus vídeos.";
@@ -2730,7 +2760,7 @@ translators: Block name. %s: The localized block name */
 "Error approving comment" = "Erro ao aprovar comentário";
 
 /* Message displayed when approving a comment fails. */
-"Error approving comment." = "Error approving comment.";
+"Error approving comment." = "Erro ao aprovar comentário.";
 
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
@@ -2743,7 +2773,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "Erro ao excluir comentário";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Error deleting comment.";
+"Error deleting comment." = "Erro ao excluir comentário.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Erro ao desabilitar atualizações automáticas para %@.";
@@ -2773,10 +2803,10 @@ translators: Block name. %s: The localized block name */
 "Error marking comment as spam" = "Erro ao marcar comentário como spam";
 
 /* Message displayed when spamming a comment fails. */
-"Error marking comment as spam." = "Error marking comment as spam.";
+"Error marking comment as spam." = "Erro ao marcar comentário como spam.";
 
 /* Message displayed when trashing a comment fails. */
-"Error moving comment to trash." = "Error moving comment to trash.";
+"Error moving comment to trash." = "Erro ao mover o comentário para a lixeira.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Um erro ocorreu\ndurante o carregamento";
@@ -2881,8 +2911,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Expande para selecionar uma área de menu diferente";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Expired";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Expira em";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Expires on %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Explique sobre o que é este site;";
@@ -3044,7 +3080,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Corrigindo ameaças";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Seguir";
 
@@ -3059,6 +3096,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Seguir tópicos";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Follow topics you're interested in and we'll find some blogs you might like.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3101,6 +3141,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Seguindo novos tópicos...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Following this conversation";
 
 /* Filters Follows Notifications */
 "Follows" = "Seguidos";
@@ -3504,6 +3547,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "In-app notifications disabled";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "In-app notifications enabled";
+
 /* Describes a status of a plugin */
 "Inactive" = "Inativo";
 
@@ -3742,6 +3791,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Fique atualizado sobre o desempenho de seu site.";
@@ -4373,6 +4425,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Precisa de atualização";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Never expires";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Novos";
 
@@ -4409,7 +4464,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Mais novos primeiro";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Abrir o link em uma nova janela";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Open subscription settings for the post";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Abrir a tela Eu";
@@ -5707,6 +5766,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Remover os próximos passos esconderá todas as dicas nesse site. Essa ação não pode ser desfeita.";
 
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Renews on %@";
+
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Substituir";
 
@@ -6151,7 +6213,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "Selecionar um modelo";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "Selecionar domínio";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selecione a mídia.";
@@ -6558,9 +6620,6 @@ translators: Block name. %s: The localized block name */
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Algo deu errado";
 
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Algo deu errado. Tente novamente.";
-
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Algo deu errado. Verifique sua conexão com a Internet e tente novamente.";
 
@@ -6863,9 +6922,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toque aqui para mostrar ajuda";
 
-/* No comment provided by engineer. */
-"Tap to add content" = "Toque para adicionar conteúdo";
-
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Toque para cancelar o upload.";
 
@@ -7043,7 +7099,7 @@ translators: Block name. %s: The localized block name */
 "The media could not be added to the Media Library." = "Não foi possível adicionar a mídia à biblioteca de mídia.";
 
 /* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
+"The module couldn't be activated." = "O módulo não pôde ser ativado.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "O número de posts a serem mostrados por página.";
@@ -7655,9 +7711,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Não foi possível encontrar um site WordPress na URL. Toque em 'Precisa de ajuda?' para exibir as perguntas frequentes.";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Não foi possível registrar o domínio";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Não foi possível restaurar o site";
 
@@ -7738,6 +7791,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Sublinhado";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7750,6 +7804,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Deixar de seguir %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Unfollow conversation";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Deixar de seguir conversa por e-mail";
@@ -8050,7 +8107,7 @@ translators: Block name. %s: The localized block name */
 "View more" = "Ver mais";
 
 /* Description for view count. Singular. */
-"View to your site so far" = "View to your site so far";
+"View to your site so far" = "Visualização em seu site até o momento";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Veja seu site";
@@ -8071,7 +8128,7 @@ translators: Block name. %s: The localized block name */
 "Views" = "Visualizações";
 
 /* Description for view count. Singular. */
-"Views to your site so far" = "Views to your site so far";
+"Views to your site so far" = "Visualizações em seu site até o momento";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8811,6 +8868,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Sem autorização para encerrar a conta.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "You've connected with other blogs";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Há alterações não salvas neste post";
 
@@ -8852,6 +8912,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Não foi possível exportar seu arquivo de mídia. Caso o problema persista, entre em contato conosco por meio da tela Eu > Ajuda e suporte.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Suas notificações sempre com você - veja comentários e curtidas assim que ocorrerem.";
@@ -8918,6 +8981,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Os dados de acesso ao seu site não serão armazenados e serão usados unicamente para instalar o Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "You’re following this conversation. You will receive an email and a notification whenever a new comment is made.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "You’re following this conversation. You will receive an email whenever a new comment is made.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Agora você está usando o editor de blocos para novas páginas — ótimo! Se você quiser mudar para o editar clássico, acesse ‘Meu site’ > ‘Configurações do site’.";
@@ -9067,9 +9136,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "seu novo domínio %@ está sendo configurado. Seu site está dando saltos de alegria!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "seu site";

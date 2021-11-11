@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-20 17:31:58+0000 */
+/* Translation-Revision-Date: 2021-11-02 06:04:02+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ru */
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Автоматически управляется на этом сайте";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Автоматическое продление включено";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Одобрять автоматически";
@@ -1560,6 +1563,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Статус комментария установлен как ожидающий одобрения.";
 
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Оставьте комментарий для начала общения.";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Поздравляем с прохождением Быстрого старта  🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Поздравляем!";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Поздравляем с завершением списка. Отлично сработано!";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Поздравляем с приобретением!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Подключитесь, чтобы ваши записи автоматически становились доступны учетной записи %@.";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Общайтесь с другими блоггерами подписываясь на их записи, отмечая их как понравившиеся и оставляя комментарии.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Подключите свои любимые службы социальных сетей, чтобы автоматически делиться новыми записями с друзьями.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Структура содержимого\nБлоки: %1$li, Слова: %2$li, Символы: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Не удалось проверить покупки.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Не удается отключить уведомления";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Не удается включить уведомления";
 
 /* Title of a prompt. */
 "Could not follow site" = "Не удалось подписаться на веб-сайт";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Откройте для себя и подпишитесь на блоги, которые полюбите";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Откройте для себя новые блоги для подписки";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Найти больше интересных тем";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Скрыть анонсы";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Скрыть экран";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Настройте отображение текущей статистики сайта здесь. Настройте в приложении WordPress в статистике сайта.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Сделайте это снова";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Документ: %@";
@@ -2627,6 +2650,7 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "Пустой URL-адрес";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Включить";
 
@@ -2638,6 +2662,12 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Включить статистику сайта";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "Включить уведомления в приложении";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "Включить уведомления в приложении?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Включите доступ к микрофону для записи звука к вашим видео.";
@@ -2881,8 +2911,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Разверните для выбора другой области меню";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Просрочено";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Истекает";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Истекает %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Объясните, о чём этот сайт.";
@@ -3044,7 +3080,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Устранение угроз";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Наблюдать";
 
@@ -3059,6 +3096,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Подписаться на темы";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Подпишитесь на заинтересовавшие вас темы и мы найдем вам блоги, которые вам понравятся.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3101,6 +3141,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Подписка на новые темы...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Вы подписаны на беседу";
 
 /* Filters Follows Notifications */
 "Follows" = "Читатели";
@@ -3504,6 +3547,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "Для того, чтобы делиться опубликованными записями в социальных сетях, требуется включить модуль Publicize.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "Уведомления в приложении отключены";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "Уведомления в приложении включены";
+
 /* Describes a status of a plugin */
 "Inactive" = "Неактивен";
 
@@ -3742,6 +3791,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Продолжайте писать в блог и следите как посетители прибывают на вашем сайте.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Продолжайте в том же духе! Отмечая понравившиеся и комментируя вы создаете свою сеть. Перейдите в Чтиво, чтобы найти еще записи.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Будьте в курсе жизни вашего сайта.";
@@ -4373,6 +4425,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Требует обновления";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Бессрочно";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Новые";
 
@@ -4409,7 +4464,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Сначала новые";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Открыть ссылку в новом окне (на новой вкладке)";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Открыть настройки подписки для записи";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Открыть мой профиль";
@@ -5707,6 +5766,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Пропуск следующих шагов отключит все гиды по этому сайту. Действие не может быть отменено.";
 
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Будет продлен %@";
+
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Заменить";
 
@@ -6558,9 +6620,6 @@ translators: Block name. %s: The localized block name */
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Что-то пошло не так...";
 
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Что-то пошло не так, попробуйте снова.";
-
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Что-то пошло не так. Проверьте подключение и попробуйте снова.";
 
@@ -6862,9 +6921,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Нажмите тут для показа справки";
-
-/* No comment provided by engineer. */
-"Tap to add content" = "Нажмите для добавления содержимого";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Нажмите, чтобы отменить загрузку.";
@@ -7655,9 +7711,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Не удалось найти веб-сайт WordPress по этому URL-адресу. Нажмите кнопку «Нужна помощь?», чтобы просмотреть ответы на часто задаваемые вопросы.";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Невозможно зарегистрировать домен";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Не удалось восстановить сайт";
 
@@ -7738,6 +7791,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Подчеркнутый";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7750,6 +7804,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Отписаться от %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Отписаться от беседы";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Отписаться от этой беседы по email";
@@ -8811,6 +8868,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "У вас нет прав для закрытия учётной записи.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "Вы в поиске других блогов";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Вы внесли, но не сохранили изменения в эту запись";
 
@@ -8852,6 +8912,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Медиафайл не может быть экспортирован. Если проблема сохранится, вы можете обратиться в поддержку через \"Мой профиль - Помощь и поддержка\".";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Ваш новый домен %@ настраивается, это может занять до 30 минут пока он станет доступен.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Ваши уведомления путешествуют с вами — смотрите комментарии и отметки \"нравится\" в реальном времени.";
@@ -8918,6 +8981,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Ваши данные входа на сайт не сохраняются и будут использованы только для установки Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Вы подписаны на эту беседу. Вы получите уведомление и сообщение по Email при появлении новых комментариев.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "Вы подписаны на эту беседу. Вы получите сообщение по Email при появлении новых комментариев.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Сейчас вы используете редактор блоков для новых страниц. Отлично! Если захотите изменить редактор на классический, то сделайте это в 'Мой сайт'>'Настройки сайта',";
@@ -9067,9 +9136,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, сайты, сайт, блоги, блог";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "Ваш новый домен %@ настраивается.";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "ваш сайт";
