@@ -32,8 +32,8 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    /// Closure to be executed upon dismissing the quick start prompt
-    private let onDismissQuickStart: ((Blog) -> Void)?
+    /// Closure to be executed upon dismissing the Login Epilogue
+    private let onDismissEpilogue: (() -> Void)?
 
     // MARK: SiteAssemblyWizardContent
 
@@ -42,10 +42,10 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// - Parameters:
     ///   - creator: the in-flight creation instance
     ///   - service: the service to use for initiating site creation
-    init(creator: SiteCreator, service: SiteAssemblyService, onDismissQuickStart: ((Blog) -> Void)? = nil) {
+    init(creator: SiteCreator, service: SiteAssemblyService, onDismissEpilogue: (() -> Void)? = nil) {
         self.siteCreator = creator
         self.service = service
-        self.onDismissQuickStart = onDismissQuickStart
+        self.onDismissEpilogue = onDismissEpilogue
         self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
@@ -224,9 +224,9 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        if let onDismissQuickStart = onDismissQuickStart {
+        if let onDismissEpilogue = onDismissEpilogue {
             let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismiss = onDismissQuickStart
+            quickstartPrompt.onDismissEpilogue = onDismissEpilogue
             navigationController?.pushViewController(quickstartPrompt, animated: true)
             return
         }
