@@ -235,11 +235,11 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
             WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
-            self?.showQuickStartAlert(for: blog)
+            self?.showQuickStartPrompt(for: blog)
         }
     }
 
-    private func showQuickStartAlert(for blog: Blog) {
+    private func showQuickStartPrompt(for blog: Blog) {
         guard !UserDefaults.standard.quickStartWasDismissedPermanently else {
             return
         }
@@ -248,9 +248,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog)
-        fancyAlert.modalPresentationStyle = .custom
-        fancyAlert.transitioningDelegate = tabBar
-        tabBar.present(fancyAlert, animated: true)
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        tabBar.present(quickstartPrompt, animated: true)
     }
 }
