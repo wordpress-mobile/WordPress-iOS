@@ -105,7 +105,11 @@ public class BlockEditorScreen: BaseScreen {
     }
 
     public func publish() throws -> EditorNoticeComponent {
-        publishButton.tap()
+        var tries = 0
+        repeat {
+            publishButton.tap()
+            tries += 1
+        } while !publishNowButton.waitForIsHittable(timeout: 3) && tries <= 3
         try confirmPublish()
 
         return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
