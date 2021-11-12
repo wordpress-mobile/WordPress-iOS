@@ -114,11 +114,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         configureViews()
     }
 
-    override func prepareForReuse() {
-        onContentLoaded = nil
-        htmlContentCache = nil
-    }
-
     // MARK: Public Methods
 
     /// Configures the cell with a `Comment` object.
@@ -148,8 +143,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
         }
 
+        // optimize: do not reload if the content doesn't change.
+        if let contentCache = commentContentCache, contentCache == comment.content {
+            return
+        }
+
         // Configure comment content.
         self.onContentLoaded = onContentLoaded
+        webViewHeightConstraint.constant = 1 // reset webview height to handle cases where the new content requires the webview to shrink.
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
     }
