@@ -261,7 +261,7 @@ private extension CommentDetailViewController {
     }
 
     struct Constants {
-        static let tableLeadingInset: CGFloat = 20.0
+        static let tableHorizontalInset: CGFloat = 20.0
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
 
@@ -270,8 +270,9 @@ private extension CommentDetailViewController {
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
     /// This needs to be computed because the frame size changes on orientation change.
+    /// NOTE: There's no need to flip the insets for RTL language, since it will be automatically applied.
     var insetsForHiddenCellSeparator: UIEdgeInsets {
-        return .init(top: 0, left: tableView.frame.size.width, bottom: 0, right: 0).flippedForRightToLeftLayoutDirection()
+        return .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
     }
 
     /// returns the height of the navigation bar + the status bar.
@@ -325,15 +326,17 @@ private extension CommentDetailViewController {
     func configureTable() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorInsetReference = .fromAutomaticInsets
 
         // get rid of the separator line for the last cell.
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
+
         // assign 20pt leading inset to the table view, as per the design.
-        // note that by default, the system assigns 16pt inset for .phone, and 20pt for .pad idioms.
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            tableView.directionalLayoutMargins.leading = Constants.tableLeadingInset
-        }
+        tableView.directionalLayoutMargins = .init(top: tableView.directionalLayoutMargins.top,
+                                                   leading: Constants.tableHorizontalInset,
+                                                   bottom: tableView.directionalLayoutMargins.bottom,
+                                                   trailing: Constants.tableHorizontalInset)
 
         tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
@@ -807,10 +810,12 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
             }
         }()
 
-        // hide cell separator if it's positioned before the delete button cell.
-        cell.separatorInset = shouldHideCellSeparator(for: indexPath) ? insetsForHiddenCellSeparator : tableView.separatorInset
-
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // Hide cell separator if it's positioned before the delete button cell.
+        cell.separatorInset = self.shouldHideCellSeparator(for: indexPath) ? self.insetsForHiddenCellSeparator : .zero
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
