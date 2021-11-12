@@ -1,7 +1,7 @@
 - Abbiamo reso più semplice visualizzare i punti in cui sono disponibili nuovi blocchi da usare sul tuo sito
 - Ora puoi evidenziare il testo usando il tag HTML <mark> e modificare il testo e il colore di sfondo del pulsante del blocco Cerca. È nuovo di zecca.
 - Abbiamo nascosto i tag HTML nei titoli degli articoli quando controlli le statistiche.
-- Abbiamo migliorato Reader Discovery, mostrandoti nuovi testi da leggere e dando una mano ai siti a basso traffico. Vantaggioso per tutti.
+- Abbiamo migliorato la Presentazione del Reader, mostrandoti nuovi testi da leggere e dando una mano ai siti a basso traffico. Vantaggioso per tutti.
 - Se hai preso parte a un thread di commenti, puoi tenerne traccia tramite le notifiche in-app, non solo tramite la tua posta in arrivo dell'e-mail.
 - A proposito di commenti, abbiamo sentito che alcuni potrebbero mancare durante la visualizzazione dei commenti dal Reader. Non preoccuparti: abbiamo trovato il problema e lo abbiamo risolto.
 - La schermata Guida si staccava dalla sua casella quando veniva ruotata dalla posizione verticale a quella orizzontale e di nuovo a quella verticale. Ora però non si muove.
