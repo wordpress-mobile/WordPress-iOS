@@ -1,5 +1,5 @@
 - Vous pouvez désormais voir plus facilement les nouveaux blocs qui sont prêts à être utilisés sur votre site.
-- Vous avez à présent la possibilité de mettre du texte en surbrillance à l’aide du tag HTML <mark>, ainsi que de modifier le texte et la couleur d’arrière-plan du bouton Rechercher un bloc. Brillant !
+- Vous avez à présent la possibilité de mettre du texte en surbrillance à l’aide du tag HTML "mark", ainsi que de modifier le texte et la couleur d’arrière-plan du bouton Rechercher un bloc. Brillant !
 - Nous avons masqué les tags HTML dans les titres des articles lorsque vous consultez vos statistiques.
 - Si vous faites partie d’un fil de commentaires, vous pouvez le suivre via les notifications dans l’application, et pas seulement dans votre boîte de réception.
 - Auparavant, l’écran d’aide sortait du cadre lorsqu’on le faisait pivoter pour passer de l’orientation portrait à paysage, puis de nouveau à l’orientation portait, mais il reste à présent en place.

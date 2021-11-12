@@ -1,5 +1,5 @@
 - Hemos facilitado la visualización de los nuevos bloques disponibles para que los uses en tu sitio.
-- Ahora puedes destacar el texto con la etiqueta HTML <mark>, así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Perfecto!
+- Ahora puedes destacar el texto con la etiqueta HTML "mark", así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Perfecto!
 - Hemos ocultado las etiquetas HTML en los títulos de las entradas cuando consultas las estadísticas.
 - Si formas parte de un hilo de comentarios, puedes seguirlo a través de las notificaciones de la aplicación, no solo en tu bandeja de entrada.
 - La pantalla de ayuda sobresalía de su recuadro cuando se giraba y pasaba del formato vertical al horizontal y de nuevo al vertical, pero ahora se mantiene.

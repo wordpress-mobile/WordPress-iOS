@@ -1,5 +1,5 @@
 - We hebben het eenvoudiger gemaakt om te zien wanneer er nieuwe blokken beschikbaar zijn voor gebruik op je site
-- Je kunt nu tekst markeren met de HTML-tag <mark> en ook de tekst en de achtergrondkleur van de knop van het Zoekblok wijzigen. Schitterend!
+- Je kunt nu tekst markeren met de HTML-tag "mark" en ook de tekst en de achtergrondkleur van de knop van het Zoekblok wijzigen. Schitterend!
 - We hebben HTML-tags verborgen in berichttitels wanneer je je statistieken bekijkt.
 - Als je deel uitmaakt van een opmerkingen-thread, kun je deze volgen via je inbox, maar ook via meldingen in de app.
 - Het Help-scherm werd niet correct in zijn venster weergegeven wanneer deze geroteerd werd van staand naar liggend en weer terug naar staand. Dit is nu verholpen.

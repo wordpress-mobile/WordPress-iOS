@@ -1,5 +1,5 @@
 - Kami mempermudah pengenalan blok baru yang tersedia untuk digunakan di situs Anda
-- Sekarang Anda dapat menyorot teks, serta mengubah teks dan warna latar belakang tombol blok Pencarian menggunakan tag HTML <mark>. Menakjubkan!
+- Sekarang Anda dapat menyorot teks, serta mengubah teks dan warna latar belakang tombol blok Pencarian menggunakan tag HTML "mark". Menakjubkan!
 - Kami menyembunyikan tag HTML pada judul pos saat Anda memeriksa statistik.
 - Kami telah meningkatkan Jelajahi Pembaca sehingga menampilkan hal-hal baru untuk Anda baca, sembari membantu situs dengan lalu lintas rendah. Saling menguntungkan.
 - Jika terlibat dalam sebuah utas komentar, Anda bisa melacaknya melalui pemberitahuan aplikasi, bukan hanya dari kotak masuk email Anda.

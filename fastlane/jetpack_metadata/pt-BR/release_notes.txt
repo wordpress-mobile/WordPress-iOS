@@ -1,5 +1,5 @@
 - Agora ficou mais fácil de ver quando tem novos blocos disponíveis para usar no seu site
-- Agora você pode realçar o texto usando a tag HTML <mark>, além de alterar a cor de fundo e texto do botão Pesquisar bloco. Brilhante!
+- Agora você pode realçar o texto usando a tag HTML "mark", além de alterar a cor de fundo e texto do botão Pesquisar bloco. Brilhante!
 - Quando você estiver conferindo suas estatísticas, as tags HTML agora ficarão ocultas nos títulos de post.
 - Se você fizer parte de uma sequência de comentários, poderá acompanhá-la pelas notificações no aplicativo, não só na caixa de entrada do seu e-mail.
 - A tela Ajuda costumava ficar distorcida quando o usuário mudava do modo retrato para o paisagem e retornava para o retrato, mas agora ela fica no seu devido lugar.

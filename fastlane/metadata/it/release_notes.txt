@@ -1,5 +1,5 @@
 - Abbiamo reso più semplice visualizzare i punti in cui sono disponibili nuovi blocchi da usare sul tuo sito
-- Ora puoi evidenziare il testo usando il tag HTML <mark> e modificare il testo e il colore di sfondo del pulsante del blocco Cerca. È nuovo di zecca.
+- Ora puoi evidenziare il testo usando il tag HTML "mark" e modificare il testo e il colore di sfondo del pulsante del blocco Cerca. È nuovo di zecca.
 - Abbiamo nascosto i tag HTML nei titoli degli articoli quando controlli le statistiche.
 - Abbiamo migliorato la Presentazione del Reader, mostrandoti nuovi testi da leggere e dando una mano ai siti a basso traffico. Vantaggioso per tutti.
 - Se hai preso parte a un thread di commenti, puoi tenerne traccia tramite le notifiche in-app, non solo tramite la tua posta in arrivo dell'e-mail.

@@ -1,5 +1,5 @@
 - Jetzt kannst du einfacher feststellen, ob neue Blocks für die Nutzung auf deiner Website verfügbar sind
-- Jetzt kannst du Text mit dem HTML-Tag <mark> hervorheben und sowohl den Text als auch die Hintergrundfarbe des Buttons „Block suchen“ verändern. Wie das funkelt!
+- Jetzt kannst du Text mit dem HTML-Tag "mark" hervorheben und sowohl den Text als auch die Hintergrundfarbe des Buttons „Block suchen“ verändern. Wie das funkelt!
 - Wir haben HTML-Tags in Beitragstiteln versteckt, wenn du deine Statistiken überprüfst.
 - Wir haben Reader Discovery verbessert – jetzt hast du wieder mehr zu lesen und hilfst auch noch anderen Websites mit niedriger Besucherzahl. Win-win.
 - Falls du Teil eines Kommentar-Threads bist, kannst du diesen durch Benachrichtigungen in der App und nicht nur per E-Mail im Blick behalten.

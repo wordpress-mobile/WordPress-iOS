@@ -1,5 +1,5 @@
 - We hebben het gemakkelijker gemaakt om te zien wanneer er nieuwe blokken beschikbaar zijn voor gebruik op je site
-- Je kunt nu tekst markeren met behulp van de <mark>HTML tag, evenals de tekst en achtergrondkleur wijzigen van de knop Zoekblok. Schitterend!
+- Je kunt nu tekst markeren met behulp van de "mark" HTML tag, evenals de tekst en achtergrondkleur wijzigen van de knop Zoekblok. Schitterend!
 - We hebben HTML tags verborgen in berichttitels wanneer je je statistieken bekijkt.
 - We hebben Reader Discovery verbeterd - je nieuwe dingen laten zien om te lezen, terwijl we een helpende hand helpen aan sites met weinig verkeer. Win-win dus.
 - Als je deel uitmaakt van een reactie thread, kun je deze bijhouden via in-app meldingen, niet alleen via je e-mail inbox.
