@@ -87,7 +87,18 @@ private class AppLogosScene: SKScene {
 
     private var traitCollection: UITraitCollection?
 
+    // Haptics
+    fileprivate var softGenerator = UIImpactFeedbackGenerator(style: .soft)
+    fileprivate var rigidGenerator = UIImpactFeedbackGenerator(style: .rigid)
 
+    // Keeps track of the last time a specific physics body made contact.
+    // Used to limit the number of haptics impacts we trigger as a result of collisions.
+    fileprivate var contacts: [SKPhysicsBody:TimeInterval] = [:]
+
+    private var bounds: CGRect {
+        view?.bounds ?? .zero
+    }
+    
     // MARK: - Scene lifecycle
 
     override func didMove(to view: SKView) {
@@ -95,6 +106,8 @@ private class AppLogosScene: SKScene {
         
         motionManager.startAccelerometerUpdates()
         generateScene()
+
+        scene?.physicsWorld.contactDelegate = self
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
@@ -174,6 +187,7 @@ private class AppLogosScene: SKScene {
         let physicsBody = SKPhysicsBody(circleOfRadius: Metrics.ballRadius)
         physicsBody.categoryBitMask = ballCategory
         physicsBody.collisionBitMask = ballCategory | edgeCategory
+        physicsBody.contactTestBitMask = ballCategory
         physicsBody.affectedByGravity = true
         physicsBody.restitution = Constants.physicsRestitution
         ball.physicsBody = physicsBody
@@ -208,10 +222,6 @@ private class AppLogosScene: SKScene {
         }
     }
 
-    private var bounds: CGRect {
-        view?.bounds ?? .zero
-    }
-
     enum Metrics {
         static let ballRadius: CGFloat = 36.0
         static let logoSize: CGFloat = 40.0
@@ -231,11 +241,33 @@ private class AppLogosScene: SKScene {
     enum Constants {
         static let appLogoPrefix = "ua-logo-"
         static let physicsRestitution: CGFloat = 0.5
+        static let phyicsContactDebounce: TimeInterval = 0.25
+        static let hapticsImpulseThreshold: TimeInterval = 0.10
     }
 
     override func update(_ currentTime: TimeInterval) {
         if let accelerometerData = motionManager.accelerometerData {
             physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 9.8, dy: accelerometerData.acceleration.y * 9.8)
         }
+    }
+}
+
+extension AppLogosScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        let currentTime = CACurrentMediaTime()
+        
+        // If we trigger a haptics impact for every single impact it feels a bit much,
+        // so we'll ignore concurrent contacts for the same physics body within a small timeout.
+        if let timestamp = contacts[contact.bodyA],
+           currentTime - timestamp < Constants.phyicsContactDebounce {
+            return
+        }
+
+        // We'll use a soft generator for collisions with a small impulse
+        // and a rigid generator for harder collisions so we have some variety in the feedback.
+        let generator: UIImpactFeedbackGenerator = contact.collisionImpulse < Constants.hapticsImpulseThreshold ? softGenerator : rigidGenerator
+        generator.impactOccurred()
+        
+        contacts[contact.bodyA] = currentTime
     }
 }

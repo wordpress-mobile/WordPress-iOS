@@ -162,6 +162,14 @@ class UnifiedAboutViewController: UIViewController {
         tableView.reloadData()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.tableView.scrollToRow(at: IndexPath(row: 1, section: 2), at: .middle, animated: true)
+        }
+    }
+
     // MARK: - Constants
 
     enum Metrics {
