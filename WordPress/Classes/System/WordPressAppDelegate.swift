@@ -824,6 +824,7 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureTableViewAppearance()
         WPStyleGuide.configureDefaultTint()
         WPStyleGuide.configureLightNavigationBarAppearance()
+        WPStyleGuide.configureToolbarAppearance()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UISwitch.appearance().onTintColor = .primary
