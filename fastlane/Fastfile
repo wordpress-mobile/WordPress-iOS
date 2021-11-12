@@ -118,8 +118,6 @@ platform :ios do
       extracted_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
     )
     ios_update_release_notes(new_version: new_version)
-    get_prs_list(repository: GHHELPER_REPO, milestone: new_version.to_s,
-                 report_path: "#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
     setbranchprotection(repository: GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: new_version)
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
