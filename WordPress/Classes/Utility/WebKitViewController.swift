@@ -322,7 +322,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         let appearance = UIToolbarAppearance()
         appearance.configureWithDefaultBackground()
         appearance.backgroundColor = UIColor(light: .white, dark: .appBarBackground)
-        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
 
         toolBar.standardAppearance = appearance
 
