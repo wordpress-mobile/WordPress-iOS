@@ -1,5 +1,6 @@
 import UIKit
 import SpriteKit
+import CoreMotion
 
 /// A table view cell that contains a SpriteKit game scene which shows logos
 /// of the various apps from Automattic.
@@ -82,6 +83,8 @@ private class AppLogosScene: SKScene {
     // Stores a reference to each of the balls in the scene
     private var balls: [SKNode] = []
 
+    private let motionManager = CMMotionManager()
+
     private var traitCollection: UITraitCollection?
 
 
@@ -89,7 +92,8 @@ private class AppLogosScene: SKScene {
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-
+        
+        motionManager.startAccelerometerUpdates()
         generateScene()
     }
 
@@ -227,5 +231,11 @@ private class AppLogosScene: SKScene {
     enum Constants {
         static let appLogoPrefix = "ua-logo-"
         static let physicsRestitution: CGFloat = 0.5
+    }
+
+    override func update(_ currentTime: TimeInterval) {
+        if let accelerometerData = motionManager.accelerometerData {
+            physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 9.8, dy: accelerometerData.acceleration.y * 9.8)
+        }
     }
 }
