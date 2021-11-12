@@ -317,9 +317,9 @@ private extension CommentDetailViewController {
     }
 
     func configureEditButtonItem() {
-        navigationItem.rightBarButtonItem = comment.canModerate ? UIBarButtonItem(barButtonSystemItem: .edit,
-                                                                                  target: self,
-                                                                                  action: #selector(editButtonTapped)) : nil
+        navigationItem.rightBarButtonItem = comment.allowsModeration() ? UIBarButtonItem(barButtonSystemItem: .edit,
+                                                                                         target: self,
+                                                                                         action: #selector(editButtonTapped)) : nil
     }
 
     func configureTable() {
@@ -342,6 +342,10 @@ private extension CommentDetailViewController {
         // Header and content cells should always be visible, regardless of user roles.
         var rows: [RowType] = [.header, .content]
 
+        defer {
+            self.rows = rows
+        }
+
         if isCommentReplied {
             rows.append(.replyIndicator)
         }
@@ -351,21 +355,21 @@ private extension CommentDetailViewController {
             rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
         }
 
-        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when `canModerate` is true.
-        if comment.canModerate {
-            // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
-            if !comment.author_email.isEmpty {
-                rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
-            }
-
-            rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
-
-            if comment.deleteWillBePermanent() {
-                rows.append(.deleteComment)
-            }
+        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
+        guard comment.allowsModeration() else {
+            return
         }
 
-        self.rows = rows
+        // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
+        if !comment.author_email.isEmpty {
+            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
+        }
+
+        rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
+
+        if comment.deleteWillBePermanent() {
+            rows.append(.deleteComment)
+        }
     }
 
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.

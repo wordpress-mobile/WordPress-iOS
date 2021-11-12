@@ -142,7 +142,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isReactionEnabled = !comment.isReadOnly()
         isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
         isAccessoryButtonEnabled = comment.isApproved()
-        isModerationEnabled = comment.canModerate
+        isModerationEnabled = comment.allowsModeration()
 
         if isModerationEnabled {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
