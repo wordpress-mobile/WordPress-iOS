@@ -304,7 +304,7 @@ workflows:
           requires: [ "Build Tests" ]
       # Always run UI tests on develop and release branches
       - UI Tests:
-          name: UI Tests (iPhone 11)
+          name: UI Tests (iPhone)
           <<: *iphone_test_device
           post-to-slack: true
           requires: [ "Build Tests" ]
@@ -315,7 +315,7 @@ workflows:
                 - /^release.*/
                 - /^gutenberg\/integrate_release_.*/
       - UI Tests:
-          name: UI Tests (iPad Air 4th generation)
+          name: UI Tests (iPad)
           <<: *ipad_test_device
           post-to-slack: true
           requires: [ "Build Tests" ]
@@ -338,11 +338,11 @@ workflows:
                 - /^release.*/
                 - /^gutenberg\/integrate_release_.*/
       - UI Tests:
-          name: UI Tests (iPhone 11)
+          name: UI Tests (iPhone)
           <<: *iphone_test_device
           requires: [ "Optional Tests" ]
       - UI Tests:
-          name: UI Tests (iPad Air 4th generation)
+          name: UI Tests (iPad)
           <<: *ipad_test_device
           requires: [ "Optional Tests" ]
   Installable Build:
