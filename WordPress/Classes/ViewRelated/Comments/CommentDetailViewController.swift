@@ -674,6 +674,7 @@ private extension CommentDetailViewController {
 
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.pendingFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -685,6 +686,7 @@ private extension CommentDetailViewController {
 
         commentService.approve(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.approveSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.approveFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -696,6 +698,7 @@ private extension CommentDetailViewController {
 
         commentService.spamComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.spamSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.spamFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -707,6 +710,7 @@ private extension CommentDetailViewController {
 
         commentService.trashComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.trashSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.trashFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
