@@ -2,6 +2,7 @@
 -----
 * [*] Comment Reply: updated UI. [#17443, #17445]
 * [***] Two-step Authentication notifications now require an unlocked device to approve or deny them.
+* [***] Site Comments: Updated comment details with a fresh new look and capability to display rich contents. [#17466]
 
 18.6
 -----
