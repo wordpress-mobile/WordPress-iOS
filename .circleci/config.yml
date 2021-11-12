@@ -101,7 +101,7 @@ jobs:
           command: bundle --path vendor/bundle
       - run:
           name: Run Unit Tests
-          command: bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
+          command: bundle exec fastlane test_without_building name:WordPressUnitTests device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
   UI Tests:
@@ -133,7 +133,7 @@ jobs:
           background: true
       - run:
           name: Run UI Tests
-          command: bundle exec fastlane test_without_building name:WordPressUITests try_count:3 device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
+          command: bundle exec fastlane test_without_building name:WordPressUITests device:'<< parameters.device >>' ios-version:'<< parameters.ios-version >>'
       - ios/save-xcodebuild-artifacts:
           result-bundle-path: build/results
       - when:
