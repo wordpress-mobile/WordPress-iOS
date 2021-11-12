@@ -110,11 +110,12 @@ extension WPStyleGuide {
     }
 
     class func configureToolbarAppearance() {
-        if #available(iOS 15.0, *) {
-            let appearance = UIToolbarAppearance()
-            appearance.configureWithDefaultBackground()
+        let appearance = UIToolbarAppearance()
+        appearance.configureWithDefaultBackground()
 
-            UIToolbar.appearance().standardAppearance = appearance
+        UIToolbar.appearance().standardAppearance = appearance
+
+        if #available(iOS 15.0, *) {
             UIToolbar.appearance().scrollEdgeAppearance = appearance
         }
     }
