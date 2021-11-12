@@ -28,7 +28,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    // MARK: Constants
+
+    private let customBottomSpacing: CGFloat = 10
+
     // MARK: Outlets
+
+    @IBOutlet private weak var containerStackView: UIStackView!
+    @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -143,6 +150,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
         isAccessoryButtonEnabled = comment.isApproved()
         isModerationEnabled = comment.allowsModeration()
+
+        // When reaction bar is hidden, add some space between the webview and the moderation bar.
+        containerStackView.setCustomSpacing(isReactionEnabled ? 0 : customBottomSpacing, after: webView)
+
+        // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
+        // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
+        containerStackBottomConstraint.constant = (isReactionEnabled || isModerationEnabled) ? 0 : customBottomSpacing
 
         if isModerationEnabled {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
