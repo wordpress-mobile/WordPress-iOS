@@ -14,6 +14,7 @@
 * [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
 * [*] Block editor: Add support for the Mark HTML tag [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4162]
 * [*] Stats Insights: HTML tags no longer display in post titles. [#17380]
+* [*] Block editor: Fixed a crash that could occur when copying lists from Microsoft Word [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4174]
 
 18.5
 -----
