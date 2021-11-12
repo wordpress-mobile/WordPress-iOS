@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-09 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-11 16:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -4426,7 +4426,7 @@ translators: Block name. %s: The localized block name */
 "Needs Update" = "업데이트 필요";
 
 /* Label indicating that a domain name registration has no expiry date. */
-"Never expires" = "만료기간 없음";
+"Never expires" = "만료 기간 없음";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "신규";

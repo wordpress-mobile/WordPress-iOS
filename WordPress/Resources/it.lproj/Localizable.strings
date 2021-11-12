@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-09 10:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-11 21:05:20+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -242,7 +242,7 @@ translators: Block name. %s: The localized block name */
 "%s has no URL set" = "%s non ha un URL impostato";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s link" = "%s link";
+"%s link" = "link %s";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "Le anteprime di %s non sono ancora disponibili";
@@ -1985,7 +1985,7 @@ translators: Block name. %s: The localized block name */
 "Create embed" = "Crea l'incorporamento";
 
 /* No comment provided by engineer. */
-"Create link" = "Create link";
+"Create link" = "Crea un link";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Crea la tua bacheca personalizzata e scegli quali rapporti visualizzare. Concentrati sui dati che ti interessano di più.";
@@ -2622,7 +2622,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "Email inviata!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "Le anteprime dei blocchi incorporati sono in arrivo";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Incorpora la didascalia. %s";
@@ -6213,7 +6213,7 @@ translators: Block name. %s: The localized block name */
 "Select a layout" = "Seleziona un layout";
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
+"Select domain" = "Seleziona un dominio";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Seleziona contenuto multimediale.";
