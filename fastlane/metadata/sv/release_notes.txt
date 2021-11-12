@@ -1,5 +1,5 @@
 - Nu har det blivit enklare att se när det finns nya blocktyper tillgängliga för din webbplats.
-- Nu kan du framhäva text med HTML-taggen <mark> och även ändra text- och bakgrundsfärg för texten på sökblockets knapp. Rejält snitsigt!
+- Nu kan du framhäva text med HTML-taggen "mark" och även ändra text- och bakgrundsfärg för texten på sökblockets knapp. Rejält snitsigt!
 - När du kollar din statistik döljer vi nu eventuella HTML-taggar i inläggsrubriker.
 - Vi har förbättrat funktionen för att hitta nya saker via läsaren – vi visar nya saker du kanske vill läsa, samtidigt som vi på det sättet hjälper webbplatser med låg trafik. Alla vinner på detta!
 - Om du deltar i en kommentarstråd kan du nu hålla koll på nya kommentarer via aviseringar inne i appen och inte bara via e-post.

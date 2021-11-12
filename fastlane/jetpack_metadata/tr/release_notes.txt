@@ -1,5 +1,5 @@
 - Sitenizde kullanılabilecek yeni bloklar olduğunda bunları görmenizi kolaylaştırdık
-- Artık <mark> HTML etiketini kullanarak metni vurgulayabilir ve Arama bloku düğmesinin metin ve arka plan rengini değiştirebilirsiniz. Göz alıcı!
+- Artık "mark" HTML etiketini kullanarak metni vurgulayabilir ve Arama bloku düğmesinin metin ve arka plan rengini değiştirebilirsiniz. Göz alıcı!
 - İstatistiklerinizi kontrol ederken gönderi başlıklarında gördüğünüz HTML etiketlerini gizledik.
 - Bir yorum dizisinin parçasıysanız, yalnızca e-posta gelen kutunuzdan değil, uygulama içi bildirimlerden de takip edebilirsiniz.
 - Yardım ekranı, eskiden dikey görünümden yataya ve ardından tekrar dikey görünüme geçildiğinde çerçevesinden çıkıyordu, ancak şimdi olması gerektiği gibi duruyor.

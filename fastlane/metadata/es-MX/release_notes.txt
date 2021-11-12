@@ -1,5 +1,5 @@
 - Hemos hecho más fácil ver cuándo hay en tu sitio nuevos bloques disponibles para usar
-- Ahora puedes resaltar el texto usando la etiqueta HTML <mark>, así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Brillante!
+- Ahora puedes resaltar el texto usando la etiqueta HTML "mark", así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Brillante!
 - Hemos ocultado las etiquetas HTML en los títulos de las entradas cuando estás comprobando tus estadísticas.
 - Hemos mejorado el descubrimiento del Lector – mostrando nuevas cosas para leer, mientras se echa una mano a los sitios con poco tráfico. Todos salimos ganando.
 - Si eres parte de un debate de comentarios, puedes seguirlo a través de los avisos de la aplicación, no solo en tu bandeja de entrada.

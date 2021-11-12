@@ -1,5 +1,5 @@
 - Vous pouvez désormais voir plus facilement les nouveaux blocs qui sont prêts à être utilisés sur votre site.
-- Vous avez à présent la possibilité de mettre du texte en surbrillance à l’aide de la balise HTML <mark>, ainsi que de modifier le texte et la couleur d’arrière-plan du bouton Rechercher un bloc. Chouette alors !
+- Vous avez à présent la possibilité de mettre du texte en surbrillance à l’aide de la balise HTML "mark", ainsi que de modifier le texte et la couleur d’arrière-plan du bouton Rechercher un bloc. Chouette alors !
 - Nous avons masqué les balises HTML dans les titres des articles lorsque vous consultez vos statistiques.
 - Nous avons amélioré la fonctionnalité Découverte du Lecteur pour vous montrer les nouveautés à lire tout en donnant un coup de pouce aux sites avec un faible trafic. Tout le monde y gagne !
 - Si vous faites partie d’un fil de commentaires, vous pouvez le suivre via les notifications dans l’application, et pas seulement dans votre boîte de réception.
