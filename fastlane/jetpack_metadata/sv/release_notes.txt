@@ -1,5 +1,5 @@
 - Vi har gjort det enklare att se när det finns nya block tillgängliga för användning på din webbplats
-- Du kan nu markera text med hjälp av HTML-taggen <mark>, samt ändra text- och bakgrundsfärg på knappen i sökblocket. Snyggt!
+- Du kan nu markera text med hjälp av HTML-taggen <mark> samt ändra text- och bakgrundsfärg på knappen i sökblocket. Snyggt!
 - Vi har dolt HTML-taggar i inläggsrubriker när du kollar din statistik.
 - Om du är med i en kommentarstråd kan du hålla koll på den med hjälp av notiser i appen, inte bara via e-postmeddelanden till din inkorg.
 - Hjälpskärmen brukade lämna sin ruta vid rotering från stående till liggande läge och vice versa, men nu stannar den kvar.

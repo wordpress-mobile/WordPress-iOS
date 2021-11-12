@@ -1,6 +1,6 @@
-- We've made it easier to see when there are new blocks available for use on your site
-- You can now highlight text using the <mark> HTML tag, as well as change the text and background color of the Search block button. Shiny!
-- We've hidden HTML tags in post titles when you're checking out your stats.
-- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
-- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
-- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
+- שיפרנו את התצוגה כדי לאפשר לך לראות בקלות אם יש בלוקים חדשים שזמינים לשימוש באתר שלך
+-כעת אפשר להדגיש טקסט באמצעות <mark> תגית HTML וכן לשנות את הטקסט ואת צבע הרקע בכפתור של בלוק החיפוש. נוצץ!
+- הסתרנו את תגיות ה-HTML בכותרות הפוסטים בבדיקה של הנתונים הסטטיסטיים.
+- אם רשמת תגובה בשרשור תגובות, אפשר לעקוב אחריו באמצעות הודעות מובנות באפליקציה ולא רק דרך תיבת הדואר הנכנס של האימייל.
+- המסך 'עזרה' חרג מהגבולות שלו בעת סיבוב התצוגה מהאורך לרוחב ובחזרה לאורך, אבל תיקנו את הבעיה.
+- תיקנו עוד מקרים שבהם בלוקים של הטמעה הציגו את השגיאה 'אין אפשרות להציג את התוכן', כדי לאפשר לך לראות את כל התוכן שלך.
