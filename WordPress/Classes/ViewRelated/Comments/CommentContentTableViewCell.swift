@@ -259,16 +259,22 @@ private extension CommentContentTableViewCell {
 
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
+        replyButton?.titleLabel?.adjustsFontSizeToFitWidth = true
+        replyButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         replyButton?.setTitle(.reply, for: .normal)
         replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         replyButton?.setImage(Style.replyIconImage, for: .normal)
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton?.flipInsetsForRightToLeftLayoutDirection()
+        replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
         likeButton?.titleLabel?.font = Style.reactionButtonFont
+        likeButton?.titleLabel?.adjustsFontSizeToFitWidth = true
+        likeButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton?.flipInsetsForRightToLeftLayoutDirection()
+        likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         updateLikeButton(liked: false, numberOfLikes: 0)
     }
 

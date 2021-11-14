@@ -40,7 +40,7 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-Xy-q8c" userLabel="Date Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-Xy-q8c" userLabel="Date Label">
                                                 <rect key="frame" x="0.0" y="16.5" width="208" height="14.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="CzL-pe-Tnr" secondAttribute="bottom" constant="15" id="FLO-bi-cgb"/>
                                     <constraint firstItem="CzL-pe-Tnr" firstAttribute="top" secondItem="9QY-3I-cxv" secondAttribute="top" id="Fs5-LK-eAC"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CzL-pe-Tnr" secondAttribute="trailing" id="R3L-jf-zLP"/>
-                                    <constraint firstAttribute="bottom" secondItem="9QY-3I-cxv" secondAttribute="bottom" priority="750" constant="15" id="S4y-cM-fX9"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9QY-3I-cxv" secondAttribute="bottom" priority="750" constant="15" id="S4y-cM-fX9"/>
                                     <constraint firstItem="9QY-3I-cxv" firstAttribute="top" secondItem="f2E-yC-BJS" secondAttribute="top" constant="20" id="VRu-Tu-EzK"/>
                                     <constraint firstItem="1G8-cc-t5d" firstAttribute="centerY" secondItem="9QY-3I-cxv" secondAttribute="centerY" id="iiu-dq-fba"/>
                                     <constraint firstItem="1G8-cc-t5d" firstAttribute="leading" secondItem="CzL-pe-Tnr" secondAttribute="trailing" id="kMf-Ux-GI7"/>
