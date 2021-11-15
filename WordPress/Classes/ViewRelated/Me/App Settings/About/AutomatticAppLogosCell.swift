@@ -93,21 +93,26 @@ private class AppLogosScene: SKScene {
 
     // Keeps track of the last time a specific physics body made contact.
     // Used to limit the number of haptics impacts we trigger as a result of collisions.
-    fileprivate var contacts: [SKPhysicsBody:TimeInterval] = [:]
+    fileprivate var contacts: [SKPhysicsBody: TimeInterval] = [:]
 
     private var bounds: CGRect {
         view?.bounds ?? .zero
     }
-    
+
     // MARK: - Scene lifecycle
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        
+
         motionManager.startAccelerometerUpdates()
+
         generateScene()
 
         scene?.physicsWorld.contactDelegate = self
+    }
+
+    deinit {
+        motionManager.stopAccelerometerUpdates()
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
@@ -243,11 +248,30 @@ private class AppLogosScene: SKScene {
         static let physicsRestitution: CGFloat = 0.5
         static let phyicsContactDebounce: TimeInterval = 0.25
         static let hapticsImpulseThreshold: TimeInterval = 0.10
+        static let gravityModifier: CGFloat = 9.8
     }
 
     override func update(_ currentTime: TimeInterval) {
         if let accelerometerData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.x * 9.8, dy: accelerometerData.acceleration.y * 9.8)
+            let acceleration = accelerometerData.acceleration
+            let gravity = gravityVector(with: acceleration)
+
+            physicsWorld.gravity = CGVector(dx: gravity.dx * Constants.gravityModifier, dy: gravity.dy * Constants.gravityModifier)
+        }
+    }
+
+    private func gravityVector(with acceleration: CMAcceleration) -> CGVector {
+        switch UIDevice.current.orientation {
+        case .portraitUpsideDown:
+            // iPad always rotates the screen so needs the axes flipped, but iPhone keeps the orientation locked
+            return UIDevice.current.userInterfaceIdiom == .pad ?
+                CGVector(dx: -acceleration.x, dy: -acceleration.y) : CGVector(dx: acceleration.x, dy: acceleration.y)
+        case .landscapeLeft:
+            return CGVector(dx: -acceleration.y, dy: acceleration.x)
+        case .landscapeRight:
+            return CGVector(dx: acceleration.y, dy: -acceleration.x)
+        default:
+            return CGVector(dx: acceleration.x, dy: acceleration.y)
         }
     }
 }
@@ -255,7 +279,7 @@ private class AppLogosScene: SKScene {
 extension AppLogosScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let currentTime = CACurrentMediaTime()
-        
+
         // If we trigger a haptics impact for every single impact it feels a bit much,
         // so we'll ignore concurrent contacts for the same physics body within a small timeout.
         if let timestamp = contacts[contact.bodyA],
@@ -267,7 +291,7 @@ extension AppLogosScene: SKPhysicsContactDelegate {
         // and a rigid generator for harder collisions so we have some variety in the feedback.
         let generator: UIImpactFeedbackGenerator = contact.collisionImpulse < Constants.hapticsImpulseThreshold ? softGenerator : rigidGenerator
         generator.impactOccurred()
-        
+
         contacts[contact.bodyA] = currentTime
     }
 }

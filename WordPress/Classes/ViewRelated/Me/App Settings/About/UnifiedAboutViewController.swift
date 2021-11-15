@@ -68,7 +68,7 @@ struct AboutItem {
     }
 }
 
-class UnifiedAboutViewController: UIViewController {
+class UnifiedAboutViewController: UIViewController, OrientationLimited {
     static let sections: [[AboutItem]] = [
         [
             AboutItem(title: "Rate Us"),
@@ -86,6 +86,8 @@ class UnifiedAboutViewController: UIViewController {
             AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
         ]
     ]
+
+    private static let appLogosIndexPath = IndexPath(row: 1, section: 2)
 
     let headerView: UIView = {
         // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
@@ -138,6 +140,10 @@ class UnifiedAboutViewController: UIViewController {
         return footerView
     }()
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -165,8 +171,8 @@ class UnifiedAboutViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.tableView.scrollToRow(at: IndexPath(row: 1, section: 2), at: .middle, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.appLogosScrollDelay) {
+            self.tableView.scrollToRow(at: UnifiedAboutViewController.appLogosIndexPath, at: .middle, animated: true)
         }
     }
 
@@ -175,6 +181,10 @@ class UnifiedAboutViewController: UIViewController {
     enum Metrics {
         static let footerHeight: CGFloat = 58.0
         static let footerVerticalOffset: CGFloat = 20.0
+    }
+
+    enum Constants {
+        static let appLogosScrollDelay: TimeInterval = 0.25
     }
 
     enum Images {
