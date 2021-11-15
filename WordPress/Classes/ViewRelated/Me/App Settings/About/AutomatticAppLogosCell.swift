@@ -265,7 +265,7 @@ private class AppLogosScene: SKScene {
             // iPhone locks the interface orientation, so we can just use the acceleration as-is
             return CGVector(dx: acceleration.x, dy: acceleration.y)
         }
-        
+
         // iPad rotates the interface so we need to change the gravity acceleration to match
         switch UIDevice.current.orientation {
         case .portraitUpsideDown:
