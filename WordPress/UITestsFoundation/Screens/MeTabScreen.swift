@@ -28,7 +28,7 @@ public class MeTabScreen: ScreenObject {
         return logOutButton.exists
     }
 
-    public func logout() -> WelcomeScreen {
+    public func logout() throws -> WelcomeScreen {
         app.cells["logOutFromWPcomButton"].tap()
 
         // Some localizations have very long "log out" text, which causes the UIAlertView
@@ -40,7 +40,7 @@ public class MeTabScreen: ScreenObject {
             logOutAlert.buttons.element(boundBy: 1).tap()
         }
 
-        return WelcomeScreen()
+        return try WelcomeScreen()
     }
 
     public func logoutToPrologue() throws -> PrologueScreen {
@@ -64,9 +64,9 @@ public class MeTabScreen: ScreenObject {
         return try PrologueScreen()
     }
 
-    public func dismiss() -> MySiteScreen {
+    public func dismiss() throws -> MySiteScreen {
         app.buttons["Done"].tap()
 
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 }

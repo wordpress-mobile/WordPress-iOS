@@ -66,6 +66,16 @@ public class Comment: NSManagedObject {
         return parentID > 0
     }
 
+
+    /// Convenience method to check if the current user can actually moderate.
+    /// `canModerate` is only applicable when the site is dotcom-related (hosted or atomic). For self-hosted sites, default to true.
+    func allowsModeration() -> Bool {
+        guard let blog = blog,
+              (blog.isHostedAtWPcom || blog.isAtomic()) else {
+                  return true
+              }
+        return canModerate
+    }
 }
 
 private extension Comment {
@@ -104,7 +114,7 @@ extension Comment: PostContentProvider {
         return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
-    public func authorForDisplay() -> String {
+    @objc public func authorForDisplay() -> String {
         let displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
         return !displayAuthor.isEmpty ? displayAuthor : gravatarEmailForDisplay()
     }

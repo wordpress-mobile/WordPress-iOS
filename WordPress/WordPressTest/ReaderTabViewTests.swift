@@ -1,16 +1,17 @@
 @testable import WordPress
 import XCTest
+import CoreData
 
 
 class ReaderTabViewTests: XCTestCase {
 
     var contextManager: TestContextManager!
-    var context: MockContext!
+    var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
         contextManager = TestContextManager()
-        context = contextManager.getMockContext()
+        context = contextManager.mainContext
     }
 
     override func tearDown() {

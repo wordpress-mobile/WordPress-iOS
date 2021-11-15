@@ -451,7 +451,7 @@ extension NotificationDetailsViewController {
         let previousReply = NotificationReplyStore.shared.loadReply(for: note.notificationId)
         let replyTextView = ReplyTextView(width: view.frame.width)
 
-        replyTextView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
+        replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
         replyTextView.text = previousReply
         replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
@@ -518,7 +518,7 @@ extension NotificationDetailsViewController {
     }
 
     var shouldAttachReplyView: Bool {
-        // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
+        // Attach the Reply component only if the notification has a comment, and it can be replied to.
         //
         guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
             return false
@@ -772,6 +772,11 @@ private extension NotificationDetailsViewController {
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
+
+        // Add comment author's name to Reply placeholder.
+        let placeholderFormat = NSLocalizedString("Reply to %1$@",
+                                                  comment: "Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.")
+        replyTextView.placeholder = String(format: placeholderFormat, cell.name ?? String())
 
         // Setup: Callbacks
         cell.onUserClick = { [weak self] in

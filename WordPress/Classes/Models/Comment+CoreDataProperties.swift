@@ -25,6 +25,7 @@ extension Comment {
     @NSManaged public var parentID: Int32
     @NSManaged public var depth: Int16
     @NSManaged public var hierarchy: String
+    @NSManaged public var replyID: Int32
 
     /*
      // Hierarchy is a string representation of a comments ancestors. Each ancestor's
