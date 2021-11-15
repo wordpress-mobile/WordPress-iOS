@@ -73,7 +73,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
-        
+
         trackNoSitesVisibleIfNeeded()
     }
 
@@ -179,7 +179,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if noResultsViewController.view.superview != nil {
             WPAnalytics.track(.mySiteNoSitesViewHidden)
         }
-        
+
         hideNoResults()
 
         cleanupNoResultsView()
@@ -203,12 +203,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
     }
-    
+
     private func trackNoSitesVisibleIfNeeded() {
         guard noResultsViewController.view.superview != nil else {
             return
         }
-        
+
         WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 

@@ -209,7 +209,7 @@ import Foundation
     case domainsRegistrationFormViewed
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
-        
+
     // My Site: No sites view displayed
     case mySiteNoSitesViewDisplayed
     case mySiteNoSitesViewActionTapped
@@ -579,7 +579,7 @@ import Foundation
             return "domains_registration_form_submitted"
         case .domainsPurchaseWebviewViewed:
             return "domains_purchase_webview_viewed"
-            
+
         // My Site No Sites View
         case .mySiteNoSitesViewDisplayed:
             return "my_site_no_sites_view_displayed"
