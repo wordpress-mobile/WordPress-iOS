@@ -57,9 +57,9 @@ public class BlockEditorScreen: BaseScreen {
     /**
      Adds an image block with latest image from device.
      */
-    public func addImage() -> BlockEditorScreen {
+    public func addImage() throws -> BlockEditorScreen {
         addBlock("Image block")
-        addImageByOrder(id: 0)
+        try addImageByOrder(id: 0)
 
         return self
     }
@@ -126,14 +126,14 @@ public class BlockEditorScreen: BaseScreen {
     /*
      Select Image from Camera Roll by its ID. Starts with 0
      */
-    private func addImageByOrder(id: Int) {
+    private func addImageByOrder(id: Int) throws {
         imageDeviceButton.tap()
 
         // Allow access to device media
         app.tap() // trigger the media permissions alert handler
 
         // Inject the first picture
-        MediaPickerAlbumListScreen()
+        try MediaPickerAlbumListScreen()
             .selectAlbum(atIndex: 0)
             .selectImage(atIndex: 0)
     }

@@ -90,14 +90,14 @@ public class MySiteScreen: BaseScreen {
         return try JetpackBackupScreen()
     }
 
-    public func gotoPostsScreen() -> PostsScreen {
+    public func gotoPostsScreen() throws -> PostsScreen {
         // A hack for iPad, because sometimes tapping "posts" doesn't load it the first time
         if XCUIDevice.isPad {
             mediaButton.tap()
         }
 
         postsButton.tap()
-        return PostsScreen()
+        return try PostsScreen()
     }
 
     public func gotoMediaScreen() -> MediaScreen {

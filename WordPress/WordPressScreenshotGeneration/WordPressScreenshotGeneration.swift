@@ -95,13 +95,13 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
         try TabNavComponent()
-            .gotoReaderScreen()
+            .goToReaderScreen()
             .openDiscover()
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
         let notificationList = try TabNavComponent()
-            .gotoNotificationsScreen()
+            .goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
             notificationList
