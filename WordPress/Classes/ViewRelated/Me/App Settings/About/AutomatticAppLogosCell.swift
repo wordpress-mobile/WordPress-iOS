@@ -261,11 +261,15 @@ private class AppLogosScene: SKScene {
     }
 
     private func gravityVector(with acceleration: CMAcceleration) -> CGVector {
+        guard UIDevice.current.userInterfaceIdiom == .pad else {
+            // iPhone locks the interface orientation, so we can just use the acceleration as-is
+            return CGVector(dx: acceleration.x, dy: acceleration.y)
+        }
+        
+        // iPad rotates the interface so we need to change the gravity acceleration to match
         switch UIDevice.current.orientation {
         case .portraitUpsideDown:
-            // iPad always rotates the screen so needs the axes flipped, but iPhone keeps the orientation locked
-            return UIDevice.current.userInterfaceIdiom == .pad ?
-                CGVector(dx: -acceleration.x, dy: -acceleration.y) : CGVector(dx: acceleration.x, dy: acceleration.y)
+            return CGVector(dx: -acceleration.x, dy: -acceleration.y)
         case .landscapeLeft:
             return CGVector(dx: -acceleration.y, dy: acceleration.x)
         case .landscapeRight:
