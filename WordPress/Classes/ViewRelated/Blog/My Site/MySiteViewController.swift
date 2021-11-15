@@ -73,6 +73,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
+        
+        trackNoSitesVisibleIfNeeded()
     }
 
     private func subscribeToPostSignupNotifications() {
@@ -173,6 +175,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - No Sites UI logic
 
     private func hideNoSites() {
+        // Only track if the no sites view is currently visible
+        if noResultsViewController.view.superview != nil {
+            WPAnalytics.track(.mySiteNoSitesViewHidden)
+        }
+        
         hideNoResults()
 
         cleanupNoResultsView()
@@ -195,6 +202,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
+    }
+    
+    private func trackNoSitesVisibleIfNeeded() {
+        guard noResultsViewController.view.superview != nil else {
+            return
+        }
+        
+        WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 
     private func makeNoResultsScrollView() {
@@ -223,6 +238,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                           image: "mysites-nosites")
         noResultsViewController.actionButtonHandler = { [weak self] in
             self?.presentInterfaceForAddingNewSite()
+            WPAnalytics.track(.mySiteNoSitesViewActionTapped)
         }
     }
 
