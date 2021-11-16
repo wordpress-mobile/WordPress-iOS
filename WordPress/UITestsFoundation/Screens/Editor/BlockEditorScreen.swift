@@ -107,7 +107,14 @@ public class BlockEditorScreen: ScreenObject {
 
     public func publish() throws -> EditorNoticeComponent {
         let publishButton = app.buttons["Publish"]
-        publishButton.tap()
+        let publishNowButton = app.buttons["Publish Now"]
+        var tries = 0
+        // This loop to check for Publish Now Button is an attempt to confirm that the publishButton.tap() call took effect.
+        // The tests would fail sometimes in the pipeline with no apparent reason.
+        repeat {
+            publishButton.tap()
+            tries += 1
+        } while !publishNowButton.waitForIsHittable(timeout: 3) && tries <= 3
         try confirmPublish()
 
         return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
