@@ -28,12 +28,12 @@ private extension LoginEpilogueChooseSiteTableViewCell {
 
     func setupTitleLabel() {
         titleLabel.text = NSLocalizedString("Choose a site to open.", comment: "A text for title label on Login epilogue screen")
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
     }
 
     func setupSubtitleLabel() {
         subtitleLabel.text = NSLocalizedString("You can switch sites at any time.", comment: "A text for subtitle label on Login epilogue screen")
-        subtitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        subtitleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         subtitleLabel.textColor = .secondaryLabel
     }
 
@@ -43,17 +43,17 @@ private extension LoginEpilogueChooseSiteTableViewCell {
         stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubviews([titleLabel, subtitleLabel])
-        addSubview(stackView)
+        contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.stackViewHorizontalMargin),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.stackViewHorizontalMargin),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewTopMargin),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.stackViewBottomMargin)
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.stackViewHorizontalMargin),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.stackViewHorizontalMargin),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.stackViewTopMargin),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.stackViewBottomMargin)
         ])
     }
 
     private enum Constants {
-        static let stackViewSpacing: CGFloat = 8.0
+        static let stackViewSpacing: CGFloat = 4.0
         static let stackViewHorizontalMargin: CGFloat = 20.0
         static let stackViewTopMargin: CGFloat = 16.0
         static let stackViewBottomMargin: CGFloat = 26.0
