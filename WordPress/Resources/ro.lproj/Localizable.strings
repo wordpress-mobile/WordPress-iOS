@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-25 19:55:10+0000 */
+/* Translation-Revision-Date: 2021-11-05 10:57:30+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Administrat automat pe acest site";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Reînnoirea automată este activată";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Aprobă automat";
@@ -1536,7 +1539,7 @@ translators: Block name. %s: The localized block name */
 "Comment Likes" = "Aprecieri la comentarii";
 
 /* Message displayed when approving a comment succeeds. */
-"Comment approved." = "Comentariu aprobat.";
+"Comment approved." = "Comentariul a fost aprobat.";
 
 /* Message displayed when deleting a comment succeeds. */
 "Comment deleted." = "Comentariu șters.";
@@ -1548,7 +1551,7 @@ translators: Block name. %s: The localized block name */
 "Comment has been marked as Spam" = "Comentariul a fost marcat ca spam";
 
 /* Message displayed when spamming a comment succeeds. */
-"Comment marked as spam." = "Comentariu marcat ca spam.";
+"Comment marked as spam." = "Comentariul a fost marcat ca spam.";
 
 /* Message displayed when trashing a comment succeeds. */
 "Comment moved to trash." = "Comentariul a fost aruncat la gunoi.";
@@ -1559,6 +1562,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Comentariu pus în așteptare.";
+
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Comentează pentru a crea conexiuni.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Felicitări, ai terminat Inițierea rapidă 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Felicitări";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Felicitări pentru finalizarea listei. Ai făcut o treabă bună.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Felicitări pentru achiziția ta!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Conectare pentru a partaja automat articolele blogului tău cu %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Conectează-te cu alți bloggeri urmărind, apreciind și comentând articolele lor.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Conectează serviciile tale sociale media pentru a partaja automat noile articole cu prietenii.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Structură conținut\nBlocuri: %1$li; cuvinte: %2$li; caractere: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Nu am putut verifica cumpărăturile pe site.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Nu am putut dezactiva notificările";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Nu am putut activa notificările";
 
 /* Title of a prompt. */
 "Could not follow site" = "Nu am putut urmări site-ul";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descoperă și urmărește blogurile care îți plac";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Descoperă bloguri pe care să le urmărești";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Găsește mai multe subiecte";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Respinge anunțurile";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Închide ecranul";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Afișează statistici site pentru azi aici. Configurează statisticile site-ului în aplicația WordPress.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Fă-o din nou";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Document: %@";
@@ -2630,6 +2653,7 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "URL gol";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Activează";
 
@@ -2641,6 +2665,12 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Activează statistici site";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "Activează notificările în aplicație";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "Activezi notificările în aplicație?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Activează accesul la microfon pentru a înregistra sunetul în videourile tale.";
@@ -2884,8 +2914,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Se extinde pentru a selecta o altă zonă din meniu";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Expirat";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Expiră pe";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Expiră pe %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Descrie acest site.";
@@ -3047,7 +3083,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Înlătur amenințările...";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Urmărire";
 
@@ -3062,6 +3099,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Urmărește subiecte";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Urmărește subiectele care te interesează și vom găsi câteva bloguri care s-ar putea să îți placă.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3104,6 +3144,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Urmăresc subiecte noi...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Urmărești această conversație";
 
 /* Filters Follows Notifications */
 "Follows" = "Urmăriri";
@@ -3507,6 +3550,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "Pentru a partaja articolele publicate pe rețelele de socializare, trebuie să activezi extensia Publicizare.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "Notificările în aplicație sunt dezactivate";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "Notificările în aplicație sunt activate";
+
 /* Describes a status of a plugin */
 "Inactive" = "Inactiv";
 
@@ -3745,6 +3794,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Continuă să scrii pe blog și întoarce-te apoi pentru a vedea vizitatorii site-ului.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Continuă! Aprecierile și comentariile sunt o modalitate bună de a construi o rețea. Mergi la Cititor pentru a găsi mai multe articole.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Fii la curent cu performanța site-ului tău.";
@@ -4376,6 +4428,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Necesită actualizare";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Nu expiră niciodată";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Noi";
 
@@ -4412,7 +4467,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Cele mai noi la început";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4846,6 +4902,9 @@ translators: Block name. %s: The localized block name */
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Deschide legătură într-o fereastră\/filă nouă";
 
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Deschide setările de abonare pentru articol";
+
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Deschide secțiunea Eu";
 
@@ -4953,7 +5012,7 @@ translators: Block name. %s: The localized block name */
 "Page pending review" = "Pagină în așteptarea revizuirii";
 
 /* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Pagină publicată";
+"Page published" = "Pagina a fost publicată";
 
 /* Title of notification displayed when a page has been successfully scheduled. */
 "Page scheduled" = "Pagina este programată";
@@ -5268,13 +5327,13 @@ translators: Block name. %s: The localized block name */
 "Post pending review" = "Articol în așteptarea revizuirii";
 
 /* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Articol publicat";
+"Post published" = "Articolul a fost publicat";
 
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Articol înlăturat.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
-"Post saved." = "Articol salvat.";
+"Post saved." = "Articolul a fost salvat.";
 
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Articolul este programat";
@@ -5709,6 +5768,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Înlăturarea pașilor următori va ascunde toate tururile de pe acest site. Această acțiune nu poate fi anulată.";
+
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Se reînnoiește la %@";
 
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Înlocuiește";
@@ -6561,9 +6623,6 @@ translators: Block name. %s: The localized block name */
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Ceva nu a mers bine";
 
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Ceva n-a mers bine, te rog încearcă din nou.";
-
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Ceva n-a mers bine. Te rog verifică conectivitatea și încearcă din nou.";
 
@@ -6865,9 +6924,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Atinge aici pentru a afișa ajutorul";
-
-/* No comment provided by engineer. */
-"Tap to add content" = "Atinge pentru a adăuga conținut";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Atinge pentru anularea încărcării.";
@@ -7658,9 +7714,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Nu pot găsi un site WordPress la acel URL. Atinge „Ai nevoi de ajutor?” pentru a vedea Întrebări frecvente.";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Nu pot înregistra domeniul";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Nu pot să restaurez site-ul";
 
@@ -7741,6 +7794,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Subliniere";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7753,6 +7807,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Anulează urmărirea %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Anulează urmărirea conversației";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Anulează urmărirea conversației prin email";
@@ -8814,6 +8871,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Nu ești autorizat să închizi contul.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "Te-ai conectat la alte bloguri";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Ai modificări nesalvate la acest articol";
 
@@ -8855,6 +8915,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Elementul media nu a putut fi exportat. Dacă problema persistă poți să ne contactezi folosind ecranul Eu > Ajutor și suport.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Noul tău domeniu %@ este în curs de inițializare. Poate dura până la 30 de minute înainte ca domeniul tău să fie funcțional.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Notificările tale călătoresc împreună cu tine — vezi comentariile și aprecierile imediat ce apar.";
@@ -8921,6 +8984,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Datele de conectare ale site-ului tău web nu vor fi stocate și sunt folosite numai în scopul de a instala Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Urmărești această conversație. Vei primi un email și o notificare ori de câte ori apare un nou comentariu.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "Urmărești această conversație. Vei primi un email ori de câte ori apare un nou comentariu.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Acum folosești editorul de blocuri pentru pagini noi - foarte bine! Dacă vrei să treci la editorul clasic, mergi la „Site-ul meu > „Setări site”.";
@@ -9070,9 +9139,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, site-uri, site, bloguri, blog";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "domeniul tău %@ este inițializat acum. Site-ul tău face tumbe de bucurie!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "site-ul tău";

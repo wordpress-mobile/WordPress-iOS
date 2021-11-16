@@ -36,4 +36,20 @@ extension ScreenObject {
             safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
         }
     }
+
+    @discardableResult
+    public func dismissNotificationAlertIfNeeded(
+        _ action: FancyAlertComponent.Action = .cancel
+    ) throws -> Self {
+        guard FancyAlertComponent.isLoaded() else { return self }
+
+        switch action {
+        case .accept:
+            try FancyAlertComponent().acceptAlert()
+        case .cancel:
+            try FancyAlertComponent().cancelAlert()
+        }
+
+        return self
+    }
 }

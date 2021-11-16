@@ -1,7 +1,6 @@
-Mit diesem Update wird das Einbetten externer Inhalte auf deinen Websites noch einfacher! Neu: die eigenen Embed-Blöcke für Facebook, Instagram, Loom und Smartframe. Außerdem erkennt der Editor einbettbare URLs, die du in einen leeren Absatz einfügst. Abgesehen von diesen neuen Features haben wir ein Problem behoben, bei dem einige eingebettete URLs nicht bearbeitet werden konnten, und das Abschneiden der Vorschau angepasst, damit du immer den vollständigen eingebetteten Inhalt siehst.
-
-Apropos Blöcke: Du kannst jetzt in den Pullquote- und Vorformatiert-Blöcken den Text und die Hintergrundfarbe anpassen.
-
-Brauchst du Unterstützung dabei, mehr Leser zu erreichen? Die neuen Publicize- und Blog-Erinnerungen helfen dir, einen konsistenten Veröffentlichungsplan einzuhalten.
-
-Und schließlich haben wir die Unterstützung für größere Textgrößen bei der Auswahl einer Startseite oder eines Seitenlayouts verbessert, einen Fehler behoben, durch den die Liste der Website-Kommentare in bestimmten Fällen nicht aktualisiert wurde, und den Header des Vorveröffentlichungs-Bottom-Sheets überarbeitet.
+- Jetzt kannst du einfacher feststellen, ob neue Blocks für die Nutzung auf deiner Website verfügbar sind
+- Jetzt kannst du Text mit dem HTML-Tag "mark" hervorheben und sowohl den Text als auch die Hintergrundfarbe des Buttons „Block suchen“ verändern. Wie das funkelt!
+- Wir haben HTML-Tags in Beitragstiteln versteckt, wenn du deine Statistiken überprüfst.
+- Falls du Teil eines Kommentar-Threads bist, kannst du diesen durch Benachrichtigungen in der App und nicht nur per E-Mail im Blick behalten.
+- Der Hilfe-Bildschirm hat früher seinen Rahmen überschritten, wenn er von Hochformat zu Querformat und zurück zu Hochformat gedreht wurde. Das passiert jetzt nicht mehr.
+- Wir haben noch weitere Fälle behoben, in denen Embed-Blocks „Inhalt kann nicht angezeigt werden“ angezeigt haben. Jetzt kannst du all deine Inhalte sehen.

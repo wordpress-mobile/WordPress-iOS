@@ -31,6 +31,33 @@ struct AboutItem {
         }
     }
 
+    var cellHeight: CGFloat {
+        switch cellStyle {
+        case .appLogos:
+            return AutomatticAppLogosCell.Metrics.cellHeight
+        default:
+            return UITableView.automaticDimension
+        }
+    }
+
+    var cellAccessoryType: UITableViewCell.AccessoryType {
+        switch cellStyle {
+        case .appLogos:
+            return .none
+        default:
+            return .disclosureIndicator
+        }
+    }
+
+    var cellSelectionStyle: UITableViewCell.SelectionStyle {
+        switch cellStyle {
+        case .appLogos:
+            return .none
+        default:
+            return .default
+        }
+    }
+
     enum AboutItemCellStyle: String {
         // Displays only a title
         case `default`
@@ -43,7 +70,7 @@ struct AboutItem {
     }
 }
 
-class UnifiedAboutViewController: UIViewController {
+class UnifiedAboutViewController: UIViewController, OrientationLimited {
     static let sections: [[AboutItem]] = [
         [
             AboutItem(title: "Rate Us", eventButton: .rateUs),
@@ -80,6 +107,8 @@ class UnifiedAboutViewController: UIViewController {
     }
     
     // MARK: - Views
+
+    private static let appLogosIndexPath = IndexPath(row: 1, section: 2)
 
     let headerView: UIView = {
         // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
@@ -130,6 +159,10 @@ class UnifiedAboutViewController: UIViewController {
         return footerView
     }()
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -170,11 +203,23 @@ class UnifiedAboutViewController: UIViewController {
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.appLogosScrollDelay) {
+            self.tableView.scrollToRow(at: UnifiedAboutViewController.appLogosIndexPath, at: .middle, animated: true)
+        }
+    }
+
     // MARK: - Constants
 
     enum Metrics {
         static let footerHeight: CGFloat = 58.0
         static let footerVerticalOffset: CGFloat = 20.0
+    }
+
+    enum Constants {
+        static let appLogosScrollDelay: TimeInterval = 0.25
     }
 
     enum Images {
@@ -201,9 +246,17 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
         cell.textLabel?.text = row.title
         cell.detailTextLabel?.text = row.subtitle
-        cell.accessoryType = .disclosureIndicator
+        cell.accessoryType = row.cellAccessoryType
+        cell.selectionStyle = row.cellSelectionStyle
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = Self.sections[indexPath.section]
+        let row = section[indexPath.row]
+
+        return row.cellHeight
     }
 }
 
@@ -220,7 +273,4 @@ extension UnifiedAboutViewController: UITableViewDelegate {
 
         row.action?()
     }
-}
-
-class AutomatticAppLogosCell: UITableViewCell {
 }

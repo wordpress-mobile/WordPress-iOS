@@ -1,7 +1,6 @@
-Pembaruan ini mempermudah penyematan konten eksternal pada situs Anda! Memperkenalkan blok sematan khusus baru untuk Facebook, Instagram, Loom, dan Smartframe. Selain itu, editor secara otomatis mendeteksi URL yang dapat disematkan dan Anda tempelkan pada paragraf kosong. Bersama fitur-fitur baru ini, kami memperbaiki masalah terkait sejumlah sematan URL yang tidak dapat disunting dan disesuaikan batas pratinjaunya sehingga Anda akan selalu melihat konten yang disematkan secara penuh.
-
-Mengenai blok, sekarang Anda dapat menyesuaikan teks dan warna latar belakang di blok Kutipan Besar dan blok Praformat.
-
-Butuh bantuan untuk menjangkau lebih banyak pembaca? Peningkatan Pengingat Publikasikan dan Blogging akan membantu Anda menjalankan jadwal pos yang konsisten.
-
-Terakhir, kami meningkatkan dukungan untuk ukuran teks yang lebih besar saat menentukan beranda atau tata letak halaman, memperbaiki daftar komentar situs yang tidak disegarkan pada kesempatan tertentu, dan mempercantik header lembar bawah prapublikasi.
+- Kami mempermudah pengenalan blok baru yang tersedia untuk digunakan di situs Anda
+- Sekarang Anda dapat menyorot teks, serta mengubah teks dan warna latar belakang tombol blok Pencarian menggunakan tag HTML "mark". Menakjubkan!
+- Kami menyembunyikan tag HTML pada judul pos saat Anda memeriksa statistik.
+- Jika terlibat dalam sebuah utas komentar, Anda bisa melacaknya melalui pemberitahuan aplikasi, bukan hanya dari kotak masuk email Anda.
+- Layar Bantuan biasanya akan keluar dari kotaknya saat layar diputar dari potret ke lanskap lalu kembali ke potret, tetapi sekarang sudah diperbaiki.
+- Kami memperbaiki masalah yang membuat blok sematan menampilkan "tidak dapat menampilkan konten" sehingga Anda dapat melihat semua konten.

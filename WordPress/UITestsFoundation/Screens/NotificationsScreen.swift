@@ -1,28 +1,28 @@
+import ScreenObject
 import XCTest
 
-public class NotificationsScreen: BaseScreen {
+public class NotificationsScreen: ScreenObject {
 
-    let replyButton: XCUIElement
-
-    init() {
-        let navBar = XCUIApplication().tables["Notifications Table"]
-        replyButton = XCUIApplication().buttons["reply-button"]
-
-        super.init(element: navBar)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.tables["Notifications Table"] } ],
+            app: app
+        )
     }
 
     public func openNotification(withText notificationText: String) -> NotificationsScreen {
-        XCUIApplication().staticTexts[notificationText].tap()
+        app.staticTexts[notificationText].tap()
         return self
     }
 
     @discardableResult
     public func replyToNotification() -> NotificationsScreen {
+        let replyButton = app.buttons["reply-button"]
         replyButton.tap()
         return self
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().tables["Notifications Table"].exists
+        (try? NotificationsScreen().isLoaded) ?? false
     }
 }

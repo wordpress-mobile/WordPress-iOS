@@ -18,10 +18,10 @@ public class WelcomeScreenLoginComponent: BaseScreen {
         super.init(element: emailLoginButton)
     }
 
-    public func selectEmailLogin() -> LoginEmailScreen {
+    public func selectEmailLogin() throws -> LoginEmailScreen {
         emailLoginButton.tap()
 
-        return LoginEmailScreen()
+        return try LoginEmailScreen()
     }
 
     func goToSiteAddressLogin() -> LoginSiteAddressScreen {

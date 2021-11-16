@@ -1,7 +1,8 @@
-Med denna uppdatering blir det ännu enklare att lägga in externt innehåll på dina webbplatser, med våra nya specialiserade inbäddningsblock för Facebook, Instagram, Loom och  Smartframe. Dessutom känner redigeraren automatiskt igen inbäddningsbara URL:er när du klistrar in dem i ett tomt stycke. Förutom dessa nya funktioner har vi även rättat till ett problem där det inte gick att redigera en inbäddad URL och anpassat förhandsvisningen så att du alltid kan se hela det inbäddade innehållet.
-
-På tal om block: nu kan du också anpassa färgen på text och bakgrund i blocken för framhävt citat och förformaterad text.
-
-Behöver du hjälp att nå fler läsare? Den nya påminnelsefunktionen för publicering och bloggning kan hjälpa dig att upprätthålla ett stabilt publiceringsschema.
-
-Slutligen har vi förbättrat stödet för stora textstorlekar när du väljer layout för startsidan eller andra sidor. Vi har rättat ett problem där kommentarslistan i vissa fall inte uppdaterades och snyggat till huvudet för sidans nedre område före publicering.
+- Nu har det blivit enklare att se när det finns nya blocktyper tillgängliga för din webbplats.
+- Nu kan du framhäva text med HTML-taggen "mark" och även ändra text- och bakgrundsfärg för texten på sökblockets knapp. Rejält snitsigt!
+- När du kollar din statistik döljer vi nu eventuella HTML-taggar i inläggsrubriker.
+- Vi har förbättrat funktionen för att hitta nya saker via läsaren – vi visar nya saker du kanske vill läsa, samtidigt som vi på det sättet hjälper webbplatser med låg trafik. Alla vinner på detta!
+- Om du deltar i en kommentarstråd kan du nu hålla koll på nya kommentarer via aviseringar inne i appen och inte bara via e-post.
+- På tal om kommentarer: vi har hört att vissa kommentarer ibland inte syntes om man läste kommentarerna i läsaren. Vi har hittat och åtgärdat det problemet nu.
+- Hjälpskärmen kunde hoppa ut ur sin ruta om man vred sin enhet fram och tillbaka mellan liggande och stående. Nu håller den sig på sin plats.
+- Vi har korrigerat flera fall där inbäddningsblock gav och och visade ”kan inte visa innehållet” så att du nu kan se allt ditt innehåll.
