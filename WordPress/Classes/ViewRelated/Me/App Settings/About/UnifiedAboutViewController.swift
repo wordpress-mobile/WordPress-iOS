@@ -9,15 +9,13 @@ struct AboutItem {
     let cellStyle: AboutItemCellStyle
     let accessoryType: UITableViewCell.AccessoryType
     let hidesSeparator: Bool
-    let action: (() -> Void)?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, action: (() -> Void)? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
         self.accessoryType = accessoryType
         self.hidesSeparator = hidesSeparator
-        self.action = action
     }
 
     func makeCell() -> UITableViewCell {
@@ -64,25 +62,51 @@ struct AboutItem {
 }
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
-    static let sections: [[AboutItem]] = [
+    enum ItemIdentifier {
+        case rateUs
+        case share
+        case socialTwitter
+        case socialFacebook
+        case socialInstagram
+        case legalAndMore
+        case automatticFamily
+        case appLogos
+        case workWithUs
+    }
+
+    let sections: [[ItemIdentifier]] = [
         [
-            AboutItem(title: "Rate Us", accessoryType: .none),
-            AboutItem(title: "Share with Friends", accessoryType: .none),
-            AboutItem(title: "Twitter", subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none)
+            .rateUs,
+            .share,
+            .socialTwitter
         ],
         [
-            AboutItem(title: "Legal and More")
+            .legalAndMore
         ],
         [
-            AboutItem(title: "Automattic Family", hidesSeparator: true),
-            AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
+            .automatticFamily,
+            .appLogos
         ],
         [
-            AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
+            .workWithUs
         ]
     ]
 
     private static let appLogosIndexPath = IndexPath(row: 1, section: 2)
+
+    let itemDetails: [ItemIdentifier: AboutItem] = [
+        .rateUs: AboutItem(title: "Rate Us", accessoryType: .none),
+        .share: AboutItem(title: "Share with Friends", accessoryType: .none),
+        .socialTwitter: AboutItem(title: "Twitter", subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none),
+        .legalAndMore: AboutItem(title: "Legal and More"),
+        .automatticFamily: AboutItem(title: "Automattic Family", hidesSeparator: true),
+        .appLogos: AboutItem(title: "", cellStyle: .appLogos),
+        .workWithUs: AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
+    ]
+
+    var sharePresenter: ShareAppContentPresenter?
+
+    // MARK: - Views
 
     let headerView: UIView = {
         // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
@@ -104,8 +128,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         return headerView
     }()
-
-    // MARK: - Views
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -146,6 +168,15 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - View lifecycle
 
+    init(sharePresenter: ShareAppContentPresenter? = nil) {
+        self.sharePresenter = sharePresenter
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -171,9 +202,16 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        // When rotating (only on iPad), scroll so that the app logos cell is always visible
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.appLogosScrollDelay) {
             self.tableView.scrollToRow(at: UnifiedAboutViewController.appLogosIndexPath, at: .middle, animated: true)
         }
+    }
+
+    // MARK: - Navigation
+
+    private func presentShareSheet(from view: UIView?) {
+        sharePresenter?.present(for: .wordpress, in: self, source: .about, sourceView: view)
     }
 
     // MARK: - Constants
@@ -196,40 +234,45 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
 extension UnifiedAboutViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Self.sections.count
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Self.sections[section].count
+        return sections[section].count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
+        let section = sections[indexPath.section]
+        let identifier = section[indexPath.row]
+        guard let item = itemDetails[identifier] else {
+            return UITableViewCell()
+        }
 
-        let cell = row.makeCell()
+        let cell = item.makeCell()
 
-        cell.textLabel?.text = row.title
-        cell.detailTextLabel?.text = row.subtitle
+        cell.textLabel?.text = item.title
+        cell.detailTextLabel?.text = item.subtitle
         cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.accessoryType = row.accessoryType
-        cell.selectionStyle = row.cellSelectionStyle
+        cell.accessoryType = item.accessoryType
+        cell.selectionStyle = item.cellSelectionStyle
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
+        let section = sections[indexPath.section]
+        let identifier = section[indexPath.row]
+        let item = itemDetails[identifier]
 
-        cell.separatorInset = row.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
+        cell.separatorInset = (item?.hidesSeparator == true) ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
+        let section = sections[indexPath.section]
+        let identifier = section[indexPath.row]
+        let item = itemDetails[identifier]
 
-        return row.cellHeight
+        return item?.cellHeight ?? 0
     }
 }
 
@@ -237,8 +280,16 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
 extension UnifiedAboutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
-        row.action?()
+        let section = sections[indexPath.section]
+        let identifier = section[indexPath.row]
+
+        switch identifier {
+        case .share:
+            presentShareSheet(from: tableView.cellForRow(at: indexPath))
+        default:
+            break
+        }
+
+        tableView.deselectSelectedRowWithAnimation(true)
     }
 }
