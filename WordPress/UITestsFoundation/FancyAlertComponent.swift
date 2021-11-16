@@ -23,7 +23,8 @@ public class FancyAlertComponent: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [defaultAlertButtonGetter, cancelAlertButtonGetter],
-            app: app
+            app: app,
+            waitTimeout: 3
         )
     }
 

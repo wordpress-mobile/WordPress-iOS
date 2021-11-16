@@ -30,7 +30,8 @@ public class TabNavComponent: ScreenObject {
                 readerTabButtonGetter,
                 notificationsTabButtonGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 3
         )
     }
 
@@ -60,7 +61,7 @@ public class TabNavComponent: ScreenObject {
         let actionSheet = try mySite.gotoCreateSheet()
         actionSheet.goToBlogPost()
 
-        return BlockEditorScreen()
+        return try BlockEditorScreen()
     }
 
     public func goToReaderScreen() throws -> ReaderScreen {

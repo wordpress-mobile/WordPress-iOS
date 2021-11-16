@@ -26,6 +26,6 @@ class SignupTests: XCTestCase {
             .continueWithSignup()
             .dismissNotificationAlertIfNeeded()
 
-        XCTAssert(mySiteScreen.isLoaded())
+        XCTAssert(mySiteScreen.isLoaded)
     }
 }

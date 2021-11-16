@@ -60,18 +60,9 @@ public class PostsScreen: ScreenObject {
 
 public struct EditorScreen {
 
-    var isGutenbergEditor: Bool {
-        let blockEditorElement = "add-block-button"
-        return XCUIApplication().buttons[blockEditorElement].waitForExistence(timeout: 3)
-    }
-
     var isAztecEditor: Bool {
         let aztecEditorElement = "Azctec Editor Navigation Bar"
         return XCUIApplication().navigationBars[aztecEditorElement].exists
-    }
-
-    private var blockEditor: BlockEditorScreen {
-        return BlockEditorScreen()
     }
 
     private var aztecEditor: AztecEditorScreen {
@@ -79,14 +70,14 @@ public struct EditorScreen {
     }
 
     func dismissDialogsIfNeeded() throws {
-        if self.isGutenbergEditor {
-            try blockEditor.dismissNotificationAlertIfNeeded(.accept)
-        }
+        guard let blockEditor = try? BlockEditorScreen() else { return }
+
+        try blockEditor.dismissNotificationAlertIfNeeded(.accept)
     }
 
     public func close() {
-        if isGutenbergEditor {
-            self.blockEditor.closeEditor()
+        if let blockEditor = try? BlockEditorScreen() {
+            blockEditor.closeEditor()
         }
 
         if isAztecEditor {
