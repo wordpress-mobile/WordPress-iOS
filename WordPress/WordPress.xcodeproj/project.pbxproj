@@ -219,6 +219,8 @@
 		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
 		173BCE791CEB780800AE8817 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE781CEB780800AE8817 /* Domain.swift */; };
 		173D82E7238EE2A7008432DA /* FeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */; };
+		173DF288274294DB007C64B5 /* OrientationLimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DF287274294DB007C64B5 /* OrientationLimited.swift */; };
+		173DF289274294DB007C64B5 /* OrientationLimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DF287274294DB007C64B5 /* OrientationLimited.swift */; };
 		1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */; };
 		1749965F2271BF08007021BD /* WordPressAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1749965E2271BF08007021BD /* WordPressAppDelegate.swift */; };
 		174C116F2624603400346EC6 /* MBarRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C116E2624603400346EC6 /* MBarRouteTests.swift */; };
@@ -4808,6 +4810,7 @@
 		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
 		173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagTests.swift; sourceTree = "<group>"; };
+		173DF287274294DB007C64B5 /* OrientationLimited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationLimited.swift; sourceTree = "<group>"; };
 		1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForcePopoverPresenter.swift; sourceTree = "<group>"; };
 		1749965E2271BF08007021BD /* WordPressAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAppDelegate.swift; sourceTree = "<group>"; };
 		174C116E2624603400346EC6 /* MBarRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBarRouteTests.swift; sourceTree = "<group>"; };
@@ -11235,6 +11238,7 @@
 				3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */,
 				43DDFE8B21715ADD008BE72F /* WPTabBarController+QuickStart.swift */,
 				57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */,
+				173DF287274294DB007C64B5 /* OrientationLimited.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -17937,6 +17941,7 @@
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				98BAA7C326F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
 				57276E71239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift in Sources */,
+				173DF288274294DB007C64B5 /* OrientationLimited.swift in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
 				FF1B11E5238FDFE70038B93E /* GutenbergGalleryUploadProcessor.swift in Sources */,
 				F5E1BA9B253A0A5E0091E9A6 /* StoriesIntroViewController.swift in Sources */,
@@ -19811,6 +19816,7 @@
 				3FE3D1FE26A6F4AC00F3CD10 /* ListTableHeaderView.swift in Sources */,
 				FABB23052602FC2C00C8785C /* WPAnalyticsEvent.swift in Sources */,
 				FABB23062602FC2C00C8785C /* Coordinate.m in Sources */,
+				173DF289274294DB007C64B5 /* OrientationLimited.swift in Sources */,
 				F1D8C6EC26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */,
 				FABB23072602FC2C00C8785C /* SiteCreationRotatingMessageView.swift in Sources */,
 				FABB23082602FC2C00C8785C /* SignupUsernameViewController.swift in Sources */,
