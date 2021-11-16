@@ -14,9 +14,14 @@ class WordPressAuthenticationManager: NSObject {
     /// without having to reimplement WordPressAuthenticatorDelegate
     private let authenticationHandler: AuthenticationHandler?
 
-    init(windowManager: WindowManager, authenticationHandler: AuthenticationHandler? = nil) {
+    private let quickStartSettings: QuickStartSettings
+
+    init(windowManager: WindowManager,
+         authenticationHandler: AuthenticationHandler? = nil,
+         quickStartSettings: QuickStartSettings? = nil) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
+        self.quickStartSettings = quickStartSettings ?? QuickStartSettings()
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -330,10 +335,26 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         epilogueViewController.credentials = credentials
-        epilogueViewController.onDismiss = { [weak self] blog in
-            onDismiss()
 
+        let dismissAndShowBlog: ((Blog) -> Void) = { [weak self] blog in
+            onDismiss()
             self?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+        }
+
+        epilogueViewController.onBlogSelected = { [weak self] blog in
+
+            guard let self = self else {
+                return
+            }
+
+            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
+                dismissAndShowBlog(blog)
+                return
+            }
+
+            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+            quickstartPrompt.onDismiss = dismissAndShowBlog
+            navigationController.pushViewController(quickstartPrompt, animated: true)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
