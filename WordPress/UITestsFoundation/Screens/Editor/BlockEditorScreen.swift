@@ -105,6 +105,8 @@ public class BlockEditorScreen: BaseScreen {
     }
 
     public func publish() throws -> EditorNoticeComponent {
+        // This check for Publish Now Button is an attempt to confirm that the publishButton.tap() call took effect.
+        // The tests would fail sometimes in the pipeline with no apparent reason.
         var tries = 0
         repeat {
             publishButton.tap()
