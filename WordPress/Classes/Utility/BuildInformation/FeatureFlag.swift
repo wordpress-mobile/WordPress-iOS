@@ -19,6 +19,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case domains
     case followConversationViaNotifications
     case aboutScreen
+    case newCommentThread
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -63,6 +64,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .aboutScreen:
             return BuildConfiguration.current == .localDeveloper
+        case .newCommentThread:
+            return false
         }
     }
 
@@ -123,6 +126,8 @@ extension FeatureFlag {
             return "Follow Conversation via Notifications"
         case .aboutScreen:
             return "New Unified About Screen"
+        case .newCommentThread:
+            return "New Comment Thread"
         }
     }
 
