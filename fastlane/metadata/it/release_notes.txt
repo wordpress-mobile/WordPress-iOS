@@ -1,7 +1,8 @@
-Questo aggiornamento rende ancora più semplice incorporare contenuti esterni nei tuoi siti. Presentazione dei nuovi blocchi Incorporamenti dedicati per Facebook, Instagram, Loom e Smartframe. Inoltre, l'editor rileva automaticamente gli URL incorporabili che incolli in un paragrafo vuoto. Oltre a queste nuove funzionalità, abbiamo risolto un problema che non permetteva di poter modificare alcuni URL incorporati e di regolare l'interruzione dell'anteprima in modo da visualizzare sempre l'intero contenuto incorporato.
-
-Parlando di blocchi, ora puoi personalizzare il testo e il colore di sfondo nei blocchi Citazione evidenziata e Preformattato.
-
-Hai bisogno di aiuto per raggiungere più lettori? I nuovi suggerimenti di Pubblicizza e Promemoria relativi al blog ti aiuteranno a rispettare un programma di pubblicazione coerente.
-
-Infine, abbiamo migliorato il supporto relativo alle dimensioni del testo più grandi quando si sceglie una homepage o un layout di pagina, corretto l'elenco dei commenti del sito che non si aggiornava in determinate occasioni e dato un tocco di classe all'intestazione del foglio nella parte inferiore prima della pubblicazione.
+- Abbiamo reso più semplice visualizzare i punti in cui sono disponibili nuovi blocchi da usare sul tuo sito
+- Ora puoi evidenziare il testo usando il tag HTML "mark" e modificare il testo e il colore di sfondo del pulsante del blocco Cerca. È nuovo di zecca.
+- Abbiamo nascosto i tag HTML nei titoli degli articoli quando controlli le statistiche.
+- Abbiamo migliorato la Presentazione del Reader, mostrandoti nuovi testi da leggere e dando una mano ai siti a basso traffico. Vantaggioso per tutti.
+- Se hai preso parte a un thread di commenti, puoi tenerne traccia tramite le notifiche in-app, non solo tramite la tua posta in arrivo dell'e-mail.
+- A proposito di commenti, abbiamo sentito che alcuni potrebbero mancare durante la visualizzazione dei commenti dal Reader. Non preoccuparti: abbiamo trovato il problema e lo abbiamo risolto.
+- La schermata Guida si staccava dalla sua casella quando veniva ruotata dalla posizione verticale a quella orizzontale e di nuovo a quella verticale. Ora però non si muove.
+- Abbiamo risolto alcuni problemi a causa dei quali i blocchi Incorporamenti mostravano "Impossibile visualizzare il contenuto", consentendoti di vedere tutti i tuoi contenuti.

@@ -1,8 +1,4 @@
-- We've made it easier to see when there are new blocks available for use on your site
-- You can now highlight text using the <mark> HTML tag, as well as change the text and background color of the Search block button. Shiny!
-- We've hidden HTML tags in post titles when you're checking out your stats.
-- We've improved Reader Discovery – showing you new things to read, while lending a helping hand to sites with low traffic. Win-win.
-- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
-- Speaking of comments, we heard that some might be missing when viewing comments from the Reader. Don't worry – we found and fixed the problem.
-- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
-- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
+* [*] Comment Reply: updated UI. [#17443, #17445]
+* [***] Two-step Authentication notifications now require an unlocked device to approve or deny them.
+* [***] Site Comments: Updated comment details with a fresh new look and capability to display rich contents. [#17466]
+

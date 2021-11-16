@@ -55,7 +55,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
         case .newCommentDetail:
-            return false
+            // NOTE: only applies to My Site > Comments.
+            return true
         case .domains:
             return BuildConfiguration.current == .localDeveloper
         case .followConversationViaNotifications:

@@ -1,7 +1,0 @@
-Com esta atualização, ficou ainda mais fácil incorporar conteúdo externo aos seus sites! Apresentamos os novos blocos de mídia incorporada dedicados para Facebook, Instagram, Loom e SmartFrame. Além disso, o editor detecta automaticamente as URLs incorporáveis que você cola em um parágrafo vazio. Junto com essas funcionalidades, outra novidade é a correção de um erro que impedia as URLs incorporadas de serem editadas e o ajuste da visualização cortada para que você veja sempre o todo o conteúdo.
-
-Falando em blocos, agora você pode personalizar o texto e a cor de fundo nos blocos de citação destacada e pré-formatado.
-
-Precisa de ajuda para atrair mais leitores? As novas funções Lembrete de publicação e Publicize ajudam você a manter um cronograma consistente de publicação.
-
-Por fim, aprimoramos a compatibilidade com tamanhos de texto maiores na escolha de um layout de página, corrigimos a lista de comentários no site, que não estava atualizando em certas situações, e aperfeiçoamos o cabeçalho de pré-publicação no fim da página.

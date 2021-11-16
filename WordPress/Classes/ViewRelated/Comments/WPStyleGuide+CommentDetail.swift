@@ -37,14 +37,19 @@ extension WPStyleGuide {
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
             private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .medium)
-            static let replyIconImage = UIImage(systemName: "arrowshape.turn.up.backward", withConfiguration: reactionIconConfiguration)?
-                .imageFlippedForRightToLeftLayoutDirection()
             static let unlikedIconImage = UIImage(systemName: "star", withConfiguration: reactionIconConfiguration)
             static let likedIconImage = UIImage(systemName: "star.fill", withConfiguration: reactionIconConfiguration)
 
             static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .large)
             static let shareIconImageName = "square.and.arrow.up"
             static let ellipsisIconImageName = "ellipsis.circle"
+
+            static var replyIconImage: UIImage? {
+                // this symbol is only available in iOS 14 and above. For iOS 13, we need to use the backported image in our assets.
+                let name = "arrowshape.turn.up.backward"
+                let image = UIImage(systemName: name) ?? UIImage(named: name)
+                return image?.withConfiguration(reactionIconConfiguration).imageFlippedForRightToLeftLayoutDirection()
+            }
         }
 
         public struct ReplyIndicator {

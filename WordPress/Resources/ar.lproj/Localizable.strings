@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-26 15:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-09 17:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "تمت الإدارة التلقائية على هذا الموقع";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "تم تمكين التجديد التلقائي";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "موافقة تلقائية";
@@ -1560,6 +1563,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "تم تعيين التعليق تحت المراجعة.";
 
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "قم بإبداء تعليق لبدء إجراء اتصالات.";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "تهانينا على الانتهاء من البدء السريع &#127881؛";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "تهانينا";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "تهانينا لك على إكمال قائمتك. عمل متقن.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "تهانينا على إتمام عملية الشراء!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "قم بالتوصيل لمشاركة مقالات المدونة تلقائيًا على %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "تواصل مع المدونين الآخرين عن طريق متابعة مقالاتهم وإبداء الإعجاب بها والتعليق عليها.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "قم بتوصيل خدمات التواصل الاجتماعي المفضلة لديك لمشاركة المقالات الجديدة تلقائيًا مع الأصدقاء.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "بنية المحتوى \nالمكوِّنات: %1$li، الكلمات: %2$li، الأحرف: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "تعذر التحقق من عمليات شراء الموقع.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "يتعذر تعطيل الإشعارات";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "يتعذر تمكين الإشعارات";
 
 /* Title of a prompt. */
 "Could not follow site" = "تعذرت متابعة الموقع";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "اكتشف وتابع المدوَّنات التي تحبها";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "اكتشاف مدونات لمتابعتها";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "اكتشاف المزيد من المواضيع";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "تجاهُل الإعلامات";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "تجاهل الشاشة";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "عرض إحصائيات موقعك لهذا اليوم هنا. إعداد التكوين في تطبيق ووردبريس ضمن إحصائيات موقعك.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "القيام بذلك مرة أخرى";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "المستند: %@";
@@ -2627,6 +2650,7 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "عنوان URL فارغ";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "تفعيل";
 
@@ -2638,6 +2662,12 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "تفعيل إحصاءات الموقع";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "تفعيل تنبيهات داخل التطبيق";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "تفعيل التنبيهات داخل التطبيق؟";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "قم بتمكين الوصول إلى الميكروفون لتسجيل الصوت في فيديوهاتك.";
@@ -2881,8 +2911,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "التوسيع لتحديد منطقة قائمة مختلفة";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "منتهي الصلاحية";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "تنتهي الصلاحية في";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "تنتهي الصلاحية في %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "اكتب نبذة قصيرة عن الموقع.";
@@ -3044,7 +3080,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "جاري معالجة التهديدات";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "تابع";
 
@@ -3059,6 +3096,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "متابعة المواضيع";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "قم بمتابعة الموضوعات التي تهتم بها وستجد بعض المدونات التي قد تنال إعجابك.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3101,6 +3141,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "جاري متابعة مواضيع جديدة...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "متابعة هذه المحادثة";
 
 /* Filters Follows Notifications */
 "Follows" = "متابعات";
@@ -3504,6 +3547,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "لمشاركة مقالاتك المنشورة على شبكات التواصل الاجتماعي الخاصة بك، سيتعيَّن عليك تمكين وحدة الإشهار النمطية.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "تم تعطيل التنبيهات داخل التطبيق";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "تم تمكين التنبيهات داخل التطبيق";
+
 /* Describes a status of a plugin */
 "Inactive" = "غير مفعل";
 
@@ -3742,6 +3791,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "استمر في التدوين وتحقَّق مرة أخرى للاطلاع على الزائرين الذين يصلون إلى موقعك.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "استمر! يُعد الإعجاب وإبداء التعليقات طريقة رائعة لبناء شبكة. انتقل إلى القارئ للعثور على مزيد من المقالات.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "واكب التحديثات المتعلقة بأداء موقعك.";
@@ -4373,6 +4425,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "بحاجة إلى تحديث";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "لا تنتهي صلاحيته أبداً";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "جديد";
 
@@ -4409,7 +4464,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "الأحدث أولاً";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "فتح الرابط في نافذة\/علامة تبويب جديدة";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "فتح إعدادات الاشتراك الخاصة بالمقالة";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "فتح قسم \"أنا\"";
@@ -5707,6 +5766,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "ستؤدي إزالة الخطوات التالية إلى إخفاء جميع الجولات الإرشادية على هذا الموقع. لا يمكن التراجع عن هذا الإجراء.";
 
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "يتم التجديد في %@";
+
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "استبدال";
 
@@ -6558,9 +6620,6 @@ translators: Block name. %s: The localized block name */
    Title for the error view when the scan start has failed */
 "Something went wrong" = "حدث خطأ ما";
 
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "حدث خطأ ما، يرجى المحاولة مرة أخرى.";
-
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "حدث خطأ. يُرجى التحقق من الاتصال والمحاولة مرة أخرى.";
 
@@ -6862,9 +6921,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "أنقر هنا لإظهار المساعدة";
-
-/* No comment provided by engineer. */
-"Tap to add content" = "أنقر لإضافة محتوى";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "انقر لإلغاء الرفع.";
@@ -7655,9 +7711,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "يتعذر قراءة موقع WordPress على معرف URL ذلك. انقر على \"هل تحتاج إلى المساعدة؟\" لعرض الأسئلة المتداولة.";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "غير قادر على تسجيل النطاق";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "غير قادر على استعادة موقعك";
 
@@ -7738,6 +7791,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "تحته خط";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7750,6 +7804,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "إلغاء متابعة %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "إلغاء متابعة المحادثة";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "إلغاء متابعة المحادثة عبر البريد الإلكتروني";
@@ -8811,6 +8868,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "لست مخولاً لإغلاق الحساب.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "لقد اتصلت بمدونات أخرى";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "لقد أجريتَ تغييرات غير محفوظة على هذه المقالة";
 
@@ -8852,6 +8912,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "لا يمكن تصدير ملفات الوسائط الخاصة بك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "جاري الآن إعداد نطاقك الجديد %@. قد يستغرق ما يصل إلى 30 دقيقة ليبدء نطاقك بالعمل.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "تنتقل الإشعارات معك — راجع التعليقات والإعجابات عندما تحدث.";
@@ -8918,6 +8981,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "لن يتم تخزين بيانات اعتمادك وستُستخدم فقط بغرض تنصيب Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "إنك تتابع هذه المحادثة. ستتلقى بريدًا إلكترونيًا وتنبيهًا عند إجراء تعليق جديد.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "إنك تتابع هذه المحادثة. ستتلقى بريدًا إلكترونيًا عند إجراء تعليق جديد.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "أنت الآن تستخدم محرِّر المكوّن للصفحات الجديدة — رائع! إذا كنت ترغب في التغيير إلى المحرِّر التقليدي، فانتقل إلى \"موقعي\" > \"إعدادات الموقع\".";
@@ -9067,9 +9136,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "ووردبريس، المواقع، الموقع، المدونات، المدونة";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "يجري إعداد نطاقك الجديد %@. يقوم موقعك ببعض الحركات البهلوانية من أجل الإثارة!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "موقعك";
