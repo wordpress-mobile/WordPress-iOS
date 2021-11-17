@@ -64,6 +64,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
 
+// A cached instance for the new comment header view.
+@property (nonatomic, strong) UIView *cachedHeaderView;
+
 @end
 
 
@@ -284,6 +287,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configurePostHeader
 {
+    // don't show the current post header view when the newCommentThread flag is enabled.
+    // the new header will be shown as one of the table view cell.
+    if ([self newCommentThreadEnabled]) {
+        return;
+    }
+
     __typeof(self) __weak weakSelf = self;
     
     // Wrapper view
@@ -425,20 +434,27 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureViewConstraints
 {
-    NSDictionary *views         = @{
+    NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"tableView"        : self.tableView,
-        @"postHeader"       : self.postHeaderWrapper,
         @"mainView"         : self.view,
         @"suggestionsview"  : self.suggestionsTableView,
         @"replyTextView"    : self.replyTextView
-    };
+    }];
 
-    // PostHeader Constraints
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    NSString *verticalVisualFormatConstraints = @"V:|[postHeader][tableView][replyTextView]";
+
+    if ([self newCommentThreadEnabled]) {
+        verticalVisualFormatConstraints = @"V:|[tableView][replyTextView]";
+    } else {
+        [views setObject:self.postHeaderWrapper forKey:@"postHeader"];
+
+        // PostHeader Constraints
+        [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+        [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    }
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatConstraints
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
@@ -531,6 +547,19 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (BOOL)followViaNotificationsEnabled
 {
     return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
+}
+
+- (BOOL)newCommentThreadEnabled
+{
+    return [Feature enabled:FeatureFlagNewCommentThread];
+}
+
+- (UIView *)cachedHeaderView {
+    if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
+        _cachedHeaderView = [self configuredHeaderViewFor:self.tableView];
+    }
+
+    return _cachedHeaderView;
 }
 
 - (UIBarButtonItem *)followBarButtonItem
@@ -641,6 +670,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshPostHeaderView
 {
+    if ([self newCommentThreadEnabled]) {
+        return;
+    }
+
     NSParameterAssert(self.postHeaderView);
     NSParameterAssert(self.postHeaderWrapper);
     
@@ -681,7 +714,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+        if (weakSelf.postHeaderView) {
+            weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+        }
 
         if ([self followViaNotificationsEnabled]) {
             // update the ReaderPost button to keep it in-sync.
@@ -1068,6 +1103,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return UITableViewAutomaticDimension;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return self.cachedHeaderView;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
@@ -1104,7 +1144,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
     // which results in 30pt tall headers on iOS 11
-    return 0;
+    return [self newCommentThreadEnabled] ? UITableViewAutomaticDimension : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

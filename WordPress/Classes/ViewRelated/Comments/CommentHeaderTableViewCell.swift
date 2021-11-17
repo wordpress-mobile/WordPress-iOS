@@ -6,6 +6,9 @@ class CommentHeaderTableViewCell: UITableViewCell, Reusable {
         /// Title for a top-level comment on a post.
         case post
 
+        /// Title for the comment threads.
+        case thread
+
         /// Title for a comment that's a reply to another comment.
         /// Requires a String describing the replied author's name.
         case reply(String)
@@ -14,6 +17,8 @@ class CommentHeaderTableViewCell: UITableViewCell, Reusable {
             switch self {
             case .post:
                 return .postCommentTitleText
+            case .thread:
+                return .commentThreadTitleText
             case .reply(let author):
                 return String(format: .replyCommentTitleFormat, author)
             }
@@ -70,4 +75,6 @@ private extension String {
     static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
                                                            + "%1$@ is a placeholder for the comment author that's been replied to."
                                                            + "Example: Reply to Pamela Nguyen")
+    static let commentThreadTitleText = NSLocalizedString("Comments on", comment: "Sentence fragment. "
+                                                          + "The full phrase is 'Comments on' followed by the title of a post on a separate line.")
 }
