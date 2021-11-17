@@ -100,7 +100,7 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         WPAnalytics.track(event)
     }
-    
+
     // MARK: - Views
 
     private static let appLogosIndexPath = IndexPath(row: 1, section: 2)
