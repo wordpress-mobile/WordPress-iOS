@@ -172,7 +172,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [super viewDidAppear:animated];
     [self.tableView reloadData];
 
-    if(self.promptToAddComment) {
+    if (self.promptToAddComment) {
         [self.replyTextView becomeFirstResponder];
 
         // Reset the value to prevent prompting again if the user leaves and comes back
