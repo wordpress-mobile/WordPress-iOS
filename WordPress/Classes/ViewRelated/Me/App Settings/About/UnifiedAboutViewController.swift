@@ -7,13 +7,17 @@ struct AboutItem {
     let title: String
     let subtitle: String?
     let cellStyle: AboutItemCellStyle
+    let accessoryType: UITableViewCell.AccessoryType
+    let hidesSeparator: Bool
     let eventButton: UnifiedAboutEvent.Button?
     let action: (() -> Void)?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, eventButton: UnifiedAboutEvent.Button?, action: (() -> Void)? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, eventButton: UnifiedAboutEvent.Button?, action: (() -> Void)? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
+        self.accessoryType = accessoryType
+        self.hidesSeparator = hidesSeparator
         self.eventButton = eventButton
         self.action = action
     }
@@ -37,15 +41,6 @@ struct AboutItem {
             return AutomatticAppLogosCell.Metrics.cellHeight
         default:
             return UITableView.automaticDimension
-        }
-    }
-
-    var cellAccessoryType: UITableViewCell.AccessoryType {
-        switch cellStyle {
-        case .appLogos:
-            return .none
-        default:
-            return .disclosureIndicator
         }
     }
 
@@ -73,16 +68,16 @@ struct AboutItem {
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
     static let sections: [[AboutItem]] = [
         [
-            AboutItem(title: "Rate Us", eventButton: .rateUs),
-            AboutItem(title: "Share with Friends", eventButton: .share),
-            AboutItem(title: "Twitter", cellStyle: .value1, eventButton: .twitter)
+            AboutItem(title: "Rate Us", accessoryType: .none, eventButton: .rateUs),
+            AboutItem(title: "Share with Friends", accessoryType: .none, eventButton: .share),
+            AboutItem(title: "Twitter", subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, eventButton: .twitter)
         ],
         [
             AboutItem(title: "Legal and More", eventButton: .legal)
         ],
         [
-            AboutItem(title: "Automattic Family", eventButton: .automatticFamily),
-            AboutItem(title: "", cellStyle: .appLogos, eventButton: nil)
+            AboutItem(title: "Automattic Family", hidesSeparator: true, eventButton: .automatticFamily),
+            AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none, eventButton: nil)
         ],
         [
             AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle, eventButton: .workWithUs)
@@ -134,6 +129,11 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Occasionally our hidden separator insets can cause the horizontal
+        // scrollbar to appear on rotation
+        tableView.showsHorizontalScrollIndicator = false
+
         tableView.tableHeaderView = headerView
 
         tableView.dataSource = self
@@ -246,10 +246,18 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
         cell.textLabel?.text = row.title
         cell.detailTextLabel?.text = row.subtitle
-        cell.accessoryType = row.cellAccessoryType
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.accessoryType = row.accessoryType
         cell.selectionStyle = row.cellSelectionStyle
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let section = Self.sections[indexPath.section]
+        let row = section[indexPath.row]
+
+        cell.separatorInset = row.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
