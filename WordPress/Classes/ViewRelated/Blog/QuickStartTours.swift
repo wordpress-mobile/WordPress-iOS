@@ -127,8 +127,8 @@ struct QuickStartThemeTour: QuickStartTour {
 struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
-    let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Enable post sharing", comment: "The Quick Start Tour title after the user finished the step.")
+    let title = NSLocalizedString("Social sharing", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Social sharing", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.share)
     let suggestionNoText = Strings.notNow
@@ -154,7 +154,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let analyticsKey = "publish_post"
     let title = NSLocalizedString("Publish a post", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Publish a post", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("It's time! Draft and publish your very first post.", comment: "Description of a Quick Start Tour")
+    let description = NSLocalizedString("Draft and publish a post.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.create)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
