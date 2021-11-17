@@ -1,110 +1,23 @@
 import UIKit
 import WordPressShared
 
-/// Defines a single row in the unified about screen.
-///
-struct AboutItem {
-    let title: String
-    let subtitle: String?
-    let cellStyle: AboutItemCellStyle
-    let accessoryType: UITableViewCell.AccessoryType
-    let hidesSeparator: Bool
-
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false) {
-        self.title = title
-        self.subtitle = subtitle
-        self.cellStyle = cellStyle
-        self.accessoryType = accessoryType
-        self.hidesSeparator = hidesSeparator
-    }
-
-    func makeCell() -> UITableViewCell {
-        switch cellStyle {
-        case .default:
-            return UITableViewCell(style: .default, reuseIdentifier: cellStyle.rawValue)
-        case .value1:
-            return UITableViewCell(style: .value1, reuseIdentifier: cellStyle.rawValue)
-        case .subtitle:
-            return UITableViewCell(style: .subtitle, reuseIdentifier: cellStyle.rawValue)
-        case .appLogos:
-            return AutomatticAppLogosCell()
-        }
-    }
-
-    var cellHeight: CGFloat {
-        switch cellStyle {
-        case .appLogos:
-            return AutomatticAppLogosCell.Metrics.cellHeight
-        default:
-            return UITableView.automaticDimension
-        }
-    }
-
-    var cellSelectionStyle: UITableViewCell.SelectionStyle {
-        switch cellStyle {
-        case .appLogos:
-            return .none
-        default:
-            return .default
-        }
-    }
-
-    enum AboutItemCellStyle: String {
-        // Displays only a title
-        case `default`
-        // Displays a title on the leading side and a secondary value on the trailing side
-        case value1
-        // Displays a title with a smaller subtitle below
-        case subtitle
-        // Displays the custom app logos cell
-        case appLogos
-    }
-}
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
-    enum ItemIdentifier {
-        case rateUs
-        case share
-        case socialTwitter
-        case socialFacebook
-        case socialInstagram
-        case legalAndMore
-        case automatticFamily
-        case appLogos
-        case workWithUs
+    let configuration: AboutScreenConfiguration
+
+    private var sections: [AboutScreenSection] {
+        configuration.sections
     }
 
-    let sections: [[ItemIdentifier]] = [
-        [
-            .rateUs,
-            .share,
-            .socialTwitter
-        ],
-        [
-            .legalAndMore
-        ],
-        [
-            .automatticFamily,
-            .appLogos
-        ],
-        [
-            .workWithUs
-        ]
-    ]
+    private var appLogosIndexPath: IndexPath? {
+        for (sectionIndex, row) in sections.enumerated() {
+            if let rowIndex = row.firstIndex(where: { $0.cellStyle == .appLogos }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+        }
 
-    private static let appLogosIndexPath = IndexPath(row: 1, section: 2)
-
-    let itemDetails: [ItemIdentifier: AboutItem] = [
-        .rateUs: AboutItem(title: "Rate Us", accessoryType: .none),
-        .share: AboutItem(title: "Share with Friends", accessoryType: .none),
-        .socialTwitter: AboutItem(title: "Twitter", subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none),
-        .legalAndMore: AboutItem(title: "Legal and More"),
-        .automatticFamily: AboutItem(title: "Automattic Family", hidesSeparator: true),
-        .appLogos: AboutItem(title: "", cellStyle: .appLogos),
-        .workWithUs: AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
-    ]
-
-    var sharePresenter: ShareAppContentPresenter?
+        return nil
+    }
 
     // MARK: - Views
 
@@ -168,8 +81,8 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - View lifecycle
 
-    init(sharePresenter: ShareAppContentPresenter? = nil) {
-        self.sharePresenter = sharePresenter
+    init(configuration: AboutScreenConfiguration) {
+        self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -202,16 +115,12 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        // When rotating (only on iPad), scroll so that the app logos cell is always visible
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.appLogosScrollDelay) {
-            self.tableView.scrollToRow(at: UnifiedAboutViewController.appLogosIndexPath, at: .middle, animated: true)
+        if let indexPath = appLogosIndexPath {
+            // When rotating (only on iPad), scroll so that the app logos cell is always visible
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.appLogosScrollDelay) {
+                self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+            }
         }
-    }
-
-    // MARK: - Navigation
-
-    private func presentShareSheet(from view: UIView?) {
-        sharePresenter?.present(for: .wordpress, in: self, source: .about, sourceView: view)
     }
 
     // MARK: - Constants
@@ -243,10 +152,7 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
-        let identifier = section[indexPath.row]
-        guard let item = itemDetails[identifier] else {
-            return UITableViewCell()
-        }
+        let item = section[indexPath.row]
 
         let cell = item.makeCell()
 
@@ -261,18 +167,16 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let section = sections[indexPath.section]
-        let identifier = section[indexPath.row]
-        let item = itemDetails[identifier]
+        let item = section[indexPath.row]
 
-        cell.separatorInset = (item?.hidesSeparator == true) ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
+        cell.separatorInset = item.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = sections[indexPath.section]
-        let identifier = section[indexPath.row]
-        let item = itemDetails[identifier]
+        let item = section[indexPath.row]
 
-        return item?.cellHeight ?? 0
+        return item.cellHeight
     }
 }
 
@@ -281,15 +185,46 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 extension UnifiedAboutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = sections[indexPath.section]
-        let identifier = section[indexPath.row]
+        let item = section[indexPath.row]
 
-        switch identifier {
-        case .share:
-            presentShareSheet(from: tableView.cellForRow(at: indexPath))
-        default:
-            break
-        }
+        let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
+        item.action?(context)
 
         tableView.deselectSelectedRowWithAnimation(true)
+    }
+}
+
+// MARK: AboutItem Extensions
+
+private extension AboutItem {
+    func makeCell() -> UITableViewCell {
+        switch cellStyle {
+        case .default:
+            return UITableViewCell(style: .default, reuseIdentifier: cellStyle.rawValue)
+        case .value1:
+            return UITableViewCell(style: .value1, reuseIdentifier: cellStyle.rawValue)
+        case .subtitle:
+            return UITableViewCell(style: .subtitle, reuseIdentifier: cellStyle.rawValue)
+        case .appLogos:
+            return AutomatticAppLogosCell()
+        }
+    }
+
+    var cellHeight: CGFloat {
+        switch cellStyle {
+        case .appLogos:
+            return AutomatticAppLogosCell.Metrics.cellHeight
+        default:
+            return UITableView.automaticDimension
+        }
+    }
+
+    var cellSelectionStyle: UITableViewCell.SelectionStyle {
+        switch cellStyle {
+        case .appLogos:
+            return .none
+        default:
+            return .default
+        }
     }
 }
