@@ -112,7 +112,7 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configurePanelBasedOnTableViewContents()
+        configureButtonPanel()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -151,28 +151,12 @@ private extension LoginEpilogueViewController {
 
     /// Setup: Button Panel
     ///
-    func configurePanelBasedOnTableViewContents() {
-        guard let tableView = tableViewController?.tableView else {
-            return
-        }
-
+    func configureButtonPanel() {
         topLineHeightConstraint.constant = .hairlineBorderWidth
-
-        let contentSize = tableView.contentSize
-        let screenHeight = UIScreen.main.bounds.height
-        let panelHeight = buttonPanel.frame.height
-
-        if contentSize.height >= (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = .quaternaryBackground
-            topLine.isHidden = false
-            blurEffectView.effect = UIBlurEffect(style: blurEffect)
-            blurEffectView.isHidden = false
-        } else {
-            buttonPanel.backgroundColor = .basicBackground
-            topLine.isHidden = true
-            blurEffectView.isHidden = true
-        }
-
+        buttonPanel.backgroundColor = .quaternaryBackground
+        topLine.isHidden = false
+        blurEffectView.effect = UIBlurEffect(style: blurEffect)
+        blurEffectView.isHidden = false
         setupDividerLineIfNeeded()
     }
 
