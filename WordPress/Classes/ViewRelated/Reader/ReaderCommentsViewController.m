@@ -67,7 +67,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
 
-/// Caches the post subscription state.
+/// Caches the post subscription state. Used to revert subscription state when the update request fails.
 @property (nonatomic, assign) BOOL subscribedToPost;
 
 @end
@@ -172,7 +172,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [super viewDidAppear:animated];
     [self.tableView reloadData];
 
-    if(self.promptToAddComment){
+    if(self.promptToAddComment) {
         [self.replyTextView becomeFirstResponder];
 
         // Reset the value to prevent prompting again if the user leaves and comes back
@@ -290,8 +290,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configurePostHeader
 {
-    // don't show the current post header view when the newCommentThread flag is enabled.
-    // the new header will be shown as one of the table view cell.
+    // Don't show the current post header view when the newCommentThread flag is enabled.
+    // the new header will displayed as a table section header.
     if ([self newCommentThreadEnabled]) {
         return;
     }
@@ -444,10 +444,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         @"replyTextView"    : self.replyTextView
     }];
 
-    NSString *verticalVisualFormatConstraints = @"V:|[postHeader][tableView][replyTextView]";
+    NSString *verticalVisualFormatString = @"V:|[postHeader][tableView][replyTextView]";
 
     if ([self newCommentThreadEnabled]) {
-        verticalVisualFormatConstraints = @"V:|[tableView][replyTextView]";
+        verticalVisualFormatString = @"V:|[tableView][replyTextView]";
     } else {
         [views setObject:self.postHeaderWrapper forKey:@"postHeader"];
 
@@ -457,7 +457,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatConstraints
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatString
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
