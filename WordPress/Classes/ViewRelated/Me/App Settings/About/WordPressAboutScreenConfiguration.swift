@@ -14,7 +14,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, links: Links.twitter),
             ],
             [
-                AboutItem(title: TextContent.legalAndMore),
+                AboutItem(title: TextContent.legalAndMore, links: Links.legalAndMore),
             ],
             [
                 AboutItem(title: TextContent.automatticFamily, hidesSeparator: true),
@@ -26,10 +26,14 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
         ]
     }()
 
-    let presentURL: AboutScreenURLPresenterBlock? = { url, context in
+    let presentURLBlock: AboutScreenURLPresenterBlock? = { url, context in
         let webViewController = WebViewControllerFactory.controller(url: url)
         let navigationController = UINavigationController(rootViewController: webViewController)
         context.viewController.present(navigationController, animated: true, completion: nil)
+    }
+
+    let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
+        context.viewController.presentingViewController?.dismiss(animated: true)
     }
 
     init(sharePresenter: ShareAppContentPresenter) {
@@ -47,7 +51,13 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum Links {
-        static let twitter    = [AboutScreenLink(url: "https://twitter.com/WordPressiOS")]
-        static let workWithUs = [AboutScreenLink(url: "https://automattic.com/work-with-us")]
+        static let legalAndMore = [
+            AboutScreenLink("Terms of Service", url: WPAutomatticTermsOfServiceURL),
+            AboutScreenLink("Privacy Policy", url: WPAutomatticPrivacyURL),
+            AboutScreenLink("Source Code", url: WPGithubMainURL),
+            AboutScreenLink("Acknowledgements", url: Bundle.main.url(forResource: "acknowledgements", withExtension: "html")?.absoluteString ?? "")
+        ]
+        static let twitter      = [AboutScreenLink(url: "https://twitter.com/WordPressiOS")]
+        static let workWithUs   = [AboutScreenLink(url: "https://automattic.com/work-with-us")]
     }
 }
