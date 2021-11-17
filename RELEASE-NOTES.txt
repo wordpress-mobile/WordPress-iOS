@@ -1,6 +1,6 @@
 18.8
 -----
-
+* [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
 
 18.7
 -----
