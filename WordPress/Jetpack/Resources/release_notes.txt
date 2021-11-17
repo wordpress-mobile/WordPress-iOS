@@ -7,7 +7,7 @@ When you head over to My Site > Comments, you'll see a fresh look and even fresh
 - A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
 - Rich content so you can see each comment just as the author wrote it.
 - A share button for approved comments.
-- Visible email and IP addresses for comment authors with Administrator or Editor roles.
+- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
 - Tappable web address to visit the author's URL (instead of their avatar image).
 
 Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!
