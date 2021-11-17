@@ -435,9 +435,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
     }
     if (customErrorMessage) {
-        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
-        userInfo[NSLocalizedDescriptionKey] = customErrorMessage;
-        error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+        error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:error.key];
     }
     return error;
 }
