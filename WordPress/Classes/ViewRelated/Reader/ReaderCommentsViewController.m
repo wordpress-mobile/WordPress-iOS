@@ -444,12 +444,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         @"replyTextView"    : self.replyTextView
     }];
 
-    NSString *verticalVisualFormatString = @"V:|[postHeader][tableView][replyTextView]";
+    NSString *verticalVisualFormatString = @"V:|[tableView][replyTextView]";
 
-    if ([self newCommentThreadEnabled]) {
-        verticalVisualFormatString = @"V:|[tableView][replyTextView]";
-    } else {
+    if (![self newCommentThreadEnabled]) {
         [views setObject:self.postHeaderWrapper forKey:@"postHeader"];
+        verticalVisualFormatString = @"V:|[postHeader][tableView][replyTextView]";
 
         // PostHeader Constraints
         [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
