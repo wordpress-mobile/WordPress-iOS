@@ -106,7 +106,7 @@ extension LoginEpilogueTableViewController {
             return siteRows
         }
 
-        if siteRows <= 3 {
+        if siteRows <= Constants.createNewSiteRowThreshold {
             parent.hideButtonPanel()
             return showCreateNewSite ? siteRows + 1 : siteRows
         } else {
@@ -148,7 +148,7 @@ extension LoginEpilogueTableViewController {
 
         let isCreateNewSiteRow =
             showCreateNewSite &&
-            siteRows <= 3 &&
+            siteRows <= Constants.createNewSiteRowThreshold &&
             indexPath.row == lastRowInSection(indexPath.section)
 
         if isCreateNewSiteRow {
@@ -192,6 +192,10 @@ extension LoginEpilogueTableViewController {
         let blog = blogDataSource.blog(at: wrappedPath)
 
         parent.onBlogSelected?(blog)
+    }
+
+    private enum Constants {
+        static let createNewSiteRowThreshold = 3
     }
 }
 
