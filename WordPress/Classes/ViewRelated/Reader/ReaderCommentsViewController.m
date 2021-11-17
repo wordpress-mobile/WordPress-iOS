@@ -64,8 +64,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
 
-// A cached instance for the new comment header view.
+/// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
+
+/// Caches the post subscription state.
+@property (nonatomic, assign) BOOL subscribedToPost;
 
 @end
 
@@ -562,6 +565,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return _cachedHeaderView;
 }
 
+// NOTE: remove this when the `followConversationViaNotifications` flag is removed.
+- (void)setSubscribedToPost:(BOOL)subscribedToPost {
+    if (self.postHeaderView) {
+        self.postHeaderView.isSubscribedToPost = subscribedToPost;
+    }
+
+    _subscribedToPost = subscribedToPost;
+}
+
 - (UIBarButtonItem *)followBarButtonItem
 {
     if (!_followBarButtonItem) {
@@ -714,9 +726,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        if (weakSelf.postHeaderView) {
-            weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
-        }
+        weakSelf.subscribedToPost = isSubscribed;
 
         if ([self followViaNotificationsEnabled]) {
             // update the ReaderPost button to keep it in-sync.
@@ -1359,11 +1369,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [generator prepare];
 
     // Keep previous subscription status in case of failure
-    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL oldIsSubscribed = self.subscribedToPost;
     BOOL newIsSubscribed = !oldIsSubscribed;
 
     // Optimistically toggle subscription status
-    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+    self.subscribedToPost = newIsSubscribed;
 
     // Define success block
     void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
@@ -1377,7 +1387,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 [weakSelf displayNoticeWithTitle:title message:nil];
 
                 // The task failed, fall back to the old subscription status
-                self.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+                self.subscribedToPost = oldIsSubscribed;
             });
         } else {
             NSString *title = newIsSubscribed
@@ -1427,7 +1437,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [weakSelf displayNoticeWithTitle:title message:nil];
 
             // If the request fails, fall back to the old subscription status
-            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+            weakSelf.subscribedToPost = oldIsSubscribed;
         });
     };
 
