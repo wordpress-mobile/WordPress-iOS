@@ -18,7 +18,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             ],
             [
                 AboutItem(title: TextContent.automatticFamily, hidesSeparator: true),
-                AboutItem(title: "", cellStyle: .appLogos)
+                AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
             [
                 AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, links: Links.workWithUs)
