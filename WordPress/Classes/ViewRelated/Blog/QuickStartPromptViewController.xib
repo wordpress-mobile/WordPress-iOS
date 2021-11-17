@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,8 +26,8 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rtJ-B8-Qq5">
-                    <rect key="frame" x="20" y="76" width="374" height="246"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="wS6-OQ-uc5">
+                    <rect key="frame" x="20" y="124" width="374" height="110"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5oK-P9-biU">
                             <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
@@ -75,53 +75,43 @@
                                 </label>
                             </subviews>
                         </stackView>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="88c-8d-UbI">
-                            <rect key="frame" x="0.0" y="142" width="374" height="104"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0WF-fO-mti" customClass="FancyButton" customModule="WordPressUI">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="B3O-Yu-fRo"/>
-                                    </constraints>
-                                    <state key="normal" title="Button"/>
-                                    <connections>
-                                        <action selector="showMeAroundButtonTapped:" destination="-1" eventType="touchUpInside" id="mp9-Ig-efP"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2uc-tK-alt" customClass="FancyButton" customModule="WordPressUI">
-                                    <rect key="frame" x="0.0" y="60" width="374" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="oud-dv-V6a"/>
-                                    </constraints>
-                                    <state key="normal" title="Button"/>
-                                    <connections>
-                                        <action selector="noThanksButtonTapped:" destination="-1" eventType="touchUpInside" id="pO2-el-6ic"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                        </stackView>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <constraints>
-                        <constraint firstItem="5oK-P9-biU" firstAttribute="top" secondItem="rtJ-B8-Qq5" secondAttribute="top" id="2JG-jF-wWe"/>
-                        <constraint firstItem="88c-8d-UbI" firstAttribute="leading" secondItem="rtJ-B8-Qq5" secondAttribute="leading" id="3VH-n8-Vs2"/>
-                        <constraint firstAttribute="bottom" secondItem="88c-8d-UbI" secondAttribute="bottom" id="Cix-5e-Ddq"/>
-                        <constraint firstItem="kWJ-TZ-NYM" firstAttribute="top" secondItem="5oK-P9-biU" secondAttribute="bottom" constant="16" id="D5l-bO-Mib"/>
-                        <constraint firstItem="88c-8d-UbI" firstAttribute="top" secondItem="kWJ-TZ-NYM" secondAttribute="bottom" constant="32" id="QJW-We-Al7"/>
-                        <constraint firstAttribute="trailing" secondItem="5oK-P9-biU" secondAttribute="trailing" id="eh7-7i-4jP"/>
-                        <constraint firstItem="5oK-P9-biU" firstAttribute="leading" secondItem="rtJ-B8-Qq5" secondAttribute="leading" id="gay-mh-1vv"/>
-                        <constraint firstItem="kWJ-TZ-NYM" firstAttribute="leading" secondItem="rtJ-B8-Qq5" secondAttribute="leading" id="kFO-tG-9Bg"/>
-                        <constraint firstAttribute="trailing" secondItem="88c-8d-UbI" secondAttribute="trailing" id="w7r-Hl-UHa"/>
-                        <constraint firstAttribute="trailing" secondItem="kWJ-TZ-NYM" secondAttribute="trailing" id="zJe-Ed-n3c"/>
-                    </constraints>
-                </view>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="88c-8d-UbI">
+                    <rect key="frame" x="20" y="734" width="374" height="104"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0WF-fO-mti" customClass="FancyButton" customModule="WordPressUI">
+                            <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="B3O-Yu-fRo"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="showMeAroundButtonTapped:" destination="-1" eventType="touchUpInside" id="mp9-Ig-efP"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2uc-tK-alt" customClass="FancyButton" customModule="WordPressUI">
+                            <rect key="frame" x="0.0" y="60" width="374" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="oud-dv-V6a"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="noThanksButtonTapped:" destination="-1" eventType="touchUpInside" id="pO2-el-6ic"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="rtJ-B8-Qq5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="XjZ-n5-PKp"/>
-                <constraint firstAttribute="trailingMargin" secondItem="rtJ-B8-Qq5" secondAttribute="trailing" id="hKu-qL-xx0"/>
-                <constraint firstItem="rtJ-B8-Qq5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="thX-l5-0iT"/>
+                <constraint firstAttribute="trailingMargin" secondItem="wS6-OQ-uc5" secondAttribute="trailing" id="Ado-d7-g5C"/>
+                <constraint firstItem="wS6-OQ-uc5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="MFc-W9-00A"/>
+                <constraint firstAttribute="leadingMargin" secondItem="88c-8d-UbI" secondAttribute="leading" id="Qbc-f2-ZaH"/>
+                <constraint firstAttribute="trailingMargin" secondItem="88c-8d-UbI" secondAttribute="trailing" id="daa-Gn-9WI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="88c-8d-UbI" secondAttribute="bottom" constant="24" id="oQS-J2-RXn"/>
+                <constraint firstItem="wS6-OQ-uc5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="80" id="vN3-dJ-56h"/>
             </constraints>
             <point key="canvasLocation" x="132" y="76"/>
         </view>
