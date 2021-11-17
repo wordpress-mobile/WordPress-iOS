@@ -144,12 +144,11 @@ extension LoginEpilogueTableViewController {
         }
 
         // Create new site row
-        let siteRows = tableView.numberOfRows(inSection: indexPath.section)
-        let threshold = 4 // 3 site rows + 1 create site row
+        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: indexPath.section - 1)
 
         let isCreateNewSiteRow =
             showCreateNewSite &&
-            siteRows <= threshold &&
+            siteRows <= 3 &&
             indexPath.row == lastRowInSection(indexPath.section)
 
         if isCreateNewSiteRow {
