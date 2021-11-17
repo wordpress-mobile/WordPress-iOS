@@ -11,7 +11,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none),
+                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, links: Links.twitter),
             ],
             [
                 AboutItem(title: TextContent.legalAndMore),
@@ -47,6 +47,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum Links {
+        static let twitter    = [AboutScreenLink(url: "https://twitter.com/WordPressiOS")]
         static let workWithUs = [AboutScreenLink(url: "https://automattic.com/work-with-us")]
     }
 }
