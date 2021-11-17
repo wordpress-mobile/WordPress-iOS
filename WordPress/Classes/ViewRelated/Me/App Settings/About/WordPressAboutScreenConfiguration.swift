@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     let sharePresenter: ShareAppContentPresenter
@@ -20,10 +21,16 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: "", cellStyle: .appLogos)
             ],
             [
-                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle)
+                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, links: Links.workWithUs)
             ]
         ]
     }()
+
+    let presentURL: AboutScreenURLPresenterBlock? = { url, context in
+        let webViewController = WebViewControllerFactory.controller(url: url)
+        let navigationController = UINavigationController(rootViewController: webViewController)
+        context.viewController.present(navigationController, animated: true, completion: nil)
+    }
 
     init(sharePresenter: ShareAppContentPresenter) {
         self.sharePresenter = sharePresenter
@@ -37,5 +44,9 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
         static let automatticFamily   = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
         static let workWithUs         = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
         static let workWithUsSubtitle = NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world")
+    }
+
+    private enum Links {
+        static let workWithUs = [AboutScreenLink(url: "https://automattic.com/work-with-us")]
     }
 }
