@@ -70,34 +70,25 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     }
 }
 
-class LegalAndMoreSubmenuConfiguration: AboutSubmenuConfiguration {
+class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     let webViewPresenter = WebViewPresenter()
 
     lazy var sections: [[AboutItem]] = {
         [
             [
-                AboutItem(title: Titles.termsOfService, accessoryType: .none, action: { [weak self] context in
-                    self?.webViewPresenter.present(for: Links.termsOfService, context: context)
-                    return .noDefaultAction
-                }),
-                AboutItem(title: Titles.privacyPolicy, accessoryType: .none, action: { [weak self] context in
-                    self?.webViewPresenter.present(for: Links.privacyPolicy, context: context)
-                    return .noDefaultAction
-                }),
-                AboutItem(title: Titles.sourceCode, accessoryType: .none, action: { [weak self] context in
-                    self?.webViewPresenter.present(for: Links.sourceCode, context: context)
-                    return .noDefaultAction
-                }),
-                AboutItem(title: Titles.acknowledgements, accessoryType: .none, action: { [weak self] context in
-                    self?.webViewPresenter.present(for: Links.acknowledgements, context: context)
-                    return .noDefaultAction
-                }),
+                linkItem(title: Titles.termsOfService, link: Links.termsOfService),
+                linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy),
+                linkItem(title: Titles.sourceCode, link: Links.sourceCode),
+                linkItem(title: Titles.acknowledgements, link: Links.acknowledgements),
             ]
         ]
     }()
 
-    func willPresent(viewController: SubmenuViewController) {
-        // no-op, but we can configure the submenu VC here
+    func linkItem(title: String, link: URL) -> AboutItem {
+        AboutItem(title: title, accessoryType: .none, action: { [weak self] context in
+            self?.webViewPresenter.present(for: link, context: context)
+            return .noDefaultAction
+        })
     }
 
     let dismissBlock: ((AboutItemActionContext) -> Void) = { context in

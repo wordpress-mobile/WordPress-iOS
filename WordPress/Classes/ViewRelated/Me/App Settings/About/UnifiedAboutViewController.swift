@@ -261,13 +261,13 @@ private extension AboutItem {
 /// Generic VC for custom submenus.
 ///
 class SubmenuViewController: UITableViewController {
-    let configuration: AboutSubmenuConfiguration
+    let configuration: AboutScreenConfiguration
 
     var sections: [AboutScreenSection] {
         configuration.sections
     }
 
-    init(configuration: AboutSubmenuConfiguration) {
+    init(configuration: AboutScreenConfiguration) {
         self.configuration = configuration
         super.init(style: .insetGrouped)
     }
