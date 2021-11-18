@@ -21,6 +21,26 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - Views
 
+
+    // MARK: - Views
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Occasionally our hidden separator insets can cause the horizontal
+        // scrollbar to appear on rotation
+        tableView.showsHorizontalScrollIndicator = false
+
+        tableView.tableHeaderView = headerView
+        tableView.tableFooterView = footerView
+
+        tableView.dataSource = self
+        tableView.delegate = self
+
+        return tableView
+    }()
+
     let headerView: UIView = {
         // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
         // into the main App.
@@ -42,35 +62,29 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return headerView
     }()
 
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        // Occasionally our hidden separator insets can cause the horizontal
-        // scrollbar to appear on rotation
-        tableView.showsHorizontalScrollIndicator = false
-
-        tableView.tableHeaderView = headerView
-
-        tableView.dataSource = self
-        tableView.delegate = self
-
-        return tableView
-    }()
-
     private lazy var footerView: UIView = {
         let footerView = UIView()
-        footerView.translatesAutoresizingMaskIntoConstraints = false
         footerView.backgroundColor = .systemGroupedBackground
+
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(containerView)
 
         let logo = UIImageView(image: UIImage(named: Images.automatticLogo))
         logo.translatesAutoresizingMaskIntoConstraints = false
-        footerView.addSubview(logo)
+        containerView.addSubview(logo)
 
         NSLayoutConstraint.activate([
-            logo.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
-            logo.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+            containerView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: Metrics.footerVerticalOffset),
+            containerView.bottomAnchor.constraint(equalTo: footerView.bottomAnchor),
+            containerView.heightAnchor.constraint(equalToConstant: Metrics.footerHeight),
+            logo.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            logo.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ])
+
+        footerView.frame.size = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 
         return footerView
     }()
@@ -96,17 +110,12 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         view.backgroundColor = .systemGroupedBackground
 
         view.addSubview(tableView)
-        view.addSubview(footerView)
 
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
-            footerView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Metrics.footerVerticalOffset),
-            footerView.heightAnchor.constraint(equalToConstant: Metrics.footerHeight),
-            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            tableView.topAnchor.constraint(equalTo: view.safeTopAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
         tableView.reloadData()
