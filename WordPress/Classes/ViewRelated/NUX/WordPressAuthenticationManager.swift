@@ -18,10 +18,10 @@ class WordPressAuthenticationManager: NSObject {
 
     init(windowManager: WindowManager,
          authenticationHandler: AuthenticationHandler? = nil,
-         quickStartSettings: QuickStartSettings? = nil) {
+         quickStartSettings: QuickStartSettings = QuickStartSettings()) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
-        self.quickStartSettings = quickStartSettings ?? QuickStartSettings()
+        self.quickStartSettings = quickStartSettings
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
