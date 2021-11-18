@@ -351,7 +351,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
-            // Otherwise, whow the My Site screen for the specified blog and after a short delay,
+            // Otherwise, show the My Site screen for the specified blog and after a short delay,
             // trigger the Quick Start tour
             self.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
