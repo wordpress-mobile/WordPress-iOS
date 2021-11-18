@@ -6,13 +6,26 @@ typealias AboutScreenSection = [AboutItem]
 protocol AboutScreenConfiguration {
     /// A list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
     var sections: [AboutScreenSection] { get }
+
+    /// A block that dismisses the about screen
+    var dismissBlock: ((AboutItemActionContext) -> Void) { get }
+}
+
+protocol AboutSubmenuConfiguration {
+    /// A list of AboutItems, grouped into sections, which will be displayed in the submenu screen's table view.
+    var sections: [AboutScreenSection] { get }
+    
+    func willPresent(viewController: SubmenuViewController)
+    
+    /// A block that dismisses the about screen
+    var dismissBlock: ((AboutItemActionContext) -> Void) { get }
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> AboutItemDefaultAction)
 
 enum AboutItemDefaultAction {
     case noDefaultAction
-    case showSubmenu(sections: [AboutScreenSection])
+    case showSubmenu(configuration: AboutSubmenuConfiguration)
 }
 
 struct AboutItemActionContext {
@@ -21,6 +34,11 @@ struct AboutItemActionContext {
 
     /// If the action was triggered by the user interacting with a specific view, it'll be available here.
     let sourceView: UIView?
+
+    init(viewController: UIViewController, sourceView: UIView? = nil) {
+        self.viewController = viewController
+        self.sourceView = sourceView
+    }
 }
 
 /// Defines a single row in the unified about screen.

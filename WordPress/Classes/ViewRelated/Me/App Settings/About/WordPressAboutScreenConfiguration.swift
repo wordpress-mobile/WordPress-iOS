@@ -1,25 +1,36 @@
 import Foundation
 import UIKit
 
+
+class WebViewPresenter {
+    func present(for url: URL, context: AboutItemActionContext) {
+        let webViewController = WebViewControllerFactory.controller(url: url)
+        let navigationController = UINavigationController(rootViewController: webViewController)
+        context.viewController.present(navigationController, animated: true, completion: nil)
+    }
+}
+
 class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     let sharePresenter: ShareAppContentPresenter
-
+    let webViewPresenter = WebViewPresenter()
+    
     lazy var sections: [[AboutItem]] = {
         [
             [
-                AboutItem(title: TextContent.rateUs, accessoryType: .none),
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                     return .noDefaultAction
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
 
-                    self?.presentWebView(for: Links.twitter, context: context)
+                    self?.webViewPresenter.present(for: Links.twitter, context: context)
                     return .noDefaultAction
                 }),
             ],
             [
-                AboutItem(title: TextContent.legalAndMore),
+                AboutItem(title: TextContent.legalAndMore, action: { [weak self] context in
+                    .showSubmenu(configuration: LegalAndMoreSubmenuConfiguration())
+                }),
             ],
             [
                 AboutItem(title: TextContent.automatticFamily, hidesSeparator: true),
@@ -28,17 +39,15 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, action: { [weak self] context in
 
-                    self?.presentWebView(for: Links.workWithUs, context: context)
+                    self?.webViewPresenter.present(for: Links.workWithUs, context: context)
                     return .noDefaultAction
                 }),
             ]
         ]
     }()
 
-    func presentWebView(for url: URL, context: AboutItemActionContext) {
-        let webViewController = WebViewControllerFactory.controller(url: url)
-        let navigationController = UINavigationController(rootViewController: webViewController)
-        context.viewController.present(navigationController, animated: true, completion: nil)
+    let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
+        context.viewController.presentingViewController?.dismiss(animated: true)
     }
 
     init(sharePresenter: ShareAppContentPresenter) {
@@ -58,5 +67,54 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     private enum Links {
         static let twitter    = URL(string: "https://twitter.com/WordPressiOS")!
         static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
+    }
+}
+
+class LegalAndMoreSubmenuConfiguration: AboutSubmenuConfiguration {
+    let webViewPresenter = WebViewPresenter()
+    
+    lazy var sections: [[AboutItem]] = {
+        [
+            [
+                AboutItem(title: Titles.termsOfService, accessoryType: .none, action: { [weak self] context in
+                    self?.webViewPresenter.present(for: Links.termsOfService, context: context)
+                    return .noDefaultAction
+                }),
+                AboutItem(title: Titles.privacyPolicy, accessoryType: .none, action: { [weak self] context in
+                    self?.webViewPresenter.present(for: Links.privacyPolicy, context: context)
+                    return .noDefaultAction
+                }),
+                AboutItem(title: Titles.sourceCode, accessoryType: .none, action: { [weak self] context in
+                    self?.webViewPresenter.present(for: Links.sourceCode, context: context)
+                    return .noDefaultAction
+                }),
+                AboutItem(title: Titles.acknowledgements, accessoryType: .none, action: { [weak self] context in
+                    self?.webViewPresenter.present(for: Links.acknowledgements, context: context)
+                    return .noDefaultAction
+                }),
+            ]
+        ]
+    }()
+    
+    func willPresent(viewController: SubmenuViewController) {
+        // no-op, but we can configure the submenu VC here
+    }
+
+    let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
+        context.viewController.presentingViewController?.dismiss(animated: true)
+    }
+
+    private enum Titles {
+        static let termsOfService     = NSLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
+        static let privacyPolicy      = NSLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
+        static let sourceCode         = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
+        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknoledgements")
+    }
+    
+    private enum Links {
+        static let termsOfService = URL(string: WPAutomatticTermsOfServiceURL)!
+        static let privacyPolicy = URL(string: WPAutomatticPrivacyURL)!
+        static let sourceCode = URL(string: WPGithubMainURL)!
+        static let acknowledgements: URL = URL(string: Bundle.main.url(forResource: "acknowledgements", withExtension: "html")?.absoluteString ?? "")!
     }
 }
