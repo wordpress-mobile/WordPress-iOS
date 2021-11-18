@@ -336,30 +336,38 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
 
-        let dismissAndShowBlog: ((Blog) -> Void) = { [weak self] blog in
-            onDismiss()
-            self?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-        }
-
-        epilogueViewController.onBlogSelected = { [weak self] blog in
+        let onDismissQuickStartPrompt: (Blog) -> Void = { [weak self] blog in
 
             guard let self = self else {
                 return
             }
 
+            onDismiss()
+
+            // If the quick start prompt has already been dismissed,
+            // then show the My Site screen for the specified blog
             guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-                dismissAndShowBlog(blog)
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
                 return
             }
 
+            // Otherwise, whow the My Site screen for the specified blog and after a short delay,
+            // trigger the Quick Start tour
+            self.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+                    QuickStartTourGuide.shared.setup(for: blog)
+                }
+            })
+        }
+
+        epilogueViewController.onBlogSelected = { blog in
             let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismissEpilogue = onDismiss
+            quickstartPrompt.onDismiss = onDismissQuickStartPrompt
             navigationController.pushViewController(quickstartPrompt, animated: true)
         }
 
         epilogueViewController.onCreateNewSite = {
-
-            let wizardLauncher = SiteCreationWizardLauncher(onDismissEpilogue: onDismiss)
+            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPrompt)
             guard let wizard = wizardLauncher.ui else {
                 return
             }
@@ -564,5 +572,9 @@ private extension WordPressAuthenticationManager {
             RecentSitesService().touch(blog: blog)
             onCompletion()
         }
+    }
+
+    private enum Constants {
+        static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
     }
 }
