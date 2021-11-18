@@ -9,7 +9,10 @@ protocol AboutScreenConfiguration {
     var sections: [AboutScreenSection] { get }
 
     /// A block that presents the provided URL in a web view
-    var presentURL: AboutScreenURLPresenterBlock? { get }
+    var presentURLBlock: AboutScreenURLPresenterBlock? { get }
+
+    /// A block that dismisses the about screen
+    var dismissBlock: ((AboutItemActionContext) -> Void) { get }
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> Void)
@@ -20,6 +23,11 @@ struct AboutItemActionContext {
 
     /// If the action was triggered by the user interacting with a specific view, it'll be available here.
     let sourceView: UIView?
+
+    init(viewController: UIViewController, sourceView: UIView? = nil) {
+        self.viewController = viewController
+        self.sourceView = sourceView
+    }
 }
 
 /// An About Screen link contains a display title and url for a single link-based navigation item.
