@@ -1,35 +1,28 @@
+import ScreenObject
 import XCTest
 
-public class BlockEditorScreen: BaseScreen {
+public class BlockEditorScreen: ScreenObject {
 
-    // Navigation bar
-    let editorNavBar = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"]
-    let editorCloseButton = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
-    let publishButton = XCUIApplication().buttons["Publish"]
-    let publishNowButton = XCUIApplication().buttons["Publish Now"]
-    let moreButton = XCUIApplication().buttons["more_post_options"]
+    let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
+    }
 
-    // Editor area
-    // Title
-    let titleView = XCUIApplication().otherElements["Post title. Empty"].firstMatch // Uses a localized string
-    // Paragraph block
-    let paragraphView = XCUIApplication().otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
-    // Image block
-    let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
+    var editorCloseButton: XCUIElement { editorCloseButtonGetter(app) }
 
-    // Toolbar
-    let addBlockButton = XCUIApplication().buttons["add-block-button"] // Uses a testID
+    let addBlockButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["add-block-button"] // Uses a testID
+    }
 
-    // Action sheets
-    let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
-    let imageDeviceButton = XCUIApplication().sheets.buttons["Choose from device"] // Uses a localized string
-    let discardButton = XCUIApplication().buttons["Discard"] // Uses a localized string
-    let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"] // Uses a localized string
-    let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"] // Uses a localized string
+    var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
 
-    public init() {
-        // Check addBlockButton element to ensure block editor is fully loaded
-        super.init(element: addBlockButton)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
+        // is loaded, we rely only on the button to add a new block and on the navigation bar we
+        // expect to encase the screen.
+        try super.init(
+            expectedElementGetters: [ addBlockButtonGetter, editorCloseButtonGetter ],
+            app: app
+        )
     }
 
     /**
@@ -37,6 +30,8 @@ public class BlockEditorScreen: BaseScreen {
      - Parameter text: the test to enter into the title
      */
     public func enterTextInTitle(text: String) -> BlockEditorScreen {
+        let titleView = app.otherElements["Post title. Empty"].firstMatch // Uses a localized string
+
         titleView.tap()
         titleView.typeText(text)
 
@@ -49,6 +44,8 @@ public class BlockEditorScreen: BaseScreen {
      */
     public func addParagraphBlock(withText text: String) -> BlockEditorScreen {
         addBlock("Paragraph block")
+
+        let paragraphView = app.otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
         paragraphView.typeText(text)
 
         return self
@@ -57,9 +54,9 @@ public class BlockEditorScreen: BaseScreen {
     /**
      Adds an image block with latest image from device.
      */
-    public func addImage() -> BlockEditorScreen {
+    public func addImage() throws -> BlockEditorScreen {
         addBlock("Image block")
-        addImageByOrder(id: 0)
+        try addImageByOrder(id: 0)
 
         return self
     }
@@ -78,10 +75,12 @@ public class BlockEditorScreen: BaseScreen {
     public func closeEditor() {
         XCTContext.runActivity(named: "Close the block editor") { (activity) in
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
+                let actionSheet = app.sheets.element(boundBy: 0)
                 if actionSheet.exists {
                     if XCUIDevice.isPad {
                         app.otherElements["PopoverDismissRegion"].tap()
                     } else {
+                        let keepEditingButton = app.sheets.buttons["Keep Editing"] // Uses a localized string
                         keepEditingButton.tap()
                     }
                 }
@@ -95,16 +94,19 @@ public class BlockEditorScreen: BaseScreen {
                 let notSavedState = app.staticTexts["You have unsaved changes."]
                 if notSavedState.exists {
                     Logger.log(message: "Discarding unsaved changes", event: .v)
+                    let discardButton = app.buttons["Discard"] // Uses a localized string
                     discardButton.tap()
                 }
             }
 
-            let editorClosed = waitFor(element: editorNavBar, predicate: "isEnabled == false")
-            XCTAssert(editorClosed, "Block editor should be closed but is still loaded.")
+            let editorNavBar = app.navigationBars["Gutenberg Editor Navigation Bar"]
+            let waitForEditorToClose = editorNavBar.waitFor(predicateString: "isEnabled == false")
+            XCTAssertEqual(waitForEditorToClose, .completed, "Block editor should be closed but is still loaded.")
         }
     }
 
     public func publish() throws -> EditorNoticeComponent {
+        let publishButton = app.buttons["Publish"]
         publishButton.tap()
         try confirmPublish()
 
@@ -112,7 +114,9 @@ public class BlockEditorScreen: BaseScreen {
     }
 
     public func openPostSettings() throws -> EditorPostSettings {
+        let moreButton = app.buttons["more_post_options"]
         moreButton.tap()
+        let postSettingsButton = app.sheets.buttons["Post Settings"] // Uses a localized string
         postSettingsButton.tap()
 
         return try EditorPostSettings()
@@ -126,14 +130,16 @@ public class BlockEditorScreen: BaseScreen {
     /*
      Select Image from Camera Roll by its ID. Starts with 0
      */
-    private func addImageByOrder(id: Int) {
+    private func addImageByOrder(id: Int) throws {
+        let imageDeviceButton = app.sheets.buttons["Choose from device"] // Uses a localized string
+
         imageDeviceButton.tap()
 
         // Allow access to device media
         app.tap() // trigger the media permissions alert handler
 
         // Inject the first picture
-        MediaPickerAlbumListScreen()
+        try MediaPickerAlbumListScreen()
             .selectAlbum(atIndex: 0)
             .selectImage(atIndex: 0)
     }
@@ -142,23 +148,43 @@ public class BlockEditorScreen: BaseScreen {
         if FancyAlertComponent.isLoaded() {
             try FancyAlertComponent().acceptAlert()
         } else {
+            let publishNowButton = app.buttons["Publish Now"]
             publishNowButton.tap()
         }
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"].exists
+        (try? BlockEditorScreen().isLoaded) ?? false
     }
 
     @discardableResult
-    public func openBlockPicker() -> BlockEditorScreen {
+    public func openBlockPicker() throws -> BlockEditorScreen {
         addBlockButton.tap()
-        return BlockEditorScreen()
+        return try BlockEditorScreen()
     }
 
     @discardableResult
-    public func closeBlockPicker() -> BlockEditorScreen {
+    public func closeBlockPicker() throws -> BlockEditorScreen {
         editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
-        return BlockEditorScreen()
+        return try BlockEditorScreen()
+    }
+}
+
+// TODO: Move this to XCUITestHelpers or ScreenObject
+extension XCUIElement {
+
+    func waitFor(
+        predicateString: String,
+        timeout: TimeInterval = 10
+    ) -> XCTWaiter.Result {
+        XCTWaiter.wait(
+            for: [
+                XCTNSPredicateExpectation(
+                    predicate: NSPredicate(format: predicateString),
+                    object: self
+                )
+            ],
+            timeout: timeout
+        )
     }
 }

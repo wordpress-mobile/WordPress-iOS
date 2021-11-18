@@ -1,91 +1,25 @@
 import UIKit
 import WordPressShared
 
-/// Defines a single row in the unified about screen.
-///
-struct AboutItem {
-    let title: String
-    let subtitle: String?
-    let cellStyle: AboutItemCellStyle
-    let action: (() -> Void)?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, action: (() -> Void)? = nil) {
-        self.title = title
-        self.subtitle = subtitle
-        self.cellStyle = cellStyle
-        self.action = action
+class UnifiedAboutViewController: UIViewController, OrientationLimited {
+    let configuration: AboutScreenConfiguration
+
+    private var sections: [AboutScreenSection] {
+        configuration.sections
     }
 
-    func makeCell() -> UITableViewCell {
-        switch cellStyle {
-        case .default:
-            return UITableViewCell(style: .default, reuseIdentifier: cellStyle.rawValue)
-        case .value1:
-            return UITableViewCell(style: .value1, reuseIdentifier: cellStyle.rawValue)
-        case .subtitle:
-            return UITableViewCell(style: .subtitle, reuseIdentifier: cellStyle.rawValue)
-        case .appLogos:
-            return AutomatticAppLogosCell()
+    private var appLogosIndexPath: IndexPath? {
+        for (sectionIndex, row) in sections.enumerated() {
+            if let rowIndex = row.firstIndex(where: { $0.cellStyle == .appLogos }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
         }
+
+        return nil
     }
 
-    var cellHeight: CGFloat {
-        switch cellStyle {
-        case .appLogos:
-            return AutomatticAppLogosCell.Metrics.cellHeight
-        default:
-            return UITableView.automaticDimension
-        }
-    }
-
-    var cellAccessoryType: UITableViewCell.AccessoryType {
-        switch cellStyle {
-        case .appLogos:
-            return .none
-        default:
-            return .disclosureIndicator
-        }
-    }
-
-    var cellSelectionStyle: UITableViewCell.SelectionStyle {
-        switch cellStyle {
-        case .appLogos:
-            return .none
-        default:
-            return .default
-        }
-    }
-
-    enum AboutItemCellStyle: String {
-        // Displays only a title
-        case `default`
-        // Displays a title on the leading side and a secondary value on the trailing side
-        case value1
-        // Displays a title with a smaller subtitle below
-        case subtitle
-        // Displays the custom app logos cell
-        case appLogos
-    }
-}
-
-class UnifiedAboutViewController: UIViewController {
-    static let sections: [[AboutItem]] = [
-        [
-            AboutItem(title: "Rate Us"),
-            AboutItem(title: "Share with Friends"),
-            AboutItem(title: "Twitter", cellStyle: .value1)
-        ],
-        [
-            AboutItem(title: "Legal and More")
-        ],
-        [
-            AboutItem(title: "Automattic Family"),
-            AboutItem(title: "", cellStyle: .appLogos)
-        ],
-        [
-            AboutItem(title: "Work With Us", subtitle: "Join From Anywhere", cellStyle: .subtitle)
-        ]
-    ]
+    // MARK: - Views
 
     let headerView: UIView = {
         // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
@@ -108,11 +42,14 @@ class UnifiedAboutViewController: UIViewController {
         return headerView
     }()
 
-    // MARK: - Views
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Occasionally our hidden separator insets can cause the horizontal
+        // scrollbar to appear on rotation
+        tableView.showsHorizontalScrollIndicator = false
+
         tableView.tableHeaderView = headerView
 
         tableView.dataSource = self
@@ -138,7 +75,20 @@ class UnifiedAboutViewController: UIViewController {
         return footerView
     }()
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
     // MARK: - View lifecycle
+
+    init(configuration: AboutScreenConfiguration) {
+        self.configuration = configuration
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,11 +112,26 @@ class UnifiedAboutViewController: UIViewController {
         tableView.reloadData()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        if let indexPath = appLogosIndexPath {
+            // When rotating (only on iPad), scroll so that the app logos cell is always visible
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.appLogosScrollDelay) {
+                self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+            }
+        }
+    }
+
     // MARK: - Constants
 
     enum Metrics {
         static let footerHeight: CGFloat = 58.0
         static let footerVerticalOffset: CGFloat = 20.0
+    }
+
+    enum Constants {
+        static let appLogosScrollDelay: TimeInterval = 0.25
     }
 
     enum Images {
@@ -178,32 +143,40 @@ class UnifiedAboutViewController: UIViewController {
 
 extension UnifiedAboutViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Self.sections.count
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Self.sections[section].count
+        return sections[section].count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
 
-        let cell = row.makeCell()
+        let cell = item.makeCell()
 
-        cell.textLabel?.text = row.title
-        cell.detailTextLabel?.text = row.subtitle
-        cell.accessoryType = row.cellAccessoryType
-        cell.selectionStyle = row.cellSelectionStyle
+        cell.textLabel?.text = item.title
+        cell.detailTextLabel?.text = item.subtitle
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.accessoryType = item.accessoryType
+        cell.selectionStyle = item.cellSelectionStyle
 
         return cell
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
 
-        return row.cellHeight
+        cell.separatorInset = item.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
+
+        return item.cellHeight
     }
 }
 
@@ -211,8 +184,47 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
 extension UnifiedAboutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = Self.sections[indexPath.section]
-        let row = section[indexPath.row]
-        row.action?()
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
+
+        let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
+        item.action?(context)
+
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+}
+
+// MARK: AboutItem Extensions
+
+private extension AboutItem {
+    func makeCell() -> UITableViewCell {
+        switch cellStyle {
+        case .default:
+            return UITableViewCell(style: .default, reuseIdentifier: cellStyle.rawValue)
+        case .value1:
+            return UITableViewCell(style: .value1, reuseIdentifier: cellStyle.rawValue)
+        case .subtitle:
+            return UITableViewCell(style: .subtitle, reuseIdentifier: cellStyle.rawValue)
+        case .appLogos:
+            return AutomatticAppLogosCell()
+        }
+    }
+
+    var cellHeight: CGFloat {
+        switch cellStyle {
+        case .appLogos:
+            return AutomatticAppLogosCell.Metrics.cellHeight
+        default:
+            return UITableView.automaticDimension
+        }
+    }
+
+    var cellSelectionStyle: UITableViewCell.SelectionStyle {
+        switch cellStyle {
+        case .appLogos:
+            return .none
+        default:
+            return .default
+        }
     }
 }
