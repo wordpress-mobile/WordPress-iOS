@@ -69,23 +69,6 @@ struct QuickStartCreateTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating your site.", comment: "This value is used to set the accessibility hint text for creating the user's site.")
 }
 
-/// This is used to track when users from v1 are shown the v2 upgrade notice
-/// This should also be created when a site is setup for v2
-struct QuickStartUpgradeToV2Tour: QuickStartTour {
-    let key = "quick-start-upgrade-to-v2"
-    let analyticsKey = "upgrade_to_v2"
-    let title = ""
-    let titleMarkedCompleted = ""
-    let description = ""
-    let icon = UIImage.gridicon(.plus)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-
-    let waypoints: [QuickStartTour.WayPoint] = []
-
-    let accessibilityHintText = ""  // not applicable for this tour type
-}
-
 struct QuickStartViewTour: QuickStartTour {
     let key = "quick-start-view-tour"
     let analyticsKey = "view_site"

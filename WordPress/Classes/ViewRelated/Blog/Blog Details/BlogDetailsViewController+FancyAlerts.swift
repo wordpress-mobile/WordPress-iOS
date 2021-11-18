@@ -160,17 +160,4 @@ extension BlogDetailsViewController {
         section.showQuickStartMenu = true
         return section
     }
-
-    private func showUpgradeToV2Alert(for blog: Blog) {
-        guard noPresentedViewControllers else {
-            return
-        }
-
-        let alert = FancyAlertViewController.makeQuickStartUpgradeToV2AlertController(blog: blog)
-        alert.modalPresentationStyle = .custom
-        alert.transitioningDelegate = self
-        tabBarController?.present(alert, animated: true)
-
-        WPAnalytics.track(.quickStartMigrationDialogViewed)
-    }
 }
