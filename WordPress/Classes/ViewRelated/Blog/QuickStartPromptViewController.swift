@@ -20,6 +20,7 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - Properties
 
     private let blog: Blog
+    private let quickStartSettings: QuickStartSettings
 
     /// Closure to be executed upon dismissing the Login Epilogue.
     ///
@@ -27,8 +28,9 @@ final class QuickStartPromptViewController: UIViewController {
 
     // MARK: - Init
 
-    init(blog: Blog) {
+    init(blog: Blog, quickStartSettings: QuickStartSettings? = nil) {
         self.blog = blog
+        self.quickStartSettings = quickStartSettings ?? QuickStartSettings()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -120,7 +122,7 @@ final class QuickStartPromptViewController: UIViewController {
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
-        UserDefaults.standard.setQuickStartWasDismissed(true, for: blog)
+        quickStartSettings.setPromptWasDismissed(true, for: blog)
 
         if let onDismissEpilogue = onDismissEpilogue {
             onDismissEpilogue()
@@ -143,29 +145,5 @@ extension QuickStartPromptViewController {
 
     private enum Constants {
         static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
-    }
-}
-
-extension UserDefaults {
-
-    func quickStartWasDismissed(for blog: Blog) -> Bool {
-        guard let key = quickStartWasDismissedKey(for: blog) else {
-            return false
-        }
-        return bool(forKey: key)
-    }
-
-    func setQuickStartWasDismissed(_ value: Bool, for blog: Blog) {
-        guard let key = quickStartWasDismissedKey(for: blog) else {
-            return
-        }
-        set(value, forKey: key)
-    }
-
-    private func quickStartWasDismissedKey(for blog: Blog) -> String? {
-        guard let siteID = blog.dotComID?.intValue else {
-            return nil
-        }
-        return "QuickStartWasDismissed-\(siteID)"
     }
 }
