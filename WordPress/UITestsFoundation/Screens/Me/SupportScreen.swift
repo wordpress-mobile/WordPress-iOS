@@ -27,6 +27,21 @@ public class SupportScreen: ScreenObject {
         )
     }
 
+    public func contactSupport() throws -> ContactUsScreen {
+        app.cells["contact-support-button"].tap()
+        addContactInformationIfNeeded()
+        return try ContactUsScreen()
+    }
+
+    private func addContactInformationIfNeeded() {
+        let emailTextField = app.textFields["Email"]
+        if emailTextField.waitForExistence(timeout: 3) {
+            emailTextField.tap()
+            emailTextField.typeText("user@test.zzz")
+            app.buttons["OK"].tap()
+        }
+    }
+
     public func dismiss() {
         closeButton.tap()
     }
