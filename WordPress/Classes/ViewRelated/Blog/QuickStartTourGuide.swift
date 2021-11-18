@@ -28,13 +28,7 @@ open class QuickStartTourGuide: NSObject {
         }
     }
 
-    func setup(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = [], executeWithDelay: Bool = false) {
-
-        guard executeWithDelay else {
-            setup(for: blog, withCompletedSteps: steps)
-            return
-        }
-
+    func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
             self.setup(for: blog, withCompletedSteps: steps)
         }
