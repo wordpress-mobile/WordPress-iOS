@@ -1,12 +1,89 @@
 import UIKit
 import WordPressShared
 
+@objc
+class UnifiedAboutTableViewManager: NSObject, UITableViewDelegate, UITableViewDataSource {
+    weak var hostViewController: UIViewController?
+    let sections: [AboutScreenSection]
+
+    init(sections: [AboutScreenSection]) {
+        self.sections = sections
+    }
+
+    // MARK: - UITableViewDataSource
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        sections.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        sections[section].count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
+
+        let cell = item.makeCell()
+
+        cell.textLabel?.text = item.title
+        cell.detailTextLabel?.text = item.subtitle
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.accessoryType = item.accessoryType
+        cell.selectionStyle = item.cellSelectionStyle
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
+
+        cell.separatorInset = item.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
+    }
+
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
+
+        return item.cellHeight
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let hostViewController = hostViewController else {
+            return
+        }
+
+        let section = sections[indexPath.section]
+        let item = section[indexPath.row]
+
+        if let customAction = item.action {
+            let context = AboutItemActionContext(viewController: hostViewController, sourceView: tableView.cellForRow(at: indexPath))
+            let defaultAction = customAction(context)
+
+            switch defaultAction {
+            case .showSubmenu(let configuration):
+                let viewController = SubmenuViewController(configuration: configuration)
+                viewController.title = item.title
+
+                hostViewController.navigationController?.pushViewController(viewController, animated: true)
+            default:
+                break
+            }
+        }
+
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+}
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
-    let configuration: AboutScreenConfiguration
+    private let tableViewManager: UnifiedAboutTableViewManager
+    private let dismissBlock: ((AboutItemActionContext) -> Void)
 
     private var sections: [AboutScreenSection] {
-        configuration.sections
+        tableViewManager.sections
     }
 
     private var appLogosIndexPath: IndexPath? {
@@ -35,8 +112,8 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = footerView
 
-        tableView.dataSource = self
-        tableView.delegate = self
+        tableView.dataSource = tableViewManager
+        tableView.delegate = tableViewManager
 
         return tableView
     }()
@@ -101,8 +178,12 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     }
 
     init(configuration: AboutScreenConfiguration) {
-        self.configuration = configuration
+        tableViewManager = UnifiedAboutTableViewManager(sections: configuration.sections)
+        dismissBlock = configuration.dismissBlock
+
         super.init(nibName: nil, bundle: nil)
+
+        tableViewManager.hostViewController = self
     }
 
     required init?(coder: NSCoder) {
@@ -155,74 +236,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     }
 }
 
-// MARK: - Table view data source
-
-extension UnifiedAboutViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        let cell = item.makeCell()
-
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = item.subtitle
-        cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.accessoryType = item.accessoryType
-        cell.selectionStyle = item.cellSelectionStyle
-
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        cell.separatorInset = item.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        return item.cellHeight
-    }
-}
-
-// MARK: - Table view delegate
-
-extension UnifiedAboutViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
-
-        if let customAction = item.action {
-            let defaultAction = customAction(context)
-
-            switch defaultAction {
-            case .showSubmenu(let configuration):
-                let viewController = SubmenuViewController(configuration: configuration)
-                viewController.title = item.title
-
-                navigationController?.pushViewController(viewController, animated: true)
-            default:
-                break
-            }
-        }
-
-        tableView.deselectSelectedRowWithAnimation(true)
-    }
-}
-
 // MARK: AboutItem Extensions
 
 private extension AboutItem {
@@ -261,15 +274,16 @@ private extension AboutItem {
 /// Generic VC for custom submenus.
 ///
 class SubmenuViewController: UITableViewController {
-    let configuration: AboutScreenConfiguration
-
-    var sections: [AboutScreenSection] {
-        configuration.sections
-    }
+    let tableViewManager: UnifiedAboutTableViewManager
+    private let dismissBlock: ((AboutItemActionContext) -> Void)
 
     init(configuration: AboutScreenConfiguration) {
-        self.configuration = configuration
+        tableViewManager = UnifiedAboutTableViewManager(sections: configuration.sections)
+        dismissBlock = configuration.dismissBlock
+
         super.init(style: .insetGrouped)
+
+        tableViewManager.hostViewController = self
     }
 
     required init?(coder: NSCoder) {
@@ -281,9 +295,10 @@ class SubmenuViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
+        tableView.delegate = tableViewManager
+        tableView.dataSource = tableViewManager
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -302,68 +317,6 @@ class SubmenuViewController: UITableViewController {
 
     @objc private func doneTapped() {
         let context = AboutItemActionContext(viewController: self)
-        configuration.dismissBlock(context)
-    }
-
-    private static let cellIdentifier = "AboutLinkListViewController.Cell"
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
-
-        if let customAction = item.action {
-            let defaultAction = customAction(context)
-
-            switch defaultAction {
-            case .showSubmenu(let configuration):
-                let viewController = SubmenuViewController(configuration: configuration)
-                viewController.title = item.title
-
-                navigationController?.pushViewController(viewController, animated: true)
-            default:
-                break
-            }
-        }
-
-        tableView.deselectSelectedRowWithAnimation(true)
-    }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sections[section].count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        let cell = item.makeCell()
-
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = item.subtitle
-        cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.accessoryType = item.accessoryType
-        cell.selectionStyle = item.cellSelectionStyle
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        cell.separatorInset = item.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        return item.cellHeight
+        dismissBlock(context)
     }
 }
