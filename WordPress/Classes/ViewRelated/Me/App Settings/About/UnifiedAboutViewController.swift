@@ -80,7 +80,7 @@ class UnifiedAboutTableViewManager: NSObject, UITableViewDelegate, UITableViewDa
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
     private let tableViewManager: UnifiedAboutTableViewManager
-    private let dismissBlock: ((AboutItemActionContext) -> Void)
+    private let configuration: AboutScreenConfiguration
 
     private var sections: [AboutScreenSection] {
         tableViewManager.sections
@@ -179,7 +179,7 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     init(configuration: AboutScreenConfiguration) {
         tableViewManager = UnifiedAboutTableViewManager(sections: configuration.sections)
-        dismissBlock = configuration.dismissBlock
+        self.configuration = configuration
 
         super.init(nibName: nil, bundle: nil)
 
@@ -275,11 +275,11 @@ private extension AboutItem {
 ///
 class SubmenuViewController: UITableViewController {
     let tableViewManager: UnifiedAboutTableViewManager
-    private let dismissBlock: ((AboutItemActionContext) -> Void)
+    private let configuration: AboutScreenConfiguration
 
     init(configuration: AboutScreenConfiguration) {
         tableViewManager = UnifiedAboutTableViewManager(sections: configuration.sections)
-        dismissBlock = configuration.dismissBlock
+        self.configuration = configuration
 
         super.init(style: .insetGrouped)
 
@@ -317,6 +317,6 @@ class SubmenuViewController: UITableViewController {
 
     @objc private func doneTapped() {
         let context = AboutItemActionContext(viewController: self)
-        dismissBlock(context)
+        configuration.dismissBlock(context)
     }
 }
