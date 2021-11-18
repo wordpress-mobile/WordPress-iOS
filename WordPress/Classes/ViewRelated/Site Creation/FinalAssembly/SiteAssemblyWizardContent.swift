@@ -49,11 +49,11 @@ final class SiteAssemblyWizardContent: UIViewController {
     ///   - onDismiss: the closure to be executed upon dismissal
     init(creator: SiteCreator,
          service: SiteAssemblyService,
-         quickStartSettings: QuickStartSettings? = nil,
+         quickStartSettings: QuickStartSettings = QuickStartSettings(),
          onDismiss: ((Blog) -> Void)? = nil) {
         self.siteCreator = creator
         self.service = service
-        self.quickStartSettings = quickStartSettings ?? QuickStartSettings()
+        self.quickStartSettings = quickStartSettings
         self.onDismiss = onDismiss
         self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 

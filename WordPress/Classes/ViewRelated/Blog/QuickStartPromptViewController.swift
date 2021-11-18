@@ -28,9 +28,9 @@ final class QuickStartPromptViewController: UIViewController {
 
     // MARK: - Init
 
-    init(blog: Blog, quickStartSettings: QuickStartSettings? = nil) {
+    init(blog: Blog, quickStartSettings: QuickStartSettings = QuickStartSettings()) {
         self.blog = blog
-        self.quickStartSettings = quickStartSettings ?? QuickStartSettings()
+        self.quickStartSettings = quickStartSettings
         super.init(nibName: nil, bundle: nil)
     }
 
