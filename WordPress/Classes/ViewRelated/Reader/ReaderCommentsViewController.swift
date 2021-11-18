@@ -47,17 +47,7 @@ import UIKit
         cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: false)
 
         // the table view does not render separators for the section header views, so we need to create one.
-        let separatorView = UIView()
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .separator
-
-        cell.contentView.addSubview(separatorView)
-        NSLayoutConstraint.activate([
-            separatorView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
-            separatorView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            separatorView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: tableView.separatorInset.left)
-        ])
+        cell.contentView.addBottomBorder(withColor: .separator, leadingMargin: tableView.separatorInset.left)
 
         return cell
     }
