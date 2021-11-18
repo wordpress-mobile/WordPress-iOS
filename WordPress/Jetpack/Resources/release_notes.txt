@@ -1,6 +1,13 @@
-- We've made it easier to see when there are new blocks available for use on your site
-- You can now highlight text using the <mark> HTML tag, as well as change the text and background color of the Search block button. Shiny!
-- We've hidden HTML tags in post titles when you're checking out your stats.
-- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
-- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
-- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
+Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
+We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
+We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
+
+When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
+
+- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
+- Rich content so you can see each comment just as the author wrote it.
+- A share button for approved comments.
+- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
+- Tappable web address to visit the author's URL (instead of their avatar image).
+
+Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!
