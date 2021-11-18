@@ -281,8 +281,6 @@ class SubmenuViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "" //item.title
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
