@@ -22,9 +22,9 @@ final class QuickStartPromptViewController: UIViewController {
     private let blog: Blog
     private let quickStartSettings: QuickStartSettings
 
-    /// Closure to be executed upon dismissing the Login Epilogue.
+    /// Closure to be executed upon dismissal.
     ///
-    var onDismissEpilogue: (() -> Void)?
+    var onDismiss: ((Blog) -> Void)?
 
     // MARK: - Init
 
@@ -103,33 +103,13 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
-        if let onDismissEpilogue = onDismissEpilogue {
-            onDismissEpilogue()
-
-            // Show the My Site screen for the specified blog
-            WordPressAppDelegate.shared?.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
-                // After a short delay, trigger the Quick Start tour
-                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
-                    QuickStartTourGuide.shared.setup(for: self.blog)
-                }
-            })
-
-            return
-        }
-
+        onDismiss?(blog)
         dismiss(animated: true)
-        QuickStartTourGuide.shared.setup(for: blog)
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
         quickStartSettings.setPromptWasDismissed(true, for: blog)
-
-        if let onDismissEpilogue = onDismissEpilogue {
-            onDismissEpilogue()
-            WordPressAppDelegate.shared?.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-            return
-        }
-
+        onDismiss?(blog)
         dismiss(animated: true)
     }
 }
@@ -143,7 +123,4 @@ extension QuickStartPromptViewController {
         static let noThanksButtonTitle = NSLocalizedString("No thanks", comment: "Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed.")
     }
 
-    private enum Constants {
-        static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
-    }
 }
