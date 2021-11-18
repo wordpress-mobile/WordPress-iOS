@@ -33,6 +33,9 @@ import WordPressFlux
         return tabItems.count > 0
     }
 
+    /// Spotlight
+    var shouldShowCommentSpotlight: Bool = false
+
     /// Settings
     private let settingsPresenter: ScenePresenter
 

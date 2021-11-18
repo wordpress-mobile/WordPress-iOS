@@ -1,25 +1,30 @@
+import ScreenObject
 import XCTest
 import XCUITestHelpers
 
-public class FancyAlertComponent: BaseScreen {
-    let defaultAlertButton: XCUIElement
-    let cancelAlertButton: XCUIElement
+public class FancyAlertComponent: ScreenObject {
+
+    private let defaultAlertButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["fancy-alert-view-default-button"]
+    }
+
+    private let cancelAlertButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["fancy-alert-view-cancel-button"]
+    }
+
+    var defaultAlertButton: XCUIElement { defaultAlertButtonGetter(app) }
+    var cancelAlertButton: XCUIElement { cancelAlertButtonGetter(app) }
 
     public enum Action {
         case accept
         case cancel
     }
 
-    struct ElementIDs {
-        static let defaultButton = "fancy-alert-view-default-button"
-        static let cancelButton = "fancy-alert-view-cancel-button"
-    }
-
-    public init() {
-        defaultAlertButton = XCUIApplication().buttons[ElementIDs.defaultButton]
-        cancelAlertButton = XCUIApplication().buttons[ElementIDs.cancelButton]
-
-        super.init(element: defaultAlertButton)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [defaultAlertButtonGetter, cancelAlertButtonGetter],
+            app: app
+        )
     }
 
     public func acceptAlert() {
@@ -35,6 +40,6 @@ public class FancyAlertComponent: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementIDs.defaultButton].waitForExistence(timeout: 3)
+        (try? FancyAlertComponent().isLoaded) ?? false
     }
 }

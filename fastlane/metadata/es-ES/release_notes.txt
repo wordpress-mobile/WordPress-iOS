@@ -1,7 +1,8 @@
-¡Esta actualización hace que sea todavía más fácil incrustar contenido externo en tus sitios! Presentamos los nuevos bloques de incrustación dedicados a Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL incrustables que pegas en un párrafo vacío. Junto con estas nuevas características, hemos corregido un problema por el que algunas URL incrustadas no podían ser editadas y ajustado el corte de la vista previa para que siempre veas el contenido incrustado completo.
-
-Hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques del párrafo de cita y preformateado.
-
-¿Necesitas ayuda para llegar a más lectores? Los nuevos recoradorios de divulgar y de bloguear te ayudarán a mantener un calendario de publicación coherente.
-
-Por último, hemos mejorado la compatibilidad para tamaños de texto más grandes al elegir una página de inicio o un diseño de página, corregido el problema por el que la lista de comentarios del sitio no se actualiza en ciertas ocasiones y pulido la cabecera de la hoja inferior de prepublicación.
+- Hemos hecho más fácil ver cuándo hay en tu sitio nuevos bloques disponibles para usar
+- Ahora puedes resaltar el texto usando la etiqueta HTML "mark", así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Brillante!
+- Hemos ocultado las etiquetas HTML en los títulos de las entradas cuando estás comprobando tus estadísticas.
+- Hemos mejorado el descubrimiento del Lector – mostrando nuevas cosas para leer, mientras se echa una mano a los sitios con poco tráfico. Todos salimos ganando.
+- Si eres parte de un debate de comentarios, puedes seguirlo a través de los avisos de la aplicación, no solo en tu bandeja de entrada.
+- Hablando de comentarios, hemos escuchado que algunos podrían perderse al ver los comentarios desde el Lector. No te preocupes, hemos encontrado y corregido el problema.
+- La pantalla de ayuda solía salirse de su caja cuando se rotaba de retrato a panorámica y de nuevo a retrato, pero ahora se mantiene.
+- Hemos corregido más casos en los que los bloques incrustados mostraban «no se puede mostrar el contenido», permitiéndote ver todo tu contenido.

@@ -279,7 +279,7 @@ private extension ReaderCardsStreamViewController {
         selectInterestsViewController.view.frame = self.view.bounds
         self.add(selectInterestsViewController)
 
-        selectInterestsViewController.didSaveInterests = { [unowned self] in
+        selectInterestsViewController.didSaveInterests = { [unowned self] _ in
             self.hideSelectInterestsView()
         }
     }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-27 14:54:07+0000 */
+/* Translation-Revision-Date: 2021-11-11 16:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "이 사이트에서 자동으로 관리됨";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "자동 갱신 활성화됨";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "자동으로 승인";
@@ -1560,6 +1563,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "댓글이 대기 중으로 설정되었습니다.";
 
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "댓글을 작성하여 연락을 시작하세요.";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "퀵 스타트 완료를 축하합니다 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "축하합니다!";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "목록이 완성되었습니다. 잘하셨습니다.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "업그레이드를 축하합니다!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "블로그 글을 %@(으)로 자동 공유하려면 연결하세요.";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "다른 블로거의 글을 팔로우하고, 좋아요를 표시하고, 댓글을 작성하여 해당 블로거와 연락하세요.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "즐겨 찾는 소셜 미디어 서비스에 연결하여 새 글을 친구와 자동으로 공유하세요.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "콘텐츠 구성\n블록: %1$li, 단어: %2$li, 글자: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "사이트 구매를 확인할 수 없습니다.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "알림을 비활성화할 수 없음";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "알림을 활성화할 수 없음";
 
 /* Title of a prompt. */
 "Could not follow site" = "사이트를 팔로우할 수 없음";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "좋아하는 블로그를 발견하고 팔로우하기";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "팔로우할 블로그 검색";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "게시글 더 검색";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "알림 해제하기";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "화면 닫기";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "여기에 오늘 사이트 통계를 표시합니다. 워드프레스 앱의 사이트 통계에서 구성할 수 있습니다.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "다시 해보기";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "문서: %@";
@@ -2627,6 +2650,7 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "빈 URL";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "활성화";
 
@@ -2638,6 +2662,12 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "사이트 통계 활성화";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "앱 내 알림 활성화";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "앱 내 알림을 활성화하나요?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "비디오에 소리를 녹음하려면 마이크 액세스를 허용하세요.";
@@ -2881,8 +2911,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "다른 메뉴 영역을 선택하도록 펼치기";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "만료됨";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "만료 날짜";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "%@에 만료";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "이 사이트의 주제에 대해 설명하세요.";
@@ -3044,7 +3080,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "위협 해결 중";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "팔로우";
 
@@ -3059,6 +3096,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "토픽 따르기";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "관심이 있는 주제를 팔로우하면 좋아할 만한 블로그를 조금 찾아드립니다.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3101,6 +3141,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "새 게시글 팔로우 중...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "이 대화 팔로우 중";
 
 /* Filters Follows Notifications */
 "Follows" = "팔로우";
@@ -3504,6 +3547,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "발행한 글을 소셜 미디어와 공유하려면 배포 기능 모듈을 활성화해야 합니다.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "앱 내 알림 비활성화됨";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "앱 내 알림 활성화됨";
+
 /* Describes a status of a plugin */
 "Inactive" = "비활성";
 
@@ -3742,6 +3791,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "블로깅을 계속하고 방문자가 회원님의 사이트를 찾아오는지 다시 확인하세요.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "계속 이용하세요! 좋아요 표시와 댓글 달기는 네트워크를 구축하는 좋은 방법입니다. 뉴스피드로 이동하여 글을 더 찾아보세요.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "사이트 성능을 최신 상태로 유지합니다.";
@@ -4373,6 +4425,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "업데이트 필요";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "만료 기간 없음";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "신규";
 
@@ -4409,7 +4464,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "최근 댓글 먼저";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "새 창\/탭에서 링크 열기";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "글에 대한 구독 설정 열기";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "미 섹션 열기";
@@ -5707,6 +5766,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "다음 단계를 제거하면 이 사이트의 모든 둘러보기가 숨겨집니다. 이 작업은 되돌릴 수 없습니다.";
 
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "%@에 갱신";
+
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "교체";
 
@@ -6558,9 +6620,6 @@ translators: Block name. %s: The localized block name */
    Title for the error view when the scan start has failed */
 "Something went wrong" = "문제가 발생했습니다";
 
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "오류가 발생했습니다. 다시 시도하세요.";
-
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "문제가 발생했습니다. 연결을 확인하고 다시 시도하세요.";
 
@@ -6862,9 +6921,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "도움말을 보려면 여기를 탭";
-
-/* No comment provided by engineer. */
-"Tap to add content" = "콘텐츠를 눌러서 추가";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "눌러서 업로드를 취소하세요.";
@@ -7655,9 +7711,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "해당 URL에서 워드프레스 사이트를 읽을 수 없습니다. '도움이 필요하세요?'를 눌러 FAQ를 보세요.";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "도메인을 등록할 수 없습니다.";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "사이트를 복원할 수 없음";
 
@@ -7738,6 +7791,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "밑줄";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7750,6 +7804,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "%@(을)를 팔로우 취소하기";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "대화 팔로우 취소";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "이메일로 대화 팔로우 취소";
@@ -8811,6 +8868,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "계정을 종료할 권한이 없습니다.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "다른 블로그와 연결되었습니다.";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "이 글에 저장되지 않은 변경 사항이 있습니다.";
 
@@ -8852,6 +8912,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "미디어를 내보낼 수 없음. If the problem persists you can contact us via the Me > 도움 및 지원 화면입니다.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "새 도메인(%@)을 설정하는 중입니다. 도메인이 작동하기 시작하려면 30분 정도 걸릴 수 있습니다.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "회원님이 어떤 기기를 사용하든 알림을 받을 수 있습니다. 댓글 및 좋아요가 표시되면 즉시 확인하세요.";
@@ -8918,6 +8981,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "웹사이트 자격 증명은 저장되지 않으며 젯팩을 설치하는 용도로만 사용됩니다.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "이 대화를 팔로우하는 중입니다. 새 댓글이 작성될 때마다 이메일과 알림이 수신됩니다.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "이 대화를 팔로우하는 중입니다. 새 댓글이 작성될 때마다 이메일이 수신됩니다.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "지금 새 페이지의 블록 편집기를 사용하고 있습니다. 잘하셨습니다! 구 버전 편집기로 변경하려면 '내 사이트'> '사이트 설정'으로 이동하세요.";
@@ -9067,9 +9136,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "워드프레스, 사이트, 사이트, 블로그, 블로그";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "새 도메인 %@을(를) 설정 중입니다. 사이트를 마음껏 이용하세요!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "내 사이트";

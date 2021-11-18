@@ -90,13 +90,13 @@ extension BaseScreen {
     }
 
     @discardableResult
-    public func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) -> Self {
+    public func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) throws -> Self {
         if FancyAlertComponent.isLoaded() {
             switch action {
             case .accept:
-                FancyAlertComponent().acceptAlert()
+                try FancyAlertComponent().acceptAlert()
             case .cancel:
-                FancyAlertComponent().cancelAlert()
+                try FancyAlertComponent().cancelAlert()
             }
         }
         return self

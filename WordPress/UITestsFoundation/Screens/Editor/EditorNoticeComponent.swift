@@ -1,29 +1,40 @@
+import ScreenObject
 import XCTest
 
-public class EditorNoticeComponent: BaseScreen {
-    let noticeAction: XCUIElement
+public class EditorNoticeComponent: ScreenObject {
+
+    private let noticeTitleGetter: (XCUIApplication) -> XCUIElement
+    private let noticeActionGetter: (XCUIApplication) -> XCUIElement
 
     private let expectedNoticeTitle: String
 
-    init(withNotice noticeTitle: String, andAction buttonText: String) {
-        let notice = XCUIApplication().otherElements["notice_title_and_message"]
-
-        noticeAction = XCUIApplication().buttons[buttonText]
-
+    init(
+        withNotice noticeTitle: String,
+        andAction buttonText: String,
+        app: XCUIApplication = XCUIApplication()
+    ) throws {
+        noticeTitleGetter = { app in app.otherElements["notice_title_and_message"] }
+        noticeActionGetter = { app in app.buttons[buttonText] }
         expectedNoticeTitle = noticeTitle
 
-        super.init(element: notice)
+        try super.init(
+            expectedElementGetters: [ noticeTitleGetter, noticeActionGetter ],
+            app: app
+        )
     }
 
-    public func viewPublishedPost(withTitle postTitle: String) -> EditorPublishEpilogueScreen {
+    public func viewPublishedPost(withTitle postTitle: String) throws -> EditorPublishEpilogueScreen {
         // The publish notice has a joined accessibility label equal to: title + message
         // (the postTitle). It does not seem possible to target the specific postTitle label
         // only because of this.
-        let expectedLabel = String(format: "%@. %@", expectedNoticeTitle, postTitle)
-        XCTAssertEqual(expectedElement.label, expectedLabel, "Post title not visible on published post notice")
+        XCTAssertEqual(
+            noticeTitleGetter(app).label,
+            String(format: "%@. %@", expectedNoticeTitle, postTitle),
+            "Post title not visible on published post notice"
+        )
 
-        noticeAction.tap()
+        noticeActionGetter(app).tap()
 
-        return EditorPublishEpilogueScreen()
+        return try EditorPublishEpilogueScreen()
     }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-10-20 17:17:14+0000 */
+/* Translation-Revision-Date: 2021-11-04 09:31:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -13,7 +13,7 @@
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nOm te bevestigen, geef je gebruikersnaam opnieuw in voor het sluiten.\n\n";
 
 /* No comment provided by engineer. */
-" \/ year" = "\/ jaar";
+" \/ year" = " \/ jaar";
 
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Lazy-load\" afbeeldingen";
@@ -919,6 +919,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Automatisch beheerd op deze site";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Automatisch verlengen ingeschakeld";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Automatisch goedkeuren";
@@ -1560,6 +1563,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Reactie op wachtend gezet.";
 
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Reageer om verbindingen te maken.";
+
 /* Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
@@ -1662,11 +1668,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Gefeliciteerd met het voltooien van Snel start  🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Gefeliciteerd";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Gefeliciteerd! Je hebt je lijst afgewerkt. Goed gedaan.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Gefeliciteerd met je aankoop!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1686,6 +1692,9 @@ translators: Block name. %s: The localized block name */
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Maak verbinding om je blogberichten automatisch te delen met %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Verbind met andere bloggers door volgen, liken en reacties op hun berichten.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Verbind je favoriete social media om automatisch nieuwe berichten met vrienden te delen.";
@@ -1748,8 +1757,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Inhouds-structuur\nBlokken: %1$li, Woorden: %2$li, Karakters: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1811,6 +1819,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Site-aankopen konden niet gecontroleerd worden.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Kon meldingen niet uitschakelen";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Kon meldingen niet inschakelen";
 
 /* Title of a prompt. */
 "Could not follow site" = "Kon site niet volgen";
@@ -2248,6 +2262,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Ontdek en volg blogs waar je van houdt";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Ontdek blogs om te volgen";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Ontdek meer onderwerpen";
 
@@ -2279,6 +2296,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Negeer aankondigingen";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Negeer scherm";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
@@ -2295,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Toon je site-statistieken voor vandaag hier. Configureer in de WordPress-app in je site-statistieken.";
+
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Opnieuw doen";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Document: %@";
@@ -2627,6 +2650,7 @@ translators: Block name. %s: The localized block name */
 "Empty URL" = "Lege URL";
 
 /* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Inschakelen";
 
@@ -2638,6 +2662,12 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Sitestatistieken inschakelen";
+
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "In-app meldingen inschakelen";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "In-app meldingen inschakelen?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Toegang tot microfoon inschakelen om geluid op te nemen in je video's.";
@@ -2881,8 +2911,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Vouwt uit om een ander menugebied te selecteren";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Verlopen";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Verloopt op";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Verloopt op %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Leg uit waarover deze site gaat.";
@@ -3044,7 +3080,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Bezig met bedreigingen oplossen";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Volgen";
 
@@ -3059,6 +3096,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Volg onderwerpen";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Volg onderwerpen waar je in bent geïnteresseerd en we zoeken enkele blogs die je wellicht leuk vindt.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3101,6 +3141,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Volgen van nieuwe onderwerpen...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Deze conversatie aan het volgen";
 
 /* Filters Follows Notifications */
 "Follows" = "Volgt";
@@ -3504,6 +3547,12 @@ translators: Block name. %s: The localized block name */
 /* Title of button to enable publicize. */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "Om je gepubliceerde berichten te delen op je sociale media, moet je de publicatie module inschakelen.";
 
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "In-app meldingen uitgeschakeld";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "In-app meldingen ingeschakeld";
+
 /* Describes a status of a plugin */
 "Inactive" = "Inactief";
 
@@ -3742,6 +3791,9 @@ translators: Block name. %s: The localized block name */
 
 /* A detailed message to users indicating that they've set up blogging reminders. */
 "Keep blogging and check back to see visitors arriving at your site." = "Ga door met bloggen en controleer achteraf om te zien of bezoekers blijven komen op je site.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Ga door! Liken en reacties geven is een goede manier om een netwerk te bouwen. Ga naar de reader om meer berichten te vinden.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Houd de prestaties van je site bij.";
@@ -4373,6 +4425,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Heeft update nodig";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Verloopt nooit";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nieuw";
 
@@ -4409,7 +4464,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Nieuwste eerst";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4689,7 +4745,7 @@ translators: Block name. %s: The localized block name */
 "Nothing to show" = "Niets te tonen";
 
 /* Notifications Details Accessibility Identifier */
-"Notification Details Table" = "Notificatiedetails tabel";
+"Notification Details Table" = "Melding details tabel";
 
 /* Link to Notification Settings section
    Title displayed in the Notification settings
@@ -4697,7 +4753,7 @@ translators: Block name. %s: The localized block name */
 "Notification Settings" = "Meldingsinstellingen";
 
 /* Title for the time picker button in Blogging Reminders. */
-"Notification time" = "Kennisgeving tijd";
+"Notification time" = "Meldingtijd";
 
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
@@ -4706,7 +4762,7 @@ translators: Block name. %s: The localized block name */
 "Notifications" = "Meldingen";
 
 /* WordPress.com Notifications Timeline */
-"Notifications Tab" = "Tabblad meldingen";
+"Notifications Tab" = "Tab meldingen";
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Ongelezen meldingen";
@@ -4842,6 +4898,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Link openen in een nieuw venster\/tab";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Open abonnement-instellingen voor het bericht";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Open de ik-sectie";
@@ -5382,7 +5441,7 @@ translators: Block name. %s: The localized block name */
 "Preview your new site to see what your visitors will see." = "Bekijk een voorbeeld van je nieuwe site om te zien wat je bezoekers zien..";
 
 /* Accessibility label for the previous notification button */
-"Previous notification" = "Vorige notificatie";
+"Previous notification" = "Vorige melding";
 
 /* Accessibility label */
 "Previous period" = "Vorige periode";
@@ -5523,10 +5582,10 @@ translators: Block name. %s: The localized block name */
 "Purchases" = "Aankopen";
 
 /* Mobile Push Notifications */
-"Push Notifications" = "Pushmeldingen";
+"Push Notifications" = "Berichtgevingen";
 
 /* Displayed when Push Notifications are disabled (iOS 7) */
-"Push Notifications have been turned off in iOS Settings" = "Push kennisgevingen zijn uitgeschakeld in iOS-instellingen";
+"Push Notifications have been turned off in iOS Settings" = "Berichtgeving is uitgeschakeld in iOS instellingen";
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Pushmeldingen zijn uitgeschakeld in de iOS-instellingen. Zet 'Sta berichtgeving toe' aan, om ze weer in te schakelen.";
@@ -5707,6 +5766,9 @@ translators: Block name. %s: The localized block name */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Door 'Volgende stappen' te verwijderen, worden alle rondleidingen op deze site verborgen. Deze actie kan niet ongedaan worden gemaakt.";
 
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Verlengt op %@";
+
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Vervang";
 
@@ -5869,7 +5931,7 @@ translators: Block name. %s: The localized block name */
 "Revert Pending Change" = "Wijziging in behandeling terugzetten";
 
 /* Accessibility hint describing what happens if the undo button is tapped. */
-"Reverts the action performed on this notification." = "Herroept de actie die op deze kennisgeving is uitgevoerd.";
+"Reverts the action performed on this notification." = "Draait de actie terug die op deze melding is uitgevoerd.";
 
 /* Title of a Quick Start Tour */
 "Review site pages" = "Beoordeel site pagina's";
@@ -5959,7 +6021,7 @@ translators: Block name. %s: The localized block name */
 "Saves this post for later." = "Bewaart dit bericht voor later.";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
-"Saving page…" = "Opslaan pagina...";
+"Saving page…" = "Pagina opslaan ...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Bericht bewaren…";
@@ -6232,7 +6294,7 @@ translators: Block name. %s: The localized block name */
 "Send notifications by email" = "Stuur meldingen via e-mail";
 
 /* Jetpack Monitor Settings: Send push notifications */
-"Send push notifications" = "Stuur pushmeldingen";
+"Send push notifications" = "Stuur berichtgevingen";
 
 /* Title for the Serve images from our servers setting */
 "Serve images from our servers" = "Serveer afbeeldingen van onze servers";
@@ -6296,7 +6358,7 @@ translators: Block name. %s: The localized block name */
 "Settings for notifications that are sent to the email tied to your account." = "Instellingen voor meldingen die worden verstuurd naar het e-mailadres dat bij je account hoort.";
 
 /* Descriptive text for the Push Notifications Settings */
-"Settings for push notifications that appear on your mobile device." = "Instellingen voor pushmeldingen die op je mobiele apparaat verschijnen.";
+"Settings for push notifications that appear on your mobile device." = "Instellingen voor berichtgevingen die op je mobiele apparaat verschijnen.";
 
 /* Message to show when setting save failed */
 "Settings update failed" = "Bijwerken van instellingen mislukt";
@@ -6557,9 +6619,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Er is iets fout gegaan";
-
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Er ging iets fout, probeer het opnieuw.";
 
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Er ging iets fout. Controleer je verbinding en probeer opnieuw.";
@@ -6862,9 +6921,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tik hier om help te tonen";
-
-/* No comment provided by engineer. */
-"Tap to add content" = "Tik om inhoud toe te voegen";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tik om het uploaden te annuleren.";
@@ -7372,7 +7428,7 @@ translators: Block name. %s: The localized block name */
 "To enable notifications:\n\n1. Open **iOS Settings**\n2. Tap **Notifications**\n3. Select **WordPress**\n4. Turn on **Allow Notifications**" = "Om meldingen in te schakelen:\n\n1. Open **Instellingen**\n2. Tik op **Berichtgeving**\n3. Selecteer **WordPress**\n4. Schakel **Sta berichtgeving toe** in";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
-"To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Installeer de Jetpack-plugin om nuttige meldingen van je WordPress-site op je telefoon te ontvangen.";
+"To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Installeer de Jetpack plugin om nuttige meldingen van je WordPress site op je telefoon te ontvangen.";
 
 /* Informational text for Report Crashes setting */
 "To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "Om ons te helpen de prestaties van de app te verbeteren en de incidentele bug te repareren, kun je automatische crash-rapporten inschakelen.";
@@ -7655,9 +7711,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Kon geen WordPress-site lezen op deze URL. Tik op 'Hulp nodig?' om de veelgestelde vragen te bekijken.";
 
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Niet mogelijk om domein te registreren";
-
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Kan je site niet terugzetten";
 
@@ -7738,6 +7791,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Onderstreept";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7750,6 +7804,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Ontvolg %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Ontvolg conversatie";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Ontvolgen gesprek per e-mail";
@@ -8257,7 +8314,7 @@ translators: Block name. %s: The localized block name */
 "We couldn’t find the status to say how long your restore will take." = "We konden de status niet vinden om te zeggen hoe lang het terugzetten zal duren.";
 
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "We ondervonden problemen met het laden van connecties voor %@";
+"We had trouble loading connections for %@" = "We ondervonden problemen met het laden van verbindingen voor %@";
 
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Er was een probleem bij het laden van gegevens";
@@ -8679,7 +8736,7 @@ translators: Block name. %s: The localized block name */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Je kunt altijd inloggen met een link zoals degene die je zojuist hebt gebruikt, maar kunt ook een wachtwoord instellen, als je wilt.";
 
 /* Action sheet title for setting Today Widget site to the current one */
-"You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site weergeven in de weergave iOS Vandaag\/Kennisgeving centrum.";
+"You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site tonen in de weergave iOS Vandaag\/Berichtencentrum.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Je kunt berichten op een bepaalde site volgen door deze te volgen.";
@@ -8811,6 +8868,9 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Je bent niet geautoriseerd om het account te sluiten.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "Je bent verbonden met andere blogs";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Je hebt niet-opgeslagen wijzigingen in dit bericht";
 
@@ -8852,6 +8912,9 @@ translators: Block name. %s: The localized block name */
 
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Je media kunnen niet worden geëxporteerd. Als het probleem aanhoudt, kun je contact met ons opnemen via het scherm Ik> Help & Ondersteuning.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Je nieuwe domein %@ wordt ingesteld. Het kan tot 30 minuten duren voor je domein werkend is.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Je meldingen reizen met je mee. Bekijk reacties en likes wanneer ze binnenkomen.";
@@ -8918,6 +8981,12 @@ translators: Block name. %s: The localized block name */
 
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "De inloggegevens voor je website zullen niet worden opgeslagen en worden alleen gebruikt om Jetpack te installeren.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Je volgt deze conversatie. Je ontvangt een e-mail zodra er een nieuwe reactie is.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "Je volgt deze conversatie. Je ontvangt een e-mail zodra er een nieuwe reactie is achtergelaten.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Je gebruikt nu de blokeditor voor nieuwe pagina's. Geweldig! Als je toch liever de klassieke editor gebruikt, ga dan naar 'Mijn site' > 'Site-instellingen'.";
@@ -9067,9 +9136,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "je nieuwe domein %@ wordt ingesteld. Je site maakt salto's van opwinding!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "je site";
