@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     let sharePresenter: ShareAppContentPresenter
@@ -10,20 +11,26 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none),
+                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, links: Links.twitter),
             ],
             [
                 AboutItem(title: TextContent.legalAndMore),
             ],
             [
                 AboutItem(title: TextContent.automatticFamily, hidesSeparator: true),
-                AboutItem(title: "", cellStyle: .appLogos)
+                AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
             [
-                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle)
+                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, links: Links.workWithUs)
             ]
         ]
     }()
+
+    let presentURL: AboutScreenURLPresenterBlock? = { url, context in
+        let webViewController = WebViewControllerFactory.controller(url: url)
+        let navigationController = UINavigationController(rootViewController: webViewController)
+        context.viewController.present(navigationController, animated: true, completion: nil)
+    }
 
     init(sharePresenter: ShareAppContentPresenter) {
         self.sharePresenter = sharePresenter
@@ -37,5 +44,10 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
         static let automatticFamily   = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
         static let workWithUs         = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
         static let workWithUsSubtitle = NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world")
+    }
+
+    private enum Links {
+        static let twitter    = [AboutScreenLink(url: "https://twitter.com/WordPressiOS")]
+        static let workWithUs = [AboutScreenLink(url: "https://automattic.com/work-with-us")]
     }
 }
