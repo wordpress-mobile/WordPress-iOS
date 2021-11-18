@@ -28,6 +28,18 @@ open class QuickStartTourGuide: NSObject {
         }
     }
 
+    func setup(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = [], executeWithDelay: Bool = false) {
+
+        guard executeWithDelay else {
+            setup(for: blog, withCompletedSteps: steps)
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+            self.setup(for: blog, withCompletedSteps: steps)
+        }
+    }
+
     @objc func remove(from blog: Blog) {
         blog.removeAllTours()
     }
@@ -433,6 +445,7 @@ private extension QuickStartTourGuide {
     private struct Constants {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
+        static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
     }
 }
 
