@@ -130,9 +130,9 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func addBlock(_ blockLabel: String) {
-        let blockButton = XCUIApplication().buttons[blockLabel]
+        let blockButton = app.buttons[blockLabel]
         addBlockButton.tap()
-        guard blockButton.waitForIsHittable(timeout: 3) else { return }
+        XCTAssertTrue(blockButton.waitForIsHittable(timeout: 3))
         blockButton.tap()
     }
 
