@@ -32,6 +32,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
+    /// UseDefaults helper for quick start settings
+    private let quickStartSettings: QuickStartSettings
+
     /// Closure to be executed upon dismissal
     private let onDismiss: ((Blog) -> Void)?
 
@@ -42,10 +45,15 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// - Parameters:
     ///   - creator: the in-flight creation instance
     ///   - service: the service to use for initiating site creation
+    ///   - quickStartSettings: the UserDefaults helper for quick start settings
     ///   - onDismiss: the closure to be executed upon dismissal
-    init(creator: SiteCreator, service: SiteAssemblyService, onDismiss: ((Blog) -> Void)? = nil) {
+    init(creator: SiteCreator,
+         service: SiteAssemblyService,
+         quickStartSettings: QuickStartSettings? = nil,
+         onDismiss: ((Blog) -> Void)? = nil) {
         self.siteCreator = creator
         self.service = service
+        self.quickStartSettings = quickStartSettings ?? QuickStartSettings()
         self.onDismiss = onDismiss
         self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
@@ -241,7 +249,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     }
 
     private func showQuickStartPrompt(for blog: Blog) {
-        guard !UserDefaults.standard.quickStartWasDismissedPermanently else {
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
             return
         }
 
