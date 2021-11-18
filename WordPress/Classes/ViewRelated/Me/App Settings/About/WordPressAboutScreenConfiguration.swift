@@ -13,7 +13,7 @@ class WebViewPresenter {
 class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     let sharePresenter: ShareAppContentPresenter
     let webViewPresenter = WebViewPresenter()
-    
+
     lazy var sections: [[AboutItem]] = {
         [
             [
@@ -72,7 +72,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
 
 class LegalAndMoreSubmenuConfiguration: AboutSubmenuConfiguration {
     let webViewPresenter = WebViewPresenter()
-    
+
     lazy var sections: [[AboutItem]] = {
         [
             [
@@ -95,7 +95,7 @@ class LegalAndMoreSubmenuConfiguration: AboutSubmenuConfiguration {
             ]
         ]
     }()
-    
+
     func willPresent(viewController: SubmenuViewController) {
         // no-op, but we can configure the submenu VC here
     }
@@ -110,7 +110,7 @@ class LegalAndMoreSubmenuConfiguration: AboutSubmenuConfiguration {
         static let sourceCode         = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
         static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknoledgements")
     }
-    
+
     private enum Links {
         static let termsOfService = URL(string: WPAutomatticTermsOfServiceURL)!
         static let privacyPolicy = URL(string: WPAutomatticPrivacyURL)!

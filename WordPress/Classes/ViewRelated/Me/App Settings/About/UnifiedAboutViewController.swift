@@ -212,7 +212,7 @@ extension UnifiedAboutViewController: UITableViewDelegate {
             case .showSubmenu(let configuration):
                 let viewController = SubmenuViewController(configuration: configuration)
                 viewController.title = item.title
-                
+
                 navigationController?.pushViewController(viewController, animated: true)
             default:
                 break
@@ -262,7 +262,7 @@ private extension AboutItem {
 ///
 class SubmenuViewController: UITableViewController {
     let configuration: AboutSubmenuConfiguration
-    
+
     var sections: [AboutScreenSection] {
         configuration.sections
     }
@@ -322,7 +322,7 @@ class SubmenuViewController: UITableViewController {
             case .showSubmenu(let configuration):
                 let viewController = SubmenuViewController(configuration: configuration)
                 viewController.title = item.title
-                
+
                 navigationController?.pushViewController(viewController, animated: true)
             default:
                 break

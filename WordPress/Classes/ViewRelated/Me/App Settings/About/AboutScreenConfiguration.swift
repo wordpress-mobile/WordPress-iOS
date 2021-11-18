@@ -14,9 +14,9 @@ protocol AboutScreenConfiguration {
 protocol AboutSubmenuConfiguration {
     /// A list of AboutItems, grouped into sections, which will be displayed in the submenu screen's table view.
     var sections: [AboutScreenSection] { get }
-    
+
     func willPresent(viewController: SubmenuViewController)
-    
+
     /// A block that dismisses the about screen
     var dismissBlock: ((AboutItemActionContext) -> Void) { get }
 }
