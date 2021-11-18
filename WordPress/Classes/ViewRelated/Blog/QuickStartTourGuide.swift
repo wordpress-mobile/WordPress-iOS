@@ -17,8 +17,6 @@ open class QuickStartTourGuide: NSObject {
     private override init() {}
 
     func setup(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
-        didShowUpgradeToV2Notice(for: blog)
-
 
         let createTour = QuickStartCreateTour()
         completed(tour: createTour, for: blog)
@@ -42,21 +40,6 @@ open class QuickStartTourGuide: NSObject {
         let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         return checklistCompletedCount > 0
-    }
-
-    func shouldShowUpgradeToV2Notice(for blog: Blog) -> Bool {
-        guard isQuickStartEnabled(for: blog),
-            !allOriginalToursCompleted(for: blog) else {
-            return false
-        }
-
-        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
-        return !completedIDs.contains(QuickStartUpgradeToV2Tour().key)
-    }
-
-    func didShowUpgradeToV2Notice(for blog: Blog) {
-        let v2tour = QuickStartUpgradeToV2Tour()
-        blog.completeTour(v2tour.key)
     }
 
     /// Provides a tour to suggest to the user
