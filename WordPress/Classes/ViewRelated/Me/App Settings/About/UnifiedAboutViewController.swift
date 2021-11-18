@@ -188,27 +188,20 @@ extension UnifiedAboutViewController: UITableViewDelegate {
         let item = section[indexPath.row]
 
         let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
-        item.action?(context)
 
-        // If the item contains links, we'll present them or show a menu
-        showLinks(for: item, with: context)
+        if let customAction = item.action {
+            let defaultAction = customAction(context)
+
+            switch defaultAction {
+            case .showSubmenu(let sections):
+                // show the submenut for the specified sections
+                break
+            default:
+                break
+            }
+        }
 
         tableView.deselectSelectedRowWithAnimation(true)
-    }
-
-    private func showLinks(for item: AboutItem, with context: AboutItemActionContext) {
-        guard let links = item.links else {
-            return
-        }
-
-        if links.count == 1,
-           let link = links.first?.url,
-           let url = URL(string: link) {
-            // If there's one link we'll display it directly
-            configuration.presentURL?(url, context)
-        } else {
-            // If there are multiple, we'll show an interstitial screen
-        }
     }
 }
 

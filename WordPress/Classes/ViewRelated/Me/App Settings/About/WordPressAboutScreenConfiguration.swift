@@ -10,8 +10,13 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: TextContent.rateUs, accessoryType: .none),
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
+                    return .noDefaultAction
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, links: Links.twitter),
+                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
+
+                    self?.presentWebView(for: Links.twitter, context: context)
+                    return .noDefaultAction
+                }),
             ],
             [
                 AboutItem(title: TextContent.legalAndMore),
@@ -21,12 +26,16 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
             [
-                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, links: Links.workWithUs)
+                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, action: { [weak self] context in
+
+                    self?.presentWebView(for: Links.workWithUs, context: context)
+                    return .noDefaultAction
+                }),
             ]
         ]
     }()
 
-    let presentURL: AboutScreenURLPresenterBlock? = { url, context in
+    func presentWebView(for url: URL, context: AboutItemActionContext) {
         let webViewController = WebViewControllerFactory.controller(url: url)
         let navigationController = UINavigationController(rootViewController: webViewController)
         context.viewController.present(navigationController, animated: true, completion: nil)
@@ -47,7 +56,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum Links {
-        static let twitter    = [AboutScreenLink(url: "https://twitter.com/WordPressiOS")]
-        static let workWithUs = [AboutScreenLink(url: "https://automattic.com/work-with-us")]
+        static let twitter    = URL(string: "https://twitter.com/WordPressiOS")!
+        static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
     }
 }
