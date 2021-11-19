@@ -26,7 +26,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             ],
             [
                 AboutItem(title: TextContent.legalAndMore, action: { [weak self] context in
-                    context.showSubmenu(with: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
+                    context.showSubmenu(title: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
                 }),
             ],
             [

@@ -3,8 +3,8 @@ import WordPressShared
 
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
-    let configuration: AboutScreenConfiguration
-    let isSubmenu: Bool
+    private let configuration: AboutScreenConfiguration
+    private let isSubmenu: Bool
 
     private var sections: [AboutScreenSection] {
         configuration.sections
@@ -118,6 +118,9 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         super.viewDidLoad()
 
         navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
+        if isSubmenu {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
+        }
 
         view.backgroundColor = .systemGroupedBackground
 
@@ -148,6 +151,13 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
+    }
+
+    // MARK: - Actions
+
+    @objc private func doneTapped() {
+        let context = AboutItemActionContext(viewController: self)
+        configuration.dismissBlock(context)
     }
 
     // MARK: - Constants
