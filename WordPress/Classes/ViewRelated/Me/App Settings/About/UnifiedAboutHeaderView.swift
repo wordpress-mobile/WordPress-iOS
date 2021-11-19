@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 
 
 /// Defines the content of the header that appears on the top level about screen.
@@ -17,12 +16,13 @@ struct AboutScreenFonts {
     let appVersion: UIFont
 
     static let defaultFonts: AboutScreenFonts = {
+        // Title is serif semibold large title
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .largeTitle)
-        let fontDescriptorWithDesign = fontDescriptor.withDesign(.serif) ?? fontDescriptor
+        let serifFontDescriptor = fontDescriptor.withDesign(.serif) ?? fontDescriptor
         let traits = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.semibold]
-        let finalDescriptor = fontDescriptorWithDesign.addingAttributes([.traits: traits])
+        let descriptor = serifFontDescriptor.addingAttributes([.traits: traits])
 
-        let font = UIFont(descriptor: finalDescriptor, size: finalDescriptor.pointSize)
+        let font = UIFont(descriptor: descriptor, size: descriptor.pointSize)
         return AboutScreenFonts(appName: font,
                                 appVersion: .preferredFont(forTextStyle: .callout))
     }()
