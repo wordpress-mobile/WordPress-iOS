@@ -154,6 +154,8 @@ static NSInteger HideSearchMinSites = 3;
 
     [self registerForAccountChangeNotification];
     [self registerForPostSignUpNotifications];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDisplayed];
 }
 
 - (void)viewWillAppear:(BOOL)animated
