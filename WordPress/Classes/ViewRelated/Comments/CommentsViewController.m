@@ -717,7 +717,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     // Adjust the NRV placement to accommodate for the filterTabBar.
     CGRect noResultsFrame = self.tableView.frame;
-    noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
+    noResultsFrame.origin.y = 0;
     self.noResultsViewController.view.frame = noResultsFrame;
 }
 
