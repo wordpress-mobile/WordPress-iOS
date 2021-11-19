@@ -8,6 +8,7 @@
 * [***] Site Comments: Updated comment details with a fresh new look and capability to display rich contents. [#17466]
 * [**] Block editor: Image block: Add ability to quickly link images to Media Files and Attachment Pages [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3971]
 * [**] Block editor: Fixed a crash that could occur when copying lists from Microsoft Word. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4174]
+* [***] Fixed an issue where trying to upload an image while offline crashes the app. [#17488]
 
 18.6
 -----
