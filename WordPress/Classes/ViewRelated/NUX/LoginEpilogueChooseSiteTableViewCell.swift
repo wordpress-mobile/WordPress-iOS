@@ -14,6 +14,19 @@ final class LoginEpilogueChooseSiteTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func configure(hasSites: Bool) {
+        let title = hasSites
+            ? NSLocalizedString("Choose a site to open.", comment: "A text for title label on Login epilogue screen")
+            : NSLocalizedString("You don't have any sites yet.", comment: "A text for title label on Login epilogue screen when the user doesn't have any site yet")
+
+        let subtitle = hasSites
+            ? NSLocalizedString("You can switch sites at any time.", comment: "A text for subtitle label on Login epilogue screen")
+            : nil
+
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+    }
 }
 
 // MARK: - Private Methods
@@ -27,12 +40,10 @@ private extension LoginEpilogueChooseSiteTableViewCell {
     }
 
     func setupTitleLabel() {
-        titleLabel.text = NSLocalizedString("Choose a site to open.", comment: "A text for title label on Login epilogue screen")
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
     }
 
     func setupSubtitleLabel() {
-        subtitleLabel.text = NSLocalizedString("You can switch sites at any time.", comment: "A text for subtitle label on Login epilogue screen")
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         subtitleLabel.textColor = .secondaryLabel
     }
