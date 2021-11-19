@@ -56,7 +56,7 @@ extension BlogDetailsViewController {
             return
         }
         let newWorkItem = DispatchWorkItem { [weak self] in
-            self?.showNoticeOrAlertAsNeeded()
+            self?.showNoticeAsNeeded()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
         alertWorkItem = newWorkItem
@@ -80,13 +80,8 @@ extension BlogDetailsViewController {
         return false
     }
 
-    private func showNoticeOrAlertAsNeeded() {
-
-        if QuickStartTourGuide.shared.shouldShowUpgradeToV2Notice(for: blog) {
-            showUpgradeToV2Alert(for: blog)
-
-            QuickStartTourGuide.shared.didShowUpgradeToV2Notice(for: blog)
-        } else if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
+    private func showNoticeAsNeeded() {
+        if let tourToSuggest = QuickStartTourGuide.shared.tourToSuggest(for: blog) {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }
     }
@@ -164,18 +159,5 @@ extension BlogDetailsViewController {
         let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)
         section.showQuickStartMenu = true
         return section
-    }
-
-    private func showUpgradeToV2Alert(for blog: Blog) {
-        guard noPresentedViewControllers else {
-            return
-        }
-
-        let alert = FancyAlertViewController.makeQuickStartUpgradeToV2AlertController(blog: blog)
-        alert.modalPresentationStyle = .custom
-        alert.transitioningDelegate = self
-        tabBarController?.present(alert, animated: true)
-
-        WPAnalytics.track(.quickStartMigrationDialogViewed)
     }
 }
