@@ -119,6 +119,8 @@ extension LoginEpilogueTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: Sections.blogSection - 1)
+
         // User Info Row
         if indexPath.section == Sections.userInfoSection {
             if indexPath.row == 0 {
@@ -138,6 +140,7 @@ extension LoginEpilogueTableViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.chooseSiteReuseIdentifier, for: indexPath) as? LoginEpilogueChooseSiteTableViewCell else {
                     return UITableViewCell()
                 }
+                cell.configure(hasSites: siteRows > 0)
                 removeSeparatorFor(cell)
                 return cell
             }
@@ -224,6 +227,7 @@ private extension LoginEpilogueTableViewController {
 
     enum Sections {
         static let userInfoSection = 0
+        static let blogSection = 1
     }
 
     enum Settings {
