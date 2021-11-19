@@ -286,7 +286,7 @@ class AppSettingsViewController: UITableViewController {
                 NSUserActivity.deleteAllSavedUserActivities {}
             }
 
-            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
+            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", value: "Successfully cleared Siri Shortcut Suggestions", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
@@ -428,7 +428,7 @@ private extension AppSettingsViewController {
 
         if #available(iOS 12.0, *) {
             let siriClearCacheRow = DestructiveButtonRow(
-                title: NSLocalizedString("Siri Reset Prompt", comment: "Label for button that clears user activities donated to Siri."),
+                title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
                 action: clearSiriActivityDonations(),
                 accessibilityIdentifier: "spotlightClearCacheButton")
 
