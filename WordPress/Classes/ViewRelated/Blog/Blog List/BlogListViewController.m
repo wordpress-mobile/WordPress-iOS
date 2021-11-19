@@ -800,12 +800,19 @@ static NSInteger HideSearchMinSites = 3;
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.dataSource.searchQuery = searchText;
+
+    [self debounce:@selector(trackSearchPerformed) afterDelay:0.5f];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     self.dataSource.searching = YES;
     [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)trackSearchPerformed
+{
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherSearchPerformed];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
