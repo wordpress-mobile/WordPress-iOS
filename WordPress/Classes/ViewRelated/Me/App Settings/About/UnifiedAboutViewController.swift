@@ -3,6 +3,8 @@ import UIKit
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
     private let appInfo: AboutScreenAppInfo?
+    private let fonts: AboutScreenFonts?
+
     private let configuration: AboutScreenConfiguration
     private let isSubmenu: Bool
 
@@ -46,13 +48,9 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
             return nil
         }
 
-        // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
-        // into the main App.
-        let fonts = UnifiedAboutHeaderView.Fonts(
-            appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
-            appVersion: WPStyleGuide.tableviewTextFont())
+        let headerFonts = fonts ?? AboutScreenFonts.defaultFonts
 
-        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: fonts)
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts)
 
         // Setting the frame once is needed so that the table view header will show.
         // This seems to be a table view bug although I'm not entirely sure.
@@ -98,14 +96,16 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - View lifecycle
 
-    static func controller(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration) -> UIViewController {
+    static func controller(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil) -> UIViewController {
         let controller = UnifiedAboutViewController(appInfo: appInfo,
-                                                    configuration: configuration)
+                                                    configuration: configuration,
+                                                    fonts: fonts)
         return UINavigationController(rootViewController: controller)
     }
 
-    init(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, isSubmenu: Bool = false) {
+    init(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil, isSubmenu: Bool = false) {
         self.appInfo = appInfo
+        self.fonts = fonts
         self.configuration = configuration
         self.isSubmenu = isSubmenu
         super.init(nibName: nil, bundle: nil)

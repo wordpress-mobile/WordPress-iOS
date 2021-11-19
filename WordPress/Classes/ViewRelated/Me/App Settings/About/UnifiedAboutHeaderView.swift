@@ -12,6 +12,22 @@ struct AboutScreenAppInfo {
     let icon: UIImage
 }
 
+struct AboutScreenFonts {
+    let appName: UIFont
+    let appVersion: UIFont
+
+    static let defaultFonts: AboutScreenFonts = {
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .largeTitle)
+        let fontDescriptorWithDesign = fontDescriptor.withDesign(.serif) ?? fontDescriptor
+        let traits = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.semibold]
+        let finalDescriptor = fontDescriptorWithDesign.addingAttributes([.traits: traits])
+
+        let font = UIFont(descriptor: finalDescriptor, size: finalDescriptor.pointSize)
+        return AboutScreenFonts(appName: font,
+                                appVersion: .preferredFont(forTextStyle: .callout))
+    }()
+}
+
 final class UnifiedAboutHeaderView: UIView {
 
     // MARK: - Customization Support
@@ -25,11 +41,6 @@ final class UnifiedAboutHeaderView: UIView {
     struct Sizing {
         let appIconWidthAndHeight: CGFloat
         let appIconCornerRadius: CGFloat
-    }
-
-    struct Fonts {
-        let appName: UIFont
-        let appVersion: UIFont
     }
 
     // MARK: - Defaults
@@ -48,14 +59,14 @@ final class UnifiedAboutHeaderView: UIView {
     private let appInfo: AboutScreenAppInfo
     private let spacing: Spacing
     private let sizing: Sizing
-    private let fonts: Fonts
+    private let fonts: AboutScreenFonts
 
     // MARK: - Initializers
 
     init(appInfo: AboutScreenAppInfo,
          sizing: Sizing = defaultSizing,
          spacing: Spacing = defaultSpacing,
-         fonts: Fonts) {
+         fonts: AboutScreenFonts) {
 
         self.appInfo = appInfo
         self.sizing = sizing
