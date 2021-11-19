@@ -138,9 +138,11 @@ platform :ios do
   desc 'Creates a new release branch from the current develop'
   lane :complete_code_freeze do |options|
     ios_completecodefreeze_prechecks(options)
-    ios_localize_project
-    version = ios_get_app_version
-    trigger_beta_build(branch_to_build: "release/#{version}")
+    generate_strings_file_for_glotpress
+
+    UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
+    push_to_git_remote  
+    trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
   end
 
   #####################################################################################
@@ -397,6 +399,30 @@ platform :ios do
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
+  end
+
+  #####################################################################################
+  # generate_strings_file_for_glotpress
+  # -----------------------------------------------------------------------------------
+  # Generate the `.strings` file to be imported by GlotPress,
+  # by parsing source code for `NSLocalizedString` (using `genstrings` under the hood).
+  #
+  # Typically called by complete_code_freeze.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane generate_strings_file_for_glotpress
+  #####################################################################################
+  lane :generate_strings_file_for_glotpress do
+    cocoapods
+
+    en_lproj = 'WordPress/Resources/en.lproj'
+    ios_generate_strings_file_from_code(
+      paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
+      exclude: ['*Vendor*', 'WordPress/WordPressTest/I18n.swift', 'WordPress/WordPressStatsWidgets/Views/Localization/LocalizedStringKey+extension.swift', '*/Secrets.swift'],
+      output_dir: en_lproj
+    )
+    
+    git_commit(path: en_lproj, message: 'Update strings for localization', allow_nothing_to_commit: true)
   end
 
   #####################################################################################
