@@ -527,7 +527,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         [commentService syncCommentsForBlog:blogInContext
                                  withStatus:self.currentStatusFilter
                             filterUnreplied:filterUnreplied
-                                    success:^(BOOL hasMore) {
+                                    success:^(BOOL hasMore, NSNumber *totalComments) {
             if (success) {
                 weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -565,7 +565,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
         [commentService loadMoreCommentsForBlog:blogInContext
                                      withStatus:self.currentStatusFilter
-                                        success:^(BOOL hasMore) {
+                                        success:^(BOOL hasMore, NSNumber *totalComments) {
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     success(hasMore);

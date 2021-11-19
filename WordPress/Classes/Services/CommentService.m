@@ -144,34 +144,73 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Sync comments
 
 - (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^)(BOOL hasMore))success
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                     failure:(void (^)(NSError *error))failure
 {
-    [self syncCommentsForBlog:blog withStatus:CommentStatusFilterAll success:success failure:failure];
+    [self syncCommentsForBlog:blog
+                   withStatus:CommentStatusFilterAll
+                      success:success
+                      failure:failure];
 }
 
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
-                    success:(void (^)(BOOL hasMore))success
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                     failure:(void (^)(NSError *error))failure
 {
-    [self syncCommentsForBlog:blog withStatus:status filterUnreplied:NO success:success failure:failure];
+    [self syncCommentsForBlog:blog
+                   withStatus:status
+                        count:WPNumberOfCommentsToSync
+              filterUnreplied:NO
+                      success:success
+                      failure:failure];
+}
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                      count:(NSInteger)count
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                    failure:(void (^)(NSError *error))failure
+{
+    [self syncCommentsForBlog:blog
+                   withStatus:CommentStatusFilterAll
+                        count:count
+              filterUnreplied:NO
+                      success:success
+                      failure:failure];
 }
 
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
             filterUnreplied:(BOOL)filterUnreplied
-                    success:(void (^)(BOOL hasMore))success
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                    failure:(void (^)(NSError *error))failure
+{
+    [self syncCommentsForBlog:blog
+                   withStatus:status
+                        count: WPNumberOfCommentsToSync
+              filterUnreplied:filterUnreplied
+                      success:success
+                      failure:failure];
+}
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+                      count:(NSInteger)count
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                     failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
         if (success) {
-            success(YES);
+            success(YES, nil);
         }
         return;
     }
+    
+    // If the count is not specified, default to API maximum.
+    NSInteger maximumCount = count ?: WPNumberOfCommentsToSync;
     
     // If the comment status is not specified, default to all.
     CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
@@ -179,9 +218,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
 
-    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
+    [remote getCommentsWithMaximumCount:maximumCount
                                 options:options
-                                success:^(NSArray *comments) {
+                                success:^(NSArray *comments, NSNumber *totalComments) {
         [self.managedObjectContext performBlock:^{
             Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
             
@@ -216,7 +255,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                             // We'll assume that if the requested page size couldn't be filled, there are no
                             // more comments left to retrieve.  However, for unreplied comments, we only fetch the first page (for now).
                             BOOL hasMore = comments.count >= WPNumberOfCommentsToSync && !filterUnreplied;
-                            success(hasMore);
+                            success(hasMore, totalComments);
                         }
                     }];
                 }];
@@ -293,7 +332,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
-                        success:(void (^)(BOOL hasMore))success
+                        success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                         failure:(void (^)(NSError *))failure
 {
     [self loadMoreCommentsForBlog:blog withStatus:CommentStatusFilterAll success:success failure:failure];
@@ -301,14 +340,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                      withStatus:(CommentStatusFilter)status
-                        success:(void (^)(BOOL hasMore))success
+                        success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                         failure:(void (^)(NSError *))failure
 {
     NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
         if (success) {
-            success(YES);
+            success(YES, nil);
         }
     }
 
@@ -333,7 +372,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
-                                success:^(NSArray *comments) {
+                                success:^(NSArray *comments, NSNumber *totalComments) {
         [self.managedObjectContext performBlock:^{
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
             if (!blog) {
@@ -343,7 +382,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             [self mergeComments:comments forBlog:blog purgeExisting:NO completionHandler:^{
                 [[self class] stopSyncingCommentsForBlog:blogID];
                 if (success) {
-                    success(comments.count > 1);
+                    success(comments.count > 1, totalComments);
                 }
             }];
         }];

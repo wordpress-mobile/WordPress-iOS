@@ -38,18 +38,30 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^)(BOOL hasMore))success
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                     failure:(void (^)(NSError *error))failure;
 
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
-                    success:(void (^)(BOOL hasMore))success
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                    failure:(void (^)(NSError *error))failure;
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                      count:(NSInteger)count
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                     failure:(void (^)(NSError *error))failure;
 
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
             filterUnreplied:(BOOL)filterUnreplied
-                    success:(void (^)(BOOL hasMore))success
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                    failure:(void (^)(NSError *error))failure;
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+                      count:(NSInteger)count
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                     failure:(void (^)(NSError *error))failure;
 
 // Determine if a recent cache is available
@@ -57,12 +69,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 // Load extra comments
 - (void)loadMoreCommentsForBlog:(Blog *)blog
-                        success:(void (^)(BOOL hasMore))success
+                        success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                         failure:(void (^)(NSError *))failure;
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                      withStatus:(CommentStatusFilter)status
-                        success:(void (^)(BOOL hasMore))success
+                        success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                         failure:(void (^)(NSError *))failure;
     
 // Upload comment
