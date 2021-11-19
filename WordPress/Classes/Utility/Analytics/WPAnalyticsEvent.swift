@@ -605,7 +605,7 @@ import Foundation
         case .siteSwitcherDismissed:
             return "site_switcher_dismissed"
         case .siteSwitcherToggleEditTapped:
-            return "site_switcher_toggled_edit_tapped"
+            return "site_switcher_toggle_edit_tapped"
         case .siteSwitcherAddSiteTapped:
             return "site_switcher_add_site_tapped"
         case .siteSwitcherSearchPerformed:
