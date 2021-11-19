@@ -3,7 +3,8 @@ import WordPressShared
 
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
-    let configuration: AboutScreenConfiguration
+    private let configuration: AboutScreenConfiguration
+    private let isSubmenu: Bool
 
     private var sections: [AboutScreenSection] {
         configuration.sections
@@ -21,9 +22,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - Views
 
-
-    // MARK: - Views
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,8 +30,10 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         // scrollbar to appear on rotation
         tableView.showsHorizontalScrollIndicator = false
 
-        tableView.tableHeaderView = headerView
-        tableView.tableFooterView = footerView
+        if isSubmenu == false {
+            tableView.tableHeaderView = headerView
+            tableView.tableFooterView = footerView
+        }
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -93,6 +93,10 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return .portrait
     }
 
+    private var shouldShowNavigationBar: Bool {
+        isSubmenu
+    }
+
     // MARK: - View lifecycle
 
     static func controller(configuration: AboutScreenConfiguration) -> UIViewController {
@@ -100,8 +104,9 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return UINavigationController(rootViewController: controller)
     }
 
-    init(configuration: AboutScreenConfiguration) {
+    init(configuration: AboutScreenConfiguration, isSubmenu: Bool = false) {
         self.configuration = configuration
+        self.isSubmenu = isSubmenu
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -112,7 +117,10 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
+        if isSubmenu {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
+        }
 
         view.backgroundColor = .systemGroupedBackground
 
@@ -137,6 +145,19 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
                 self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
             }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
+    }
+
+    // MARK: - Actions
+
+    @objc private func doneTapped() {
+        let context = AboutItemActionContext(viewController: self)
+        configuration.dismissBlock(context)
     }
 
     // MARK: - Constants
@@ -204,29 +225,10 @@ extension UnifiedAboutViewController: UITableViewDelegate {
         let item = section[indexPath.row]
 
         let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
+
         item.action?(context)
 
-        // If the item contains links, we'll present them or show a menu
-        showLinks(for: item, with: context)
-
         tableView.deselectSelectedRowWithAnimation(true)
-    }
-
-    private func showLinks(for item: AboutItem, with context: AboutItemActionContext) {
-        guard let links = item.links else {
-            return
-        }
-
-        if links.count == 1,
-           let link = links.first?.url,
-           let url = URL(string: link) {
-            // If there's one link we'll display it directly
-            configuration.presentURLBlock?(url, context)
-        } else {
-            // If there are multiple, we'll show an interstitial screen
-            let viewController = AboutLinkListViewController(configuration: configuration, item: item)
-            navigationController?.pushViewController(viewController, animated: true)
-        }
     }
 }
 
@@ -263,85 +265,4 @@ private extension AboutItem {
             return .default
         }
     }
-}
-
-/// This view controller displays a simple list in a table view of links provided by an `AboutItem`.
-///
-private class AboutLinkListViewController: UITableViewController {
-    let configuration: AboutScreenConfiguration
-    let item: AboutItem
-
-    init(configuration: AboutScreenConfiguration, item: AboutItem) {
-        self.configuration = configuration
-        self.item = item
-        super.init(style: .insetGrouped)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - View Lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        title = item.title
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
-
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-
-    // MARK: - Actions
-
-    @objc private func doneTapped() {
-        let context = AboutItemActionContext(viewController: self)
-        configuration.dismissBlock(context)
-    }
-
-    // MARK: - Table view data source / delegate
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        item.links?.count ?? 0
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Self.cellIdentifier, for: indexPath)
-        cell.textLabel?.text = item.links?[indexPath.row].title ?? ""
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        defer {
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
-
-        guard let link = item.links?[indexPath.row],
-              let url = URL(string: link.url) else {
-            return
-        }
-
-        let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
-        configuration.presentURLBlock?(url, context)
-
-    }
-
-    private static let cellIdentifier = "Cell"
 }

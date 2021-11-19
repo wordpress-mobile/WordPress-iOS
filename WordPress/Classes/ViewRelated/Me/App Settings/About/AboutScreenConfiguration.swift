@@ -1,21 +1,18 @@
 import Foundation
 
 typealias AboutScreenSection = [AboutItem]
-typealias AboutScreenURLPresenterBlock = ((URL, AboutItemActionContext) -> Void)
 
 /// Users of UnifiedAboutViewController must provide a configuration conforming to this protocol.
 protocol AboutScreenConfiguration {
     /// A list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
     var sections: [AboutScreenSection] { get }
 
-    /// A block that presents the provided URL in a web view
-    var presentURLBlock: AboutScreenURLPresenterBlock? { get }
-
     /// A block that dismisses the about screen
     var dismissBlock: ((AboutItemActionContext) -> Void) { get }
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> Void)
+
 
 struct AboutItemActionContext {
     /// The About Screen view controller itself.
@@ -28,16 +25,12 @@ struct AboutItemActionContext {
         self.viewController = viewController
         self.sourceView = sourceView
     }
-}
 
-/// An About Screen link contains a display title and url for a single link-based navigation item.
-struct AboutScreenLink {
-    let title: String
-    let url: String
+    func showSubmenu(title: String = "", configuration: AboutScreenConfiguration) {
+        let submenu = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
+        submenu.title = title
 
-    init(_ title: String = "", url: String) {
-        self.title = title
-        self.url = url
+        viewController.navigationController?.pushViewController(submenu, animated: true)
     }
 }
 
@@ -64,20 +57,13 @@ struct AboutItem {
     /// and the source view that triggered the action.
     let action: AboutItemAction?
 
-    /// An optional list of titles and URLs to be used for navigation.
-    /// If a single link is provided, the title is ignored in favour of the item's title, and tapping the item's table row will display the URL in a webview.
-    /// If multiple links are provided, an intermediary screen will be displayed containing a list of titles of each link.
-    /// If a title on this intermediary screen is tapped, the associated URL will be displayed in a webview.
-    let links: [AboutScreenLink]?
-
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, action: AboutItemAction? = nil, links: [AboutScreenLink]? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, action: AboutItemAction? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
         self.accessoryType = accessoryType
         self.hidesSeparator = hidesSeparator
         self.action = action
-        self.links = links
     }
 
     enum AboutItemCellStyle: String {
