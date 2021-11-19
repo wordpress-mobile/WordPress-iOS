@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressShared
 
 
 struct WebViewPresenter {
@@ -13,28 +14,35 @@ struct WebViewPresenter {
 class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     let sharePresenter: ShareAppContentPresenter
     let webViewPresenter = WebViewPresenter()
+    let tracker = AboutScreenTracker()
 
     lazy var sections: [[AboutItem]] = {
         [
             [
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
+                    self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
+                    self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.present(for: Links.twitter, context: context)
                 }),
             ],
             [
                 AboutItem(title: TextContent.legalAndMore, action: { [weak self] context in
+                    self?.tracker.buttonPressed(.legal)
                     context.showSubmenu(title: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
                 }),
             ],
             [
-                AboutItem(title: TextContent.automatticFamily, hidesSeparator: true),
+                AboutItem(title: TextContent.automatticFamily, hidesSeparator: true, action: { [weak self] context in
+                    self?.tracker.buttonPressed(.automatticFamily)
+                }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
             [
                 AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, action: { [weak self] context in
+                    self?.tracker.buttonPressed(.workWithUs)
                     self?.webViewPresenter.present(for: Links.workWithUs, context: context)
                 }),
             ]
@@ -43,6 +51,14 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
 
     let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
         context.viewController.presentingViewController?.dismiss(animated: true)
+    }
+
+    func willShow(viewController: UIViewController) {
+        tracker.screenShown(.main)
+    }
+
+    func willHide(viewController: UIViewController) {
+        tracker.screenDismissed(.main)
     }
 
     init(sharePresenter: ShareAppContentPresenter) {
@@ -67,26 +83,40 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
 
 class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     let webViewPresenter = WebViewPresenter()
+    let tracker = AboutScreenTracker()
 
     lazy var sections: [[AboutItem]] = {
         [
             [
-                linkItem(title: Titles.termsOfService, link: Links.termsOfService),
-                linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy),
-                linkItem(title: Titles.sourceCode, link: Links.sourceCode),
-                linkItem(title: Titles.acknowledgements, link: Links.acknowledgements),
+                linkItem(title: Titles.termsOfService, link: Links.termsOfService, button: .termsOfService),
+                linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy, button: .privacyPolicy),
+                linkItem(title: Titles.sourceCode, link: Links.sourceCode, button: .sourceCode),
+                linkItem(title: Titles.acknowledgements, link: Links.acknowledgements, button: .acknowledgements),
             ]
         ]
     }()
 
-    func linkItem(title: String, link: URL) -> AboutItem {
+    private func linkItem(title: String, link: URL, button: AboutScreenTracker.Event.Button) -> AboutItem {
         AboutItem(title: title, accessoryType: .none, action: { [weak self] context in
-            self?.webViewPresenter.present(for: link, context: context)
+            self?.buttonPressed(link: link, context: context, button: button)
         })
+    }
+
+    private func buttonPressed(link: URL, context: AboutItemActionContext, button: AboutScreenTracker.Event.Button) {
+        tracker.buttonPressed(button)
+        webViewPresenter.present(for: link, context: context)
     }
 
     let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
         context.viewController.presentingViewController?.dismiss(animated: true)
+    }
+
+    func willShow(viewController: UIViewController) {
+        tracker.screenShown(.legalAndMore)
+    }
+
+    func willHide(viewController: UIViewController) {
+        tracker.screenDismissed(.legalAndMore)
     }
 
     private enum Titles {

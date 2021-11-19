@@ -9,6 +9,14 @@ protocol AboutScreenConfiguration {
 
     /// A block that dismisses the about screen
     var dismissBlock: ((AboutItemActionContext) -> Void) { get }
+
+    /// Called when the screen will be shown for customization purposes and event tracking.
+    ///
+    func willShow(viewController: UIViewController)
+
+    /// Called when the screen will be hidden for customization purposes and event tracking.
+    ///
+    func willHide(viewController: UIViewController)
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> Void)

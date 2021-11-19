@@ -147,10 +147,20 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isMovingFromParent || isBeingDismissedDirectlyOrByAncestor() {
+            configuration.willHide(viewController: self)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
+        if isMovingToParent {
+            configuration.willShow(viewController: self)
+        }
     }
 
     // MARK: - Actions
