@@ -963,6 +963,9 @@ static NSInteger HideSearchMinSites = 3;
     }
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [accountService setVisibility:visible forBlogs:@[blog]];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherToggleBlogVisible properties:@{ @"visible": @(visible)} blog:blog];
+
 }
 
 #pragma mark - Data Listener
