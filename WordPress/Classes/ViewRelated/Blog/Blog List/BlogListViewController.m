@@ -1013,6 +1013,9 @@ static NSInteger HideSearchMinSites = 3;
 
         [self presentViewController:alertController animated:YES completion:nil];
         self.addSiteAlertController = alertController;
+
+        [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherAddSiteTapped];
+
     }
 }
 
