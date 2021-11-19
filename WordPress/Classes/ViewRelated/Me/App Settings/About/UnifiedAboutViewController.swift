@@ -4,6 +4,7 @@ import WordPressShared
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
     let configuration: AboutScreenConfiguration
+    let isSubmenu: Bool
 
     private var sections: [AboutScreenSection] {
         configuration.sections
@@ -21,9 +22,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - Views
 
-
-    // MARK: - Views
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,8 +30,10 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         // scrollbar to appear on rotation
         tableView.showsHorizontalScrollIndicator = false
 
-        tableView.tableHeaderView = headerView
-        tableView.tableFooterView = footerView
+        if isSubmenu == false {
+            tableView.tableHeaderView = headerView
+            tableView.tableFooterView = footerView
+        }
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -93,6 +93,10 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return .portrait
     }
 
+    private var shouldShowNavigationBar: Bool {
+        isSubmenu
+    }
+
     // MARK: - View lifecycle
 
     static func controller(configuration: AboutScreenConfiguration) -> UIViewController {
@@ -100,8 +104,9 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return UINavigationController(rootViewController: controller)
     }
 
-    init(configuration: AboutScreenConfiguration) {
+    init(configuration: AboutScreenConfiguration, isSubmenu: Bool = false) {
         self.configuration = configuration
+        self.isSubmenu = isSubmenu
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -112,7 +117,7 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
 
         view.backgroundColor = .systemGroupedBackground
 
@@ -137,6 +142,12 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
                 self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
             }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
     }
 
     // MARK: - Constants
@@ -210,7 +221,7 @@ extension UnifiedAboutViewController: UITableViewDelegate {
 
             switch defaultAction {
             case .showSubmenu(let configuration):
-                let viewController = SubmenuViewController(configuration: configuration)
+                let viewController = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
                 viewController.title = item.title
 
                 navigationController?.pushViewController(viewController, animated: true)
@@ -255,115 +266,5 @@ private extension AboutItem {
         default:
             return .default
         }
-    }
-}
-
-/// Generic VC for custom submenus.
-///
-class SubmenuViewController: UITableViewController {
-    let configuration: AboutScreenConfiguration
-
-    var sections: [AboutScreenSection] {
-        configuration.sections
-    }
-
-    init(configuration: AboutScreenConfiguration) {
-        self.configuration = configuration
-        super.init(style: .insetGrouped)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - View Lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
-
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-
-    // MARK: - Actions
-
-    @objc private func doneTapped() {
-        let context = AboutItemActionContext(viewController: self)
-        configuration.dismissBlock(context)
-    }
-
-    private static let cellIdentifier = "AboutLinkListViewController.Cell"
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
-
-        if let customAction = item.action {
-            let defaultAction = customAction(context)
-
-            switch defaultAction {
-            case .showSubmenu(let configuration):
-                let viewController = SubmenuViewController(configuration: configuration)
-                viewController.title = item.title
-
-                navigationController?.pushViewController(viewController, animated: true)
-            default:
-                break
-            }
-        }
-
-        tableView.deselectSelectedRowWithAnimation(true)
-    }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sections[section].count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        let cell = item.makeCell()
-
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = item.subtitle
-        cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.accessoryType = item.accessoryType
-        cell.selectionStyle = item.cellSelectionStyle
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        cell.separatorInset = item.hidesSeparator ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) : tableView.separatorInset
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        let item = section[indexPath.row]
-
-        return item.cellHeight
     }
 }
