@@ -33,6 +33,7 @@ class SupportScreenTests: XCTestCase {
             .contactSupport()
 
         XCTAssert(contactUsScreen.isLoaded)
+        XCTAssert(contactUsScreen.canSendMessage())
 
         //Dismiss because tearDown() can't handle modals currently
         try contactUsScreen.dismiss().dismiss()

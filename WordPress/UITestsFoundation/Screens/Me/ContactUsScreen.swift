@@ -17,18 +17,13 @@ public class ContactUsScreen: ScreenObject {
         $0.buttons["ZDKattachButton"]
     }
 
-    private let messageTextFieldGetter: (XCUIApplication) -> XCUIElement = {
-        $0.textFields["writeAMessage"]
-    }
-
     var closeButton: XCUIElement { closeButtonGetter(app) }
     var sendButton: XCUIElement { sendButtonGetter(app) }
     var attachButton: XCUIElement { attachButtonGetter(app) }
-    var messageTextField: XCUIElement { messageTextFieldGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        // Notice we are not checking for the send button and message text field
-        // because they're visible but not enabled, and `ScreenObject` checks for enabled elements.
+        // Notice we are not checking for the send button because it's visible but not enabled,
+        // and `ScreenObject` checks for enabled elements.
         try super.init(
             expectedElementGetters: [
                 closeButtonGetter,
@@ -36,6 +31,14 @@ public class ContactUsScreen: ScreenObject {
             ],
             app: app
         )
+    }
+
+    public func canSendMessage() -> Bool {
+        app.typeText("A")
+        let isSendButtonEnabled = sendButton.isEnabled
+        app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 1))
+
+        return isSendButtonEnabled
     }
 
     public func dismiss() throws -> SupportScreen {
