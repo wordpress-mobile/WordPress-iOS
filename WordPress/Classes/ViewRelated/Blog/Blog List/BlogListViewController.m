@@ -863,6 +863,8 @@ static NSInteger HideSearchMinSites = 3;
         [self updateViewsForCurrentSiteCount];
         [self updateSearchVisibility];
     }
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherToggleEditTapped properties: @{ @"state": editing ? @"edit" : @"done"}];
+
 }
 
 - (BOOL)shouldShowAddSiteButton
