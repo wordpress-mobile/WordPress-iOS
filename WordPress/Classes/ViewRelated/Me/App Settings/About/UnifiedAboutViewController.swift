@@ -216,19 +216,7 @@ extension UnifiedAboutViewController: UITableViewDelegate {
 
         let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
 
-        if let customAction = item.action {
-            let defaultAction = customAction(context)
-
-            switch defaultAction {
-            case .showSubmenu(let configuration):
-                let viewController = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
-                viewController.title = item.title
-
-                navigationController?.pushViewController(viewController, animated: true)
-            default:
-                break
-            }
-        }
+        item.action?(context)
 
         tableView.deselectSelectedRowWithAnimation(true)
     }

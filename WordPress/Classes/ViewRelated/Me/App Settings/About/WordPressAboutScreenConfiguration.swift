@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 
-class WebViewPresenter {
+struct WebViewPresenter {
     func present(for url: URL, context: AboutItemActionContext) {
         let webViewController = WebViewControllerFactory.controller(url: url)
         let navigationController = UINavigationController(rootViewController: webViewController)
@@ -19,17 +19,14 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
-                    return .noDefaultAction
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
-
                     self?.webViewPresenter.present(for: Links.twitter, context: context)
-                    return .noDefaultAction
                 }),
             ],
             [
                 AboutItem(title: TextContent.legalAndMore, action: { [weak self] context in
-                    .showSubmenu(configuration: LegalAndMoreSubmenuConfiguration())
+                    context.showSubmenu(with: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
                 }),
             ],
             [
@@ -38,9 +35,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             ],
             [
                 AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, action: { [weak self] context in
-
                     self?.webViewPresenter.present(for: Links.workWithUs, context: context)
-                    return .noDefaultAction
                 }),
             ]
         ]
@@ -87,7 +82,6 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     func linkItem(title: String, link: URL) -> AboutItem {
         AboutItem(title: title, accessoryType: .none, action: { [weak self] context in
             self?.webViewPresenter.present(for: link, context: context)
-            return .noDefaultAction
         })
     }
 

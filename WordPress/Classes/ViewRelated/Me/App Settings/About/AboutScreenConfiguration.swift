@@ -11,12 +11,8 @@ protocol AboutScreenConfiguration {
     var dismissBlock: ((AboutItemActionContext) -> Void) { get }
 }
 
-typealias AboutItemAction = ((AboutItemActionContext) -> AboutItemDefaultAction)
+typealias AboutItemAction = ((AboutItemActionContext) -> Void)
 
-enum AboutItemDefaultAction {
-    case noDefaultAction
-    case showSubmenu(configuration: AboutScreenConfiguration)
-}
 
 struct AboutItemActionContext {
     /// The About Screen view controller itself.
@@ -28,6 +24,13 @@ struct AboutItemActionContext {
     init(viewController: UIViewController, sourceView: UIView? = nil) {
         self.viewController = viewController
         self.sourceView = sourceView
+    }
+
+    func showSubmenu(title: String = "", configuration: AboutScreenConfiguration) {
+        let submenu = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
+        submenu.title = title
+
+        viewController.navigationController?.pushViewController(submenu, animated: true)
     }
 }
 
