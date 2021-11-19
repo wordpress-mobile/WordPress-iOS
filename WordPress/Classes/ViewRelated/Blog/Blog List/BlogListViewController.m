@@ -188,6 +188,8 @@ static NSInteger HideSearchMinSites = 3;
         [self.searchBar resignFirstResponder];
     }
     self.visible = NO;
+
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDismissed];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
