@@ -1,15 +1,20 @@
 import Foundation
 import SwiftUI
 
+
+/// Defines the content of the header that appears on the top level about screen.
+struct AboutScreenAppInfo {
+    /// The app's name
+    let name: String
+    /// The current build version of the app
+    let version: String
+    /// The app's icon
+    let icon: UIImage
+}
+
 final class UnifiedAboutHeaderView: UIView {
 
     // MARK: - Customization Support
-
-    struct AppInfo {
-        let icon: UIImage
-        let name: String
-        let version: String
-    }
 
     struct Spacing {
         let betweenAppIconAndAppNameLabel: CGFloat
@@ -40,14 +45,14 @@ final class UnifiedAboutHeaderView: UIView {
 
     // MARK: - View Customization
 
-    private let appInfo: AppInfo
+    private let appInfo: AboutScreenAppInfo
     private let spacing: Spacing
     private let sizing: Sizing
     private let fonts: Fonts
 
     // MARK: - Initializers
 
-    init(appInfo: AppInfo,
+    init(appInfo: AboutScreenAppInfo,
          sizing: Sizing = defaultSizing,
          spacing: Spacing = defaultSpacing,
          fonts: Fonts) {

@@ -1,8 +1,8 @@
 import UIKit
-import WordPressShared
 
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
+    private let appInfo: AboutScreenAppInfo?
     private let configuration: AboutScreenConfiguration
     private let isSubmenu: Bool
 
@@ -41,14 +41,13 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return tableView
     }()
 
-    let headerView: UIView = {
+    lazy var headerView: UIView? = {
+        guard let appInfo = appInfo else {
+            return nil
+        }
+
         // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
         // into the main App.
-        let appInfo = UnifiedAboutHeaderView.AppInfo(
-            icon: UIImage(named: AppIcon.currentOrDefault.imageName) ?? UIImage(),
-            name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
-            version: Bundle.main.detailedVersionNumber() ?? "")
-
         let fonts = UnifiedAboutHeaderView.Fonts(
             appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
             appVersion: WPStyleGuide.tableviewTextFont())
@@ -99,12 +98,14 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - View lifecycle
 
-    static func controller(configuration: AboutScreenConfiguration) -> UIViewController {
-        let controller = UnifiedAboutViewController(configuration: configuration)
+    static func controller(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration) -> UIViewController {
+        let controller = UnifiedAboutViewController(appInfo: appInfo,
+                                                    configuration: configuration)
         return UINavigationController(rootViewController: controller)
     }
 
-    init(configuration: AboutScreenConfiguration, isSubmenu: Bool = false) {
+    init(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, isSubmenu: Bool = false) {
+        self.appInfo = appInfo
         self.configuration = configuration
         self.isSubmenu = isSubmenu
         super.init(nibName: nil, bundle: nil)
