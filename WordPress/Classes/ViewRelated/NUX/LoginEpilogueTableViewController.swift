@@ -97,8 +97,7 @@ extension LoginEpilogueTableViewController {
             return 2
         }
 
-        let correctedSection = section - 1
-        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
+        let siteRows = numberOfSites()
 
         // Add one for Create new site cell
 
@@ -119,8 +118,6 @@ extension LoginEpilogueTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: Sections.blogSection - 1)
-
         // User Info Row
         if indexPath.section == Sections.userInfoSection {
             if indexPath.row == 0 {
@@ -140,18 +137,16 @@ extension LoginEpilogueTableViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.chooseSiteReuseIdentifier, for: indexPath) as? LoginEpilogueChooseSiteTableViewCell else {
                     return UITableViewCell()
                 }
-                cell.configure(hasSites: siteRows > 0)
+                cell.configure(hasSites: numberOfSites() > 0)
                 removeSeparatorFor(cell)
                 return cell
             }
         }
 
         // Create new site row
-        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: indexPath.section - 1)
-
         let isCreateNewSiteRow =
             showCreateNewSite &&
-            siteRows <= Constants.createNewSiteRowThreshold &&
+            numberOfSites() <= Constants.createNewSiteRowThreshold &&
             indexPath.row == lastRowInSection(indexPath.section)
 
         if isCreateNewSiteRow {
@@ -223,6 +218,11 @@ private extension LoginEpilogueTableViewController {
 
     func removeSeparatorFor(_ cell: UITableViewCell) {
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+    }
+
+    func numberOfSites() -> Int {
+        let adjustedBlogSection = Sections.blogSection - 1
+        return blogDataSource.tableView(tableView, numberOfRowsInSection: adjustedBlogSection)
     }
 
     enum Sections {
