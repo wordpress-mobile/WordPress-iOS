@@ -1670,6 +1670,8 @@
 		98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98812965219CE42A0075FF33 /* StatsTotalRow.xib */; };
 		9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9881296C219CF1300075FF33 /* StatsCellHeader.swift */; };
 		9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9881296D219CF1310075FF33 /* StatsCellHeader.xib */; };
+		98830A922747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */; };
+		98830A932747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */; };
 		98880A4A22B2E5E400464538 /* TwoColumnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98880A4822B2E5E400464538 /* TwoColumnCell.swift */; };
 		98880A4B22B2E5E400464538 /* TwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98880A4922B2E5E400464538 /* TwoColumnCell.xib */; };
 		988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988AC37422F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift */; };
@@ -6307,6 +6309,7 @@
 		98812965219CE42A0075FF33 /* StatsTotalRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTotalRow.xib; sourceTree = "<group>"; };
 		9881296C219CF1300075FF33 /* StatsCellHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsCellHeader.swift; sourceTree = "<group>"; };
 		9881296D219CF1310075FF33 /* StatsCellHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsCellHeader.xib; sourceTree = "<group>"; };
+		98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButtonTableViewCell.swift; sourceTree = "<group>"; };
 		9884B143236224F80021D8E9 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9884B145236225230021D8E9 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98880A4822B2E5E400464538 /* TwoColumnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoColumnCell.swift; sourceTree = "<group>"; };
@@ -10994,6 +10997,7 @@
 		8320B5CF11FCA3EA00607422 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				98830A912747043B0061A87C /* BorderedButtonTableViewCell.swift */,
 				9F74696A209EFD0C0074D52B /* CheckmarkTableViewCell.swift */,
 				4034FDE92007C42400153B87 /* ExpandableCell.swift */,
 				4034FDED2007D4F700153B87 /* ExpandableCell.xib */,
@@ -18399,6 +18403,7 @@
 				1714F8D020E6DA8900226DCB /* RouteMatcher.swift in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				3FD272E024CF8F270021F0C8 /* UIColor+Notice.swift in Sources */,
+				98830A922747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */,
 				FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */,
 				E1CA0A6C1FA73053004C4BBE /* PluginStore.swift in Sources */,
 				FAB8F7AA25AD792500D5D54A /* JetpackBackupStatusViewController.swift in Sources */,
@@ -20568,6 +20573,7 @@
 				FABB25AD2602FC2C00C8785C /* SharingAuthorizationWebViewController.swift in Sources */,
 				3FB1929326C6C57A000F5AA3 /* TimeSelectionView.swift in Sources */,
 				FABB25AE2602FC2C00C8785C /* SearchWrapperView.swift in Sources */,
+				98830A932747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */,
 				FABB25AF2602FC2C00C8785C /* UserSettings.swift in Sources */,
 				FABB25B02602FC2C00C8785C /* MediaImportService.swift in Sources */,
 				FABB25B12602FC2C00C8785C /* NSAttributedStringKey+Conversion.swift in Sources */,
