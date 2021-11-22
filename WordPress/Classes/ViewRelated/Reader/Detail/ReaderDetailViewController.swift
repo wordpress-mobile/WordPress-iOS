@@ -37,8 +37,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
 
+    /// The table view that displays Comments
+    @IBOutlet weak var commentsTableView: IntrinsicTableView!
     /// The table view that displays Related Posts
-    @IBOutlet weak var tableView: IntrinsicTableView!
+    @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
@@ -255,8 +257,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
-        tableView.reloadData()
-        tableView.invalidateIntrinsicContentSize()
+        relatedPostsTableView.reloadData()
+        relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
     private func navigateToCommentIfNecessary() {
@@ -479,16 +481,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureRelatedPosts() {
-        tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
+        relatedPostsTableView.isScrollEnabled = false
+        relatedPostsTableView.separatorStyle = .none
 
-        tableView.register(ReaderRelatedPostsCell.defaultNib,
+        relatedPostsTableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
-        tableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
+        relatedPostsTableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
 
-        tableView.dataSource = self
-        tableView.delegate = self
+        relatedPostsTableView.dataSource = self
+        relatedPostsTableView.delegate = self
     }
 
     private func configureToolbar() {
