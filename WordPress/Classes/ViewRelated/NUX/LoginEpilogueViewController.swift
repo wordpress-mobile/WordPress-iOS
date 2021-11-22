@@ -136,6 +136,10 @@ class LoginEpilogueViewController: UIViewController {
         tableViewBottomConstraintToSafeArea.isActive = true
     }
 
+    func hideCreateANewSiteButton() {
+        createANewSiteButton.isHidden = true
+    }
+
     func showSkipButton() {
         skipButton.isHidden = false
     }

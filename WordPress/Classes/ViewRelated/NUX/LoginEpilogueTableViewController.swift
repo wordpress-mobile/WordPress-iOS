@@ -97,26 +97,39 @@ extension LoginEpilogueTableViewController {
             return 2
         }
 
-        let siteRows = numberOfSites()
+        let siteCount = numberOfSites()
 
         // Add one for Create new site cell
 
         guard let parent = parent as? LoginEpilogueViewController else {
-            return siteRows
+            return siteCount
         }
 
-        if siteRows <= Constants.createNewSiteRowThreshold {
+        switch siteCount {
+
+        case 0:
+            if !showCreateNewSite {
+                parent.hideCreateANewSiteButton()
+            }
+            parent.showSkipButton()
+            return siteCount
+
+        case 1...Constants.createNewSiteRowThreshold:
             parent.hideButtonPanel()
-            return showCreateNewSite ? siteRows + 1 : siteRows
-        } else {
+            return showCreateNewSite ? siteCount + 1 : siteCount
+
+        default:
             if !showCreateNewSite {
                 parent.hideButtonPanel()
             }
-            return siteRows
+            return siteCount
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let siteCount = numberOfSites()
+        let hasSites = siteCount > 0
 
         // User Info Row
         if indexPath.section == Sections.userInfoSection {
@@ -137,7 +150,7 @@ extension LoginEpilogueTableViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.chooseSiteReuseIdentifier, for: indexPath) as? LoginEpilogueChooseSiteTableViewCell else {
                     return UITableViewCell()
                 }
-                cell.configure(hasSites: numberOfSites() > 0)
+                cell.configure(hasSites: hasSites)
                 removeSeparatorFor(cell)
                 return cell
             }
@@ -146,7 +159,7 @@ extension LoginEpilogueTableViewController {
         // Create new site row
         let isCreateNewSiteRow =
             showCreateNewSite &&
-            numberOfSites() <= Constants.createNewSiteRowThreshold &&
+            siteCount <= Constants.createNewSiteRowThreshold &&
             indexPath.row == lastRowInSection(indexPath.section)
 
         if isCreateNewSiteRow {
