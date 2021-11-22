@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:wordpress-mobile/release-toolkit
-  revision: ed8af1fd0f3d576b901e957e8747625671c1b22b
-  branch: l10n/localize.py
+  revision: 664f5f3e654abc0eb67b7b4650bb560731041e6f
+  branch: develop
   specs:
     fastlane-plugin-wpmreleasetoolkit (2.1.0)
       activesupport (~> 5)
