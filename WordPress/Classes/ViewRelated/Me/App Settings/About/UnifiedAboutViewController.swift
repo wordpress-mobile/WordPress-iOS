@@ -96,13 +96,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - View lifecycle
 
-    static func controller(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil) -> UIViewController {
-        let controller = UnifiedAboutViewController(appInfo: appInfo,
-                                                    configuration: configuration,
-                                                    fonts: fonts)
-        return UINavigationController(rootViewController: controller)
-    }
-
     init(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil, isSubmenu: Bool = false) {
         self.appInfo = appInfo
         self.fonts = fonts
