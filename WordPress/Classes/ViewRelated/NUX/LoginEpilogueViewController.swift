@@ -58,6 +58,10 @@ class LoginEpilogueViewController: UIViewController {
     ///
     var onCreateNewSite: (() -> Void)?
 
+    /// Closure to be executed upon dismissal.
+    ///
+    var onDismiss: (() -> Void)?
+
     /// Site that was just connected to our awesome app.
     ///
     var credentials: AuthenticatorCredentials? {
@@ -234,5 +238,11 @@ private extension LoginEpilogueViewController {
 
     @IBAction func createANewSite() {
         onCreateNewSite?()
+    }
+
+    @IBAction func dismissEpilogue() {
+        tracker.track(click: .continue)
+        onDismiss?()
+        navigationController?.dismiss(animated: true)
     }
 }

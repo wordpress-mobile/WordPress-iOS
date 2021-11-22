@@ -81,6 +81,9 @@
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="dismissEpilogue" destination="FBE-8U-liw" eventType="touchUpInside" id="cRc-fJ-fcY"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
