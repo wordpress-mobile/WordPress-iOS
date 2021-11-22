@@ -11,6 +11,8 @@ protocol ReaderDetailView: AnyObject {
     func scroll(to: String)
     func updateHeader()
 
+    func updateComments()
+
     /// Shows likes view containing avatars of users that liked the post.
     /// The number of avatars displayed is limited to `ReaderDetailView.maxAvatarDisplayed` plus the current user's avatar.
     /// Note that the current user's avatar is displayed through a different method.
@@ -238,6 +240,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.configure(for: post)
         fetchLikes()
 
+        if FeatureFlag.postDetailsComments.enabled {
+            fetchComments()
+        }
+
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
             webView.postURL = postURL
@@ -379,6 +385,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
     }
 
+    func updateComments() {
+        commentsTableView.reloadData()
+        commentsTableView.invalidateIntrinsicContentSize()
+    }
+
     deinit {
         scrollObserver?.invalidate()
         NotificationCenter.default.removeObserver(self)
@@ -484,6 +495,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
         view.setNeedsDisplay()
+    }
+
+    private func fetchComments() {
+        guard let post = post else {
+            return
+        }
+
+        coordinator?.fetchComments(for: post)
     }
 
     private func configureCommentsTable() {
