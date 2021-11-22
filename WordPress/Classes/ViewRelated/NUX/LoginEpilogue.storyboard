@@ -17,18 +17,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LF6-fg-TWa">
-                                <rect key="frame" x="0.0" y="563" width="375" height="104"/>
+                                <rect key="frame" x="0.0" y="503" width="375" height="164"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7v-Xt-6uK">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="104"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="164"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="TIz-aA-WwG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="104"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="164"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                         <blurEffect style="regular"/>
@@ -40,46 +40,69 @@
                                             <constraint firstAttribute="height" constant="0.5" id="kg0-Rj-t1o"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
-                                        <rect key="frame" x="20" y="40" width="335" height="44"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="8TV-5o-H50"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <state key="normal" title="Create a new site">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <state key="selected" backgroundImage="beveled-blue-button-down"/>
-                                        <state key="highlighted" backgroundImage="beveled-blue-button-down">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="createANewSite" destination="FBE-8U-liw" eventType="touchUpInside" id="pVd-x6-7g4"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="NUJ-06-TI5">
+                                        <rect key="frame" x="20" y="40" width="335" height="104"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuX-qp-CAG" userLabel="Create A New Site Button" customClass="FancyButton" customModule="WordPressUI">
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="Fkq-k6-7rB"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <state key="normal" title="Create a new site">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="createANewSite" destination="FBE-8U-liw" eventType="touchUpInside" id="RZn-Vp-EYc"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMx-Ec-Bv1" customClass="FancyButton" customModule="WordPressUI">
+                                                <rect key="frame" x="0.0" y="60" width="335" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="dFU-fI-cmv"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <state key="normal" title="Skip">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="E7v-Xt-6uK" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" id="4cD-GC-Ud9"/>
-                                    <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="40" id="TMQ-51-NeF"/>
+                                    <constraint firstItem="NUJ-06-TI5" firstAttribute="centerX" secondItem="LF6-fg-TWa" secondAttribute="centerX" id="JBs-KR-HUs"/>
                                     <constraint firstAttribute="trailing" secondItem="E7v-Xt-6uK" secondAttribute="trailing" id="YmO-ZG-PD3"/>
                                     <constraint firstAttribute="trailing" secondItem="aTr-q6-PbK" secondAttribute="trailing" id="cQt-u6-ypc"/>
+                                    <constraint firstItem="NUJ-06-TI5" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="40" id="hfz-ci-ga9"/>
                                     <constraint firstAttribute="bottom" secondItem="E7v-Xt-6uK" secondAttribute="bottom" id="mNZ-iM-0Uu"/>
                                     <constraint firstItem="aTr-q6-PbK" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="oAL-rY-TS7"/>
                                     <constraint firstItem="E7v-Xt-6uK" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="phn-sq-0JJ"/>
-                                    <constraint firstItem="51h-er-sEL" firstAttribute="centerX" secondItem="LF6-fg-TWa" secondAttribute="centerX" id="u3c-pn-hx5"/>
                                     <constraint firstItem="aTr-q6-PbK" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" id="zIw-8v-OFh"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NNF-sA-UQ4"/>
                         <constraints>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="5Lj-HO-aLO"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
-                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="CsN-0S-KD9"/>
+                            <constraint firstItem="NUJ-06-TI5" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="DFf-WH-AzB"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="NUJ-06-TI5" secondAttribute="bottom" constant="20" id="GlE-sU-jXB"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="trailing" secondItem="qDW-L0-z8a" secondAttribute="trailing" id="au1-yD-v4h"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
@@ -99,7 +122,8 @@
                     <connections>
                         <outlet property="blurEffectView" destination="E7v-Xt-6uK" id="RIm-YT-MPx"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
-                        <outlet property="createANewSiteButton" destination="51h-er-sEL" id="703-qw-kKG"/>
+                        <outlet property="createANewSiteButton" destination="uuX-qp-CAG" id="asO-dI-cKy"/>
+                        <outlet property="skipButton" destination="TMx-Ec-Bv1" id="67M-pJ-u11"/>
                         <outlet property="tableViewBottomConstraintToButtonPanel" destination="wZ3-6e-hG6" id="a3q-GB-ads"/>
                         <outlet property="tableViewBottomConstraintToSafeArea" destination="mVQ-Dg-W4g" id="IbU-ct-ltZ"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
@@ -117,7 +141,7 @@
             <objects>
                 <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bES-Rc-GFi">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
