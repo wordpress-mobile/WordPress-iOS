@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,50 +40,50 @@
                                             <constraint firstAttribute="height" constant="0.5" id="kg0-Rj-t1o"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
+                                        <rect key="frame" x="20" y="40" width="335" height="44"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="8TV-5o-H50"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <state key="normal" title="Create a new site">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                        <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="createANewSite" destination="FBE-8U-liw" eventType="touchUpInside" id="pVd-x6-7g4"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="E7v-Xt-6uK" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" id="4cD-GC-Ud9"/>
+                                    <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="40" id="TMQ-51-NeF"/>
                                     <constraint firstAttribute="trailing" secondItem="E7v-Xt-6uK" secondAttribute="trailing" id="YmO-ZG-PD3"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="bjg-yv-Bi5"/>
                                     <constraint firstAttribute="trailing" secondItem="aTr-q6-PbK" secondAttribute="trailing" id="cQt-u6-ypc"/>
                                     <constraint firstAttribute="bottom" secondItem="E7v-Xt-6uK" secondAttribute="bottom" id="mNZ-iM-0Uu"/>
                                     <constraint firstItem="aTr-q6-PbK" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="oAL-rY-TS7"/>
                                     <constraint firstItem="E7v-Xt-6uK" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="phn-sq-0JJ"/>
+                                    <constraint firstItem="51h-er-sEL" firstAttribute="centerX" secondItem="LF6-fg-TWa" secondAttribute="centerX" id="u3c-pn-hx5"/>
                                     <constraint firstItem="aTr-q6-PbK" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" id="zIw-8v-OFh"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
-                                <rect key="frame" x="20" y="603" width="335" height="44"/>
-                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="8TV-5o-H50"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="Create a new site">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
-                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="createANewSite" destination="FBE-8U-liw" eventType="touchUpInside" id="pVd-x6-7g4"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NNF-sA-UQ4"/>
                         <constraints>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="0rB-nq-HUv"/>
+                            <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="5Lj-HO-aLO"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="40" id="M0r-84-tJ6"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="CsN-0S-KD9"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="trailing" secondItem="qDW-L0-z8a" secondAttribute="trailing" id="au1-yD-v4h"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
-                            <constraint firstItem="qDW-L0-z8a" firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="gKl-WT-Qzi"/>
-                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="jN3-1W-Vzo"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="qDW-L0-z8a" secondAttribute="bottom" constant="104" id="mVQ-Dg-W4g"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" id="pOP-pd-DMR"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
