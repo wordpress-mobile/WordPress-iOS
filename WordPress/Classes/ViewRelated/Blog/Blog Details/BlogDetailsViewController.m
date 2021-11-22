@@ -1155,6 +1155,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:true completion:nil];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventMySiteSiteSwitcherTapped];
 }
 
 - (void)visitSiteTapped
