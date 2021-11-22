@@ -44,11 +44,23 @@ import UIKit
 
         let cell = CommentHeaderTableViewCell()
         cell.backgroundColor = .systemBackground
-        cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: false)
+        cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: allowsPushingPostDetails)
+        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleHeaderTapped)))
 
         // the table view does not render separators for the section header views, so we need to create one.
         cell.contentView.addBottomBorder(withColor: .separator, leadingMargin: tableView.separatorInset.left)
 
         return cell
+    }
+
+    func handleHeaderTapped() {
+        guard let post = post,
+              allowsPushingPostDetails else {
+            return
+        }
+
+        let controller = ReaderDetailViewController.controllerWithPost(post)
+        controller.shouldHideComments = true
+        navigationController?.pushFullscreenViewController(controller, animated: true)
     }
 }
