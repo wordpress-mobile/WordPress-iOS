@@ -1155,6 +1155,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:true completion:nil];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventMySiteSiteSwitcherTapped];
 }
 
 - (void)visitSiteTapped
@@ -1715,7 +1717,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
