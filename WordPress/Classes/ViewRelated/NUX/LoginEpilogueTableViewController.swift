@@ -111,6 +111,7 @@ extension LoginEpilogueTableViewController {
             if !showCreateNewSite {
                 parent.hideCreateANewSiteButton()
             }
+            parent.configureButtonPanel(showBackground: false)
             parent.showSkipButton()
             return siteCount
 
