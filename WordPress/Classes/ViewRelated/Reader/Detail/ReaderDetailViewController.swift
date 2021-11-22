@@ -39,6 +39,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
+    var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
+
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
 
@@ -152,6 +154,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
+
+        if FeatureFlag.postDetailsComments.enabled {
+            configureCommentsTable()
+        }
 
         coordinator?.start()
 
@@ -478,6 +484,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
         view.setNeedsDisplay()
+    }
+
+    private func configureCommentsTable() {
+        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
     }
 
     private func configureRelatedPosts() {
