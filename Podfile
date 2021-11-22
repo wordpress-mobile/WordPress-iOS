@@ -6,7 +6,10 @@ install! 'cocoapods', warn_for_multiple_pod_sources: false
 source 'https://github.com/wordpress-mobile/cocoapods-specs.git'
 source 'https://cdn.cocoapods.org/'
 
-raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_GEMFILE].any? { |k| ENV.key?(k) }
+unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
+  puts "⚠️ Calling `pod` without `bundle exec`. Currently possible because of Xcode Cloud."
+  puts "Normally, this would: raise 'Please run CocoaPods via `bundle exec`'"
+end
 
 inhibit_all_warnings!
 use_frameworks!
