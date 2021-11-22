@@ -224,6 +224,9 @@ import Foundation
     case siteSwitcherSearchPerformed
     case siteSwitcherToggleBlogVisible
 
+    // Post List
+    case postListShareAction
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -612,6 +615,8 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+        case .postListShareAction:
+            return "post_list_button_pressed"
 
         } // END OF SWITCH
     }
@@ -631,6 +636,8 @@ import Foundation
             return ["via": "tenor"]
         case .editorAddedPhotoViaTenor:
             return ["via": "tenor"]
+        case .postListShareAction:
+            return ["button": "share"]
         default:
             return nil
         }
