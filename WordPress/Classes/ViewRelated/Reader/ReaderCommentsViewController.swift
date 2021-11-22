@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
@@ -32,5 +33,22 @@ import Foundation
         case (.disableNotification, false):
             return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
         }
+    }
+
+    // MARK: New Comment Threads
+
+    func configuredHeaderView(for tableView: UITableView) -> UIView {
+        guard let post = post else {
+            return .init()
+        }
+
+        let cell = CommentHeaderTableViewCell()
+        cell.backgroundColor = .systemBackground
+        cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: false)
+
+        // the table view does not render separators for the section header views, so we need to create one.
+        cell.contentView.addBottomBorder(withColor: .separator, leadingMargin: tableView.separatorInset.left)
+
+        return cell
     }
 }

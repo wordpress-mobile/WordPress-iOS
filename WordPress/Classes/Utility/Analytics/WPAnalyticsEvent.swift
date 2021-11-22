@@ -215,6 +215,15 @@ import Foundation
     case mySiteNoSitesViewActionTapped
     case mySiteNoSitesViewHidden
 
+    // Site Switcher
+    case mySiteSiteSwitcherTapped
+    case siteSwitcherDisplayed
+    case siteSwitcherDismissed
+    case siteSwitcherToggleEditTapped
+    case siteSwitcherAddSiteTapped
+    case siteSwitcherSearchPerformed
+    case siteSwitcherToggleBlogVisible
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -587,7 +596,24 @@ import Foundation
             return "my_site_no_sites_view_action_tapped"
         case .mySiteNoSitesViewHidden:
             return "my_site_no_sites_view_hidden"
-        }
+
+        // Site Switcher
+        case .mySiteSiteSwitcherTapped:
+            return "my_site_site_switcher_tapped"
+        case .siteSwitcherDisplayed:
+            return "site_switcher_displayed"
+        case .siteSwitcherDismissed:
+            return "site_switcher_dismissed"
+        case .siteSwitcherToggleEditTapped:
+            return "site_switcher_toggle_edit_tapped"
+        case .siteSwitcherAddSiteTapped:
+            return "site_switcher_add_site_tapped"
+        case .siteSwitcherSearchPerformed:
+            return "site_switcher_search_performed"
+        case .siteSwitcherToggleBlogVisible:
+            return "site_switcher_toggle_blog_visible"
+
+        } // END OF SWITCH
     }
 
     /**

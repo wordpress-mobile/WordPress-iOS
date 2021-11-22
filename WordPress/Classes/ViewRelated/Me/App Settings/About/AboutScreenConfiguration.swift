@@ -3,12 +3,16 @@ import Foundation
 typealias AboutScreenSection = [AboutItem]
 
 /// Users of UnifiedAboutViewController must provide a configuration conforming to this protocol.
-/// It provides a list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
 protocol AboutScreenConfiguration {
+    /// A list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
     var sections: [AboutScreenSection] { get }
+
+    /// A block that dismisses the about screen
+    var dismissBlock: ((AboutItemActionContext) -> Void) { get }
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> Void)
+
 
 struct AboutItemActionContext {
     /// The About Screen view controller itself.
@@ -16,6 +20,18 @@ struct AboutItemActionContext {
 
     /// If the action was triggered by the user interacting with a specific view, it'll be available here.
     let sourceView: UIView?
+
+    init(viewController: UIViewController, sourceView: UIView? = nil) {
+        self.viewController = viewController
+        self.sourceView = sourceView
+    }
+
+    func showSubmenu(title: String = "", configuration: AboutScreenConfiguration) {
+        let submenu = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
+        submenu.title = title
+
+        viewController.navigationController?.pushViewController(submenu, animated: true)
+    }
 }
 
 /// Defines a single row in the unified about screen.

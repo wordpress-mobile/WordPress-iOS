@@ -1,9 +1,12 @@
 import UIKit
-import WordPressShared
 
 
 class UnifiedAboutViewController: UIViewController, OrientationLimited {
-    let configuration: AboutScreenConfiguration
+    private let appInfo: AboutScreenAppInfo?
+    private let fonts: AboutScreenFonts?
+
+    private let configuration: AboutScreenConfiguration
+    private let isSubmenu: Bool
 
     private var sections: [AboutScreenSection] {
         configuration.sections
@@ -21,27 +24,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - Views
 
-    let headerView: UIView = {
-        // These customizations are temporarily here, but if this VC is moved into a framework we'll need to move them
-        // into the main App.
-        let appInfo = UnifiedAboutHeaderView.AppInfo(
-            icon: UIImage(named: AppIcon.currentOrDefault.imageName) ?? UIImage(),
-            name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
-            version: Bundle.main.detailedVersionNumber() ?? "")
-
-        let fonts = UnifiedAboutHeaderView.Fonts(
-            appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
-            appVersion: WPStyleGuide.tableviewTextFont())
-
-        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: fonts)
-
-        // Setting the frame once is needed so that the table view header will show.
-        // This seems to be a table view bug although I'm not entirely sure.
-        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-
-        return headerView
-    }()
-
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +32,10 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         // scrollbar to appear on rotation
         tableView.showsHorizontalScrollIndicator = false
 
-        tableView.tableHeaderView = headerView
+        if isSubmenu == false {
+            tableView.tableHeaderView = headerView
+            tableView.tableFooterView = footerView
+        }
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -58,19 +43,45 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return tableView
     }()
 
+    lazy var headerView: UIView? = {
+        guard let appInfo = appInfo else {
+            return nil
+        }
+
+        let headerFonts = fonts ?? AboutScreenFonts.defaultFonts
+
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts)
+
+        // Setting the frame once is needed so that the table view header will show.
+        // This seems to be a table view bug although I'm not entirely sure.
+        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        return headerView
+    }()
+
     private lazy var footerView: UIView = {
         let footerView = UIView()
-        footerView.translatesAutoresizingMaskIntoConstraints = false
         footerView.backgroundColor = .systemGroupedBackground
+
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(containerView)
 
         let logo = UIImageView(image: UIImage(named: Images.automatticLogo))
         logo.translatesAutoresizingMaskIntoConstraints = false
-        footerView.addSubview(logo)
+        containerView.addSubview(logo)
 
         NSLayoutConstraint.activate([
-            logo.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
-            logo.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+            containerView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: Metrics.footerVerticalOffset),
+            containerView.bottomAnchor.constraint(equalTo: footerView.bottomAnchor),
+            containerView.heightAnchor.constraint(equalToConstant: Metrics.footerHeight),
+            logo.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            logo.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ])
+
+        footerView.frame.size = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 
         return footerView
     }()
@@ -79,10 +90,17 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return .portrait
     }
 
+    private var shouldShowNavigationBar: Bool {
+        isSubmenu
+    }
+
     // MARK: - View lifecycle
 
-    init(configuration: AboutScreenConfiguration) {
+    init(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil, isSubmenu: Bool = false) {
+        self.appInfo = appInfo
+        self.fonts = fonts
         self.configuration = configuration
+        self.isSubmenu = isSubmenu
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -93,20 +111,20 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
+        if isSubmenu {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
+        }
+
         view.backgroundColor = .systemGroupedBackground
 
         view.addSubview(tableView)
-        view.addSubview(footerView)
 
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
-            footerView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Metrics.footerVerticalOffset),
-            footerView.heightAnchor.constraint(equalToConstant: Metrics.footerHeight),
-            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            tableView.topAnchor.constraint(equalTo: view.safeTopAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
         tableView.reloadData()
@@ -121,6 +139,19 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
                 self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
             }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
+    }
+
+    // MARK: - Actions
+
+    @objc private func doneTapped() {
+        let context = AboutItemActionContext(viewController: self)
+        configuration.dismissBlock(context)
     }
 
     // MARK: - Constants
@@ -188,6 +219,7 @@ extension UnifiedAboutViewController: UITableViewDelegate {
         let item = section[indexPath.row]
 
         let context = AboutItemActionContext(viewController: self, sourceView: tableView.cellForRow(at: indexPath))
+
         item.action?(context)
 
         tableView.deselectSelectedRowWithAnimation(true)

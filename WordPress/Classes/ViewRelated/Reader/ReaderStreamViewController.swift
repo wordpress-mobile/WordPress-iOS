@@ -170,7 +170,7 @@ import WordPressFlux
 
     var contentType: ReaderContentType = .topic {
         didSet {
-            if contentType == .saved {
+            if oldValue != .saved, contentType == .saved {
                 updateContent(synchronize: false)
                 trackSavedListAccessed()
             }
