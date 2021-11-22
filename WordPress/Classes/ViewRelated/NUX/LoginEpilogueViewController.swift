@@ -85,6 +85,7 @@ class LoginEpilogueViewController: UIViewController {
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
+        configureButtonPanel()
         WordPressAuthenticator.track(.loginEpilogueViewed)
 
         // If the user just signed in, refresh the A/B assignments
@@ -115,11 +116,6 @@ class LoginEpilogueViewController: UIViewController {
         return UIDevice.isPad() ? .all : .portrait
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        configureButtonPanel()
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setTableViewMargins(forWidth: size.width)
@@ -128,6 +124,24 @@ class LoginEpilogueViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setTableViewMargins(forWidth: view.frame.width)
+    }
+
+    /// Setup: Button Panel
+    ///
+    func configureButtonPanel(showBackground: Bool = true) {
+        if showBackground {
+            topLineHeightConstraint.constant = .hairlineBorderWidth
+            buttonPanel.backgroundColor = .quaternaryBackground
+            topLine.isHidden = false
+            blurEffectView.effect = UIBlurEffect(style: blurEffect)
+            blurEffectView.isHidden = false
+            setupDividerLineIfNeeded()
+        } else {
+            buttonPanel.backgroundColor = .basicBackground
+            topLine.isHidden = true
+            blurEffectView.isHidden = true
+            dividerView?.isHidden = true
+        }
     }
 
     func hideButtonPanel() {
@@ -173,17 +187,6 @@ private extension LoginEpilogueViewController {
 
         // Skip button should be hidden by default
         skipButton.isHidden = true
-    }
-
-    /// Setup: Button Panel
-    ///
-    func configureButtonPanel() {
-        topLineHeightConstraint.constant = .hairlineBorderWidth
-        buttonPanel.backgroundColor = .quaternaryBackground
-        topLine.isHidden = false
-        blurEffectView.effect = UIBlurEffect(style: blurEffect)
-        blurEffectView.isHidden = false
-        setupDividerLineIfNeeded()
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
