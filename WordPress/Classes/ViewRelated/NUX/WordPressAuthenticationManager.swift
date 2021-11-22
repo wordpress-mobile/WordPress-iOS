@@ -373,6 +373,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             navigationController.present(wizard, animated: true)
         }
 
+        epilogueViewController.onDismiss = { [weak self] in
+            onDismiss()
+            self?.windowManager.dismissFullscreenSignIn()
+        }
+
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
