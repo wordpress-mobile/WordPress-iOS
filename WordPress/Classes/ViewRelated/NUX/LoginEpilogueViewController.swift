@@ -19,7 +19,11 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Create a new site button.
     ///
-    @IBOutlet var createANewSiteButton: UIButton!
+    @IBOutlet weak var createANewSiteButton: FancyButton!
+
+    /// Skip button.
+    ///
+    @IBOutlet weak var skipButton: FancyButton!
 
     /// Constraints on the table view container.
     /// Used to adjust the width on iPad.
@@ -131,6 +135,10 @@ class LoginEpilogueViewController: UIViewController {
         tableViewBottomConstraintToButtonPanel.isActive = false
         tableViewBottomConstraintToSafeArea.isActive = true
     }
+
+    func showSkipButton() {
+        skipButton.isHidden = false
+    }
 }
 
 // MARK: - Private Extension
@@ -141,13 +149,26 @@ private extension LoginEpilogueViewController {
     ///
     func refreshInterface(with credentials: AuthenticatorCredentials) {
         configureCreateANewSiteButton()
+        configureSkipButton()
     }
 
-    /// Setup: Buttons
+    /// Setup: Create a new site button
     ///
     func configureCreateANewSiteButton() {
-        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "A button title"), for: .normal)
+        createANewSiteButton.isPrimary = false
+        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "Title for the button that will show a prompt to create a new site."), for: .normal)
         createANewSiteButton.accessibilityIdentifier = "Create a new site"
+    }
+
+    /// Setup: Skip button
+    ///
+    func configureSkipButton() {
+        skipButton.isPrimary = true
+        skipButton.setTitle(NSLocalizedString("Skip", comment: "Title for the button that will skip creating a site and display the logged in view"), for: .normal)
+        skipButton.accessibilityIdentifier = "Skip"
+
+        // Skip button should be hidden by default
+        skipButton.isHidden = true
     }
 
     /// Setup: Button Panel
