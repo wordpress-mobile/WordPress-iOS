@@ -59,6 +59,7 @@ import UIKit
             return
         }
 
+        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.shouldHideComments = true
         navigationController?.pushFullscreenViewController(controller, animated: true)
