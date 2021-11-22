@@ -421,8 +421,15 @@ platform :ios do
       exclude: ['*Vendor*', 'WordPress/WordPressTest/I18n.swift', 'WordPress/WordPressStatsWidgets/Views/Localization/LocalizedStringKey+extension.swift', '*/Secrets.swift'],
       output_dir: en_lproj
     )
-    
-    git_commit(path: en_lproj, message: 'Update strings for localization', allow_nothing_to_commit: true)
+
+    # @TODO: Remove once we migrated the codebase of the widgets to use the app bundle for .strings
+    today_widget_base = 'WordPress/WordPressTodayWidget/Base.lproj'
+    ios_generate_strings_file_from_code(paths: ['WordPress/WordPressTodayWidget'], output_dir: today_widget_base)
+    share_ext_base = 'WordPress/WordPressShareExtension/Base.lproj'
+    ios_generate_strings_file_from_code(paths: ['WordPress/WordPressShareExtension'], output_dir: share_ext_base)
+    # END TODO
+
+    git_commit(path: [en_lproj, today_widget_base, share_ext_base], message: 'Update strings for localization', allow_nothing_to_commit: true)
   end
 
   #####################################################################################
