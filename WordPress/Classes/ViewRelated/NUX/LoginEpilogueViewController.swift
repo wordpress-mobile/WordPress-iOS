@@ -25,7 +25,8 @@ class LoginEpilogueViewController: UIViewController {
     /// Used to adjust the width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewBottomContraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomConstraintToSafeArea: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomConstraintToButtonPanel: NSLayoutConstraint!
 
     private var defaultTableViewMargin: CGFloat = 0
 
@@ -127,8 +128,8 @@ class LoginEpilogueViewController: UIViewController {
 
     func hideButtonPanel() {
         buttonPanel.isHidden = true
-        createANewSiteButton.isHidden = true
-        tableViewBottomContraint.constant = 0
+        tableViewBottomConstraintToButtonPanel.isActive = false
+        tableViewBottomConstraintToSafeArea.isActive = true
     }
 }
 
