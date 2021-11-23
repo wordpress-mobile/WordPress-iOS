@@ -841,9 +841,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
 
-//                WPAnalytics.trackSettingsChange(page: "site_tags", fieldName: "add_tag")
-
                 if ([weakSelf savingWritingDefaultsIsAvailable]) {
+                    [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"default_post_format"];
+
                     [weakSelf saveSettings];
                 }
             }
