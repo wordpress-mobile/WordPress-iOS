@@ -276,7 +276,9 @@ import WordPressShared
         /// If there is already an in progress change (i.e. bad network), don't push the view controller and deselect the selection immediately.
         tableView.allowsSelection = false
 
-        WPAnalytics.track(.settingsDidChange, properties: ["page": "homepage_settings", "field_name": "homepage_type", "value": (homepageType == .page) ? "page" : "posts"])
+        WPAnalytics.trackSettingsChange(page: "homepage_settings",
+                                        fieldName: "homepage_type",
+                                        value: (homepageType == .page) ? "page" : "posts")
 
         /// Send the remove service call
         let service = HomepageSettingsService(blog: blog, context: blog.managedObjectContext!)

@@ -93,6 +93,6 @@ extension SettingsController {
             return
         }
 
-        WPAnalytics.track(.settingsDidChange, properties: ["page": trackingKey, "field_name": fieldName])
+        WPAnalytics.trackSettingsChange(page: trackingKey, fieldName: fieldName)
     }
 }

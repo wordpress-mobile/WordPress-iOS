@@ -80,7 +80,7 @@ extension SiteSettingsViewController {
             self?.blog.settings?.timezoneString = newValue.timezoneString
             self?.saveSettings()
             self?.trackSettingsChange(fieldName: "timezone",
-                                      properties: ["value": newValue.value as Any])
+                                      value: newValue.value as Any)
         }
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -107,7 +107,7 @@ extension SiteSettingsViewController {
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.blog.settings?.postsPerPage = newValue as NSNumber?
             self?.saveSettings()
-            self?.trackSettingsChange(fieldName: "posts_per_page", properties: ["value": newValue as Any])
+            self?.trackSettingsChange(fieldName: "posts_per_page", value: newValue as Any)
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -411,10 +411,9 @@ extension SiteSettingsViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    func trackSettingsChange(fieldName: String, properties: [AnyHashable: Any]? = nil) {
-        var props: [AnyHashable: Any] = ["page": "site_settings", "field_name": fieldName]
-        props.merge(properties ?? [:]) { (_, new) in new }
-
-        WPAnalytics.track(.settingsDidChange, properties: props)
+    func trackSettingsChange(fieldName: String, value: Any? = nil) {
+        WPAnalytics.trackSettingsChange(page: "site_settings",
+                                        fieldName: fieldName,
+                                        value: value)
     }
 }
