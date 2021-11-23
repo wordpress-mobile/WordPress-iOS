@@ -44,8 +44,8 @@ class AboutScreenTracker {
         track(event.rawValue, properties)
     }
 
-    func buttonPressed(_ button: Event.Button) {
-        track(.buttonPressed, properties: [Event.PropertyName.button.rawValue: button.rawValue])
+    func buttonPressed(_ button: Event.Button, properties: [String: Any]? = nil) {
+        track(.buttonPressed, properties: properties ?? [Event.PropertyName.button.rawValue: button.rawValue])
     }
 
     func screenShown(_ screen: Event.Screen) {
