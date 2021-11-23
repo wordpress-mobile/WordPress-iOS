@@ -54,9 +54,6 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
       notify_testers: false
     )
 
-    # Install SentryCLI prior to trying to upload dSYMs
-    sh("curl -sL https://sentry.io/get-cli/ | bash") unless sh("which sentry-cli")
-
     sentry_upload_dsym(
       auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',

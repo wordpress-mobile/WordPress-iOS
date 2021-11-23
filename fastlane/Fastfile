@@ -580,9 +580,6 @@ platform :ios do
       notify_testers: false
     )
 
-    # Install SentryCLI prior to trying to upload dSYMs
-    sh('curl -sL https://sentry.io/get-cli/ | bash')
-
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: 'a8c',
