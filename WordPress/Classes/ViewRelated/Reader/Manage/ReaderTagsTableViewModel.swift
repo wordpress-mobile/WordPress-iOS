@@ -179,7 +179,7 @@ extension ReaderTagsTableViewModel {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
             alert.presentFromRootViewController()
-        })
+        }, source: "manage")
     }
 
     /// Tells the ReaderTopicService to unfollow the specified topic.

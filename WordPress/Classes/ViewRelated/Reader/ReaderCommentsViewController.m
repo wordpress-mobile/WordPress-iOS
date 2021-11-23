@@ -978,7 +978,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     self.failedToFetchComments = NO;
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
-    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -993,7 +993,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-    [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
         }

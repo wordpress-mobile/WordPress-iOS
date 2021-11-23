@@ -123,6 +123,8 @@ extension ReaderTabViewModel {
         let bottomSheet = BottomSheetViewController(childViewController: viewController)
         bottomSheet.additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
+
+        WPAnalytics.track(.readerFilterSheetDisplayed)
     }
 
     func presentManage(from: UIViewController) {
@@ -139,12 +141,16 @@ extension ReaderTabViewModel {
     }
 
     func resetFilter(selectedItem: FilterTabBarItem) {
+        WPAnalytics.track(.readerFilterSheetCleared)
         if let content = (selectedItem as? ReaderTabItem)?.content {
             setContent?(content)
         }
     }
 
     func setFilterContent(topic: ReaderAbstractTopic) {
+        let type = ((topic as? ReaderSiteTopic) != nil) ? "site" : "topic"
+        WPAnalytics.track(.readerFilterSheetItemSelected, properties: ["type": type])
+
         setContent?(ReaderContent(topic: topic))
     }
 
