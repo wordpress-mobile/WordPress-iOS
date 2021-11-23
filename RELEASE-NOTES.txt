@@ -1,5 +1,6 @@
 18.8
 -----
+* [*] Editor: Show a compact notice when switching between HTML or Visual mode. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17521]
 * [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
 
 18.7
