@@ -1,15 +1,36 @@
 import Foundation
-import SwiftUI
+
+
+/// Defines the content of the header that appears on the top level about screen.
+struct AboutScreenAppInfo {
+    /// The app's name
+    let name: String
+    /// The current build version of the app
+    let version: String
+    /// The app's icon
+    let icon: UIImage
+}
+
+struct AboutScreenFonts {
+    let appName: UIFont
+    let appVersion: UIFont
+
+    static let defaultFonts: AboutScreenFonts = {
+        // Title is serif semibold large title
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .largeTitle)
+        let serifFontDescriptor = fontDescriptor.withDesign(.serif) ?? fontDescriptor
+        let traits = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.semibold]
+        let descriptor = serifFontDescriptor.addingAttributes([.traits: traits])
+
+        let font = UIFont(descriptor: descriptor, size: descriptor.pointSize)
+        return AboutScreenFonts(appName: font,
+                                appVersion: .preferredFont(forTextStyle: .callout))
+    }()
+}
 
 final class UnifiedAboutHeaderView: UIView {
 
     // MARK: - Customization Support
-
-    struct AppInfo {
-        let icon: UIImage
-        let name: String
-        let version: String
-    }
 
     struct Spacing {
         let betweenAppIconAndAppNameLabel: CGFloat
@@ -20,11 +41,6 @@ final class UnifiedAboutHeaderView: UIView {
     struct Sizing {
         let appIconWidthAndHeight: CGFloat
         let appIconCornerRadius: CGFloat
-    }
-
-    struct Fonts {
-        let appName: UIFont
-        let appVersion: UIFont
     }
 
     // MARK: - Defaults
@@ -40,17 +56,17 @@ final class UnifiedAboutHeaderView: UIView {
 
     // MARK: - View Customization
 
-    private let appInfo: AppInfo
+    private let appInfo: AboutScreenAppInfo
     private let spacing: Spacing
     private let sizing: Sizing
-    private let fonts: Fonts
+    private let fonts: AboutScreenFonts
 
     // MARK: - Initializers
 
-    init(appInfo: AppInfo,
+    init(appInfo: AboutScreenAppInfo,
          sizing: Sizing = defaultSizing,
          spacing: Spacing = defaultSpacing,
-         fonts: Fonts) {
+         fonts: AboutScreenFonts) {
 
         self.appInfo = appInfo
         self.sizing = sizing

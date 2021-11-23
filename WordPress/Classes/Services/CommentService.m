@@ -512,18 +512,47 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSInteger count, BOOL hasMore))success
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [self syncHierarchicalCommentsForPost:post
+                                     page:page
+                   numberTopLevelComments:WPTopLevelHierarchicalCommentsPerPage
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                 number:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [self syncHierarchicalCommentsForPost:post
+                                     page:1
+                   numberTopLevelComments:number
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                   page:(NSUInteger)page
+                 numberTopLevelComments:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
     NSNumber *siteID = post.siteID;
     NSNumber *postID = post.postID;
+    
+    NSUInteger commentsPerPage = number ?: WPTopLevelHierarchicalCommentsPerPage;
+    NSUInteger pageNumber = page ?: 1;
+    
     [self.managedObjectContext performBlock:^{
         CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
         [service syncHierarchicalCommentsForPost:postID
-                                            page:page
-                                          number:WPTopLevelHierarchicalCommentsPerPage
-                                         success:^(NSArray *comments) {
+                                            page:pageNumber
+                                          number:commentsPerPage
+                                         success:^(NSArray *comments, NSNumber *totalComments) {
                                              [self.managedObjectContext performBlock:^{
                                                  NSError *error;
                                                  ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
@@ -554,7 +583,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                          }
 
                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                             success([comments count], hasMore);
+                                                             success(hasMore, totalComments);
                                                          });
                                                      }];
                                                  }];
