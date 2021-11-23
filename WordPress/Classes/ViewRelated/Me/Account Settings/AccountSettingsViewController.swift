@@ -255,6 +255,8 @@ private class AccountSettingsController: SettingsController {
     private var closeAccountAction: (ImmuTableRow) -> Void {
         return { [weak self] _ in
             guard let self = self else { return }
+            WPAnalytics.track(.accountCloseTapped, properties: ["has_atomic": self.hasAtomicSite])
+
             switch self.hasAtomicSite {
             case true:
                 self.showCloseAccountErrorAlert(message: self.localizedErrorMessageForAtomicSites)
@@ -292,10 +294,14 @@ private class AccountSettingsController: SettingsController {
             guard let self = self else { return }
             switch $0 {
             case .success:
+                WPAnalytics.track(.accountCloseCompleted, properties: ["status": "success"])
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
                 SVProgressHUD.showDismissibleSuccess(withStatus: status)
                 AccountHelper.logOutDefaultWordPressComAccount()
             case .failure(let error):
+                let errorCode = self.errorCode(error) ?? "unknown"
+                WPAnalytics.track(.accountCloseCompleted, properties: ["status": "failure", "error_code": errorCode])
+
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
                 self.showCloseAccountErrorAlert(message: self.generateLocalizedMessage(error))
@@ -317,9 +323,15 @@ private class AccountSettingsController: SettingsController {
         alert.presentFromRootViewController()
     }
 
-    private func generateLocalizedMessage(_ error: Error) -> String {
+    private func errorCode(_ error: Error) -> String? {
         let userInfo = (error as NSError).userInfo
         let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+
+        return errorCode
+    }
+
+    private func generateLocalizedMessage(_ error: Error) -> String {
+        let errorCode = errorCode(error)
 
         switch errorCode {
         case "unauthorized":
