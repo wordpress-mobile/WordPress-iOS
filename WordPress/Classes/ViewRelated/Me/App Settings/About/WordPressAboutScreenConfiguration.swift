@@ -49,15 +49,15 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
         ]
     }()
 
-    let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
-        context.viewController.presentingViewController?.dismiss(animated: true)
+    func dismissScreen(_ actionContext: AboutItemActionContext) {
+        actionContext.viewController.presentingViewController?.dismiss(animated: true)
     }
 
     func willShow(viewController: UIViewController) {
         tracker.screenShown(.main)
     }
 
-    func willHide(viewController: UIViewController) {
+    func didHide(viewController: UIViewController) {
         tracker.screenDismissed(.main)
     }
 
@@ -107,15 +107,15 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
         webViewPresenter.present(for: link, context: context)
     }
 
-    let dismissBlock: ((AboutItemActionContext) -> Void) = { context in
-        context.viewController.presentingViewController?.dismiss(animated: true)
+    func dismissScreen(_ actionContext: AboutItemActionContext) {
+        actionContext.viewController.presentingViewController?.dismiss(animated: true)
     }
 
     func willShow(viewController: UIViewController) {
         tracker.screenShown(.legalAndMore)
     }
 
-    func willHide(viewController: UIViewController) {
+    func didHide(viewController: UIViewController) {
         tracker.screenDismissed(.legalAndMore)
     }
 
