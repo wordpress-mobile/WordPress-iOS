@@ -183,6 +183,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "allow_comments", value: enabled as Any)
         settings.commentsAllowed = enabled
     }
 
@@ -191,6 +192,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "send_pingbacks", value: enabled as Any)
         settings.pingbackInboundEnabled = enabled
     }
 
@@ -199,6 +201,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "receive_pingbacks", value: enabled as Any)
         settings.pingbackOutboundEnabled = enabled
     }
 
@@ -207,6 +210,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "require_name_and_email", value: enabled as Any)
         settings.commentsRequireNameAndEmail = enabled
     }
 
@@ -215,6 +219,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "require_registration", value: enabled as Any)
         settings.commentsRequireRegistration = enabled
     }
 
@@ -234,6 +239,9 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsCloseAutomatically = enabled
             self?.settings.commentsCloseAutomaticallyAfterDays = newValue as NSNumber
+
+            let value: Any = enabled ? newValue : "disabled"
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "close_commenting", value: value)
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -250,6 +258,7 @@ open class DiscussionSettingsViewController: UITableViewController {
                 return
             }
 
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_sort_by", value: selected as Any)
             self?.settings.commentsSorting = newSortOrder
         }
 
@@ -268,6 +277,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             }
 
             self?.settings.commentsThreading = newThreadingDepth
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_threading", value: selected as Any)
         }
 
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -287,6 +297,9 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsPagingEnabled = enabled
             self?.settings.commentsPageSize = newValue as NSNumber
+
+            let value: Any = enabled ? newValue : "disabled"
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_paging", value: value)
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -305,6 +318,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             }
 
             self?.settings.commentsAutoapproval = newApprovalStatus
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_automatically_approve", value: selected as Any)
         }
 
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -321,6 +335,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsMaximumLinks = newValue as NSNumber
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_links", value: newValue as Any)
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -336,6 +351,8 @@ open class DiscussionSettingsViewController: UITableViewController {
                                                                     comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
             self?.settings.commentsModerationKeys = updated
+
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_hold_for_moderation", value: updated.count as Any)
         }
 
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -351,6 +368,7 @@ open class DiscussionSettingsViewController: UITableViewController {
                                                                     comment: "Text rendered at the bottom of the Discussion Blocklist Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
             self?.settings.commentsBlocklistKeys = updated
+            WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "comments_block_list", value: updated.count as Any)
         }
 
         navigationController?.pushViewController(settingsViewController, animated: true)
