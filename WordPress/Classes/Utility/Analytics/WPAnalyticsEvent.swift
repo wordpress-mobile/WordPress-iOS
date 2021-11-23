@@ -237,6 +237,14 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
+    // App Settings
+    case settingsDidChange
+
+    // Account Close
+    case accountCloseTapped
+    case accountCloseCancel
+    case accountCloseCompleted
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -628,6 +636,7 @@ import Foundation
         case .postListShareAction:
             return "post_list_button_pressed"
 
+        // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
             return "reader_filter_sheet_displayed"
         case .readerFilterSheetDismissed:
@@ -636,10 +645,24 @@ import Foundation
             return "reader_filter_sheet_item_selected"
         case .readerFilterSheetCleared:
             return "reader_filter_sheet_cleared"
+
+        // Reader: Manage View
         case .readerManageViewDisplayed:
             return "reader_manage_view_displayed"
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
+
+        // App Settings
+        case .settingsDidChange:
+            return "settings_did_change"
+
+        // Account Close
+        case .accountCloseTapped:
+            return "account_close_tapped"
+        case .accountCloseCancel:
+            return "account_close_cancel"
+        case .accountCloseCompleted:
+            return "account_close_completed"
         } // END OF SWITCH
     }
 
