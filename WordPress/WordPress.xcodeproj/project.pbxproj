@@ -1633,6 +1633,8 @@
 		985ED0E423C6950600B8D06A /* WidgetStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985ED0E323C6950600B8D06A /* WidgetStyles.swift */; };
 		985ED0E723C6964500B8D06A /* WidgetStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985ED0E323C6950600B8D06A /* WidgetStyles.swift */; };
 		985ED0E823C6964600B8D06A /* WidgetStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985ED0E323C6950600B8D06A /* WidgetStyles.swift */; };
+		98622E9F274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98622E9E274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift */; };
+		98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98622E9E274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift */; };
 		9865257D2194D77F0078B916 /* SiteStatsInsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */; };
 		98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98656BD72037A1770079DE67 /* SignupEpilogueViewController.swift */; };
 		986C908422319EFF00FC31E1 /* PostStatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986C908322319EFF00FC31E1 /* PostStatsTableViewController.swift */; };
@@ -6283,6 +6285,7 @@
 		98579BC6203DD86E004086E4 /* EpilogueSectionHeaderFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EpilogueSectionHeaderFooter.xib; sourceTree = "<group>"; };
 		985ED0E323C6950600B8D06A /* WidgetStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStyles.swift; sourceTree = "<group>"; };
 		985F06B42303866200949733 /* WelcomeScreenLoginComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScreenLoginComponent.swift; sourceTree = "<group>"; };
+		98622E9E274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCommentsTableViewDelegate.swift; sourceTree = "<group>"; };
 		9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsViewModel.swift; sourceTree = "<group>"; };
 		98656BD72037A1770079DE67 /* SignupEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueViewController.swift; sourceTree = "<group>"; };
 		986C908322319EFF00FC31E1 /* PostStatsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatsTableViewController.swift; sourceTree = "<group>"; };
@@ -11402,6 +11405,7 @@
 		8BD89F2C24D9E73600341C90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				98622E9E274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift */,
 				3223393B24FEC18000BDD4BF /* ReaderDetailFeaturedImageView.swift */,
 				3223393D24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib */,
 				8B0CE7D02481CFE8004C4799 /* ReaderDetailHeaderView.swift */,
@@ -17106,6 +17110,7 @@
 				AB2211D225ED68E300BF72FC /* CommentServiceRemoteFactory.swift in Sources */,
 				8BBBCE702717651200B277AC /* JetpackModuleHelper.swift in Sources */,
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
+				98622E9F274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
 				40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */,
 				46183D1F251BD6A0004F9AFD /* PageTemplateCategory+CoreDataClass.swift in Sources */,
 				40E7FED02211FFBC0032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift in Sources */,
@@ -19512,6 +19517,7 @@
 				FABB21E72602FC2C00C8785C /* WPRichTextImage.swift in Sources */,
 				FABB21E82602FC2C00C8785C /* FormattableContentRange.swift in Sources */,
 				FABB21E92602FC2C00C8785C /* MenuItemSourceHeaderView.m in Sources */,
+				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
 				FABB21EA2602FC2C00C8785C /* RestoreWarningView.swift in Sources */,
 				C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */,
 				FABB21EB2602FC2C00C8785C /* GutenbergWebNavigationViewController.swift in Sources */,

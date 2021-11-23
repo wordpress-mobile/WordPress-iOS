@@ -185,6 +185,13 @@ class ReaderDetailCoordinator {
                                 })
     }
 
+    /// Fetch Comments for the current post.
+    ///
+    func fetchComments(for post: ReaderPost) {
+        // TODO: fetch comments.
+        view?.updateComments()
+    }
+
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
