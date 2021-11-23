@@ -114,8 +114,11 @@ open class AppIconViewController: UITableViewController {
 
         UIApplication.shared.setAlternateIconName(iconName, completionHandler: { [weak self] error in
             if error == nil {
-                let event: WPAnalyticsStat = isOriginalIcon ? .appIconReset : .appIconChanged
-                WPAppAnalytics.track(event)
+                if isOriginalIcon {
+                    WPAppAnalytics.track(.appIconReset)
+                } else {
+                    WPAppAnalytics.track(.appIconChanged, withProperties: ["icon_name": iconName ?? "default"])
+                }
             }
 
             self?.tableView.reloadData()
