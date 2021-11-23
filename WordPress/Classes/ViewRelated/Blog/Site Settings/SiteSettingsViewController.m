@@ -832,7 +832,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                       SettingsSelectionValuesKey         : formats,
                                       SettingsSelectionCurrentValueKey   : currentDefaultPostFormat
                                       };
-    
+
     SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak __typeof__(self) weakSelf = self;
     vc.onItemSelected = ^(NSString *status) {
@@ -840,6 +840,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         if ([status isKindOfClass:[NSString class]]) {
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
+
+//                WPAnalytics.trackSettingsChange(page: "site_tags", fieldName: "add_tag")
+
                 if ([weakSelf savingWritingDefaultsIsAvailable]) {
                     [weakSelf saveSettings];
                 }
@@ -1149,10 +1152,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     if ([self savingWritingDefaultsIsAvailable]) {
-        NSDictionary *properties = @{@"page": @"site_settings", @"field_name": @"default_category"};
-        [WPAnalytics trackEvent:WPAnalyticsEventSettingsDidChange
-                     properties:properties];
-
+        [WPAnalytics trackSettingsChange:@"site_settings"
+                               fieldName:@"default_category"];
 
         [self saveSettings];
     }

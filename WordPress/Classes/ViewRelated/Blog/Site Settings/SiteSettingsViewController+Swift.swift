@@ -412,7 +412,7 @@ extension SiteSettingsViewController {
     }
 
     func trackSettingsChange(fieldName: String, value: Any? = nil) {
-        WPAnalytics.trackSettingsChange(page: "site_settings",
+        WPAnalytics.trackSettingsChange("site_settings",
                                         fieldName: fieldName,
                                         value: value)
     }

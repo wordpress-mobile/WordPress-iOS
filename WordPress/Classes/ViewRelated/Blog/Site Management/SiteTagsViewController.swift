@@ -310,7 +310,7 @@ extension SiteTagsViewController {
         newTag.tagDescription = data.subtitle
 
         save(newTag)
-        WPAnalytics.trackSettingsChange(page: "site_tags", fieldName: "add_tag")
+        WPAnalytics.trackSettingsChange("site_tags", fieldName: "add_tag")
     }
 
     private func updateTag(_ tag: PostTag, updatedData: SettingsTitleSubtitleController.Content) {
@@ -325,7 +325,7 @@ extension SiteTagsViewController {
         tag.tagDescription = updatedData.subtitle
 
         save(tag)
-        WPAnalytics.trackSettingsChange(page: "site_tags", fieldName: "edit_tag")
+        WPAnalytics.trackSettingsChange("site_tags", fieldName: "edit_tag")
     }
 
     private func existingTagForData(_ data: SettingsTitleSubtitleController.Content) -> PostTag? {
