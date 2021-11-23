@@ -46,6 +46,11 @@ final class QuickStartPromptViewController: UIViewController {
         setup()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIAccessibility.post(notification: .layoutChanged, argument: promptTitleLabel)
+    }
+
     // MARK: - Styling
 
     private func applyStyles() {
