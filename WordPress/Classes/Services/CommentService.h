@@ -103,9 +103,12 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 // Sync a list of comments sorted by hierarchy, restricted by the specified number of _top level_ comments.
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
-                 numberTopLevelComments:(NSUInteger)number
+                 topLevelComments:(NSUInteger)number
                                 success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure;
+
+// Get the specified number of top level comments for the specified post.
+- (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post;
 
 // Counts and returns the number of full pages of hierarchcial comments synced for a post.
 // A partial set does not count toward the total number of pages. 

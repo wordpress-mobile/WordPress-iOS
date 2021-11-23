@@ -517,26 +517,26 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     [self syncHierarchicalCommentsForPost:post
                                      page:page
-                   numberTopLevelComments:WPTopLevelHierarchicalCommentsPerPage
+                         topLevelComments:WPTopLevelHierarchicalCommentsPerPage
                                   success:success
                                   failure:failure];
 }
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
-                                 number:(NSUInteger)number
+                       topLevelComments:(NSUInteger)number
                                 success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
     [self syncHierarchicalCommentsForPost:post
                                      page:1
-                   numberTopLevelComments:number
+                         topLevelComments:number
                                   success:success
                                   failure:failure];
 }
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                 numberTopLevelComments:(NSUInteger)number
+                       topLevelComments:(NSUInteger)number
                                 success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
@@ -1193,6 +1193,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         DDLogError(@"Error fetching top level comments for page %i : %@", page, error);
     }
     return fetchedObjects;
+}
+
+- (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post
+{
+    NSArray *comments = [self topLevelCommentsForPage:1 forPost:post];
+    NSInteger count = MIN(comments.count, number);
+    return [comments subarrayWithRange:NSMakeRange(0, count)];
 }
 
 - (Comment *)firstCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
