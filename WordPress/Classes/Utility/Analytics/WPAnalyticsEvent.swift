@@ -245,6 +245,7 @@ import Foundation
     case accountCloseCompleted
 
     case appSettingsClearMediaCacheTapped
+    case appSettingsClearSpotlightIndexTapped
     /// A String that represents the event
     var value: String {
         switch self {
@@ -657,6 +658,8 @@ import Foundation
             return "settings_did_change"
         case .appSettingsClearMediaCacheTapped:
             return "app_settings_clear_media_cache_tapped"
+        case .appSettingsClearSpotlightIndexTapped:
+            return "app_settings_clear_spotlight_index_tapped"
 
         // Account Close
         case .accountCloseTapped:

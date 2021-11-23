@@ -302,6 +302,8 @@ class AppSettingsViewController: UITableViewController {
 
     func clearSpotlightCache() -> ImmuTableAction {
         return { [weak self] row in
+            WPAnalytics.track(.appSettingsClearSpotlightIndexTapped)
+
             self?.tableView.deselectSelectedRowWithAnimation(true)
             SearchManager.shared.deleteAllSearchableItems()
             let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
