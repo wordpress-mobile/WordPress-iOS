@@ -289,6 +289,8 @@ class AppSettingsViewController: UITableViewController {
 
     func clearSiriActivityDonations() -> ImmuTableAction {
         return { [tableView] _ in
+            WPAnalytics.track(.appSettingsClearSiriSuggestionsTapped)
+
             tableView?.deselectSelectedRowWithAnimation(true)
 
             if #available(iOS 12.0, *) {
