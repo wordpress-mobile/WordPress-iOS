@@ -1149,6 +1149,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     if ([self savingWritingDefaultsIsAvailable]) {
+        NSDictionary *properties = @{@"page": @"site_settings", @"field_name": @"default_category"};
+        [WPAnalytics trackEvent:WPAnalyticsEventSettingsDidChange
+                     properties:properties];
+
+
         [self saveSettings];
     }
 }
