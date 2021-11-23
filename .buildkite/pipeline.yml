@@ -12,10 +12,24 @@ common_params:
 
 # This is the default pipeline – it will build and test the app
 steps:
+
+  #################
+  # Create Installable Builds for WP and JP
+  #################
+  - label: ":hammer_and_wrench: WordPress Installable Build"
+    command: ".buildkite/commands/installable-build-wordpress.sh"
+    env: *common_env
+    plugins: *common_plugins
+
+  - label: ":hammer_and_wrench: Jetpack Installable Build"
+    command: ".buildkite/commands/installable-build-jetpack.sh"
+    env: *common_env
+    plugins: *common_plugins
+
   #################
   # Build the app
   #################
-  - label: ":pipeline: Build"
+  - label: ":pipeline: Build for Testing"
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
     env: *common_env
