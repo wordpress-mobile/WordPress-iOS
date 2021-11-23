@@ -224,6 +224,9 @@ import Foundation
     case siteSwitcherSearchPerformed
     case siteSwitcherToggleBlogVisible
 
+    // Post List
+    case postListShareAction
+
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
     case readerFilterSheetDismissed
@@ -622,6 +625,8 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+        case .postListShareAction:
+            return "post_list_button_pressed"
 
         case .readerFilterSheetDisplayed:
             return "reader_filter_sheet_displayed"
@@ -653,6 +658,8 @@ import Foundation
             return ["via": "tenor"]
         case .editorAddedPhotoViaTenor:
             return ["via": "tenor"]
+        case .postListShareAction:
+            return ["button": "share"]
         default:
             return nil
         }
