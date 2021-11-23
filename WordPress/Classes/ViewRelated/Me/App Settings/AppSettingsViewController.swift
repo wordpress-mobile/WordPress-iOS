@@ -133,6 +133,8 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate func clearMediaCache() {
+        WPAnalytics.track(.appSettingsClearMediaCacheTapped)
+
         setMediaCacheRowDescription(status: .clearingCache)
         MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
