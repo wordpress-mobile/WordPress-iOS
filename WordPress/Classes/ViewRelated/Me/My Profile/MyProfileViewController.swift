@@ -44,6 +44,9 @@ private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
 /// To avoid problems, it's marked private and should only be initialized using the
 /// `MyProfileViewController` factory functions.
 private class MyProfileController: SettingsController {
+    var trackingKey: String {
+        return "my_profile"
+    }
 
     // MARK: - Private Properties
 

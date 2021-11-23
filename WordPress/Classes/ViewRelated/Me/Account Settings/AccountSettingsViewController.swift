@@ -19,6 +19,10 @@ func AccountSettingsViewController(accountSettingsService: AccountSettingsServic
 }
 
 private class AccountSettingsController: SettingsController {
+    var trackingKey: String {
+        return "account_settings"
+    }
+
     let title = NSLocalizedString("Account Settings", comment: "Account Settings Title")
 
     var immuTableRows: [ImmuTableRow.Type] {

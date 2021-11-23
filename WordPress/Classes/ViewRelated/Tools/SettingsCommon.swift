@@ -2,7 +2,9 @@ import UIKit
 import WordPressKit
 import CocoaLumberjack
 
-protocol SettingsController: ImmuTableController {}
+protocol SettingsController: ImmuTableController {
+    var trackingKey: String { get }
+}
 
 // MARK: - Actions
 extension SettingsController {
