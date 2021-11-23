@@ -7,16 +7,16 @@ protocol AboutScreenConfiguration {
     /// A list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
     var sections: [AboutScreenSection] { get }
 
-    /// A block that dismisses the about screen
-    var dismissBlock: ((AboutItemActionContext) -> Void) { get }
+    /// A method that dismisses the about screen
+    func dismissScreen(_ actionContext: AboutItemActionContext)
 
     /// Called when the screen will be shown for customization purposes and event tracking.
     ///
     func willShow(viewController: UIViewController)
 
-    /// Called when the screen will be hidden for customization purposes and event tracking.
+    /// Called when the screen has been hidden for customization purposes and event tracking.
     ///
-    func willHide(viewController: UIViewController)
+    func didHide(viewController: UIViewController)
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> Void)
