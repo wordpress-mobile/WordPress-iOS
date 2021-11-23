@@ -242,7 +242,6 @@ import Foundation
 
     // Account Close
     case accountCloseTapped
-    case accountCloseCancel
     case accountCloseCompleted
 
     /// A String that represents the event
@@ -659,8 +658,6 @@ import Foundation
         // Account Close
         case .accountCloseTapped:
             return "account_close_tapped"
-        case .accountCloseCancel:
-            return "account_close_cancel"
         case .accountCloseCompleted:
             return "account_close_completed"
         } // END OF SWITCH
