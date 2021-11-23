@@ -234,6 +234,8 @@ private class AccountSettingsController: SettingsController {
             let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID as NSNumber?,
                                                                     successHandler: { (dotComID: NSNumber?) in
                                                                         if let dotComID = dotComID?.intValue {
+                                                                            WPAnalytics.track(.settingsDidChange, properties: ["page": self.trackingKey, "field_name": "primary_site"])
+
                                                                             let change = AccountSettingsChange.primarySite(dotComID)
                                                                             service.saveChange(change)
                                                                         }
