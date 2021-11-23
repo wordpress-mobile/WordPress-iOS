@@ -64,4 +64,14 @@ import UIKit
         controller.shouldHideComments = true
         navigationController?.pushFullscreenViewController(controller, animated: true)
     }
+
+    func configureContentCell(_ cell: UITableViewCell, comment: Comment, tableView: UITableView) {
+        guard let cell = cell as? CommentContentTableViewCell else {
+            return
+        }
+
+        cell.configure(with: comment) { _ in
+            tableView.performBatchUpdates({})
+        }
+    }
 }
