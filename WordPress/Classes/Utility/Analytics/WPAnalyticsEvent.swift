@@ -244,9 +244,11 @@ import Foundation
     case accountCloseTapped
     case accountCloseCompleted
 
+    // App Settings
     case appSettingsClearMediaCacheTapped
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
+    case appSettingsOpenDeviceSettingsTapped
 
     // Privacy Settings
     case privacySettingsOpened
@@ -668,6 +670,9 @@ import Foundation
             return "app_settings_clear_spotlight_index_tapped"
         case .appSettingsClearSiriSuggestionsTapped:
             return "app_settings_clear_siri_suggestions_tapped"
+        case .appSettingsOpenDeviceSettingsTapped:
+            return "app_settings_open_device_settings_tapped"
+
         // Privacy Settings
         case .privacySettingsOpened:
             return "privacy_settings_opened"
