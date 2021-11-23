@@ -278,6 +278,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { [weak self] row in
+            WPAnalytics.track(.appSettingsOpenDeviceSettingsTapped)
+
             if let targetURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(targetURL)
 
