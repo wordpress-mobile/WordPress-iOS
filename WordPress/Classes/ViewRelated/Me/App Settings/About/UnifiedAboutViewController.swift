@@ -147,11 +147,11 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
         if isMovingFromParent || isBeingDismissedDirectlyOrByAncestor() {
-            configuration.willHide(viewController: self)
+            configuration.didHide(viewController: self)
         }
     }
 
@@ -167,7 +167,7 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     @objc private func doneTapped() {
         let context = AboutItemActionContext(viewController: self)
-        configuration.dismissBlock(context)
+        configuration.dismissScreen(context)
     }
 
     // MARK: - Constants
