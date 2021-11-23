@@ -11,8 +11,6 @@ protocol ReaderDetailView: AnyObject {
     func scroll(to: String)
     func updateHeader()
 
-    func updateComments()
-
     /// Shows likes view containing avatars of users that liked the post.
     /// The number of avatars displayed is limited to `ReaderDetailView.maxAvatarDisplayed` plus the current user's avatar.
     /// Note that the current user's avatar is displayed through a different method.
@@ -26,6 +24,12 @@ protocol ReaderDetailView: AnyObject {
     /// Updates the likes view to append an additional avatar for the current user, indicating that the post is liked by current user.
     /// - Parameter avatarURLString: The URL string for the current user's avatar. Optional.
     func updateSelfLike(with avatarURLString: String?)
+
+    /// Updates comments table to display the post's comments.
+    /// - Parameters:
+    ///   - comments: Comments to be displayed.
+    ///   - totalComments: The total number of comments for this post.
+    func updateComments(_ comments: [Comment], totalComments: Int)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -385,7 +389,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
     }
 
-    func updateComments() {
+    func updateComments(_ comments: [Comment], totalComments: Int) {
+        // TODO: if there are no comments, hide the commentsTableView.
+        commentsTableViewDelegate?.comments = comments
+        commentsTableViewDelegate?.totalComments = totalComments
         commentsTableView.reloadData()
         commentsTableView.invalidateIntrinsicContentSize()
     }
