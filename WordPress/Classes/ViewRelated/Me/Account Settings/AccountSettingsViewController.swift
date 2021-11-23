@@ -95,14 +95,16 @@ private class AccountSettingsController: SettingsController {
         let editableUsername = EditableTextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "",
-            action: presenter.push(changeUsername(with: settings, service: service))
+            action: presenter.push(changeUsername(with: settings, service: service)),
+            fieldName: "username"
         )
 
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
             accessoryImage: emailAccessoryImage(),
-            action: presenter.push(editEmailAddress(settings, service: service))
+            action: presenter.push(editEmailAddress(settings, service: service)),
+            fieldName: "email"
         )
 
         var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) } ?? ""
@@ -116,19 +118,22 @@ private class AccountSettingsController: SettingsController {
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
             value: primarySiteName,
-            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
+            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service))),
+            fieldName: "primary_site"
         )
 
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.push(editWebAddress(service))
+            action: presenter.push(editWebAddress(service)),
+            fieldName: "web_address"
         )
 
         let password = EditableTextRow(
             title: Constants.title,
             value: "",
-            action: presenter.push(changePassword(with: settings, service: service))
+            action: presenter.push(changePassword(with: settings, service: service)),
+            fieldName: "password"
         )
 
         let closeAccount = DestructiveButtonRow(
