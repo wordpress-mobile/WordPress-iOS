@@ -20,6 +20,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var contentLinkTapAction: ((URL) -> Void)? = nil
 
+    /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
+    var hidesModerationBar: Bool = false {
+        didSet {
+            updateModerationBarVisibility()
+        }
+    }
+
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
@@ -110,7 +117,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Controls the visibility of the moderation bar view.
     private var isModerationEnabled: Bool = false {
         didSet {
-            moderationBar.isHidden = !isModerationEnabled
+            updateModerationBarVisibility()
         }
     }
 
@@ -335,6 +342,10 @@ private extension CommentContentTableViewCell {
         htmlContentCache = htmlContent
 
         return htmlContent
+    }
+
+    func updateModerationBarVisibility() {
+        moderationBar.isHidden = !isModerationEnabled || hidesModerationBar
     }
 
     /// Updates the style and text of the Like button.

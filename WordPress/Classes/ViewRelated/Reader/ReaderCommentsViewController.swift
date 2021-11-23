@@ -35,6 +35,18 @@ import UIKit
         }
     }
 
+    func handleHeaderTapped() {
+        guard let post = post,
+              allowsPushingPostDetails else {
+            return
+        }
+
+        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        let controller = ReaderDetailViewController.controllerWithPost(post)
+        controller.shouldHideComments = true
+        navigationController?.pushFullscreenViewController(controller, animated: true)
+    }
+
     // MARK: New Comment Threads
 
     func configuredHeaderView(for tableView: UITableView) -> UIView {
@@ -53,23 +65,12 @@ import UIKit
         return cell
     }
 
-    func handleHeaderTapped() {
-        guard let post = post,
-              allowsPushingPostDetails else {
-            return
-        }
-
-        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-        let controller = ReaderDetailViewController.controllerWithPost(post)
-        controller.shouldHideComments = true
-        navigationController?.pushFullscreenViewController(controller, animated: true)
-    }
-
     func configureContentCell(_ cell: UITableViewCell, comment: Comment, tableView: UITableView) {
         guard let cell = cell as? CommentContentTableViewCell else {
             return
         }
 
+        cell.hidesModerationBar = true
         cell.configure(with: comment) { _ in
             tableView.performBatchUpdates({})
         }
