@@ -847,4 +847,14 @@ extension WPAnalytics {
         }
     }
 
+    @objc static func trackSettingsChange(page: String, fieldName: String, value: Any? = nil) {
+        var properties: [AnyHashable: Any] = ["page": page, "field_name": fieldName]
+        
+        if let value = value {
+            let additionalProperties: [AnyHashable: Any] = ["value": value]
+            properties.merge(additionalProperties) { (_, new) in new }
+        }
+
+        WPAnalytics.track(.settingsDidChange, properties: properties)
+    }
 }
