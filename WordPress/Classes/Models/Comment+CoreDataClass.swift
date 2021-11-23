@@ -76,6 +76,27 @@ public class Comment: NSManagedObject {
               }
         return canModerate
     }
+
+    func canReply() -> Bool {
+        if let readerPost = post as? ReaderPost {
+            return readerPost.commentsOpen && ReaderHelpers.isLoggedIn()
+        }
+
+        return !isReadOnly()
+    }
+
+    func canLike() -> Bool {
+        if let readerPost = post as? ReaderPost {
+            return readerPost.isLikesEnabled
+        }
+
+        guard let blog = blog else {
+            // Likes feature is disabled for self-hosted sites.
+            return false
+        }
+
+        return blog.supports(.commentLikes)
+    }
 }
 
 private extension Comment {
