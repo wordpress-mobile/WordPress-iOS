@@ -224,6 +224,16 @@ import Foundation
     case siteSwitcherSearchPerformed
     case siteSwitcherToggleBlogVisible
 
+    // Reader: Filter Sheet
+    case readerFilterSheetDisplayed
+    case readerFilterSheetDismissed
+    case readerFilterSheetItemSelected
+    case readerFilterSheetCleared
+
+    // Reader: Manage
+    case readerManageViewDisplayed
+    case readerManageViewDismissed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -613,6 +623,18 @@ import Foundation
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
 
+        case .readerFilterSheetDisplayed:
+            return "reader_filter_sheet_displayed"
+        case .readerFilterSheetDismissed:
+            return "reader_filter_sheet_dismissed"
+        case .readerFilterSheetItemSelected:
+            return "reader_filter_sheet_item_selected"
+        case .readerFilterSheetCleared:
+            return "reader_filter_sheet_cleared"
+        case .readerManageViewDisplayed:
+            return "reader_manage_view_displayed"
+        case .readerManageViewDismissed:
+            return "reader_manage_view_dismissed"
         } // END OF SWITCH
     }
 
