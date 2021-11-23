@@ -269,6 +269,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
+            WPAnalytics.track(.privacySettingsOpened)
+
             let controller = PrivacySettingsViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }

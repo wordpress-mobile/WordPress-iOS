@@ -248,6 +248,10 @@ import Foundation
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
 
+    // Privacy Settings
+    case privacySettingsOpened
+    case privacySettingsReportCrashesToggled
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -664,6 +668,11 @@ import Foundation
             return "app_settings_clear_spotlight_index_tapped"
         case .appSettingsClearSiriSuggestionsTapped:
             return "app_settings_clear_siri_suggestions_tapped"
+        // Privacy Settings
+        case .privacySettingsOpened:
+            return "privacy_settings_opened"
+        case .privacySettingsReportCrashesToggled:
+            return "privacy_settings_report_crashes_toggled"
 
         // Account Close
         case .accountCloseTapped:
