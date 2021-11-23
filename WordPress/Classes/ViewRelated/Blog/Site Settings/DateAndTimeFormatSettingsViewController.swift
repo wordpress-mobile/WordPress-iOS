@@ -135,6 +135,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                 if let newDateFormat = selected as? String {
                     self?.settings.dateFormat = newDateFormat
                     self?.saveSettings()
+                    WPAnalytics.trackSettingsChange("date_format", fieldName: "date_format")
                 }
             }
 
@@ -168,6 +169,8 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                 if let newTimeFormat = selected as? String {
                     self?.settings.timeFormat = newTimeFormat
                     self?.saveSettings()
+                    WPAnalytics.trackSettingsChange("date_format", fieldName: "time_format")
+
                 }
             }
 
@@ -187,6 +190,9 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                 if let newStartOfWeek = selected as? String {
                     self?.settings.startOfWeek = newStartOfWeek
                     self?.saveSettings()
+                    WPAnalytics.trackSettingsChange("date_format",
+                                                    fieldName: "start_of_week",
+                                                    value: newStartOfWeek as Any)
                 }
             }
 
