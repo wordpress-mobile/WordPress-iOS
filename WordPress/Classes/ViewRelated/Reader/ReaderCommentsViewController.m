@@ -24,6 +24,7 @@ static CGFloat const CommentIndentationWidth = 40.0;
 
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
+static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
@@ -354,8 +355,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.backgroundColor = [UIColor murielBasicBackground];
     [self.view addSubview:self.tableView];
 
-    UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
-    [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+    if ([self newCommentThreadEnabled]) {
+        UINib *nib = [UINib nibWithNibName:[CommentContentTableViewCell classNameWithoutNamespaces] bundle:nil];
+        [self.tableView registerNib:nib forCellReuseIdentifier:CommentContentCellIdentifier];
+    } else {
+        UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
+        [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+    }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -1063,10 +1069,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
-
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
+    if ([self newCommentThreadEnabled]) {
+        [self configureContentCell:aCell comment:comment tableView:self.tableView];
+        return;
+    }
+
+    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     cell.indentationWidth = CommentIndentationWidth;
     cell.indentationLevel = MIN(comment.depth, MaxCommentDepth);
     cell.delegate = self;
@@ -1119,7 +1129,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
+    NSString *cellIdentifier = [self newCommentThreadEnabled] ? CommentContentCellIdentifier : CommentCellIdentifier;
+    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
