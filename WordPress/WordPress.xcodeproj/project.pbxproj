@@ -2519,7 +2519,6 @@
 		F1450CF92437EEBB00A28BFE /* MediaRequestAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1450CF82437EEBB00A28BFE /* MediaRequestAuthenticatorTests.swift */; };
 		F1482CE02575BDA4007E4DD6 /* SitesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1482CDF2575BDA4007E4DD6 /* SitesDataProvider.swift */; };
 		F151EC832665271200AEA89E /* BloggingRemindersSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151EC822665271200AEA89E /* BloggingRemindersSchedulerTests.swift */; };
-		F1521A022733F0690041DEC7 /* UnifiedAboutEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1521A012733F0690041DEC7 /* UnifiedAboutEventTests.swift */; };
 		F15272FD243B27BC00C8DC7A /* AbstractPost+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */; };
 		F15272FF243B28B700C8DC7A /* RequestAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */; };
 		F1527301243B290E00C8DC7A /* AbstractPost+Autosave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */; };
@@ -7380,7 +7379,6 @@
 		F14B5F75208E64F900439554 /* Version.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.internal.xcconfig; sourceTree = "<group>"; };
 		F14E844C2317252200D0C63E /* WordPress 90.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 90.xcdatamodel"; sourceTree = "<group>"; };
 		F151EC822665271200AEA89E /* BloggingRemindersSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersSchedulerTests.swift; sourceTree = "<group>"; };
-		F1521A012733F0690041DEC7 /* UnifiedAboutEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedAboutEventTests.swift; sourceTree = "<group>"; };
 		F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Local.swift"; sourceTree = "<group>"; };
 		F15272FE243B28B600C8DC7A /* RequestAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAuthenticator.swift; sourceTree = "<group>"; };
 		F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Autosave.swift"; sourceTree = "<group>"; };
@@ -13048,7 +13046,6 @@
 			isa = PBXGroup;
 			children = (
 				8B69F0E2255C2BC0006B1CEF /* Activity */,
-				F15219FE2733F02A0041DEC7 /* Me */,
 				32F1A6D123F710A300AB8CA9 /* NUX */,
 				8BD36E042395CC2F00EFFF1C /* Aztec */,
 				325D3B3A23A8372500766DF6 /* Comments */,
@@ -14126,30 +14123,6 @@
 			);
 			name = config;
 			path = ../config;
-			sourceTree = "<group>";
-		};
-		F15219FE2733F02A0041DEC7 /* Me */ = {
-			isa = PBXGroup;
-			children = (
-				F15219FF2733F03E0041DEC7 /* App Settings */,
-			);
-			path = Me;
-			sourceTree = "<group>";
-		};
-		F15219FF2733F03E0041DEC7 /* App Settings */ = {
-			isa = PBXGroup;
-			children = (
-				F1521A002733F0460041DEC7 /* About */,
-			);
-			path = "App Settings";
-			sourceTree = "<group>";
-		};
-		F1521A002733F0460041DEC7 /* About */ = {
-			isa = PBXGroup;
-			children = (
-				F1521A012733F0690041DEC7 /* UnifiedAboutEventTests.swift */,
-			);
-			path = About;
 			sourceTree = "<group>";
 		};
 		F15D1FB7265C40C300854EE5 /* Blogging Reminders */ = {
@@ -18957,7 +18930,6 @@
 				4054F4592214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift in Sources */,
 				C8567496243F3D37001A995E /* TenorResultsPageTests.swift in Sources */,
 				B0A6DEBF2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift in Sources */,
-				F1521A022733F0690041DEC7 /* UnifiedAboutEventTests.swift in Sources */,
 				4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
 				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
