@@ -438,6 +438,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     _ampSettingCell.onChange = ^(BOOL value){
         weakSelf.blog.settings.ampEnabled = value;
         [weakSelf saveSettings];
+        [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"amp_enabled" value:@(value)];
     };
 
     return _ampSettingCell;
@@ -751,6 +752,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             if (weakSelf.blog.siteVisibility != newSiteVisibility) {
                 weakSelf.blog.siteVisibility = newSiteVisibility;
                 [weakSelf saveSettings];
+                [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"privacy" value:status];
             }
         }
     };
@@ -768,6 +770,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     languageViewController.onChange = ^(NSNumber *newLanguageID){
         weakSelf.blog.settings.languageID = newLanguageID;
         [weakSelf saveSettings];
+        [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"language" value:newLanguageID];
     };
     
     [self.navigationController pushViewController:languageViewController animated:YES];
