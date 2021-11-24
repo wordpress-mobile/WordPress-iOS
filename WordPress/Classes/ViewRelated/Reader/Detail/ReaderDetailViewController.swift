@@ -393,6 +393,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // TODO: if there are no comments, hide the commentsTableView.
         commentsTableViewDelegate?.comments = comments
         commentsTableViewDelegate?.totalComments = totalComments
+        commentsTableViewDelegate?.buttonDelegate = self
         commentsTableView.reloadData()
         commentsTableView.invalidateIntrinsicContentSize()
     }
@@ -988,3 +989,14 @@ extension ReaderDetailViewController {
 // MARK: - DefinesVariableStatusBarStyle
 // Allows this VC to control the statusbar style dynamically
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+// For the `View All Comments` button.
+extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
+    func buttonTapped() {
+        guard let post = post else {
+            return
+        }
+        ReaderCommentAction().execute(post: post, origin: self)
+    }
+}
