@@ -28,14 +28,15 @@ class LikeUserHelperTests: XCTestCase {
 
     func testNewLikeUserWithPreferredBlog() {
         let completionExpectation = expectation(description: "We expect the context to save successfully")
-        let context = TestContextManager.sharedInstance().mainContext
+        let contextManager = TestContextManager()
+        let context = contextManager.mainContext
 
         let remoteUserDictionary = createTestRemoteUserDictionary(withPreferredBlog: true)
         let remoteUser = RemoteLikeUser(dictionary: remoteUserDictionary, commentID: 25, siteID: 30)
         let likeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
         XCTAssertNotNil(likeUser)
 
-        TestContextManager.sharedInstance().save(context) {
+        contextManager.save(context) {
             completionExpectation.fulfill()
         }
 
@@ -44,28 +45,31 @@ class LikeUserHelperTests: XCTestCase {
 
     func testUpdatingExistingUserToRemovePreferredBlog() {
         let completionExpectation = expectation(description: "We expect the context to save successfully")
-        let context = TestContextManager.sharedInstance().newDerivedContext()
+        let contextManager = TestContextManager()
+        let context = contextManager.mainContext
 
         // First we create the pre-existing user, so we can later modify it to remove the preferred blog
 
         let remoteUserDictionary = createTestRemoteUserDictionary(withPreferredBlog: true)
         let remoteUser = RemoteLikeUser(dictionary: remoteUserDictionary, commentID: 25, siteID: 30)
         let existingLikeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
-        let existingPreferredBlog = existingLikeUser.preferredBlog
+        guard let existingPreferredBlog = existingLikeUser.preferredBlog else {
+            XCTFail()
+            return
+        }
+
         XCTAssertNotNil(existingLikeUser)
 
-        TestContextManager.sharedInstance().save(context)
-
-        //let updateContext = TestContextManager.sharedInstance().newDerivedContext()
+        XCTAssertNocontextManager.save(context)
 
         // Then we remove the preferred blog from the remote user, so we can save it again and make sure
         // the preferred blog deletion works fine.
         remoteUser.preferredBlog = nil
         let updatedLikeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
         XCTAssertNotNil(updatedLikeUser)
-        XCTAssertTrue(existingPreferredBlog?.isDeleted ?? false)
+        XCTAssertTrue(existingPreferredBlog.isDeleted)
 
-        TestContextManager.sharedInstance().save(context) {
+        contextManager.save(context) {
             completionExpectation.fulfill()
         }
 
