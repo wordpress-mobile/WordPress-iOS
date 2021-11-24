@@ -50,8 +50,8 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         let headerFonts = fonts ?? AboutScreenFonts.defaultFonts
 
-        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts, dismissAction: {
-            self.dismissAboutScreen()
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts, dismissAction: { [weak self] in
+            self?.dismissAboutScreen()
         })
 
         // Setting the frame once is needed so that the table view header will show.
