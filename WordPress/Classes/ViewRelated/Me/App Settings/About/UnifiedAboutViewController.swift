@@ -50,7 +50,9 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         let headerFonts = fonts ?? AboutScreenFonts.defaultFonts
 
-        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts)
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts, dismissAction: {
+            self.doneTapped()
+        })
 
         // Setting the frame once is needed so that the table view header will show.
         // This seems to be a table view bug although I'm not entirely sure.
