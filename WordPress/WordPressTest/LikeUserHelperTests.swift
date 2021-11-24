@@ -1,4 +1,5 @@
 @testable import WordPress
+import XCTest
 
 class LikeUserHelperTests: XCTestCase {
     func createTestRemoteUserDictionary(withPreferredBlog hasPreferredBlog: Bool) -> [String: Any] {
@@ -36,9 +37,9 @@ class LikeUserHelperTests: XCTestCase {
         let likeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
         XCTAssertNotNil(likeUser)
 
-        contextManager.save(context) {
+        XCTAssertNoThrow(contextManager.save(context, withCompletionBlock: {
             completionExpectation.fulfill()
-        }
+        }))
 
         waitForExpectations(timeout: 0.1)
     }
@@ -59,8 +60,7 @@ class LikeUserHelperTests: XCTestCase {
         }
 
         XCTAssertNotNil(existingLikeUser)
-
-        XCTAssertNocontextManager.save(context)
+        XCTAssertNoThrow(contextManager.save(context))
 
         // Then we remove the preferred blog from the remote user, so we can save it again and make sure
         // the preferred blog deletion works fine.
@@ -69,9 +69,9 @@ class LikeUserHelperTests: XCTestCase {
         XCTAssertNotNil(updatedLikeUser)
         XCTAssertTrue(existingPreferredBlog.isDeleted)
 
-        contextManager.save(context) {
+        XCTAssertNoThrow(contextManager.save(context, withCompletionBlock: {
             completionExpectation.fulfill()
-        }
+        }))
 
         waitForExpectations(timeout: 0.1)
     }
