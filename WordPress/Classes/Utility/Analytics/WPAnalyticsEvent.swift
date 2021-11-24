@@ -237,6 +237,23 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
+    // App Settings
+    case settingsDidChange
+
+    // Account Close
+    case accountCloseTapped
+    case accountCloseCompleted
+
+    // App Settings
+    case appSettingsClearMediaCacheTapped
+    case appSettingsClearSpotlightIndexTapped
+    case appSettingsClearSiriSuggestionsTapped
+    case appSettingsOpenDeviceSettingsTapped
+
+    // Privacy Settings
+    case privacySettingsOpened
+    case privacySettingsReportCrashesToggled
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -628,6 +645,7 @@ import Foundation
         case .postListShareAction:
             return "post_list_button_pressed"
 
+        // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
             return "reader_filter_sheet_displayed"
         case .readerFilterSheetDismissed:
@@ -636,10 +654,36 @@ import Foundation
             return "reader_filter_sheet_item_selected"
         case .readerFilterSheetCleared:
             return "reader_filter_sheet_cleared"
+
+        // Reader: Manage View
         case .readerManageViewDisplayed:
             return "reader_manage_view_displayed"
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
+
+        // App Settings
+        case .settingsDidChange:
+            return "settings_did_change"
+        case .appSettingsClearMediaCacheTapped:
+            return "app_settings_clear_media_cache_tapped"
+        case .appSettingsClearSpotlightIndexTapped:
+            return "app_settings_clear_spotlight_index_tapped"
+        case .appSettingsClearSiriSuggestionsTapped:
+            return "app_settings_clear_siri_suggestions_tapped"
+        case .appSettingsOpenDeviceSettingsTapped:
+            return "app_settings_open_device_settings_tapped"
+
+        // Privacy Settings
+        case .privacySettingsOpened:
+            return "privacy_settings_opened"
+        case .privacySettingsReportCrashesToggled:
+            return "privacy_settings_report_crashes_toggled"
+
+        // Account Close
+        case .accountCloseTapped:
+            return "account_close_tapped"
+        case .accountCloseCompleted:
+            return "account_close_completed"
         } // END OF SWITCH
     }
 

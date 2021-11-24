@@ -133,6 +133,8 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate func clearMediaCache() {
+        WPAnalytics.track(.appSettingsClearMediaCacheTapped)
+
         setMediaCacheRowDescription(status: .clearingCache)
         MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
@@ -267,6 +269,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
+            WPAnalytics.track(.privacySettingsOpened)
+
             let controller = PrivacySettingsViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
@@ -274,6 +278,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { [weak self] row in
+            WPAnalytics.track(.appSettingsOpenDeviceSettingsTapped)
+
             if let targetURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(targetURL)
 
@@ -287,6 +293,8 @@ class AppSettingsViewController: UITableViewController {
 
     func clearSiriActivityDonations() -> ImmuTableAction {
         return { [tableView] _ in
+            WPAnalytics.track(.appSettingsClearSiriSuggestionsTapped)
+
             tableView?.deselectSelectedRowWithAnimation(true)
 
             if #available(iOS 12.0, *) {
@@ -300,6 +308,8 @@ class AppSettingsViewController: UITableViewController {
 
     func clearSpotlightCache() -> ImmuTableAction {
         return { [weak self] row in
+            WPAnalytics.track(.appSettingsClearSpotlightIndexTapped)
+
             self?.tableView.deselectSelectedRowWithAnimation(true)
             SearchManager.shared.deleteAllSearchableItems()
             let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),

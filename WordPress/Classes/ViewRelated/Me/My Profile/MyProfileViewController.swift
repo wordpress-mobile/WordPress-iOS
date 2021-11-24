@@ -44,6 +44,9 @@ private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
 /// To avoid problems, it's marked private and should only be initialized using the
 /// `MyProfileViewController` factory functions.
 private class MyProfileController: SettingsController {
+    var trackingKey: String {
+        return "my_profile"
+    }
 
     // MARK: - Private Properties
 
@@ -111,24 +114,28 @@ private class MyProfileController: SettingsController {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.firstName, service: service)))
+            action: presenter.push(editText(AccountSettingsChange.firstName, service: service)),
+            fieldName: "first_name")
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.lastName, service: service)))
+            action: presenter.push(editText(AccountSettingsChange.lastName, service: service)),
+            fieldName: "last_name")
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.displayName, service: service)))
+            action: presenter.push(editText(AccountSettingsChange.displayName, service: service)),
+            fieldName: "display_name")
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
             action: presenter.push(editMultilineText(AccountSettingsChange.aboutMe,
                 hint: NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
-                service: service)))
+                service: service)),
+            fieldName: "about_me")
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
