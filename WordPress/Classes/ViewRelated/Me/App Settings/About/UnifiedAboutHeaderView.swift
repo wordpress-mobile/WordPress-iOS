@@ -185,7 +185,7 @@ final class UnifiedAboutHeaderView: UIView {
 
         // Hide if we don't have a dismiss action
         closeButton.isHidden = (dismissAction == nil)
-        
+
         return closeButton
     }
 
