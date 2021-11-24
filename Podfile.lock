@@ -555,7 +555,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.42.1)
   - WordPressKit (~> 4.44.0-beta)
   - WordPressMocks (~> 0.0.15)
-  - WordPressShared (~> 1.16.2)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `issue/17503-add-stats-tracking`)
   - WordPressUI (~> 1.12.2)
   - WPMediaPicker (~> 1.7.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.66.0/third-party-podspecs/Yoga.podspec.json`)
@@ -607,7 +607,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressMocks
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -711,6 +710,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.66.0
+  WordPressShared:
+    :branch: issue/17503-add-stats-tracking
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.66.0/third-party-podspecs/Yoga.podspec.json
 
@@ -726,6 +728,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.66.0
+  WordPressShared:
+    :commit: 78dbd61a3843a3402c611146d212de7402febdd4
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -826,6 +831,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 70e2c1b2bb057852c4af271041294e98678f6963
+PODFILE CHECKSUM: 859927fd17e6baff602c5d2dd5618c852120d920
 
 COCOAPODS: 1.10.1
