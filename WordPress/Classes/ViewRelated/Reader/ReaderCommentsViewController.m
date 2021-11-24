@@ -1483,18 +1483,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }];
 }
 
-- (void)handleHeaderTapped
-{
-    if (!self.allowsPushingPostDetails) {
-        return;
-    }
-
-    // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
-    controller.shouldHideComments = YES;
-    [self.navigationController pushFullscreenViewController:controller animated:YES];
-}
-
 
 #pragma mark - UITextViewDelegate methods
 
