@@ -37,6 +37,7 @@ class LikeUserHelperTests: XCTestCase {
         let likeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
         XCTAssertNotNil(likeUser)
 
+        // TODO: The save crashes when it fails, interrupting all other tests.
         contextManager.save(context, withCompletionBlock: {
             completionExpectation.fulfill()
         })
@@ -60,6 +61,7 @@ class LikeUserHelperTests: XCTestCase {
         }
 
         XCTAssertNotNil(existingLikeUser)
+        // TODO: The save crashes when it fails, interrupting all other tests.
         contextManager.save(context)
 
         // Then we remove the preferred blog from the remote user, so we can save it again and make sure
@@ -69,6 +71,7 @@ class LikeUserHelperTests: XCTestCase {
         XCTAssertNotNil(updatedLikeUser)
         XCTAssertTrue(existingPreferredBlog.isDeleted)
 
+        // TODO: The save crashes when it fails, interrupting all other tests.
         contextManager.save(context, withCompletionBlock: {
             completionExpectation.fulfill()
         })
