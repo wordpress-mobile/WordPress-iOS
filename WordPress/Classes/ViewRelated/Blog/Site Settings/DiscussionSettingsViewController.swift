@@ -192,7 +192,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
-        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "send_pingbacks", value: enabled as Any)
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "receive_pingbacks", value: enabled as Any)
         settings.pingbackInboundEnabled = enabled
     }
 
@@ -201,7 +201,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
-        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "receive_pingbacks", value: enabled as Any)
+        WPAnalytics.trackSettingsChange("site_settings_discussion", fieldName: "send_pingbacks", value: enabled as Any)
         settings.pingbackOutboundEnabled = enabled
     }
 
