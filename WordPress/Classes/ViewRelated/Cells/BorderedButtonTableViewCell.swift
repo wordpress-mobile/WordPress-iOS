@@ -34,6 +34,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
         self.titleFont = titleFont
         self.normalColor = normalColor
         self.highlightedColor = highlightedColor
+        self.buttonInsets = buttonInsets
         configureView()
     }
 
