@@ -161,6 +161,18 @@ class LoginEpilogueViewController: UIViewController {
     func showSkipButton() {
         skipButton.isHidden = false
     }
+
+    // MARK: - Actions
+
+    func createNewSite() {
+        onCreateNewSite?()
+        WPAnalytics.track(.loginEpilogueCreateNewSiteTapped)
+    }
+
+    func blogSelected(_ blog: Blog) {
+        onBlogSelected?(blog)
+        WPAnalytics.track(.loginEpilogueChooseSiteTapped, properties: [:], blog: blog)
+    }
 }
 
 // MARK: - Private Extension
@@ -237,7 +249,7 @@ private extension LoginEpilogueViewController {
     // MARK: - Actions
 
     @IBAction func createANewSite() {
-        onCreateNewSite?()
+        createNewSite()
     }
 
     @IBAction func dismissEpilogue() {

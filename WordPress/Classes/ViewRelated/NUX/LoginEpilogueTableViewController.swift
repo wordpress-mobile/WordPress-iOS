@@ -203,7 +203,7 @@ extension LoginEpilogueTableViewController {
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         let blog = blogDataSource.blog(at: wrappedPath)
 
-        parent.onBlogSelected?(blog)
+        parent.blogSelected(blog)
     }
 
     private enum Constants {
@@ -217,7 +217,7 @@ extension LoginEpilogueTableViewController: LoginEpilogueCreateNewSiteCellDelega
         guard let parent = parent as? LoginEpilogueViewController else {
             return
         }
-        parent.onCreateNewSite?()
+        parent.createNewSite()
     }
 }
 

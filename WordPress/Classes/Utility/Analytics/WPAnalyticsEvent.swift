@@ -234,6 +234,10 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
+    // Login: Epilogue
+    case loginEpilogueChooseSiteTapped
+    case loginEpilogueCreateNewSiteTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -635,6 +639,12 @@ import Foundation
             return "reader_manage_view_displayed"
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
+
+        // Login: Epilogue
+        case .loginEpilogueChooseSiteTapped:
+            return "login_epilogue_choose_site_tapped"
+        case .loginEpilogueCreateNewSiteTapped:
+            return "login_epilogue_create_new_site_tapped"
         } // END OF SWITCH
     }
 
