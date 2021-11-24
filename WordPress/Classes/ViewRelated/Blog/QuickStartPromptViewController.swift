@@ -105,12 +105,16 @@ final class QuickStartPromptViewController: UIViewController {
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
         onDismiss?(blog)
         dismiss(animated: true)
+
+        WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
     }
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
         quickStartSettings.setPromptWasDismissed(true, for: blog)
         onDismiss?(blog)
         dismiss(animated: true)
+
+        WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "neutral"])
     }
 }
 
