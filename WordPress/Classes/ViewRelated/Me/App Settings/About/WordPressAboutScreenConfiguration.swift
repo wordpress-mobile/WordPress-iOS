@@ -25,10 +25,6 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
         [
             [
                 AboutItem(title: TextContent.rateUs, accessoryType: .none, action: { [weak self] context in
-                    // Note:
-                    // Let's follow the same procedure executed as in NotificationsViewController, so that if the user
-                    // manually decides to rate the app, we don't render the prompt!
-                    //
                     WPAnalytics.track(.appReviewsRatedApp)
                     AppRatingUtility.shared.ratedCurrentVersion()
                     UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
