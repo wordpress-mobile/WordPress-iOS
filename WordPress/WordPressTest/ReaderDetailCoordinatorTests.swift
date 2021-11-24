@@ -335,7 +335,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
     func updateSelfLike(with avatarURLString: String?) { }
 
-    func updateComments() { }
+    func updateComments(_ comments: [Comment], totalComments: Int) { }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) { }
 
