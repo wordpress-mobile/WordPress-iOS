@@ -568,5 +568,10 @@ extension PeopleViewController {
     func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let selectedFilter = Filter.allCases[filterBar.selectedIndex]
         filter = selectedFilter
+
+        guard let blog = blog else {
+            return
+        }
+        WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
     }
 }
