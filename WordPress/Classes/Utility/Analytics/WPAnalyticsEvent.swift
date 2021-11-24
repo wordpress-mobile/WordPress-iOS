@@ -259,6 +259,10 @@ import Foundation
     case privacySettingsOpened
     case privacySettingsReportCrashesToggled
 
+    // Notifications
+    case notificationsPreviousTapped
+    case notificationsNextTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -699,6 +703,12 @@ import Foundation
             return "account_close_tapped"
         case .accountCloseCompleted:
             return "account_close_completed"
+
+        case .notificationsPreviousTapped:
+            return "notifications_previous_tapped"
+        case .notificationsNextTapped:
+            return "notifications_next_tapped"
+
         } // END OF SWITCH
     }
 
