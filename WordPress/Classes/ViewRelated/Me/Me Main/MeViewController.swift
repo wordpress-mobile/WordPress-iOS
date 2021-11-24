@@ -254,9 +254,12 @@ class MeViewController: UITableViewController {
     private func pushAbout() -> ImmuTableAction {
         return { [unowned self] _ in
             let configuration = WordPressAboutScreenConfiguration(sharePresenter: self.sharePresenter)
-            let controller = UnifiedAboutViewController.controller(configuration: configuration)
-            controller.modalPresentationStyle = .formSheet
-            self.present(controller, animated: true) {
+            let controller = UnifiedAboutViewController(appInfo: WordPressAboutScreenConfiguration.appInfo,
+                                                        configuration: configuration,
+                                                        fonts: WordPressAboutScreenConfiguration.fonts)
+            let navigationController = UINavigationController(rootViewController: controller)
+            navigationController.modalPresentationStyle = .formSheet
+            self.present(navigationController, animated: true) {
                 self.tableView.deselectSelectedRowWithAnimation(true)
             }
         }

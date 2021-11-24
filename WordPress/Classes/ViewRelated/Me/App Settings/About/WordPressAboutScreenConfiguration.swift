@@ -11,6 +11,13 @@ struct WebViewPresenter {
 }
 
 class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
+    static let appInfo = AboutScreenAppInfo(name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
+                                            version: Bundle.main.detailedVersionNumber() ?? "",
+                                            icon: UIImage(named: AppIcon.currentOrDefault.imageName) ?? UIImage())
+
+    static let fonts = AboutScreenFonts(appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
+                                        appVersion: WPStyleGuide.tableviewTextFont())
+
     let sharePresenter: ShareAppContentPresenter
     let webViewPresenter = WebViewPresenter()
 

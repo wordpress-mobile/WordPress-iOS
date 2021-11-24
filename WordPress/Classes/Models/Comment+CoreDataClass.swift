@@ -76,6 +76,28 @@ public class Comment: NSManagedObject {
               }
         return canModerate
     }
+
+    func canReply() -> Bool {
+        if let readerPost = post as? ReaderPost {
+            return readerPost.commentsOpen && ReaderHelpers.isLoggedIn()
+        }
+
+        return !isReadOnly()
+    }
+
+    // NOTE: Comment Likes could be disabled, but the API doesn't have that info yet. Let's update this once it's available.
+    func canLike() -> Bool {
+        if let _ = post as? ReaderPost {
+            return ReaderHelpers.isLoggedIn()
+        }
+
+        guard let blog = blog else {
+            // Disable likes feature for self-hosted sites.
+            return false
+        }
+
+        return !isReadOnly() && blog.supports(.commentLikes)
+    }
 }
 
 private extension Comment {

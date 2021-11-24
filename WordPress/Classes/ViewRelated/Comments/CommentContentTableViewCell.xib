@@ -12,15 +12,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="168" id="KGk-i7-Jjw" customClass="CommentContentTableViewCell" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="168"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="225" id="KGk-i7-Jjw" customClass="CommentContentTableViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="225"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="168"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="225"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG">
-                        <rect key="frame" x="16" y="0.0" width="288" height="168"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG" userLabel="Container Stack View">
+                        <rect key="frame" x="16" y="0.0" width="288" height="225"/>
                         <subviews>
                             <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="f2E-yC-BJS" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="288" height="167"/>
@@ -88,11 +88,11 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ta5-Cz-flw" userLabel="Reaction Bar View">
-                                <rect key="frame" x="0.0" y="168" width="288" height="0.0"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QT8-DO-J30" userLabel="Reaction Stack View">
+                                <rect key="frame" x="0.0" y="168" width="288" height="57"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="0.0"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
+                                        <rect key="frame" x="0.0" y="8.5" width="174.5" height="40"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
@@ -105,11 +105,11 @@
                                             </preferredSymbolConfiguration>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="60" y="0.0" width="78.5" height="0.0"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="762" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
+                                        <rect key="frame" x="179.5" y="8" width="53.5" height="41"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
-                                        <inset key="contentEdgeInsets" minX="5" minY="10" maxX="35" maxY="15"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
                                         <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
                                         <state key="normal" title="Like">
                                             <color key="titleColor" systemColor="secondaryLabelColor"/>
@@ -119,21 +119,17 @@
                                             </preferredSymbolConfiguration>
                                         </state>
                                     </button>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8GH-U7-J7H" userLabel="Spacer View">
+                                        <rect key="frame" x="238" y="0.0" width="50" height="57"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" placeholder="YES" id="4wt-Z8-Xp5"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="X2J-8b-R5F" firstAttribute="top" secondItem="ta5-Cz-flw" secondAttribute="top" id="2nT-bm-PdY"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="X2J-8b-R5F" secondAttribute="trailing" id="BaU-wG-gvI"/>
-                                    <constraint firstItem="X2J-8b-R5F" firstAttribute="leading" secondItem="VoI-YI-Qgc" secondAttribute="trailing" id="EB0-u1-7Tg"/>
-                                    <constraint firstItem="VoI-YI-Qgc" firstAttribute="top" secondItem="ta5-Cz-flw" secondAttribute="top" id="Nec-gq-oLP"/>
-                                    <constraint firstAttribute="bottom" secondItem="VoI-YI-Qgc" secondAttribute="bottom" id="OHA-JJ-O5q"/>
-                                    <constraint firstItem="X2J-8b-R5F" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ta5-Cz-flw" secondAttribute="leading" id="Vix-Nc-fT5"/>
-                                    <constraint firstItem="VoI-YI-Qgc" firstAttribute="leading" secondItem="ta5-Cz-flw" secondAttribute="leading" id="eiP-L2-BU6"/>
-                                    <constraint firstAttribute="bottom" secondItem="X2J-8b-R5F" secondAttribute="bottom" id="kdD-9h-GEp"/>
-                                </constraints>
-                            </view>
+                            </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Z-LV-01Y" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="168" width="288" height="83"/>
+                                <rect key="frame" x="0.0" y="225" width="288" height="83"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="qRm-Qi-IXu"/>
@@ -159,12 +155,11 @@
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="moderationBar" destination="T1Z-LV-01Y" id="YUL-ft-QkO"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>
-                <outlet property="reactionBarView" destination="ta5-Cz-flw" id="puY-Sa-fKk"/>
                 <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
                 <outlet property="webView" destination="Je0-5Q-ty6" id="YaD-wp-E6W"/>
                 <outlet property="webViewHeightConstraint" destination="dGD-8Q-LSr" id="rBk-4R-GCz"/>
             </connections>
-            <point key="canvasLocation" x="131.8840579710145" y="253.125"/>
+            <point key="canvasLocation" x="131.8840579710145" y="272.20982142857139"/>
         </tableViewCell>
     </objects>
     <resources>
