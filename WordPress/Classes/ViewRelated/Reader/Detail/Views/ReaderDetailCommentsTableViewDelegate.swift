@@ -36,16 +36,39 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         return UITableViewCell()
     }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader else {
+            return nil
+        }
+
+        let titleFormat = totalComments == 1 ? Constants.singularCommentFormat : Constants.pluralCommentsFormat
+        header.titleLabel.text = String(format: titleFormat, totalComments)
+        header.addBottomBorder(withColor: .divider, leadingMargin: 0)
+        return header
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return ReaderDetailCommentsHeader.estimatedHeight
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
 }
 
 private extension ReaderDetailCommentsTableViewDelegate {
 
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
-        let title = NSLocalizedString("View All Comments", comment: "Title for button on the post details page to show all comments when tapped.")
         let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: title)
+        cell.configure(buttonTitle: Constants.buttonTitle)
         cell.delegate = buttonDelegate
         return cell
     }
 
+    struct Constants {
+        static let buttonTitle = NSLocalizedString("View All Comments", comment: "Title for button on the post details page to show all comments when tapped.")
+        static let singularCommentFormat = NSLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
+        static let pluralCommentsFormat = NSLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
+    }
 }
