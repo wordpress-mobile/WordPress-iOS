@@ -991,7 +991,7 @@ extension ReaderDetailViewController {
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
 
 // MARK: - BorderedButtonTableViewCellDelegate
-// For the `Show All Comments` button.
+// For the `View All Comments` button.
 extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
     func buttonTapped() {
         guard let post = post else {
