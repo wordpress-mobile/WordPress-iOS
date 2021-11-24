@@ -226,6 +226,8 @@ import Foundation
 
     // Post List
     case postListShareAction
+    case postListSetAsPostsPageAction
+    case postListSetHomePageAction
 
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
@@ -644,6 +646,10 @@ import Foundation
             return "site_switcher_toggle_blog_visible"
         case .postListShareAction:
             return "post_list_button_pressed"
+        case .postListSetAsPostsPageAction:
+            return "post_list_button_pressed"
+        case .postListSetHomePageAction:
+            return "post_list_button_pressed"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
@@ -704,6 +710,10 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListSetAsPostsPageAction:
+            return ["button": "set_posts_page"]
+        case .postListSetHomePageAction:
+            return ["button": "set_homepage"]
         default:
             return nil
         }
