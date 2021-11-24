@@ -51,6 +51,7 @@ class LikeUserHelperTests: XCTestCase {
         let remoteUserDictionary = createTestRemoteUserDictionary(withPreferredBlog: true)
         let remoteUser = RemoteLikeUser(dictionary: remoteUserDictionary, commentID: 25, siteID: 30)
         let existingLikeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
+        let existingPreferredBlog = existingLikeUser.preferredBlog
         XCTAssertNotNil(existingLikeUser)
 
         TestContextManager.sharedInstance().save(context)
@@ -62,6 +63,7 @@ class LikeUserHelperTests: XCTestCase {
         remoteUser.preferredBlog = nil
         let updatedLikeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
         XCTAssertNotNil(updatedLikeUser)
+        XCTAssertTrue(existingPreferredBlog?.isDeleted ?? false)
 
         TestContextManager.sharedInstance().save(context) {
             completionExpectation.fulfill()
