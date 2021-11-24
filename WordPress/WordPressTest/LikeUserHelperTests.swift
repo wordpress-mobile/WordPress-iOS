@@ -37,9 +37,9 @@ class LikeUserHelperTests: XCTestCase {
         let likeUser = LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: context)
         XCTAssertNotNil(likeUser)
 
-        XCTAssertNoThrow(contextManager.save(context, withCompletionBlock: {
+        contextManager.save(context, withCompletionBlock: {
             completionExpectation.fulfill()
-        }))
+        })
 
         waitForExpectations(timeout: 0.1)
     }
@@ -60,7 +60,7 @@ class LikeUserHelperTests: XCTestCase {
         }
 
         XCTAssertNotNil(existingLikeUser)
-        XCTAssertNoThrow(contextManager.save(context))
+        contextManager.save(context)
 
         // Then we remove the preferred blog from the remote user, so we can save it again and make sure
         // the preferred blog deletion works fine.
@@ -69,9 +69,9 @@ class LikeUserHelperTests: XCTestCase {
         XCTAssertNotNil(updatedLikeUser)
         XCTAssertTrue(existingPreferredBlog.isDeleted)
 
-        XCTAssertNoThrow(contextManager.save(context, withCompletionBlock: {
+        contextManager.save(context, withCompletionBlock: {
             completionExpectation.fulfill()
-        }))
+        })
 
         waitForExpectations(timeout: 0.1)
     }
