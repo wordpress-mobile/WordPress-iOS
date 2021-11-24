@@ -53,6 +53,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         view.backgroundColor = .basicBackground
         tableView.backgroundColor = .basicBackground
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.accessibilityIdentifier = "login-epilogue-table"
 
         //  Remove separator line on last row
         tableView.tableFooterView = UIView()
