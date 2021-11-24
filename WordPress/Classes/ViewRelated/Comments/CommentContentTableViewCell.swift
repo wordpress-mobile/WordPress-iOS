@@ -20,6 +20,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var contentLinkTapAction: ((URL) -> Void)? = nil
 
+    /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
+    var hidesModerationBar: Bool = false {
+        didSet {
+            updateModerationBarVisibility()
+        }
+    }
+
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
@@ -45,7 +52,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
@@ -88,10 +94,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Visibility Control
 
-    /// Controls the visibility of the reaction bar view. Setting this to false disables Reply and Likes functionality.
-    private var isReactionEnabled: Bool = false {
+    private var isCommentReplyEnabled: Bool = false {
         didSet {
-            reactionBarView.isHidden = !isReactionEnabled
+            replyButton.isHidden = !isCommentReplyEnabled
         }
     }
 
@@ -110,8 +115,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Controls the visibility of the moderation bar view.
     private var isModerationEnabled: Bool = false {
         didSet {
-            moderationBar.isHidden = !isModerationEnabled
+            updateModerationBarVisibility()
         }
+    }
+
+    private var isReactionBarVisible: Bool {
+        return isCommentReplyEnabled || isCommentLikesEnabled
     }
 
     // MARK: Lifecycle
@@ -141,17 +150,17 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
         // Configure feature availability.
-        isReactionEnabled = !comment.isReadOnly()
-        isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
+        isCommentReplyEnabled = comment.canReply()
+        isCommentLikesEnabled = comment.canLike()
         isAccessoryButtonEnabled = comment.isApproved()
         isModerationEnabled = comment.allowsModeration()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(isReactionEnabled ? 0 : customBottomSpacing, after: webView)
+        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: webView)
 
         // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
         // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
-        containerStackBottomConstraint.constant = (isReactionEnabled || isModerationEnabled) ? 0 : customBottomSpacing
+        containerStackBottomConstraint.constant = (isReactionBarVisible || isModerationEnabled) ? 0 : customBottomSpacing
 
         if isModerationEnabled {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
@@ -335,6 +344,10 @@ private extension CommentContentTableViewCell {
         htmlContentCache = htmlContent
 
         return htmlContent
+    }
+
+    func updateModerationBarVisibility() {
+        moderationBar.isHidden = !isModerationEnabled || hidesModerationBar
     }
 
     /// Updates the style and text of the Like button.

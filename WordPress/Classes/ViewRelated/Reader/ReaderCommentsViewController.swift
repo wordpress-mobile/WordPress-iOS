@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
@@ -31,6 +32,47 @@ import Foundation
             return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
         case (.disableNotification, false):
             return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
+        }
+    }
+
+    func handleHeaderTapped() {
+        guard let post = post,
+              allowsPushingPostDetails else {
+            return
+        }
+
+        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        let controller = ReaderDetailViewController.controllerWithPost(post)
+        controller.shouldHideComments = true
+        navigationController?.pushFullscreenViewController(controller, animated: true)
+    }
+
+    // MARK: New Comment Threads
+
+    func configuredHeaderView(for tableView: UITableView) -> UIView {
+        guard let post = post else {
+            return .init()
+        }
+
+        let cell = CommentHeaderTableViewCell()
+        cell.backgroundColor = .systemBackground
+        cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: allowsPushingPostDetails)
+        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleHeaderTapped)))
+
+        // the table view does not render separators for the section header views, so we need to create one.
+        cell.contentView.addBottomBorder(withColor: .separator, leadingMargin: tableView.separatorInset.left)
+
+        return cell
+    }
+
+    func configureContentCell(_ cell: UITableViewCell, comment: Comment, tableView: UITableView) {
+        guard let cell = cell as? CommentContentTableViewCell else {
+            return
+        }
+
+        cell.hidesModerationBar = true
+        cell.configure(with: comment) { _ in
+            tableView.performBatchUpdates({})
         }
     }
 }

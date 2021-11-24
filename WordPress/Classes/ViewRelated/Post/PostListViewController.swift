@@ -732,6 +732,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
+        WPAnalytics.track(.postListShareAction, properties: propertiesForAnalytics())
+
         let shareController = PostSharingController()
         shareController.sharePost(post, fromView: view, inViewController: self)
     }

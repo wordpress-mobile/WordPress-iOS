@@ -24,6 +24,7 @@ static CGFloat const CommentIndentationWidth = 40.0;
 
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
+static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
@@ -63,6 +64,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
+
+/// A cached instance for the new comment header view.
+@property (nonatomic, strong) UIView *cachedHeaderView;
+
+/// Caches the post subscription state. Used to revert subscription state when the update request fails.
+@property (nonatomic, assign) BOOL subscribedToPost;
 
 @end
 
@@ -166,7 +173,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [super viewDidAppear:animated];
     [self.tableView reloadData];
 
-    if(self.promptToAddComment){
+    if (self.promptToAddComment) {
         [self.replyTextView becomeFirstResponder];
 
         // Reset the value to prevent prompting again if the user leaves and comes back
@@ -284,6 +291,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configurePostHeader
 {
+    // Don't show the current post header view when the newCommentThread flag is enabled.
+    // the new header will displayed as a table section header.
+    if ([self newCommentThreadEnabled]) {
+        return;
+    }
+
     __typeof(self) __weak weakSelf = self;
     
     // Wrapper view
@@ -342,8 +355,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.backgroundColor = [UIColor murielBasicBackground];
     [self.view addSubview:self.tableView];
 
-    UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
-    [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+    if ([self newCommentThreadEnabled]) {
+        UINib *nib = [UINib nibWithNibName:[CommentContentTableViewCell classNameWithoutNamespaces] bundle:nil];
+        [self.tableView registerNib:nib forCellReuseIdentifier:CommentContentCellIdentifier];
+    } else {
+        UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
+        [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+    }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -425,20 +443,26 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureViewConstraints
 {
-    NSDictionary *views         = @{
+    NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"tableView"        : self.tableView,
-        @"postHeader"       : self.postHeaderWrapper,
         @"mainView"         : self.view,
         @"suggestionsview"  : self.suggestionsTableView,
         @"replyTextView"    : self.replyTextView
-    };
+    }];
 
-    // PostHeader Constraints
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    NSString *verticalVisualFormatString = @"V:|[tableView][replyTextView]";
+
+    if (![self newCommentThreadEnabled]) {
+        [views setObject:self.postHeaderWrapper forKey:@"postHeader"];
+        verticalVisualFormatString = @"V:|[postHeader][tableView][replyTextView]";
+
+        // PostHeader Constraints
+        [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+        [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    }
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatString
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
@@ -531,6 +555,28 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (BOOL)followViaNotificationsEnabled
 {
     return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
+}
+
+- (BOOL)newCommentThreadEnabled
+{
+    return [Feature enabled:FeatureFlagNewCommentThread];
+}
+
+- (UIView *)cachedHeaderView {
+    if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
+        _cachedHeaderView = [self configuredHeaderViewFor:self.tableView];
+    }
+
+    return _cachedHeaderView;
+}
+
+// NOTE: remove this when the `followConversationViaNotifications` flag is removed.
+- (void)setSubscribedToPost:(BOOL)subscribedToPost {
+    if (self.postHeaderView) {
+        self.postHeaderView.isSubscribedToPost = subscribedToPost;
+    }
+
+    _subscribedToPost = subscribedToPost;
 }
 
 - (UIBarButtonItem *)followBarButtonItem
@@ -641,6 +687,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshPostHeaderView
 {
+    if ([self newCommentThreadEnabled]) {
+        return;
+    }
+
     NSParameterAssert(self.postHeaderView);
     NSParameterAssert(self.postHeaderWrapper);
     
@@ -681,7 +731,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+        weakSelf.subscribedToPost = isSubscribed;
 
         if ([self followViaNotificationsEnabled]) {
             // update the ReaderPost button to keep it in-sync.
@@ -934,7 +984,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     self.failedToFetchComments = NO;
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
-    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -949,7 +999,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-    [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -1019,10 +1069,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
-
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
+    if ([self newCommentThreadEnabled]) {
+        [self configureContentCell:aCell comment:comment tableView:self.tableView];
+        return;
+    }
+
+    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     cell.indentationWidth = CommentIndentationWidth;
     cell.indentationLevel = MIN(comment.depth, MaxCommentDepth);
     cell.delegate = self;
@@ -1068,9 +1122,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return UITableViewAutomaticDimension;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return self.cachedHeaderView;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
+    NSString *cellIdentifier = [self newCommentThreadEnabled] ? CommentContentCellIdentifier : CommentCellIdentifier;
+    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -1104,7 +1164,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
     // which results in 30pt tall headers on iOS 11
-    return 0;
+    return [self newCommentThreadEnabled] ? UITableViewAutomaticDimension : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -1319,11 +1379,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [generator prepare];
 
     // Keep previous subscription status in case of failure
-    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL oldIsSubscribed = self.subscribedToPost;
     BOOL newIsSubscribed = !oldIsSubscribed;
 
     // Optimistically toggle subscription status
-    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+    self.subscribedToPost = newIsSubscribed;
 
     // Define success block
     void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
@@ -1337,7 +1397,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 [weakSelf displayNoticeWithTitle:title message:nil];
 
                 // The task failed, fall back to the old subscription status
-                self.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+                self.subscribedToPost = oldIsSubscribed;
             });
         } else {
             NSString *title = newIsSubscribed
@@ -1387,7 +1447,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [weakSelf displayNoticeWithTitle:title message:nil];
 
             // If the request fails, fall back to the old subscription status
-            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+            weakSelf.subscribedToPost = oldIsSubscribed;
         });
     };
 
@@ -1432,18 +1492,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             completion(NO);
         }
     }];
-}
-
-- (void)handleHeaderTapped
-{
-    if (!self.allowsPushingPostDetails) {
-        return;
-    }
-
-    // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
-    controller.shouldHideComments = YES;
-    [self.navigationController pushFullscreenViewController:controller animated:YES];
 }
 
 

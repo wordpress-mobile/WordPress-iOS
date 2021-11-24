@@ -102,40 +102,11 @@ class CommentDetailViewController: UIViewController {
         return cell
     }()
 
-    private lazy var deleteButton: UIButton = {
-        let button = UIButton()
-        let buttonColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(.deleteButtonText, for: .normal)
-        button.setTitleColor(buttonColor, for: .normal)
-        button.setTitleColor(.white, for: .highlighted)
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: buttonColor), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: buttonColor, border: buttonColor), for: .highlighted)
-
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.numberOfLines = 0
-
-        // add constraints to the title label, so the button can contain it properly in multi-line cases.
-        if let label = button.titleLabel {
-            button.pinSubviewToAllEdgeMargins(label)
-        }
-
-        button.on(.touchUpInside) { [weak self] _ in
-            self?.deleteButtonTapped()
-        }
-
-        return button
-    }()
-
-    private lazy var deleteButtonCell: UITableViewCell = {
-        let cell = UITableViewCell()
-        cell.selectionStyle = .none
-        cell.accessibilityTraits = .button
-
-        cell.contentView.addSubview(deleteButton)
-        cell.contentView.pinSubviewToAllEdges(deleteButton, insets: Constants.deleteButtonInsets)
-
+    private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
+        let cell = BorderedButtonTableViewCell()
+        cell.configure(buttonTitle: .deleteButtonText,
+                       normalColor: UIColor(light: .error, dark: .muriel(name: .red, .shade40)))
+        cell.delegate = self
         return cell
     }()
 
@@ -264,8 +235,6 @@ private extension CommentDetailViewController {
         static let tableHorizontalInset: CGFloat = 20.0
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
-
-        static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
@@ -983,6 +952,16 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.hideSuggestions()
+    }
+
+}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+
+extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
+
+    func buttonTapped() {
+        deleteButtonTapped()
     }
 
 }
