@@ -38,8 +38,8 @@ import UIKit
     func handleHeaderTapped() {
         guard let post = post,
               allowsPushingPostDetails else {
-            return
-        }
+                  return
+              }
 
         // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
         let controller = ReaderDetailViewController.controllerWithPost(post)
