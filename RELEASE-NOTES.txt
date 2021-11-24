@@ -1,5 +1,6 @@
 18.8
 -----
+* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications.
 
 
 18.7
