@@ -177,6 +177,8 @@ import Foundation
     case commentRepliedTo
     case commentFilterChanged
     case commentSnackbarNext
+    case commentFullScreenEntered
+    case commentFullScreenExited
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -571,6 +573,10 @@ import Foundation
             return "comment_filter_changed"
         case .commentSnackbarNext:
             return "comment_snackbar_next"
+        case .commentFullScreenEntered:
+            return "comment_fullscreen_entered"
+        case .commentFullScreenExited:
+            return "comment_fullscreen_exited"
 
         // Invite Links
         case .inviteLinksGetStatus:
