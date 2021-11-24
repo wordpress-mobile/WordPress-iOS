@@ -91,6 +91,8 @@ import Foundation
     case readerRelatedPostFromOtherSiteClicked
     case readerRelatedPostFromSameSiteClicked
     case readerSearchHistoryCleared
+    case readerArticleLinkTapped
+    case readerArticleImageTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -411,6 +413,10 @@ import Foundation
             return "reader_related_post_from_same_site_clicked"
         case .readerSearchHistoryCleared:
             return "reader_search_history_cleared"
+        case .readerArticleLinkTapped:
+            return "reader_article_link_tapped"
+        case .readerArticleImageTapped:
+            return "reader_article_image_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
