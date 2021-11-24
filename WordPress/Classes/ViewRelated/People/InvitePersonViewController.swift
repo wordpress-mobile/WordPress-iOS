@@ -443,6 +443,7 @@ extension InvitePersonViewController {
             let success = NSLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
             SVProgressHUD.showDismissibleSuccess(withStatus: success)
 
+            WPAnalytics.track(.peopleUserInvited, properties: ["role": role], blog: blog)
         }, failure: { error in
             self.handleSendError() {
                 self.sendInvitation(blog, recipient: recipient, role: role, message: message)

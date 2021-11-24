@@ -258,6 +258,11 @@ import Foundation
     case sharingButtonsEditSharingButtonsToggled
     case sharingButtonsEditMoreButtonToggled
     case sharingButtonsLabelChanged
+
+    // People
+    case peopleFilterChanged
+    case peopleUserInvited
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -696,6 +701,12 @@ import Foundation
             return "sharing_buttons_edit_more_button_toggled"
         case .sharingButtonsLabelChanged:
             return "sharing_buttons_label_changed"
+
+        // People
+        case .peopleFilterChanged:
+            return "people_management_filter_changed"
+        case .peopleUserInvited:
+            return "people_management_user_invited"
         } // END OF SWITCH
     }
 
