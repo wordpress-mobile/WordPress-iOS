@@ -254,6 +254,10 @@ import Foundation
     case privacySettingsOpened
     case privacySettingsReportCrashesToggled
 
+    // Sharing Buttons
+    case sharingButtonsEditSharingButtonsToggled
+    case sharingButtonsEditMoreButtonToggled
+    case sharingButtonsLabelChanged
     /// A String that represents the event
     var value: String {
         switch self {
@@ -684,6 +688,14 @@ import Foundation
             return "account_close_tapped"
         case .accountCloseCompleted:
             return "account_close_completed"
+
+        // Sharing
+        case .sharingButtonsEditSharingButtonsToggled:
+            return "sharing_buttons_edit_sharing_buttons_toggled"
+        case .sharingButtonsEditMoreButtonToggled:
+            return "sharing_buttons_edit_more_button_toggled"
+        case .sharingButtonsLabelChanged:
+            return "sharing_buttons_label_changed"
         } // END OF SWITCH
     }
 
