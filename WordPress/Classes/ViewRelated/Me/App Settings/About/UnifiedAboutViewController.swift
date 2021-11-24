@@ -141,17 +141,27 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if isMovingFromParent || isBeingDismissedDirectlyOrByAncestor() {
+            configuration.didHide(viewController: self)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
+        if isMovingToParent {
+            configuration.willShow(viewController: self)
+        }
     }
 
     // MARK: - Actions
 
     @objc private func doneTapped() {
         let context = AboutItemActionContext(viewController: self)
-        configuration.dismissBlock(context)
+        configuration.dismissScreen(context)
     }
 
     // MARK: - Constants
