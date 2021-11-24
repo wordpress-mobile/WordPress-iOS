@@ -20,6 +20,25 @@ import Gridicons
             case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
             }
         }
+
+        var trackingValue: String {
+            switch self {
+            case .posts: return "posts"
+            case .sites: return "sites"
+            }
+        }
+    }
+
+    private enum SearchSource {
+        case userInput
+        case searchHistory
+
+        var value: String {
+            switch self {
+            case .userInput: return "user_input"
+            case .searchHistory: return "search_history"
+            }
+        }
     }
 
     // MARK: - Properties
@@ -236,13 +255,24 @@ import Gridicons
     /// Constructs a ReaderSearchTopic from the search phrase and sets the
     /// embedded stream to the topic.
     ///
-    @objc func performSearch() {
+    private func performSearch(source: SearchSource = .userInput) {
         guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
         }
 
         performPostsSearch(for: phrase)
         performSitesSearch(for: phrase)
+        trackSearchPerformed(source: source)
+    }
+
+    private func trackSearchPerformed(source: SearchSource) {
+        let selectedTab: Section = Section(rawValue: filterBar.selectedIndex) ?? .posts
+        let properties: [AnyHashable: Any] = [
+            "source": source.value,
+            "type": selectedTab.trackingValue
+        ]
+
+        WPAppAnalytics.track(.readerSearchPerformed, withProperties: properties)
     }
 
     private func performPostsSearch(for phrase: String) {
@@ -257,7 +287,6 @@ import Gridicons
 
         let topic = service.searchTopic(forSearchPhrase: phrase)
         streamController.readerTopic = topic
-        WPAppAnalytics.track(.readerSearchPerformed)
 
         // Hide the starting label now that a topic has been set.
         label.isHidden = true
@@ -411,7 +440,7 @@ extension ReaderSearchViewController: ReaderSearchSuggestionsDelegate {
 
     @objc func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String) {
         searchBar.text = selectedItem
-        performSearch()
+        performSearch(source: .searchHistory)
     }
 
 }
