@@ -35,6 +35,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    override var indentationWidth: CGFloat {
+        didSet {
+            updateContainerLeadingConstraint()
+        }
+    }
+
+    override var indentationLevel: Int {
+        didSet {
+            updateContainerLeadingConstraint()
+        }
+    }
+
     // MARK: Constants
 
     private let customBottomSpacing: CGFloat = 10
@@ -43,6 +55,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
+
+    // used for indentation
+    @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -348,6 +363,10 @@ private extension CommentContentTableViewCell {
 
     func updateModerationBarVisibility() {
         moderationBar.isHidden = !isModerationEnabled || hidesModerationBar
+    }
+
+    func updateContainerLeadingConstraint() {
+        containerStackLeadingConstraint?.constant = indentationWidth * CGFloat(indentationLevel)
     }
 
     /// Updates the style and text of the Like button.

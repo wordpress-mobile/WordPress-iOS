@@ -92,7 +92,7 @@
                                 <rect key="frame" x="0.0" y="168" width="288" height="57"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
-                                        <rect key="frame" x="0.0" y="8.5" width="174.5" height="40"/>
+                                        <rect key="frame" x="0.0" y="8.5" width="170.5" height="40"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
@@ -106,7 +106,7 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="762" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="179.5" y="8" width="53.5" height="41"/>
+                                        <rect key="frame" x="175.5" y="7" width="57.5" height="43.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
@@ -150,6 +150,7 @@
                 <outlet property="accessoryButton" destination="1G8-cc-t5d" id="kLS-Ag-hAG"/>
                 <outlet property="avatarImageView" destination="9QY-3I-cxv" id="lbp-Hv-zRm"/>
                 <outlet property="containerStackBottomConstraint" destination="jAu-U3-I4N" id="1Hk-Cp-fR5"/>
+                <outlet property="containerStackLeadingConstraint" destination="uFL-PF-ffo" id="6Ah-H9-d0b"/>
                 <outlet property="containerStackView" destination="hcN-S7-sLG" id="k9D-6a-BmR"/>
                 <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
