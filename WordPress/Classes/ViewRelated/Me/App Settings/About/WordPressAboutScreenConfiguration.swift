@@ -17,6 +17,15 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     lazy var sections: [[AboutItem]] = {
         [
             [
+                AboutItem(title: TextContent.rateUs, accessoryType: .none, action: { [weak self] context in
+                    // Note:
+                    // Let's follow the same procedure executed as in NotificationsViewController, so that if the user
+                    // manually decides to rate the app, we don't render the prompt!
+                    //
+                    WPAnalytics.track(.appReviewsRatedApp)
+                    AppRatingUtility.shared.ratedCurrentVersion()
+                    UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
+                }),
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
