@@ -633,7 +633,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         rightInset -= self.tableView.separatorInset.left;
     }
 
-    // The system will automatically flip the separator insets for RTL layout, so there's no need to flip it manually.
+    // Note: no need to flip the insets manually for RTL layout. The system will automatically take care of this.
     return UIEdgeInsetsMake(0, -self.tableView.separatorInset.left, 0, rightInset);
 }
 
