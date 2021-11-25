@@ -625,8 +625,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// orientation animation is completed – and this caused the computed separator insets to intermittently return the wrong table view size.
 ///
 - (UIEdgeInsets)hiddenSeparatorInsets {
+    CGFloat rightInset = CGRectGetWidth(self.tableView.frame);
+
+    // Add an extra inset for landscape iPad (without a split view) where the separator does reach the trailing edge.
+    // Otherwise, after orientation the inset may not be enough to hide the separator.
+    if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+        rightInset -= self.tableView.separatorInset.left;
+    }
+
     // The system will automatically flip the separator insets for RTL layout, so there's no need to flip it manually.
-    return UIEdgeInsetsMake(0, -self.tableView.separatorInset.left, 0, self.tableView.frame.size.width);
+    return UIEdgeInsetsMake(0, -self.tableView.separatorInset.left, 0, rightInset);
 }
 
 /// Determines whether a separator should be drawn for the provided index path.
