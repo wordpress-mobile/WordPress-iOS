@@ -28,6 +28,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.rateUs, accessoryType: .none, action: { [weak self] context in
                     WPAnalytics.track(.appReviewsRatedApp)
+                    self?.tracker.buttonPressed(.rateUs)
                     AppRatingUtility.shared.ratedCurrentVersion()
                     UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
                 }),
