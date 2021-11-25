@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-11 16:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-23 15:54:06+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "내 소개";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "워드프레스 소개";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "WordPress for iOS에 대하여";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "코믹";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "댓글";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "현재 복원 중: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "사용자 정의 URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "사용자 정의 안내문…";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "이미지 링크";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "이미지 링크 URL";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "이미지 크기";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "특성 이미지 제거 ";
 
+/* No comment provided by engineer. */
+"Remove block" = "블록 제거하기";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "회신 메시지";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@에 회신";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "댓글에 응답하기...";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "답글 달기…";
+"Reply to post" = "글에 답글 달기";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "이 글 신고하기";
@@ -8676,6 +8679,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "글 작성";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "답글 작성";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "답변 작성...";
