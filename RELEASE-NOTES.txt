@@ -1,10 +1,10 @@
 18.8
 -----
-* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications.
-
 * [*] Editor: Show a compact notice when switching between HTML or Visual mode. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17521]
 * [*] Onboarding Improvements: Need a little help after login? We're here for you. We've made a few changes to the login flow that will make it easier for you to start managing your site or create a new one. [#17564]
 * [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
+* [***] Fixed crash that was sometimes triggered when deleting media. [#17559]
+* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications. [#17529]
 
 18.7
 -----
