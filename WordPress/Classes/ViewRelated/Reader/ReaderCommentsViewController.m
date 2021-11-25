@@ -71,6 +71,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// Caches the post subscription state. Used to revert subscription state when the update request fails.
 @property (nonatomic, assign) BOOL subscribedToPost;
 
+/// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
+@property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
+
 @end
 
 
@@ -356,14 +359,24 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.view addSubview:self.tableView];
 
     if ([self newCommentThreadEnabled]) {
+        // register the content cell
         UINib *nib = [UINib nibWithNibName:[CommentContentTableViewCell classNameWithoutNamespaces] bundle:nil];
         [self.tableView registerNib:nib forCellReuseIdentifier:CommentContentCellIdentifier];
+
+        // configure table view separator
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;
+
+        // hide cell separator for the last row
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+
     } else {
         UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
         [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
 
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.estimatedRowHeights = [[NSCache alloc] init];
@@ -437,7 +450,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [weakSelf refreshNoResultsView];
     };
 }
-
 
 #pragma mark - Autolayout Helpers
 
@@ -604,6 +616,53 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     return _subscriptionSettingsBarButtonItem;
+}
+
+/// NOTE: In order for the inset to work across orientations, the tableView should use `UITableViewSeparatorInsetFromAutomaticInsets` to
+/// base the separator insets on the cell layout margins instead of the edges.
+///
+/// With the default inset reference (i.e. `UITableViewSeparatorInsetFromCellEdges`), sometimes the cell configuration is called before the
+/// orientation animation is completed – and this caused the computed separator insets to intermittently return the wrong table view size.
+///
+- (UIEdgeInsets)hiddenSeparatorInsets {
+    CGFloat rightInset = CGRectGetWidth(self.tableView.frame);
+
+    // Add an extra inset for landscape iPad (without a split view) where the separator does reach the trailing edge.
+    // Otherwise, after orientation the inset may not be enough to hide the separator.
+    if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+        rightInset -= self.tableView.separatorInset.left;
+    }
+
+    // Note: no need to flip the insets manually for RTL layout. The system will automatically take care of this.
+    return UIEdgeInsetsMake(0, -self.tableView.separatorInset.left, 0, rightInset);
+}
+
+/// Determines whether a separator should be drawn for the provided index path.
+/// The method returns YES if the index path represent a comment that is placed before a top-level comment.
+///
+/// Example:
+///
+/// - comment 1
+///     - comment 2
+///         - comment 3      --> returns YES.
+/// - comment 4
+///     - comment 5
+///         - comment 6
+///             - comment 7
+///         - comment 8      --> returns YES.
+/// - comment 9
+///
+- (BOOL)shouldShowSeparatorForIndexPath:(NSIndexPath *)indexPath
+{
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+    NSArray<id<NSFetchedResultsSectionInfo>> *sections = self.tableViewHandler.resultsController.sections;
+
+    if (sections && sections[indexPath.section] && nextIndexPath.row < sections[indexPath.section].numberOfObjects) {
+        Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
+        return [nextComment isTopLevelComment];
+    }
+
+    return NO;
 }
 
 #pragma mark - Accessor methods
@@ -1073,6 +1132,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     if ([self newCommentThreadEnabled]) {
         [self configureContentCell:aCell comment:comment tableView:self.tableView];
+
+        // show separator when the comment is the "last leaf" of its top-level comment.
+        aCell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
+
         return;
     }
 
@@ -1130,7 +1193,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = [self newCommentThreadEnabled] ? CommentContentCellIdentifier : CommentCellIdentifier;
-    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }

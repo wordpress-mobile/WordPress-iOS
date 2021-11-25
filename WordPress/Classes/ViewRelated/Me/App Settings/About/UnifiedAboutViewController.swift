@@ -50,7 +50,9 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         let headerFonts = fonts ?? AboutScreenFonts.defaultFonts
 
-        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts)
+        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts, dismissAction: { [weak self] in
+            self?.dismissAboutScreen()
+        })
 
         // Setting the frame once is needed so that the table view header will show.
         // This seems to be a table view bug although I'm not entirely sure.
@@ -113,7 +115,7 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
         if isSubmenu {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissAboutScreen))
         }
 
         view.backgroundColor = .systemGroupedBackground
@@ -159,7 +161,7 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
     // MARK: - Actions
 
-    @objc private func doneTapped() {
+    @objc private func dismissAboutScreen() {
         let context = AboutItemActionContext(viewController: self)
         configuration.dismissScreen(context)
     }

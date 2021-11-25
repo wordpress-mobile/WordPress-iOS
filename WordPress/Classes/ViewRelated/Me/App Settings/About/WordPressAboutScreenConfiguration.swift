@@ -26,6 +26,12 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     lazy var sections: [[AboutItem]] = {
         [
             [
+                AboutItem(title: TextContent.rateUs, accessoryType: .none, action: { [weak self] context in
+                    WPAnalytics.track(.appReviewsRatedApp)
+                    self?.tracker.buttonPressed(.rateUs)
+                    AppRatingUtility.shared.ratedCurrentVersion()
+                    UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
+                }),
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
@@ -44,6 +50,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.automatticFamily, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
+                    self?.webViewPresenter.present(for: Links.automattic, context: context)
                 }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
@@ -85,6 +92,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     private enum Links {
         static let twitter    = URL(string: "https://twitter.com/WordPressiOS")!
         static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
+        static let automattic = URL(string: "https://automattic.com")!
     }
 }
 
