@@ -9164,3 +9164,14 @@ translators: Block name. %s: The localized block name */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Utenti e autori";
 
+
+// MARK: WordPressStatsWidgets Strings
+
+"widget.alltime.bestviews.label" = "Record di visite";
+"widget.alltime.posts.label" = "Articoli";
+"widget.today.comments.label" = "Commenti";
+"widget.today.likes.label" = "Like";
+"widget.today.title" = "Oggi";
+"widget.today.views.label" = "Visite";
+"widget.today.visitors.label" = "Visitatori";
+
