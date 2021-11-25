@@ -24,6 +24,12 @@ protocol ReaderDetailView: AnyObject {
     /// Updates the likes view to append an additional avatar for the current user, indicating that the post is liked by current user.
     /// - Parameter avatarURLString: The URL string for the current user's avatar. Optional.
     func updateSelfLike(with avatarURLString: String?)
+
+    /// Updates comments table to display the post's comments.
+    /// - Parameters:
+    ///   - comments: Comments to be displayed.
+    ///   - totalComments: The total number of comments for this post.
+    func updateComments(_ comments: [Comment], totalComments: Int)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -37,8 +43,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
 
+    /// The table view that displays Comments
+    @IBOutlet weak var commentsTableView: IntrinsicTableView!
+    var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
+
     /// The table view that displays Related Posts
-    @IBOutlet weak var tableView: IntrinsicTableView!
+    @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
@@ -151,6 +161,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         observeWebViewHeight()
         configureNotifications()
 
+        if FeatureFlag.postDetailsComments.enabled {
+            configureCommentsTable()
+        }
+
         coordinator?.start()
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
@@ -230,6 +244,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.configure(for: post)
         fetchLikes()
 
+        if FeatureFlag.postDetailsComments.enabled {
+            fetchComments()
+        }
+
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
             webView.postURL = postURL
@@ -255,8 +273,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
-        tableView.reloadData()
-        tableView.invalidateIntrinsicContentSize()
+        relatedPostsTableView.reloadData()
+        relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
     private func navigateToCommentIfNecessary() {
@@ -371,6 +389,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
     }
 
+    func updateComments(_ comments: [Comment], totalComments: Int) {
+        // TODO: if there are no comments, hide the commentsTableView.
+        commentsTableViewDelegate?.comments = comments
+        commentsTableViewDelegate?.totalComments = totalComments
+        commentsTableViewDelegate?.buttonDelegate = self
+        commentsTableView.reloadData()
+        commentsTableView.invalidateIntrinsicContentSize()
+    }
+
     deinit {
         scrollObserver?.invalidate()
         NotificationCenter.default.removeObserver(self)
@@ -478,17 +505,31 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         view.setNeedsDisplay()
     }
 
-    private func configureRelatedPosts() {
-        tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
+    private func fetchComments() {
+        guard let post = post else {
+            return
+        }
 
-        tableView.register(ReaderRelatedPostsCell.defaultNib,
+        coordinator?.fetchComments(for: post)
+    }
+
+    private func configureCommentsTable() {
+        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
+    }
+
+    private func configureRelatedPosts() {
+        relatedPostsTableView.isScrollEnabled = false
+        relatedPostsTableView.separatorStyle = .none
+
+        relatedPostsTableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
-        tableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
+        relatedPostsTableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
 
-        tableView.dataSource = self
-        tableView.delegate = self
+        relatedPostsTableView.dataSource = self
+        relatedPostsTableView.delegate = self
     }
 
     private func configureToolbar() {
@@ -948,3 +989,14 @@ extension ReaderDetailViewController {
 // MARK: - DefinesVariableStatusBarStyle
 // Allows this VC to control the statusbar style dynamically
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+// For the `View All Comments` button.
+extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
+    func buttonTapped() {
+        guard let post = post else {
+            return
+        }
+        ReaderCommentAction().execute(post: post, origin: self)
+    }
+}

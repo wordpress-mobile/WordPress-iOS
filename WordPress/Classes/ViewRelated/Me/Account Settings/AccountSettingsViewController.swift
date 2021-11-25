@@ -19,6 +19,10 @@ func AccountSettingsViewController(accountSettingsService: AccountSettingsServic
 }
 
 private class AccountSettingsController: SettingsController {
+    var trackingKey: String {
+        return "account_settings"
+    }
+
     let title = NSLocalizedString("Account Settings", comment: "Account Settings Title")
 
     var immuTableRows: [ImmuTableRow.Type] {
@@ -91,14 +95,16 @@ private class AccountSettingsController: SettingsController {
         let editableUsername = EditableTextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "",
-            action: presenter.push(changeUsername(with: settings, service: service))
+            action: presenter.push(changeUsername(with: settings, service: service)),
+            fieldName: "username"
         )
 
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
             accessoryImage: emailAccessoryImage(),
-            action: presenter.push(editEmailAddress(settings, service: service))
+            action: presenter.push(editEmailAddress(settings, service: service)),
+            fieldName: "email"
         )
 
         var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) } ?? ""
@@ -112,19 +118,22 @@ private class AccountSettingsController: SettingsController {
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
             value: primarySiteName,
-            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
+            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service))),
+            fieldName: "primary_site"
         )
 
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.push(editWebAddress(service))
+            action: presenter.push(editWebAddress(service)),
+            fieldName: "web_address"
         )
 
         let password = EditableTextRow(
             title: Constants.title,
             value: "",
-            action: presenter.push(changePassword(with: settings, service: service))
+            action: presenter.push(changePassword(with: settings, service: service)),
+            fieldName: "password"
         )
 
         let closeAccount = DestructiveButtonRow(
@@ -225,6 +234,8 @@ private class AccountSettingsController: SettingsController {
             let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID as NSNumber?,
                                                                     successHandler: { (dotComID: NSNumber?) in
                                                                         if let dotComID = dotComID?.intValue {
+                                                                            WPAnalytics.trackSettingsChange(self.trackingKey, fieldName: "primary_site")
+
                                                                             let change = AccountSettingsChange.primarySite(dotComID)
                                                                             service.saveChange(change)
                                                                         }
@@ -244,6 +255,8 @@ private class AccountSettingsController: SettingsController {
     private var closeAccountAction: (ImmuTableRow) -> Void {
         return { [weak self] _ in
             guard let self = self else { return }
+            WPAnalytics.track(.accountCloseTapped, properties: ["has_atomic": self.hasAtomicSite])
+
             switch self.hasAtomicSite {
             case true:
                 self.showCloseAccountErrorAlert(message: self.localizedErrorMessageForAtomicSites)
@@ -281,10 +294,14 @@ private class AccountSettingsController: SettingsController {
             guard let self = self else { return }
             switch $0 {
             case .success:
+                WPAnalytics.track(.accountCloseCompleted, properties: ["status": "success"])
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
                 SVProgressHUD.showDismissibleSuccess(withStatus: status)
                 AccountHelper.logOutDefaultWordPressComAccount()
             case .failure(let error):
+                let errorCode = self.errorCode(error) ?? "unknown"
+                WPAnalytics.track(.accountCloseCompleted, properties: ["status": "failure", "error_code": errorCode])
+
                 SVProgressHUD.dismiss()
                 DDLogError("Error closing account: \(error.localizedDescription)")
                 self.showCloseAccountErrorAlert(message: self.generateLocalizedMessage(error))
@@ -306,9 +323,15 @@ private class AccountSettingsController: SettingsController {
         alert.presentFromRootViewController()
     }
 
-    private func generateLocalizedMessage(_ error: Error) -> String {
+    private func errorCode(_ error: Error) -> String? {
         let userInfo = (error as NSError).userInfo
         let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+
+        return errorCode
+    }
+
+    private func generateLocalizedMessage(_ error: Error) -> String {
+        let errorCode = errorCode(error)
 
         switch errorCode {
         case "unauthorized":

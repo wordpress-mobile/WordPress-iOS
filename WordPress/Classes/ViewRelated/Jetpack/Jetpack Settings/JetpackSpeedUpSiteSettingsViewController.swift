@@ -90,6 +90,8 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
         return { [unowned self] newValue in
             self.settings.jetpackServeImagesFromOurServers = newValue
             self.reloadViewModel()
+            WPAnalytics.trackSettingsChange("jetpack_speed_up_site", fieldName: "serve_images", value: newValue as Any)
+
             self.service.updateJetpackServeImagesFromOurServersModuleSettingForBlog(self.blog,
                                                                                     success: {},
                                                                                     failure: { [weak self] (_) in
@@ -102,6 +104,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
         return { [unowned self] newValue in
             self.settings.jetpackLazyLoadImages = newValue
             self.reloadViewModel()
+            WPAnalytics.trackSettingsChange("jetpack_speed_up_site", fieldName: "lazy_load_images", value: newValue as Any)
             self.service.updateJetpackLazyImagesModuleSettingForBlog(self.blog,
                                                                      success: {},
                                                                      failure: { [weak self] (_) in
