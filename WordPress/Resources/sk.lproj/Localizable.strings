@@ -402,6 +402,9 @@ translators: Block name. %s: The localized block name */
 "About Me" = "O mne";
 
 /* Link to About screen for WordPress for iOS */
+"About WordPress" = "About WordPress";
+
+/* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "O aplikácií WordPress pre iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "Komiks";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Komentár";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Currently restoring: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "Custom URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Custom message…";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "Odkaz obrázku";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "Image Link URL";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Veľkosť obrázka";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Remove as Featured Image ";
 
+/* No comment provided by engineer. */
+"Remove block" = "Remove block";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text odpovede";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Reply to %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Odpovedať na komentár...";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Odpovedať na článok...";
+"Reply to post" = "Reply to post";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Report this post";
@@ -8676,6 +8679,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Napíšte článok";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "Write a reply";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Odpovedať...";

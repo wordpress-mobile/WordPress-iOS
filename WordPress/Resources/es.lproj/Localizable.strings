@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-02 05:09:27+0000 */
+/* Translation-Revision-Date: 2021-11-15 12:53:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "Sobre mí";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "Acerca de WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Acerca de WordPress para iOS";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "Cómics";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Comentario";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Estamos restaurando: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "URL personalizada";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Mensaje personalizado…";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "Enlace de la imagen";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "URL del vínculo de la imagen";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Tamaño de imagen";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Eliminar como imagen destacada";
 
+/* No comment provided by engineer. */
+"Remove block" = "Eliminar bloque";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Eliminar de las perspectivas";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Texto de respuesta";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Responder a %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Responder al comentario…";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Responder a la entrada…";
+"Reply to post" = "Responder a la entrada";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Informar de esta entrada";
@@ -8676,6 +8679,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Escribir entrada";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "Escribe una respuesta";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Escribe una respuesta...";
