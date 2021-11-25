@@ -9174,4 +9174,3 @@ translators: Block name. %s: The localized block name */
 "widget.today.title" = "Bugün";
 "widget.today.views.label" = "Gösterimler";
 "widget.today.visitors.label" = "Ziyaretçiler";
-
