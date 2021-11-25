@@ -72,6 +72,7 @@ import UIKit
 
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
+        cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
         cell.hidesModerationBar = true
         cell.configure(with: comment) { _ in
             tableView.performBatchUpdates({})
