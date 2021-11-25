@@ -50,6 +50,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.automatticFamily, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
+                    self?.webViewPresenter.present(for: Links.automattic, context: context)
                 }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
@@ -91,6 +92,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     private enum Links {
         static let twitter    = URL(string: "https://twitter.com/WordPressiOS")!
         static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
+        static let automattic = URL(string: "https://automattic.com")!
     }
 }
 
