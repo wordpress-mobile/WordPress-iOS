@@ -1,8 +1,13 @@
-- Abbiamo reso più semplice visualizzare i punti in cui sono disponibili nuovi blocchi da usare sul tuo sito
-- Ora puoi evidenziare il testo usando il tag HTML "mark" e modificare il testo e il colore di sfondo del pulsante del blocco Cerca. È nuovo di zecca.
-- Abbiamo nascosto i tag HTML nei titoli degli articoli quando controlli le statistiche.
-- Abbiamo migliorato la Presentazione del Reader, mostrandoti nuovi testi da leggere e dando una mano ai siti a basso traffico. Vantaggioso per tutti.
-- Se hai preso parte a un thread di commenti, puoi tenerne traccia tramite le notifiche in-app, non solo tramite la tua posta in arrivo dell'e-mail.
-- A proposito di commenti, abbiamo sentito che alcuni potrebbero mancare durante la visualizzazione dei commenti dal Reader. Non preoccuparti: abbiamo trovato il problema e lo abbiamo risolto.
-- La schermata Guida si staccava dalla sua casella quando veniva ruotata dalla posizione verticale a quella orizzontale e di nuovo a quella verticale. Ora però non si muove.
-- Abbiamo risolto alcuni problemi a causa dei quali i blocchi Incorporamenti mostravano "Impossibile visualizzare il contenuto", consentendoti di vedere tutti i tuoi contenuti.
+L'autenticazione a due fattori ora offre una sicurezza aggiuntiva. Dovrai sbloccare il dispositivo per approvare o rifiutare le notifiche.
+Abbiamo ampliato l'impostazione "Collega a" per il blocco Immagine in modo da includere le opzioni "File multimediale" e "Pagina dell'allegato" accanto all'opzione preesistente "URL personalizzato".
+Abbiamo risolto un problema che causava l'arresto anomalo dell'interfaccia quando gli utenti copiavano e incollavano elenchi da Microsoft Word.
+
+Quando passi a Il mio sito > Commenti, visualizzerai un aspetto nuovo e dettagli sui commenti ancora più recenti, tra cui:
+
+- Un'anteprima del titolo dell'articolo o del commento principale, a seconda che l'autore abbia lasciato un commento all'articolo o abbia risposto a un commento esistente.
+- Ricchi contenuti in modo che tu possa vedere ogni commento proprio come lo ha scritto l'autore.
+- Un pulsante per la condivisione per i commenti approvati.
+- Gli utenti con ruoli di Amministratore o Editor possono vedere l'e-mail e gli indirizzi IP degli autori dei commenti.
+- Indirizzo web che può essere toccato per visitare l'URL dell'autore (invece dell'immagine avatar).
+
+Infine, abbiamo aggiornato l'interfaccia utente per la visualizzazione di Rispondi, sia ridotta a icona che a schermo intero. Bella!
