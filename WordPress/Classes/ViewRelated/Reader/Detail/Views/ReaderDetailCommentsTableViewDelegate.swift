@@ -43,7 +43,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
         let titleFormat = totalComments == 1 ? Constants.singularCommentFormat : Constants.pluralCommentsFormat
         header.titleLabel.text = String(format: titleFormat, totalComments)
-        header.addBottomBorder(withColor: .divider, leadingMargin: 0)
+        header.addBottomBorder(withColor: .divider)
         return header
     }
 
