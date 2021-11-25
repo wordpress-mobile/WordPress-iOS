@@ -26,6 +26,12 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     lazy var sections: [[AboutItem]] = {
         [
             [
+                AboutItem(title: TextContent.rateUs, accessoryType: .none, action: { [weak self] context in
+                    WPAnalytics.track(.appReviewsRatedApp)
+                    self?.tracker.buttonPressed(.rateUs)
+                    AppRatingUtility.shared.ratedCurrentVersion()
+                    UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
+                }),
                 AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
                     self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
