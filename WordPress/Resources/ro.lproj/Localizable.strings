@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-05 10:57:30+0000 */
+/* Translation-Revision-Date: 2021-11-23 16:30:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "Despre mine";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "Despre WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Despre WordPress pentru iOS";
@@ -1111,7 +1114,7 @@ translators: Block name. %s: The localized block name */
 "Build layouts" = "Construiește aranjamente";
 
 /* Discoverability title for bullet list keyboard shortcut. */
-"Bullet List" = "Listă punctată";
+"Bullet List" = "Listă cu buline";
 
 /* Title of a prompt letting the user know that they must wait until the current aciton completes. */
 "Busy" = "Ocupat";
@@ -1390,7 +1393,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Alege o oră";
 
 /* No comment provided by engineer. */
-"Choose audio" = "Alege un fișier audio";
+"Choose audio" = "Alege fișierul audio";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Alege intervalul de date";
@@ -1426,7 +1429,7 @@ translators: Block name. %s: The localized block name */
 "Choose the items to restore" = "Alege elementele de restaurat";
 
 /* No comment provided by engineer. */
-"Choose video" = "Alege un video";
+"Choose video" = "Alege videoul";
 
 /* Reader select interests subtitle label text */
 "Choose your topics" = "Alege subiecte";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "Benzi desenate";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Comentariu";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Acum restaurez %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "URL personalizat";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Mesaj personalizat...";
@@ -2622,7 +2627,7 @@ translators: Block name. %s: The localized block name */
 "Email or Username…" = "Email sau nume utilizator...";
 
 /* Overlay message displayed when export content started */
-"Email sent!" = "Email trimis!";
+"Email sent!" = "Am trimis emailul!";
 
 /* No comment provided by engineer. */
 "Embed block previews are coming soon" = "În curând, previzualizări pentru blocul Înglobează";
@@ -3519,9 +3524,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "Legătură imagine";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "URL legătură la imagine";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Dimensiune imagine";
@@ -5415,7 +5417,7 @@ translators: Block name. %s: The localized block name */
 "Preparing to scan" = "Pregătesc scanarea";
 
 /* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Pregătire...";
+"Preparing..." = "Pregătesc...";
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
@@ -5739,6 +5741,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Înlătură imaginea, ca imagine reprezentativă";
 
+/* No comment provided by engineer. */
+"Remove block" = "Înlătură blocul";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Înlătură din perspective";
 
@@ -5809,14 +5814,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text pentru răspuns";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Răspunde-i lui %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Răspunde la comentariu...";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Răspunde la articol...";
+"Reply to post" = "Răspunde la articol";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Raportează acest articol";
@@ -8521,7 +8524,7 @@ translators: Block name. %s: The localized block name */
 "What was the problem?" = "Care a fost problema?";
 
 /* Title of section that contains plugins' change log */
-"What's New" = "Ce este nou?";
+"What's New" = "Ce este nou";
 
 /* Opens the What's New / Feature Announcement modal
    Title of the What's new page. */
@@ -8679,6 +8682,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Scrie un articol";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "Scrie un răspuns";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Scrie un răspuns...";

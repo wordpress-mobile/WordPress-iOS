@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 
 /// Defines the content of the header that appears on the top level about screen.
@@ -60,18 +61,21 @@ final class UnifiedAboutHeaderView: UIView {
     private let spacing: Spacing
     private let sizing: Sizing
     private let fonts: AboutScreenFonts
+    private let dismissAction: (() -> Void)?
 
     // MARK: - Initializers
 
     init(appInfo: AboutScreenAppInfo,
          sizing: Sizing = defaultSizing,
          spacing: Spacing = defaultSpacing,
-         fonts: AboutScreenFonts) {
+         fonts: AboutScreenFonts,
+         dismissAction: (() -> Void)? = nil) {
 
         self.appInfo = appInfo
         self.sizing = sizing
         self.spacing = spacing
         self.fonts = fonts
+        self.dismissAction = dismissAction
 
         super.init(frame: .zero)
 
@@ -89,31 +93,14 @@ final class UnifiedAboutHeaderView: UIView {
     // MARK: - Setting up the subviews
 
     func setupSubviews() {
-        let stackView = UIStackView()
-        let iconView = UIImageView()
-        let appNameLabel = UILabel()
-        let appVersionLabel = UILabel()
+        let stackView = makeStackView()
+        let iconView = makeIconView()
+        let appNameLabel = makeAppNameLabel()
+        let appVersionLabel = makeAppVersionLabel()
+        let closeButton = makeCloseButton()
 
         clipsToBounds = true
 
-        appNameLabel.text = appInfo.name
-        appNameLabel.lineBreakMode = .byWordWrapping
-        appNameLabel.numberOfLines = 1
-        appNameLabel.font = fonts.appName
-
-        appVersionLabel.text = appInfo.version
-        appVersionLabel.lineBreakMode = .byWordWrapping
-        appVersionLabel.numberOfLines = 1
-        appVersionLabel.font = fonts.appVersion
-        appVersionLabel.textColor = .secondaryLabel
-
-        iconView.image = appInfo.icon
-        iconView.layer.cornerRadius = sizing.appIconCornerRadius
-        iconView.layer.masksToBounds = true
-
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubviews([
             iconView,
             appNameLabel,
@@ -123,6 +110,7 @@ final class UnifiedAboutHeaderView: UIView {
         stackView.setCustomSpacing(spacing.betweenAppNameLabelAndAppVersionLabel, after: appNameLabel)
 
         addSubview(stackView)
+        addSubview(closeButton)
 
         NSLayoutConstraint.activate([
             iconView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
@@ -135,6 +123,84 @@ final class UnifiedAboutHeaderView: UIView {
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: spacing.aboveAndBelowHeaderView),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -spacing.aboveAndBelowHeaderView),
+
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.closeButtonInset),
+            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.closeButtonInset),
+            closeButton.widthAnchor.constraint(equalToConstant: Metrics.closeButtonRadius),
+            closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor)
         ])
+    }
+
+    // MARK: - Subviews
+
+    private func makeStackView() -> UIStackView {
+        let stackView = UIStackView()
+
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }
+
+    private func makeAppNameLabel() -> UILabel {
+        let appNameLabel = UILabel()
+
+        appNameLabel.text = appInfo.name
+        appNameLabel.lineBreakMode = .byWordWrapping
+        appNameLabel.numberOfLines = 1
+        appNameLabel.font = fonts.appName
+        return appNameLabel
+    }
+
+    private func makeAppVersionLabel() -> UILabel {
+        let appVersionLabel = UILabel()
+
+        appVersionLabel.text = appInfo.version
+        appVersionLabel.lineBreakMode = .byWordWrapping
+        appVersionLabel.numberOfLines = 1
+        appVersionLabel.font = fonts.appVersion
+        appVersionLabel.textColor = .secondaryLabel
+        return appVersionLabel
+    }
+
+    private func makeIconView() -> UIImageView {
+        let iconView = UIImageView()
+
+        iconView.image = appInfo.icon
+        iconView.layer.cornerRadius = sizing.appIconCornerRadius
+        iconView.layer.masksToBounds = true
+        return iconView
+    }
+
+    private func makeCloseButton() -> UIButton {
+        let closeButton = UIButton()
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        let configuration = UIImage.SymbolConfiguration(pointSize: Metrics.closeButtonSymbolSize, weight: .bold)
+        closeButton.setImage(UIImage(systemName: "xmark", withConfiguration: configuration), for: .normal)
+        closeButton.tintColor = .secondaryLabel
+        closeButton.backgroundColor = .quaternarySystemFill
+        closeButton.layer.cornerRadius = Metrics.closeButtonRadius * 0.5
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+
+        // Hide if we don't have a dismiss action
+        closeButton.isHidden = (dismissAction == nil)
+
+        return closeButton
+    }
+
+
+    // MARK: - Actions
+
+    @objc private func closeButtonTapped() {
+        dismissAction?()
+    }
+
+    // MARK: - Constants
+
+    private enum Metrics {
+        static let closeButtonRadius: CGFloat = 30
+        static let closeButtonInset: CGFloat = 16
+        static let closeButtonSymbolSize: CGFloat = 16
     }
 }

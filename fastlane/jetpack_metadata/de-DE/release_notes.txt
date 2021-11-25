@@ -1,6 +1,13 @@
-- Jetzt kannst du einfacher feststellen, ob neue Blocks für die Nutzung auf deiner Website verfügbar sind
-- Jetzt kannst du Text mit dem HTML-Tag "mark" hervorheben und sowohl den Text als auch die Hintergrundfarbe des Buttons „Block suchen“ verändern. Wie das funkelt!
-- Wir haben HTML-Tags in Beitragstiteln versteckt, wenn du deine Statistiken überprüfst.
-- Falls du Teil eines Kommentar-Threads bist, kannst du diesen durch Benachrichtigungen in der App und nicht nur per E-Mail im Blick behalten.
-- Der Hilfe-Bildschirm hat früher seinen Rahmen überschritten, wenn er von Hochformat zu Querformat und zurück zu Hochformat gedreht wurde. Das passiert jetzt nicht mehr.
-- Wir haben noch weitere Fälle behoben, in denen Embed-Blocks „Inhalt kann nicht angezeigt werden“ angezeigt haben. Jetzt kannst du all deine Inhalte sehen.
+Die Zwei-Schritt-Authentifizierung ist jetzt noch sicherer. Du musst dein Gerät entsperren, um Benachrichtigungen zu genehmigen oder abzulehnen.
+Der Einstellung „Link zu“ im Bildblock wurden neben der vorhandenen Option „Individuelle URL“ die Optionen „Mediendatei“ und „Anhang-Seite“ hinzugefügt.
+Das Problem, das zum Absturz der Benutzeroberfläche führte, wenn Benutzer aus Microsoft Word kopierte Listen einfügen wollten, wurde behoben.
+
+Der Bereich „Meine Website > Kommentare“ hat einen frischen Look und zusätzliche Kommentardetails erhalten, u. a.:
+
+- Eine Vorschau auf den Beitragstitel oder den übergeordneten Kommentar, je nachdem, ob der Autor einen Kommentar zum Beitrag hinterlassen hat oder auf einen vorhandenen Kommentar geantwortet hat
+- Formatierten Inhalt, damit jeder Kommentar so angezeigt wird, wie der Autor ihn verfasst hat
+- Einen Teilen-Button für genehmigte Kommentare
+- Anzeige der E-Mail- und IP-Adresse des Autors für Benutzer mit Administrator- oder Redakteursrolle
+- Antippbare Web-Adresse zum Aufrufen der URL des Autors (statt eines Avatarbilds)
+
+Außerdem haben wir der Benutzeroberfläche eine die Anzeige von Antworten in minimierter und Vollbildansicht hinzugefügt. Schicker Look!

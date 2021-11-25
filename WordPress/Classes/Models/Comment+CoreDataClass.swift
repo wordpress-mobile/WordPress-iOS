@@ -102,6 +102,10 @@ public class Comment: NSManagedObject {
 
         return !isReadOnly() && blog.supports(.commentLikes)
     }
+
+    @objc func isTopLevelComment() -> Bool {
+        return depth == 0
+    }
 }
 
 private extension Comment {

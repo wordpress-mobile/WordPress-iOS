@@ -256,6 +256,10 @@ import Foundation
     case privacySettingsOpened
     case privacySettingsReportCrashesToggled
 
+    // Login: Epilogue
+    case loginEpilogueChooseSiteTapped
+    case loginEpilogueCreateNewSiteTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -690,6 +694,12 @@ import Foundation
             return "account_close_tapped"
         case .accountCloseCompleted:
             return "account_close_completed"
+
+        // Login: Epilogue
+        case .loginEpilogueChooseSiteTapped:
+            return "login_epilogue_choose_site_tapped"
+        case .loginEpilogueCreateNewSiteTapped:
+            return "login_epilogue_create_new_site_tapped"
         } // END OF SWITCH
     }
 

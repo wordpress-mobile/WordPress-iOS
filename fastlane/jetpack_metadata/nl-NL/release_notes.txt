@@ -1,6 +1,13 @@
-- We hebben het eenvoudiger gemaakt om te zien wanneer er nieuwe blokken beschikbaar zijn voor gebruik op je site
-- Je kunt nu tekst markeren met de HTML-tag "mark" en ook de tekst en de achtergrondkleur van de knop van het Zoekblok wijzigen. Schitterend!
-- We hebben HTML-tags verborgen in berichttitels wanneer je je statistieken bekijkt.
-- Als je deel uitmaakt van een opmerkingen-thread, kun je deze volgen via je inbox, maar ook via meldingen in de app.
-- Het Help-scherm werd niet correct in zijn venster weergegeven wanneer deze geroteerd werd van staand naar liggend en weer terug naar staand. Dit is nu verholpen.
-- Meerdere gevallen waarin insluitblokken de melding 'content kan niet worden weergegeven' gaven, zijn verholpen. Je ziet nu al je content.
+Tweestapsverificatie biedt nu nog meer beveiliging. Je moet je apparaat ontgrendelen om meldingen te accepteren of weigeren.
+We hebben de instelling 'Link naar' voor het afbeeldingblok uitgebreid. Deze omvat nu naast de reeds bestaande optie 'Aangepaste URL' de opties 'Mediabestand' en 'Bijlagepagina'.
+We hebben een probleem opgelost waardoor de interface crashte zodra gebruikers lijsten vanuit Microsoft Word kopieerden en plakten.
+
+Als je naar Mijn site > Reacties gaat, zie je een splinternieuwe weergave en nieuwe informatie bij reacties, waaronder:
+
+- Een sneakpeek van de berichttitel als iemand een reactie bij het bericht heeft geplaatst, of de bovenliggende reactie als iemand heeft gereageerd op een andere reactie.
+- Uitgebreide content zodat elke reactie wordt weergegeven zoals de persoon deze heeft opgesteld.
+- Een knop om goedgekeurde reacties te delen.
+- Gebruikers met de rollen Beheerder of Editor kunnen het e-mailadres en IP-adres van de reagerende persoon zien.
+- Tikbaar webadres om naar de URL van de reagerende persoon te gaan (in plaats van zijn/haar avatar).
+
+Ten slotte hebben we de gebruikersinterface bijgewerkt voor de weergave Reageren, zowel geminimaliseerd als weergegeven in volledig scherm. Ziet er strak uit!
