@@ -17,14 +17,21 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var topLine: UIView!
     @IBOutlet var topLineHeightConstraint: NSLayoutConstraint!
 
-    /// Done Button.
+    /// Create a new site button.
     ///
-    @IBOutlet var doneButton: UIButton!
+    @IBOutlet weak var createANewSiteButton: FancyButton!
+
+    /// Skip button.
+    ///
+    @IBOutlet weak var skipButton: FancyButton!
 
     /// Constraints on the table view container.
     /// Used to adjust the width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomConstraintToSafeArea: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomConstraintToButtonPanel: NSLayoutConstraint!
+
     private var defaultTableViewMargin: CGFloat = 0
 
     /// Blur effect on button panel
@@ -33,6 +40,8 @@ class LoginEpilogueViewController: UIViewController {
         return .systemChromeMaterial
     }
 
+    private var dividerView: LoginEpilogueDividerView?
+
     /// Links to the Epilogue TableViewController
     ///
     private var tableViewController: LoginEpilogueTableViewController?
@@ -40,6 +49,14 @@ class LoginEpilogueViewController: UIViewController {
     /// Analytics Tracker
     ///
     private let tracker = AuthenticatorAnalyticsTracker.shared
+
+    /// Closure to be executed upon blog selection.
+    ///
+    var onBlogSelected: ((Blog) -> Void)?
+
+    /// Closure to be executed upon a new site creation.
+    ///
+    var onCreateNewSite: (() -> Void)?
 
     /// Closure to be executed upon dismissal.
     ///
@@ -72,6 +89,7 @@ class LoginEpilogueViewController: UIViewController {
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
+        configureButtonPanel()
         WordPressAuthenticator.track(.loginEpilogueViewed)
 
         // If the user just signed in, refresh the A/B assignments
@@ -94,20 +112,12 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
-        epilogueTableViewController.setup(with: credentials, onConnectSite: { [weak self] in
-            self?.handleConnectAnotherButton()
-        })
-
+        epilogueTableViewController.setup(with: credentials)
         tableViewController = epilogueTableViewController
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        configurePanelBasedOnTableViewContents()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -120,6 +130,49 @@ class LoginEpilogueViewController: UIViewController {
         setTableViewMargins(forWidth: view.frame.width)
     }
 
+    /// Setup: Button Panel
+    ///
+    func configureButtonPanel(showBackground: Bool = true) {
+        if showBackground {
+            topLineHeightConstraint.constant = .hairlineBorderWidth
+            buttonPanel.backgroundColor = .quaternaryBackground
+            topLine.isHidden = false
+            blurEffectView.effect = UIBlurEffect(style: blurEffect)
+            blurEffectView.isHidden = false
+            setupDividerLineIfNeeded()
+        } else {
+            buttonPanel.backgroundColor = .basicBackground
+            topLine.isHidden = true
+            blurEffectView.isHidden = true
+            dividerView?.isHidden = true
+        }
+    }
+
+    func hideButtonPanel() {
+        buttonPanel.isHidden = true
+        tableViewBottomConstraintToButtonPanel.isActive = false
+        tableViewBottomConstraintToSafeArea.isActive = true
+    }
+
+    func hideCreateANewSiteButton() {
+        createANewSiteButton.isHidden = true
+    }
+
+    func showSkipButton() {
+        skipButton.isHidden = false
+    }
+
+    // MARK: - Actions
+
+    func createNewSite() {
+        onCreateNewSite?()
+        WPAnalytics.track(.loginEpilogueCreateNewSiteTapped)
+    }
+
+    func blogSelected(_ blog: Blog) {
+        onBlogSelected?(blog)
+        WPAnalytics.track(.loginEpilogueChooseSiteTapped, properties: [:], blog: blog)
+    }
 }
 
 // MARK: - Private Extension
@@ -129,38 +182,27 @@ private extension LoginEpilogueViewController {
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
     func refreshInterface(with credentials: AuthenticatorCredentials) {
-        configureDoneButton()
+        configureCreateANewSiteButton()
+        configureSkipButton()
     }
 
-    /// Setup: Buttons
+    /// Setup: Create a new site button
     ///
-    func configureDoneButton() {
-        doneButton.setTitle(NSLocalizedString("Done", comment: "A button title"), for: .normal)
-        doneButton.accessibilityIdentifier = "Done"
+    func configureCreateANewSiteButton() {
+        createANewSiteButton.isPrimary = false
+        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "Title for the button that will show a prompt to create a new site."), for: .normal)
+        createANewSiteButton.accessibilityIdentifier = "Create a new site"
     }
 
-    /// Setup: Button Panel
+    /// Setup: Skip button
     ///
-    func configurePanelBasedOnTableViewContents() {
-        guard let tableView = tableViewController?.tableView else {
-            return
-        }
+    func configureSkipButton() {
+        skipButton.isPrimary = true
+        skipButton.setTitle(NSLocalizedString("Skip", comment: "Title for the button that will skip creating a site and display the logged in view"), for: .normal)
+        skipButton.accessibilityIdentifier = "Skip"
 
-        topLineHeightConstraint.constant = .hairlineBorderWidth
-
-        let contentSize = tableView.contentSize
-        let screenHeight = UIScreen.main.bounds.height
-        let panelHeight = buttonPanel.frame.height
-
-        if contentSize.height >= (screenHeight - panelHeight) {
-            topLine.isHidden = false
-            blurEffectView.effect = UIBlurEffect(style: blurEffect)
-            blurEffectView.isHidden = false
-        } else {
-            buttonPanel.backgroundColor = .basicBackground
-            topLine.isHidden = true
-            blurEffectView.isHidden = true
-        }
+        // Skip button should be hidden by default
+        skipButton.isHidden = true
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
@@ -181,24 +223,38 @@ private extension LoginEpilogueViewController {
         tableViewTrailingConstraint.constant = margin
     }
 
+    func setupDividerLineIfNeeded() {
+        guard dividerView == nil else { return }
+        dividerView = LoginEpilogueDividerView()
+        guard let dividerView = dividerView else { return }
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        buttonPanel.addSubview(dividerView)
+        NSLayoutConstraint.activate([
+            dividerView.leadingAnchor.constraint(equalTo: buttonPanel.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: buttonPanel.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: buttonPanel.topAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight)
+        ])
+    }
+
     enum TableViewMarginMultipliers {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
     }
 
+    private enum Constants {
+        static let dividerViewHeight: CGFloat = 40.0
+    }
+
     // MARK: - Actions
+
+    @IBAction func createANewSite() {
+        createNewSite()
+    }
 
     @IBAction func dismissEpilogue() {
         tracker.track(click: .continue)
         onDismiss?()
         navigationController?.dismiss(animated: true)
-    }
-
-    func handleConnectAnotherButton() {
-        guard let controller = WordPressAuthenticator.signinForWPOrg() else {
-            return
-        }
-
-        navigationController?.setViewControllers([controller], animated: true)
     }
 }
