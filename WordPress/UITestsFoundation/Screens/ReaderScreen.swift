@@ -20,19 +20,17 @@ public class ReaderScreen: ScreenObject {
         )
     }
 
-    public func openTheLastPostInApp() {
-        getTheLastPost().tap()
+    public func openLastPost() {
+        getLastPost().tap()
     }
 
-    public func openTheLastPostInSafari() {
-        getTheLastPost().buttons["More"].tap()
+    public func openLastPostInSafari() {
+        getLastPost().buttons["More"].tap()
         app.buttons["Visit"].tap()
     }
 
-    public func getTheLastPost() -> XCUIElement {
-        let postPosition = app.cells.count - 1
-        let post = app.cells.element(boundBy: postPosition)
-
+    public func getLastPost() -> XCUIElement {
+        guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
         scrollDownUntilElementIsHittable(element: post)
         return post
     }
@@ -42,11 +40,10 @@ public class ReaderScreen: ScreenObject {
         while !element.waitForIsHittable(timeout: 3) && loopCount < 10 {
             loopCount += 1
             app.swipeUp(velocity: .fast)
-            print(loopCount)
         }
     }
 
-    public func postContentEquals(expected: String) -> Bool {
+    public func postContentEquals(_ expected: String) -> Bool {
         let equalsPostContent = NSPredicate(format: "label == %@", expected)
         let isPostContentEqual = app.staticTexts.element(matching: equalsPostContent).waitForIsHittable(timeout: 3)
 

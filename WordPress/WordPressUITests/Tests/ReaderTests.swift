@@ -24,13 +24,13 @@ class ReaderTests: XCTestCase {
 
     let expectedPostContent = "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis. Proin dictum non ligula aliquam varius. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
 
-    func testViewPostInApp() {
-        readerScreen.openTheLastPostInApp()
-        XCTAssert(readerScreen.postContentEquals(expected: expectedPostContent))
+    func testViewPost() {
+        readerScreen.openLastPost()
+        XCTAssert(readerScreen.postContentEquals(expectedPostContent))
     }
 
     func testViewPostInSafari() {
-        readerScreen.openTheLastPostInSafari()
-        XCTAssert(readerScreen.postContentEquals(expected: expectedPostContent))
+        readerScreen.openLastPostInSafari()
+        XCTAssert(readerScreen.postContentEquals(expectedPostContent))
     }
 }
