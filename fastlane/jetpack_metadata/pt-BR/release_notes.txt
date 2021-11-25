@@ -1,6 +1,13 @@
-- Agora ficou mais fácil de ver quando tem novos blocos disponíveis para usar no seu site
-- Agora você pode realçar o texto usando a tag HTML "mark", além de alterar a cor de fundo e texto do botão Pesquisar bloco. Brilhante!
-- Quando você estiver conferindo suas estatísticas, as tags HTML agora ficarão ocultas nos títulos de post.
-- Se você fizer parte de uma sequência de comentários, poderá acompanhá-la pelas notificações no aplicativo, não só na caixa de entrada do seu e-mail.
-- A tela Ajuda costumava ficar distorcida quando o usuário mudava do modo retrato para o paisagem e retornava para o retrato, mas agora ela fica no seu devido lugar.
-- Para que você possa ver todo o seu conteúdo, corrigimos mais casos em que blocos de mídia incorporada informavam não ser possível exibir conteúdo.
+Agora a autenticação em dois fatores vem com segurança extra. Você precisará desbloquear o dispositivo para aprovar ou recusar notificações.
+Ampliamos a configuração "Link para" de forma que o bloco de imagem inclua as opções "Arquivo de mídia" e "Página de anexo" juntamente com a opção já existente "URL personalizada".
+Corrigimos um problema que causava um erro na interface quando os usuários copiavam e colavam listas do Microsoft Word.
+
+Quando você acessar Meu site > Comentários, verá que demos uma repaginada nessa tela e fizemos ainda mais mudanças nos detalhes de comentários, incluindo:
+
+- Uma prévia do título do post ou comentário principal, dependendo de se o autor comentou em um post ou respondeu a um comentário.
+- Rich media para que você possa ver todos os comentários exatamente como o autor os escreveu.
+- Um botão de compartilhamento para comentários aprovados.
+- Capacidade de ver os endereços de IP e e-mail dos autores dos comentários disponível para usuários com as funções de administrador ou editor.
+- Endereço da Web tocável para acessar a URL do autor (em vez da imagem do avatar).
+
+Por fim, atualizamos a IU da visualização Responder, tanto minimizada quanto em tela cheia. Está bem elegante!
