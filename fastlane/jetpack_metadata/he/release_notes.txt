@@ -1,13 +1,13 @@
-Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
-We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
-We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
+הוספנו אבטחה לאימות דו-שלבי. יהיה צורך לבטל את הנעילה של המכשיר כדי לאשר או לדחות את ההודעות.
+- הרחבנו את ההגדרות של 'קישור אל' בבלוק התמונה והוספנו את האפשרויות 'קובץ מדיה' ו'עמוד עם קובץ מצורף' לצד האפשרות 'כתובת URL מותאמת' שהייתה כבר קיימת.
+תיקנו בעיה שגרמה לממשק לקרוס כאשר המשתמשים העתיקו והדביקו רשימות מ-Microsoft Word.
 
-When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
+לאזור 'האתר שלי > תגובות' יש מראה חדש והוספנו חידושים לפרטי התגובות, כולל: 
 
-- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
-- Rich content so you can see each comment just as the author wrote it.
-- A share button for approved comments.
-- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
-- Tappable web address to visit the author's URL (instead of their avatar image).
+- הצצה לכותרת הפוסט או לתגובת ההורה, תלוי אם המחבר הגיב לפוסט עצמו או הגיב לתגובה קיימת.
+- תוכן עשיר כדי לאפשר לך לראות כל תגובה בדיוק כפי שהמחבר רשם אותה.
+- כפתור שיתוף לתגובות שאושרו.
+- משתמשים עם תפקידים של מנהל מערכת או עורך יכולים לראות את כתובת האימייל וכתובת ה-IP של המחבר.
+- כתובות אינטרנט שניתן להקיש עליהן כדי לבקר בכתובת ה-URL של המחבר (במקום הקשה על תמונת הפרופיל שלו).
 
-Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!
+אחרון חביב, עדכנו את ממשק המשתמש של האפשרות 'להגיב' בתצוגה הממוזערת ובתצוגה במסך מלא. נראה טוב!
