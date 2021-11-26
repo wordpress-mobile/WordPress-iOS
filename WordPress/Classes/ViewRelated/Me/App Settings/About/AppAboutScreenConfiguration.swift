@@ -14,7 +14,7 @@ struct WebViewPresenter {
 class AppAboutScreenConfiguration: AboutScreenConfiguration {
     static let appInfo = AboutScreenAppInfo(name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
                                             version: Bundle.main.detailedVersionNumber() ?? "",
-                                            icon: UIImage(named: AppIcon.currentOrDefault.imageName) ?? UIImage())
+                                            icon: UIImage(named: AppConstants.currentAppIconName) ?? UIImage())
 
     static let fonts = AboutScreenFonts(appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
                                         appVersion: WPStyleGuide.tableviewTextFont())
@@ -34,7 +34,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                 }),
                 AboutItem(title: TextContent.share, action: { [weak self] context in
                     self?.tracker.buttonPressed(.share)
-                    self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
+                    self?.sharePresenter.present(for: AppConstants.shareAppName, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: AppConstants.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)

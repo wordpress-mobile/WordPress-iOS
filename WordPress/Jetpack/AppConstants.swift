@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 @objc class AppConstants: NSObject {
     static let itunesAppID = "1565481562"
@@ -7,6 +8,7 @@ import Foundation
     static let productBlogURL = "https://jetpack.com/blog"
     static let productBlogDisplayURL = "jetpack.com/blog"
     static let zendeskSourcePlatform = "mobile_-_jp_ios"
+    static let shareAppName: ShareAppName = .jetpack
     @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
@@ -20,6 +22,17 @@ import Foundation
     static let pushNotificationAppId = "com.jetpack.appstore"
     #endif
     #endif
+
+    static var currentAppIconName: String {
+        guard let icons =
+                Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
+              let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
+              let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String] else {
+                  return ""
+              }
+
+        return iconFiles.last ?? ""
+    }
 }
 
 // MARK: - Tab bar order

@@ -8,6 +8,7 @@ import WordPressAuthenticator
     static let productBlogURL = "https://blog.wordpress.com"
     static let productBlogDisplayURL = "blog.wordpress.com"
     static let zendeskSourcePlatform = "mobile_-_ios"
+    static let shareAppName: ShareAppName = .wordpress
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
@@ -21,6 +22,10 @@ import WordPressAuthenticator
     static let pushNotificationAppId = "org.wordpress.appstore"
     #endif
     #endif
+
+    static var currentAppIconName: String {
+        AppIcon.currentOrDefault.imageName
+    }
 }
 
 // MARK: - Tab bar order
