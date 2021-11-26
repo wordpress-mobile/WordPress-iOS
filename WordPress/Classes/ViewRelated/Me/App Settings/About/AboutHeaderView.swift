@@ -29,7 +29,7 @@ struct AboutScreenFonts {
     }()
 }
 
-final class UnifiedAboutHeaderView: UIView {
+final class AboutHeaderView: UIView {
 
     // MARK: - Customization Support
 
