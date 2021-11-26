@@ -36,11 +36,11 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: TextContent.twitter, subtitle: AppConstants.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.present(for: Links.twitter, context: context)
                 }),
-                AboutItem(title: TextContent.blog, subtitle: "blog.wordpress.com", cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: TextContent.blog, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
                     self?.webViewPresenter.present(for: Links.blog, context: context)
                 })
@@ -95,8 +95,8 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum Links {
-        static let twitter    = URL(string: "https://twitter.com/WordPressiOS")!
-        static let blog       = URL(string: "https://blog.wordpress.com")!
+        static let twitter    = URL(string: AppConstants.productTwitterURL)!
+        static let blog       = URL(string: AppConstants.productBlogURL)!
         static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
         static let automattic = URL(string: "https://automattic.com")!
     }

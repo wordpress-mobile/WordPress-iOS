@@ -494,7 +494,7 @@ private extension MeViewController {
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
-        static let about = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+        static let about = AppConstants.Settings.aboutTitle
     }
 
     enum HeaderTitles {
