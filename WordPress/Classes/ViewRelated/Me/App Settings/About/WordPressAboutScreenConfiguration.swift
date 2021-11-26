@@ -40,6 +40,10 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.present(for: Links.twitter, context: context)
                 }),
+                AboutItem(title: TextContent.blog, subtitle: "blog.wordpress.com", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
+                    self?.tracker.buttonPressed(.blog)
+                    self?.webViewPresenter.present(for: Links.blog, context: context)
+                })
             ],
             [
                 AboutItem(title: TextContent.legalAndMore, action: { [weak self] context in
@@ -83,6 +87,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
         static let rateUs             = NSLocalizedString("Rate Us", comment: "Title for button allowing users to rate the app in the App Store")
         static let share              = NSLocalizedString("Share with Friends", comment: "Title for button allowing users to share information about the app with friends, such as via Messages")
         static let twitter            = NSLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
+        static let blog               = NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress product blog")
         static let legalAndMore       = NSLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
         static let automatticFamily   = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
         static let workWithUs         = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
@@ -91,6 +96,7 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
 
     private enum Links {
         static let twitter    = URL(string: "https://twitter.com/WordPressiOS")!
+        static let blog       = URL(string: "https://blog.wordpress.com")!
         static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
         static let automattic = URL(string: "https://automattic.com")!
     }
