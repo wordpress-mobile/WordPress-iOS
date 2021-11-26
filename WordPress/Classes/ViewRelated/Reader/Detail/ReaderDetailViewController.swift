@@ -514,6 +514,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureCommentsTable() {
+        commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
+                                   forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
+
         commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate

@@ -1547,6 +1547,10 @@
 		93F72150271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7214E271831820021A09F /* SiteStatsPinnedItemStore.swift */; };
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
 		976E325EAC3B33524407BFC0 /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
+		9801E682274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801E681274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift */; };
+		9801E683274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801E681274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift */; };
+		9801E685274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9801E684274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib */; };
+		9801E686274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9801E684274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib */; };
 		9804A097263780B500354097 /* LikeUserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804A096263780B400354097 /* LikeUserHelpers.swift */; };
 		9804A098263780B500354097 /* LikeUserHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9804A096263780B400354097 /* LikeUserHelpers.swift */; };
 		98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98077B592075561800109F95 /* SupportTableViewController.swift */; };
@@ -6225,6 +6229,8 @@
 		93FA59DB18D88C1C001446BC /* PostCategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PostCategoryService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		93FA59DC18D88C1C001446BC /* PostCategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostCategoryService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		979B445A45E13F3289F2E99E /* Pods_WordPressThisWeekWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressThisWeekWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9801E681274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailCommentsHeader.swift; sourceTree = "<group>"; };
+		9801E684274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderDetailCommentsHeader.xib; sourceTree = "<group>"; };
 		98035B7225C49CC1002C0EB4 /* WordPress 112.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 112.xcdatamodel"; sourceTree = "<group>"; };
 		9804A096263780B400354097 /* LikeUserHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeUserHelpers.swift; sourceTree = "<group>"; };
 		9804E0B42639D88C00532095 /* WordPress 123.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 123.xcdatamodel"; sourceTree = "<group>"; };
@@ -11424,6 +11430,8 @@
 		8BD89F2C24D9E73600341C90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9801E681274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift */,
+				9801E684274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib */,
 				98622E9E274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift */,
 				3223393B24FEC18000BDD4BF /* ReaderDetailFeaturedImageView.swift */,
 				3223393D24FEC2A700BDD4BF /* ReaderDetailFeaturedImageView.xib */,
@@ -15521,6 +15529,7 @@
 				1761F17426209AEE000815EF /* open-source-dark-icon-app-76x76.png in Resources */,
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				1761F18326209AEE000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png in Resources */,
+				9801E685274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */,
 				17222D8E261DDDF90047B163 /* black-classic-icon-app-76x76.png in Resources */,
@@ -16028,6 +16037,7 @@
 				FABB20AB2602FC2C00C8785C /* Pages.storyboard in Resources */,
 				FABB20AC2602FC2C00C8785C /* Shrikhand-Regular.ttf in Resources */,
 				FABB20AD2602FC2C00C8785C /* StatsGhostSingleRowCell.xib in Resources */,
+				9801E686274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */,
 				FABB20AE2602FC2C00C8785C /* ThemeBrowser.storyboard in Resources */,
 				FABB20AF2602FC2C00C8785C /* StatsGhostTabbedCell.xib in Resources */,
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
@@ -17767,6 +17777,7 @@
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
 				AE2F3125270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
 				B560914C208A671F00399AE4 /* WPStyleGuide+SiteCreation.swift in Sources */,
+				9801E682274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */,
 				B5EFB1C21B31B98E007608A3 /* NotificationSettingsService.swift in Sources */,
 				5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */,
 				1717139F265FE59700F3A022 /* ButtonStyles.swift in Sources */,
@@ -19823,6 +19834,7 @@
 				FABB22DE2602FC2C00C8785C /* KeyboardInfo.swift in Sources */,
 				FABB22DF2602FC2C00C8785C /* PlanDetailViewModel.swift in Sources */,
 				FABB22E02602FC2C00C8785C /* DebugMenuViewController.swift in Sources */,
+				9801E683274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */,
 				FABB22E12602FC2C00C8785C /* MenuItemCheckButtonView.m in Sources */,
 				FABB22E22602FC2C00C8785C /* MenuItemLinkViewController.m in Sources */,
 				FABB22E32602FC2C00C8785C /* PreviewWebKitViewController.swift in Sources */,
