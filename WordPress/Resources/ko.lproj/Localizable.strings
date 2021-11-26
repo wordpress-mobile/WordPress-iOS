@@ -9170,3 +9170,13 @@ translators: Block name. %s: The localized block name */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• 사용자 및 글쓴이";
 
+
+// MARK: WordPressStatsWidgets Strings
+
+"widget.alltime.bestviews.label" = "최고 조회수";
+"widget.alltime.posts.label" = "글";
+"widget.today.comments.label" = "댓글";
+"widget.today.likes.label" = "좋아요";
+"widget.today.title" = "오늘";
+"widget.today.views.label" = "뷰";
+"widget.today.visitors.label" = "방문자";

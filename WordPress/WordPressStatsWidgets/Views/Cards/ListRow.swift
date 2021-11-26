@@ -48,12 +48,12 @@ struct ListRow: View {
         return percentValue < 0 ? Constants.negativeColor : Constants.positiveColor
     }
 
-    private var differenceLabelText: LocalizedStringKey {
+    private var differenceLabelText: LocalizedString {
         guard !isToday else {
             return LocalizableStrings.todayWidgetTitle
         }
 
-        return LocalizedStringKey(dateFormatter.string(from: date))
+        return dateFormatter.string(from: date)
     }
 
     var body: some View {

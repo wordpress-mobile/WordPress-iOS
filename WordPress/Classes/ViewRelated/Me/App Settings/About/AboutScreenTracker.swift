@@ -16,6 +16,7 @@ class AboutScreenTracker {
             case rateUs = "rate_us"
             case share
             case twitter
+            case blog
             case legal
             case automatticFamily = "automattic_family"
             case workWithUs = "work_with_us"

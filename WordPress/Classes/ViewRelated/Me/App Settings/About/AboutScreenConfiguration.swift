@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 typealias AboutScreenSection = [AboutItem]
 
@@ -65,7 +66,7 @@ struct AboutItem {
     /// and the source view that triggered the action.
     let action: AboutItemAction?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, action: AboutItemAction? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .none, hidesSeparator: Bool = false, action: AboutItemAction? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle
