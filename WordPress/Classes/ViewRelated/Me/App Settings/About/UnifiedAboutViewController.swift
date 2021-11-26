@@ -126,7 +126,6 @@ class UnifiedAboutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
         if isSubmenu {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissAboutScreen))
         }
@@ -166,6 +165,8 @@ class UnifiedAboutViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
 
         if isMovingToParent {
             configuration.willShow(viewController: self)
