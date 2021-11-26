@@ -26,40 +26,40 @@ class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
     lazy var sections: [[AboutItem]] = {
         [
             [
-                AboutItem(title: TextContent.rateUs, accessoryType: .none, action: { [weak self] context in
+                AboutItem(title: TextContent.rateUs, action: { [weak self] context in
                     WPAnalytics.track(.appReviewsRatedApp)
                     self?.tracker.buttonPressed(.rateUs)
                     AppRatingUtility.shared.ratedCurrentVersion()
                     UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
                 }),
-                AboutItem(title: TextContent.share, accessoryType: .none, action: { [weak self] context in
+                AboutItem(title: TextContent.share, action: { [weak self] context in
                     self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: .wordpress, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
+                AboutItem(title: TextContent.twitter, subtitle: "@WordPressiOS", cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.present(for: Links.twitter, context: context)
                 }),
-                AboutItem(title: TextContent.blog, subtitle: "blog.wordpress.com", cellStyle: .value1, accessoryType: .none, action: { [weak self] context in
+                AboutItem(title: TextContent.blog, subtitle: "blog.wordpress.com", cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
                     self?.webViewPresenter.present(for: Links.blog, context: context)
                 })
             ],
             [
-                AboutItem(title: TextContent.legalAndMore, action: { [weak self] context in
+                AboutItem(title: TextContent.legalAndMore, accessoryType: .disclosureIndicator, action: { [weak self] context in
                     self?.tracker.buttonPressed(.legal)
                     context.showSubmenu(title: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
                 }),
             ],
             [
-                AboutItem(title: TextContent.automatticFamily, hidesSeparator: true, action: { [weak self] context in
+                AboutItem(title: TextContent.automatticFamily, accessoryType: .disclosureIndicator, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
                     self?.webViewPresenter.present(for: Links.automattic, context: context)
                 }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ],
             [
-                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, action: { [weak self] context in
+                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
                     self?.tracker.buttonPressed(.workWithUs)
                     self?.webViewPresenter.present(for: Links.workWithUs, context: context)
                 }),
@@ -118,7 +118,7 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     }()
 
     private func linkItem(title: String, link: URL, button: AboutScreenTracker.Event.Button) -> AboutItem {
-        AboutItem(title: title, accessoryType: .none, action: { [weak self] context in
+        AboutItem(title: title, action: { [weak self] context in
             self?.buttonPressed(link: link, context: context, button: button)
         })
     }
