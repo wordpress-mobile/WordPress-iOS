@@ -11,7 +11,7 @@ struct WebViewPresenter {
     }
 }
 
-class WordPressAboutScreenConfiguration: AboutScreenConfiguration {
+class AppAboutScreenConfiguration: AboutScreenConfiguration {
     static let appInfo = AboutScreenAppInfo(name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
                                             version: Bundle.main.detailedVersionNumber() ?? "",
                                             icon: UIImage(named: AppIcon.currentOrDefault.imageName) ?? UIImage())

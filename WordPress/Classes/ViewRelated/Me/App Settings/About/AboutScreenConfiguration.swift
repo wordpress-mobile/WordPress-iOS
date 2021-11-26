@@ -3,7 +3,7 @@ import UIKit
 
 typealias AboutScreenSection = [AboutItem]
 
-/// Users of UnifiedAboutViewController must provide a configuration conforming to this protocol.
+/// Users of AutomatticAboutScreen must provide a configuration conforming to this protocol.
 protocol AboutScreenConfiguration {
     /// A list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
     var sections: [AboutScreenSection] { get }
@@ -36,7 +36,7 @@ struct AboutItemActionContext {
     }
 
     func showSubmenu(title: String = "", configuration: AboutScreenConfiguration) {
-        let submenu = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
+        let submenu = AutomatticAboutScreen(configuration: configuration, isSubmenu: true)
         submenu.title = title
 
         viewController.navigationController?.pushViewController(submenu, animated: true)
