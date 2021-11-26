@@ -1,13 +1,13 @@
 import UIKit
 
 // Required to prevent rotation in the About screen
-private class UnifiedAboutNavigationController: UINavigationController, OrientationLimited {
+private class AutomatticAboutScreenNavigationController: UINavigationController, OrientationLimited {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
 }
 
-class UnifiedAboutViewController: UIViewController {
+class AutomatticAboutScreen: UIViewController {
     private let appInfo: AboutScreenAppInfo?
     private let fonts: AboutScreenFonts?
 
@@ -56,7 +56,7 @@ class UnifiedAboutViewController: UIViewController {
 
         let headerFonts = fonts ?? AboutScreenFonts.defaultFonts
 
-        let headerView = UnifiedAboutHeaderView(appInfo: appInfo, fonts: headerFonts, dismissAction: { [weak self] in
+        let headerView = AboutHeaderView(appInfo: appInfo, fonts: headerFonts, dismissAction: { [weak self] in
             self?.dismissAboutScreen()
         })
 
@@ -102,11 +102,11 @@ class UnifiedAboutViewController: UIViewController {
 
     /// This is the preferred way to create an About screen to present, as a navigation controller is required.
     static func controller(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil, isSubmenu: Bool = false) -> UIViewController {
-        let viewController = UnifiedAboutViewController(appInfo: appInfo,
-                                                        configuration: configuration,
-                                                        fonts: fonts,
-                                                        isSubmenu: isSubmenu)
-        let navigationController = UnifiedAboutNavigationController(rootViewController: viewController)
+        let viewController = AutomatticAboutScreen(appInfo: appInfo,
+                                                   configuration: configuration,
+                                                   fonts: fonts,
+                                                   isSubmenu: isSubmenu)
+        let navigationController = AutomatticAboutScreenNavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .formSheet
         return navigationController
     }
@@ -197,7 +197,7 @@ class UnifiedAboutViewController: UIViewController {
 
 // MARK: - Table view data source
 
-extension UnifiedAboutViewController: UITableViewDataSource {
+extension AutomatticAboutScreen: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -238,7 +238,7 @@ extension UnifiedAboutViewController: UITableViewDataSource {
 
 // MARK: - Table view delegate
 
-extension UnifiedAboutViewController: UITableViewDelegate {
+extension AutomatticAboutScreen: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = sections[indexPath.section]
         let item = section[indexPath.row]
