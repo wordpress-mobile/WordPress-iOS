@@ -1,7 +1,13 @@
 import UIKit
 
+// Required to prevent rotation in the About screen
+private class UnifiedAboutNavigationController: UINavigationController, OrientationLimited {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+}
 
-class UnifiedAboutViewController: UIViewController, OrientationLimited {
+class UnifiedAboutViewController: UIViewController {
     private let appInfo: AboutScreenAppInfo?
     private let fonts: AboutScreenFonts?
 
@@ -88,15 +94,22 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
         return footerView
     }()
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
-    }
-
     private var shouldShowNavigationBar: Bool {
         isSubmenu
     }
 
     // MARK: - View lifecycle
+
+    /// This is the preferred way to create an About screen to present, as a navigation controller is required.
+    static func controller(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil, isSubmenu: Bool = false) -> UIViewController {
+        let viewController = UnifiedAboutViewController(appInfo: appInfo,
+                                                        configuration: configuration,
+                                                        fonts: fonts,
+                                                        isSubmenu: isSubmenu)
+        let navigationController = UnifiedAboutNavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .formSheet
+        return navigationController
+    }
 
     init(appInfo: AboutScreenAppInfo? = nil, configuration: AboutScreenConfiguration, fonts: AboutScreenFonts? = nil, isSubmenu: Bool = false) {
         self.appInfo = appInfo
