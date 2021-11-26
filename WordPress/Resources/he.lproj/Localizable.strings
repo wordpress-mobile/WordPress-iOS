@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-23 15:54:06+0000 */
+/* Translation-Revision-Date: 2021-11-25 10:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -402,7 +402,7 @@ translators: Block name. %s: The localized block name */
 "About Me" = "אודותיי";
 
 /* Link to About screen for WordPress for iOS */
-"About WordPress" = "אודות וורדפרס";
+"About WordPress" = "אודות WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "מידע לגבי WordPress עבור iOS";
@@ -2050,7 +2050,7 @@ translators: Block name. %s: The localized block name */
 "Currently restoring: %1$@" = "אנחנו משחזרים כעת את: %1$@";
 
 /* No comment provided by engineer. */
-"Custom URL" = "כתובת מותאמת";
+"Custom URL" = "כתובת URL מותאמת";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "הודעה מותאמת אישית...";
@@ -8681,7 +8681,7 @@ translators: Block name. %s: The localized block name */
 "Write Post" = "כתיבת פוסט";
 
 /* Placeholder text for inline compose view */
-"Write a reply" = "כתוב תגובה...";
+"Write a reply" = "לכתוב תגובה";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "כתוב תגובה...";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-23 16:30:07+0000 */
+/* Translation-Revision-Date: 2021-11-25 14:07:06+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -5665,7 +5665,7 @@ translators: Block name. %s: The localized block name */
 
 /* Button label to refres a web page
    The loading view button title displayed when an error occurred */
-"Refresh" = "Reîmprospătare";
+"Refresh" = "Reîmprospătează";
 
 /* Action to redeem domain credit. */
 "Register Domain" = "Înregistrează domeniul";
