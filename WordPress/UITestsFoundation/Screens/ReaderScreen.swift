@@ -54,11 +54,8 @@ public class ReaderScreen: ScreenObject {
         let backButton = app.buttons["Back"]
         let dismissButton = app.buttons["Dismiss"]
 
-        if dismissButton.isHittable {
-            dismissButton.tap()
-        } else if backButton.isHittable {
-            backButton.tap()
-        }
+        if dismissButton.isHittable { dismissButton.tap() }
+        if backButton.isHittable { backButton.tap() }
     }
 
     public static func isLoaded() -> Bool {
