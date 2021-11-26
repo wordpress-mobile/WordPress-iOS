@@ -158,7 +158,7 @@ class MeViewController: UITableViewController {
             // middle section
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
-                if AppConfiguration.showsNewAboutScreen && FeatureFlag.aboutScreen.enabled {
+                if FeatureFlag.aboutScreen.enabled {
                     rows.append(NavigationItemRow(title: RowTitles.about,
                                                   icon: UIImage.gridicon(.mySites),
                                                   accessoryType: .disclosureIndicator,
