@@ -257,7 +257,7 @@ class MeViewController: UITableViewController {
             let controller = UnifiedAboutViewController(appInfo: WordPressAboutScreenConfiguration.appInfo,
                                                         configuration: configuration,
                                                         fonts: WordPressAboutScreenConfiguration.fonts)
-            let navigationController = UINavigationController(rootViewController: controller)
+            let navigationController = UnifiedAboutNavigationController(rootViewController: controller)
             navigationController.modalPresentationStyle = .formSheet
             self.present(navigationController, animated: true) {
                 self.tableView.deselectSelectedRowWithAnimation(true)

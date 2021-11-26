@@ -1,7 +1,12 @@
 import UIKit
 
+class UnifiedAboutNavigationController: UINavigationController, OrientationLimited {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+}
 
-class UnifiedAboutViewController: UIViewController, OrientationLimited {
+class UnifiedAboutViewController: UIViewController {
     private let appInfo: AboutScreenAppInfo?
     private let fonts: AboutScreenFonts?
 
@@ -87,10 +92,6 @@ class UnifiedAboutViewController: UIViewController, OrientationLimited {
 
         return footerView
     }()
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
-    }
 
     private var shouldShowNavigationBar: Bool {
         isSubmenu
