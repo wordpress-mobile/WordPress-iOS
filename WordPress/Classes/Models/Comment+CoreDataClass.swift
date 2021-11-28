@@ -106,6 +106,17 @@ public class Comment: NSManagedObject {
     @objc func isTopLevelComment() -> Bool {
         return depth == 0
     }
+
+    func isFromPostAuthor() -> Bool {
+        guard let post = post,
+              let postAuthorID = post.authorID?.int32Value,
+              postAuthorID > 0,
+              authorID > 0 else {
+                  return false
+              }
+
+        return authorID == postAuthorID
+    }
 }
 
 private extension Comment {

@@ -70,6 +70,7 @@ import UIKit
             return
         }
 
+        cell.badgeTitle = comment.isFromPostAuthor() ? Constants.authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
@@ -84,5 +85,8 @@ private extension ReaderCommentsViewController {
     struct Constants {
         static let indentationWidth: CGFloat = 15.0
         static let maxIndentationLevel: Int = 4
+
+        static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
+                                                       + "Shown when the comment is written by the post author.")
     }
 }
