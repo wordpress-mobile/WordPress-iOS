@@ -301,7 +301,6 @@
         <attribute name="author_ip" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="author_url" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="authorAvatarURL" optional="YES" attributeType="String" defaultValueString="" syncable="YES"/>
-        <attribute name="authorID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="canModerate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
         <attribute name="content" optional="YES" attributeType="String" defaultValueString=""/>
@@ -987,7 +986,7 @@
         <element name="BlogSettings" positionX="1056.86328125" positionY="236.3984375" width="128" height="853"/>
         <element name="Category" positionX="-472.19921875" positionY="-178.47265625" width="128" height="118"/>
         <element name="ClicksStatsRecordValue" positionX="493.99609375" positionY="1741.6171875" width="128" height="133"/>
-        <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="389"/>
+        <element name="Comment" positionX="-897.9921875" positionY="-561.09375" width="128" height="374"/>
         <element name="CountryStatsRecordValue" positionX="321.078125" positionY="2037.06640625" width="128" height="88"/>
         <element name="DiffAbstractValue" positionX="-1074.79296875" positionY="1237.0859375" width="128" height="88"/>
         <element name="DiffContentValue" positionX="-1280.3125" positionY="1246.609375" width="128" height="60"/>
