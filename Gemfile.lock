@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:wordpress-mobile/release-toolkit
-  revision: eccf5a273276e976cd42c66590af087d1654037f
-  branch: develop
+  revision: 83e4d5f036f1871ce6f8e9411550d4040cebddca
+  branch: add/github-comment-action
   specs:
     fastlane-plugin-wpmreleasetoolkit (2.1.0)
       activesupport (~> 5)
