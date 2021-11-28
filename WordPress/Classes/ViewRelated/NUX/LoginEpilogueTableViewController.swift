@@ -98,40 +98,27 @@ extension LoginEpilogueTableViewController {
             return 2
         }
 
-        let siteCount = numberOfSites()
+        let correctedSection = section - 1
+        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
 
         // Add one for Create new site cell
 
         guard let parent = parent as? LoginEpilogueViewController else {
-            return siteCount
+            return siteRows
         }
 
-        switch siteCount {
-
-        case 0:
-            if !showCreateNewSite {
-                parent.hideCreateANewSiteButton()
-            }
-            parent.configureButtonPanel(showBackground: false)
-            parent.showSkipButton()
-            return siteCount
-
-        case 1...Constants.createNewSiteRowThreshold:
+        if siteRows <= Constants.createNewSiteRowThreshold {
             parent.hideButtonPanel()
-            return showCreateNewSite ? siteCount + 1 : siteCount
-
-        default:
+            return showCreateNewSite ? siteRows + 1 : siteRows
+        } else {
             if !showCreateNewSite {
                 parent.hideButtonPanel()
             }
-            return siteCount
+            return siteRows
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let siteCount = numberOfSites()
-        let hasSites = siteCount > 0
 
         // User Info Row
         if indexPath.section == Sections.userInfoSection {
@@ -152,16 +139,17 @@ extension LoginEpilogueTableViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.chooseSiteReuseIdentifier, for: indexPath) as? LoginEpilogueChooseSiteTableViewCell else {
                     return UITableViewCell()
                 }
-                cell.configure(hasSites: hasSites)
                 removeSeparatorFor(cell)
                 return cell
             }
         }
 
         // Create new site row
+        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: indexPath.section - 1)
+
         let isCreateNewSiteRow =
             showCreateNewSite &&
-            siteCount <= Constants.createNewSiteRowThreshold &&
+            siteRows <= Constants.createNewSiteRowThreshold &&
             indexPath.row == lastRowInSection(indexPath.section)
 
         if isCreateNewSiteRow {
@@ -235,14 +223,8 @@ private extension LoginEpilogueTableViewController {
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
     }
 
-    func numberOfSites() -> Int {
-        let adjustedBlogSection = Sections.blogSection - 1
-        return blogDataSource.tableView(tableView, numberOfRowsInSection: adjustedBlogSection)
-    }
-
     enum Sections {
         static let userInfoSection = 0
-        static let blogSection = 1
     }
 
     enum Settings {
