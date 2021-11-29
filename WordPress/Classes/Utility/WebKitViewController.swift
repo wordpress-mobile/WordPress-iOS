@@ -27,6 +27,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let webView: WKWebView
     @objc let progressView = WebProgressView()
     @objc let titleView = NavigationTitleView()
+    let analyticsSource: String?
 
     @objc lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
@@ -120,12 +121,14 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         linkBehavior = configuration.linkBehavior
         opensNewInSafari = configuration.opensNewInSafari
         onClose = configuration.onClose
+        analyticsSource = configuration.analyticsSource
+
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
     }
 
-    fileprivate init(url: URL, parent: WebKitViewController, configuration: WKWebViewConfiguration) {
+    fileprivate init(url: URL, parent: WebKitViewController, configuration: WKWebViewConfiguration, source: String? = nil) {
         webView = WKWebView(frame: .zero, configuration: configuration)
         self.url = url
         customOptionsButton = parent.customOptionsButton
@@ -136,6 +139,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationDelegate = parent.navigationDelegate
         linkBehavior = parent.linkBehavior
         opensNewInSafari = parent.opensNewInSafari
+        analyticsSource = source
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -537,7 +541,7 @@ extension WebKitViewController: WKUIDelegate {
             if opensNewInSafari {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                let controller = WebKitViewController(url: url, parent: self, configuration: configuration)
+                let controller = WebKitViewController(url: url, parent: self, configuration: configuration, source: analyticsSource)
                 let navController = UINavigationController(rootViewController: controller)
                 present(navController, animated: true)
                 return controller.webView
