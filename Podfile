@@ -121,8 +121,10 @@ def gutenberg_dependencies(options)
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
+        'React-logger',
         'React-perflogger',
         'React-runtimeexecutor',
+        'boost',
         'Yoga',
         'RCT-Folly',
         'glog',
@@ -166,7 +168,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.67.0'
+    gutenberg :commit => '5c46e44a7e6f85ca8413f44fb4b12a1425e15764'
 
     ## Third party libraries
     ## =====================
@@ -472,9 +474,12 @@ post_install do |installer|
     # =====================================
     #
     installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |configuration|
-        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      # Exclude RCT-Folly as it requires explicit deployment target https://git.io/JPb73
+      if (target.name != 'RCT-Folly')
+        target.build_configurations.each do |configuration|
+          pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+          configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+        end
       end
     end
 
