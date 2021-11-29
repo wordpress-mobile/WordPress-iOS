@@ -9,15 +9,30 @@ public class SupportScreen: ScreenObject {
         $0.buttons["close-button"]
     }
 
+    private let contactSupportButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells["contact-support-button"]
+    }
+
+    private let contactEmailFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Email"]
+    }
+
+    private let okButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["OK"]
+    }
+
     var closeButton: XCUIElement { closeButtonGetter(app) }
+    var contactSupportButton: XCUIElement { contactSupportButtonGetter(app) }
+    var contactEmailField: XCUIElement { contactEmailFieldGetter(app) }
+    var okButton: XCUIElement { okButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 closeButtonGetter,
+                contactSupportButtonGetter,
                 // swiftlint:disable opening_brace
                 { $0.cells["help-center-link-button"] },
-                { $0.cells["contact-support-button"] },
                 { $0.cells["my-tickets-button"] },
                 { $0.cells["set-contact-email-button"] },
                 { $0.cells["activity-logs-button"] }
@@ -28,17 +43,16 @@ public class SupportScreen: ScreenObject {
     }
 
     public func contactSupport() throws -> ContactUsScreen {
-        app.cells["contact-support-button"].tap()
+        contactSupportButton.tap()
         addContactInformationIfNeeded()
         return try ContactUsScreen()
     }
 
     private func addContactInformationIfNeeded() {
-        let emailTextField = app.textFields["Email"]
-        if emailTextField.waitForExistence(timeout: 3) {
-            emailTextField.tap()
-            emailTextField.typeText("user@test.zzz")
-            app.buttons["OK"].tap()
+        if contactEmailField.waitForExistence(timeout: 3) {
+            contactEmailField.tap()
+            contactEmailField.typeText("user@test.zzz")
+            okButton.tap()
         }
     }
 

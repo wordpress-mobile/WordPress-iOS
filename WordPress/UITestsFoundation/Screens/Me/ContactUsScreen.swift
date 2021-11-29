@@ -17,9 +17,14 @@ public class ContactUsScreen: ScreenObject {
         $0.buttons["ZDKattachButton"]
     }
 
+    private let deleteMessageButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Delete"]
+    }
+
     var closeButton: XCUIElement { closeButtonGetter(app) }
     var sendButton: XCUIElement { sendButtonGetter(app) }
     var attachButton: XCUIElement { attachButtonGetter(app) }
+    var deleteMessageButton: XCUIElement { deleteMessageButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // Notice we are not checking for the send button because it's visible but not enabled,
@@ -33,17 +38,30 @@ public class ContactUsScreen: ScreenObject {
         )
     }
 
-    public func canSendMessage() -> Bool {
-        app.typeText("A")
-        let isSendButtonEnabled = sendButton.isEnabled
-        app.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 1))
+    public func assertCanNotSendEmptyMessage() -> ContactUsScreen {
+        XCTAssert(!sendButton.isEnabled)
+        return self
+    }
 
-        return isSendButtonEnabled
+    public func assertCanSendMessage() {
+        XCTAssert(sendButton.isEnabled)
+    }
+
+    public func enterText(_ text: String) -> ContactUsScreen {
+        app.typeText(text)
+        return self
     }
 
     public func dismiss() throws -> SupportScreen {
         closeButton.tap()
+        discardMessageIfNeeded()
         return try SupportScreen()
+    }
+
+    private func discardMessageIfNeeded() {
+        if deleteMessageButton.isHittable {
+            deleteMessageButton.tap()
+        }
     }
 
     static func isLoaded() -> Bool {
