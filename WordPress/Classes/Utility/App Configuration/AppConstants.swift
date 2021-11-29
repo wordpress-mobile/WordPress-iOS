@@ -22,10 +22,6 @@ import WordPressAuthenticator
     static let pushNotificationAppId = "org.wordpress.appstore"
     #endif
     #endif
-
-    static var currentAppIconName: String {
-        AppIcon.currentOrDefault.imageName
-    }
 }
 
 // MARK: - Tab bar order

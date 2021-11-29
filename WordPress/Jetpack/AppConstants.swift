@@ -22,17 +22,6 @@ import WordPressKit
     static let pushNotificationAppId = "com.jetpack.appstore"
     #endif
     #endif
-
-    static var currentAppIconName: String {
-        guard let icons =
-                Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
-              let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
-              let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String] else {
-                  return ""
-              }
-
-        return iconFiles.last ?? ""
-    }
 }
 
 // MARK: - Tab bar order

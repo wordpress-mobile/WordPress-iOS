@@ -239,6 +239,8 @@
 		1752D4FA238D702E002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		1752D4FB238D702F002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
+		175721162754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
+		175721172754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		1759F1701FE017BF0003EC81 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F16F1FE017BF0003EC81 /* Queue.swift */; };
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
 		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
@@ -4840,6 +4842,7 @@
 		1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueDatabase.swift; sourceTree = "<group>"; };
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		17523380246C4F9200870B4A /* HomepageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageSettingsViewController.swift; sourceTree = "<group>"; };
+		175721152754D31F00DE38BC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
@@ -11195,6 +11198,7 @@
 				57C3D392235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift */,
 				F582060123A85495005159A9 /* SiteDateFormatters.swift */,
 				17C64BD1248E26A200AF09D7 /* AppAppearance.swift */,
+				175721152754D31F00DE38BC /* AppIcon.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -17321,6 +17325,7 @@
 				17B7C89E20EC1D0D0042E260 /* UniversalLinkRouter.swift in Sources */,
 				F59AAC16235EA46D00385EE6 /* LightNavigationController.swift in Sources */,
 				40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */,
+				175721162754D31F00DE38BC /* AppIcon.swift in Sources */,
 				7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */,
 				17BD4A192101D31B00975AC3 /* NavigationActionHelpers.swift in Sources */,
 				B55FFCFA1F034F1A0070812C /* String+Ranges.swift in Sources */,
@@ -20525,6 +20530,7 @@
 				FABB258C2602FC2C00C8785C /* ActivityContentStyles.swift in Sources */,
 				FABB258D2602FC2C00C8785C /* CategorySectionTableViewCell.swift in Sources */,
 				FAE4CA692732C094003BFDFE /* QuickStartPromptViewController.swift in Sources */,
+				175721172754D31F00DE38BC /* AppIcon.swift in Sources */,
 				FABB258E2602FC2C00C8785C /* StatsForegroundObservable.swift in Sources */,
 				FABB258F2602FC2C00C8785C /* AbstractPost+TitleForVisibility.swift in Sources */,
 				FABB25902602FC2C00C8785C /* SharingViewController.m in Sources */,

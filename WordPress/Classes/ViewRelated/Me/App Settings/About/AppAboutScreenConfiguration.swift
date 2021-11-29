@@ -12,10 +12,12 @@ struct WebViewPresenter {
 }
 
 class AppAboutScreenConfiguration: AboutScreenConfiguration {
-    static let appInfo = AboutScreenAppInfo(name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
-                                            version: Bundle.main.detailedVersionNumber() ?? "",
-                                            icon: UIImage(named: AppConstants.currentAppIconName) ?? UIImage())
-
+    static var appInfo: AboutScreenAppInfo {
+        AboutScreenAppInfo(name: (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "",
+                           version: Bundle.main.detailedVersionNumber() ?? "",
+                           icon: UIImage(named: AppIcon.currentOrDefaultIconName) ?? UIImage())
+    }
+    
     static let fonts = AboutScreenFonts(appName: WPStyleGuide.serifFontForTextStyle(.largeTitle, fontWeight: .semibold),
                                         appVersion: WPStyleGuide.tableviewTextFont())
 
