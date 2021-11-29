@@ -256,6 +256,14 @@ import Foundation
     case privacySettingsOpened
     case privacySettingsReportCrashesToggled
 
+    // Sharing Buttons
+    case sharingButtonsEditSharingButtonsToggled
+    case sharingButtonsEditMoreButtonToggled
+    case sharingButtonsLabelChanged
+
+    // People
+    case peopleFilterChanged
+    case peopleUserInvited
     // Login: Epilogue
     case loginEpilogueChooseSiteTapped
     case loginEpilogueCreateNewSiteTapped
@@ -695,6 +703,19 @@ import Foundation
         case .accountCloseCompleted:
             return "account_close_completed"
 
+        // Sharing
+        case .sharingButtonsEditSharingButtonsToggled:
+            return "sharing_buttons_edit_sharing_buttons_toggled"
+        case .sharingButtonsEditMoreButtonToggled:
+            return "sharing_buttons_edit_more_button_toggled"
+        case .sharingButtonsLabelChanged:
+            return "sharing_buttons_label_changed"
+
+        // People
+        case .peopleFilterChanged:
+            return "people_management_filter_changed"
+        case .peopleUserInvited:
+            return "people_management_user_invited"
         // Login: Epilogue
         case .loginEpilogueChooseSiteTapped:
             return "login_epilogue_choose_site_tapped"
