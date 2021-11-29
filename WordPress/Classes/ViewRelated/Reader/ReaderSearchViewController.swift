@@ -29,16 +29,9 @@ import Gridicons
         }
     }
 
-    private enum SearchSource {
-        case userInput
-        case searchHistory
-
-        var value: String {
-            switch self {
-            case .userInput: return "user_input"
-            case .searchHistory: return "search_history"
-            }
-        }
+    private enum SearchSource: String {
+        case userInput = "user_input"
+        case searchHistory = "search_history"
     }
 
     // MARK: - Properties
@@ -268,7 +261,7 @@ import Gridicons
     private func trackSearchPerformed(source: SearchSource) {
         let selectedTab: Section = Section(rawValue: filterBar.selectedIndex) ?? .posts
         let properties: [AnyHashable: Any] = [
-            "source": source.value,
+            "source": source.rawValue,
             "type": selectedTab.trackingValue
         ]
 
