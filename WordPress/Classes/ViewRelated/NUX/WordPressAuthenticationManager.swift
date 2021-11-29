@@ -1,6 +1,7 @@
 import Foundation
 import WordPressAuthenticator
 import Gridicons
+import UIKit
 
 
 // MARK: - WordPressAuthenticationManager
@@ -347,28 +348,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
 
-        let onDismissQuickStartPrompt: (Blog) -> Void = { [weak self] blog in
-
-            guard let self = self else {
-                return
-            }
-
-            onDismiss()
-
-            // If the quick start prompt has already been dismissed,
-            // then show the My Site screen for the specified blog
-            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                return
-            }
-
-            // Otherwise, show the My Site screen for the specified blog and after a short delay,
-            // trigger the Quick Start tour
-            self.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog)
-            })
-        }
-
         epilogueViewController.onBlogSelected = { [weak self] blog in
             guard let self = self else {
                 return
@@ -445,7 +424,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func shouldPresentSignupEpilogue() -> Bool {
         return true
     }
-
 
     /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
@@ -558,6 +536,7 @@ private extension WordPressAuthenticationManager {
         })
     }
 }
+
 
 // MARK: - WordPressAuthenticatorManager
 //
