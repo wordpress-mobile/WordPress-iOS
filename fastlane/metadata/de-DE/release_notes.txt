@@ -1,7 +1,13 @@
-Mit diesem Update wird das Einbetten externer Inhalte auf deinen Websites noch einfacher! Neu: die eigenen Embed-Blöcke für Facebook, Instagram, Loom und Smartframe. Außerdem erkennt der Editor einbettbare URLs, die du in einen leeren Absatz einfügst. Abgesehen von diesen neuen Features haben wir ein Problem behoben, bei dem einige eingebettete URLs nicht bearbeitet werden konnten, und das Abschneiden der Vorschau angepasst, damit du immer den vollständigen eingebetteten Inhalt siehst.
+Die Zwei-Schritt-Authentifizierung ist jetzt noch sicherer. Du musst dein Gerät entsperren, um Benachrichtigungen zu genehmigen oder abzulehnen.
+Der Einstellung „Link zu“ im Bildblock wurden neben der vorhandenen Option „Individuelle URL“ die Optionen „Mediendatei“ und „Anhang-Seite“ hinzugefügt.
+Das Problem, das zum Absturz der Benutzeroberfläche führte, wenn Benutzer aus Microsoft Word kopierte Listen einfügen wollten, wurde behoben.
 
-Apropos Blöcke: Du kannst jetzt in den Pullquote- und Vorformatiert-Blöcken den Text und die Hintergrundfarbe anpassen.
+Der Bereich „Meine Website > Kommentare“ hat einen frischen Look und zusätzliche Kommentardetails erhalten, u. a.:
 
-Brauchst du Unterstützung dabei, mehr Leser zu erreichen? Die neuen Publicize- und Blog-Erinnerungen helfen dir, einen konsistenten Veröffentlichungsplan einzuhalten.
+- Eine Vorschau auf den Beitragstitel oder den übergeordneten Kommentar, je nachdem, ob der Autor einen Kommentar zum Beitrag hinterlassen hat oder auf einen vorhandenen Kommentar geantwortet hat
+- Formatierten Inhalt, damit jeder Kommentar so angezeigt wird, wie der Autor ihn verfasst hat
+- Einen Teilen-Button für genehmigte Kommentare
+- Anzeige der E-Mail- und IP-Adresse des Autors für Benutzer mit Administrator- oder Redakteurrolle
+- Antippbare Web-Adresse zum Aufrufen der URL des Autors (statt eines Avatarbilds)
 
-Und schließlich haben wir die Unterstützung für größere Textgrößen bei der Auswahl einer Startseite oder eines Seitenlayouts verbessert, einen Fehler behoben, durch den die Liste der Website-Kommentare in bestimmten Fällen nicht aktualisiert wurde, und den Header des Vorveröffentlichungs-Bottom-Sheets überarbeitet.
+Außerdem haben wir der Benutzeroberfläche eine die Anzeige von Antworten in minimierter und Vollbildansicht hinzugefügt. Schicker Look!

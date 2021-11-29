@@ -1,11 +1,13 @@
-* [**] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
-* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
-* [*] Reader post comments: fixed an issue that prevented all comments from displaying. [#17373]
-* [**] Stats: added Reader Discover nudge for sites with low traffic in order to increase it. [#17349, #17352, #17354, #17377]
-* [**] Block editor: Search block - Text and background color support [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4127]
-* [*] Block editor: Fix Embed Block loading glitch with resolver resolution approach [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4146]
-* [*] Block editor: Fixed an issue where the Help screens may not respect an iOS device's notch. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4110]
-* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
-* [*] Block editor: Add support for the Mark HTML tag [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4162]
-* [*] Stats Insights: HTML tags no longer display in post titles. [#17380]
+Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
+We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
+We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
 
+When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
+
+- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
+- Rich content so you can see each comment just as the author wrote it.
+- A share button for approved comments.
+- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
+- Tappable web address to visit the author's URL (instead of their avatar image).
+
+Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!

@@ -1,7 +1,13 @@
-Bu güncelleme sitelerinize harici içerik gömmeyi daha da kolaylaştırıyor! Facebook, Instagram, Loom ve Smartframe'e yönelik yeni ve özel gömülü bloklarla tanışın. Ayrıca düzenleyici boş bir paragrafa yapıştırdığınız gömülebilir URL'leri otomatik olarak algılar. Bu yeni özelliklerin yanı sıra, bazı gömülü URL'lerin düzenlenememesine neden olan sorunu düzelttik ve her zaman gömülü içeriğin tamamını görebilmeniz için önizleme kırpmasını ayarladık.
+İki adımlı kimlik doğrulama artık ekstra güvenlikle birlikte geliyor. Bildirimleri onaylamak veya reddetmek için cihazınızın kilidini açmanız gerekir.
+Görsel bloku için "Bağlantı" ayarını, önceden var olan "Özel URL" seçeneğinin yanı sıra "Ortam Dosyası" ve "Ek Sayfası" seçeneklerini içerecek şekilde genişlettik.
+Kullanıcılar Microsoft Word'den listeleri kopyalayıp yapıştırdıklarında arayüzün çökmesine neden olan bir sorunu düzelttik.
 
-Bloklardan bahsetmişken, şimdi artık Alıntı ve Önceden Biçimlendirilmiş bloklardaki metni ve arka plan rengini özelleştirebilirsiniz.
+Sitem > Yorumlar'a gittiğinizde, yeni bir görünüm ve aşağıdakiler dahil olmak üzere daha yeni yorum ayrıntıları göreceksiniz:
 
-Daha fazla okuyucuya ulaşmak için yardıma mı ihtiyacınız var? Yeni Duyuru ve Blog Oluşturma Hatırlatıcısı öğeleri tutarlı bir yayın planına bağlı kalmanıza yardımcı olacaktır.
+- Yazarın gönderiye yorum bırakıp bırakmasına veya mevcut bir yoruma yanıt vermesine bağlı olarak, gönderi başlığına veya ana yoruma gizli bir bakış.
+- Her yorumu yazıldığı anda görebilmeniz için zengin içerik.
+- Onaylanmış yorumlar için bir paylaş düğmesi.
+- Yönetici veya Düzenleyici rolüne sahip kullanıcılar için, yorum yazarlarının e-posta ve IP adreslerini görebilme olanağı.
+- Yazarın URL'sini ziyaret etmek için dokunulabilir web adresi (avatar resmi yerine).
 
-Son olarak, bir ana sayfa veya sayfa düzeni seçerken daha büyük metin boyutları için desteği iyileştirdik, site yorumları listesinin belirli durumlarda yenilenmemesi ile ilgili hatayı düzelttik ve yayın öncesi alt sayfa üst bilgisini yeniledik.
+Son olarak, hem simge durumuna küçültülmüş hem de tam ekran olarak Yanıt görünümünde kullanıcı arayüzünü güncelledik. Harika bir görünüm!

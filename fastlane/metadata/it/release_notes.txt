@@ -1,7 +1,13 @@
-Questo aggiornamento rende ancora più semplice incorporare contenuti esterni nei tuoi siti. Presentazione dei nuovi blocchi Incorporamenti dedicati per Facebook, Instagram, Loom e Smartframe. Inoltre, l'editor rileva automaticamente gli URL incorporabili che incolli in un paragrafo vuoto. Oltre a queste nuove funzionalità, abbiamo risolto un problema che non permetteva di poter modificare alcuni URL incorporati e di regolare l'interruzione dell'anteprima in modo da visualizzare sempre l'intero contenuto incorporato.
+L'autenticazione a due fattori ora offre una sicurezza aggiuntiva. Dovrai sbloccare il dispositivo per approvare o rifiutare le notifiche.
+Abbiamo ampliato l'impostazione "Collega a" per il blocco Immagine in modo da includere le opzioni "File multimediale" e "Pagina dell'allegato" accanto all'opzione preesistente "URL personalizzato".
+Abbiamo risolto un problema che causava l'arresto anomalo dell'interfaccia quando gli utenti copiavano e incollavano elenchi da Microsoft Word.
 
-Parlando di blocchi, ora puoi personalizzare il testo e il colore di sfondo nei blocchi Citazione evidenziata e Preformattato.
+Quando passi a Il mio sito > Commenti, visualizzerai un aspetto nuovo e dettagli sui commenti ancora più recenti, tra cui:
 
-Hai bisogno di aiuto per raggiungere più lettori? I nuovi suggerimenti di Pubblicizza e Promemoria relativi al blog ti aiuteranno a rispettare un programma di pubblicazione coerente.
+- Un'anteprima del titolo dell'articolo o del commento principale, a seconda che l'autore abbia lasciato un commento all'articolo o abbia risposto a un commento esistente.
+- Ricchi contenuti in modo che tu possa vedere ogni commento proprio come lo ha scritto l'autore.
+- Un pulsante per la condivisione per i commenti approvati.
+- Gli utenti con ruoli di Amministratore o Editor possono vedere l'e-mail e gli indirizzi IP degli autori dei commenti.
+- Indirizzo web che può essere toccato per visitare l'URL dell'autore (invece dell'immagine avatar).
 
-Infine, abbiamo migliorato il supporto relativo alle dimensioni del testo più grandi quando si sceglie una homepage o un layout di pagina, corretto l'elenco dei commenti del sito che non si aggiornava in determinate occasioni e dato un tocco di classe all'intestazione del foglio nella parte inferiore prima della pubblicazione.
+Infine, abbiamo aggiornato l'interfaccia utente per la visualizzazione di Rispondi, sia ridotta a icona che a schermo intero. Bella!

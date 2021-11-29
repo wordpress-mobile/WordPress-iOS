@@ -1,7 +1,13 @@
-Pembaruan ini mempermudah penyematan konten eksternal pada situs Anda! Memperkenalkan blok sematan khusus baru untuk Facebook, Instagram, Loom, dan Smartframe. Selain itu, editor secara otomatis mendeteksi URL yang dapat disematkan dan Anda tempelkan pada paragraf kosong. Bersama fitur-fitur baru ini, kami memperbaiki masalah terkait sejumlah sematan URL yang tidak dapat disunting dan disesuaikan batas pratinjaunya sehingga Anda akan selalu melihat konten yang disematkan secara penuh.
+Otentikasi dua langkah kini lebih aman Anda perlu membuka kunci perangkat Anda untuk menerima atau mengabaikan pemberitahuan.
+- Kami memperluas pengaturan "Tautan Ke" untuk blok gambar agar mencakup pilihan "Berkas Media" dan "Halaman Lampiran" di samping opsi "URL Kustom yang sudah ada.
+Kami memperbaiki masalah yang menyebabkan crash antarmuka jika pengguna menyalin dan menempelkan daftar dari Microsoft Word.
 
-Mengenai blok, sekarang Anda dapat menyesuaikan teks dan warna latar belakang di blok Kutipan Besar dan blok Praformat.
+Jika Anda menuju ke Situs Saya > Komentar, Anda akan melihat tampilan yang segar dan bahkan detail komentar yang lebih segar, termasuk:
 
-Butuh bantuan untuk menjangkau lebih banyak pembaca? Peningkatan Pengingat Publikasikan dan Blogging akan membantu Anda menjalankan jadwal pos yang konsisten.
+- Sneak peek judul pos atau komentar induk, tergantung apakah penulis meninggalkan komentar di pos atau membalas komentar yang sudah ada.
+- Konten yang kaya sehingga Anda dapat melihat setiap komentar sebagaimana dibuat oleh penulisnya.
+- Tombol berbagi untuk menerima komentar.
+- Pengguna dengan peran Administrator atau Editor dapat melihat alamat email dan IP penulis komentar.
+- Alamat web yang dapat diketuk untuk mengunjungi URL penulis (alih-alih gambar avatarnya).
 
-Terakhir, kami meningkatkan dukungan untuk ukuran teks yang lebih besar saat menentukan beranda atau tata letak halaman, memperbaiki daftar komentar situs yang tidak disegarkan pada kesempatan tertentu, dan mempercantik header lembar bawah prapublikasi.
+Akhirnya, kami memperbarui UI untuk melihat Balasan, dengan layar kecil dan penuh. Keren!

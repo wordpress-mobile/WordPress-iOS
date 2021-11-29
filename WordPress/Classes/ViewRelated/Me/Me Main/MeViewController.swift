@@ -253,9 +253,13 @@ class MeViewController: UITableViewController {
 
     private func pushAbout() -> ImmuTableAction {
         return { [unowned self] _ in
-            let controller = UnifiedAboutViewController()
-            controller.modalPresentationStyle = .formSheet
-            self.present(controller, animated: true, completion: nil)
+            let configuration = AppAboutScreenConfiguration(sharePresenter: self.sharePresenter)
+            let controller = AutomatticAboutScreen.controller(appInfo: AppAboutScreenConfiguration.appInfo,
+                                                              configuration: configuration,
+                                                              fonts: AppAboutScreenConfiguration.fonts)
+            self.present(controller, animated: true) {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
         }
     }
 

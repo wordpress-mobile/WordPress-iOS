@@ -53,7 +53,7 @@ class LoginFlow {
         guard TabNavComponent.isLoaded() else {
             return try login(siteUrl: siteUrl, username: username, password: password).tabBar
         }
-        return TabNavComponent()
+        return try TabNavComponent()
     }
 
     // Login with WP site via Site Address.
@@ -61,18 +61,18 @@ class LoginFlow {
         guard TabNavComponent.isLoaded() else {
             return try login(siteUrl: siteUrl, email: email, password: password).tabBar
         }
-        return TabNavComponent()
+        return try TabNavComponent()
     }
 
     static func logoutIfNeeded() throws {
         try XCTContext.runActivity(named: "Log out of app if currently logged in") { (activity) in
             if TabNavComponent.isLoaded() {
                 Logger.log(message: "Logging out...", event: .i)
-                let meScreen = try TabNavComponent().gotoMeScreen()
+                let meScreen = try TabNavComponent().goToMeScreen()
                 if meScreen.isLoggedInToWpcom() {
                     _ = try meScreen.logoutToPrologue()
                 } else {
-                    meScreen.dismiss().removeSelfHostedSite()
+                    try meScreen.dismiss().removeSelfHostedSite()
                 }
                 return
             }

@@ -1,7 +1,13 @@
-Deze update maakt het nog eenvoudiger om externe content in te sluiten op je sites! Maak kennis met de nieuwe speciale insluitblokken voor Facebook, Instagram, Loom en Smartframe. Daarbij detecteert de editor automatisch insluitbare URL's die je in lege paragrafen plakt. Naast het toevoegen van deze nieuwe functies, hebben we een probleem opgelost met het niet kunnen bewerken van sommige ingesloten URL's. Ook hebben we het bijsnijden van de voorbeeldweergave aangepast, zodat je altijd de volledige ingesloten content ziet.
+Tweestapsverificatie biedt nu nog meer beveiliging. Je moet je apparaat ontgrendelen om meldingen te accepteren of weigeren.
+We hebben de instelling 'Link naar' voor het afbeeldingblok uitgebreid. Deze omvat nu naast de reeds bestaande optie 'Aangepaste URL' de opties 'Mediabestand' en 'Bijlagepagina'.
+We hebben een probleem opgelost waardoor de interface crashte zodra gebruikers lijsten vanuit Microsoft Word kopieerden en plakten.
 
-Over blokken gesproken; je kunt nu de tekst en de achtergrondkleur aanpassen in de Pullquote- en vooraf ingestelde blokken.
+Als je naar Mijn site > Reacties gaat, zie je een splinternieuwe weergave en nieuwe informatie bij reacties, waaronder:
 
-Wil je meer lezers bereiken? De nieuwe Publiceren- en Blog-herinneringsmeldingen zorgen ervoor dat je volgens een consistent schema publiceert.
+- Een sneakpeek van de berichttitel als iemand een reactie bij het bericht heeft geplaatst, of de bovenliggende reactie als iemand heeft gereageerd op een andere reactie.
+- Uitgebreide content zodat elke reactie wordt weergegeven zoals de persoon deze heeft opgesteld.
+- Een knop om goedgekeurde reacties te delen.
+- Gebruikers met de rollen Beheerder of Editor kunnen het e-mailadres en IP-adres van de reagerende persoon zien.
+- Tikbaar webadres om naar de URL van de reagerende persoon te gaan (in plaats van zijn/haar avatar).
 
-Ten slotte hebben we de ondersteuning van grotere lettertypen verbeterd tijdens het kiezen van een startpagina of pagina-lay-out, ervoor gezorgd dat de opmerkingenlijst op de site nu altijd wordt vernieuwd en de pre-publiceren-footer van de sheet wat opgepoetst.
+Ten slotte hebben we de gebruikersinterface bijgewerkt voor de weergave Reageren, zowel geminimaliseerd als weergegeven in volledig scherm. Ziet er strak uit!

@@ -1,7 +1,13 @@
-Med denna uppdatering blir det ännu enklare att lägga in externt innehåll på dina webbplatser, med våra nya specialiserade inbäddningsblock för Facebook, Instagram, Loom och  Smartframe. Dessutom känner redigeraren automatiskt igen inbäddningsbara URL:er när du klistrar in dem i ett tomt stycke. Förutom dessa nya funktioner har vi även rättat till ett problem där det inte gick att redigera en inbäddad URL och anpassat förhandsvisningen så att du alltid kan se hela det inbäddade innehållet.
+Tvåstegsinloggningen har nu blivit säkrare. För att bekräfta eller avböja aviseringar måste du först låsa upp din enhet.
+Vi har utökat inställningen ”länka till” för bildblocket så att den nu utöver det tidigare alternativet ”anpassad URL” också omfattar ”mediafilen” och ”sidan för bilagan”.
+Vi har rättat ett problem som gjorde att gränssnittet slutade fungera när användare klistrade in listor som de kopierat från Microsoft Word.
 
-På tal om block: nu kan du också anpassa färgen på text och bakgrund i blocken för framhävt citat och förformaterad text.
+När du går till Min webbplats > Kommentarer möts du av en uppdaterad design och ännu bättre information om kommentarerna, inklusive:
 
-Behöver du hjälp att nå fler läsare? Den nya påminnelsefunktionen för publicering och bloggning kan hjälpa dig att upprätthålla ett stabilt publiceringsschema.
+- Förhandsvisning av inläggsrubriken eller den besvarade kommentaren, beroende på om det var en kommentar på inlägget eller ett svar på en annan kommentar.
+- Formaterat innehåll, så att varje kommentar ser ut just som dess författare utformade den.
+- En knapp för delning av kommentarer som godkänts.
+- Användare med någon av rollerna administratör eller redaktör kan se kommentarsförfattarens e-postadress och IP-adress.
+- Man kan trycka på webbadressen för att besöka den (i stället för författarikonen).
 
-Slutligen har vi förbättrat stödet för stora textstorlekar när du väljer layout för startsidan eller andra sidor. Vi har rättat ett problem där kommentarslistan i vissa fall inte uppdaterades och snyggat till huvudet för sidans nedre område före publicering.
+Slutligen har vi fräschat upp gränssnittet där man svarar, både i minimerat läge och på helskärm ser det riktigt stiligt ut!

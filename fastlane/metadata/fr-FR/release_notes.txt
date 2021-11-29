@@ -1,7 +1,13 @@
-Cette mise à jour permet d’intégrer encore plus facilement du contenu externe sur vos sites ! Voici les nouveaux blocs d’intégration dédiés pour Facebook, Instagram, Loom et Smartframe. De plus, l’éditeur détecte automatiquement les URL embarquables que vous collez dans un paragraphe vide. En plus de ces nouvelles fonctionnalités, nous avons corrigé un problème où certaines URL embarquées ne pouvaient pas être modifiées et ajusté la coupure de l’aperçu afin que vous puissiez toujours voir l’intégralité du contenu embarqué.
+L’identification à deux facteurs s’accompagne désormais d’une sécurité supplémentaire. Vous devrez déverrouiller votre appareil pour approuver ou refuser les notifications.
+Nous avons développé le réglage « Lier à » du bloc d’image pour inclure les options « Fichier média » et « Page de fichier joint » à côté de l’option préexistante « Lien personnalisé ».
+Nous avons résolu un problème qui bloquait l’interface lorsque les utilisateurs copiaient et collaient des listes à partir de Microsoft Word.
 
-En ce qui concerne les blocs, vous pouvez désormais personnaliser le texte et la couleur d’arrière-plan dans les blocs Citation et Préformaté.
+Lorsque vous accédez à Mon site > Commentaires, vous voyez une nouvelle apparence et de tout nouveaux détails de commentaires, y compris :
 
-Avez-vous besoin d’aide pour atteindre davantage de public ? Les nouveaux assistants Publicize et Rappels vous aideront à respecter un calendrier de publication régulier.
+- Un aperçu du titre de l’article ou du commentaire parent, selon que l’auteur a laissé un commentaire sur l’article ou répondu à un commentaire existant.
+- Du contenu riche pour que vous puissiez voir chaque commentaire tel que l’auteur l’a écrit.
+- Un bouton de partage pour les commentaires approuvés.
+- Les utilisateurs avec les rôles d’administrateur ou d’éditeur peuvent voir les adresses e-mail et IP des auteurs des commentaires.
+- Adresse Web cliquable pour visiter l’URL de l’auteur (à la place de son image d’avatar).
 
-Enfin, nous avons amélioré la prise en charge des tailles de texte plus grandes lors du choix de la page d’accueil ou de la mise en page, corrigé le problème de rafraîchissement de la liste des commentaires du site à certaines occasions et amélioré l’en-tête de la feuille de bas de page avant publication.
+Enfin, nous avons mis à jour l’interface utilisateur de la vue Répondre, à la fois en mode réduit et en plein écran. Quelle classe !

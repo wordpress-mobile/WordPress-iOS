@@ -5,9 +5,18 @@ import CoreData
     func nextCommentSelected()
 }
 
-class CommentDetailViewController: UITableViewController {
+class CommentDetailViewController: UIViewController {
 
     // MARK: Properties
+
+    private let containerStackView = UIStackView()
+    private let tableView = UITableView(frame: .zero, style: .plain)
+
+    // Reply properties
+    private var replyTextView: ReplyTextView?
+    private var suggestionsTableView: SuggestionsTableView?
+    private var keyboardManager: KeyboardDismissHelper?
+    private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
     @objc weak var delegate: CommentDetailsDelegate?
     private var comment: Comment
@@ -18,6 +27,10 @@ class CommentDetailViewController: UITableViewController {
 
     private var viewIsVisible: Bool {
         return navigationController?.visibleViewController == self
+    }
+
+    private var siteID: NSNumber? {
+        return comment.blog?.dotComID
     }
 
     private var replyID: Int32 {
@@ -89,40 +102,12 @@ class CommentDetailViewController: UITableViewController {
         return cell
     }()
 
-    private lazy var deleteButton: UIButton = {
-        let button = UIButton()
-        let buttonColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(.deleteButtonText, for: .normal)
-        button.setTitleColor(buttonColor, for: .normal)
-        button.setTitleColor(.white, for: .highlighted)
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: buttonColor), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: buttonColor, border: buttonColor), for: .highlighted)
-
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.numberOfLines = 0
-
-        // add constraints to the title label, so the button can contain it properly in multi-line cases.
-        if let label = button.titleLabel {
-            button.pinSubviewToAllEdgeMargins(label)
-        }
-
-        button.on(.touchUpInside) { [weak self] _ in
-            self?.deleteButtonTapped()
-        }
-
-        return button
-    }()
-
-    private lazy var deleteButtonCell: UITableViewCell = {
-        let cell = UITableViewCell()
-        cell.selectionStyle = .none
-        cell.accessibilityTraits = .button
-
-        cell.contentView.addSubview(deleteButton)
-        cell.contentView.pinSubviewToAllEdges(deleteButton, insets: Constants.deleteButtonInsets)
-
+    private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
+        let cell = BorderedButtonTableViewCell()
+        cell.configure(buttonTitle: .deleteButtonText,
+                       normalColor: UIColor(light: .error, dark: .muriel(name: .red, .shade40)),
+                       buttonInsets: Constants.deleteButtonInsets)
+        cell.delegate = self
         return cell
     }()
 
@@ -184,7 +169,7 @@ class CommentDetailViewController: UITableViewController {
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
         self.replyID = comment.replyID
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -195,10 +180,24 @@ class CommentDetailViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureView()
+        configureReplyView()
+        setupKeyboardManager()
+        configureSuggestionsView()
         configureNavigationBar()
         configureTable()
         configureRows()
         refreshCommentReplyIfNeeded()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        keyboardManager?.startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -217,83 +216,6 @@ class CommentDetailViewController: UITableViewController {
         self.isLastInList = isLastInList
         refreshData()
     }
-
-    // MARK: Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = rows[indexPath.row]
-        let cell: UITableViewCell = {
-            switch row {
-            case .header:
-                configureHeaderCell()
-                return headerCell
-
-            case .content:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
-                    return .init()
-                }
-
-                configureContentCell(cell, comment: comment)
-                cell.moderationBar.delegate = self
-                moderationBar = cell.moderationBar
-                return cell
-
-            case .replyIndicator:
-                return replyIndicatorCell
-
-            case .text:
-                return configuredTextCell(for: row)
-
-            case .deleteComment:
-                return deleteButtonCell
-            }
-        }()
-
-        // hide cell separator if it's positioned before the delete button cell.
-        cell.separatorInset = shouldHideCellSeparator(for: indexPath) ? insetsForHiddenCellSeparator : tableView.separatorInset
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-
-        switch rows[indexPath.row] {
-        case .header:
-            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
-
-        case .replyIndicator:
-            navigateToReplyComment()
-
-        case .text(let title, _, _) where title == .webAddressLabelText:
-            visitAuthorURL()
-
-        default:
-            break
-        }
-    }
-
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
-        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
-        if #available(iOS 15, *) {
-            return
-        }
-
-        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
-    }
 }
 
 // MARK: - Private Helpers
@@ -311,17 +233,17 @@ private extension CommentDetailViewController {
     }
 
     struct Constants {
-        static let tableLeadingInset: CGFloat = 20.0
+        static let tableHorizontalInset: CGFloat = 20.0
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
-
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
     /// This needs to be computed because the frame size changes on orientation change.
+    /// NOTE: There's no need to flip the insets for RTL language, since it will be automatically applied.
     var insetsForHiddenCellSeparator: UIEdgeInsets {
-        return .init(top: 0, left: tableView.frame.size.width, bottom: 0, right: 0).flippedForRightToLeftLayoutDirection()
+        return .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
     }
 
     /// returns the height of the navigation bar + the status bar.
@@ -334,6 +256,14 @@ private extension CommentDetailViewController {
     /// for translucent navigation bars, the content view spans behind the status bar and navigation bar so we'd have to account for that.
     var contentScrollThreshold: CGFloat {
         (navigationController?.navigationBar.isTranslucent ?? false) ? -topBarHeight : 0
+    }
+
+    func configureView() {
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(containerStackView)
+        containerStackView.axis = .vertical
+        containerStackView.addArrangedSubview(tableView)
+        view.pinSubviewToAllEdges(containerStackView)
     }
 
     func configureNavigationBar() {
@@ -359,20 +289,25 @@ private extension CommentDetailViewController {
     }
 
     func configureEditButtonItem() {
-        navigationItem.rightBarButtonItem = comment.canModerate ? UIBarButtonItem(barButtonSystemItem: .edit,
-                                                                                  target: self,
-                                                                                  action: #selector(editButtonTapped)) : nil
+        navigationItem.rightBarButtonItem = comment.allowsModeration() ? UIBarButtonItem(barButtonSystemItem: .edit,
+                                                                                         target: self,
+                                                                                         action: #selector(editButtonTapped)) : nil
     }
 
     func configureTable() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorInsetReference = .fromAutomaticInsets
+
         // get rid of the separator line for the last cell.
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
+
         // assign 20pt leading inset to the table view, as per the design.
-        // note that by default, the system assigns 16pt inset for .phone, and 20pt for .pad idioms.
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            tableView.directionalLayoutMargins.leading = Constants.tableLeadingInset
-        }
+        tableView.directionalLayoutMargins = .init(top: tableView.directionalLayoutMargins.top,
+                                                   leading: Constants.tableHorizontalInset,
+                                                   bottom: tableView.directionalLayoutMargins.bottom,
+                                                   trailing: Constants.tableHorizontalInset)
 
         tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
@@ -380,6 +315,10 @@ private extension CommentDetailViewController {
     func configureRows() {
         // Header and content cells should always be visible, regardless of user roles.
         var rows: [RowType] = [.header, .content]
+
+        defer {
+            self.rows = rows
+        }
 
         if isCommentReplied {
             rows.append(.replyIndicator)
@@ -390,21 +329,21 @@ private extension CommentDetailViewController {
             rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
         }
 
-        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when `canModerate` is true.
-        if comment.canModerate {
-            // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
-            if !comment.author_email.isEmpty {
-                rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
-            }
-
-            rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
-
-            if comment.deleteWillBePermanent() {
-                rows.append(.deleteComment)
-            }
+        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
+        guard comment.allowsModeration() else {
+            return
         }
 
-        self.rows = rows
+        // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
+        if !comment.author_email.isEmpty {
+            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
+        }
+
+        rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
+
+        if comment.deleteWillBePermanent() {
+            rows.append(.deleteComment)
+        }
     }
 
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
@@ -430,14 +369,12 @@ private extension CommentDetailViewController {
     func configureHeaderCell() {
         // if the comment is a reply, show the author of the parent comment.
         if let parentComment = self.parentComment {
-            headerCell.textLabel?.text = String(format: .replyCommentTitleFormat, parentComment.authorForDisplay())
-            headerCell.detailTextLabel?.text = parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines)
-            return
+            return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
+                                        subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
         }
 
         // otherwise, if this is a comment to a post, show the post title instead.
-        headerCell.textLabel?.text = .postCommentTitleText
-        headerCell.detailTextLabel?.text = comment.titleForDisplay()
+        headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
@@ -458,6 +395,10 @@ private extension CommentDetailViewController {
         cell.likeButtonAction = {
             self.toggleCommentLike()
         }
+
+        cell.replyButtonAction = {
+            self.showReplyView()
+        }
     }
 
     func configuredTextCell(for row: RowType) -> UITableViewCell {
@@ -467,6 +408,7 @@ private extension CommentDetailViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
 
+        cell.selectionStyle = .none
         cell.tintColor = Style.tintColor
 
         cell.textLabel?.font = Style.secondaryTextFont
@@ -491,7 +433,7 @@ private extension CommentDetailViewController {
     // MARK: Data Sync
 
     func refreshCommentReplyIfNeeded() {
-        guard let siteID = comment.blog?.dotComID?.intValue else {
+        guard let siteID = siteID?.intValue else {
             return
         }
 
@@ -523,30 +465,33 @@ private extension CommentDetailViewController {
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
         guard let parentComment = parentComment,
-              let blog = comment.blog else {
-                  navigateToPost()
-                  return
-              }
+              let siteID = siteID,
+              let blog = comment.blog,
+              blog.supports(.wpComRESTAPI) else {
+            let parentCommentURL = URL(string: parentComment?.link ?? "")
+            openWebView(for: parentCommentURL)
+            return
+        }
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: blog.dotComID,
+                                                          siteID: siteID,
                                                           commentID: NSNumber(value: parentComment.commentID))
     }
 
     func navigateToReplyComment() {
-        guard let blog = comment.blog,
+        guard let siteID = siteID,
               isCommentReplied else {
             return
         }
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
-                                                          siteID: blog.dotComID,
+                                                          siteID: siteID,
                                                           commentID: NSNumber(value: replyID))
     }
 
     func navigateToPost() {
         guard let blog = comment.blog,
-              let siteID = blog.dotComID,
+              let siteID = siteID,
               blog.supports(.wpComRESTAPI) else {
             let postPermalinkURL = URL(string: comment.post?.permaLink ?? "")
             openWebView(for: postPermalinkURL)
@@ -611,7 +556,7 @@ private extension CommentDetailViewController {
     }
 
     func toggleCommentLike() {
-        guard let siteID = comment.blog?.dotComID else {
+        guard let siteID = siteID else {
             refreshData() // revert the like button state.
             return
         }
@@ -655,12 +600,9 @@ private extension String {
     static let textCellIdentifier = "textCell"
 
     // MARK: Localization
-    static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
-                                                            + "The title of the post will displayed below this string. "
-                                                            + "Example: Comment on \n My First Post")
-    static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
-                                                           + "%1$@ is a placeholder for the comment author that's been replied to."
-                                                           + "Example: Reply to Pamela Nguyen")
+    static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
+                                                          + "%1$@ is a placeholder for the comment author."
+                                                          + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
@@ -698,6 +640,7 @@ private extension CommentDetailViewController {
 
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.pendingFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -709,6 +652,7 @@ private extension CommentDetailViewController {
 
         commentService.approve(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.approveSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.approveFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -720,6 +664,7 @@ private extension CommentDetailViewController {
 
         commentService.spamComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.spamSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.spamFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -731,6 +676,7 @@ private extension CommentDetailViewController {
 
         commentService.trashComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.trashSuccess)
+            self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.trashFail)
             self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -785,6 +731,239 @@ private extension CommentDetailViewController {
         static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
         static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
         static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
+    }
+
+}
+
+// MARK: - UITableView Methods
+
+extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return rows.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = rows[indexPath.row]
+        let cell: UITableViewCell = {
+            switch row {
+            case .header:
+                configureHeaderCell()
+                return headerCell
+
+            case .content:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                    return .init()
+                }
+
+                configureContentCell(cell, comment: comment)
+                cell.moderationBar.delegate = self
+                moderationBar = cell.moderationBar
+                return cell
+
+            case .replyIndicator:
+                return replyIndicatorCell
+
+            case .text:
+                return configuredTextCell(for: row)
+
+            case .deleteComment:
+                return deleteButtonCell
+            }
+        }()
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // Hide cell separator if it's positioned before the delete button cell.
+        cell.separatorInset = self.shouldHideCellSeparator(for: indexPath) ? self.insetsForHiddenCellSeparator : .zero
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        switch rows[indexPath.row] {
+        case .header:
+            comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+
+        case .replyIndicator:
+            navigateToReplyComment()
+
+        case .text(let title, _, _) where title == .webAddressLabelText:
+            visitAuthorURL()
+
+        default:
+            break
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // keep track of whether the content has scrolled or not. This is used to update the navigation bar style in iOS 14 and below.
+        // in iOS 15, we don't need to do this since it's been handled automatically; hence the early return.
+        if #available(iOS 15, *) {
+            return
+        }
+
+        isContentScrolled = scrollView.contentOffset.y > contentScrollThreshold
+    }
+
+}
+
+// MARK: - Reply Handling
+
+private extension CommentDetailViewController {
+
+    func configureReplyView() {
+        let replyView = ReplyTextView(width: view.frame.width)
+
+        replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
+        replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyView.delegate = self
+        replyView.onReply = { [weak self] content in
+            self?.createReply(content: content)
+        }
+
+        replyView.isHidden = true
+        containerStackView.addArrangedSubview(replyView)
+        replyTextView = replyView
+    }
+
+    func showReplyView() {
+        guard replyTextView?.isFirstResponder == false else {
+            return
+        }
+
+        replyTextView?.isHidden = false
+        replyTextView?.becomeFirstResponder()
+        addDismissKeyboardTapGesture()
+    }
+
+    func setupKeyboardManager() {
+        guard let replyTextView = replyTextView,
+              let bottomLayoutConstraint = view.constraints.first(where: { $0.firstAttribute == .bottom }) else {
+                  return
+              }
+
+        keyboardManager = KeyboardDismissHelper(parentView: view,
+                                                scrollView: tableView,
+                                                dismissableControl: replyTextView,
+                                                bottomLayoutConstraint: bottomLayoutConstraint)
+    }
+
+    func addDismissKeyboardTapGesture() {
+        dismissKeyboardTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tableView.addGestureRecognizer(dismissKeyboardTapGesture)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        tableView.removeGestureRecognizer(dismissKeyboardTapGesture)
+    }
+
+    @objc func createReply(content: String) {
+        CommentAnalytics.trackCommentRepliedTo(comment: comment)
+
+        guard let reply = commentService.createReply(for: comment) else {
+            DDLogError("Failed creating comment reply.")
+            return
+        }
+
+        reply.content = content
+
+        commentService.uploadComment(reply, success: { [weak self] in
+            self?.displayReplyNotice(success: true)
+            self?.refreshCommentReplyIfNeeded()
+        }, failure: { [weak self] error in
+            self?.displayReplyNotice(success: false)
+        })
+    }
+
+    func displayReplyNotice(success: Bool) {
+        let message = success ? ReplyMessages.successMessage : ReplyMessages.failureMessage
+        displayNotice(title: message)
+    }
+
+    func configureSuggestionsView() {
+        guard shouldShowSuggestions,
+              let siteID = siteID,
+              let replyTextView = replyTextView else {
+                  return
+              }
+
+        let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
+        suggestionsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(suggestionsView)
+
+        NSLayoutConstraint.activate([
+            suggestionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            suggestionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            suggestionsView.topAnchor.constraint(equalTo: view.topAnchor),
+            suggestionsView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
+        ])
+
+        suggestionsTableView = suggestionsView
+    }
+
+    var shouldShowSuggestions: Bool {
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+                  return false
+              }
+
+        return SuggestionService.shared.shouldShowSuggestions(for: blog)
+    }
+
+    struct ReplyMessages {
+        static let successMessage = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+        static let failureMessage = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
+    }
+
+}
+
+// MARK: - ReplyTextViewDelegate
+
+extension CommentDetailViewController: ReplyTextViewDelegate {
+
+    func textView(_ textView: UITextView, didTypeWord word: String) {
+        suggestionsTableView?.showSuggestions(forWord: word)
+    }
+
+    func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
+        suggestionsTableView?.hideSuggestions()
+
+        if let siteID = siteID {
+            controller.enableSuggestions(with: siteID)
+        }
+    }
+
+}
+
+// MARK: - SuggestionsTableViewDelegate
+
+extension CommentDetailViewController: SuggestionsTableViewDelegate {
+
+    func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
+        replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
+        suggestionsTableView.hideSuggestions()
+    }
+
+}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+
+extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
+
+    func buttonTapped() {
+        deleteButtonTapped()
     }
 
 }

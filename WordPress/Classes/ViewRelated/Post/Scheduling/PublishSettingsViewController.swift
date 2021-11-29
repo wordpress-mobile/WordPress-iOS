@@ -123,6 +123,9 @@ private struct DateAndTimeRow: ImmuTableRow {
 }
 
 @objc class PublishSettingsController: NSObject, SettingsController {
+    var trackingKey: String {
+        return "publish_settings"
+    }
 
     @objc class func viewController(post: AbstractPost) -> ImmuTableViewController {
         let controller = PublishSettingsController(post: post)

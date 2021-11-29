@@ -15,7 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Faster, safer WordPress"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -38,15 +38,21 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.5-whats-new"
+msgctxt "v18.7-whats-new"
 msgid ""
-"This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.\n"
+"Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.\n"
+"We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.\n"
+"We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.\n"
 "\n"
-"Speaking of blocks, you can now customize the text and background color in the Pullquote and Preformatted blocks.\n"
+"When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:\n"
 "\n"
-"Need help reaching more readers? The new Publicize and Blogging Reminder nudges will help you stick to a consistent publishing schedule.\n"
+"- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.\n"
+"- Rich content so you can see each comment just as the author wrote it.\n"
+"- A share button for approved comments.\n"
+"- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.\n"
+"- Tappable web address to visit the author's URL (instead of their avatar image).\n"
 "\n"
-"Finally, we improved support for larger text sizes when choosing a homepage or page layout, fixed the site comments list not refreshing on certain occasions, and polished the pre-publishing bottom sheet header.\n"
+"Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

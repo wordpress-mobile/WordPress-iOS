@@ -1,7 +1,13 @@
-¡Esta actualización hace que sea todavía más fácil incrustar contenido externo en tus sitios! Presentamos los nuevos bloques de incrustación dedicados a Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL incrustables que pegas en un párrafo vacío. Junto con estas nuevas características, hemos corregido un problema por el que algunas URL incrustadas no podían ser editadas y ajustado el corte de la vista previa para que siempre veas el contenido incrustado completo.
+La identificación en dos pasos ahora viene con seguridad adicional. Tendrás que desbloquear tu dispositivo para aprobar o rechazar los avisos.
+Hemos ampliado el ajuste "Enlace a" del bloque de imágenes para incluir las opciones "Archivo de medios" y "Página de adjuntos" además de la opción preexistente "URL personalizada".
+Hemos corregido un problema que hacía que la interfaz se bloqueara cuando los usuarios copiaban y pegaban listas desde Microsoft Word.
 
-Hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques del párrafo de cita y preformateado.
+Cuando te dirijas a "Mi sitio > Comentarios", verás un nuevo aspecto y detalles incluso más novedosos de los comentarios, incluyendo:
 
-¿Necesitas ayuda para llegar a más lectores? Los nuevos recoradorios de divulgar y de bloguear te ayudarán a mantener un calendario de publicación coherente.
+- Un vistazo del título de la entrada o del comentario principal, dependiendo si el autor ha dejado un comentario en la entrada o ha respondido a un comentario existente.
+- Contenido enriquecido para que puedas ver cada comentario tal y como lo ha escrito el autor.
+- Un botón para compartir los comentarios aprobados.
+- Los usuarios con perfiles de administrador o editor pueden ver el correo electrónico y las direcciones IP de los autores de los comentarios.
+- Dirección web táctil para visitar la URL del autor (en lugar de la imagen de su avatar).
 
-Por último, hemos mejorado la compatibilidad para tamaños de texto más grandes al elegir una página de inicio o un diseño de página, corregido el problema por el que la lista de comentarios del sitio no se actualiza en ciertas ocasiones y pulido la cabecera de la hoja inferior de prepublicación.
+Por último, hemos actualizado la interfaz de usuario de la vista de la respuesta en pantalla minimizada y en pantalla completa. ¡Se ve muy bien!

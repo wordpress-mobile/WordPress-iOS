@@ -465,6 +465,14 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         gutenberg.toggleHTMLMode()
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
+        presentEditingModeSwitchedNotice()
+    }
+
+    private func presentEditingModeSwitchedNotice() {
+        let message = mode == .html
+            ? NSLocalizedString("Switched to HTML mode", comment: "Message of the notice shown when toggling the HTML editor mode")
+            : NSLocalizedString("Switched to Visual mode", comment: "Message of the notice shown when toggling the Visual editor mode")
+        gutenberg.showNotice(message)
     }
 
     func requestHTML(for reason: RequestHTMLReason) {

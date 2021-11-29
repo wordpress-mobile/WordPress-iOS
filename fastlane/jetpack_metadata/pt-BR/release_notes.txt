@@ -1,7 +1,13 @@
-Com esta atualização, ficou ainda mais fácil incorporar conteúdo externo aos seus sites! Apresentamos os novos blocos de mídia incorporada dedicados para Facebook, Instagram, Loom e SmartFrame. Além disso, o editor detecta automaticamente as URLs incorporáveis que você cola em um parágrafo vazio. Junto com essas funcionalidades, outra novidade é a correção de um erro que impedia as URLs incorporadas de serem editadas e o ajuste da visualização cortada para que você veja sempre o todo o conteúdo.
+Agora a autenticação em dois fatores vem com segurança extra. Você precisará desbloquear o dispositivo para aprovar ou recusar notificações.
+Ampliamos a configuração "Link para" de forma que o bloco de imagem inclua as opções "Arquivo de mídia" e "Página de anexo" juntamente com a opção já existente "URL personalizada".
+Corrigimos um problema que causava um erro na interface quando os usuários copiavam e colavam listas do Microsoft Word.
 
-Falando em blocos, agora você pode personalizar o texto e a cor de fundo nos blocos de citação destacada e pré-formatado.
+Quando você acessar Meu site > Comentários, verá que demos uma repaginada nessa tela e fizemos ainda mais mudanças nos detalhes de comentários, incluindo:
 
-Precisa de ajuda para atrair mais leitores? As novas funções Lembrete de publicação e Publicize ajudam você a manter um cronograma consistente de publicação.
+- Uma prévia do título do post ou comentário principal, dependendo de se o autor comentou em um post ou respondeu a um comentário.
+- Rich media para que você possa ver todos os comentários exatamente como o autor os escreveu.
+- Um botão de compartilhamento para comentários aprovados.
+- Capacidade de ver os endereços de IP e e-mail dos autores dos comentários disponível para usuários com as funções de administrador ou editor.
+- Endereço da Web tocável para acessar a URL do autor (em vez da imagem do avatar).
 
-Por fim, aprimoramos a compatibilidade com tamanhos de texto maiores na escolha de um layout de página, corrigimos a lista de comentários no site, que não estava atualizando em certas situações, e aperfeiçoamos o cabeçalho de pré-publicação no fim da página.
+Por fim, atualizamos a IU da visualização Responder, tanto minimizada quanto em tela cheia. Está bem elegante!

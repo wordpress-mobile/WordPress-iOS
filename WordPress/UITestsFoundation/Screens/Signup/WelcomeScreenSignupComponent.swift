@@ -15,9 +15,9 @@ public class WelcomeScreenSignupComponent: ScreenObject {
         try super.init(expectedElementGetters: [emailSignupButtonGetter], app: app)
     }
 
-    public func selectEmailSignup() -> SignupEmailScreen {
+    public func selectEmailSignup() throws -> SignupEmailScreen {
         emailSignupButton.tap()
 
-        return SignupEmailScreen()
+        return try SignupEmailScreen()
     }
 }

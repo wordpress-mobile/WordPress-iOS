@@ -477,7 +477,12 @@ extension InteractiveNotificationsManager {
         }
 
         var requiresAuthentication: Bool {
-            return false
+            switch self {
+            case .approveLogin, .denyLogin:
+                return true
+            default:
+                return false
+            }
         }
 
         var requiresForeground: Bool {

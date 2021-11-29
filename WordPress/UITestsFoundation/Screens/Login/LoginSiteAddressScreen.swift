@@ -25,12 +25,12 @@ public class LoginSiteAddressScreen: BaseScreen {
         super.init(element: siteAddressTextField)
     }
 
-    public func proceedWith(siteUrl: String) -> LoginUsernamePasswordScreen {
+    public func proceedWith(siteUrl: String) throws -> LoginUsernamePasswordScreen {
         siteAddressTextField.tap()
         siteAddressTextField.typeText(siteUrl)
         nextButton.tap()
 
-        return LoginUsernamePasswordScreen()
+        return try LoginUsernamePasswordScreen()
     }
 
     public func proceedWithWP(siteUrl: String) throws -> GetStartedScreen {

@@ -1,7 +1,13 @@
-This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.
+Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
+We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the pre-existing “Custom URL” option.
+We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
 
-Speaking of blocks, you can now customise the text and background colour in the Pullquote and Preformatted blocks.
+When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
 
-Need help reaching more readers? The new Publicise and Blogging Reminder nudges will help you stick to a consistent publishing schedule.
+– A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
+– Rich content so you can see each comment just as the author wrote it.
+– A share button for approved comments.
+– Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
+– Tappable web address to visit the author's URL (instead of their avatar image).
 
-Finally, we improved support for larger text sizes when choosing a homepage or page layout, fixed the site comments list not refreshing on certain occasions, and polished the pre-publishing bottom sheet header.
+Finally, we updated the UI for the Reply view, both minimised and fullscreen. Looking sharp!

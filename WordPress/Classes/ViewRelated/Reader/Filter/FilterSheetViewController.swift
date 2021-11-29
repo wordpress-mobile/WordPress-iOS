@@ -26,6 +26,10 @@ class FilterSheetViewController: UIViewController {
 }
 
 extension FilterSheetViewController: DrawerPresentable {
+    func handleDismiss() {
+        WPAnalytics.track(.readerFilterSheetDismissed)
+    }
+
     var scrollableView: UIScrollView? {
         return (view as? FilterSheetView)?.tableView
     }

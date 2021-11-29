@@ -118,8 +118,6 @@ platform :ios do
       extracted_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
     )
     ios_update_release_notes(new_version: new_version)
-    get_prs_list(repository: GHHELPER_REPO, milestone: new_version.to_s,
-                 report_path: "#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
     setbranchprotection(repository: GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: new_version)
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
@@ -140,9 +138,11 @@ platform :ios do
   desc 'Creates a new release branch from the current develop'
   lane :complete_code_freeze do |options|
     ios_completecodefreeze_prechecks(options)
-    ios_localize_project
-    version = ios_get_app_version
-    trigger_beta_build(branch_to_build: "release/#{version}")
+    generate_strings_file_for_glotpress
+
+    UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
+    push_to_git_remote  
+    trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
   end
 
   #####################################################################################
@@ -399,6 +399,38 @@ platform :ios do
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
+  end
+
+  #####################################################################################
+  # generate_strings_file_for_glotpress
+  # -----------------------------------------------------------------------------------
+  # Generate the `.strings` file to be imported by GlotPress,
+  # by parsing source code for `NSLocalizedString` (using `genstrings` under the hood).
+  #
+  # Typically called by complete_code_freeze.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane generate_strings_file_for_glotpress
+  #####################################################################################
+  lane :generate_strings_file_for_glotpress do
+    cocoapods
+
+    en_lproj = 'WordPress/Resources/en.lproj'
+    ios_generate_strings_file_from_code(
+      paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
+      exclude: ['*Vendor*', 'WordPress/WordPressTest/I18n.swift', 'WordPress/WordPressStatsWidgets/Views/Localization/AppLocalizedString.swift'],
+      routines: ['AppLocalizedString'],
+      output_dir: en_lproj
+    )
+
+    # @TODO: Remove once we migrated the codebase of the widgets to use the app bundle for .strings
+    today_widget_base = 'WordPress/WordPressTodayWidget/Base.lproj'
+    ios_generate_strings_file_from_code(paths: ['WordPress/WordPressTodayWidget'], output_dir: today_widget_base)
+    share_ext_base = 'WordPress/WordPressShareExtension/Base.lproj'
+    ios_generate_strings_file_from_code(paths: ['WordPress/WordPressShareExtension'], output_dir: share_ext_base)
+    # END TODO
+
+    git_commit(path: [en_lproj, today_widget_base, share_ext_base], message: 'Update strings for localization', allow_nothing_to_commit: true)
   end
 
   #####################################################################################
@@ -826,10 +858,10 @@ platform :ios do
   # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [try_count:<Number of times to try tests>]
+  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>]
   #
   # Example:
-  # bundle exec fastlane test_without_building name:UITests try_count:3
+  # bundle exec fastlane test_without_building name:UITests
   #####################################################################################
   desc 'Run tests without building'
   lane :test_without_building do |options|
@@ -844,7 +876,7 @@ platform :ios do
       UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
     end
 
-    multi_scan(
+    run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
       device: options[:device],
@@ -852,7 +884,6 @@ platform :ios do
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: test_plan_path,
-      try_count: options[:try_count],
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       result_bundle: true
     )
@@ -861,11 +892,6 @@ platform :ios do
 ########################################################################
 # Helper Lanes
 ########################################################################
-  desc "Get a list of pull request for a given `milestone`"
-  lane :get_pullrequests_list do | options |
-    get_prs_list(repository: GHHELPER_REPO, milestone:"#{options[:milestone]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
-  end
-
   desc 'Verifies that Gutenberg is referenced by release version and not by commit'
   lane :gutenberg_dep_check do |_options|
     res = ''

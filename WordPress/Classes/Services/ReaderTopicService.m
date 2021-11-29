@@ -354,14 +354,17 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)followTagNamed:(NSString *)topicName withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)followTagNamed:(NSString *)topicName
+           withSuccess:(void (^)(void))success
+               failure:(void (^)(NSError *error))failure
+                source:(NSString *)source
 {
     topicName = [[topicName lowercaseString] trim];
 
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            NSDictionary *properties = @{@"tag":topicName};
+            NSDictionary *properties = @{@"tag":topicName, @"source":source};
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
