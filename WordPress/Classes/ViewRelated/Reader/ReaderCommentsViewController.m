@@ -1296,7 +1296,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:url];
     [configuration authenticateWithDefaultAccount];
     [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments_author"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1414,7 +1414,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:linkURL];
     [configuration authenticateWithDefaultAccount];
     [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
