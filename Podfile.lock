@@ -436,7 +436,7 @@ PODS:
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
-  - UIDeviceIdentifier (1.6.0)
+  - UIDeviceIdentifier (1.7.1)
   - WordPress-Aztec-iOS (1.19.5)
   - WordPress-Editor-iOS (1.19.5):
     - WordPress-Aztec-iOS (= 1.19.5)
@@ -806,7 +806,7 @@ SPEC CHECKSUMS:
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
+  UIDeviceIdentifier: d0fee204f467dacf8808b7ac14ce43affeb271a5
   WordPress-Aztec-iOS: af36d9cb86a0109b568f516874870e2801ba1bd9
   WordPress-Editor-iOS: 446be349b94707c1a82a83d525b86dbcf18cf2c7
   WordPressAuthenticator: 111793c08fa8e9d9a72aed5b33a094c91ff4fd82
