@@ -47,7 +47,7 @@ class PreviewWebKitViewController: WebKitViewController {
     /// - Parameters:
     ///   - post: The post to use for generating the preview URL and authenticating to the blog. **NOTE**: `previewURL` will be used as the URL instead, when available.
     ///   - previewURL: The URL to display in the preview web view.
-    init(post: AbstractPost, previewURL: URL? = nil) {
+    init(post: AbstractPost, previewURL: URL? = nil, source: String) {
 
         self.post = post
 
@@ -67,6 +67,7 @@ class PreviewWebKitViewController: WebKitViewController {
         configuration.linkBehavior = isPage ? .hostOnly(url) : .urlOnly(url)
         configuration.opensNewInSafari = true
         configuration.authenticate(blog: post.blog)
+        configuration.analyticsSource = source
         super.init(configuration: configuration)
     }
 
