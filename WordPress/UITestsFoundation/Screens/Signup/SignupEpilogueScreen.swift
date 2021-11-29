@@ -49,9 +49,9 @@ public class SignupEpilogueScreen: BaseScreen {
         return self
     }
 
-    public func continueWithSignup() -> MySiteScreen {
+    public func continueWithSignup() throws -> MySiteScreen {
         continueButton.tap()
 
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 }

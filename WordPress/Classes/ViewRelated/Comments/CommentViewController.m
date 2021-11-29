@@ -114,9 +114,11 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
     
     __typeof(self) __weak weakSelf = self;
-
+    
+    NSString *placeholderFormat = NSLocalizedString(@"Reply to %1$@", @"Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.");
+    
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.placeholder = [NSString stringWithFormat:placeholderFormat, [self.comment authorForDisplay]];
     replyTextView.onReply = ^(NSString *content) {
         [weakSelf sendReplyWithNewContent:content];
     };
@@ -650,39 +652,19 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)editComment
 {
-    UINavigationController *navController;
+    EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
+    __typeof(self) __weak weakSelf = self;
+    editViewController.completion = ^(Comment *comment, BOOL commentChanged) {
+        if (commentChanged) {
+            weakSelf.comment = comment;
+            [weakSelf updateComment];
+        }
+    };
     
-    if ([Feature enabled:FeatureFlagNewCommentEdit]) {
-        EditCommentTableViewController *editViewController = [[EditCommentTableViewController alloc] initWithComment:self.comment];
-        
-        __typeof(self) __weak weakSelf = self;
-        editViewController.completion = ^(Comment *comment, BOOL commentChanged) {
-            if (commentChanged) {
-                weakSelf.comment = comment;
-                [weakSelf updateComment];
-            }
-        };
-
-        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    } else {
-        EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-        editViewController.content = [self.comment contentForEdit];
-        
-        __typeof(self) __weak weakSelf = self;
-        editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
-            [self dismissViewControllerAnimated:YES completion:^{
-                if (hasNewContent) {
-                    weakSelf.comment.content = newContent;
-                    [weakSelf updateComment];
-                }
-            }];
-        };
-        
-        navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-        navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    }
-
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
 

@@ -318,7 +318,17 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor(light: .white, dark: .appBarBackground)
+
+        let appearance = UIToolbarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = UIColor(light: .white, dark: .appBarBackground)
+
+        toolBar.standardAppearance = appearance
+
+        if #available(iOS 15.0, *) {
+            toolBar.scrollEdgeAppearance = appearance
+        }
+
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 

@@ -8,8 +8,8 @@ class MainNavigationTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        mySiteScreen = TabNavComponent()
-         .gotoMySiteScreen()
+        mySiteScreen = try TabNavComponent()
+            .goToMySiteScreen()
     }
 
     override func tearDownWithError() throws {

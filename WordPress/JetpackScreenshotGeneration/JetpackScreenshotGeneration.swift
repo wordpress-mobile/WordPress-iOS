@@ -35,7 +35,7 @@ class JetpackScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() throws {
 
         // Get My Site screenshot
-        let mySite = MySiteScreen()
+        let mySite = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "yourjetpack.blog")
             .thenTakeScreenshot(1, named: "MySite")
@@ -77,7 +77,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Stats screenshot
-        let statsScreen = mySite.gotoStatsScreen()
+        let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)

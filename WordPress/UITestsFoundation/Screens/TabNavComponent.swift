@@ -1,34 +1,54 @@
+import ScreenObject
 import XCTest
 
-public class TabNavComponent: BaseScreen {
+public class TabNavComponent: ScreenObject {
 
-    let mySitesTabButton: XCUIElement
-    let readerTabButton: XCUIElement
-    let notificationsTabButton: XCUIElement
-
-    public init() {
-        let tabBars = XCUIApplication().tabBars["Main Navigation"]
-        mySitesTabButton = tabBars.buttons["mySitesTabButton"]
-        readerTabButton = tabBars.buttons["readerTabButton"]
-        notificationsTabButton = tabBars.buttons["notificationsTabButton"]
-        super.init(element: mySitesTabButton)
+    private static let tabBarGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tabBars["Main Navigation"]
     }
 
-    public func gotoMeScreen() throws -> MeTabScreen {
-        gotoMySiteScreen()
+    private let mySitesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        TabNavComponent.tabBarGetter($0).buttons["mySitesTabButton"]
+    }
+
+    private let readerTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        TabNavComponent.tabBarGetter($0).buttons["readerTabButton"]
+    }
+
+    private let notificationsTabButtonGetter: (XCUIApplication) -> XCUIElement = {
+        TabNavComponent.tabBarGetter($0).buttons["notificationsTabButton"]
+    }
+
+    var mySitesTabButton: XCUIElement { mySitesTabButtonGetter(app) }
+    var readerTabButton: XCUIElement { readerTabButtonGetter(app) }
+    var notificationsTabButton: XCUIElement { notificationsTabButtonGetter(app) }
+
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [
+                mySitesTabButtonGetter,
+                readerTabButtonGetter,
+                notificationsTabButtonGetter
+            ],
+            app: app
+        )
+    }
+
+    public func goToMeScreen() throws -> MeTabScreen {
+        try goToMySiteScreen()
         let meButton = app.navigationBars.buttons["meBarButton"]
         meButton.tap()
         return try MeTabScreen()
     }
 
     @discardableResult
-    public func gotoMySiteScreen() -> MySiteScreen {
+    public func goToMySiteScreen() throws -> MySiteScreen {
         mySitesTabButton.tap()
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 
     public func gotoAztecEditorScreen() throws -> AztecEditorScreen {
-        let mySiteScreen = gotoMySiteScreen()
+        let mySiteScreen = try goToMySiteScreen()
         let actionSheet = try mySiteScreen.gotoCreateSheet()
         actionSheet.goToBlogPost()
 
@@ -36,7 +56,7 @@ public class TabNavComponent: BaseScreen {
     }
 
     public func gotoBlockEditorScreen() throws -> BlockEditorScreen {
-        let mySite = gotoMySiteScreen()
+        let mySite = try goToMySiteScreen()
         let actionSheet = try mySite.gotoCreateSheet()
         actionSheet.goToBlogPost()
 
@@ -54,10 +74,11 @@ public class TabNavComponent: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["mySitesTabButton"].exists
+        (try? TabNavComponent().isLoaded) ?? false
     }
 
     public static func isVisible() -> Bool {
-        return XCUIApplication().buttons["mySitesTabButton"].isHittable
+        guard let screen = try? TabNavComponent() else { return false }
+        return screen.mySitesTabButton.isHittable
     }
 }

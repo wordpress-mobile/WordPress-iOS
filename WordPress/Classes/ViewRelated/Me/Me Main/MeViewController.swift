@@ -158,7 +158,13 @@ class MeViewController: UITableViewController {
             // middle section
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
-                if isRecommendAppRowEnabled {
+                if AppConfiguration.showsNewAboutScreen && FeatureFlag.aboutScreen.enabled {
+                    rows.append(NavigationItemRow(title: RowTitles.about,
+                                                  icon: UIImage.gridicon(.mySites),
+                                                  accessoryType: .disclosureIndicator,
+                                                  action: pushAbout(),
+                                                  accessibilityIdentifier: "About"))
+                } else if isRecommendAppRowEnabled {
                     rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
                                                   icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
                                                   accessoryType: accessoryType,
@@ -242,6 +248,16 @@ class MeViewController: UITableViewController {
             self.navigationController?.pushViewController(controller,
                                                           animated: true,
                                                           rightBarButton: self.navigationItem.rightBarButtonItem)
+        }
+    }
+
+    private func pushAbout() -> ImmuTableAction {
+        return { [unowned self] _ in
+            let controller = UnifiedAboutViewController()
+            controller.modalPresentationStyle = .formSheet
+            self.present(controller, animated: true) {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
         }
     }
 
@@ -476,6 +492,7 @@ private extension MeViewController {
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
+        static let about = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
     }
 
     enum HeaderTitles {

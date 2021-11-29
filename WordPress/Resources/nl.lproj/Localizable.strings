@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-04 09:31:34+0000 */
+/* Translation-Revision-Date: 2021-11-15 21:43:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "Over mij";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "Over WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Over WordPress voor iOS";
@@ -942,7 +945,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media accounts." = "Deel nieuwe berichten automatisch op je socialmedia-accounts.";
 
 /* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Deel nieuwe berichten automatisch op je social media, om te starten met het brengen van dat publiek naar je site ";
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Deel nieuwe berichten automatisch op je social media, om te starten met het brengen van dat publiek naar je site.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische updates";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "Comics";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Reactie";
 
 /* Title for the `comment likes` setting */
@@ -2047,6 +2049,9 @@ translators: Block name. %s: The localized block name */
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Momenteel aan het herstellen: %1$@";
 
+/* No comment provided by engineer. */
+"Custom URL" = "Aangepaste URL";
+
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Aangepast bericht…";
 
@@ -2335,7 +2340,7 @@ translators: Block name. %s: The localized block name */
 "Domains purchased on this site will redirect to %@" = "Domeinen aangeschaft op deze site, zullen gebruikers omleiden naar %@";
 
 /* Description for the first domain purchased with a free plan. */
-"Domains purchased on this site will redirect users to " = "Domeinen aangeschaft op deze site, zullen gebruikers omleiden naar";
+"Domains purchased on this site will redirect users to " = "Domeinen aangeschaft op deze site, zullen gebruikers omleiden naar ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Heb je geen account? _Aanmelden_";
@@ -2773,7 +2778,7 @@ translators: Block name. %s: The localized block name */
 "Error deleting comment" = "Fout bij het verwijderen van reactie";
 
 /* Message displayed when deleting a comment fails. */
-"Error deleting comment." = "Fout bij het verwijderen van reactie";
+"Error deleting comment." = "Fout bij het verwijderen van reactie.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Fout tijdens uitschakelen autoupdates voor %@.";
@@ -3179,7 +3184,7 @@ translators: Block name. %s: The localized block name */
 "Free Photo Library" = "Gratis fotobibliotheek";
 
 /* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
-"Free for the first year " = "Gratis voor het eerste jaar";
+"Free for the first year " = "Gratis voor het eerste jaar ";
 
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Maak opslagruimte vrij op dit apparaat door tijdelijke mediabestanden te verwijderen. Dit heeft geen effect op de media van je site.";
@@ -3386,7 +3391,7 @@ translators: Block name. %s: The localized block name */
 "Help button" = "Help knop";
 
 /* No comment provided by engineer. */
-"Help icon" = "Help-icoon";
+"Help icon" = "Help pictogram";
 
 /* Appended to latest post summary text when the post has data. */
 "Here's how the post performed so far." = "Hier zie je hoe het bericht het tot nu toe heeft gedaan.";
@@ -3517,14 +3522,11 @@ translators: Block name. %s: The localized block name */
 /* Hint for image link on image settings. */
 "Image Link" = "Afbeeldingslink";
 
-/* No comment provided by engineer. */
-"Image Link URL" = "Afbeelding link URL";
-
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Afbeeldingsgrootte";
 
 /* translators: accessibility text. %s: image caption. */
-"Image caption. %s" = "Onderschrift afbeelding. %s";
+"Image caption. %s" = "Bijschrift afbeelding. %s";
 
 /* No comment provided by engineer. */
 "Image settings" = "Afbeelding-instellingen";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Verwijder als uitgelichte afbeelding ";
 
+/* No comment provided by engineer. */
+"Remove block" = "Verwijder blok";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Antwoordtekst";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Antwoord aan %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Reageer op deze reactie…";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Reageer op bericht…";
+"Reply to post" = "Reageer op bericht";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Rapporteer dit bericht";
@@ -6950,7 +6953,7 @@ translators: Block name. %s: The localized block name */
 "Tap to mark referrer as not spam." = "Tik om verwijzer als geen spam te markeren.";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as spam." = "Tik om verwijzer als spam te markeren";
+"Tap to mark referrer as spam." = "Tik om verwijzer als spam te markeren.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Tik om alle tags voor dit bericht te zien";
@@ -8676,6 +8679,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Schrijf bericht";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "Schrijf een antwoord";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Schrijf een reactie...";

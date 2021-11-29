@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -40,7 +40,7 @@
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-Xy-q8c" userLabel="Date Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-Xy-q8c" userLabel="Date Label">
                                                 <rect key="frame" x="0.0" y="16.5" width="208" height="14.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="CzL-pe-Tnr" secondAttribute="bottom" constant="15" id="FLO-bi-cgb"/>
                                     <constraint firstItem="CzL-pe-Tnr" firstAttribute="top" secondItem="9QY-3I-cxv" secondAttribute="top" id="Fs5-LK-eAC"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CzL-pe-Tnr" secondAttribute="trailing" id="R3L-jf-zLP"/>
-                                    <constraint firstAttribute="bottom" secondItem="9QY-3I-cxv" secondAttribute="bottom" priority="750" constant="15" id="S4y-cM-fX9"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9QY-3I-cxv" secondAttribute="bottom" priority="750" constant="15" id="S4y-cM-fX9"/>
                                     <constraint firstItem="9QY-3I-cxv" firstAttribute="top" secondItem="f2E-yC-BJS" secondAttribute="top" constant="20" id="VRu-Tu-EzK"/>
                                     <constraint firstItem="1G8-cc-t5d" firstAttribute="centerY" secondItem="9QY-3I-cxv" secondAttribute="centerY" id="iiu-dq-fba"/>
                                     <constraint firstItem="1G8-cc-t5d" firstAttribute="leading" secondItem="CzL-pe-Tnr" secondAttribute="trailing" id="kMf-Ux-GI7"/>
@@ -106,7 +106,7 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="60" y="0.0" width="82.5" height="0.0"/>
+                                        <rect key="frame" x="60" y="0.0" width="78.5" height="0.0"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="10" maxX="35" maxY="15"/>
@@ -153,6 +153,8 @@
             <connections>
                 <outlet property="accessoryButton" destination="1G8-cc-t5d" id="kLS-Ag-hAG"/>
                 <outlet property="avatarImageView" destination="9QY-3I-cxv" id="lbp-Hv-zRm"/>
+                <outlet property="containerStackBottomConstraint" destination="jAu-U3-I4N" id="1Hk-Cp-fR5"/>
+                <outlet property="containerStackView" destination="hcN-S7-sLG" id="k9D-6a-BmR"/>
                 <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="moderationBar" destination="T1Z-LV-01Y" id="YUL-ft-QkO"/>

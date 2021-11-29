@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-09 17:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-17 23:27:59+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "نبذة عني";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "نبذة عن ووردبريس";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "حول ووردبريس لنظام التشغيل iOS";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "كوميكات";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "تعليق";
 
 /* Title for the `comment likes` setting */
@@ -1821,10 +1823,10 @@ translators: Block name. %s: The localized block name */
 "Could not check site purchases." = "تعذر التحقق من عمليات شراء الموقع.";
 
 /* The app failed to disable notifications for the subscription */
-"Could not disable notifications" = "يتعذر تعطيل الإشعارات";
+"Could not disable notifications" = "يتعذر تعطيل التنبيهات";
 
 /* The app failed to enable notifications for the subscription */
-"Could not enable notifications" = "يتعذر تمكين الإشعارات";
+"Could not enable notifications" = "يتعذر تمكين التنبيهات";
 
 /* Title of a prompt. */
 "Could not follow site" = "تعذرت متابعة الموقع";
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "جاري الآن استعادة: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "رابط (URL) مخصّص";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "رسالة مخصصة…";
@@ -2664,10 +2669,10 @@ translators: Block name. %s: The localized block name */
 "Enable Site Stats" = "تفعيل إحصاءات الموقع";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
-"Enable in-app notifications" = "تفعيل تنبيهات داخل التطبيق";
+"Enable in-app notifications" = "تمكين التنبيهات داخل التطبيق";
 
 /* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "تفعيل التنبيهات داخل التطبيق؟";
+"Enable in-app notifications?" = "هل تريد تمكين التنبيهات داخل التطبيق؟";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "قم بتمكين الوصول إلى الميكروفون لتسجيل الصوت في فيديوهاتك.";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "رابط صورة";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "رابط الصورة URL";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "حجم الصورة";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "إزالة الصورة البارزة ";
 
+/* No comment provided by engineer. */
+"Remove block" = "إزالة المكوِّن";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "إزالة من الرؤى";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "نص الرد";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "الرد على %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "الرد على التعليق...";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "الرد على المقالة…";
+"Reply to post" = "الرد على المقالة";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "الإبلاغ عن هذه المقالة";
@@ -8678,6 +8681,9 @@ translators: Block name. %s: The localized block name */
 "Write Post" = "كتابة مقالة";
 
 /* Placeholder text for inline compose view */
+"Write a reply" = "كتابة رد";
+
+/* Placeholder text for inline compose view */
 "Write a reply…" = "اكتب ردًا…";
 
 /* Title for the writing section in site settings screen */
@@ -8790,7 +8796,7 @@ translators: Block name. %s: The localized block name */
 "You have 1 hidden WordPress site." = "لديك موقع WordPress واحد مخفى.";
 
 /* Description for the first domain purchased with a paid plan. */
-"You have a free one-year domain registration with your plan" = "لديك تسجيل مجال مجاني مدته عام واحد في خطتك";
+"You have a free one-year domain registration with your plan" = "لديك تسجيل نطاق مجاني مدته عام واحد ضمن خطتك";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "لديك ترقيات متميزة نشطة على موقعك. يرجى إلغاء ترقياتك قبل حذف موقعك.";
@@ -8914,7 +8920,7 @@ translators: Block name. %s: The localized block name */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "لا يمكن تصدير ملفات الوسائط الخاصة بك. إذا استمرت المشكلة، يمكنك الاتصال بنا من خلال شاشة \"أنا\" > \"المساعدة والدعم\".";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
-"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "جاري الآن إعداد نطاقك الجديد %@. قد يستغرق ما يصل إلى 30 دقيقة ليبدء نطاقك بالعمل.";
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "جاري الآن إعداد نطاقك الجديد %@. قد يستغرق الأمر ما يصل إلى 30 دقيقة لكي يبدأ نطاقك بالعمل.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "تنتقل الإشعارات معك — راجع التعليقات والإعجابات عندما تحدث.";

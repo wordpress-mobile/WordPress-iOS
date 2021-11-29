@@ -118,8 +118,6 @@ platform :ios do
       extracted_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
     )
     ios_update_release_notes(new_version: new_version)
-    get_prs_list(repository: GHHELPER_REPO, milestone: new_version.to_s,
-                 report_path: "#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
     setbranchprotection(repository: GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: new_version)
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
@@ -826,10 +824,10 @@ platform :ios do
   # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [try_count:<Number of times to try tests>]
+  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>]
   #
   # Example:
-  # bundle exec fastlane test_without_building name:UITests try_count:3
+  # bundle exec fastlane test_without_building name:UITests
   #####################################################################################
   desc 'Run tests without building'
   lane :test_without_building do |options|
@@ -844,7 +842,7 @@ platform :ios do
       UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
     end
 
-    multi_scan(
+    run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
       device: options[:device],
@@ -852,7 +850,6 @@ platform :ios do
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: test_plan_path,
-      try_count: options[:try_count],
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       result_bundle: true
     )
@@ -861,11 +858,6 @@ platform :ios do
 ########################################################################
 # Helper Lanes
 ########################################################################
-  desc "Get a list of pull request for a given `milestone`"
-  lane :get_pullrequests_list do | options |
-    get_prs_list(repository: GHHELPER_REPO, milestone:"#{options[:milestone]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
-  end
-
   desc 'Verifies that Gutenberg is referenced by release version and not by commit'
   lane :gutenberg_dep_check do |_options|
     res = ''

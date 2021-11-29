@@ -45,7 +45,6 @@ class UserProfileSheetViewController: UITableViewController {
         size.height += bottomPadding
 
         preferredContentSize = size
-        presentedVC?.presentedView?.layoutIfNeeded()
     }
 }
 

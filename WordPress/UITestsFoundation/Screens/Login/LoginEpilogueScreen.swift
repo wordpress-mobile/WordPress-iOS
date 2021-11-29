@@ -23,9 +23,9 @@ public class LoginEpilogueScreen: BaseScreen {
         super.init(element: continueButton)
     }
 
-    public func continueWithSelectedSite() -> MySiteScreen {
+    public func continueWithSelectedSite() throws -> MySiteScreen {
         continueButton.tap()
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 
     // Used by "Self-Hosted after WordPress.com login" test. When a site is added from the Sites List, the Sites List modal (MySitesScreen)

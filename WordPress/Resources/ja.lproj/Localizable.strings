@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-10 09:54:09+0000 */
+/* Translation-Revision-Date: 2021-11-24 09:54:06+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "自己紹介";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "WordPress について";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "WordPress for iOS について";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "コミック";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "コメント";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "現在復元中: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "カスタム URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "カスタムメッセージ...";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "画像リンク";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "画像リンク URL";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "画像サイズ";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "アイキャッチ画像を削除 ";
 
+/* No comment provided by engineer. */
+"Remove block" = "ブロックを削除";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "統計概要から削除";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "返信テキスト";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@ への返信";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "コメントに返信…";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "投稿に返信…";
+"Reply to post" = "投稿に返信";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "この投稿を報告";
@@ -8676,6 +8679,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "投稿を作成";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "コメントする";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "コメントする";

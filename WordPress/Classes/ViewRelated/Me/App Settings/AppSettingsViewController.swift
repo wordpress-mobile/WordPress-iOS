@@ -469,7 +469,12 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
-        var rows: [ImmuTableRow] = [settingsRow, aboutRow]
+        var rows: [ImmuTableRow] = [settingsRow]
+
+        if !(AppConfiguration.showsNewAboutScreen && FeatureFlag.aboutScreen.enabled) {
+            rows.append(aboutRow)
+        }
+
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)

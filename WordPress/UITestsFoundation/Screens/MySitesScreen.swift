@@ -30,14 +30,14 @@ public class MySitesScreen: BaseScreen {
         return LoginSiteAddressScreen()
     }
 
-    public func closeModal() -> MySiteScreen {
+    public func closeModal() throws -> MySiteScreen {
         cancelButton.tap()
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 
     @discardableResult
-    public func switchToSite(withTitle title: String) -> MySiteScreen {
+    public func switchToSite(withTitle title: String) throws -> MySiteScreen {
         XCUIApplication().cells[title].tap()
-        return MySiteScreen()
+        return try MySiteScreen()
     }
 }
