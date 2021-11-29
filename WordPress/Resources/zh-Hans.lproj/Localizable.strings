@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-09 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-23 13:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "关于我";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "关于 WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "关于 WordPress for iOS";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "漫画";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "评论";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "当前正在恢复：%1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "自定义 URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "自定义消息...";
@@ -2912,13 +2917,13 @@ translators: Block name. %s: The localized block name */
 "Expands to select a different menu area" = "展开以选择其他菜单区域";
 
 /* Label indicating that a domain name registration has expired. */
-"Expired" = "Expired";
+"Expired" = "已到期";
 
 /* Title. Indicates an expiration date. */
 "Expires on" = "到期日期";
 
 /* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
-"Expires on %@" = "Expires on %@";
+"Expires on %@" = "到期 %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "描述该站点。";
@@ -3143,7 +3148,7 @@ translators: Block name. %s: The localized block name */
 "Following new topics..." = "以下新话题……";
 
 /* The app successfully subscribed to the comments for the post */
-"Following this conversation" = "Following this conversation";
+"Following this conversation" = "关注此对话";
 
 /* Filters Follows Notifications */
 "Follows" = "关注";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "图片链接";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "图片链接";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "图片尺寸";
@@ -4426,7 +4428,7 @@ translators: Block name. %s: The localized block name */
 "Needs Update" = "需要更新";
 
 /* Label indicating that a domain name registration has no expiry date. */
-"Never expires" = "Never expires";
+"Never expires" = "永不到期";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "新";
@@ -4900,7 +4902,7 @@ translators: Block name. %s: The localized block name */
 "Open link in new window\/tab" = "在新窗口\/选项卡中打开链接";
 
 /* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
-"Open subscription settings for the post" = "Open subscription settings for the post";
+"Open subscription settings for the post" = "打开此文章的订阅设置";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "打开“我”部分";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "移除特色图片";
 
+/* No comment provided by engineer. */
+"Remove block" = "Remove block";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "从数据分析中删除";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "回复文本";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "回复 %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "回复评论…";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "回复文章…";
+"Reply to post" = "回复文章";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "举报此文章";
@@ -6103,7 +6106,7 @@ translators: Block name. %s: The localized block name */
 "Search button. Current button text is" = "搜索按钮。当前按钮文字为";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "搜索域";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "搜索域";
@@ -8678,6 +8681,9 @@ translators: Block name. %s: The localized block name */
 "Write Post" = "写文章";
 
 /* Placeholder text for inline compose view */
+"Write a reply" = "写回复";
+
+/* Placeholder text for inline compose view */
 "Write a reply…" = "写回复…";
 
 /* Title for the writing section in site settings screen */
@@ -8869,7 +8875,7 @@ translators: Block name. %s: The localized block name */
 "You're not authorized to close the account." = "您不具备关闭此账户的权限";
 
 /* A hint to users that they've set up reader discover. */
-"You've connected with other blogs" = "You've connected with other blogs";
+"You've connected with other blogs" = "您已与其他博客建立连接";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
@@ -8983,10 +8989,10 @@ translators: Block name. %s: The localized block name */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "系统将不会存储您的网站凭据，并且仅将其用于安装 Jetpack。";
 
 /* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
-"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "You’re following this conversation. You will receive an email and a notification whenever a new comment is made.";
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "您已关注此对话。当有新评论时，您将会收到一封电子邮件及通知。";
 
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
-"You’re following this conversation. You will receive an email whenever a new comment is made." = "You’re following this conversation. You will receive an email whenever a new comment is made.";
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "您已关注此对话。当有新评论时，您将会收到电子邮件。";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "您现在正在使用区块编辑器创建新页面，太棒了！如果您想要改为使用经典编辑器，请转至“我的站点”>“站点设置”。";
@@ -9164,3 +9170,13 @@ translators: Block name. %s: The localized block name */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "•用户与作者";
 
+
+// MARK: WordPressStatsWidgets Strings
+
+"widget.alltime.bestviews.label" = "最受欢迎的文章";
+"widget.alltime.posts.label" = "文章";
+"widget.today.comments.label" = "评论";
+"widget.today.likes.label" = "赞";
+"widget.today.title" = "今日";
+"widget.today.views.label" = "查看数";
+"widget.today.visitors.label" = "访客数";

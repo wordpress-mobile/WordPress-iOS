@@ -26,9 +26,9 @@
     }
 
     /// Constructs a two-card column for the medium size Today widget
-    private func makeColumn(upperTitle: LocalizedStringKey,
+    private func makeColumn(upperTitle: LocalizedString,
                             upperValue: Int,
-                            lowerTitle: LocalizedStringKey,
+                            lowerTitle: LocalizedString,
                             lowerValue: Int) -> some View {
         VStack(alignment: .leading) {
             VerticalCard(title: upperTitle, value: upperValue, largeText: false)

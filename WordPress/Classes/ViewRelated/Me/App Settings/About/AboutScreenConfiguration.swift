@@ -1,14 +1,23 @@
 import Foundation
+import UIKit
 
 typealias AboutScreenSection = [AboutItem]
 
-/// Users of UnifiedAboutViewController must provide a configuration conforming to this protocol.
+/// Users of AutomatticAboutScreen must provide a configuration conforming to this protocol.
 protocol AboutScreenConfiguration {
     /// A list of AboutItems, grouped into sections, which will be displayed in the about screen's table view.
     var sections: [AboutScreenSection] { get }
 
-    /// A block that dismisses the about screen
-    var dismissBlock: ((AboutItemActionContext) -> Void) { get }
+    /// A method that dismisses the about screen
+    func dismissScreen(_ actionContext: AboutItemActionContext)
+
+    /// Called when the screen will be shown for customization purposes and event tracking.
+    ///
+    func willShow(viewController: UIViewController)
+
+    /// Called when the screen has been hidden for customization purposes and event tracking.
+    ///
+    func didHide(viewController: UIViewController)
 }
 
 typealias AboutItemAction = ((AboutItemActionContext) -> Void)
@@ -27,7 +36,7 @@ struct AboutItemActionContext {
     }
 
     func showSubmenu(title: String = "", configuration: AboutScreenConfiguration) {
-        let submenu = UnifiedAboutViewController(configuration: configuration, isSubmenu: true)
+        let submenu = AutomatticAboutScreen(configuration: configuration, isSubmenu: true)
         submenu.title = title
 
         viewController.navigationController?.pushViewController(submenu, animated: true)
@@ -57,7 +66,7 @@ struct AboutItem {
     /// and the source view that triggered the action.
     let action: AboutItemAction?
 
-    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, hidesSeparator: Bool = false, action: AboutItemAction? = nil) {
+    init(title: String, subtitle: String? = nil, cellStyle: AboutItemCellStyle = .default, accessoryType: UITableViewCell.AccessoryType = .none, hidesSeparator: Bool = false, action: AboutItemAction? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.cellStyle = cellStyle

@@ -1,6 +1,13 @@
-- Vi har gjort det enklare att se när det finns nya block tillgängliga för användning på din webbplats
-- Du kan nu markera text med hjälp av HTML-taggen "mark" samt ändra text- och bakgrundsfärg på knappen i sökblocket. Snyggt!
-- Vi har dolt HTML-taggar i inläggsrubriker när du kollar din statistik.
-- Om du är med i en kommentarstråd kan du hålla koll på den med hjälp av notiser i appen, inte bara via e-postmeddelanden till din inkorg.
-- Hjälpskärmen brukade lämna sin ruta vid rotering från stående till liggande läge och vice versa, men nu stannar den kvar.
-- Vi har åtgärdat ett antal instanser där inbäddningsblock visade texten "Kan inte visa innehåll", så du ska nu kunna se allt ditt innehåll.
+Tvåstegsautentisering kommer nu med extra säkerhet. Du behöver låsa upp din enhet för att godkänna eller avvisa notiser.
+Vi har expanderat inställningen "Länka till" för bildblocket så att den inkluderar alternativen "Mediafil" och "Bilagssida" tillsammans med det tidigare alternativet "Anpassad URL".
+Vi har åtgärdat ett problem som fick gränssnittet att krascha när användare kopierade och klistrade in listor från Microsoft Word.
+
+När du går till Min webbplats > Kommentarer kommer du att mötas av ett nytt utseende och ännu nyare kommentarsinformation, inklusive: 
+
+- En smygtitt på innehållets rubrik eller överordnade kommentar, beroende på om författaren har lämnat en kommentar på inlägget eller svarat på en befintlig kommentar.
+- Formaterat innehåll så att du kan se varje kommentar precis som författaren skrev den.
+- En delningsknapp för godkända kommentarer.
+- Användare med administratörs- eller redigerarroller kan se kommentarsförfattarnas e-post- och IP-adresser.
+- Tryckbara webbadresser för att besöka författarens URL (istället för deras profilbild).
+
+Slutligen har vi uppdaterat gränssnittet för vyn Svara, både minimerad och i fullskärm. Det ser bra ut!

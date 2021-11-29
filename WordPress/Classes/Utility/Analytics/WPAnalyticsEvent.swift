@@ -231,6 +231,8 @@ import Foundation
 
     // Post List
     case postListShareAction
+    case postListSetAsPostsPageAction
+    case postListSetHomePageAction
 
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
@@ -262,6 +264,17 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+    // Sharing Buttons
+    case sharingButtonsEditSharingButtonsToggled
+    case sharingButtonsEditMoreButtonToggled
+    case sharingButtonsLabelChanged
+
+    // People
+    case peopleFilterChanged
+    case peopleUserInvited
+    // Login: Epilogue
+    case loginEpilogueChooseSiteTapped
+    case loginEpilogueCreateNewSiteTapped
 
     /// A String that represents the event
     var value: String {
@@ -663,6 +676,10 @@ import Foundation
             return "site_switcher_toggle_blog_visible"
         case .postListShareAction:
             return "post_list_button_pressed"
+        case .postListSetAsPostsPageAction:
+            return "post_list_button_pressed"
+        case .postListSetHomePageAction:
+            return "post_list_button_pressed"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
@@ -709,6 +726,24 @@ import Foundation
         case .notificationsNextTapped:
             return "notifications_next_tapped"
 
+        // Sharing
+        case .sharingButtonsEditSharingButtonsToggled:
+            return "sharing_buttons_edit_sharing_buttons_toggled"
+        case .sharingButtonsEditMoreButtonToggled:
+            return "sharing_buttons_edit_more_button_toggled"
+        case .sharingButtonsLabelChanged:
+            return "sharing_buttons_label_changed"
+
+        // People
+        case .peopleFilterChanged:
+            return "people_management_filter_changed"
+        case .peopleUserInvited:
+            return "people_management_user_invited"
+        // Login: Epilogue
+        case .loginEpilogueChooseSiteTapped:
+            return "login_epilogue_choose_site_tapped"
+        case .loginEpilogueCreateNewSiteTapped:
+            return "login_epilogue_create_new_site_tapped"
         } // END OF SWITCH
     }
 
@@ -729,6 +764,10 @@ import Foundation
             return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
+        case .postListSetAsPostsPageAction:
+            return ["button": "set_posts_page"]
+        case .postListSetHomePageAction:
+            return ["button": "set_homepage"]
         default:
             return nil
         }
@@ -872,4 +911,18 @@ extension WPAnalytics {
         }
     }
 
+    @objc static func trackSettingsChange(_ page: String, fieldName: String) {
+        Self.trackSettingsChange(page, fieldName: fieldName, value: nil)
+    }
+
+    @objc static func trackSettingsChange(_ page: String, fieldName: String, value: Any?) {
+        var properties: [AnyHashable: Any] = ["page": page, "field_name": fieldName]
+
+        if let value = value {
+            let additionalProperties: [AnyHashable: Any] = ["value": value]
+            properties.merge(additionalProperties) { (_, new) in new }
+        }
+
+        WPAnalytics.track(.settingsDidChange, properties: properties)
+    }
 }

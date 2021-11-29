@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-09 11:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-23 10:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "關於我";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "關於 WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "關於 iOS 版 WordPress";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "漫畫";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "留言";
 
 /* Title for the `comment likes` setting */
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "目前正在還原：%1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "自訂 URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "自訂訊息…";
@@ -2622,7 +2627,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "已傳送電子郵件！";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "嵌入內容區塊預覽功能即將推出";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "內嵌字幕。 %s";
@@ -3516,9 +3521,6 @@ translators: Block name. %s: The localized block name */
 
 /* Hint for image link on image settings. */
 "Image Link" = "圖片連結";
-
-/* No comment provided by engineer. */
-"Image Link URL" = "圖片連結 URL";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "圖片大小";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "移除特色圖片 ";
 
+/* No comment provided by engineer. */
+"Remove block" = "移除區塊";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "從洞察報告中移除";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "回覆文字";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "回覆 %1$@";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "回覆留言...";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "回覆文章...";
+"Reply to post" = "回覆文章";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "檢舉這篇文章";
@@ -8678,6 +8681,9 @@ translators: Block name. %s: The localized block name */
 "Write Post" = "撰寫文章";
 
 /* Placeholder text for inline compose view */
+"Write a reply" = "撰寫回覆";
+
+/* Placeholder text for inline compose view */
 "Write a reply…" = "撰寫回應…";
 
 /* Title for the writing section in site settings screen */
@@ -9164,3 +9170,13 @@ translators: Block name. %s: The localized block name */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "•使用者和作者";
 
+
+// MARK: WordPressStatsWidgets Strings
+
+"widget.alltime.bestviews.label" = "最高記錄的瀏覽次數";
+"widget.alltime.posts.label" = "文章";
+"widget.today.comments.label" = "留言";
+"widget.today.likes.label" = "按讚數";
+"widget.today.title" = "今天";
+"widget.today.views.label" = "點閱數";
+"widget.today.visitors.label" = "訪客";

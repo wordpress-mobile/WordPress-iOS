@@ -61,6 +61,10 @@ class ReaderDetailCoordinator {
     /// Post Service
     private let postService: PostService
 
+    /// Comment Service
+    private let commentService: CommentService
+    private let commentsDisplayed: UInt = 2
+
     /// Used for `RequestAuthenticator` creation and likes filtering logic.
     private let accountService: AccountService
 
@@ -107,6 +111,7 @@ class ReaderDetailCoordinator {
          readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         commentService: CommentService = CommentService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
@@ -115,6 +120,7 @@ class ReaderDetailCoordinator {
         self.readerPostService = readerPostService
         self.topicService = topicService
         self.postService = postService
+        self.commentService = commentService
         self.accountService = accountService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
@@ -189,8 +195,23 @@ class ReaderDetailCoordinator {
     /// Fetch Comments for the current post.
     ///
     func fetchComments(for post: ReaderPost) {
-        // TODO: fetch comments.
-        view?.updateComments()
+        commentService.syncHierarchicalComments(for: post,
+                                   topLevelComments: commentsDisplayed,
+                                            success: { [weak self] _, totalComments in
+                                                self?.updateCommentsFor(post: post, totalComments: totalComments?.intValue ?? 0)
+                                            }, failure: { [weak self] error in
+                                                DDLogError("Failed fetching post detail comments: \(String(describing: error))")
+                                                self?.view?.updateComments([], totalComments: 0)
+                                            })
+    }
+
+    func updateCommentsFor(post: ReaderPost, totalComments: Int) {
+        guard let comments = commentService.topLevelComments(commentsDisplayed, for: post) as? [Comment] else {
+            view?.updateComments([], totalComments: 0)
+            return
+        }
+
+        view?.updateComments(comments, totalComments: totalComments)
     }
 
     /// Share the current post

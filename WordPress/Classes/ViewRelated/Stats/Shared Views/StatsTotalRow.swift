@@ -460,6 +460,10 @@ private extension StatSection {
             return .statsItemTappedVideoTapped
         case .insightsAddInsight:
             return .statsItemTappedInsightsAddStat
+        case .postStatsMonthsYears:
+            return .statsItemTappedPostStatsMonthsYears
+        case .postStatsRecentWeeks:
+            return .statsItemTappedPostStatsRecentWeeks
         default:
             return nil
         }

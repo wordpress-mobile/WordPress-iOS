@@ -1,8 +1,13 @@
-- Nu har det blivit enklare att se när det finns nya blocktyper tillgängliga för din webbplats.
-- Nu kan du framhäva text med HTML-taggen "mark" och även ändra text- och bakgrundsfärg för texten på sökblockets knapp. Rejält snitsigt!
-- När du kollar din statistik döljer vi nu eventuella HTML-taggar i inläggsrubriker.
-- Vi har förbättrat funktionen för att hitta nya saker via läsaren – vi visar nya saker du kanske vill läsa, samtidigt som vi på det sättet hjälper webbplatser med låg trafik. Alla vinner på detta!
-- Om du deltar i en kommentarstråd kan du nu hålla koll på nya kommentarer via aviseringar inne i appen och inte bara via e-post.
-- På tal om kommentarer: vi har hört att vissa kommentarer ibland inte syntes om man läste kommentarerna i läsaren. Vi har hittat och åtgärdat det problemet nu.
-- Hjälpskärmen kunde hoppa ut ur sin ruta om man vred sin enhet fram och tillbaka mellan liggande och stående. Nu håller den sig på sin plats.
-- Vi har korrigerat flera fall där inbäddningsblock gav och och visade ”kan inte visa innehållet” så att du nu kan se allt ditt innehåll.
+Tvåstegsinloggningen har nu blivit säkrare. För att bekräfta eller avböja aviseringar måste du först låsa upp din enhet.
+Vi har utökat inställningen ”länka till” för bildblocket så att den nu utöver det tidigare alternativet ”anpassad URL” också omfattar ”mediafilen” och ”sidan för bilagan”.
+Vi har rättat ett problem som gjorde att gränssnittet slutade fungera när användare klistrade in listor som de kopierat från Microsoft Word.
+
+När du går till Min webbplats > Kommentarer möts du av en uppdaterad design och ännu bättre information om kommentarerna, inklusive:
+
+- Förhandsvisning av inläggsrubriken eller den besvarade kommentaren, beroende på om det var en kommentar på inlägget eller ett svar på en annan kommentar.
+- Formaterat innehåll, så att varje kommentar ser ut just som dess författare utformade den.
+- En knapp för delning av kommentarer som godkänts.
+- Användare med någon av rollerna administratör eller redaktör kan se kommentarsförfattarens e-postadress och IP-adress.
+- Man kan trycka på webbadressen för att besöka den (i stället för författarikonen).
+
+Slutligen har vi fräschat upp gränssnittet där man svarar, både i minimerat läge och på helskärm ser det riktigt stiligt ut!
