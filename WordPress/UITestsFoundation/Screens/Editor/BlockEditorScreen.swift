@@ -107,7 +107,14 @@ public class BlockEditorScreen: ScreenObject {
 
     public func publish() throws -> EditorNoticeComponent {
         let publishButton = app.buttons["Publish"]
-        publishButton.tap()
+        let publishNowButton = app.buttons["Publish Now"]
+        var tries = 0
+        // This loop to check for Publish Now Button is an attempt to confirm that the publishButton.tap() call took effect.
+        // The tests would fail sometimes in the pipeline with no apparent reason.
+        repeat {
+            publishButton.tap()
+            tries += 1
+        } while !publishNowButton.waitForIsHittable(timeout: 3) && tries <= 3
         try confirmPublish()
 
         return try EditorNoticeComponent(withNotice: "Post published", andAction: "View")
@@ -123,8 +130,10 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func addBlock(_ blockLabel: String) {
+        let blockButton = app.buttons[blockLabel]
         addBlockButton.tap()
-        XCUIApplication().buttons[blockLabel].tap()
+        XCTAssertTrue(blockButton.waitForIsHittable(timeout: 3))
+        blockButton.tap()
     }
 
     /*
@@ -150,6 +159,18 @@ public class BlockEditorScreen: ScreenObject {
         } else {
             let publishNowButton = app.buttons["Publish Now"]
             publishNowButton.tap()
+            dismissBloggingRemindersAlertIfNeeded()
+        }
+    }
+
+    public func dismissBloggingRemindersAlertIfNeeded() {
+        guard app.buttons["Set reminders"].waitForExistence(timeout: 3) else { return }
+
+        if XCUIDevice.isPad {
+            app.swipeDown(velocity: .fast)
+        } else {
+            let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)
+            dismissBloggingRemindersAlertButton.tap()
         }
     }
 
