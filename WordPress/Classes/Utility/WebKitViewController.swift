@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 import UIKit
 import WebKit
+import WordPressShared
 
 protocol WebKitAuthenticatable {
     var authenticator: RequestAuthenticator? { get }
@@ -201,6 +202,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         webView.uiDelegate = self
 
         loadWebViewRequest()
+
+        track(.webKitViewDisplayed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -394,6 +397,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     @objc func close() {
         dismiss(animated: true, completion: onClose)
+        track(.webKitViewDismissed)
     }
 
     @objc func share() {
@@ -411,19 +415,22 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             }
         }
         present(activityViewController, animated: true)
-
+        track(.webKitViewShareTapped)
     }
 
     @objc func refresh() {
         webView.reload()
+        track(.webKitViewReloadTapped)
     }
 
     @objc func goBack() {
         webView.goBack()
+        track(.webKitViewNavigatedBack)
     }
 
     @objc func goForward() {
         webView.goForward()
+        track(.webKitViewNavigatedForward)
     }
 
     @objc func openInSafari() {
@@ -431,6 +438,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             return
         }
         UIApplication.shared.open(url)
+        track(.webKitViewOpenInSafariTapped)
     }
 
     ///location is used to present a document menu in tap location on iOS 13
@@ -475,6 +483,14 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")
         navigationItem.titleView?.accessibilityValue = titleView.titleLabel.text
         navigationItem.titleView?.accessibilityTraits = .updatesFrequently
+    }
+
+    private func track(_ event: WPAnalyticsEvent) {
+        let properties: [AnyHashable: Any] = [
+            "source": analyticsSource ?? "unknown"
+        ]
+
+        WPAnalytics.track(event, properties: properties)
     }
 }
 
