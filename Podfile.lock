@@ -464,7 +464,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.2)
-  - WPMediaPicker (1.7.2)
+  - WPMediaPicker (1.7.3)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.1)
@@ -814,7 +814,7 @@ SPEC CHECKSUMS:
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: a4b0308a6345d4dda20c8f7ad9317df4246b4a00
   WordPressUI: c573f4b5c2e5d0ffcebe69ecf86ae75ab7b6ff4d
-  WPMediaPicker: d5ae9a83cd5cc0e4de46bfc1c59120aa86658bc3
+  WPMediaPicker: 4af3fdfba06541ada2613178f8c01175671c38a8
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 982b1e7bf7c0873643955853293b269e4487890e
   ZendeskCommonUISDK: 5808802951ad2bb424f0bed4259dc3c0ce9b52ec
