@@ -267,6 +267,14 @@ import Foundation
     // Login: Epilogue
     case loginEpilogueChooseSiteTapped
     case loginEpilogueCreateNewSiteTapped
+    // WebKitView
+    case webKitViewDisplayed
+    case webKitViewDismissed
+    case webKitViewOpenInSafariTapped
+    case webKitViewReloaded
+    case webKitViewShared
+    case webKitViewNavigatedBack
+    case webKitViewNavigatedForward
 
     /// A String that represents the event
     var value: String {
@@ -721,6 +729,22 @@ import Foundation
             return "login_epilogue_choose_site_tapped"
         case .loginEpilogueCreateNewSiteTapped:
             return "login_epilogue_create_new_site_tapped"
+        // WebKitView
+        case .webKitViewDisplayed:
+            return "webkitview_displayed"
+        case .webKitViewDismissed:
+            return "webkitview_dismissed"
+        case .webKitViewOpenInSafariTapped:
+            return "webkitview_open_in_safari_tapped"
+        case .webKitViewReloaded:
+            return "webkitview_reload"
+        case .webKitViewShared:
+            return "webkitview_shared"
+        case .webKitViewNavigatedBack:
+            return "webkitview_navigated_back"
+        case .webKitViewNavigatedForward:
+            return "webkitview_navigated_forward"
+
         } // END OF SWITCH
     }
 
