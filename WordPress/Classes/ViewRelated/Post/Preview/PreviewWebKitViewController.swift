@@ -1,5 +1,6 @@
 import Gridicons
 import WebKit
+import WordPressShared
 
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {
@@ -191,6 +192,12 @@ class PreviewWebKitViewController: WebKitViewController {
         popoverContentController.selectedOption = selectedDevice
         popoverContentController.onDeviceChange = { [weak self] option in
             self?.selectedDevice = option
+
+            let properties: [AnyHashable: Any] = [
+                "source": self?.analyticsSource ?? "unknown",
+                "option": option.rawValue
+            ]
+            WPAnalytics.track(.previewWebKitViewDeviceChanged, properties: properties)
         }
 
         popoverContentController.modalPresentationStyle = .popover

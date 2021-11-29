@@ -264,9 +264,11 @@ import Foundation
     // People
     case peopleFilterChanged
     case peopleUserInvited
+
     // Login: Epilogue
     case loginEpilogueChooseSiteTapped
     case loginEpilogueCreateNewSiteTapped
+
     // WebKitView
     case webKitViewDisplayed
     case webKitViewDismissed
@@ -275,6 +277,9 @@ import Foundation
     case webKitViewShareTapped
     case webKitViewNavigatedBack
     case webKitViewNavigatedForward
+
+    // Preview WebKitView
+    case previewWebKitViewDeviceChanged
 
     /// A String that represents the event
     var value: String {
@@ -724,11 +729,13 @@ import Foundation
             return "people_management_filter_changed"
         case .peopleUserInvited:
             return "people_management_user_invited"
+
         // Login: Epilogue
         case .loginEpilogueChooseSiteTapped:
             return "login_epilogue_choose_site_tapped"
         case .loginEpilogueCreateNewSiteTapped:
             return "login_epilogue_create_new_site_tapped"
+
         // WebKitView
         case .webKitViewDisplayed:
             return "webkitview_displayed"
@@ -744,6 +751,9 @@ import Foundation
             return "webkitview_navigated_back"
         case .webKitViewNavigatedForward:
             return "webkitview_navigated_forward"
+
+        case .previewWebKitViewDeviceChanged:
+            return "preview_webkitview_device_changed"
 
         } // END OF SWITCH
     }
