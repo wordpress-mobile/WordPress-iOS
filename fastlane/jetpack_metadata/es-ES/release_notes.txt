@@ -1,6 +1,13 @@
-- Hemos facilitado la visualización de los nuevos bloques disponibles para que los uses en tu sitio.
-- Ahora puedes destacar el texto con la etiqueta HTML "mark", así como cambiar el texto y el color de fondo del botón del bloque de búsqueda. ¡Perfecto!
-- Hemos ocultado las etiquetas HTML en los títulos de las entradas cuando consultas las estadísticas.
-- Si formas parte de un hilo de comentarios, puedes seguirlo a través de las notificaciones de la aplicación, no solo en tu bandeja de entrada.
-- La pantalla de ayuda sobresalía de su recuadro cuando se giraba y pasaba del formato vertical al horizontal y de nuevo al vertical, pero ahora se mantiene.
-- Hemos corregido más errores en los que los bloques de incrustar mostraban el mensaje siguiente: "no se puede mostrar el contenido", para que ahora puedas verlo todo.
+Ahora, la autenticación en dos pasos cuenta con seguridad adicional. Deberás desbloquear tu dispositivo para aprobar o rechazar las notificaciones.
+Hemos ampliado el ajuste "Enlace a" del bloque Imagen para incluir las opciones "Archivo de medios" y "Página de adjuntos", junto con la opción preexistente "URL personalizada".
+Hemos corregido un error por el que la interfaz se bloqueaba cuando los usuarios copiaban y pegaban listas desde Microsoft Word.
+
+Al dirigirte a Mi sitio > Comentarios, verás que tiene un aspecto renovado y que se han actualizado los detalles de los comentarios, entre otros:
+
+- La vista previa del título de la entrada o el comentario principal, en función de si el autor dejó un comentario en la entrada o respondió a un comentario ya existente.
+- Contenido enriquecido para que puedas ver los comentarios tal y como los escribió el autor.
+- Un botón para compartir los comentarios aprobados.
+- Los usuarios con perfiles de administrador o editor pueden ver el correo electrónico y las direcciones IP de los autores de los comentarios.
+- Dirección web que se puede tocar para visitar la URL del autor (en lugar de ir a la imagen de su avatar).
+
+Por último, hemos actualizado la interfaz del usuario para la vista previa de la respuesta, tanto minimizada como a pantalla completa. ¡Tiene un aspecto fantástico!

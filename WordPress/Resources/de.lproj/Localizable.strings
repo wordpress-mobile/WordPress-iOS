@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-09 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-11-23 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -315,7 +315,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong>-mal pro Woche";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong>-mal pro Woche um %2$@";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Einmal<\/strong> pro Woche";
@@ -400,6 +400,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "Über mich";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "Über WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Über WordPress für iOS";
@@ -503,7 +506,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Füge hier eine individuelle CSS-URL hinzu, die im Reader geladen werden soll. Wenn du Calypso lokal ausführst, kann das etwa folgendermaßen aussehen: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
-"Add a domain" = "Add a domain";
+"Add a domain" = "Domain hinzufügen";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Du kannst jederzeit einen neuen Block hinzufügen, indem du auf das Icon „+“ in der Werkzeugleiste unten links klickst. ";
@@ -1531,8 +1534,7 @@ translators: Block name. %s: The localized block name */
 "Comics" = "Comics";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Kommentar";
 
 /* Title for the `comment likes` setting */
@@ -1672,7 +1674,7 @@ translators: Block name. %s: The localized block name */
 "Congratulations on completing your list. A job well done." = "Herzlichen Glückwunsch zum Vervollständigen deiner Liste. Eine gute Arbeit.";
 
 /* Title of domain name purchase success screen */
-"Congratulations on your purchase!" = "Herzlichen Glückwunsch zu deinem Kauf!";
+"Congratulations on your purchase!" = "Glückwunsch zu deinem Kauf!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1890,7 +1892,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't mark as spam" = "Couldn't mark as spam";
 
 /* Indicating that referrer couldn't be unmarked as spam */
-"Couldn't unmark as spam" = "Couldn't unmark as spam";
+"Couldn't unmark as spam" = "Spam-Markierung konnte nicht entfernt werden";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Das Beitragsbild konnte nicht hochgeladen werden";
@@ -2046,6 +2048,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Wird derzeit wiederhergestellt: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "Individuelle URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Individuelle Nachricht ...";
@@ -2455,7 +2460,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to undo last change" = "Zum Rückgängigmachen der letzten Änderung zweimal tippen";
 
 /* No comment provided by engineer. */
-"Double tap to view embed options." = "Double tap to view embed options.";
+"Double tap to view embed options." = "Tippe zweimal, um die eingebetteten Optionen anzuzeigen.";
 
 /* Download button title */
 "Download" = "Herunterladen";
@@ -2622,7 +2627,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "E-Mail gesendet!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Eingebettete Block-Vorschau demnächst verfügbar";
+"Embed block previews are coming soon" = "Vorschauen für Einbettungen-Blöcke sind demnächst verfügbar";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Beschriftung einbetten %s";
@@ -2637,7 +2642,7 @@ translators: Block name. %s: The localized block name */
 "Embed media" = "Medien einbetten";
 
 /* No comment provided by engineer. */
-"Embed options" = "Embed options";
+"Embed options" = "Einbettungsoptionen";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -3517,9 +3522,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image link on image settings. */
 "Image Link" = "Bild-Link";
 
-/* No comment provided by engineer. */
-"Image Link URL" = "Bild-Link-URL";
-
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Bildgröße";
 
@@ -4134,7 +4136,7 @@ translators: Block name. %s: The localized block name */
 "Mark as Sticky" = "Als oben gehalten markieren";
 
 /* Action title for unmarking referrer as spam */
-"Mark as not spam" = "Mark as not spam";
+"Mark as not spam" = "Als „Kein Spam“ markieren";
 
 /* An option to mark a post as seen. */
 "Mark as seen" = "Als gesehen markieren";
@@ -5736,6 +5738,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Als Beitragsbild entfernen ";
 
+/* No comment provided by engineer. */
+"Remove block" = "Block entfernen";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Aus Einsichten entfernen";
 
@@ -5806,14 +5811,12 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Antworttext";
 
-/* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@ antworten";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Antwort auf Kommentar…";
-
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Antwort auf Beitrag…";
+"Reply to post" = "Auf Beitrag antworten";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Diesen Beitrag melden";
@@ -5973,13 +5976,13 @@ translators: Block name. %s: The localized block name */
 "Save" = "Speichern";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
-"Save %ld photos as a draft page on:" = "Save %ld photos as a draft page on:";
+"Save %ld photos as a draft page on:" = "%ld Fotos als Entwurfsseite speichern unter:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "%ld Fotos als Beitragsentwurf speichern unter:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
-"Save 1 photo as a draft page on:" = "Save 1 photo as a draft page on:";
+"Save 1 photo as a draft page on:" = "1 Foto als Entwurfsseite speichern unter:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "1 Foto als Beitragsentwurf speichern unter:";
@@ -6938,7 +6941,7 @@ translators: Block name. %s: The localized block name */
 "Tap to dismiss this card" = "Tippen, um diese Karte zu schließen";
 
 /* Accessibility hint for referrer details row. */
-"Tap to display referrer web page." = "Tap to display referrer web page.";
+"Tap to display referrer web page." = "Tippe zur Anzeige der Referrer-Webseite.";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Zum Eingeben eines individuellen Wertes tippen";
@@ -6947,10 +6950,10 @@ translators: Block name. %s: The localized block name */
 "Tap to hide the keyboard" = "Zum Ausblenden der Tastatur hier tippen";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
+"Tap to mark referrer as not spam." = "Tippe zum Markieren des Referrers als „Kein Spam“.";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as spam." = "Tap to mark referrer as spam.";
+"Tap to mark referrer as spam." = "Tippe zum Markieren des Referrers als Spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Tippe, um alle Schlagwörter für diesen Beitrag anzuzeigen";
@@ -8678,6 +8681,9 @@ translators: Block name. %s: The localized block name */
 "Write Post" = "Beitrag verfassen";
 
 /* Placeholder text for inline compose view */
+"Write a reply" = "Antwort schreiben";
+
+/* Placeholder text for inline compose view */
 "Write a reply…" = "Schreib eine Antwort …";
 
 /* Title for the writing section in site settings screen */
@@ -9075,7 +9081,7 @@ translators: Block name. %s: The localized block name */
 "later today" = "später heute";
 
 /* Indicating that referrer was marked as spam */
-"marked as spam" = "marked as spam";
+"marked as spam" = "als Spam markiert";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "von";
@@ -9164,3 +9170,13 @@ translators: Block name. %s: The localized block name */
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Benutzer und Autoren";
 
+
+// MARK: WordPressStatsWidgets Strings
+
+"widget.alltime.bestviews.label" = "Bisher bestes Aufrufergebnis";
+"widget.alltime.posts.label" = "Artikel";
+"widget.today.comments.label" = "Kommentare";
+"widget.today.likes.label" = "Gefällt mir";
+"widget.today.title" = "Heute";
+"widget.today.views.label" = "Aufrufe";
+"widget.today.visitors.label" = "Besucher";

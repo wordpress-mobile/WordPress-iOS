@@ -38,8 +38,8 @@ import UIKit
     func handleHeaderTapped() {
         guard let post = post,
               allowsPushingPostDetails else {
-            return
-        }
+                  return
+              }
 
         // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
         let controller = ReaderDetailViewController.controllerWithPost(post)
@@ -70,9 +70,19 @@ import UIKit
             return
         }
 
+        cell.indentationWidth = Constants.indentationWidth
+        cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
+        cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
         cell.hidesModerationBar = true
         cell.configure(with: comment) { _ in
             tableView.performBatchUpdates({})
         }
+    }
+}
+
+private extension ReaderCommentsViewController {
+    struct Constants {
+        static let indentationWidth: CGFloat = 15.0
+        static let maxIndentationLevel: Int = 4
     }
 }

@@ -68,9 +68,6 @@ class PostSignUpInterstitialViewController: UIViewController {
 
         configureI18N()
 
-        let coordinator = PostSignUpInterstitialCoordinator()
-        coordinator.markAsSeen()
-
         WPAnalytics.track(.welcomeNoSitesInterstitialShown)
     }
 
@@ -125,10 +122,7 @@ class PostSignUpInterstitialViewController: UIViewController {
             return false
         }
 
-        let numberOfBlogs = self.numberOfBlogs()
-
-        let coordinator = PostSignUpInterstitialCoordinator()
-        return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
+        return self.numberOfBlogs() == 0
     }
 
     private class func numberOfBlogs() -> Int {

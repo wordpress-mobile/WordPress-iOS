@@ -47,7 +47,6 @@
                                         <constraint firstAttribute="width" constant="33" id="9Tt-IW-C84"/>
                                         <constraint firstAttribute="height" constant="33" id="re6-7y-Hef"/>
                                     </constraints>
-                                    <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="6" maxY="15"/>
                                     <state key="normal" image="icon-nav-chevron-highlight">
                                         <color key="titleColor" red="0.034757062790000001" green="0.31522077320000003" blue="0.81491315360000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,6 +58,7 @@
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wxv-ga-1LS" secondAttribute="bottom" id="EMu-Xg-vmD"/>
                                 <constraint firstItem="wxv-ga-1LS" firstAttribute="top" secondItem="OaT-BL-6lY" secondAttribute="top" id="lxs-W5-jNr"/>
                                 <constraint firstItem="wxv-ga-1LS" firstAttribute="width" secondItem="OaT-BL-6lY" secondAttribute="width" id="nT8-R3-cWk"/>
                                 <constraint firstAttribute="trailing" secondItem="wxv-ga-1LS" secondAttribute="trailing" id="vum-BA-PAg"/>
@@ -68,7 +68,7 @@
                             <rect key="frame" x="33" y="0.0" width="225" height="33"/>
                             <subviews>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                                    <rect key="frame" x="0.0" y="0.0" width="225" height="33"/>
+                                    <rect key="frame" x="0.0" y="5" width="225" height="28"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -89,7 +89,7 @@
                                 <constraint firstItem="gfH-NN-dph" firstAttribute="leading" secondItem="t6q-rh-Bzh" secondAttribute="leadingMargin" id="Wnr-UR-Oup"/>
                                 <constraint firstItem="6Lf-XI-exE" firstAttribute="leading" secondItem="t6q-rh-Bzh" secondAttribute="leading" id="cVC-qr-WEL"/>
                                 <constraint firstItem="6Lf-XI-exE" firstAttribute="top" secondItem="t6q-rh-Bzh" secondAttribute="top" id="coT-RG-6rz"/>
-                                <constraint firstItem="gfH-NN-dph" firstAttribute="top" secondItem="t6q-rh-Bzh" secondAttribute="topMargin" id="f52-SP-Tv4"/>
+                                <constraint firstItem="gfH-NN-dph" firstAttribute="top" secondItem="t6q-rh-Bzh" secondAttribute="topMargin" constant="5" id="f52-SP-Tv4"/>
                                 <constraint firstAttribute="trailing" secondItem="6Lf-XI-exE" secondAttribute="trailing" id="nk9-ec-6ee"/>
                                 <constraint firstAttribute="bottom" secondItem="6Lf-XI-exE" secondAttribute="bottom" id="pZt-mP-ney"/>
                                 <constraint firstAttribute="bottomMargin" secondItem="gfH-NN-dph" secondAttribute="bottom" id="rqH-Tc-Wyo"/>
@@ -105,7 +105,6 @@
                                         <constraint firstAttribute="height" constant="33" id="Ehr-Ib-Hp7"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="43" id="l81-pf-M8M"/>
                                     </constraints>
-                                    <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="6" maxY="15"/>
                                     <state key="normal" title="Reply"/>
                                     <buttonConfiguration key="configuration" style="plain" title="Reply">
                                         <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
@@ -120,6 +119,7 @@
                                 <constraint firstAttribute="trailing" secondItem="8sg-79-AsR" secondAttribute="trailing" id="4MX-yD-sG2"/>
                                 <constraint firstItem="8sg-79-AsR" firstAttribute="width" secondItem="lA2-1V-bck" secondAttribute="width" id="UVG-FL-ebz"/>
                                 <constraint firstItem="8sg-79-AsR" firstAttribute="top" secondItem="lA2-1V-bck" secondAttribute="top" id="awo-Br-IxO"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="8sg-79-AsR" secondAttribute="bottom" id="fbB-yv-eOu"/>
                             </constraints>
                         </view>
                     </subviews>

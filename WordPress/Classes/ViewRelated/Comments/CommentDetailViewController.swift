@@ -105,7 +105,8 @@ class CommentDetailViewController: UIViewController {
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,
-                       normalColor: UIColor(light: .error, dark: .muriel(name: .red, .shade40)))
+                       normalColor: UIColor(light: .error, dark: .muriel(name: .red, .shade40)),
+                       buttonInsets: Constants.deleteButtonInsets)
         cell.delegate = self
         return cell
     }()
@@ -235,6 +236,7 @@ private extension CommentDetailViewController {
         static let tableHorizontalInset: CGFloat = 20.0
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
+        static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.

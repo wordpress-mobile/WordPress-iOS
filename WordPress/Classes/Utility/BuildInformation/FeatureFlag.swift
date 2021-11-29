@@ -64,7 +64,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .followConversationViaNotifications:
             return true
         case .aboutScreen:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .newCommentThread:
             return false
         case .postDetailsComments:
