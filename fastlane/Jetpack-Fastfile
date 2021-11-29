@@ -17,12 +17,21 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
   desc "Builds and uploads a Jetpack installable build"
   lane :build_and_upload_jetpack_installable_build do | options |
     jetpack_alpha_code_signing
+    require 'git'
 
     # Get the current build version, and update it if needed
     version_config_path = File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
 
-    build_number = Time.new.strftime("%Y-%m-%d-%H")
+    long_hash = Git.open(PROJECT_ROOT_FOLDER).revparse('HEAD')
+    short_hash = `git rev-parse --short #{long_hash}`.strip!
+
+    build_number = [
+      short_hash,
+      '-',
+      Time.new.strftime("%Y%m%d-%H%M")
+    ].join
+
     UI.message("Updating build version to #{build_number}")
 
     versions["VERSION_SHORT"] = "0.1"
