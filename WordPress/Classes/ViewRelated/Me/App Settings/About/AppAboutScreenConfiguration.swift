@@ -5,7 +5,7 @@ import WordPressShared
 
 struct WebViewPresenter {
     func present(for url: URL, context: AboutItemActionContext) {
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "about_screen")
         let navigationController = UINavigationController(rootViewController: webViewController)
         context.viewController.present(navigationController, animated: true, completion: nil)
     }
