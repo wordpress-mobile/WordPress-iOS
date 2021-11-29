@@ -489,7 +489,7 @@ extension InvitePersonViewController {
             return
         }
 
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "invite_person_role_learn_more")
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
     }
