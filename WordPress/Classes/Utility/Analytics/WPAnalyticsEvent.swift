@@ -271,8 +271,8 @@ import Foundation
     case webKitViewDisplayed
     case webKitViewDismissed
     case webKitViewOpenInSafariTapped
-    case webKitViewReloaded
-    case webKitViewShared
+    case webKitViewReloadTapped
+    case webKitViewShareTapped
     case webKitViewNavigatedBack
     case webKitViewNavigatedForward
 
@@ -736,10 +736,10 @@ import Foundation
             return "webkitview_dismissed"
         case .webKitViewOpenInSafariTapped:
             return "webkitview_open_in_safari_tapped"
-        case .webKitViewReloaded:
-            return "webkitview_reload"
-        case .webKitViewShared:
-            return "webkitview_shared"
+        case .webKitViewReloadTapped:
+            return "webkitview_reload_tapped"
+        case .webKitViewShareTapped:
+            return "webkitview_share_tapped"
         case .webKitViewNavigatedBack:
             return "webkitview_navigated_back"
         case .webKitViewNavigatedForward:
