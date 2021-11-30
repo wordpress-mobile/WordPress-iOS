@@ -51,10 +51,14 @@ class StatsTests: XCTestCase {
         "Visitors,  2017: 465"
     ]
 
-    func testStatsLoadProperly() {
+    func testInsightsStatsLoadProperly() {
         statsScreen
             .switchTo(mode: .insights)
             .assertStatsAreLoaded(insightsStats)
+    }
+
+    func testYearsStatsLoadProperly() {
+        statsScreen
             .switchTo(mode: .years)
             .assertStatsAreLoaded(yearsStats)
             .assertChartIsLoaded(yearsChartBars)
