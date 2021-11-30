@@ -33,7 +33,17 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return showCommentsButtonCell()
         }
 
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell,
+              let comment = comments[safe: indexPath.row] else {
+                  return UITableViewCell()
+              }
+
+        cell.configure(with: comment) { _ in
+            tableView.performBatchUpdates({})
+        }
+
+        cell.hideAllActions()
+        return cell
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -61,7 +71,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
 
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: Constants.buttonTitle, borderColor: .textTertiary)
+        cell.configure(buttonTitle: Constants.buttonTitle, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
         cell.delegate = buttonDelegate
         return cell
     }
@@ -70,5 +80,6 @@ private extension ReaderDetailCommentsTableViewDelegate {
         static let buttonTitle = NSLocalizedString("View All Comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let singularCommentFormat = NSLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
         static let pluralCommentsFormat = NSLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
+        static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
 }

@@ -395,7 +395,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         commentsTableViewDelegate?.totalComments = totalComments
         commentsTableViewDelegate?.buttonDelegate = self
         commentsTableView.reloadData()
-        commentsTableView.invalidateIntrinsicContentSize()
     }
 
     deinit {
@@ -516,6 +515,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureCommentsTable() {
         commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
+        commentsTableView.register(CommentContentTableViewCell.defaultNib,
+                                   forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
 
         commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
         commentsTableView.delegate = commentsTableViewDelegate
