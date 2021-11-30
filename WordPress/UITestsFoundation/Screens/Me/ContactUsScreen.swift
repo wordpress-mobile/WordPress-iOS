@@ -38,13 +38,16 @@ public class ContactUsScreen: ScreenObject {
         )
     }
 
+    @discardableResult
     public func assertCanNotSendEmptyMessage() -> ContactUsScreen {
         XCTAssert(!sendButton.isEnabled)
         return self
     }
 
-    public func assertCanSendMessage() {
+    @discardableResult
+    public func assertCanSendMessage() -> ContactUsScreen {
         XCTAssert(sendButton.isEnabled)
+        return self
     }
 
     public func enterText(_ text: String) -> ContactUsScreen {
