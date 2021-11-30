@@ -1194,6 +1194,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             [weakSelf didTapLikeForComment:comment atIndexPath:indexPath];
         };
 
+        cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {
+            [weakSelf interactWithURL:url];
+        };
+
         return;
     }
 
