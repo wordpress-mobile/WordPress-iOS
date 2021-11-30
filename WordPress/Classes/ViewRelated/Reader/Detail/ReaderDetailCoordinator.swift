@@ -577,7 +577,7 @@ class ReaderDetailCoordinator {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_detail")
         let navController = LightNavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
     }

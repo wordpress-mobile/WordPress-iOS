@@ -508,7 +508,7 @@ private extension CommentDetailViewController {
             return
         }
 
-        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "comment_detail")
         let navigationControllerToPresent = UINavigationController(rootViewController: viewController)
 
         present(navigationControllerToPresent, animated: true, completion: nil)

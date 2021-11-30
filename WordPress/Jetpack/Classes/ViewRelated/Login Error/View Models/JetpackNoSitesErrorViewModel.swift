@@ -12,7 +12,7 @@ struct JetpackNoSitesErrorViewModel: JetpackErrorViewModel {
             return
         }
 
-        let controller = WebViewControllerFactory.controller(url: url)
+        let controller = WebViewControllerFactory.controller(url: url, source: "jetpack_no_sites")
         let navController = UINavigationController(rootViewController: controller)
 
         viewController?.present(navController, animated: true)

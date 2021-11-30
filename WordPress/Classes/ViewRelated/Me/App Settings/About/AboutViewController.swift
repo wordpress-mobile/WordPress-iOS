@@ -170,10 +170,10 @@ open class AboutViewController: UITableViewController {
         }
 
         if let title = title {
-            present(webViewController: WebViewControllerFactory.controller(url: url, title: title))
+            present(webViewController: WebViewControllerFactory.controller(url: url, title: title, source: "about"))
         }
         else {
-            present(webViewController: WebViewControllerFactory.controller(url: url))
+            present(webViewController: WebViewControllerFactory.controller(url: url, source: "about"))
         }
     }
 

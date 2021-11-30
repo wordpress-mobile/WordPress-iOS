@@ -919,7 +919,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
         NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
-        UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL];
+
+        UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL source:@"site_settings_start_over"];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navController animated:YES completion:nil];
     }
