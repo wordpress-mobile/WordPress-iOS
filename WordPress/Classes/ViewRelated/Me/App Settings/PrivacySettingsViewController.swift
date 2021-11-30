@@ -153,7 +153,7 @@ class PrivacySettingsViewController: UITableViewController {
         guard let url = URL(string: urlString) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "privacy_settings")
         let navigation = UINavigationController(rootViewController: webViewController)
         present(navigation, animated: true)
     }

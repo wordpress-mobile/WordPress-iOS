@@ -16,7 +16,7 @@ struct NotificationContentRouter {
         do {
             try displayContent(of: range, with: url)
         } catch {
-            coordinator.displayWebViewWithURL(url)
+            coordinator.displayWebViewWithURL(url, source: "notifications")
         }
     }
 
@@ -31,7 +31,7 @@ struct NotificationContentRouter {
         do {
             try displayNotificationSource()
         } catch {
-            coordinator.displayWebViewWithURL(fallbackURL)
+            coordinator.displayWebViewWithURL(fallbackURL, source: "notifications")
         }
     }
 

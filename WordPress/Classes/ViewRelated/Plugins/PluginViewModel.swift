@@ -555,7 +555,7 @@ class PluginViewModel: Observable {
     }
 
     private func presentBrowser(`for` url: URL) {
-        let controller = WebViewControllerFactory.controller(url: url)
+        let controller = WebViewControllerFactory.controller(url: url, source: "plugins")
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

@@ -488,7 +488,7 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [settingsRow]
 
-        if !(AppConfiguration.showsNewAboutScreen && FeatureFlag.aboutScreen.enabled) {
+        if FeatureFlag.aboutScreen.enabled == false {
             rows.append(aboutRow)
         }
 

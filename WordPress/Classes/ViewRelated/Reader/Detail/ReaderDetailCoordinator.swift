@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class ReaderDetailCoordinator {
 
@@ -265,6 +266,8 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter url: URL of the image or gif
     func presentImage(_ url: URL) {
+        WPAnalytics.trackReader(.readerArticleImageTapped)
+
         let imageViewController = WPImageViewController(url: url)
         imageViewController.readerPost = post
         imageViewController.modalTransitionStyle = .crossDissolve
@@ -470,6 +473,8 @@ class ReaderDetailCoordinator {
         } else if url.isLinkProtocol {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
         } else {
+            WPAnalytics.trackReader(.readerArticleLinkTapped)
+
             presentWebViewController(url)
         }
     }
@@ -572,7 +577,7 @@ class ReaderDetailCoordinator {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_detail")
         let navController = LightNavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
     }

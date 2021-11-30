@@ -322,7 +322,7 @@ open class JetpackSettingsViewController: UITableViewController {
         guard let url =  URL(string: JetpackSettingsViewController.learnMoreUrl) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "jetpack_settings_learn_more")
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

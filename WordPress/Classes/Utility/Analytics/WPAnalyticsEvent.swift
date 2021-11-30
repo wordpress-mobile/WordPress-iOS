@@ -90,6 +90,9 @@ import Foundation
     case readerPostMarkUnseen
     case readerRelatedPostFromOtherSiteClicked
     case readerRelatedPostFromSameSiteClicked
+    case readerSearchHistoryCleared
+    case readerArticleLinkTapped
+    case readerArticleImageTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -174,6 +177,8 @@ import Foundation
     case commentRepliedTo
     case commentFilterChanged
     case commentSnackbarNext
+    case commentFullScreenEntered
+    case commentFullScreenExited
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -256,6 +261,9 @@ import Foundation
     case privacySettingsOpened
     case privacySettingsReportCrashesToggled
 
+    // Notifications
+    case notificationsPreviousTapped
+    case notificationsNextTapped
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
     case sharingButtonsEditMoreButtonToggled
@@ -264,9 +272,22 @@ import Foundation
     // People
     case peopleFilterChanged
     case peopleUserInvited
+
     // Login: Epilogue
     case loginEpilogueChooseSiteTapped
     case loginEpilogueCreateNewSiteTapped
+
+    // WebKitView
+    case webKitViewDisplayed
+    case webKitViewDismissed
+    case webKitViewOpenInSafariTapped
+    case webKitViewReloadTapped
+    case webKitViewShareTapped
+    case webKitViewNavigatedBack
+    case webKitViewNavigatedForward
+
+    // Preview WebKitView
+    case previewWebKitViewDeviceChanged
 
     /// A String that represents the event
     var value: String {
@@ -422,6 +443,12 @@ import Foundation
             return "reader_related_post_from_other_site_clicked"
         case .readerRelatedPostFromSameSiteClicked:
             return "reader_related_post_from_same_site_clicked"
+        case .readerSearchHistoryCleared:
+            return "reader_search_history_cleared"
+        case .readerArticleLinkTapped:
+            return "reader_article_link_tapped"
+        case .readerArticleImageTapped:
+            return "reader_article_image_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -576,6 +603,10 @@ import Foundation
             return "comment_filter_changed"
         case .commentSnackbarNext:
             return "comment_snackbar_next"
+        case .commentFullScreenEntered:
+            return "comment_fullscreen_entered"
+        case .commentFullScreenExited:
+            return "comment_fullscreen_exited"
 
         // Invite Links
         case .inviteLinksGetStatus:
@@ -703,6 +734,11 @@ import Foundation
         case .accountCloseCompleted:
             return "account_close_completed"
 
+        case .notificationsPreviousTapped:
+            return "notifications_previous_tapped"
+        case .notificationsNextTapped:
+            return "notifications_next_tapped"
+
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:
             return "sharing_buttons_edit_sharing_buttons_toggled"
@@ -716,11 +752,32 @@ import Foundation
             return "people_management_filter_changed"
         case .peopleUserInvited:
             return "people_management_user_invited"
+
         // Login: Epilogue
         case .loginEpilogueChooseSiteTapped:
             return "login_epilogue_choose_site_tapped"
         case .loginEpilogueCreateNewSiteTapped:
             return "login_epilogue_create_new_site_tapped"
+
+        // WebKitView
+        case .webKitViewDisplayed:
+            return "webkitview_displayed"
+        case .webKitViewDismissed:
+            return "webkitview_dismissed"
+        case .webKitViewOpenInSafariTapped:
+            return "webkitview_open_in_safari_tapped"
+        case .webKitViewReloadTapped:
+            return "webkitview_reload_tapped"
+        case .webKitViewShareTapped:
+            return "webkitview_share_tapped"
+        case .webKitViewNavigatedBack:
+            return "webkitview_navigated_back"
+        case .webKitViewNavigatedForward:
+            return "webkitview_navigated_forward"
+
+        case .previewWebKitViewDeviceChanged:
+            return "preview_webkitview_device_changed"
+
         } // END OF SWITCH
     }
 

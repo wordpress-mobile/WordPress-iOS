@@ -44,7 +44,7 @@ class MockContentCoordinator: ContentCoordinator {
         streamSiteID = siteID
     }
 
-    func displayWebViewWithURL(_ url: URL) {
+    func displayWebViewWithURL(_ url: URL, source: String) {
 
     }
 
