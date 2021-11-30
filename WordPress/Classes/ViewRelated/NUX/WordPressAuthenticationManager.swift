@@ -324,7 +324,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
-        let onDismissQuickStartPrompt: (Blog) -> Void = { [weak self] blog in
+        let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
             self?.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
         }
 
@@ -494,7 +494,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
 // MARK: - Quick Start Prompt
 private extension WordPressAuthenticationManager {
-    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: ((Blog) -> Void)?) {
+    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: ((Blog, Bool) -> Void)?) {
         // If the quick start prompt has already been dismissed,
         // then show the My Site screen for the specified blog
         guard !quickStartSettings.promptWasDismissed(for: blog) else {
