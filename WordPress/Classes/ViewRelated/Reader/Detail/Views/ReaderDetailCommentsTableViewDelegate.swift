@@ -61,7 +61,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
 
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: Constants.buttonTitle)
+        cell.configure(buttonTitle: Constants.buttonTitle, borderColor: .textTertiary)
         cell.delegate = buttonDelegate
         return cell
     }
