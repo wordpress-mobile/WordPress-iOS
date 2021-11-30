@@ -11,15 +11,15 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - AppCenter (4.2.0):
-    - AppCenter/Analytics (= 4.2.0)
-    - AppCenter/Crashes (= 4.2.0)
-  - AppCenter/Analytics (4.2.0):
+  - AppCenter (4.3.0):
+    - AppCenter/Analytics (= 4.3.0)
+    - AppCenter/Crashes (= 4.3.0)
+  - AppCenter/Analytics (4.3.0):
     - AppCenter/Core
-  - AppCenter/Core (4.2.0)
-  - AppCenter/Crashes (4.2.0):
+  - AppCenter/Core (4.3.0)
+  - AppCenter/Crashes (4.3.0):
     - AppCenter/Core
-  - AppCenter/Distribute (4.2.0):
+  - AppCenter/Distribute (4.3.0):
     - AppCenter/Core
   - Automattic-Tracks-iOS (0.9.1):
     - CocoaLumberjack (~> 3)
@@ -436,7 +436,7 @@ PODS:
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
-  - UIDeviceIdentifier (1.6.0)
+  - UIDeviceIdentifier (1.7.1)
   - WordPress-Aztec-iOS (1.19.5)
   - WordPress-Editor-iOS (1.19.5):
     - WordPress-Aztec-iOS (= 1.19.5)
@@ -452,7 +452,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.44.0):
+  - WordPressKit (4.45.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -553,7 +553,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.5)
   - WordPressAuthenticator (~> 1.42.1)
-  - WordPressKit (~> 4.44.0)
+  - WordPressKit (~> 4.45.0-beta)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.0)
   - WordPressUI (~> 1.12.2)
@@ -734,7 +734,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  AppCenter: 87ef6eefd8ade4df59e88951288587429f3dd2a5
+  AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
   Automattic-Tracks-iOS: f5a6188ad8d00680748111466beabb0aea11f856
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: c6323e480d83b64fe09e9fc9e34e208fc637b5ea
@@ -806,11 +806,11 @@ SPEC CHECKSUMS:
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  UIDeviceIdentifier: f4bf3b343581a1beacdbf5fb1a8825bd5f05a4a4
+  UIDeviceIdentifier: d0fee204f467dacf8808b7ac14ce43affeb271a5
   WordPress-Aztec-iOS: af36d9cb86a0109b568f516874870e2801ba1bd9
   WordPress-Editor-iOS: 446be349b94707c1a82a83d525b86dbcf18cf2c7
   WordPressAuthenticator: 111793c08fa8e9d9a72aed5b33a094c91ff4fd82
-  WordPressKit: 9ba5691ebe42f7bee2d0032386c7c8ee27c20c32
+  WordPressKit: af274cd448033101df5beddd144ee3ad81063d92
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: a4b0308a6345d4dda20c8f7ad9317df4246b4a00
   WordPressUI: c573f4b5c2e5d0ffcebe69ecf86ae75ab7b6ff4d
@@ -826,6 +826,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 60352df76a9f4471bd7766984cd37ca07c5705ed
+PODFILE CHECKSUM: 22e47ac08ff376890a2371f01f5950f182d2bf06
 
 COCOAPODS: 1.10.1
