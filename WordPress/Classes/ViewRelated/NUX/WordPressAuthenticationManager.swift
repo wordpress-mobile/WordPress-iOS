@@ -323,6 +323,17 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
+        let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
+            self?.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
+        }
+
+        // If adding a self-hosted site, skip the Epilogue
+        if let wporg = credentials.wporg,
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
+            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+            return
+        }
+
         if PostSignUpInterstitialViewController.shouldDisplay() {
             self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
             return
@@ -519,6 +530,45 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     }
 }
 
+// MARK: - Quick Start Prompt
+private extension WordPressAuthenticationManager {
+    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: ((Blog, Bool) -> Void)?) {
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
+            return
+        }
+
+        // Otherwise, show the Quick Start prompt
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        quickstartPrompt.onDismiss = onDismiss
+        navigationController.pushViewController(quickstartPrompt, animated: true)
+    }
+
+    func onDismissQuickStartPrompt(for blog: Blog, onDismiss: @escaping () -> Void) {
+        onDismiss()
+
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
+            self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            return
+        }
+
+        // Otherwise, show the My Site screen for the specified blog and after a short delay,
+        // trigger the Quick Start tour
+        self.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
+            QuickStartTourGuide.shared.setupWithDelay(for: blog)
+        })
+    }
+}
 
 // MARK: - WordPressAuthenticatorManager
 //

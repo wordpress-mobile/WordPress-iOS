@@ -36,7 +36,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     private let quickStartSettings: QuickStartSettings
 
     /// Closure to be executed upon dismissal
-    private let onDismiss: ((Blog) -> Void)?
+    private let onDismiss: ((Blog, Bool) -> Void)?
 
     // MARK: SiteAssemblyWizardContent
 
@@ -50,7 +50,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     init(creator: SiteCreator,
          service: SiteAssemblyService,
          quickStartSettings: QuickStartSettings = QuickStartSettings(),
-         onDismiss: ((Blog) -> Void)? = nil) {
+         onDismiss: ((Blog, Bool) -> Void)? = nil) {
         self.siteCreator = creator
         self.service = service
         self.quickStartSettings = quickStartSettings
@@ -258,7 +258,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         }
 
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-        quickstartPrompt.onDismiss = { blog in
+        quickstartPrompt.onDismiss = { blog, _ in
             QuickStartTourGuide.shared.setupWithDelay(for: blog)
         }
         tabBar.present(quickstartPrompt, animated: true)
