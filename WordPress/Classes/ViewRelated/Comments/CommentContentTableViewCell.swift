@@ -35,6 +35,20 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// When supplied with a non-empty string, the cell will show a badge label beside the name label.
+    /// Note that the badge will be hidden when the title is nil or empty.
+    var badgeTitle: String? = nil {
+        didSet {
+            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
+                badgeLabel.isHidden = true
+                return
+            }
+
+            badgeLabel.setText(badgeTitle.localizedUppercase)
+            badgeLabel.isHidden = false
+        }
+    }
+
     override var indentationWidth: CGFloat {
         didSet {
             updateContainerLeadingConstraint()
@@ -61,6 +75,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var badgeLabel: BadgeLabel!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var accessoryButton: UIButton!
 
@@ -269,6 +284,12 @@ private extension CommentContentTableViewCell {
 
         nameLabel?.font = Style.nameFont
         nameLabel?.textColor = Style.nameTextColor
+
+        badgeLabel?.font = Style.badgeFont
+        badgeLabel?.textColor = Style.badgeTextColor
+        badgeLabel?.backgroundColor = Style.badgeColor
+        badgeLabel?.adjustsFontForContentSizeCategory = true
+        badgeLabel?.adjustsFontSizeToFitWidth = true
 
         dateLabel?.font = Style.dateFont
         dateLabel?.textColor = Style.dateTextColor
