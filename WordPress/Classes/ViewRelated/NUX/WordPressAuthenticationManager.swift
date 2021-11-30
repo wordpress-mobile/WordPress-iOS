@@ -68,8 +68,9 @@ extension WordPressAuthenticationManager {
                                                    enableSignUp: AppConfiguration.allowSignUp,
                                                    enableSignInWithApple: enableSignInWithApple,
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
-                                                   enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
+                                                   enableUnifiedAuth: false,
+                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
+                                                   enableOnePassword: false)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
