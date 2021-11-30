@@ -17,6 +17,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
     weak var delegate: BorderedButtonTableViewCellDelegate?
 
+    private var button = UIButton()
     private var buttonTitle = String()
     private var buttonInsets = Defaults.buttonInsets
     private var titleFont = Defaults.titleFont
@@ -38,6 +39,13 @@ class BorderedButtonTableViewCell: UITableViewCell {
         configureView()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateButtonBorderColors()
+        }
+    }
+
 }
 
 // MARK: - Private Extension
@@ -48,20 +56,19 @@ private extension BorderedButtonTableViewCell {
         selectionStyle = .none
         accessibilityTraits = .button
 
-        let button = configuredButton()
+        configureButton()
         contentView.addSubview(button)
         contentView.pinSubviewToAllEdges(button, insets: buttonInsets)
     }
 
-    func configuredButton() -> UIButton {
+    func configureButton() {
         let button = UIButton()
-        let buttonColor = normalColor
+
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(buttonTitle, for: .normal)
-        button.setTitleColor(buttonColor, for: .normal)
+
+        button.setTitleColor(normalColor, for: .normal)
         button.setTitleColor(highlightedColor, for: .highlighted)
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: buttonColor), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: buttonColor, border: buttonColor), for: .highlighted)
 
         button.titleLabel?.font = titleFont
         button.titleLabel?.textAlignment = .center
@@ -76,14 +83,20 @@ private extension BorderedButtonTableViewCell {
             self?.delegate?.buttonTapped()
         }
 
-        return button
+        self.button = button
+        updateButtonBorderColors()
+    }
+
+    func updateButtonBorderColors() {
+        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: normalColor), for: .normal)
+        button.setBackgroundImage(.renderBackgroundImage(fill: normalColor, border: normalColor), for: .highlighted)
     }
 
     struct Defaults {
         static let buttonInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         static let titleFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let normalColor: UIColor = .text
-        static let highlightedColor: UIColor = .white
+        static let highlightedColor: UIColor = .textInverted
     }
 
 }
