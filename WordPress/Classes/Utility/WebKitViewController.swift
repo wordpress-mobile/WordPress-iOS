@@ -210,6 +210,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         super.viewWillDisappear(animated)
         stopWaitingForConnectionRestored()
         ReachabilityUtils.dismissNoInternetConnectionNotice()
+
+        track(.webKitViewDismissed)
     }
 
     @objc func loadWebViewRequest() {
@@ -394,10 +396,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     // MARK: User Actions
-
     @objc func close() {
         dismiss(animated: true, completion: onClose)
-        track(.webKitViewDismissed)
     }
 
     @objc func share() {
