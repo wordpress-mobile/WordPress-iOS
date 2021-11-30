@@ -1065,6 +1065,24 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self refreshReplyTextViewPlaceholder];
 }
 
+- (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    if (!comment.isLiked) {
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
+    }
+
+    __typeof(self) __weak weakSelf = self;
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+        [weakSelf trackCommentLikedOrUnliked:comment];
+    } failure:^(NSError *error) {
+        // in case of failure, revert the cell's like state.
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+}
+
 #pragma mark - Sync methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
@@ -1170,6 +1188,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
         cell.replyButtonAction = ^{
             [weakSelf didTapReplyAtIndexPath:indexPath];
+        };
+
+        cell.likeButtonAction = ^{
+            [weakSelf didTapLikeForComment:comment atIndexPath:indexPath];
         };
 
         return;
@@ -1325,6 +1347,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 
 #pragma mark - ReaderCommentCell Delegate Methods
+
+// TODO: Remove ReaderCommentCell methods once the `newCommentThread` flag is removed.
 
 - (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
