@@ -1083,6 +1083,33 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }];
 }
 
+- (void)presentMenuForComment:(Comment *)comment fromView:(UIView *)sourceView
+{
+    // create context menu.
+
+    UIAction *unapproveAction = [UIAction actionWithTitle:NSLocalizedString(@"Unapprove", @"Unapproves a comment")
+                                                    image:[UIImage systemImageNamed:@"x.circle"]
+                                               identifier:nil
+                                                  handler:^(__kindof UIAction * _Nonnull action) {
+        // TODO: Unapprove comment.
+    }];
+
+    UIAction *spamAction = [UIAction actionWithTitle:NSLocalizedString(@"Spam", @"Marks comment as spam")
+                                               image:[UIImage systemImageNamed:@"exclamationmark.octagon"]
+                                          identifier:nil
+                                             handler:^(__kindof UIAction * _Nonnull action) {
+        // TODO: Spam comment.
+    }];
+
+    UIAction *trashAction = [UIAction actionWithTitle:NSLocalizedString(@"Trash", @"Trashes the comment")
+                                                image:[UIImage systemImageNamed:@"trash"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+        // TODO: Trash comment.
+    }];
+
+}
+
 #pragma mark - Sync methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
@@ -1185,6 +1212,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
         // configure button actions.
         __weak __typeof(self) weakSelf = self;
+
+        cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
+            if ([comment allowsModeration]) {
+                // TODO: Show menu in iOS 13.
+            } else {
+                [self shareComment:comment sourceView:sourceView];
+            }
+        };
 
         cell.replyButtonAction = ^{
             [weakSelf didTapReplyAtIndexPath:indexPath];
