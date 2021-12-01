@@ -353,6 +353,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
+            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                return
+            }
+
             self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
         }
 
