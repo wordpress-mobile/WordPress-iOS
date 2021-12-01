@@ -142,9 +142,9 @@ private extension ReaderCommentsViewController {
             case .unapprove:
                 return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
             case .spam:
-                return NSLocalizedString("Spam", comment: "Marks comment as spam")
+                return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
             case .trash:
-                return NSLocalizedString("Trash", comment: "Trashes the comment")
+                return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
             case .edit:
                 return NSLocalizedString("Edit", comment: "Edits the comment")
             case .share:
