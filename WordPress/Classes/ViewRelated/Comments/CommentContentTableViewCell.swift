@@ -219,7 +219,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     /// Hide all actions for the comment.
-    ///
+    /// NOTE: This must be called after configure or these values will be overwritten.
+    /// 
     func hideAllActions() {
         hidesModerationBar = true
         isCommentLikesEnabled = false
