@@ -1036,6 +1036,52 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                     sourceBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
 
+- (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!indexPath) {
+        return;
+    }
+
+    // if a row is already selected don't allow selection of another
+    if (self.replyTextView.isFirstResponder) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+        [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
+        return;
+    }
+
+    if (!self.canComment) {
+        return;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+    [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
+
+    self.indexPathForCommentRepliedTo = indexPath;
+    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self refreshReplyTextViewPlaceholder];
+}
+
+- (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    if (!comment.isLiked) {
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
+    }
+
+    __typeof(self) __weak weakSelf = self;
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+        [weakSelf trackCommentLikedOrUnliked:comment];
+    } failure:^(NSError *error) {
+        // in case of failure, revert the cell's like state.
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+}
 
 #pragma mark - Sync methods
 
@@ -1131,10 +1177,26 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     if ([self newCommentThreadEnabled]) {
-        [self configureContentCell:aCell comment:comment tableView:self.tableView];
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
+        [self configureContentCell:cell comment:comment tableView:self.tableView];
 
         // show separator when the comment is the "last leaf" of its top-level comment.
-        aCell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
+        cell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
+
+        // configure button actions.
+        __weak __typeof(self) weakSelf = self;
+
+        cell.replyButtonAction = ^{
+            [weakSelf didTapReplyAtIndexPath:indexPath];
+        };
+
+        cell.likeButtonAction = ^{
+            [weakSelf didTapLikeForComment:comment atIndexPath:indexPath];
+        };
+
+        cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {
+            [weakSelf interactWithURL:url];
+        };
 
         return;
     }
@@ -1290,6 +1352,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 #pragma mark - ReaderCommentCell Delegate Methods
 
+// TODO: Remove ReaderCommentCell methods once the `newCommentThread` flag is removed.
+
 - (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
     NSURL *url = [comment authorURL];
@@ -1303,27 +1367,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)cell:(ReaderCommentCell *)cell didTapReply:(Comment *)comment
 {
-    // if a row is already selected don't allow selection of another
-    if (self.replyTextView.isFirstResponder) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-        [self.replyTextView resignFirstResponder];
-#pragma clang diagnostic pop
-        return;
-    }
-
-    if (!self.canComment) {
-        return;
-    }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-    [self.replyTextView becomeFirstResponder];
-#pragma clang diagnostic pop
-
-    self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self refreshReplyTextViewPlaceholder];
+    [self didTapReplyAtIndexPath:[self.tableViewHandler.resultsController indexPathForObject:comment]];
 }
 
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment

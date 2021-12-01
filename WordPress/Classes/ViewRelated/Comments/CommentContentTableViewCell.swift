@@ -12,13 +12,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     /// A closure that's called when the accessory button is tapped.
     /// The button's view is sent as the closure's parameter for reference.
-    var accessoryButtonAction: ((UIView) -> Void)? = nil
+    @objc var accessoryButtonAction: ((UIView) -> Void)? = nil
 
-    var replyButtonAction: (() -> Void)? = nil
+    @objc var replyButtonAction: (() -> Void)? = nil
 
-    var likeButtonAction: (() -> Void)? = nil
+    @objc var likeButtonAction: (() -> Void)? = nil
 
-    var contentLinkTapAction: ((URL) -> Void)? = nil
+    @objc var contentLinkTapAction: ((URL) -> Void)? = nil
 
     /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
     var hidesModerationBar: Bool = false {
@@ -154,6 +154,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     // MARK: Lifecycle
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // reset all button actions.
+        accessoryButtonAction = nil
+        replyButtonAction = nil
+        likeButtonAction = nil
+        contentLinkTapAction = nil
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
