@@ -12,7 +12,7 @@ final class SiteStatsPinnedItemStore {
             InsightType.customize
         ]
     }()
-    private let lowSiteViewsCountThreshold = 30
+    private let lowSiteViewsCountThreshold = 3000
     private let siteId: NSNumber
     private(set) var currentItem: SiteStatsPinnable?
 
