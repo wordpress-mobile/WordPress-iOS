@@ -2,7 +2,8 @@ import UIKit
 
 // UITableViewCell that displays a full width button with a border.
 // Properties:
-// - normalColor: used for the button label and border.
+// - normalColor: used for the button label and border (if borderColor is not specified).
+// - borderColor: used for border. Defaults to normalColor if not specified.
 // - highlightedColor: used for the button label when the button is pressed.
 // - buttonInsets: used to provide margins around the button within the cell.
 // The delegate is notified when the button is tapped.
@@ -23,6 +24,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
     private var titleFont = Defaults.titleFont
     private var normalColor = Defaults.normalColor
     private var highlightedColor = Defaults.highlightedColor
+    private var borderColor = Defaults.normalColor
 
     // MARK: - Configure
 
@@ -30,11 +32,13 @@ class BorderedButtonTableViewCell: UITableViewCell {
                    titleFont: UIFont = Defaults.titleFont,
                    normalColor: UIColor = Defaults.normalColor,
                    highlightedColor: UIColor = Defaults.highlightedColor,
+                   borderColor: UIColor? = nil,
                    buttonInsets: UIEdgeInsets = Defaults.buttonInsets) {
         self.buttonTitle = buttonTitle
         self.titleFont = titleFont
         self.normalColor = normalColor
         self.highlightedColor = highlightedColor
+        self.borderColor = borderColor ?? normalColor
         self.buttonInsets = buttonInsets
         configureView()
     }
@@ -88,8 +92,8 @@ private extension BorderedButtonTableViewCell {
     }
 
     func updateButtonBorderColors() {
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: normalColor), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: normalColor, border: normalColor), for: .highlighted)
+        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: borderColor), for: .normal)
+        button.setBackgroundImage(.renderBackgroundImage(fill: borderColor, border: borderColor), for: .highlighted)
     }
 
     struct Defaults {
