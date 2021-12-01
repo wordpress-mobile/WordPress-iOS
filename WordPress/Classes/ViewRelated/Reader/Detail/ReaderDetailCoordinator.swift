@@ -63,7 +63,7 @@ class ReaderDetailCoordinator {
 
     /// Comment Service
     private let commentService: CommentService
-    private let commentsDisplayed: UInt = 2
+    private let commentsDisplayed: UInt = 1
 
     /// Used for `RequestAuthenticator` creation and likes filtering logic.
     private let accountService: AccountService

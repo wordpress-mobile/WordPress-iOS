@@ -217,6 +217,17 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
     }
+
+    /// Hide all actions for the comment.
+    /// NOTE: This must be called after configure or these values will be overwritten.
+    /// 
+    func hideAllActions() {
+        hidesModerationBar = true
+        isCommentLikesEnabled = false
+        isCommentReplyEnabled = false
+        isAccessoryButtonEnabled = false
+    }
+
 }
 
 // MARK: - WKNavigationDelegate
