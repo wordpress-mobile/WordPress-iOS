@@ -141,7 +141,8 @@ def gutenberg_dependencies(options)
         'RNScreens',
         'RNReanimated',
         'RNGestureHandler',
-        'RNCMaskedView'
+        'RNCMaskedView',
+        'RNCClipboard'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -168,7 +169,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '5c46e44a7e6f85ca8413f44fb4b12a1425e15764'
+    gutenberg :commit => '3567928eacb8ec84d43e52cd9cf58c3ba6dc622c'
 
     ## Third party libraries
     ## =====================
