@@ -45,7 +45,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
-    var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
+    private var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
@@ -390,7 +390,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-        // TODO: if there are no comments, hide the commentsTableView.
+
+        guard totalComments > 0 else {
+            return
+        }
+
+        // Set the table delegate here, after the totalComments check,
+        // to prevent the table from showing if there are no comments.
+        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
+
         commentsTableViewDelegate?.comments = comments
         commentsTableViewDelegate?.totalComments = totalComments
         commentsTableViewDelegate?.buttonDelegate = self
@@ -498,7 +508,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func hideLikesView() {
-        // Because the Related Posts table is constrained to the likesContainerView, simply hiding it leaves a gap.
+        // Because other components are constrained to the likesContainerView, simply hiding it leaves a gap.
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
         view.setNeedsDisplay()
@@ -517,10 +527,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
         commentsTableView.register(CommentContentTableViewCell.defaultNib,
                                    forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
-
-        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
-        commentsTableView.delegate = commentsTableViewDelegate
-        commentsTableView.dataSource = commentsTableViewDelegate
     }
 
     private func configureRelatedPosts() {
