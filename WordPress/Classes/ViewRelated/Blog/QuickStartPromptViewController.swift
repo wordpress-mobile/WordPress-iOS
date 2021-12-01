@@ -24,6 +24,9 @@ final class QuickStartPromptViewController: UIViewController {
 
     /// Closure to be executed upon dismissal.
     ///
+    /// - Parameters:
+    ///   - Blog: the blog for which the prompt was dismissed
+    ///   - Bool: `true` if Quick Start should start, otherwise `false`
     var onDismiss: ((Blog, Bool) -> Void)?
 
     // MARK: - Init
