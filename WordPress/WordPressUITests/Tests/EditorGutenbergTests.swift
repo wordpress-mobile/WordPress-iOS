@@ -25,8 +25,8 @@ class EditorGutenbergTests: XCTestCase {
 
     func testTextPostPublish() throws {
 
-        let title = getRandomPhrase()
-        let content = getRandomContent()
+        let title = "Text post title"
+        let content = "Text post content"
         try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
@@ -39,8 +39,8 @@ class EditorGutenbergTests: XCTestCase {
 
     func testBasicPostPublish() throws {
 
-        let title = getRandomPhrase()
-        let content = getRandomContent()
+        let title = "Rich post title"
+        let content = "Some text, and more text"
         let category = getCategory()
         let tag = getTag()
         try editorScreen
