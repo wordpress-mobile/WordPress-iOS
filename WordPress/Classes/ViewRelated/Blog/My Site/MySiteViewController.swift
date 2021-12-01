@@ -300,7 +300,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     func launchSiteCreationFromNotification() {
-        self.launchSiteCreation(source: "post_signup")
+        self.launchSiteCreation(source: "signup_epilogue")
     }
 
     func launchSiteCreation(source: String) {
