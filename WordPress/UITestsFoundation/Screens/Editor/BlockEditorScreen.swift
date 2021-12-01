@@ -91,12 +91,11 @@ public class BlockEditorScreen: ScreenObject {
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
-                let notSavedState = app.staticTexts["You have unsaved changes."]
-                if notSavedState.exists {
-                    Logger.log(message: "Discarding unsaved changes", event: .v)
-                    let discardButton = app.buttons["Discard"] // Uses a localized string
-                    discardButton.tap()
-                }
+                guard app.staticTexts["You have unsaved changes."].waitForIsHittable(timeout: 3) else { return }
+
+                Logger.log(message: "Discarding unsaved changes", event: .v)
+                let discardButton = app.buttons["Discard"] // Uses a localized string
+                discardButton.tap()
             }
 
             let editorNavBar = app.navigationBars["Gutenberg Editor Navigation Bar"]
@@ -130,10 +129,23 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func addBlock(_ blockLabel: String) {
-        let blockButton = app.buttons[blockLabel]
         addBlockButton.tap()
+        let blockButton = app.buttons[blockLabel]
         XCTAssertTrue(blockButton.waitForIsHittable(timeout: 3))
         blockButton.tap()
+    }
+
+    /// Some tests might fail during the block picking flow. In such cases, we need to dismiss the
+    /// block picker itself before being able to interact with the rest of the app again.
+    public func dismissBlocksPickerIfNeeded() {
+        // Determine whether the block picker is on screen using the visibility of the add block
+        // button as a proxy
+        guard addBlockButton.isFullyVisibleOnScreen == false else { return }
+
+        // Dismiss the block picker by swiping down
+        app.swipeDown()
+
+        XCTAssertTrue(addBlockButton.waitForIsHittable(timeout: 3))
     }
 
     /*
