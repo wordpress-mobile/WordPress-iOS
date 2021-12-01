@@ -374,23 +374,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
-            // If the quick start prompt has already been dismissed,
-            // then show the My Site screen for the specified blog
-            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                } else {
-                    navigationController.dismiss(animated: true)
-                }
-
+            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
                 return
             }
 
-            // Otherwise, show the Quick Start prompt
-            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismiss = onDismissQuickStartPrompt
-            navigationController.pushViewController(quickstartPrompt, animated: true)
+            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
         }
 
         epilogueViewController.onCreateNewSite = {
