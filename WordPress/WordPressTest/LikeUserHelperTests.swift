@@ -76,6 +76,6 @@ class LikeUserHelperTests: XCTestCase {
             completionExpectation.fulfill()
         })
 
-        waitForExpectations(timeout: 0.1)
+        waitForExpectations(timeout: 5)
     }
 }
