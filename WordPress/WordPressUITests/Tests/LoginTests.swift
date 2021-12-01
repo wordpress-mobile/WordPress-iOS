@@ -54,9 +54,7 @@ class LoginTests: XCTestCase {
         try prologueScreen
             .selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
-            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .continueWithSelectedSite()
+            .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .removeSelfHostedSite()
 
         XCTAssert(prologueScreen.isLoaded)
@@ -85,9 +83,7 @@ class LoginTests: XCTestCase {
 
             // Then, go through the self-hosted login flow:
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
-            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .continueWithSelfHostedSiteAddedFromSitesList()
+            .proceedWithSelfHostedSiteAddedFromSitesList(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
 
             // Login flow returns MySites modal, which needs to be closed.
             .closeModal()
