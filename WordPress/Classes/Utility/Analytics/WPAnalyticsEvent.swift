@@ -289,6 +289,8 @@ import Foundation
     // Preview WebKitView
     case previewWebKitViewDeviceChanged
 
+    case addSiteAlertDisplayed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -777,6 +779,9 @@ import Foundation
 
         case .previewWebKitViewDeviceChanged:
             return "preview_webkitview_device_changed"
+
+        case .addSiteAlertDisplayed:
+            return "add_site_alert_displayed"
 
         } // END OF SWITCH
     }
