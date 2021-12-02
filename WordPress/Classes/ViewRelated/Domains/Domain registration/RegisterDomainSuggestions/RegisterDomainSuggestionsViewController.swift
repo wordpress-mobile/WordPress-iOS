@@ -309,7 +309,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
 
-        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url)
+        let webViewController = WebViewControllerFactory.controllerWithDefaultAccountAndSecureInteraction(url: url, source: "domains_register")
         let navController = LightNavigationController(rootViewController: webViewController)
 
         // WORKAROUND: The reason why we have to use this mechanism to detect success and failure conditions

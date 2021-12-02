@@ -1155,6 +1155,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:true completion:nil];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventMySiteSiteSwitcherTapped];
 }
 
 - (void)visitSiteTapped
@@ -1715,7 +1717,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
@@ -1864,7 +1865,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog withDeviceModes:true];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog source:@"my_site_view_site" withDeviceModes:true];
     LightNavigationController *navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;

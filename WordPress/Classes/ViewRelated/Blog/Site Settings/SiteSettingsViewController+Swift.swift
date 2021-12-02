@@ -79,6 +79,8 @@ extension SiteSettingsViewController {
             self?.blog.settings?.gmtOffset = newValue.gmtOffset as NSNumber?
             self?.blog.settings?.timezoneString = newValue.timezoneString
             self?.saveSettings()
+            self?.trackSettingsChange(fieldName: "timezone",
+                                      value: newValue.value as Any)
         }
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -105,6 +107,7 @@ extension SiteSettingsViewController {
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.blog.settings?.postsPerPage = newValue as NSNumber?
             self?.saveSettings()
+            self?.trackSettingsChange(fieldName: "posts_per_page", value: newValue as Any)
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -147,7 +150,7 @@ extension SiteSettingsViewController {
         guard let url =  URL(string: self.ampSupportURL) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "site_settings_amp_footer")
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
@@ -355,6 +358,8 @@ extension SiteSettingsViewController {
             if value != self.blog.settings?.name {
                 self.blog.settings?.name = value
                 self.saveSettings()
+
+                self.trackSettingsChange(fieldName: "site_title")
             }
         }
 
@@ -385,6 +390,8 @@ extension SiteSettingsViewController {
             if normalizedTagline != self.blog.settings?.tagline {
                 self.blog.settings?.tagline = normalizedTagline
                 self.saveSettings()
+
+                self.trackSettingsChange(fieldName: "tagline")
             }
         }
 
@@ -402,5 +409,11 @@ extension SiteSettingsViewController {
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func trackSettingsChange(fieldName: String, value: Any? = nil) {
+        WPAnalytics.trackSettingsChange("site_settings",
+                                        fieldName: fieldName,
+                                        value: value)
     }
 }

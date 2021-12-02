@@ -875,6 +875,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.addActionWithTitle(setHomepageButtonTitle, style: .default, handler: { [weak self] _ in
             if let pageID = page.postID?.intValue {
                 self?.beginRefreshingManually()
+                WPAnalytics.track(.postListSetHomePageAction)
                 self?.homepageSettingsService?.setHomepageType(.page,
                                                                homePageID: pageID, success: {
                                                                 self?.refreshAndReload()
@@ -907,6 +908,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.addActionWithTitle(setPostsPageButtonTitle, style: .default, handler: { [weak self] _ in
             if let pageID = page.postID?.intValue {
                 self?.beginRefreshingManually()
+                WPAnalytics.track(.postListSetAsPostsPageAction)
                 self?.homepageSettingsService?.setHomepageType(.page,
                                                                withPostsPageID: pageID, success: {
                                                                 self?.refreshAndReload()

@@ -138,7 +138,7 @@ public extension SiteSettingsViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.secureInteraction = true
         configuration.authenticate(blog: blog)
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "site_settings_show_purchases")
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = NSLocalizedString("Purchases", comment: "Title of screen showing site purchases")

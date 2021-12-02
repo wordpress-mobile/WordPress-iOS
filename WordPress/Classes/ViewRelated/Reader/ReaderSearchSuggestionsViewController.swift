@@ -137,6 +137,8 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         service.deleteAllSuggestions()
         tableView.reloadData()
         updateHeightConstraint()
+
+        WPAnalytics.trackReader(.readerSearchHistoryCleared)
     }
 
 

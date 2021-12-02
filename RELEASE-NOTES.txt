@@ -1,12 +1,29 @@
-18.8
+18.9
 -----
 
+
+18.8
+-----
+* [*] Added a new About screen, with links to rate the app, share it with others, visit our Twitter profile, view our other apps, and more. [https://github.com/orgs/wordpress-mobile/projects/107]
+* [*] Editor: Show a compact notice when switching between HTML or Visual mode. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17521]
+* [*] Onboarding Improvements: Need a little help after login? We're here for you. We've made a few changes to the login flow that will make it easier for you to start managing your site or create a new one. [#17564]
+* [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
+* [***] Fixed crash that was sometimes triggered when deleting media. [#17559]
+* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications. [#17529]
+* [**] Block editor: Add clipboard link suggestion to image block and button block. [https://github.com/WordPress/gutenberg/pull/35972]
+* [*] Block editor: Embed block: Include link in block settings. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4189]
+* [**] Block editor: Fix tab titles translation of inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4248]
+* [**] Block editor: Gallery block: When a gallery block is added, the media options are auto opened for v2 of the Gallery block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4277]
+* [*] Block editor: Media & Text block: Fix an issue where the text font size would be bigger than expected in some cases. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4252]
 
 18.7
 -----
 * [*] Comment Reply: updated UI. [#17443, #17445]
 * [***] Two-step Authentication notifications now require an unlocked device to approve or deny them.
 * [***] Site Comments: Updated comment details with a fresh new look and capability to display rich contents. [#17466]
+* [**] Block editor: Image block: Add ability to quickly link images to Media Files and Attachment Pages [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3971]
+* [**] Block editor: Fixed a crash that could occur when copying lists from Microsoft Word. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4174]
+* [***] Fixed an issue where trying to upload an image while offline crashes the app. [#17488]
 
 18.6
 -----
