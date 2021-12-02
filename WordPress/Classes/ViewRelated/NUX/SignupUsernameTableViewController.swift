@@ -10,6 +10,10 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
+    var analyticsSource: String {
+        return "signup_epilogue"
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -85,12 +89,21 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
         return description
     }
 
+    private var searchCount: Int = 0
+    func trackSearchPerformed() {
+        searchCount += 1
+
+        WPAnalytics.track(.changeUsernameSearchPerformed, properties: ["search_count": searchCount, "source": analyticsSource])
+    }
+
     // MARK: - SearchTableViewCellDelegate
 
     func startSearch(for searchTerm: String) {
         guard searchTerm.count > 0 else {
             return
         }
+
+        trackSearchPerformed()
 
         suggestUsernames(for: searchTerm) { [weak self] suggestions in
             self?.suggestions = suggestions
