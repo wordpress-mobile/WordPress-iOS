@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 15:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-02 13:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -9196,7 +9196,7 @@ translators: Block name. %s: The localized block name */
 "widget.today.unconfigured.view.title" = "워드프레스에 로그인하여 오늘 통계를 참조하세요.";
 
 /* Error message to show if a widget view is unavailable */
-"widget.today.view.unavailable.title" = "미리보기 사용할 수 없음";
+"widget.today.view.unavailable.title" = "미리보기를 사용할 수 없습니다.";
 
 /* Title of views label in today widget */
 "widget.today.views.label" = "뷰";

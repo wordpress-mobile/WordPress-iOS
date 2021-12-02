@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-26 17:24:11+0000 */
+/* Translation-Revision-Date: 2021-12-02 17:03:46+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "Ndiqni statistikat e sajtit tuaj";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "Kontrolloni titullin e sajtit tuaj";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Po kontrollohen blerjet…";
@@ -1627,7 +1627,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "E plotësuar: Shihni statistikat e sajtit tuaj";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "E plotësuar: Kontrolloni titullin e sajtit tuaj";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "E plotësuar: Zgjidhni një temë";
@@ -5841,7 +5841,7 @@ translators: Block name. %s: The localized block name */
 "Reply to %1$@" = "Përgjigje për %1$@";
 
 /* Placeholder text for replying to a post */
-"Reply to post" = "Reply to post";
+"Reply to post" = "Përgjigjuni postimit";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Njoftoni për këtë postim";

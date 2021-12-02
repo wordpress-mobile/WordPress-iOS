@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-26 17:23:23+0000 */
+/* Translation-Revision-Date: 2021-12-02 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -9160,22 +9160,22 @@ translators: Block name. %s: The localized block name */
 "widget.alltime.posts.label" = "投稿";
 
 /* Description of all time widget in the preview */
-"widget.alltime.preview.description" = "widget.alltime.preview.description";
+"widget.alltime.preview.description" = "全期間のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
 
 /* Title of all time widget */
-"widget.alltime.title" = "widget.alltime.title";
+"widget.alltime.title" = "すべての期間";
 
 /* Title of the unconfigured view in all time widget */
-"widget.alltime.unconfigured.view.title" = "widget.alltime.unconfigured.view.title";
+"widget.alltime.unconfigured.view.title" = "WordPress にログインして全期間の統計情報を確認しましょう。";
 
 /* Description of all time widget in the preview */
-"widget.thisweek.preview.description" = "widget.thisweek.preview.description";
+"widget.thisweek.preview.description" = "今週のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
 
 /* Title of this week widget */
-"widget.thisweek.title" = "widget.thisweek.title";
+"widget.thisweek.title" = "今週";
 
 /* Title of the unconfigured view in this week widget */
-"widget.thisweek.unconfigured.view.title" = "widget.thisweek.unconfigured.view.title";
+"widget.thisweek.unconfigured.view.title" = "WordPress にログインして今週の統計情報を確認しましょう。";
 
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "コメント";
@@ -9184,19 +9184,19 @@ translators: Block name. %s: The localized block name */
 "widget.today.likes.label" = "いいね";
 
 /* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "widget.today.nodata.view.title";
+"widget.today.nodata.view.title" = "サイト統計情報を読み込めません。";
 
 /* Description of today widget in the preview */
-"widget.today.preview.description" = "widget.today.preview.description";
+"widget.today.preview.description" = "今日のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
 
 /* Title of today widget */
 "widget.today.title" = "今日";
 
 /* Title of the unconfigured view in today widget */
-"widget.today.unconfigured.view.title" = "widget.today.unconfigured.view.title";
+"widget.today.unconfigured.view.title" = "WordPress にログインして今日の統計情報を確認しましょう。";
 
 /* Error message to show if a widget view is unavailable */
-"widget.today.view.unavailable.title" = "widget.today.view.unavailable.title";
+"widget.today.view.unavailable.title" = "プレビューは利用できません";
 
 /* Title of views label in today widget */
 "widget.today.views.label" = "表示数";
