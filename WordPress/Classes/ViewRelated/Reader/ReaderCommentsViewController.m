@@ -1186,6 +1186,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // configure button actions.
         __weak __typeof(self) weakSelf = self;
 
+        cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
+            if ([comment allowsModeration]) {
+                // TODO: Show menu in iOS 13.
+            } else {
+                [self shareComment:comment sourceView:sourceView];
+            }
+        };
+
         cell.replyButtonAction = ^{
             [weakSelf didTapReplyAtIndexPath:indexPath];
         };

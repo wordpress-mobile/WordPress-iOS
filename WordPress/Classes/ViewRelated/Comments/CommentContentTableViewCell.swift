@@ -77,7 +77,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var badgeLabel: BadgeLabel!
     @IBOutlet private weak var dateLabel: UILabel!
-    @IBOutlet private weak var accessoryButton: UIButton!
+    @IBOutlet private(set) weak var accessoryButton: UIButton!
 
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
