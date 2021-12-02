@@ -516,6 +516,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
         commentsTableView.register(CommentContentTableViewCell.defaultNib,
                                    forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
+                                   forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
 
         commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
         commentsTableView.delegate = commentsTableViewDelegate
