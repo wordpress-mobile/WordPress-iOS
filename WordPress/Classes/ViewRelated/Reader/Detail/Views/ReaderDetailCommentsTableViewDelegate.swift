@@ -95,11 +95,6 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
-    func configureForNoComment(_ cell: UITableViewCell) -> UITableViewCell {
-        cell.textLabel?.text = Constants.noComments
-        return cell
-    }
-
     struct Constants {
         static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
