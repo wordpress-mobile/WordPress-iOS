@@ -51,7 +51,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return UITableViewCell()
         }
 
-        return configureForNoComment(cell)
+        cell.titleLabel.text = Constants.noComments
+        return cell
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
