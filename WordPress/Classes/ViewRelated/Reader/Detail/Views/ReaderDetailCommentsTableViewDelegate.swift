@@ -38,11 +38,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                   return UITableViewCell()
               }
 
-        cell.configure(with: comment) { _ in
+        cell.configureForPostDetails(with: comment) { _ in
             tableView.performBatchUpdates({})
         }
 
-        cell.hideAllActions()
         return cell
     }
 
