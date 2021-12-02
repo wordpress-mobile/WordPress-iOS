@@ -24,6 +24,8 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        trackViewLoaded()
+
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
@@ -48,6 +50,8 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         SVProgressHUD.dismiss()
+
+        trackViewDismissed()
     }
 
     func registerNibs() {
@@ -87,6 +91,15 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
         description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfUsername))
         description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfDisplayName))
         return description
+    }
+
+    // MARK: - Tracking
+    func trackViewLoaded() {
+        WPAnalytics.track(.changeUsernameDisplayed, properties: ["source": analyticsSource])
+    }
+
+    func trackViewDismissed() {
+        WPAnalytics.track(.changeUsernameDismissed, properties: ["source": analyticsSource])
     }
 
     private var searchCount: Int = 0
