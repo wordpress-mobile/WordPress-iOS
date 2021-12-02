@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-15 18:34:01+0000 */
+/* Translation-Revision-Date: 2021-11-30 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nלאישור, עליך להזין שוב את שם המשתמש שלך לפני הסגירה.\n\n";
 
+/* No comment provided by engineer. */
+" \/ year" = " לשנה";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "'טעינה עצלה' של תמונות";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "כפתור 'עוד'";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ הוא המועד שנבחר לשחזור.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -35,6 +38,12 @@
 
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ כדי לתקן את האיומים.";
+
+/* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
+"%1$d Comment" = "%1$d Comment";
+
+/* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
+"%1$d Comments" = "%1$d Comments";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -230,13 +239,16 @@ translators: Block name. %s: The localized block name */
 "%s converted to regular blocks" = "התוכן של %s הומר לבלוקים רגילים";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+"%s embed block previews are coming soon" = "%s תצוגות מקדימות של בלוק ההטמעה יהיו זמינות בקרוב";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "ב-%s הוגדרה כתובת URL";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "ב-%s לא הוגדרה כתובת URL";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s קישור";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s previews not yet available" = "תצוגות מקדימות של %s עדיין לא זמינות";
@@ -309,7 +321,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> פעמים בשבוע";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> פעמים בשבוע בשעה %2$@";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>פעם<\/strong> בשבוע";
@@ -335,9 +347,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "קובץ שמכיל תבנית של קוד זדוני";
 
-/* Accessibility hint for My Sites list. */
-"A list of sites on this account." = "רשימה של אתרים בחשבון זה.";
-
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "דרך חדשה ליצור ולפרסם תוכן מעניין באתר שלך.";
 
@@ -349,6 +358,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "תגית בשם '%@' כבר קיימת.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "עצה להגדלת הקהל שלך";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "כותרת אתר";
@@ -393,6 +405,9 @@ translators: Block name. %s: The localized block name */
 "About Me" = "אודותיי";
 
 /* Link to About screen for WordPress for iOS */
+"About WordPress" = "אודות WordPress";
+
+/* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "מידע לגבי WordPress עבור iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
@@ -414,7 +429,8 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "החשבון נסגר";
 
-/* Displays the list of third-party libraries we use */
+/* Displays the list of third-party libraries we use
+   Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "בשיתוף";
 
 /* Theme Activate action title */
@@ -457,9 +473,6 @@ translators: Block name. %s: The localized block name */
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "הוספת %@";
 
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "הוספת דומיין חדש";
-
 /* No comment provided by engineer. */
 "Add Block After" = "הוספת בלוק לאחר";
 
@@ -497,7 +510,7 @@ translators: Block name. %s: The localized block name */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "להוסיף כאן כתובת URL של CSS מותאם כדי לטעון אותה ב-Reader. אם השירות של Calypso מופעל אצלך באופן מקומי, הכתובת תוצג בצורה הבאה: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
-"Add a domain" = "Add a domain";
+"Add a domain" = "להוסיף דומיין";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "ניתן להוסיף בלוק בכל עת על ידי הקשה על הסמל '+' בסרגל הכלים שנמצא בפינה השמאלית התחתונה. ";
@@ -709,6 +722,9 @@ translators: Block name. %s: The localized block name */
 /* Error message shown when trying to view the Scan History feature and there is no internet connection. */
 "An active internet connection is required to view the history" = "נדרש חיבור פעיל לאינטרנט כדי להציג את ההיסטוריה";
 
+/* Default error message displayed when unable to close user account. */
+"An error occured while closing account." = "אירעה שגיאה במהלך סגירת החשבון.";
+
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "אירעה שגיאה בעת יצירת התפריט.";
 
@@ -775,7 +791,8 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "אשר";
 
-/* Title of approved Comments filter. */
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
 "Approved" = "אושר";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -909,6 +926,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "מנוהל באופן אוטומטי באתר זה";
 
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "החידוש האוטומטי מופעל";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "אישור אוטומטי";
@@ -927,6 +947,12 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "שיתוף אוטומטי של פוסטים חדשים בחשבונות שלך ברשתות החברתיות.";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "ניתן לשתף באופן אוטומטי פוסטים חדשים ברשתות החברתיות כדי להביא עוד קהל לאתר שלך.";
+
+/* Title of button that displays information about the other apps available from Automattic */
+"Automattic Family" = "Automattic Family";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "עדכונים אוטומטיים";
@@ -1051,7 +1077,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "הבלוקים הם חלקים של תוכן שאפשר להוסיף, לארגן ולעצב ללא צורך בניסיון עם כתיבת קודים. בלוקים הם אפשרות פשוטה ומודרנית ליצור פריסות יפות.";
 
-/* Opens the WordPress Mobile Blog */
+/* Opens the WordPress Mobile Blog
+   Title of a button that displays the WordPress product blog */
 "Blog" = "אתר";
 
 /* Create new Blog Post button title */
@@ -1196,7 +1223,6 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
-   Title of the cancel button in the modal presentation of the domain registration flow, used in Domains Dashboard.
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1335,6 +1361,9 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Check your site stats" = "בדיקת הנתונים הסטטיסטיים של האתר שלך";
 
+/* Title of a Quick Start Tour */
+"Check your site title" = "Check your site title";
+
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "בודק רכישות…";
 
@@ -1368,20 +1397,23 @@ translators: Block name. %s: The localized block name */
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "לבחור סמל חדש לאפליקציה";
 
+/* A text for title label on Login epilogue screen */
+"Choose a site to open." = "Choose a site to open.";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "בחירת ערכת עיצוב";
 
 /* Label for Publish time picker */
 "Choose a time" = "לבחור שעה";
 
+/* Title of a Quick Start Tour */
+"Choose a unique site icon" = "Choose a unique site icon";
+
 /* No comment provided by engineer. */
 "Choose audio" = "לבחור אודיו";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "לבחור טווח תאריכים";
-
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "בחירת דומיין";
 
 /* No comment provided by engineer. */
 "Choose file" = "לבחור קובץ";
@@ -1424,6 +1456,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Address information field City */
 "City" = "עיר";
+
+/* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Claim your free domain" = "לקבל דומיין בחינם";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "בלוג קלאסי";
@@ -1504,7 +1539,7 @@ translators: Block name. %s: The localized block name */
 "Colorful backgrounds" = "רקעים צבעוניים";
 
 /* translators: %d: column index. */
-"Column %d" = "Column %d";
+"Column %d" = "טור %d";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "הגדרות טורים";
@@ -1516,12 +1551,17 @@ translators: Block name. %s: The localized block name */
 "Comics" = "קומיקס";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "תגובה";
 
 /* Title for the `comment likes` setting */
 "Comment Likes" = "'לייקים' לתגובה";
+
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "התגובה אושרה.";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "התגובה נמחקה.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "תגובה נמחקה";
@@ -1529,9 +1569,21 @@ translators: Block name. %s: The localized block name */
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "התגובה סומנה כתגובת זבל";
 
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "התגובה סומנה כתגובת זבל.";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "התגובה הועברה לפח.";
+
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
 "Comment on" = "תגובה על";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "התגובה הוגדרה ל'בהמתנה'.";
+
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "אפשר להגיב כדי להתחבר לאנשים חדשים.";
 
 /* Filters Comments Notifications
    Insights 'Comments' header
@@ -1575,7 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "הושלם: לבדיקת הנתונים הסטטיסטיים של האתר שלך";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site title" = "Completed: Check your site title";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "הושלם: לבחירה של ערכת עיצוב";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "הושלם: להמשך הגדרת האתר";
@@ -1585,9 +1643,6 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Edit your homepage" = "הושלם: לערוך את עמוד הבית";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Enable post sharing" = "הושלם: להפעלת השיתוף של הפוסטים";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "הושלם: לעיון בתוכניות";
@@ -1602,10 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "הושלם: לבדוק עמודים באתר";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Set your site title" = "הושלם: להגדיר את שם האתר שלך";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload a site icon" = "הושלם: להעלאת סמל האתר";
+"Completed: Social sharing" = "Completed: Social sharing";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "הושלם: להצגת האתר שלך";
@@ -1635,11 +1687,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "ברכותינו על סיום הסיור להתחלה מהירה 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "ברכותינו";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "ברכותינו על השלמת הרשימה. עבודה מצוינת.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "ברכותינו על הרכישה החדשה שלך!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1648,14 +1700,14 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "חיבור חשבון נוסף";
 
-/* Link to connect a site, shown after logging in. */
-"Connect a site" = "חיבור אתר";
-
-/* Link to connect another site, shown after logging in. */
-"Connect another site" = "חיבור אתר נוסף";
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "לחבר רשתות נוספות";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "יש להתחבר כדי לשתף את הפוסטים בבלוג שלך אוטומטית עם %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "כדאי להתחבר עם בלוגרים אחרים באמצעות מעקב אחר הפוסטים שלהם, סימון לייקים והוספת תגובות בפוסטים.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "חיבור שירותי הרשתות החברתיות המועדפים שלך כדי לשתף פוסטים חדשים עם חברים באופן אוטומטי.";
@@ -1718,8 +1770,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "מבנה תוכן\nבלוקים: ⁦%1$li⁩, מילים: %2$li, תווים: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1747,7 +1798,7 @@ translators: Block name. %s: The localized block name */
 "Continuing with Apple" = "להמשיך עם Apple";
 
 /* No comment provided by engineer. */
-"Convert to link" = "Convert to link";
+"Convert to link" = "להמיר לקישור";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "בישול";
@@ -1757,6 +1808,9 @@ translators: Block name. %s: The localized block name */
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "העתקת הקישור לתגובה";
+
+/* translators: Copy URL from the clipboard, https://sample.url */
+"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "להעתיק בלוק";
@@ -1781,6 +1835,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "לא ניתן היה לבדוק רכישות באתר.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "לא הצלחנו להשבית את ההודעות";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "לא הצלחנו להפעיל את הודעות";
 
 /* Title of a prompt. */
 "Could not follow site" = "אי אפשר לעקוב אחר האתר";
@@ -1843,10 +1903,10 @@ translators: Block name. %s: The localized block name */
 "Couldn't load tags. Tap to retry." = "לא ניתן לטעון את התגיות. יש להקיש כדי לנסות שוב.";
 
 /* Indicating that referrer couldn't be marked as spam */
-"Couldn't mark as spam" = "Couldn't mark as spam";
+"Couldn't mark as spam" = "לא ניתן לסמן כ'זבל'";
 
 /* Indicating that referrer couldn't be unmarked as spam */
-"Couldn't unmark as spam" = "Couldn't unmark as spam";
+"Couldn't unmark as spam" = "לא ניתן לבטל את הסימון כ'זבל'";
 
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "שגיאה בהעלאת תמונה ראשית";
@@ -1916,7 +1976,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "יצירת תגית";
 
-/* Title for a button that when tapped starts the site creation process */
+/* A button title
+   Title for a button that when tapped starts the site creation process */
 "Create a new site" = "ליצור אתר חדש";
 
 /* Text shown when the account has no sites. */
@@ -1936,6 +1997,12 @@ translators: Block name. %s: The localized block name */
 
 /* Button title for download backup action */
 "Create downloadable file" = "ליצור קובץ להורדה";
+
+/* No comment provided by engineer. */
+"Create embed" = "ליצור תוכן מוטמע";
+
+/* No comment provided by engineer. */
+"Create link" = "ליצור קישור";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.";
@@ -1996,6 +2063,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "אנחנו משחזרים כעת את: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "כתובת URL מותאמת";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "הודעה מותאמת אישית...";
@@ -2107,7 +2177,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "מחק לצמיתות";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2211,6 +2282,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "לגלות בלוגים למעקב";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "לגלות נושאים נוספים";
 
@@ -2229,11 +2303,11 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. User action to dismiss error alert when failing to load media item.
-   Verb. User action to dismiss error alert when failing to share media. */
+   Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "בטל";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2241,6 +2315,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "למחוק את ההודעות";
+
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "להתעלם מהמסך";
 
 /* Display Name label text.
    My Profile display name label
@@ -2259,6 +2336,9 @@ translators: Block name. %s: The localized block name */
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "להציג את הנתונים הסטטיסטיים היומיים של האתר כאן. יש להגדיר את האפשרות באפליקציה של WordPress בנתונים הסטטיסטיים של האתר שלך.";
 
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "לחזור על הפעולה";
+
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "מסמכים: ‎%@";
 
@@ -2268,15 +2348,19 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "בעלי דומיינים מחויבים לשתף את פרטי הקשר שלהם בבסיס נתונים ציבורי של כל הדומיינים. בזכות הגנת פרטיות, אנחנו מפרסמים את הפרטים שלנו ולא את שלך ומעבירים אליך באופן פרטי כל התקשרות שתהיה.";
 
-/* Noun. Title. Links to the Domains screen.
-   Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "דומיינים";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "רכישות דומיין באתר זה ינתבו את המבקרים אל %@";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect users to " = "דומיינים שנרכשו באתר זה ינתבו את המשתמשים אל ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "אין לך חשבון עדיין? _הרשמה_";
 
-/* A button title
-   Accessibility label for the Done button in the Me screen.
+/* Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2390,7 +2474,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to undo last change" = "יש להקיש פעמיים כדי לבטל את השינוי האחרון";
 
 /* No comment provided by engineer. */
-"Double tap to view embed options." = "Double tap to view embed options.";
+"Double tap to view embed options." = "יש להקיש פעמיים כדי להציג את אפשרויות ההטמעה.";
 
 /* Download button title */
 "Download" = "הורדה";
@@ -2411,6 +2495,9 @@ translators: Block name. %s: The localized block name */
 /* Name for the status of a draft post. */
 "Draft" = "טיוטה";
 
+/* Description of a Quick Start Tour */
+"Draft and publish a post." = "Draft and publish a post.";
+
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "טיוטות";
@@ -2429,7 +2516,7 @@ translators: Block name. %s: The localized block name */
 "EDIT LINK" = "ערוך קישור";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "לכל בלוק יש הגדרות משלו. כדי למצוא אותן, יש להקיש על הבלוק. ההגדרות שלו יופיעו בסרגל הכלים שנמצא בתחתית המסך.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2480,6 +2567,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
+
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "לערוך תזכורות";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "עריכת כפתורי שיתוף";
@@ -2554,7 +2644,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "האימייל נשלח!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "תצוגות מקדימות של בלוק מוטמע יהיו אפשריות בקרוב";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "כיתוב התמונה מוטמע. %s";
@@ -2569,7 +2659,7 @@ translators: Block name. %s: The localized block name */
 "Embed media" = "להטמיע מדיה";
 
 /* No comment provided by engineer. */
-"Embed options" = "Embed options";
+"Embed options" = "אפשרויות הטמעה";
 
 /* Title for the Emoji section */
 "Emoji" = "אמוג'י";
@@ -2581,8 +2671,13 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "קישור ריק";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
+   Title of button to enable publicize. */
 "Enable" = "הפעלה";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "להפעיל את השיתוף האוטומטי";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "להפעיל התחלה מהירה לאתר";
@@ -2590,10 +2685,16 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "הפעלת הנתונים הסטטיסטיים של האתר";
 
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "להפעיל הודעות בתוך האפליקציה";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "האם להפעיל הודעות בתוך האפליקציה?";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "אליך לאפשר גישה למיקרופון כדי להקליט סאונד בקובצי ווידאו.";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "הפעלת השיתוף של הפוסטים";
 
 /* Message prompting user to enable site notifications. */
@@ -2679,6 +2780,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "שגיאה באישור התגובה";
 
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "שגיאה באישור התגובה.";
+
 /* No comment (test)
    This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "שגיאה בתקשורת עם השרת, יש לנסות שוב";
@@ -2688,6 +2792,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "שגיאה במחיקת התגובה";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "שגיאה במחיקת התגובה.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "שגיאה בעת השבתת העדכונים האוטומטיים של %@.";
@@ -2715,6 +2822,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "שגיאה בסימון התגובה כתגובת זבל";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "שגיאה בסימון התגובה כתגובת זבל.";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "שגיאת בהעברת התגובה לפח.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
@@ -2748,6 +2861,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "שגיאה בשליחה האימייל לאימות. יש לבדוק את החיבור ולנסות שוב.";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "שגיאה בהגדרת התגובה ל'בהמתנה'.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "שגיאה בביטול האישור של התגובה";
@@ -2816,8 +2932,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "הפעולה מרחיבה כדי לאפשר בחירה באזור תפריט אחר";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "פג תוקף";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "התוקף פג בתאריך";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "התוקף פג בתאריך %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "מה מהות האתר.";
@@ -2979,7 +3101,8 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "מתקן את האיומים";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "עקוב";
 
@@ -2994,6 +3117,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "לעקוב אחר נושאים";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "אפשר לעקוב אחר נושאים שמעניינים אותך ואנחנו נמצא בלוגים שאולי ימצאו חן בעיניך.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3037,6 +3163,9 @@ translators: Block name. %s: The localized block name */
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "מתחיל מעקב אחר נושאים חדשים...";
 
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "נרשמת למעקב אחר השיחה הזאת";
+
 /* Filters Follows Notifications */
 "Follows" = "עוקב";
 
@@ -3070,6 +3199,9 @@ translators: Block name. %s: The localized block name */
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "ספריית תמונות בחינם";
 
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "ניתן בחינם לשנה הראשונה ";
+
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "פינוי שטח אחסון במכשיר באמצעות מחיקה של קובצי מדיה זמניים. הפעולה לא תשפיע על המדיה באתר שלך.";
 
@@ -3078,6 +3210,9 @@ translators: Block name. %s: The localized block name */
 
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "ממכשיר אחר";
+
+/* No comment provided by engineer. */
+"From clipboard" = "From clipboard";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "מהמכשיר הזה";
@@ -3125,8 +3260,8 @@ translators: Block name. %s: The localized block name */
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "אפשר חשיפה רבה יותר לפוסט שלך על ידי שיתוף.";
 
-/* Label of the button that starts the purchase of a the first redirected domain in the Domains Dashboard. */
-"Get your domain" = "Get your domain";
+/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "לקבל בעלות על דומיין משלך";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "לקבל הודעות מהר יותר";
@@ -3153,7 +3288,7 @@ translators: Block name. %s: The localized block name */
 "Gmail" = "Gmail";
 
 /* No comment provided by engineer. */
-"Go back" = "Go back";
+"Go back" = "חזרה";
 
 /* Button title. Tapping lets the user view the sites they follow. */
 "Go to Following" = "מעבר לעוקבים";
@@ -3263,11 +3398,11 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "כותרת ברמה 6";
 
-/* Help button
-   Open editor help options */
+/* Help button */
 "Help" = "עזרה";
 
 /* Link to Help section
+   Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "עזרה ותמיכה";
 
@@ -3406,9 +3541,6 @@ translators: Block name. %s: The localized block name */
 /* Hint for image link on image settings. */
 "Image Link" = "קישור תמונה";
 
-/* No comment provided by engineer. */
-"Image Link URL" = "כתובת URL לקישור התמונה";
-
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "גודל תמונה";
 
@@ -3432,6 +3564,15 @@ translators: Block name. %s: The localized block name */
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "במספר מילים, הסבר במה עוסק האתר.";
+
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "כדי לשתף את הפוסטים שפרסמת ברשתות החברתיות, עליך להפעיל את המודל 'שיתוף אוטומטי'.";
+
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "ההודעות בתוך האפליקציה מושבתות";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "ההודעות בתוך האפליקציה מופעלות";
 
 /* Describes a status of a plugin */
 "Inactive" = "לא פעיל";
@@ -3584,9 +3725,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a notification displayed prompting the user to create a new blog post */
 "It's time to blog!" = "הגיע הזמן לכתוב בלוג!";
 
-/* Description of a Quick Start Tour */
-"It's time! Draft and publish your very first post." = "הגיע הזמן! אפשר לכתוב טיוטה ולפרסם את הפוסט הראשון שלך.";
-
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "כתב נטוי";
@@ -3660,6 +3798,9 @@ translators: Block name. %s: The localized block name */
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack ימטב את התמונות שלך ויציג אותם ממיקום השרת הקרוב ביותר למבקרים שלך. שימוש ברשת שליחת התוכן העולמית שלנו ישפר את מהירות הטעינה של האתר שלך.";
 
+/* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
+"Join From Anywhere" = "Join From Anywhere";
+
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "הצטרפות לדיון: הוספת תגובה על פוסטים בבלוגים תחת מעקב שלך.";
 
@@ -3668,6 +3809,12 @@ translators: Block name. %s: The localized block name */
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "המשך לערוך";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "כדאי להמשיך לכתוב בבלוג ולבדוק כאן שוב כדי לראות את המבקרים שנכנסים לאתר שלך.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "ההתמדה משתלמת! סימון לייק והוספת תגובות הן פעולות מומלצות להרחבת הרשת שלך. כדאי לעבור ל-Reader כדי למצוא פוסטים נוספים.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "קבלת עדכונים על הביצועים של האתר שלך.";
@@ -3720,11 +3867,17 @@ translators: Block name. %s: The localized block name */
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "מידע נוסף...";
 
+/* Description for a prompt asking if users want to try out the quick start checklist. */
+"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "שמאל";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "סמלים ישנים";
+
+/* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
+"Legal and More" = "Legal and More";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "תנו לנו לעזור";
@@ -4008,13 +4161,13 @@ translators: Block name. %s: The localized block name */
 "Mark as Sticky" = "סימון כ'דביק'";
 
 /* Action title for unmarking referrer as spam */
-"Mark as not spam" = "Mark as not spam";
+"Mark as not spam" = "לסמל כ'לא זבל'";
 
 /* An option to mark a post as seen. */
 "Mark as seen" = "לסמן כ'נקרא'";
 
 /* Action title for marking referrer as spam */
-"Mark as spam" = "Mark as spam";
+"Mark as spam" = "לסמן כ'זבל'";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "סימון כתגובת זבל.";
@@ -4243,13 +4396,11 @@ translators: Block name. %s: The localized block name */
 "My Profile" = "הפרופיל שלי";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
-   Header for a single site, shown after logging in
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "אתר שלי";
 
-/* Header for list of multiple sites, shown after logging in
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "האתרים שלי";
 
 /* Siri Suggestion to open My Sites */
@@ -4299,6 +4450,9 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "נדרש עדכון";
 
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "לעולם לא יפוג";
+
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "חדש";
 
@@ -4335,7 +4489,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "החדש ביותר תחילה";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4535,7 +4690,10 @@ translators: Block name. %s: The localized block name */
 "No posts." = "אין פוסטים.";
 
 /* No comment provided by engineer. */
-"No preview available" = "No preview available";
+"No preview available" = "תצוגה מקדימה לא זמינה";
+
+/* String to display in place of the site address, in case it was not retrieved from the backend. */
+"No primary site address found" = "לא נמצא כתובת אתר ראשי";
 
 /* A message title */
 "No recent posts" = "אין פוסטים מהזמן האחרון";
@@ -4552,7 +4710,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "לא נמצאו תגיות שמתאימות לחיפוש שלך";
 
-/* Button label for denying our request to re-allow push notifications */
+/* Button label for denying our request to re-allow push notifications
+   Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
 "No thanks" = "לא תודה";
 
 /* Text displayed when theme name search has no matches */
@@ -4578,9 +4737,6 @@ translators: Block name. %s: The localized block name */
 
 /* Display value for Support email field if there is no user email address. */
 "Not Set" = "לא הוגדר";
-
-/* Not this time button title shown in alert asking if users want to try out the quick start checklist. */
-"Not This Time" = "לא הפעם";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "אין מספיק מקום לבצע העלאה";
@@ -4663,7 +4819,6 @@ translators: Block name. %s: The localized block name */
    Button title. An acknowledgement of the message displayed in a prompt.
    Confirmation of action
    Default action
-   Dismiss button of alert letting users know we've upgraded the quick start checklist
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
@@ -4765,6 +4920,9 @@ translators: Block name. %s: The localized block name */
 
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "פתיחת קישור בחלון חדש\/כרטיסייה חדשה";
+
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "לפתוח את הגדרות הרישום לעדכונים בפוסט";
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "לפתוח את המקטע 'אני'";
@@ -4932,7 +5090,8 @@ translators: Block name. %s: The localized block name */
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "הדבקה בלי העיצוב";
 
-/* Status for Media object that is being processed locally.
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "ממתין לאישור";
 
@@ -4965,9 +5124,6 @@ translators: Block name. %s: The localized block name */
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "התמונות מובאות בחסות Pexels";
-
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "יש לבחור כתובת זמינה";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "בחירת שם משתמש";
@@ -5029,6 +5185,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Last Name" = "יש להזין שם משפחה תקף";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "יש להזין ארגון תקף";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "יש להזין מיקוד תקף";
@@ -5226,6 +5385,9 @@ translators: Block name. %s: The localized block name */
    Title for stats Posting Activity view. */
 "Posting Activity" = "פעילות פרסום";
 
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "פרסום באופן קבוע יכול לעזור לך להגדיל את הקהל. התזכורות יעזרו לך לשמור על הקצב.";
+
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "פרסום באופן שגרתי יכול לעזור בשילוב הקוראים שלך, ולמשוך מבקרים חדשים לאתר שלך.";
 
@@ -5310,15 +5472,16 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "אתר ראשי";
 
-/* Header of the primary site section in the Domains dashboard. */
-"Primary Site Address" = "כתובת האתר הראשי";
+/* Primary site address label, used in the site address section of the Domains Dashboard. */
+"Primary site address" = "כתובת האתר הראשי";
 
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
 "Privacy" = "פרטיות";
 
-/* Opens the Privacy Policy Web */
+/* Opens the Privacy Policy Web
+   Title of button that displays the App's privacy policy */
 "Privacy Policy" = "מדיניות פרטיות";
 
 /* Register Domain - Privacy Protection section header title */
@@ -5408,7 +5571,7 @@ translators: Block name. %s: The localized block name */
 "Publish immediately" = "פרסום מיידי";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
-"Publish page on:" = "Publish page on:";
+"Publish page on:" = "לפרסם את העמוד במיקום:";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "פרסום הפוסט באתר:";
@@ -5430,7 +5593,7 @@ translators: Block name. %s: The localized block name */
 "Publishing To" = "פורסם בעמוד";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
-"Publishing page..." = "Publishing page...";
+"Publishing page..." = "מפרסם את העמוד...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "מפרסם את הפוסט...";
@@ -5455,6 +5618,9 @@ translators: Block name. %s: The localized block name */
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "התחלה מהירה";
+
+/* Title for button allowing users to rate the app in the App Store */
+"Rate Us" = "Rate Us";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "נשמח לקבל ממך דירוג בחנות האפליקציות";
@@ -5512,9 +5678,6 @@ translators: Block name. %s: The localized block name */
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "מחובר";
 
-/* Header of the redirected domains section in the Domains Dashboard. */
-"Redirected Domains" = "דומיינים מופנים";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "הפניה";
 
@@ -5525,19 +5688,14 @@ translators: Block name. %s: The localized block name */
    The loading view button title displayed when an error occurred */
 "Refresh" = "רענן";
 
-/* Action to redeem domain credit.
-   Navigation bar title of the free domain registration flow, used in the Domains Dashboard. */
+/* Action to redeem domain credit. */
 "Register Domain" = "רישום דומיין";
 
 /* Register Domain - Register Privately with Privacy Protection option title */
 "Register Privately with Privacy Protection" = "הירשמות באופן פרטי עם הגנת פרטיות";
 
-/* Label of the button that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
-"Register a free domain" = "לרשום דומיין בחינם";
-
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "רישום הדומיין";
 
@@ -5604,6 +5762,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "להסיר מהתמונה המרכזית ";
 
+/* No comment provided by engineer. */
+"Remove block" = "להסיר בלוק";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
 
@@ -5633,6 +5794,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "ההסרה של השלבים הבאים תסתיר את כל הסיורים באתר זה. לא ניתן לבטל פעולה זו.";
+
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "מתחדש בתאריך %@";
 
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "להחליף";
@@ -5671,11 +5835,13 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "טקסט תגובה";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "מענה לתגובה...";
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+"Reply to %1$@" = "לענות ל-%1$@";
 
 /* Placeholder text for replying to a post */
-"Reply to post…" = "מענה לפוסט...";
+"Reply to post" = "מענה לפוסט";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "דיווח על פוסט זה";
@@ -5835,13 +6001,13 @@ translators: Block name. %s: The localized block name */
 "Save" = "שמור";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
-"Save %ld photos as a draft page on:" = "Save %ld photos as a draft page on:";
+"Save %ld photos as a draft page on:" = "שמירה של %ld תמונות כעמוד טיוטה במיקום:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "שמירה של %ld תמונות כטיוטה של הפוסט במיקום:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
-"Save 1 photo as a draft page on:" = "Save 1 photo as a draft page on:";
+"Save 1 photo as a draft page on:" = "שמירה של תמונה אחת כעמוד טיוטה במיקום:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "שמירה של תמונה אחת כטיוטה של הפוסט במיקום:";
@@ -5857,7 +6023,7 @@ translators: Block name. %s: The localized block name */
 "Save as Draft" = "לשמור כטיוטה";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
-"Save draft page on:" = "Save draft page on:";
+"Save draft page on:" = "לשמור את עמוד הטיוטה במיקום:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "שמירת טיוטה של הפוסט במיקום:";
@@ -5883,7 +6049,7 @@ translators: Block name. %s: The localized block name */
 "Saves this post for later." = "שומר את הפוסט הנוכחי למועד מאוחר יותר.";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
-"Saving page…" = "Saving page…";
+"Saving page…" = "שומר את העמוד...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "שומר פוסט...";
@@ -5963,6 +6129,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "הכפתור 'חיפוש'. הטקסט הנוכחי של הכפתור הוא";
+
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "לחפש דומיינים";
+
+/* title of the button that searches the first domain. */
+"Search for a domain" = "לחפש דומיין";
 
 /* No comment provided by engineer. */
 "Search input field." = "שדה להזנת חיפוש.";
@@ -6067,6 +6239,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Select a layout" = "לבחור פריסה";
+
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "לבחור דומיין";
 
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "בחירת מדיה.";
@@ -6183,14 +6358,14 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "הגדרת Jetpack";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "להגדיר תזכורת לכתיבת בלוג";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "להגדיר את התזכורות שלך לכתוב בלוג בימים שבחרת לפרסם.";
 
 /* Title of the Blogging Reminders Settings screen. */
 "Set your blogging reminders" = "להגדיר את התזכורות שלך לכתוב בלוג";
-
-/* Title of a Quick Start Tour */
-"Set your site title" = "להגדיר את שם האתר שלך";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "להגדיר ערכת עיצוב";
@@ -6236,6 +6411,9 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "שיתוף הקישור";
 
+/* Title for button allowing users to share information about the app with friends, such as via Messages */
+"Share with Friends" = "Share with Friends";
+
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "מומלץ לשתף את הסיפור שלך כאן...";
@@ -6256,6 +6434,9 @@ translators: Block name. %s: The localized block name */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "שגיאה בשיתוף";
 
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "השיתוף הוגדר!";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "הצגת כותרת";
 
@@ -6273,6 +6454,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "הצג תכנים באותו נושא";
+
+/* Button title. When tapped, the quick start checklist will be shown. */
+"Show me around" = "Show me around";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6295,6 +6479,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "מוצג";
+
+/* Description of a Quick Start Tour */
+"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "תוצג באופן ציבורי כשתגיב על בלוגים.";
@@ -6358,6 +6545,9 @@ translators: Block name. %s: The localized block name */
 
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "אתר";
+
+/* Title of the Domains Dashboard. */
+"Site Domains" = "דומיינים באתר";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "סמל אתר";
@@ -6454,6 +6644,9 @@ translators: Block name. %s: The localized block name */
 /* Follower Totals label for social media followers */
 "Social" = "רשתות חברתיות";
 
+/* Title of a Quick Start Tour */
+"Social sharing" = "Social sharing";
+
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "בבלוקים מסוימים יש הגדרות נוספות. יש להקיש על סמל ההגדרות בפינה הימנית התחתונה של הבלוק כדי להציג את האפשרויות הנוספות.";
 
@@ -6463,9 +6656,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "משהו השתבש";
-
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "משהו השתבש, יש לנסות שוב.";
 
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "משהו השתבש. יש לבדוק את החיבור ולנסות שוב.";
@@ -6546,13 +6736,15 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Sorting and filtering" = "מיון וסימון";
 
-/* Opens the Github Repository Web */
+/* Opens the Github Repository Web
+   Title of button that displays the App's source code information */
 "Source Code" = "קוד מקור";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "שטח שנוצל";
 
-/* Marks comment as spam.
+/* Button title for Spam comment state.
+   Marks comment as spam.
    Spam
    Title of spam Comments filter. */
 "Spam" = "תגובות זבל";
@@ -6686,6 +6878,12 @@ translators: Block name. %s: The localized block name */
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "להחליף לעורך הבלוקים";
 
+/* Message of the notice shown when toggling the HTML editor mode */
+"Switched to HTML mode" = "Switched to HTML mode";
+
+/* Message of the notice shown when toggling the Visual editor mode */
+"Switched to Visual mode" = "Switched to Visual mode";
+
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "מבצע החלפה לגודל גופן 1 בכותרת";
 
@@ -6768,9 +6966,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Tap here to show help" = "יש להקיש כאן כי להציג את העזרה";
 
-/* No comment provided by engineer. */
-"Tap to add content" = "יש להקיש כדי להוסיף תוכן";
-
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "יש להקיש כדי לבטל את ההעלאה.";
 
@@ -6787,7 +6982,7 @@ translators: Block name. %s: The localized block name */
 "Tap to dismiss this card" = "Tap to dismiss this card";
 
 /* Accessibility hint for referrer details row. */
-"Tap to display referrer web page." = "Tap to display referrer web page.";
+"Tap to display referrer web page." = "יש להקיש כדי להציג את אתר האינטרנט של המפנה.";
 
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "יש להקיש כדי להזין ערך מותאם אישית";
@@ -6796,10 +6991,10 @@ translators: Block name. %s: The localized block name */
 "Tap to hide the keyboard" = "יש להקיש כדי להסתיר את המקלדת";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as not spam." = "Tap to mark referrer as not spam.";
+"Tap to mark referrer as not spam." = "יש להקיש כדי לבטל את הסימון של המפנה כ'זבל'.";
 
 /* Accessibility hint for referrer action row. */
-"Tap to mark referrer as spam." = "Tap to mark referrer as spam.";
+"Tap to mark referrer as spam." = "יש להקיש כדי לסמן את המפנה כ'זבל'.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "יש להקיש כדי לראות את כל התגיות בפוסט זה";
@@ -6834,7 +7029,8 @@ translators: Block name. %s: The localized block name */
 /* The underlined title sentence */
 "Terms and Conditions" = "תנאים והתניות";
 
-/* Opens the Terms of Service Web */
+/* Opens the Terms of Service Web
+   Title of button that displays the App's terms of service */
 "Terms of Service" = "תנאי שימוש";
 
 /* Menu item label for linking a testimonial post. */
@@ -6946,6 +7142,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "לא ניתן להוסיף את הקובץ לספריית המדיה.";
+
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "לא ניתן היה להפעיל את המודול.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "מספר הפוסטים שניתן להציג בכל עמוד.";
@@ -7181,6 +7380,15 @@ translators: Block name. %s: The localized block name */
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "אתר זה עדיין לא פרסם דבר. כדאי לנסות שוב מאוחר יותר.";
 
+/* Error message displayed when unable to close user account due to unresolved chargebacks. */
+"This user account cannot be closed if there are unresolved chargebacks." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו חיובים שלא שולמו.";
+
+/* Error message displayed when unable to close user account due to having active purchases. */
+"This user account cannot be closed while it has active purchases." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו רכישות פעילות.";
+
+/* Error message displayed when unable to close user account due to having active subscriptions. */
+"This user account cannot be closed while it has active subscriptions." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו מינויים פעילים.";
+
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "ייכלל בציוצים שאנשים משתפים באמצעות הלחצן 'טוויטר'.";
@@ -7252,7 +7460,7 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "להוסיף תמונות או סרטוני וידאו לפוסטים.";
 
-/* Error message displayed when unable to close user account. */
+/* Error message displayed when unable to close user account due to having active atomic site. */
 "To close this account now, contact our support team." = "לסגירת חשבון זה כעת, עליך לפנות לצוות התמיכה שלנו.";
 
 /* Instructions for alert asking for email and name. */
@@ -7364,6 +7572,7 @@ translators: Block name. %s: The localized block name */
 "Transform block…" = "לשנות בלוק...";
 
 /* Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
    Trash button title
    Trashes a comment
    Trashes the comment */
@@ -7443,14 +7652,15 @@ translators: Block name. %s: The localized block name */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "ההודעות של האתר הופעלו";
 
-/* Launches the Twitter App */
+/* Launches the Twitter App
+   Title of button that displays the app's Twitter profile */
 "Twitter" = "טוויטר";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "שם המשתמש בטוויטר";
 
 /* Type menu item in share extension. */
-"Type" = "Type";
+"Type" = "סוג";
 
 /* No comment provided by engineer. */
 "Type a URL" = "יש להקליד כתובת URL";
@@ -7515,9 +7725,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site fails. */
 "Unable to follow site" = "לא ניתן לעקוב אחרי האתר";
 
-/* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
-"Unable to get URL for media item." = "לא ניתן לקבל כתובת URL עבור פריט מדיה זה.";
-
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "אין אפשרות לטעון את העמודים כעת.";
 
@@ -7549,9 +7756,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "לא ניתן לקרוא את אתר WordPress בכתובת URL זו. יש להקיש על 'דרושה עזרה?' כדי להציג את השאלות הנפוצות.";
-
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "אין אפשרות לרשום את הדומיין";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "לא ניתן לשחזר את האתר שלך";
@@ -7633,6 +7837,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "קו תחתון";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7645,6 +7850,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "להפסיק את המעקב אחר %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "לבטל את המעקב אחר השיחה";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "ביטול מעקב אחר השיחה באמצעות האימייל";
@@ -7768,9 +7976,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "העלאת מדיה";
-
-/* Title of a Quick Start Tour */
-"Upload a site icon" = "העלאה של סמל לאתר";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
@@ -7923,6 +8128,9 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "להציג הכול";
 
+/* Title for button on the post details page to show all comments when tapped. */
+"View All Comments" = "View All Comments";
+
 /* Button label for viewing a post */
 "View Post" = "הצג פוסט";
 
@@ -7944,6 +8152,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more stats. */
 "View more" = "הצגת פריטים נוספים";
 
+/* Description for view count. Singular. */
+"View to your site so far" = "צפייה באתר שלך עד כה";
+
 /* Title of a Quick Start Tour */
 "View your site" = "הצגת האתר שלך";
 
@@ -7961,6 +8172,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "דפים נצפים";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "צפיות באתר שלך עד כה";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8023,8 +8237,8 @@ translators: Block name. %s: The localized block name */
 /* View title during the Google auth process. */
 "Waiting..." = "ממתין...";
 
-/* Title of alert asking if users want to try out the quick start checklist. */
-"Want a little help getting started?" = "נדרשת לך עזרה כדי לצאת לדרך?";
+/* Title for a prompt asking if users want to try out the quick start checklist. */
+"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8316,20 +8530,11 @@ translators: Block name. %s: The localized block name */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll still attempt to restore your site." = "אנחנו עדיין ננסה לשחזר את האתר שלך.";
 
-/* Body text of alert asking if users want to try out the quick start checklist. */
-"We’ll walk you through the basics of building and growing your site" = "אנחנו נלווה אותך בביצוע הפעולות הבסיסיות לבנייה של האתר שלך ולהגדלתו";
-
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "אנחנו משקיעים מאמצים כדי להוסיף תמיכה בתצוגות מקדימות של %s. בינתיים אפשר לראות תצוגה מקדימה של התוכן המוטמע בעמוד.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "אנחנו משקיעים מאמצים כדי להוסיף תמיכה בתצוגות מקדימות של %s. בינתיים אפשר לראות תצוגה מקדימה של התוכן המוטמע בפוסט.";
-
-/* Body text of alert letting users know we've upgraded the quick start checklist. */
-"We’ve added more tasks to help you grow your audience." = "הוספנו עוד משימות כדי לעזור לך להגדיל את הקהל.";
-
-/* Title of alert letting users know we've upgraded the quick start checklist. */
-"We’ve made some changes to your checklist" = "ביצענו מספר שינויים לרשימת המשימות שלך";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "עדכנו את הסמלים המותאמים באפליקציה עם סגנון חדש ומרענן. יש עשרה סגנונות חדשים שמהם ניתן לבחור ואפשר גם להשאיר את הסמלים שקיימים אצלך, לבחירתך.";
@@ -8376,6 +8581,9 @@ translators: Block name. %s: The localized block name */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "בעת ביצוע שינויים באתר שלך, אפשר לראות את היסטוריית הפעילות כאן.";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "כאשר הפוסט הבא שלך יפורסם, הוא ישותף באופן אוטומטי ברשתות המחוברות שלך.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "איזו גרסה ברצונך לערוך?";
@@ -8490,6 +8698,9 @@ translators: Block name. %s: The localized block name */
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "עמוד התוספים של WordPress.org";
 
+/* Title of button that displays the Automattic Work With Us web page */
+"Work With Us" = "Work With Us";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "מפת העולם שמציגה צפיות לפי מדינה.";
 
@@ -8505,6 +8716,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "כתיבת פוסט";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "לכתוב תגובה";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "כתוב תגובה...";
@@ -8532,9 +8746,6 @@ translators: Block name. %s: The localized block name */
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "כן";
-
-/* Allow button title shown in alert asking if users want to try out the quick start checklist. */
-"Yes, Help Me" = "כן, נדרשת לי עזרה";
 
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "כן, אני רוצה לראות";
@@ -8579,6 +8790,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "כדי לשנות את סדר הבלוקים, יש להקיש על הבלוק ולאחר מכן להקיש על החצים למעלה ולמטה שמופיעים בפינה השמאלית התחתונה כדי להזיז את הבלוק מעל הבלוקים האחרים או מתחתיהם.";
 
+/* A text for subtitle label on Login epilogue screen */
+"You can switch sites at any time." = "You can switch sites at any time.";
+
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "אפשר לעדכן את ההגדרה הזאת בכל עת דרך 'האתר שלי' > 'הגדרות אתר'";
 
@@ -8617,6 +8831,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "יש לך אתר WordPress מוסתר אחד.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan" = "אנחנו מעניקים לך רישום דומיין בחינם לשנה עם התוכנית שלך";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "קיימים שדרוגים פעילים באתר שלך. יש לבטל את השדרוגים לפני מחיקת האתר.";
@@ -8673,6 +8890,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "נראה שהתקנת תוסף למכשירים ניידים מ-DudaMobile שמונע מהאפליקציה להתחבר לבלוג שלך";
 
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "הגדרת תזכורת לכתיבת בלוג";
+
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "לא כדאי להתעלם מבעיות אבטחה אלא אם אין לך ספק שהתוכן בטוח. אם ברצונך להתעלם מהאיום הזה, הוא יישאר באתר \"%1$@\".";
 
@@ -8688,11 +8908,17 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "הכול מעודכן!";
 
+/* Error message displayed when unable to close user account due to being unauthorized. */
+"You're not authorized to close the account." = "אין לך הרשאה לסגור את החשבון הזה.";
+
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "התחברת עם בלוגים אחרים";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "ביצעת שינויים שלא נשמרו בפוסט הזה";
 
-/* Header title for your domains section of Domains. */
-"Your Domains" = "הדומיינים שלך";
+/* Header of the domains list section in the Domains Dashboard. */
+"Your Site Domains" = "הדומיינים באתר שלך";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "הסמל של האתר שלך";
@@ -8724,8 +8950,14 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "הגיבוי הראשון שלך יהיה מוכן בקרוב";
 
+/* Title of the site address section in the Domains Dashboard. */
+"Your free WordPress.com address is" = "הכתובת החינמית שלך ב-WordPress.com היא";
+
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "לא ניתן היה לייצא את המדיה שלך. If the problem persists you can contact us via the Me > מסך 'עזרה ותמיכה'.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "כעת מתבצע תהליך ההגדרה של הדומיין החדש שלך, %@. יידרשו עד 30 שעות להתחלת הפעילות של הדומיין.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "ההודעות שלך אתך בכל מקום - אפשר לראות תגובות ולייקים בזמן אמת.";
@@ -8742,7 +8974,7 @@ translators: Block name. %s: The localized block name */
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "הפוסטים, העמודים וההגדרות שלך יישלחו באימייל לכתובת %@.";
 
-/* Footer of the primary site section in the Domains dashboard. */
+/* Footer of the primary site section in the Domains Dashboard. */
 "Your primary site address is what visitors will see in their address bar when visiting your website." = "כתובת האתר הראשי שלך היא הכתובת שהמבקרים יראו בשורת הכתובת שלהם כאשר יבקרו באתר שלך.";
 
 /* Text displayed when a site restore takes too long. */
@@ -8787,11 +9019,14 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "לא יישלחו עוד נתונים מהאתר שלך ל-WordPress.com ותכונות של Jetpack יפסיקו לעבוד. לא תהיה לך עוד גישה לאתר באפליקציה ויהיה עליך להוסיף אותו מחדש ולהזין את שם המשתמש והסיסמה של האתר.";
 
-/* Description of a Quick Start Tour */
-"Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look." = "המבקרים באתר יראו את הסמל שלך בדפדפן שלהם. ניתן להוסיף סמל מותאם אישית למראה נקי ומקצועי.";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "פרטי הכניסה שלך לאתר לא יאוחסנו. אנחנו משתמשים בהם כדי להתקין את Jetpack בלבד.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "השיחה הזאת נוספה למעקב שלך. נשלח לך אימייל והודעה כאשר תתפרסם תגובה חדשה.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "השיחה הזאת נוספה למעקב שלך. נשלח לך אימייל כאשר תתפרסם תגובה חדשה.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "התחלת להשתמש בעורך הבלוקים עבור עמודים חדשים - מעולה! כדי לחזור לעורך הקלאסי, יש לעבור אל 'האתר שלי' > 'הגדרות אתר'.";
@@ -8880,7 +9115,7 @@ translators: Block name. %s: The localized block name */
 "later today" = "מאוחר יותר היום";
 
 /* Indicating that referrer was marked as spam */
-"marked as spam" = "marked as spam";
+"marked as spam" = "סומן כ'זבל'";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "מתוך";
@@ -8904,7 +9139,7 @@ translators: Block name. %s: The localized block name */
 "unknown url" = "כתובת URL לא ידועה";
 
 /* Indicating that referrer was unmarked as spam */
-"unmarked as spam" = "unmarked as spam";
+"unmarked as spam" = "לבטל את הסימון כתגובת זבל";
 
 /* Noun. Describes a site's user. */
 "user" = "משתמש";
@@ -8917,6 +9152,57 @@ translators: Block name. %s: The localized block name */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "היכנס לעמוד המסמכים שלנו";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "כמות הצפיות הגבוהה בכל הזמנים";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "פוסטים";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "אפשר להתעדכן לגבי הפעילות מכל הזמנים באתר שלך ב-WordPress.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "כל הזמנים";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "יש להתחבר לחשבון ב-WordPress כדי להציג את הנתונים הסטטיסטיים מכל הזמנים.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "אפשר להתעדכן לגבי כל הפעילות החדשה השבוע באתר שלך ב-WordPress.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "השבוע";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "יש להתחבר לחשבון ב-WordPress כדי להציג את הנתונים הסטטיסטיים של השבוע.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "תגובות";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = " לייקים";
+
+/* Title of the nodata view in today widget */
+"widget.today.nodata.view.title" = "אין אפשרות לטעון את הנתונים הסטטיסטיים של האתר.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "אפשר להתעדכן לגבי כל הפעילות החדשה היום באתר שלך ב-WordPress.";
+
+/* Title of today widget */
+"widget.today.title" = "היום";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "יש להתחבר לחשבון ב-WordPress כדי להציג את הנתונים הסטטיסטיים של היום.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "התצוגה לא זמינה";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "דפים נצפים";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "מבקרים";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "לא יהיה זמין בעתיד.";
@@ -8941,9 +9227,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, אתרים, אתר, בלוגים, בלוג";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "כעת מתבצע תהליך ההגדרה של הדומיין החדש שלך, %@. האתר שלך עושה סלטות מרוב התרגשות!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "האתר שלך";

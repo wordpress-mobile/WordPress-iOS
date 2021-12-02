@@ -17,8 +17,10 @@ extension Blog {
         guard let domainsSet = domains as? Set<ManagedDomain> else {
             return []
         }
+
         return domainsSet
             .filter { $0.domainType != .wpCom }
+            .sorted(by: { $0.domainName > $1.domainName })
             .map { DomainRepresentation(domain: Domain(managedDomain: $0)) }
 
     }

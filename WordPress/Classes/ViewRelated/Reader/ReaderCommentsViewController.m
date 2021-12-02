@@ -24,6 +24,8 @@ static CGFloat const CommentIndentationWidth = 40.0;
 
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
+static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
+
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             ReaderCommentCellDelegate,
@@ -31,7 +33,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                             UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
-                                            SuggestionsTableViewDelegate>
+                                            SuggestionsTableViewDelegate,
+                                            ReaderCommentsNotificationSheetDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -58,6 +61,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
+
+@property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
+
+/// A cached instance for the new comment header view.
+@property (nonatomic, strong) UIView *cachedHeaderView;
+
+/// Caches the post subscription state. Used to revert subscription state when the update request fails.
+@property (nonatomic, assign) BOOL subscribedToPost;
+
+/// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
+@property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
 
 @end
 
@@ -161,7 +176,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [super viewDidAppear:animated];
     [self.tableView reloadData];
 
-    if(self.promptToAddComment){
+    if (self.promptToAddComment) {
         [self.replyTextView becomeFirstResponder];
 
         // Reset the value to prevent prompting again if the user leaves and comes back
@@ -273,10 +288,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+
+    [self refreshFollowButton];
 }
 
 - (void)configurePostHeader
 {
+    // Don't show the current post header view when the newCommentThread flag is enabled.
+    // the new header will displayed as a table section header.
+    if ([self newCommentThreadEnabled]) {
+        return;
+    }
+
     __typeof(self) __weak weakSelf = self;
     
     // Wrapper view
@@ -335,10 +358,25 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.backgroundColor = [UIColor murielBasicBackground];
     [self.view addSubview:self.tableView];
 
-    UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
-    [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+    if ([self newCommentThreadEnabled]) {
+        // register the content cell
+        UINib *nib = [UINib nibWithNibName:[CommentContentTableViewCell classNameWithoutNamespaces] bundle:nil];
+        [self.tableView registerNib:nib forCellReuseIdentifier:CommentContentCellIdentifier];
 
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        // configure table view separator
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;
+
+        // hide cell separator for the last row
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+
+    } else {
+        UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
+        [self.tableView registerNib:commentNib forCellReuseIdentifier:CommentCellIdentifier];
+
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.estimatedRowHeights = [[NSCache alloc] init];
@@ -413,25 +451,30 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 }
 
-
 #pragma mark - Autolayout Helpers
 
 - (void)configureViewConstraints
 {
-    NSDictionary *views         = @{
+    NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"tableView"        : self.tableView,
-        @"postHeader"       : self.postHeaderWrapper,
         @"mainView"         : self.view,
         @"suggestionsview"  : self.suggestionsTableView,
         @"replyTextView"    : self.replyTextView
-    };
+    }];
 
-    // PostHeader Constraints
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    NSString *verticalVisualFormatString = @"V:|[tableView][replyTextView]";
+
+    if (![self newCommentThreadEnabled]) {
+        [views setObject:self.postHeaderWrapper forKey:@"postHeader"];
+        verticalVisualFormatString = @"V:|[postHeader][tableView][replyTextView]";
+
+        // PostHeader Constraints
+        [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+        [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    }
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatString
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
@@ -521,6 +564,107 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
+- (BOOL)followViaNotificationsEnabled
+{
+    return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
+}
+
+- (BOOL)newCommentThreadEnabled
+{
+    return [Feature enabled:FeatureFlagNewCommentThread];
+}
+
+- (UIView *)cachedHeaderView {
+    if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
+        _cachedHeaderView = [self configuredHeaderViewFor:self.tableView];
+    }
+
+    return _cachedHeaderView;
+}
+
+// NOTE: remove this when the `followConversationViaNotifications` flag is removed.
+- (void)setSubscribedToPost:(BOOL)subscribedToPost {
+    if (self.postHeaderView) {
+        self.postHeaderView.isSubscribedToPost = subscribedToPost;
+    }
+
+    _subscribedToPost = subscribedToPost;
+}
+
+- (UIBarButtonItem *)followBarButtonItem
+{
+    if (!_followBarButtonItem) {
+        _followBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Follow", @"Button title. Follow the comments on a post.")
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(handleFollowConversationButtonTapped)];
+    }
+
+    return _followBarButtonItem;
+}
+
+- (UIBarButtonItem *)subscriptionSettingsBarButtonItem
+{
+    if (!_subscriptionSettingsBarButtonItem) {
+        _subscriptionSettingsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"bell"]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(subscriptionSettingsButtonTapped)];
+        _subscriptionSettingsBarButtonItem.accessibilityHint = NSLocalizedString(@"Open subscription settings for the post",
+                                                                                 @"VoiceOver hint. Informs the user that the button allows the user to access "
+                                                                                 + "post subscription settings.");
+    }
+
+    return _subscriptionSettingsBarButtonItem;
+}
+
+/// NOTE: In order for the inset to work across orientations, the tableView should use `UITableViewSeparatorInsetFromAutomaticInsets` to
+/// base the separator insets on the cell layout margins instead of the edges.
+///
+/// With the default inset reference (i.e. `UITableViewSeparatorInsetFromCellEdges`), sometimes the cell configuration is called before the
+/// orientation animation is completed – and this caused the computed separator insets to intermittently return the wrong table view size.
+///
+- (UIEdgeInsets)hiddenSeparatorInsets {
+    CGFloat rightInset = CGRectGetWidth(self.tableView.frame);
+
+    // Add an extra inset for landscape iPad (without a split view) where the separator does reach the trailing edge.
+    // Otherwise, after orientation the inset may not be enough to hide the separator.
+    if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+        rightInset -= self.tableView.separatorInset.left;
+    }
+
+    // Note: no need to flip the insets manually for RTL layout. The system will automatically take care of this.
+    return UIEdgeInsetsMake(0, -self.tableView.separatorInset.left, 0, rightInset);
+}
+
+/// Determines whether a separator should be drawn for the provided index path.
+/// The method returns YES if the index path represent a comment that is placed before a top-level comment.
+///
+/// Example:
+///
+/// - comment 1
+///     - comment 2
+///         - comment 3      --> returns YES.
+/// - comment 4
+///     - comment 5
+///         - comment 6
+///             - comment 7
+///         - comment 8      --> returns YES.
+/// - comment 9
+///
+- (BOOL)shouldShowSeparatorForIndexPath:(NSIndexPath *)indexPath
+{
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+    NSArray<id<NSFetchedResultsSectionInfo>> *sections = self.tableViewHandler.resultsController.sections;
+
+    if (sections && sections[indexPath.section] && nextIndexPath.row < sections[indexPath.section].numberOfObjects) {
+        Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
+        return [nextComment isTopLevelComment];
+    }
+
+    return NO;
+}
+
 #pragma mark - Accessor methods
 
 - (void)setPost:(ReaderPost *)post
@@ -602,6 +746,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshPostHeaderView
 {
+    if ([self newCommentThreadEnabled]) {
+        return;
+    }
+
     NSParameterAssert(self.postHeaderView);
     NSParameterAssert(self.postHeaderWrapper);
     
@@ -622,19 +770,34 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
-    
-    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
+
+    // when the "follow via notifications" flag is enabled, the Follow button is moved into the navigation bar as a UIButtonBarItem.
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation && ![self followViaNotificationsEnabled];
 }
 
-- (void)refreshSubscriptionStatusIfNeeded
+- (void)refreshFollowButton
 {
-    if (!self.canFollowConversation) {
+    if (!self.canFollowConversation || ![self followViaNotificationsEnabled]) {
         return;
     }
-    
+
+    self.navigationItem.rightBarButtonItem = self.post.isSubscribedComments ? self.subscriptionSettingsBarButtonItem : self.followBarButtonItem;
+}
+
+// NOTE: Remove this method once "follow via notifications" feature flag can be removed.
+// Subscription status is now available through ReaderPost's `isSubscribedComments` Boolean property.
+- (void)refreshSubscriptionStatusIfNeeded
+{
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        weakSelf.postHeaderView.isSubscribedToPost = isSubscribed;
+        weakSelf.subscribedToPost = isSubscribed;
+
+        if ([self followViaNotificationsEnabled]) {
+            // update the ReaderPost button to keep it in-sync.
+            self.post.isSubscribedComments = isSubscribed;
+            [ContextManager.sharedInstance saveContext:self.post.managedObjectContext];
+        }
+
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
     }];
@@ -660,9 +823,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshReplyTextViewPlaceholder
 {
     if (self.tableView.indexPathForSelectedRow) {
-        self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
+        Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
+        NSString *placeholderFormat = NSLocalizedString(@"Reply to %1$@", @"Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.");
+        self.replyTextView.placeholder = [NSString stringWithFormat:placeholderFormat, [comment authorForDisplay]];
     } else {
-        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
+        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post", @"Placeholder text for replying to a post");
     }
 }
 
@@ -864,6 +1029,59 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.indexPathForCommentRepliedTo = nil;
 }
 
+- (void)subscriptionSettingsButtonTapped
+{
+    [self showNotificationSheetWithNotificationsEnabled:self.post.receivesCommentNotifications
+                                               delegate:self
+                                    sourceBarButtonItem:self.navigationItem.rightBarButtonItem];
+}
+
+- (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!indexPath) {
+        return;
+    }
+
+    // if a row is already selected don't allow selection of another
+    if (self.replyTextView.isFirstResponder) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+        [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
+        return;
+    }
+
+    if (!self.canComment) {
+        return;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+    [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
+
+    self.indexPathForCommentRepliedTo = indexPath;
+    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self refreshReplyTextViewPlaceholder];
+}
+
+- (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    if (!comment.isLiked) {
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
+    }
+
+    __typeof(self) __weak weakSelf = self;
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+        [weakSelf trackCommentLikedOrUnliked:comment];
+    } failure:^(NSError *error) {
+        // in case of failure, revert the cell's like state.
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+}
 
 #pragma mark - Sync methods
 
@@ -871,7 +1089,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     self.failedToFetchComments = NO;
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
-    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -886,7 +1104,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-    [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
         }
@@ -956,10 +1174,42 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
-
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
+    if ([self newCommentThreadEnabled]) {
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
+        [self configureContentCell:cell comment:comment tableView:self.tableView];
+
+        // show separator when the comment is the "last leaf" of its top-level comment.
+        cell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
+
+        // configure button actions.
+        __weak __typeof(self) weakSelf = self;
+
+        cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
+            if ([comment allowsModeration]) {
+                // TODO: Show menu in iOS 13.
+            } else {
+                [self shareComment:comment sourceView:sourceView];
+            }
+        };
+
+        cell.replyButtonAction = ^{
+            [weakSelf didTapReplyAtIndexPath:indexPath];
+        };
+
+        cell.likeButtonAction = ^{
+            [weakSelf didTapLikeForComment:comment atIndexPath:indexPath];
+        };
+
+        cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {
+            [weakSelf interactWithURL:url];
+        };
+
+        return;
+    }
+
+    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     cell.indentationWidth = CommentIndentationWidth;
     cell.indentationLevel = MIN(comment.depth, MaxCommentDepth);
     cell.delegate = self;
@@ -1005,9 +1255,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return UITableViewAutomaticDimension;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return self.cachedHeaderView;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
+    NSString *cellIdentifier = [self newCommentThreadEnabled] ? CommentContentCellIdentifier : CommentCellIdentifier;
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -1041,7 +1297,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
     // which results in 30pt tall headers on iOS 11
-    return 0;
+    return [self newCommentThreadEnabled] ? UITableViewAutomaticDimension : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -1104,40 +1360,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - ReaderCommentCell Delegate Methods
 
+// TODO: Remove ReaderCommentCell methods once the `newCommentThread` flag is removed.
+
 - (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
     NSURL *url = [comment authorURL];
     WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:url];
     [configuration authenticateWithDefaultAccount];
     [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments_author"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)cell:(ReaderCommentCell *)cell didTapReply:(Comment *)comment
 {
-    // if a row is already selected don't allow selection of another
-    if (self.replyTextView.isFirstResponder) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-        [self.replyTextView resignFirstResponder];
-#pragma clang diagnostic pop
-        return;
-    }
-
-    if (!self.canComment) {
-        return;
-    }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-    [self.replyTextView becomeFirstResponder];
-#pragma clang diagnostic pop
-
-    self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self refreshReplyTextViewPlaceholder];
+    [self didTapReplyAtIndexPath:[self.tableViewHandler.resultsController indexPathForObject:comment]];
 }
 
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
@@ -1228,11 +1466,23 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:linkURL];
     [configuration authenticateWithDefaultAccount];
     [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+
+#pragma mark - ReaderCommentsNotificationSheet Delegate Methods
+
+- (void)didToggleNotificationSwitch:(BOOL)isOn completion:(void (^)(BOOL))completion
+{
+    [self handleNotificationsButtonTappedWithUndo:NO completion:completion];
+}
+
+- (void)didTapUnfollowConversation
+{
+    [self handleFollowConversationButtonTapped];
+}
 
 #pragma mark - PostHeaderView helpers
 
@@ -1244,11 +1494,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [generator prepare];
 
     // Keep previous subscription status in case of failure
-    BOOL oldIsSubscribed = self.postHeaderView.isSubscribedToPost;
+    BOOL oldIsSubscribed = self.subscribedToPost;
     BOOL newIsSubscribed = !oldIsSubscribed;
 
     // Optimistically toggle subscription status
-    self.postHeaderView.isSubscribedToPost = newIsSubscribed;
+    self.subscribedToPost = newIsSubscribed;
 
     // Define success block
     void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
@@ -1262,16 +1512,38 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                 [weakSelf displayNoticeWithTitle:title message:nil];
 
                 // The task failed, fall back to the old subscription status
-                self.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+                self.subscribedToPost = oldIsSubscribed;
             });
         } else {
             NSString *title = newIsSubscribed
                 ? NSLocalizedString(@"Successfully followed conversation", @"The app successfully subscribed to the comments for the post")
                 : NSLocalizedString(@"Successfully unfollowed conversation", @"The app successfully unsubscribed from the comments for the post");
 
-
             dispatch_async(dispatch_get_main_queue(), ^{
+                // update ReaderPost when the subscription process has succeeded.
+                weakSelf.post.isSubscribedComments = newIsSubscribed;
+                [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
+
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+
+                if ([self followViaNotificationsEnabled]) {
+                    [weakSelf refreshFollowButton];
+
+                    // only show the new notice with undo option when the user intends to subscribe.
+                    if (newIsSubscribed) {
+                        [weakSelf displayActionableNoticeWithTitle:NSLocalizedString(@"Following this conversation",
+                                                                                     @"The app successfully subscribed to the comments for the post")
+                                                           message:NSLocalizedString(@"Enable in-app notifications?",
+                                                                                     @"Hint for the action button that enables notification for new comments")
+                                                       actionTitle:NSLocalizedString(@"Enable",
+                                                                                     @"Button title to enable notifications for new comments")
+                                                     actionHandler:^(BOOL accepted) {
+                            [weakSelf handleNotificationsButtonTappedWithUndo:YES completion:nil];
+                        }];
+                        return;
+                    }
+                }
+
                 [weakSelf displayNoticeWithTitle:title message:nil];
             });
         }
@@ -1290,7 +1562,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [weakSelf displayNoticeWithTitle:title message:nil];
 
             // If the request fails, fall back to the old subscription status
-            weakSelf.postHeaderView.isSubscribedToPost = oldIsSubscribed;
+            weakSelf.subscribedToPost = oldIsSubscribed;
         });
     };
 
@@ -1300,16 +1572,41 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                          failure:failureBlock];
 }
 
-- (void)handleHeaderTapped
+/// Toggles the state of comment subscription notifications. When enabled, the user will receive in-app notifications for new comments.
+///
+/// @param canUndo Boolean. When true, this provides a way for the user to revert their actions.
+- (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo completion:(void (^ _Nullable)(BOOL))completion
 {
-    if (!self.allowsPushingPostDetails) {
-        return;
-    }
+    BOOL desiredState = !self.post.receivesCommentNotifications;
+    PostSubscriptionAction action = desiredState ? PostSubscriptionActionEnableNotification : PostSubscriptionActionDisableNotification;
 
-    // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
-    controller.shouldHideComments = YES;
-    [self.navigationController pushFullscreenViewController:controller animated:YES];
+    __weak __typeof(self) weakSelf = self;
+    NSString* (^noticeTitle)(BOOL) = ^NSString* (BOOL success) {
+        return [weakSelf noticeTitleForAction:action success:success];
+    };
+
+    [self.followCommentsService toggleNotificationSettings:desiredState success:^{
+        if (completion) {
+            completion(YES);
+        }
+
+        if (!canUndo) {
+            [weakSelf displayNoticeWithTitle:noticeTitle(YES) message:nil];
+            return;
+        }
+
+        // show the undo notice with action button.
+        NSString *undoActionTitle = NSLocalizedString(@"Undo", @"Button title. Reverts the previous notification operation");
+        [weakSelf displayActionableNoticeWithTitle:noticeTitle(YES) message:nil actionTitle:undoActionTitle actionHandler:^(BOOL accepted) {
+            [weakSelf handleNotificationsButtonTappedWithUndo:NO completion:nil];
+        }];
+
+    } failure:^(NSError * _Nullable error) {
+        [weakSelf displayNoticeWithTitle:noticeTitle(NO) message:nil];
+        if (completion) {
+            completion(NO);
+        }
+    }];
 }
 
 

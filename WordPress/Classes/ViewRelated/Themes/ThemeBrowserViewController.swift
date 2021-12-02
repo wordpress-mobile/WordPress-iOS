@@ -894,7 +894,7 @@ public protocol ThemePresenter: AnyObject {
         activateButton = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
         activateButton?.isEnabled = !theme.isCurrentTheme()
 
-        let webViewController = WebViewControllerFactory.controller(configuration: configuration)
+        let webViewController = WebViewControllerFactory.controller(configuration: configuration, source: "theme_browser")
         webViewController.navigationItem.rightBarButtonItem = activateButton
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle

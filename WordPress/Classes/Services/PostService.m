@@ -128,9 +128,15 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                           }
                           if (remotePost) {
                               AbstractPost *post = [self findPostWithID:postID inBlog:blog];
+                              
                               if (!post) {
-                                  post = [self createPostForBlog:blog];
+                                  if ([remotePost.type isEqualToString:PostServiceTypePage]) {
+                                      post = [self createPageForBlog:blog];
+                                  } else {
+                                      post = [self createPostForBlog:blog];
+                                  }
                               }
+                              
                               [self updatePost:post withRemotePost:remotePost];
                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 

@@ -55,6 +55,8 @@ extension RegisterDomainDetailsViewModel {
                 errorMessage = Localized.validationErrorFirstName
             case Localized.ContactInformation.lastName:
                 errorMessage = Localized.validationErrorLastName
+            case Localized.ContactInformation.organization:
+                errorMessage = Localized.validationErrorOrganization
             case Localized.ContactInformation.email:
                 errorMessage = Localized.validationErrorEmail
             case Localized.ContactInformation.country:
@@ -114,6 +116,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.ContactInformation.organizationPlaceholder,
                 editingStyle: .inline,
+                validationRules: [serverSideRule(with: Localized.ContactInformation.organization)],
                 valueSanitizer: transformToLatinASCII
                 )),
             .inlineEditable(.init(

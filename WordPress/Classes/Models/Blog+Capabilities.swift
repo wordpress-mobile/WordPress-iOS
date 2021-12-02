@@ -64,4 +64,8 @@ extension Blog {
     private func isUserCapableOf(_ capability: String) -> Bool {
         return capabilities?[capability] as? Bool ?? false
     }
+
+    public func areBloggingRemindersAllowed() -> Bool {
+        return Feature.enabled(.bloggingReminders) && isUserCapableOf(.EditPosts)
+    }
 }

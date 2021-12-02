@@ -20,17 +20,17 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = [], canViewEditorOnboarding: Bool = false, galleryWithImageBlocks: Bool? = nil) {
+    mutating func start(unsupportedBlocks: [String] = [], galleryWithImageBlocks: Bool? = nil) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks, canViewEditorOnboarding: canViewEditorOnboarding, galleryWithImageBlocks: galleryWithImageBlocks)
+        let properties = startEventProperties(with: unsupportedBlocks, galleryWithImageBlocks: galleryWithImageBlocks)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String], canViewEditorOnboarding: Bool, galleryWithImageBlocks: Bool?) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String], galleryWithImageBlocks: Bool?) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -42,8 +42,6 @@ struct PostEditorAnalyticsSession {
             let blocksJSON = String(data: data, encoding: .utf8)
             properties[Property.unsupportedBlocks] = blocksJSON
         }
-
-        properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
 
         if let galleryWithImageBlocks = galleryWithImageBlocks {
             properties[Property.unstableGalleryWithImageBlocks] = "\(galleryWithImageBlocks)"
@@ -72,11 +70,9 @@ struct PostEditorAnalyticsSession {
         }
     }
 
-    func end(outcome endOutcome: Outcome, canViewEditorOnboarding: Bool = false) {
+    func end(outcome endOutcome: Outcome) {
         let outcome = self.outcome ?? endOutcome
-        var properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
-
-        properties[Property.canViewEditorOnboarding] = canViewEditorOnboarding
+        let properties: [String: Any] = [ Property.outcome: outcome.rawValue ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
@@ -95,7 +91,6 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
         static let template = "template"
         static let startupTime = "startup_time_ms"
-        static let canViewEditorOnboarding = "can_view_editor_onboarding"
         static let unstableGalleryWithImageBlocks = "unstable_gallery_with_image_blocks"
     }
 

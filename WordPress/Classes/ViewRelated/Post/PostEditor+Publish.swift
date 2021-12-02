@@ -47,17 +47,11 @@ protocol PublishingEditor where Self: UIViewController {
     var debouncer: Debouncer { get }
 
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
-
-    func canViewEditorOnboarding() -> Bool
 }
 
 var postPublishedReceipt: Receipt?
 
 extension PublishingEditor {
-
-    func canViewEditorOnboarding() -> Bool {
-        return false
-    }
 
     func publishingDismissed() {
 
@@ -170,7 +164,7 @@ extension PublishingEditor {
             }
 
             if dismissWhenDone {
-                self.editorSession.end(outcome: action.analyticsEndOutcome, canViewEditorOnboarding: self.canViewEditorOnboarding())
+                self.editorSession.end(outcome: action.analyticsEndOutcome)
             } else {
                 self.editorSession.forceOutcome(action.analyticsEndOutcome)
             }
@@ -316,7 +310,7 @@ extension PublishingEditor {
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
         if post.shouldAttemptAutoUpload && post.canSave() {
-            editorSession.end(outcome: .cancel, canViewEditorOnboarding: canViewEditorOnboarding())
+            editorSession.end(outcome: .cancel)
             /// If there are ongoing media uploads, save with completion processing
             if MediaCoordinator.shared.isUploadingMedia(for: post) {
                 resumeSaving()
@@ -326,7 +320,7 @@ extension PublishingEditor {
         } else if post.canSave() {
             showPostHasChangesAlert()
         } else {
-            editorSession.end(outcome: .cancel, canViewEditorOnboarding: canViewEditorOnboarding())
+            editorSession.end(outcome: .cancel)
             discardUnsavedChangesAndUpdateGUI()
         }
     }
@@ -431,7 +425,7 @@ extension PublishingEditor {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
-            self.editorSession.end(outcome: .discard, canViewEditorOnboarding: self.canViewEditorOnboarding())
+            self.editorSession.end(outcome: .discard)
             self.discardUnsavedChangesAndUpdateGUI()
         }
 

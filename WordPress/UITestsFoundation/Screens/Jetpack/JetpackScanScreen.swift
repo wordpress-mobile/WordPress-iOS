@@ -1,8 +1,12 @@
+import ScreenObject
 import XCTest
 
-public class JetpackScanScreen: BaseScreen {
+public class JetpackScanScreen: ScreenObject {
 
-    public init() {
-        super.init(element: XCUIApplication().otherElements.firstMatch)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.otherElements.firstMatch } ],
+            app: app
+        )
     }
 }

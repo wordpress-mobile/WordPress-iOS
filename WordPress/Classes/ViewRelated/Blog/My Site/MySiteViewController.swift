@@ -73,10 +73,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
+
+        trackNoSitesVisibleIfNeeded()
     }
 
     private func subscribeToPostSignupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreation), name: .createSite, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
@@ -173,6 +175,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - No Sites UI logic
 
     private func hideNoSites() {
+        // Only track if the no sites view is currently visible
+        if noResultsViewController.view.superview != nil {
+            WPAnalytics.track(.mySiteNoSitesViewHidden)
+        }
+
         hideNoResults()
 
         cleanupNoResultsView()
@@ -195,6 +202,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
+    }
+
+    private func trackNoSitesVisibleIfNeeded() {
+        guard noResultsViewController.view.superview != nil else {
+            return
+        }
+
+        WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 
     private func makeNoResultsScrollView() {
@@ -223,6 +238,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                           image: "mysites-nosites")
         noResultsViewController.actionButtonHandler = { [weak self] in
             self?.presentInterfaceForAddingNewSite()
+            WPAnalytics.track(.mySiteNoSitesViewActionTapped)
         }
     }
 
@@ -264,8 +280,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(canCreateWPComSite: defaultAccount() != nil) { [weak self] in
-            self?.launchSiteCreation()
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites", canCreateWPComSite: defaultAccount() != nil) { [weak self] in
+            self?.launchSiteCreation(source: "my_site_no_sites")
         } addSelfHostedSite: {
             WordPressAuthenticator.showLoginForSelfHostedSite(self)
         }
@@ -282,13 +298,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    func launchSiteCreation() {
+    func launchSiteCreationFromNotification() {
+        self.launchSiteCreation(source: "signup_epilogue")
+    }
+
+    func launchSiteCreation(source: String) {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
             return
         }
         present(wizard, animated: true)
-        WPAnalytics.track(.enhancedSiteCreationAccessed)
+        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
     }
 
     @objc

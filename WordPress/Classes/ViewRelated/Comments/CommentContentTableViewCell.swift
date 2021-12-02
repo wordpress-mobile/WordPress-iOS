@@ -10,11 +10,22 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: - Public Properties
 
-    var accessoryButtonAction: (() -> Void)? = nil
+    /// A closure that's called when the accessory button is tapped.
+    /// The button's view is sent as the closure's parameter for reference.
+    @objc var accessoryButtonAction: ((UIView) -> Void)? = nil
 
-    var replyButtonAction: (() -> Void)? = nil
+    @objc var replyButtonAction: (() -> Void)? = nil
 
-    var likeButtonAction: (() -> Void)? = nil
+    @objc var likeButtonAction: (() -> Void)? = nil
+
+    @objc var contentLinkTapAction: ((URL) -> Void)? = nil
+
+    /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
+    var hidesModerationBar: Bool = false {
+        didSet {
+            updateModerationBarVisibility()
+        }
+    }
 
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
@@ -24,19 +35,58 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// When supplied with a non-empty string, the cell will show a badge label beside the name label.
+    /// Note that the badge will be hidden when the title is nil or empty.
+    var badgeTitle: String? = nil {
+        didSet {
+            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
+                badgeLabel.isHidden = true
+                return
+            }
+
+            badgeLabel.setText(badgeTitle.localizedUppercase)
+            badgeLabel.isHidden = false
+        }
+    }
+
+    override var indentationWidth: CGFloat {
+        didSet {
+            updateContainerLeadingConstraint()
+        }
+    }
+
+    override var indentationLevel: Int {
+        didSet {
+            updateContainerLeadingConstraint()
+        }
+    }
+
+    // MARK: Constants
+
+    private let customBottomSpacing: CGFloat = 10
+
     // MARK: Outlets
+
+    @IBOutlet private weak var containerStackView: UIStackView!
+    @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
+
+    // used for indentation
+    @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var badgeLabel: BadgeLabel!
     @IBOutlet private weak var dateLabel: UILabel!
-    @IBOutlet private weak var accessoryButton: UIButton!
+    @IBOutlet private(set) weak var accessoryButton: UIButton!
 
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
 
-    @IBOutlet private weak var reactionBarView: UIView!
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
+
+    // This is public so its delegate can be set directly.
+    @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
 
     // MARK: Private Properties
 
@@ -64,12 +114,19 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
 
+    // MARK: Like Button State
+
+    private var isLiked: Bool = false
+
+    private var likeCount: Int = 0
+
+    private var isLikeButtonAnimating: Bool = false
+
     // MARK: Visibility Control
 
-    /// Controls the visibility of the reaction bar view. Setting this to false disables Reply and Likes functionality.
-    private var isReactionEnabled: Bool = false {
+    private var isCommentReplyEnabled: Bool = false {
         didSet {
-            reactionBarView.isHidden = !isReactionEnabled
+            replyButton.isHidden = !isCommentReplyEnabled
         }
     }
 
@@ -85,16 +142,32 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// Controls the visibility of the moderation bar view.
+    private var isModerationEnabled: Bool = false {
+        didSet {
+            updateModerationBarVisibility()
+        }
+    }
+
+    private var isReactionBarVisible: Bool {
+        return isCommentReplyEnabled || isCommentLikesEnabled
+    }
+
     // MARK: Lifecycle
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // reset all button actions.
+        accessoryButtonAction = nil
+        replyButtonAction = nil
+        likeButtonAction = nil
+        contentLinkTapAction = nil
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         configureViews()
-    }
-
-    override func prepareForReuse() {
-        onContentLoaded = nil
-        htmlContentCache = nil
     }
 
     // MARK: Public Methods
@@ -117,15 +190,44 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
         // Configure feature availability.
-        isReactionEnabled = !comment.isReadOnly()
-        isCommentLikesEnabled = isReactionEnabled && (comment.blog?.supports(.commentLikes) ?? false)
+        isCommentReplyEnabled = comment.canReply()
+        isCommentLikesEnabled = comment.canLike()
         isAccessoryButtonEnabled = comment.isApproved()
+        isModerationEnabled = comment.allowsModeration()
+
+        // When reaction bar is hidden, add some space between the webview and the moderation bar.
+        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: webView)
+
+        // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
+        // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
+        containerStackBottomConstraint.constant = (isReactionBarVisible || isModerationEnabled) ? 0 : customBottomSpacing
+
+        if isModerationEnabled {
+            moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
+        }
+
+        // optimize: do not reload if the content doesn't change.
+        if let contentCache = commentContentCache, contentCache == comment.content {
+            return
+        }
 
         // Configure comment content.
         self.onContentLoaded = onContentLoaded
+        webViewHeightConstraint.constant = 1 // reset webview height to handle cases where the new content requires the webview to shrink.
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
     }
+
+    /// Hide all actions for the comment.
+    /// NOTE: This must be called after configure or these values will be overwritten.
+    /// 
+    func hideAllActions() {
+        hidesModerationBar = true
+        isCommentLikesEnabled = false
+        isCommentReplyEnabled = false
+        isAccessoryButtonEnabled = false
+    }
+
 }
 
 // MARK: - WKNavigationDelegate
@@ -157,13 +259,17 @@ extension CommentContentTableViewCell: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        // TODO: Offload the decision making to the delegate.
-        // For now, all navigation requests will be rejected (except for loading local files).
         switch navigationAction.navigationType {
         case .other:
+            // allow local file requests.
             decisionHandler(.allow)
         default:
             decisionHandler(.cancel)
+            guard let destinationURL = navigationAction.request.url,
+                  let linkTapAction = contentLinkTapAction else {
+                      return
+                  }
+            linkTapAction(destinationURL)
         }
     }
 }
@@ -182,12 +288,29 @@ private extension CommentContentTableViewCell {
         }
     }
 
+    var likeButtonTitle: String {
+        switch likeCount {
+        case .zero:
+            return .noLikes
+        case 1:
+            return String(format: .singularLikeFormat, likeCount)
+        default:
+            return String(format: .pluralLikesFormat, likeCount)
+        }
+    }
+
     // assign base styles for all the cell components.
     func configureViews() {
         selectionStyle = .none
 
         nameLabel?.font = Style.nameFont
         nameLabel?.textColor = Style.nameTextColor
+
+        badgeLabel?.font = Style.badgeFont
+        badgeLabel?.textColor = Style.badgeTextColor
+        badgeLabel?.backgroundColor = Style.badgeColor
+        badgeLabel?.adjustsFontForContentSizeCategory = true
+        badgeLabel?.adjustsFontSizeToFitWidth = true
 
         dateLabel?.font = Style.dateFont
         dateLabel?.textColor = Style.dateTextColor
@@ -202,14 +325,22 @@ private extension CommentContentTableViewCell {
 
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
+        replyButton?.titleLabel?.adjustsFontSizeToFitWidth = true
+        replyButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         replyButton?.setTitle(.reply, for: .normal)
         replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         replyButton?.setImage(Style.replyIconImage, for: .normal)
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
+        replyButton?.flipInsetsForRightToLeftLayoutDirection()
+        replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
         likeButton?.titleLabel?.font = Style.reactionButtonFont
+        likeButton?.titleLabel?.adjustsFontSizeToFitWidth = true
+        likeButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton?.flipInsetsForRightToLeftLayoutDirection()
+        likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         updateLikeButton(liked: false, numberOfLikes: 0)
     }
 
@@ -272,25 +403,73 @@ private extension CommentContentTableViewCell {
         return htmlContent
     }
 
-    func likeButtonTitle(for numberOfLikes: Int) -> String {
-        switch numberOfLikes {
-        case .zero:
-            return .noLikes
-        case 1:
-            return String(format: .singularLikeFormat, numberOfLikes)
-        default:
-            return String(format: .pluralLikesFormat, numberOfLikes)
+    func updateModerationBarVisibility() {
+        moderationBar.isHidden = !isModerationEnabled || hidesModerationBar
+    }
+
+    func updateContainerLeadingConstraint() {
+        containerStackLeadingConstraint?.constant = indentationWidth * CGFloat(indentationLevel)
+    }
+
+    /// Updates the style and text of the Like button.
+    /// - Parameters:
+    ///   - liked: Represents the target state – true if the comment is liked, or should be false otherwise.
+    ///   - numberOfLikes: The number of likes to be displayed.
+    ///   - animated: Whether the Like button state change should be animated or not. Defaults to false.
+    ///   - completion: Completion block called once the animation is completed. Defaults to nil.
+    func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false, completion: (() -> Void)? = nil) {
+        guard !isLikeButtonAnimating else {
+            return
+        }
+
+        isLiked = liked
+        likeCount = numberOfLikes
+
+        let onAnimationComplete = {
+            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
+            self.likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
+            self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
+            completion?()
+        }
+
+        guard animated else {
+            onAnimationComplete()
+            return
+        }
+
+        isLikeButtonAnimating = true
+
+        if isLiked {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        }
+
+        animateLikeButton {
+            onAnimationComplete()
+            self.isLikeButtonAnimating = false
         }
     }
 
-    func updateLikeButton(liked: Bool, numberOfLikes: Int) {
-        likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
-        likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
-        likeButton.setTitle(likeButtonTitle(for: numberOfLikes), for: .normal)
+    /// Animates the Like button state change.
+    func animateLikeButton(completion: @escaping () -> Void) {
+        guard let buttonImageView = likeButton.imageView,
+              let overlayImage = Style.likedIconImage?.withTintColor(Style.likedTintColor) else {
+                  completion()
+                  return
+              }
+
+        let overlayImageView = UIImageView(image: overlayImage)
+        overlayImageView.frame = likeButton.convert(buttonImageView.bounds, from: buttonImageView)
+        likeButton.addSubview(overlayImageView)
+
+        let animation = isLiked ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
+        animation { _ in
+            overlayImageView.removeFromSuperview()
+            completion()
+        }
     }
 
     @objc func accessoryButtonTapped() {
-        accessoryButtonAction?()
+        accessoryButtonAction?(accessoryButton)
     }
 
     @objc func replyButtonTapped() {
@@ -298,7 +477,11 @@ private extension CommentContentTableViewCell {
     }
 
     @objc func likeButtonTapped() {
-        likeButtonAction?()
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true) {
+                self.likeButtonAction?()
+            }
+        }
     }
 }
 

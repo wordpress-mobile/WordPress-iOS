@@ -13,13 +13,13 @@ common_params:
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
-    IMAGE_ID: xcode-12.5.1
+    IMAGE_ID: xcode-13
 
 steps:
 
   #################
   # Build the CocoaPods Base Cache
-  # 
+  #
   # This prevents the base cache from infinite growth caused by storing every
   # version of every pod we've ever used.
   #################

@@ -356,7 +356,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [self preloadDomains];
     [self preloadMetadata];
 
     if (self.blog.account && !self.blog.account.userID) {
@@ -992,7 +991,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                    accessibilityIdentifier:@"Domains Row"
                                                                      image:[UIImage gridiconOfType:GridiconTypeDomains]
                                                                   callback:^{
-                                                                    [weakSelf showDomains];
+                                                                    [weakSelf showDomainsFromSource:BlogDetailsNavigationSourceRow];
                                                       }];
         [rows addObject:domainsRow];
     }
@@ -1156,6 +1155,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:blogListViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:true completion:nil];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventMySiteSiteSwitcherTapped];
 }
 
 - (void)visitSiteTapped
@@ -1169,7 +1170,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.headerView.blog = blog;
     self.blog = blog;
-    [self preloadDomains];
     [self showInitialDetailsForBlog];
     [self.tableView reloadData];
     [self preloadMetadata];
@@ -1546,26 +1546,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)trackEvent:(WPAnalyticsStat)event fromSource:(BlogDetailsNavigationSource)source {
     
-    NSString *sourceString;
-    
-    switch (source) {
-        case BlogDetailsNavigationSourceRow:
-            sourceString = @"row";
-            break;
-            
-        case BlogDetailsNavigationSourceLink:
-            sourceString = @"link";
-            break;
-            
-        case BlogDetailsNavigationSourceButton:
-            sourceString = @"button";
-            break;
-            
-        default:
-            break;
-    }
+    NSString *sourceString = [self propertiesStringForSource:source];
     
     [WPAppAnalytics track:event withProperties:@{WPAppAnalyticsKeyTapSource: sourceString} withBlog:self.blog];
+}
+
+- (NSString *)propertiesStringForSource:(BlogDetailsNavigationSource)source {
+    switch (source) {
+        case BlogDetailsNavigationSourceRow:
+            return @"row";
+        case BlogDetailsNavigationSourceLink:
+            return @"link";
+        case BlogDetailsNavigationSourceButton:
+            return @"button";
+        default:
+            return @"";
+    }
 }
 
 - (void)preloadBlogData
@@ -1575,7 +1571,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // only preload on wifi
     if (isOnWifi) {
-        [self preloadDomains];
         [self preloadPosts];
         [self preloadPages];
         [self preloadComments];
@@ -1680,18 +1675,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
-- (void)preloadDomains
-{
-    __weak __typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        DomainsServiceAdapter *service = [[DomainsServiceAdapter alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        if (weakSelf.blog.dotComID != nil) {
-            NSInteger siteID = [weakSelf.blog.dotComID integerValue];
-            [service refreshDomainsFor:siteID completion:^(BOOL success) { }];
-        }
-    });
-}
-
 - (void)showCommentsFromSource:(BlogDetailsNavigationSource)source
 {
     [self trackEvent:WPAnalyticsStatOpenedComments fromSource:source];
@@ -1734,7 +1717,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
@@ -1772,9 +1754,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showDomains
+- (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
 {
-    /// - TODO: DOMAINS - Add tracking  here
+    [WPAnalytics trackEvent:WPAnalyticsEventDomainsDashboardViewed
+                 properties:@{WPAppAnalyticsKeyTapSource: [self propertiesStringForSource:source]}
+                       blog:self.blog];
+
     UIViewController *controller = [self makeDomainsDashboardViewController];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self showDetailViewController:controller sender:self];
@@ -1795,7 +1780,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
 
     } else {
-        controller = [[SharingViewController alloc] initWithBlog:self.blog];
+        controller = [[SharingViewController alloc] initWithBlog:self.blog delegate: nil];
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];
@@ -1880,7 +1865,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog withDeviceModes:true];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog source:@"my_site_view_site" withDeviceModes:true];
     LightNavigationController *navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;

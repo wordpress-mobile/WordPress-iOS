@@ -11,6 +11,7 @@ extension Comment {
     @NSManaged public var link: String
     @NSManaged public var status: String
     @NSManaged public var type: String
+    @NSManaged public var authorID: Int32
     @NSManaged public var author: String
     @NSManaged public var author_email: String
     @NSManaged public var author_url: String
@@ -25,6 +26,7 @@ extension Comment {
     @NSManaged public var parentID: Int32
     @NSManaged public var depth: Int16
     @NSManaged public var hierarchy: String
+    @NSManaged public var replyID: Int32
 
     /*
      // Hierarchy is a string representation of a comments ancestors. Each ancestor's

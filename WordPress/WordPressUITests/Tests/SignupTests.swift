@@ -16,8 +16,8 @@ class SignupTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testEmailSignup() {
-        let mySiteScreen = WelcomeScreen().selectSignup()
+    func testEmailSignup() throws {
+        let mySiteScreen = try WelcomeScreen().selectSignup()
             .selectEmailSignup()
             .proceedWith(email: WPUITestCredentials.signupEmail)
             .openMagicSignupLink()
@@ -26,6 +26,6 @@ class SignupTests: XCTestCase {
             .continueWithSignup()
             .dismissNotificationAlertIfNeeded()
 
-        XCTAssert(mySiteScreen.isLoaded())
+        XCTAssert(mySiteScreen.isLoaded)
     }
 }

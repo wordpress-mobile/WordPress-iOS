@@ -13,12 +13,15 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case siteIconCreator
     case unifiedCommentsAndNotificationsList
     case recommendAppToOthers
-    case newCommentEdit
     case weeklyRoundup
     case weeklyRoundupStaticNotification
     case newCommentDetail
     case domains
     case timeZoneSuggester
+    case followConversationViaNotifications
+    case aboutScreen
+    case newCommentThread
+    case postDetailsComments
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -49,18 +52,25 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .recommendAppToOthers:
             return true
-        case .newCommentEdit:
-            return true
         case .weeklyRoundup:
             return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
         case .newCommentDetail:
-            return false
+            // NOTE: only applies to My Site > Comments.
+            return true
         case .domains:
             return BuildConfiguration.current == .localDeveloper
         case .timeZoneSuggester:
+            return BuildConfiguration.current == .localDeveloper
+        case .followConversationViaNotifications:
+            return true
+        case .aboutScreen:
+            return true
+        case .newCommentThread:
+            return false
+        case .postDetailsComments:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -110,8 +120,6 @@ extension FeatureFlag {
             return "Unified List for Comments and Notifications"
         case .recommendAppToOthers:
             return "Recommend App to Others"
-        case .newCommentEdit:
-            return "New Comment Edit"
         case .weeklyRoundup:
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
@@ -122,6 +130,14 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
+        case .followConversationViaNotifications:
+            return "Follow Conversation via Notifications"
+        case .aboutScreen:
+            return "New Unified About Screen"
+        case .newCommentThread:
+            return "New Comment Thread"
+        case .postDetailsComments:
+            return "Post Details Comments"
         }
     }
 

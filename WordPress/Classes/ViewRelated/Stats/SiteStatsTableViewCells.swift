@@ -89,6 +89,33 @@ struct InsightCellHeaderRow: ImmuTableRow {
     }
 }
 
+struct GrowAudienceRow: ImmuTableRow {
+
+    typealias CellType = GrowAudienceCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let hintType: GrowAudienceCell.HintType
+    let allTimeViewsCount: Int
+    let isNudgeCompleted: Bool
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(hintType: hintType,
+                       allTimeViewsCount: allTimeViewsCount,
+                       isNudgeCompleted: isNudgeCompleted,
+                       insightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
 struct CustomizeInsightsRow: ImmuTableRow {
 
     typealias CellType = CustomizeInsightsCell

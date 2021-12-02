@@ -15,7 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Faster, safer WordPress"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -38,11 +38,21 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.3-whats-new"
+msgctxt "v18.7-whats-new"
 msgid ""
-"- Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.\n"
+"Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.\n"
+"We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.\n"
+"We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.\n"
 "\n"
-"- Various improvements and fixes: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) We also fixed a bug that prevented you from following a conversation by email through a post’s comments.\n"
+"When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:\n"
+"\n"
+"- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.\n"
+"- Rich content so you can see each comment just as the author wrote it.\n"
+"- A share button for approved comments.\n"
+"- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.\n"
+"- Tappable web address to visit the author's URL (instead of their avatar image).\n"
+"\n"
+"Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

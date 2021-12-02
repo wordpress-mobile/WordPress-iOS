@@ -435,7 +435,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
     }
     if (customErrorMessage) {
-        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
         userInfo[NSLocalizedDescriptionKey] = customErrorMessage;
         error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
     }
@@ -453,6 +453,14 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     void (^successBlock)(void) = ^() {
         [self.managedObjectContext performBlock:^{
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+
+            if (mediaInContext == nil) {
+                // Considering the intent of calling this method is to delete the media object,
+                // when it doesn't exist, we can simply signal success, since the intent is fulfilled.
+                success();
+                return;
+            }
+
             [self.managedObjectContext deleteObject:mediaInContext];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext
                                      withCompletionBlock:^{

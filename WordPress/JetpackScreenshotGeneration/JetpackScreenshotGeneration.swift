@@ -1,3 +1,4 @@
+import ScreenObject
 import UIKit
 import UITestsFoundation
 import XCTest
@@ -31,17 +32,17 @@ class JetpackScreenshotGeneration: XCTestCase {
         super.tearDown()
     }
 
-    func testGenerateScreenshots() {
+    func testGenerateScreenshots() throws {
 
         // Get My Site screenshot
-        let mySite = MySiteScreen()
+        let mySite = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "yourjetpack.blog")
             .thenTakeScreenshot(1, named: "MySite")
 
         // Get Activity Log screenshot
-        let activityLog = mySite
-            .gotoActivityLog()
+        let activityLog = try mySite
+            .goToActivityLog()
             .thenTakeScreenshot(2, named: "ActivityLog")
 
         if !XCUIDevice.isPad {
@@ -49,8 +50,8 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Scan screenshot
-        let jetpackScan = mySite
-            .gotoJetpackScan()
+        let jetpackScan = try mySite
+            .goToJetpackScan()
 
         sleep(scanWaitTime)
 
@@ -62,10 +63,10 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Backup screenshot
-        let jetpackBackup = mySite
-            .gotoJetpackBackup()
+        let jetpackBackup = try mySite
+            .goToJetpackBackup()
 
-        let jetpackBackupOptions = jetpackBackup
+        let jetpackBackupOptions = try jetpackBackup
             .goToBackupOptions()
             .thenTakeScreenshot(4, named: "JetpackBackup")
 
@@ -76,7 +77,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         }
 
         // Get Stats screenshot
-        let statsScreen = mySite.gotoStatsScreen()
+        let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)
@@ -85,6 +86,19 @@ class JetpackScreenshotGeneration: XCTestCase {
 }
 
 extension BaseScreen {
+    @discardableResult
+    func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
+        let mode = XCUIDevice.inDarkMode ? "dark" : "light"
+        let filename = "\(index)-\(mode)-\(title)"
+
+        snapshot(filename)
+
+        return self
+    }
+}
+
+extension ScreenObject {
+
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = XCUIDevice.inDarkMode ? "dark" : "light"

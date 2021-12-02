@@ -4,6 +4,14 @@ import WordPressKit
 /// The Domains dashboard screen, accessible from My Site
 struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
+    @State var isShowingDomainRegistrationFlow = false
+
+    // Property observer
+    private func showingDomainRegistrationFlow(to value: Bool) {
+        if value {
+            WPAnalytics.track(.domainsDashboardAddDomainTapped, properties: WPAnalytics.domainsProperties(for: blog), blog: blog)
+        }
+    }
 
     var body: some View {
         List {
@@ -15,6 +23,11 @@ struct DomainsDashboardView: View {
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .navigationBarTitle(TextContent.navigationTitle)
+        .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
+            makeDomainSearch(for: blog, onDismiss: {
+                isShowingDomainRegistrationFlow = false
+            })
+        })
     }
 
     @ViewBuilder
@@ -44,14 +57,13 @@ struct DomainsDashboardView: View {
 
     @ViewBuilder
     private func makeDomainCell(domain: Blog.DomainRepresentation) -> some View {
-        if domain.domain.isPrimaryDomain {
-            VStack(alignment: .leading) {
-                Text(domain.domain.domainName)
+        VStack(alignment: .leading) {
+            Text(domain.domain.domainName)
+            if domain.domain.isPrimaryDomain {
                 ShapeWithTextView(title: TextContent.primaryAddressLabel)
                     .smallRoundedRectangle()
             }
-        } else {
-            Text(domain.domain.domainName)
+            makeExpiryRenewalLabel(domain: domain)
         }
     }
 
@@ -62,8 +74,7 @@ struct DomainsDashboardView: View {
                 makeDomainCell(domain: $0)
             }
             PresentationButton(
-                destination: {
-                    makeDomainSearch(for: blog) },
+                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow),
                 appearance: {
                     HStack {
                         Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
@@ -82,17 +93,24 @@ struct DomainsDashboardView: View {
             PresentationCard(
                 title: TextContent.firstDomainTitle(blog.canRegisterDomainWithPaidPlan),
                 description: TextContent.firstDomainDescription(blog.canRegisterDomainWithPaidPlan),
-                highlight: siteAddressForGetFirstDomainSection) {
-                        makeDomainSearch(for: blog)
-                    } appearance: {
-                        ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
-                            .largeRoundedRectangle()
-                    }
+                highlight: siteAddressForGetFirstDomainSection,
+                isShowingDestination: $isShowingDomainRegistrationFlow.onChange(showingDomainRegistrationFlow)) {
+                    ShapeWithTextView(title: TextContent.firstSearchDomainButtonTitle)
+                        .largeRoundedRectangle()
+                }
         }
     }
 
     private var siteAddressForGetFirstDomainSection: String {
         blog.canRegisterDomainWithPaidPlan ? "" : blog.freeSiteAddress
+    }
+
+    private func makeExpiryRenewalLabel(domain: Blog.DomainRepresentation) -> some View {
+        let stringForDomain = DomainExpiryDateFormatter.expiryDate(for: domain.domain)
+
+        return Text(stringForDomain)
+                .font(.subheadline)
+                .foregroundColor(domain.domain.expirySoon || domain.domain.expired ? Color(UIColor.error) : Color(UIColor.textSubtle))
     }
 
     private func makeSiteAddressHeader() -> Divider? {
@@ -103,8 +121,8 @@ struct DomainsDashboardView: View {
     }
 
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
-    private func makeDomainSearch(for blog: Blog) -> some View {
-        DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect)
+    private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
+        return DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
     }
 }
 

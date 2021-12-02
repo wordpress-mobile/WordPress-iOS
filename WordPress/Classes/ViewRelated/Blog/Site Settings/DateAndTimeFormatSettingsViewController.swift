@@ -135,6 +135,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                 if let newDateFormat = selected as? String {
                     self?.settings.dateFormat = newDateFormat
                     self?.saveSettings()
+                    WPAnalytics.trackSettingsChange("date_format", fieldName: "date_format")
                 }
             }
 
@@ -168,6 +169,8 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                 if let newTimeFormat = selected as? String {
                     self?.settings.timeFormat = newTimeFormat
                     self?.saveSettings()
+                    WPAnalytics.trackSettingsChange("date_format", fieldName: "time_format")
+
                 }
             }
 
@@ -187,6 +190,9 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                 if let newStartOfWeek = selected as? String {
                     self?.settings.startOfWeek = newStartOfWeek
                     self?.saveSettings()
+                    WPAnalytics.trackSettingsChange("date_format",
+                                                    fieldName: "start_of_week",
+                                                    value: newStartOfWeek as Any)
                 }
             }
 
@@ -200,7 +206,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
         guard let url =  URL(string: DateAndTimeFormatSettingsViewController.learnMoreUrl) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "site_settings_date_time_format_learn_more")
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

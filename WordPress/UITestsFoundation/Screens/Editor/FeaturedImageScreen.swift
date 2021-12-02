@@ -1,13 +1,16 @@
+import ScreenObject
 import XCTest
 
-public class FeaturedImageScreen: BaseScreen {
+public class FeaturedImageScreen: ScreenObject {
 
-    let removeButton: XCUIElement
+    // expectedElement comes from the superclass and gets the first expectedElementGetters result
+    var removeButton: XCUIElement { expectedElement }
 
-    public init() {
-        let app = XCUIApplication()
-        removeButton = app.navigationBars.buttons["Remove Featured Image"]
-        super.init(element: removeButton )
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.navigationBars.buttons["Remove Featured Image"] } ],
+            app: app
+        )
     }
 
     public func tapRemoveFeaturedImageButton() {

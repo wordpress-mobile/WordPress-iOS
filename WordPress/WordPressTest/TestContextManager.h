@@ -37,8 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 + (void)overrideSharedInstance:(id <CoreDataStack> _Nullable)contextManager;
 
-- (MockContext *)getMockContext;
-
 @end
 
 NS_ASSUME_NONNULL_END

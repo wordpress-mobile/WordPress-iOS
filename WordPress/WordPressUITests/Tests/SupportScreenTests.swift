@@ -17,10 +17,10 @@ class SupportScreenTests: XCTestCase {
 
     // Test Support Section Loads
     // From Prologue > continue, tap "help" and make sure Support Screen loads
-    func testSupportScreenLoads() {
-        let supportScreen = PrologueScreen().selectContinue().selectHelp()
+    func testSupportScreenLoads() throws {
+        let supportScreen = try PrologueScreen().selectContinue().selectHelp()
 
-        XCTAssert(supportScreen.isLoaded())
+        XCTAssert(supportScreen.isLoaded)
 
         //Dismiss because tearDown() can't handle modals currently
         supportScreen.dismiss()

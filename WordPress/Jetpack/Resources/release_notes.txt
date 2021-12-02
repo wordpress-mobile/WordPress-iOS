@@ -1,3 +1,13 @@
-- Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.
+Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
+We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
+We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
 
-- Various improvements and fixes: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) We also fixed a bug that prevented you from following a conversation by email through a post’s comments.
+When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
+
+- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
+- Rich content so you can see each comment just as the author wrote it.
+- A share button for approved comments.
+- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
+- Tappable web address to visit the author's URL (instead of their avatar image).
+
+Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!

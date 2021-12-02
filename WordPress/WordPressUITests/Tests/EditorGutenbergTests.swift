@@ -8,14 +8,16 @@ class EditorGutenbergTests: XCTestCase {
         setUpTestSuite()
 
         _ = try LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        editorScreen = EditorFlow
-            .gotoMySiteScreen()
+        editorScreen = try EditorFlow
+            .goToMySiteScreen()
             .tabBar.gotoBlockEditorScreen()
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
+
         if editorScreen != nil && !TabNavComponent.isVisible() {
+            editorScreen.dismissBlocksPickerIfNeeded()
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
@@ -24,11 +26,10 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testTextPostPublish() throws {
-        try skipTillBloggingRemindersAreHandled()
 
-        let title = getRandomPhrase()
-        let content = getRandomContent()
-        editorScreen
+        let title = "Text post title"
+        let content = "Text post content"
+        try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
@@ -39,13 +40,12 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testBasicPostPublish() throws {
-        try skipTillBloggingRemindersAreHandled()
 
-        let title = getRandomPhrase()
-        let content = getRandomContent()
+        let title = "Rich post title"
+        let content = "Some text, and more text"
         let category = getCategory()
         let tag = getTag()
-        editorScreen
+        try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
@@ -60,13 +60,9 @@ class EditorGutenbergTests: XCTestCase {
             .setFeaturedImage()
             .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
             .closePostSettings()
-        BlockEditorScreen().publish()
+        try BlockEditorScreen().publish()
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
-    }
-
-    func skipTillBloggingRemindersAreHandled(file: StaticString = #file, line: UInt = #line) throws {
-        try XCTSkipIf(true, "Skipping test because we haven't added support for Blogging Reminders. See https://github.com/wordpress-mobile/WordPress-iOS/issues/16797.", file: file, line: line)
     }
 }

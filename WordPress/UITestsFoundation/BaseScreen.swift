@@ -69,34 +69,18 @@ extension BaseScreen {
         }
     }
 
-    /// Scroll an element into view within another element.
-    /// scrollView can be a UIScrollView, or anything that subclasses it like UITableView
-    ///
-    /// TODO: The implementation of this could use work:
-    /// - What happens if the element is above the current scroll view position?
-    /// - What happens if it's a really long scroll view?
     public func scrollElementIntoView(element: XCUIElement, within scrollView: XCUIElement, threshold: Int = 1000) {
-
-        var iteration = 0
-
-        while !element.isFullyVisibleOnScreen && iteration < threshold {
-            scrollView.scroll(byDeltaX: 0, deltaY: 100)
-            iteration += 1
-        }
-
-        if !element.isFullyVisibleOnScreen {
-            XCTFail("Unable to scroll element into view")
-        }
+        element.scrollIntoView(within: scrollView, threshold: threshold)
     }
 
     @discardableResult
-    public func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) -> Self {
+    public func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) throws -> Self {
         if FancyAlertComponent.isLoaded() {
             switch action {
             case .accept:
-                FancyAlertComponent().acceptAlert()
+                try FancyAlertComponent().acceptAlert()
             case .cancel:
-                FancyAlertComponent().cancelAlert()
+                try FancyAlertComponent().cancelAlert()
             }
         }
         return self

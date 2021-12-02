@@ -5,23 +5,26 @@ import WordPressKit
 /// Makes RegisterDomainSuggestionsViewController available to SwiftUI
 final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
 
+    @SwiftUI.Environment(\.presentationMode) var presentationMode
+
     private let blog: Blog
     private let domainType: DomainType
+    private let onDismiss: () -> Void
 
     private weak var domainSuggestionViewController: RegisterDomainSuggestionsViewController?
     private weak var wrapperNavigationController: LightNavigationController?
 
-    init(blog: Blog, domainType: DomainType) {
+    init(blog: Blog, domainType: DomainType, onDismiss: @escaping () -> Void) {
         self.blog = blog
         self.domainType = domainType
+        self.onDismiss = onDismiss
     }
 
     func makeUIViewController(context: Context) -> LightNavigationController {
         let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         let viewController = RegisterDomainSuggestionsViewController
-        /// TODO: - DOMAINS - Resolve the force unwrap here
-            .instance(site: JetpackSiteRef(blog: blog)!,
+            .instance(site: blog,
                       domainType: domainType,
                       includeSupportButton: false,
                       domainPurchasedCallback: { domain in
@@ -49,14 +52,9 @@ final class DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable
 /// Handles the action after the domain registration confirmation is dismissed - go back to Domains Dashboard
 extension DomainSuggestionViewControllerWrapper: DomainCreditRedemptionSuccessViewControllerDelegate {
 
-    func continueButtonPressed() {
-
+    func continueButtonPressed(domain: String) {
         domainSuggestionViewController?.dismiss(animated: true) { [weak self] in
-            if let popController = self?.domainSuggestionViewController?.navigationController?.viewControllers.first(where: {
-                                                                                $0 is UIHostingController<DomainsDashboardView>
-            }) ?? self?.domainSuggestionViewController?.navigationController?.topViewController {
-                self?.domainSuggestionViewController?.navigationController?.popToViewController(popController, animated: true)
-            }
+            self?.onDismiss()
         }
     }
 }

@@ -84,15 +84,22 @@ private extension DomainSuggestion {
         super.init(managedObjectContext: context)
     }
 
-    @objc func refreshDomains(for siteID: Int, completion: @escaping (Bool) -> Void) {
-        domainsService.refreshDomainsForSite(siteID, completion: completion)
+    @objc func refreshDomains(siteID: Int, completion: @escaping (Bool) -> Void) {
+        domainsService.refreshDomains(siteID: siteID) { result in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
     }
 
     // MARK: SiteAddressService
 
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
 
-        domainsService.getDomainSuggestions(base: query,
+        domainsService.getDomainSuggestions(query: query,
                                             segmentID: segmentID,
                                             quantity: domainRequestQuantity,
                                             success: { domainSuggestions in
@@ -109,7 +116,7 @@ private extension DomainSuggestion {
     }
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
-        domainsService.getDomainSuggestions(base: query,
+        domainsService.getDomainSuggestions(query: query,
                                             quantity: domainRequestQuantity,
                                             domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
                                             success: { domainSuggestions in

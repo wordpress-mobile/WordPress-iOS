@@ -12,7 +12,7 @@ struct UnconfiguredView: View {
             .padding()
     }
 
-    var unconfiguredMessage: LocalizedStringKey {
+    var unconfiguredMessage: LocalizedString {
         switch widgetKind {
         case .today:
             return LocalizableStrings.unconfiguredViewTodayTitle

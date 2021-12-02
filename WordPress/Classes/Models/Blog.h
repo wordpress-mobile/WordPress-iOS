@@ -85,6 +85,15 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureBlockEditorSettings,
     /// Does the blog support the Layout grid block?
     BlogFeatureLayoutGrid,
+    /// Does the blog support Facebook embed block?
+    BlogFeatureFacebookEmbed,
+    /// Does the blog support Instagram embed block?
+    BlogFeatureInstagramEmbed,
+    /// Does the blog support Loom embed block?
+    BlogFeatureLoomEmbed,
+    /// Does the blog support Smartframe embed block?
+    BlogFeatureSmartframeEmbed,
+
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {

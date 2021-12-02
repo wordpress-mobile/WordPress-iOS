@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 /// Protocol for cart response, empty because there are no external details.
 protocol CartResponseProtocol {}
@@ -24,11 +25,20 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
                    success: @escaping ([WPState]) -> Void,
                    failure: @escaping (Error) -> Void)
 
-    func createTemporaryDomainShoppingCart(siteID: Int,
-                                           domainSuggestion: DomainSuggestion,
-                                           privacyProtectionEnabled: Bool,
-                                           success: @escaping (CartResponseProtocol) -> Void,
-                                           failure: @escaping (Error) -> Void)
+    func purchaseDomainUsingCredits(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        domainContactInformation: [String: String],
+        privacyProtectionEnabled: Bool,
+        success: @escaping (String) -> Void,
+        failure: @escaping (Error) -> Void)
+
+     func createTemporaryDomainShoppingCart(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        privacyProtectionEnabled: Bool,
+        success: @escaping (CartResponseProtocol) -> Void,
+        failure: @escaping (Error) -> Void)
 
     func createPersistentDomainShoppingCart(siteID: Int,
                                             domainSuggestion: DomainSuggestion,
@@ -41,27 +51,34 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error) -> Void)
 
-    func changePrimaryDomain(siteID: Int,
-                             newDomain: String,
-                             success: @escaping () -> Void,
-                             failure: @escaping (Error) -> Void)
-
-
+    func setPrimaryDomain(
+        siteID: Int,
+        domain: String,
+        success: @escaping () -> Void,
+        failure: @escaping (Error) -> Void)
 }
 
 class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtocol {
 
+    private lazy var context = {
+        ContextManager.sharedInstance().mainContext
+    }()
+
     private lazy var restApi: WordPressComRestApi = {
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let accountService = AccountService(managedObjectContext: context)
         return accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
     }()
 
+    private lazy var domainService = {
+        DomainsService(managedObjectContext: context, remote: domainsServiceRemote)
+    }()
+
     private lazy var domainsServiceRemote = {
-        return DomainsServiceRemote(wordPressComRestApi: restApi)
+        DomainsServiceRemote(wordPressComRestApi: restApi)
     }()
 
     private lazy var transactionsServiceRemote = {
-        return TransactionsServiceRemote(wordPressComRestApi: restApi)
+        TransactionsServiceRemote(wordPressComRestApi: restApi)
     }()
 
     func validateDomainContactInformation(contactInformation: [String: String],
@@ -96,11 +113,62 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                        failure: failure)
     }
 
-    func createTemporaryDomainShoppingCart(siteID: Int,
-                                           domainSuggestion: DomainSuggestion,
-                                           privacyProtectionEnabled: Bool,
-                                           success: @escaping (CartResponseProtocol) -> Void,
-                                           failure: @escaping (Error) -> Void) {
+    /// Convenience method to perform a full domain purchase.
+    ///
+    func purchaseDomainUsingCredits(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        domainContactInformation: [String: String],
+        privacyProtectionEnabled: Bool,
+        success: @escaping (String) -> Void,
+        failure: @escaping (Error) -> Void) {
+
+        let domainName = domainSuggestion.domainName
+
+        createTemporaryDomainShoppingCart(
+            siteID: siteID,
+            domainSuggestion: domainSuggestion,
+            privacyProtectionEnabled: privacyProtectionEnabled,
+            success: { cart in
+                self.redeemCartUsingCredits(
+                    cart: cart,
+                    domainContactInformation: domainContactInformation,
+                    success: {
+                        self.recordDomainPurchase(
+                            siteID: siteID,
+                            domain: domainName,
+                            isPrimaryDomain: false)
+                        success(domainName)
+                    },
+                    failure: failure)
+            }, failure: failure)
+    }
+
+    /// Records that a domain purchase took place.
+    ///
+    func recordDomainPurchase(
+        siteID: Int,
+        domain: String,
+        isPrimaryDomain: Bool) {
+
+        let domain = Domain(
+            domainName: domain,
+            isPrimaryDomain: isPrimaryDomain,
+            domainType: .registered)
+
+        domainService.create(domain, forSite: siteID)
+
+        if let blog = try? Blog.lookup(withID: siteID, in: context) {
+            blog.hasDomainCredit = false
+        }
+    }
+
+    func createTemporaryDomainShoppingCart(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        privacyProtectionEnabled: Bool,
+        success: @escaping (CartResponseProtocol) -> Void,
+        failure: @escaping (Error) -> Void) {
 
         transactionsServiceRemote.createTemporaryDomainShoppingCart(siteID: siteID,
                                                                     domainSuggestion: domainSuggestion,
@@ -135,12 +203,26 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                          failure: failure)
     }
 
-    func changePrimaryDomain(siteID: Int,
-                             newDomain: String,
-                             success: @escaping () -> Void,
-                             failure: @escaping (Error) -> Void) {
+    func setPrimaryDomain(siteID: Int,
+                          domain: String,
+                          success: @escaping () -> Void,
+                          failure: @escaping (Error) -> Void) {
+
+        if let blog = try? Blog.lookup(withID: siteID, in: context),
+           let domains = blog.domains as? Set<ManagedDomain>,
+           let newPrimaryDomain = domains.first(where: { $0.domainName == domain }) {
+
+            for existingPrimaryDomain in domains.filter({ $0.isPrimary }) {
+                existingPrimaryDomain.isPrimary = false
+            }
+
+            newPrimaryDomain.isPrimary = true
+
+            ContextManager.shared.save(context)
+        }
+
         domainsServiceRemote.setPrimaryDomainForSite(siteID: siteID,
-                                                     domain: newDomain,
+                                                     domain: domain,
                                                      success: success,
                                                      failure: failure)
     }

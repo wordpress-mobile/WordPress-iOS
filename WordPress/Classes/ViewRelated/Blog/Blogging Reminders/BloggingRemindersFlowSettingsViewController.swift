@@ -1,5 +1,8 @@
 import UIKit
 
+protocol BloggingRemindersFlowDelegate: AnyObject {
+    func didSetUpBloggingReminders()
+}
 
 class BloggingRemindersFlowSettingsViewController: UIViewController {
 
@@ -200,15 +203,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         makeSpacer()
     }()
 
-    private let dismissButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(.gridicon(.cross), for: .normal)
-        button.tintColor = .secondaryLabel
-        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
-        return button
-    }()
-
     // MARK: - Properties
 
     private let calendar: Calendar
@@ -229,11 +223,13 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
     private var scheduledTime: Date
+    private weak var delegate: BloggingRemindersFlowDelegate?
 
     init(
         for blog: Blog,
         tracker: BloggingRemindersTracker,
-        calendar: Calendar? = nil) throws {
+        calendar: Calendar? = nil,
+        delegate: BloggingRemindersFlowDelegate? = nil) throws {
 
         self.blog = blog
         self.tracker = tracker
@@ -243,6 +239,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
             return calendar
         }()
+        self.delegate = delegate
 
         scheduler = try BloggingRemindersScheduler()
 
@@ -273,7 +270,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .basicBackground
-        view.addSubview(dismissButton)
 
         configureStackView()
         configureConstraints()
@@ -353,6 +349,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
                 self.tracker.scheduled(schedule, time: self.scheduledTime)
 
                 DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.didSetUpBloggingReminders()
                     self?.pushCompletionViewController()
                 }
             case .failure(let error):
@@ -429,7 +426,6 @@ private extension BloggingRemindersFlowSettingsViewController {
     func showFullUI(_ isVisible: Bool) {
         bottomTipPanel.isHidden = !isVisible
         imageView.isHidden = !isVisible
-        dismissButton.isHidden = !isVisible
     }
 
     /// Updates the title of the cconfirmation button depending on the action (new schedule or updated schedule)
@@ -518,8 +514,6 @@ private extension BloggingRemindersFlowSettingsViewController {
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.right),
             topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),

@@ -1,5 +1,0 @@
-- Actualizaciones del bloque de incrustación: Hemos activado las vistas previas de incrustación de WordPress, así como las incrustaciones para el contenido de Instagram y Vimeo. Para algunos medios, puede que incrustes correctamente una URL, pero no podrás la vista previa del contenido; en estos casos, verás el mensaje «Vista previa no disponible». En los casos en los que no puedas incrustar medios, ahora verás la opción «Reintentar» para volver a incrustar el contenido y una opción alternativa para convertirlo en su lugar en un enlace.
-
-- Varias mejoras: Hemos simplificado el menú «Mi sitio», cambiando «Entradas del blog» por «Entradas» y «Páginas del sitio» por «Páginas». (Esto no ha afectado al contenido de tus entradas y páginas, ¡lo prometemos!) También habrás visto que ahora puedes publicar una página a través de la característica de la extensión para compartir de la aplicación.
-
-- Correcciones de fallos: Hemos solucionado un problema en el Lector que te impedía eliminar las entradas guardadas y, también, hemos corregido un fallo que te impedía seguir una conversación por correo electrónico a través de los comentarios de una entrada.

@@ -47,6 +47,7 @@ import Foundation
     case gutenbergSuggestionSessionFinished
     case gutenbergEditorSettingsFetched
     case gutenbergEditorHelpShown
+    case gutenbergEditorBlockInserted
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -78,6 +79,7 @@ import Foundation
     case readerBlogBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
+    case readerToggleCommentNotifications
     case readerPostReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
@@ -88,6 +90,26 @@ import Foundation
     case readerPostMarkUnseen
     case readerRelatedPostFromOtherSiteClicked
     case readerRelatedPostFromSameSiteClicked
+    case readerSearchHistoryCleared
+    case readerArticleLinkTapped
+    case readerArticleImageTapped
+
+    // Stats - Empty Stats nudges
+    case statsPublicizeNudgeShown
+    case statsPublicizeNudgeTapped
+    case statsPublicizeNudgeDismissed
+    case statsPublicizeNudgeCompleted
+    case statsBloggingRemindersNudgeShown
+    case statsBloggingRemindersNudgeTapped
+    case statsBloggingRemindersNudgeDismissed
+    case statsBloggingRemindersNudgeCompleted
+    case statsReaderDiscoverNudgeShown
+    case statsReaderDiscoverNudgeTapped
+    case statsReaderDiscoverNudgeDismissed
+    case statsReaderDiscoverNudgeCompleted
+
+    // Stats - Customize card
+    case statsCustomizeInsightsShown
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -154,6 +176,9 @@ import Foundation
     case commentEdited
     case commentRepliedTo
     case commentFilterChanged
+    case commentSnackbarNext
+    case commentFullScreenEntered
+    case commentFullScreenExited
 
     // InviteLinks
     case inviteLinksGetStatus
@@ -181,6 +206,90 @@ import Foundation
     // Recommend app to others
     case recommendAppEngaged
     case recommendAppContentFetchFailed
+
+    // Domains
+    case domainsDashboardViewed
+    case domainsDashboardAddDomainTapped
+    case domainsSearchSelectDomainTapped
+    case domainsRegistrationFormViewed
+    case domainsRegistrationFormSubmitted
+    case domainsPurchaseWebviewViewed
+
+    // My Site: No sites view displayed
+    case mySiteNoSitesViewDisplayed
+    case mySiteNoSitesViewActionTapped
+    case mySiteNoSitesViewHidden
+
+    // Site Switcher
+    case mySiteSiteSwitcherTapped
+    case siteSwitcherDisplayed
+    case siteSwitcherDismissed
+    case siteSwitcherToggleEditTapped
+    case siteSwitcherAddSiteTapped
+    case siteSwitcherSearchPerformed
+    case siteSwitcherToggleBlogVisible
+
+    // Post List
+    case postListShareAction
+    case postListSetAsPostsPageAction
+    case postListSetHomePageAction
+
+    // Reader: Filter Sheet
+    case readerFilterSheetDisplayed
+    case readerFilterSheetDismissed
+    case readerFilterSheetItemSelected
+    case readerFilterSheetCleared
+
+    // Reader: Manage
+    case readerManageViewDisplayed
+    case readerManageViewDismissed
+
+    // App Settings
+    case settingsDidChange
+
+    // Account Close
+    case accountCloseTapped
+    case accountCloseCompleted
+
+    // App Settings
+    case appSettingsClearMediaCacheTapped
+    case appSettingsClearSpotlightIndexTapped
+    case appSettingsClearSiriSuggestionsTapped
+    case appSettingsOpenDeviceSettingsTapped
+
+    // Privacy Settings
+    case privacySettingsOpened
+    case privacySettingsReportCrashesToggled
+
+    // Notifications
+    case notificationsPreviousTapped
+    case notificationsNextTapped
+    // Sharing Buttons
+    case sharingButtonsEditSharingButtonsToggled
+    case sharingButtonsEditMoreButtonToggled
+    case sharingButtonsLabelChanged
+
+    // People
+    case peopleFilterChanged
+    case peopleUserInvited
+
+    // Login: Epilogue
+    case loginEpilogueChooseSiteTapped
+    case loginEpilogueCreateNewSiteTapped
+
+    // WebKitView
+    case webKitViewDisplayed
+    case webKitViewDismissed
+    case webKitViewOpenInSafariTapped
+    case webKitViewReloadTapped
+    case webKitViewShareTapped
+    case webKitViewNavigatedBack
+    case webKitViewNavigatedForward
+
+    // Preview WebKitView
+    case previewWebKitViewDeviceChanged
+
+    case addSiteAlertDisplayed
 
     /// A String that represents the event
     var value: String {
@@ -256,6 +365,8 @@ import Foundation
             return "editor_settings_fetched"
         case .gutenbergEditorHelpShown:
             return "editor_help_shown"
+        case .gutenbergEditorBlockInserted:
+            return "editor_block_inserted"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -312,6 +423,8 @@ import Foundation
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:
             return "reader_toggle_follow_conversation"
+        case .readerToggleCommentNotifications:
+            return "reader_toggle_comment_notifications"
         case .readerPostReported:
             return "reader_post_reported"
         case .readerArticleDetailMoreTapped:
@@ -332,6 +445,42 @@ import Foundation
             return "reader_related_post_from_other_site_clicked"
         case .readerRelatedPostFromSameSiteClicked:
             return "reader_related_post_from_same_site_clicked"
+        case .readerSearchHistoryCleared:
+            return "reader_search_history_cleared"
+        case .readerArticleLinkTapped:
+            return "reader_article_link_tapped"
+        case .readerArticleImageTapped:
+            return "reader_article_image_tapped"
+
+        // Stats - Empty Stats nudges
+        case .statsPublicizeNudgeShown:
+            return "stats_publicize_nudge_shown"
+        case .statsPublicizeNudgeTapped:
+            return "stats_publicize_nudge_tapped"
+        case .statsPublicizeNudgeDismissed:
+            return "stats_publicize_nudge_dismissed"
+        case .statsPublicizeNudgeCompleted:
+            return "stats_publicize_nudge_completed"
+        case .statsBloggingRemindersNudgeShown:
+            return "stats_blogging_reminders_nudge_shown"
+        case .statsBloggingRemindersNudgeTapped:
+            return "stats_blogging_reminders_nudge_tapped"
+        case .statsBloggingRemindersNudgeDismissed:
+            return "stats_blogging_reminders_nudge_dismissed"
+        case .statsBloggingRemindersNudgeCompleted:
+            return "stats_blogging_reminders_nudge_completed"
+        case .statsReaderDiscoverNudgeShown:
+            return "stats_reader_discover_nudge_shown"
+        case .statsReaderDiscoverNudgeTapped:
+            return "stats_reader_discover_nudge_tapped"
+        case .statsReaderDiscoverNudgeDismissed:
+            return "stats_reader_discover_nudge_dismissed"
+        case .statsReaderDiscoverNudgeCompleted:
+            return "stats_reader_discover_nudge_completed"
+
+        // Stats - Customize card
+        case .statsCustomizeInsightsShown:
+            return "stats_customize_insights_shown"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -454,6 +603,12 @@ import Foundation
             return "comment_replied_to"
         case .commentFilterChanged:
             return "comment_filter_changed"
+        case .commentSnackbarNext:
+            return "comment_snackbar_next"
+        case .commentFullScreenEntered:
+            return "comment_fullscreen_entered"
+        case .commentFullScreenExited:
+            return "comment_fullscreen_exited"
 
         // Invite Links
         case .inviteLinksGetStatus:
@@ -496,7 +651,139 @@ import Foundation
         // When the content fetching for the recommend app failed
         case .recommendAppContentFetchFailed:
             return "recommend_app_content_fetch_failed"
-        }
+
+        // Domains
+        case .domainsDashboardViewed:
+            return "domains_dashboard_viewed"
+        case .domainsDashboardAddDomainTapped:
+            return "domains_dashboard_add_domain_tapped"
+        case .domainsSearchSelectDomainTapped:
+            return "domains_dashboard_add_domain_tapped"
+        case .domainsRegistrationFormViewed:
+            return "domains_registration_form_viewed"
+        case .domainsRegistrationFormSubmitted:
+            return "domains_registration_form_submitted"
+        case .domainsPurchaseWebviewViewed:
+            return "domains_purchase_webview_viewed"
+
+        // My Site No Sites View
+        case .mySiteNoSitesViewDisplayed:
+            return "my_site_no_sites_view_displayed"
+        case .mySiteNoSitesViewActionTapped:
+            return "my_site_no_sites_view_action_tapped"
+        case .mySiteNoSitesViewHidden:
+            return "my_site_no_sites_view_hidden"
+
+        // Site Switcher
+        case .mySiteSiteSwitcherTapped:
+            return "my_site_site_switcher_tapped"
+        case .siteSwitcherDisplayed:
+            return "site_switcher_displayed"
+        case .siteSwitcherDismissed:
+            return "site_switcher_dismissed"
+        case .siteSwitcherToggleEditTapped:
+            return "site_switcher_toggle_edit_tapped"
+        case .siteSwitcherAddSiteTapped:
+            return "site_switcher_add_site_tapped"
+        case .siteSwitcherSearchPerformed:
+            return "site_switcher_search_performed"
+        case .siteSwitcherToggleBlogVisible:
+            return "site_switcher_toggle_blog_visible"
+        case .postListShareAction:
+            return "post_list_button_pressed"
+        case .postListSetAsPostsPageAction:
+            return "post_list_button_pressed"
+        case .postListSetHomePageAction:
+            return "post_list_button_pressed"
+
+        // Reader: Filter Sheet
+        case .readerFilterSheetDisplayed:
+            return "reader_filter_sheet_displayed"
+        case .readerFilterSheetDismissed:
+            return "reader_filter_sheet_dismissed"
+        case .readerFilterSheetItemSelected:
+            return "reader_filter_sheet_item_selected"
+        case .readerFilterSheetCleared:
+            return "reader_filter_sheet_cleared"
+
+        // Reader: Manage View
+        case .readerManageViewDisplayed:
+            return "reader_manage_view_displayed"
+        case .readerManageViewDismissed:
+            return "reader_manage_view_dismissed"
+
+        // App Settings
+        case .settingsDidChange:
+            return "settings_did_change"
+        case .appSettingsClearMediaCacheTapped:
+            return "app_settings_clear_media_cache_tapped"
+        case .appSettingsClearSpotlightIndexTapped:
+            return "app_settings_clear_spotlight_index_tapped"
+        case .appSettingsClearSiriSuggestionsTapped:
+            return "app_settings_clear_siri_suggestions_tapped"
+        case .appSettingsOpenDeviceSettingsTapped:
+            return "app_settings_open_device_settings_tapped"
+
+        // Privacy Settings
+        case .privacySettingsOpened:
+            return "privacy_settings_opened"
+        case .privacySettingsReportCrashesToggled:
+            return "privacy_settings_report_crashes_toggled"
+
+        // Account Close
+        case .accountCloseTapped:
+            return "account_close_tapped"
+        case .accountCloseCompleted:
+            return "account_close_completed"
+
+        case .notificationsPreviousTapped:
+            return "notifications_previous_tapped"
+        case .notificationsNextTapped:
+            return "notifications_next_tapped"
+
+        // Sharing
+        case .sharingButtonsEditSharingButtonsToggled:
+            return "sharing_buttons_edit_sharing_buttons_toggled"
+        case .sharingButtonsEditMoreButtonToggled:
+            return "sharing_buttons_edit_more_button_toggled"
+        case .sharingButtonsLabelChanged:
+            return "sharing_buttons_label_changed"
+
+        // People
+        case .peopleFilterChanged:
+            return "people_management_filter_changed"
+        case .peopleUserInvited:
+            return "people_management_user_invited"
+
+        // Login: Epilogue
+        case .loginEpilogueChooseSiteTapped:
+            return "login_epilogue_choose_site_tapped"
+        case .loginEpilogueCreateNewSiteTapped:
+            return "login_epilogue_create_new_site_tapped"
+
+        // WebKitView
+        case .webKitViewDisplayed:
+            return "webkitview_displayed"
+        case .webKitViewDismissed:
+            return "webkitview_dismissed"
+        case .webKitViewOpenInSafariTapped:
+            return "webkitview_open_in_safari_tapped"
+        case .webKitViewReloadTapped:
+            return "webkitview_reload_tapped"
+        case .webKitViewShareTapped:
+            return "webkitview_share_tapped"
+        case .webKitViewNavigatedBack:
+            return "webkitview_navigated_back"
+        case .webKitViewNavigatedForward:
+            return "webkitview_navigated_forward"
+
+        case .previewWebKitViewDeviceChanged:
+            return "preview_webkitview_device_changed"
+
+        case .addSiteAlertDisplayed:
+            return "add_site_alert_displayed"
+
+        } // END OF SWITCH
     }
 
     /**
@@ -514,6 +801,12 @@ import Foundation
             return ["via": "tenor"]
         case .editorAddedPhotoViaTenor:
             return ["via": "tenor"]
+        case .postListShareAction:
+            return ["button": "share"]
+        case .postListSetAsPostsPageAction:
+            return ["button": "set_posts_page"]
+        case .postListSetHomePageAction:
+            return ["button": "set_homepage"]
         default:
             return nil
         }
@@ -596,15 +889,22 @@ extension WPAnalytics {
     /// Track a event in Obj-C
     ///
     /// This will call each registered tracker and fire the given event
-    /// - Parameter event: a `String` that represents the event name
+    /// - Parameter event: a `WPAnalyticsEvent` that represents the event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
     @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
-        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
-        mergedProperties.merge(properties) { (_, new) in new }
+        track(event, properties: properties)
+    }
 
-
-        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    /// Track an event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - event: a `WPAnalyticsEvent` that represents the event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
+        track(event, properties: properties, blog: blog)
     }
 
     /// Track a Reader event in Obj-C
@@ -631,4 +931,37 @@ extension WPAnalytics {
         WPAnalytics.track(stat, withProperties: props)
     }
 
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - eventName: a `String` that represents the Block Editor event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    static func trackBlockEditorEvent(_ eventName: String, properties: [AnyHashable: Any], blog: Blog) {
+        var event: WPAnalyticsEvent?
+        switch eventName {
+        case "editor_block_inserted": event = .gutenbergEditorBlockInserted
+        default: event = nil
+        }
+
+        if event == nil {
+            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+        } else {
+            WPAnalytics.track(event!, properties: properties, blog: blog)
+        }
+    }
+
+    @objc static func trackSettingsChange(_ page: String, fieldName: String) {
+        Self.trackSettingsChange(page, fieldName: fieldName, value: nil)
+    }
+
+    @objc static func trackSettingsChange(_ page: String, fieldName: String, value: Any?) {
+        var properties: [AnyHashable: Any] = ["page": page, "field_name": fieldName]
+
+        if let value = value {
+            let additionalProperties: [AnyHashable: Any] = ["value": value]
+            properties.merge(additionalProperties) { (_, new) in new }
+        }
+
+        WPAnalytics.track(.settingsDidChange, properties: properties)
+    }
 }

@@ -1748,6 +1748,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsItemTappedInsightsAddStat:
             eventName = @"stats_add_insight_item_tapped";
             break;
+        case WPAnalyticsStatStatsItemTappedPostStatsMonthsYears:
+            eventName = @"stats_posts_and_pages_months_years_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedPostStatsRecentWeeks:
+            eventName = @"stats_posts_and_pages_recent_weeks_item_tapped";
+            break;
         case WPAnalyticsStatStatsItemTappedInsightsCustomizeDismiss:
             eventName = @"stats_customize_insights_dismiss_item_tapped";
             break;

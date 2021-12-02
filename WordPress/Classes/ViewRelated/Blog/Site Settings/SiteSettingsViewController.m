@@ -438,6 +438,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     _ampSettingCell.onChange = ^(BOOL value){
         weakSelf.blog.settings.ampEnabled = value;
         [weakSelf saveSettings];
+        [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"amp_enabled" value:@(value)];
     };
 
     return _ampSettingCell;
@@ -751,6 +752,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             if (weakSelf.blog.siteVisibility != newSiteVisibility) {
                 weakSelf.blog.siteVisibility = newSiteVisibility;
                 [weakSelf saveSettings];
+                [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"privacy" value:status];
             }
         }
     };
@@ -768,6 +770,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     languageViewController.onChange = ^(NSNumber *newLanguageID){
         weakSelf.blog.settings.languageID = newLanguageID;
         [weakSelf saveSettings];
+        [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"language" value:newLanguageID];
     };
     
     [self.navigationController pushViewController:languageViewController animated:YES];
@@ -832,7 +835,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                       SettingsSelectionValuesKey         : formats,
                                       SettingsSelectionCurrentValueKey   : currentDefaultPostFormat
                                       };
-    
+
     SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak __typeof__(self) weakSelf = self;
     vc.onItemSelected = ^(NSString *status) {
@@ -840,7 +843,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         if ([status isKindOfClass:[NSString class]]) {
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
+
                 if ([weakSelf savingWritingDefaultsIsAvailable]) {
+                    [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"default_post_format"];
+
                     [weakSelf saveSettings];
                 }
             }
@@ -913,7 +919,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
         NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
-        UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL];
+
+        UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL source:@"site_settings_start_over"];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navController animated:YES completion:nil];
     }
@@ -1149,6 +1156,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     if ([self savingWritingDefaultsIsAvailable]) {
+        [WPAnalytics trackSettingsChange:@"site_settings"
+                               fieldName:@"default_category"];
+
         [self saveSettings];
     }
 }
