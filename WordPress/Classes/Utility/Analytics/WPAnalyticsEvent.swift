@@ -264,6 +264,7 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
     case sharingButtonsEditMoreButtonToggled
@@ -289,7 +290,13 @@ import Foundation
     // Preview WebKitView
     case previewWebKitViewDeviceChanged
 
+    // Add Site
     case addSiteAlertDisplayed
+
+    // Change Username
+    case changeUsernameSearchPerformed
+    case changeUsernameDisplayed
+    case changeUsernameDismissed
 
     /// A String that represents the event
     var value: String {
@@ -782,6 +789,14 @@ import Foundation
 
         case .addSiteAlertDisplayed:
             return "add_site_alert_displayed"
+
+        // Change Username
+        case .changeUsernameSearchPerformed:
+            return "change_username_search_performed"
+        case .changeUsernameDisplayed:
+            return "change_username_displayed"
+        case .changeUsernameDismissed:
+            return "change_username_dismissed"
 
         } // END OF SWITCH
     }
