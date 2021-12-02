@@ -80,12 +80,14 @@ struct EditableTextRow: ImmuTableRow {
     let value: String
     let accessoryImage: UIImage?
     let action: ImmuTableAction?
+    let fieldName: String?
 
-    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?) {
+    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?, fieldName: String? = nil) {
         self.title = title
         self.value = value
         self.accessoryImage = accessoryImage
         self.action = action
+        self.fieldName = fieldName
     }
 
     func configureCell(_ cell: UITableViewCell) {

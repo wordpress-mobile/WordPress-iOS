@@ -51,7 +51,7 @@ extension ReferrerDetailsTableViewController {
 // MARK: - ReferrerDetailsViewModelDelegate
 extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "stats_referrer_details")
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
     }

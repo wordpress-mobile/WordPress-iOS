@@ -50,6 +50,8 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupSuggestionsTableViewIfNeeded()
+
+        WPAnalytics.track(.commentFullScreenEntered)
     }
 
     // MARK: - Public Methods
@@ -192,6 +194,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         let updatedText = textView.text ?? ""
 
         completion(shouldSave, updatedText)
+        WPAnalytics.track(.commentFullScreenExited)
     }
 
     var suggestionsTop: NSLayoutConstraint!

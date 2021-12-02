@@ -1,13 +1,12 @@
-Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
-We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
-We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
+* [*] Added a new About screen, with links to rate the app, share it with others, visit our Twitter profile, view our other apps, and more. [https://github.com/orgs/wordpress-mobile/projects/107]
+* [*] Editor: Show a compact notice when switching between HTML or Visual mode. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17521]
+* [*] Onboarding Improvements: Need a little help after login? We're here for you. We've made a few changes to the login flow that will make it easier for you to start managing your site or create a new one. [#17564]
+* [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
+* [***] Fixed crash that was sometimes triggered when deleting media. [#17559]
+* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications. [#17529]
+* [**] Block editor: Add clipboard link suggestion to image block and button block. [https://github.com/WordPress/gutenberg/pull/35972]
+* [*] Block editor: Embed block: Include link in block settings. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4189]
+* [**] Block editor: Fix tab titles translation of inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4248]
+* [**] Block editor: Gallery block: When a gallery block is added, the media options are auto opened for v2 of the Gallery block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4277]
+* [*] Block editor: Media & Text block: Fix an issue where the text font size would be bigger than expected in some cases. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4252]
 
-When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
-
-- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
-- Rich content so you can see each comment just as the author wrote it.
-- A share button for approved comments.
-- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
-- Tappable web address to visit the author's URL (instead of their avatar image).
-
-Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!

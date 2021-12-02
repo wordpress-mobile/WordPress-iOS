@@ -15,7 +15,9 @@ class EditorGutenbergTests: XCTestCase {
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
+
         if editorScreen != nil && !TabNavComponent.isVisible() {
+            editorScreen.dismissBlocksPickerIfNeeded()
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
@@ -24,10 +26,9 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testTextPostPublish() throws {
-        try skipTillBloggingRemindersAreHandled()
 
-        let title = getRandomPhrase()
-        let content = getRandomContent()
+        let title = "Text post title"
+        let content = "Text post content"
         try editorScreen
             .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
@@ -39,10 +40,9 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     func testBasicPostPublish() throws {
-        try skipTillBloggingRemindersAreHandled()
 
-        let title = getRandomPhrase()
-        let content = getRandomContent()
+        let title = "Rich post title"
+        let content = "Some text, and more text"
         let category = getCategory()
         let tag = getTag()
         try editorScreen
@@ -64,9 +64,5 @@ class EditorGutenbergTests: XCTestCase {
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
-    }
-
-    func skipTillBloggingRemindersAreHandled(file: StaticString = #file, line: UInt = #line) throws {
-        try XCTSkipIf(true, "Skipping test because we haven't added support for Blogging Reminders. See https://github.com/wordpress-mobile/WordPress-iOS/issues/16797.", file: file, line: line)
     }
 }

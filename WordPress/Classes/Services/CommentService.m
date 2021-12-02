@@ -517,26 +517,26 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     [self syncHierarchicalCommentsForPost:post
                                      page:page
-                   numberTopLevelComments:WPTopLevelHierarchicalCommentsPerPage
+                         topLevelComments:WPTopLevelHierarchicalCommentsPerPage
                                   success:success
                                   failure:failure];
 }
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
-                                 number:(NSUInteger)number
+                       topLevelComments:(NSUInteger)number
                                 success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
     [self syncHierarchicalCommentsForPost:post
                                      page:1
-                   numberTopLevelComments:number
+                         topLevelComments:number
                                   success:success
                                   failure:failure];
 }
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                 numberTopLevelComments:(NSUInteger)number
+                       topLevelComments:(NSUInteger)number
                                 success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
@@ -1045,7 +1045,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
 
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    comment.author = [[service defaultWordPressComAccount] username];
+    WPAccount *account = [service defaultWordPressComAccount];
+    comment.author = account.username;
+    comment.authorID = [account.userID intValue];
     comment.content = content;
     comment.dateCreated = [NSDate date];
     comment.parentID = [parentID intValue];
@@ -1195,6 +1197,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return fetchedObjects;
 }
 
+- (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post
+{
+    NSArray *comments = [self topLevelCommentsForPage:1 forPost:post];
+    NSInteger count = MIN(comments.count, number);
+    return [comments subarrayWithRange:NSMakeRange(0, count)];
+}
+
 - (Comment *)firstCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
     NSArray *comments = [self topLevelCommentsForPage:page forPost:post];
@@ -1233,6 +1242,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     comment.commentID = [remoteComment.commentID intValue];
+    comment.authorID = [remoteComment.authorID intValue];
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
@@ -1262,6 +1272,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     RemoteComment *remoteComment = [RemoteComment new];
     remoteComment.commentID = [NSNumber numberWithInt:comment.commentID];
+    remoteComment.authorID = [NSNumber numberWithInt:comment.authorID];
     remoteComment.author = comment.author;
     remoteComment.authorEmail = comment.author_email;
     remoteComment.authorUrl = comment.author_url;

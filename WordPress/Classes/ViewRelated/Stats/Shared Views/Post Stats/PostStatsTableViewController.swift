@@ -184,7 +184,7 @@ private extension PostStatsTableViewController {
 extension PostStatsTableViewController: PostStatsDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "stats_post_stats")
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true)
     }

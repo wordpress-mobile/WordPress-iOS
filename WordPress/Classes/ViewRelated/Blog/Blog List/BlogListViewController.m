@@ -995,13 +995,15 @@ static NSInteger HideSearchMinSites = 3;
         [self setEditing:YES animated:YES];
     } else {
         AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
-        UIAlertController *alertController = [factory makeAddSiteAlertWithCanCreateWPComSite:[self defaultWordPressComAccount]
-                                                                             createWPComSite:^{
+        BOOL canCreateWPComSite = [self defaultWordPressComAccount] ? YES : NO;
+        UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site"
+                                                              canCreateWPComSite:canCreateWPComSite
+                                                                 createWPComSite:^{
             [self launchSiteCreation];
         } addSelfHostedSite:^{
             [self showLoginControllerForAddingSelfHostedSite];
         }];
-        
+
         if ([source isKindOfClass:[UIView class]]) {
             UIView *sourceView = (UIView *)source;
             alertController.popoverPresentationController.sourceView = sourceView;

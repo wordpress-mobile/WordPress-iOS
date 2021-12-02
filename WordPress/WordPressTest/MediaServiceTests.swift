@@ -1,5 +1,6 @@
 import Foundation
 @testable import WordPress
+import XCTest
 
 class MediaServiceTests: XCTestCase {
     private var contextManager: TestContextManager!
@@ -110,5 +111,30 @@ class MediaServiceTests: XCTestCase {
         let failedMediaForUpload = mediaService.failedMediaForUpload(in: post, automatedRetry: true)
 
         XCTAssertEqual(failedMediaForUpload.count, 0)
+    }
+
+    // MARK: - Deleting Media
+
+    func testDeletingLocalMediaThatDoesntExistInCoreData() {
+        let firstDeleteSucceeds = expectation(description: "The delete call succeeds even if the media object isn't saved.")
+        let secondDeleteSucceeds = expectation(description: "The delete call succeeds even if the media object isn't saved.")
+
+        let media = mediaBuilder
+            .with(remoteStatus: .failed)
+            .with(autoUploadFailureCount: Media.maxAutoUploadFailureCount).build()
+
+        mediaService.delete(media) {
+            firstDeleteSucceeds.fulfill()
+        } failure: { error in
+            XCTFail("Media deletion failed with error: \(error)")
+        }
+
+        mediaService.delete(media) {
+            secondDeleteSucceeds.fulfill()
+        } failure: { error in
+            XCTFail("Media deletion failed with error: \(error)")
+        }
+
+        waitForExpectations(timeout: 0.1)
     }
 }

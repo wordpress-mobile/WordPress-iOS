@@ -11,8 +11,6 @@ protocol ReaderDetailView: AnyObject {
     func scroll(to: String)
     func updateHeader()
 
-    func updateComments()
-
     /// Shows likes view containing avatars of users that liked the post.
     /// The number of avatars displayed is limited to `ReaderDetailView.maxAvatarDisplayed` plus the current user's avatar.
     /// Note that the current user's avatar is displayed through a different method.
@@ -26,6 +24,12 @@ protocol ReaderDetailView: AnyObject {
     /// Updates the likes view to append an additional avatar for the current user, indicating that the post is liked by current user.
     /// - Parameter avatarURLString: The URL string for the current user's avatar. Optional.
     func updateSelfLike(with avatarURLString: String?)
+
+    /// Updates comments table to display the post's comments.
+    /// - Parameters:
+    ///   - comments: Comments to be displayed.
+    ///   - totalComments: The total number of comments for this post.
+    func updateComments(_ comments: [Comment], totalComments: Int)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -41,7 +45,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
-    var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
+    private var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
@@ -385,9 +389,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
     }
 
-    func updateComments() {
+    func updateComments(_ comments: [Comment], totalComments: Int) {
+
+        guard totalComments > 0 else {
+            return
+        }
+
+        // Set the table delegate here, after the totalComments check,
+        // to prevent the table from showing if there are no comments.
+        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
+
+        commentsTableViewDelegate?.comments = comments
+        commentsTableViewDelegate?.totalComments = totalComments
+        commentsTableViewDelegate?.buttonDelegate = self
         commentsTableView.reloadData()
-        commentsTableView.invalidateIntrinsicContentSize()
     }
 
     deinit {
@@ -491,7 +508,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func hideLikesView() {
-        // Because the Related Posts table is constrained to the likesContainerView, simply hiding it leaves a gap.
+        // Because other components are constrained to the likesContainerView, simply hiding it leaves a gap.
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
         view.setNeedsDisplay()
@@ -506,9 +523,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureCommentsTable() {
-        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
-        commentsTableView.delegate = commentsTableViewDelegate
-        commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
+                                   forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
+        commentsTableView.register(CommentContentTableViewCell.defaultNib,
+                                   forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
 
     private func configureRelatedPosts() {
@@ -981,3 +999,14 @@ extension ReaderDetailViewController {
 // MARK: - DefinesVariableStatusBarStyle
 // Allows this VC to control the statusbar style dynamically
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+// For the `View All Comments` button.
+extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
+    func buttonTapped() {
+        guard let post = post else {
+            return
+        }
+        ReaderCommentAction().execute(post: post, origin: self)
+    }
+}

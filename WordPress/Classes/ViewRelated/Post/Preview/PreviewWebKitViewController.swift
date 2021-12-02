@@ -1,5 +1,6 @@
 import Gridicons
 import WebKit
+import WordPressShared
 
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {
@@ -47,7 +48,7 @@ class PreviewWebKitViewController: WebKitViewController {
     /// - Parameters:
     ///   - post: The post to use for generating the preview URL and authenticating to the blog. **NOTE**: `previewURL` will be used as the URL instead, when available.
     ///   - previewURL: The URL to display in the preview web view.
-    init(post: AbstractPost, previewURL: URL? = nil) {
+    init(post: AbstractPost, previewURL: URL? = nil, source: String) {
 
         self.post = post
 
@@ -67,6 +68,7 @@ class PreviewWebKitViewController: WebKitViewController {
         configuration.linkBehavior = isPage ? .hostOnly(url) : .urlOnly(url)
         configuration.opensNewInSafari = true
         configuration.authenticate(blog: post.blog)
+        configuration.analyticsSource = source
         super.init(configuration: configuration)
     }
 
@@ -190,6 +192,12 @@ class PreviewWebKitViewController: WebKitViewController {
         popoverContentController.selectedOption = selectedDevice
         popoverContentController.onDeviceChange = { [weak self] option in
             self?.selectedDevice = option
+
+            let properties: [AnyHashable: Any] = [
+                "source": self?.analyticsSource ?? "unknown",
+                "option": option.rawValue
+            ]
+            WPAnalytics.track(.previewWebKitViewDeviceChanged, properties: properties)
         }
 
         popoverContentController.modalPresentationStyle = .popover

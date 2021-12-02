@@ -1,3 +1,4 @@
+import WordPressShared
 /// This class groups all of the styles used by the comment detail screen.
 ///
 extension WPStyleGuide {
@@ -27,6 +28,10 @@ extension WPStyleGuide {
 
             static let nameFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
             static let nameTextColor = CommentDetail.textColor
+
+            static let badgeFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .semibold)
+            static let badgeTextColor = UIColor.white
+            static let badgeColor = UIColor.muriel(name: .blue, .shade50)
 
             static let dateFont = CommentDetail.tertiaryTextFont
             static let dateTextColor = CommentDetail.secondaryTextColor

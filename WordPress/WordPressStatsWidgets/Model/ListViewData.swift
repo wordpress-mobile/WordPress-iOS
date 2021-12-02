@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ListViewData {
 
-    let widgetTitle: LocalizedStringKey
+    let widgetTitle: LocalizedString
     let siteName: String
     let items: [ThisWeekWidgetDay]
 

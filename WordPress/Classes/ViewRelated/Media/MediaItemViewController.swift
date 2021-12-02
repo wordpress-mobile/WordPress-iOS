@@ -225,7 +225,7 @@ class MediaItemViewController: UITableViewController {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
 
-        let controller = WebViewControllerFactory.controller(url: url, blog: media.blog)
+        let controller = WebViewControllerFactory.controller(url: url, blog: media.blog, source: "media_item")
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = media.title ?? ""
