@@ -70,8 +70,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
 
-    // used for indentation
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
+    private var defaultLeadingMargin: CGFloat = 0
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -301,6 +302,9 @@ private extension CommentContentTableViewCell {
 
     // assign base styles for all the cell components.
     func configureViews() {
+        // Store default margin for use in content layout.
+        defaultLeadingMargin = containerStackLeadingConstraint.constant
+
         selectionStyle = .none
 
         nameLabel?.font = Style.nameFont
@@ -408,7 +412,7 @@ private extension CommentContentTableViewCell {
     }
 
     func updateContainerLeadingConstraint() {
-        containerStackLeadingConstraint?.constant = indentationWidth * CGFloat(indentationLevel)
+        containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
     /// Updates the style and text of the Like button.
