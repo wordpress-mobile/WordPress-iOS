@@ -390,17 +390,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-
-        guard totalComments > 0 else {
-            return
-        }
-
-        // Set the table delegate here, after the totalComments check,
-        // to prevent the table from showing if there are no comments.
-        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
-        commentsTableView.delegate = commentsTableViewDelegate
-        commentsTableView.dataSource = commentsTableViewDelegate
-
         commentsTableViewDelegate?.comments = comments
         commentsTableViewDelegate?.totalComments = totalComments
         commentsTableViewDelegate?.buttonDelegate = self
@@ -527,6 +516,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
         commentsTableView.register(CommentContentTableViewCell.defaultNib,
                                    forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
+                                   forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
+
+        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
     }
 
     private func configureRelatedPosts() {
@@ -1007,6 +1002,6 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         guard let post = post else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: self)
+        ReaderCommentAction().execute(post: post, origin: self, promptToAddComment: commentsTableViewDelegate?.comments.count == 0)
     }
 }
