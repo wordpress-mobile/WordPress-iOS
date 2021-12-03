@@ -1188,7 +1188,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
         cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
             if ([comment allowsModeration]) {
-                // TODO: Show menu in iOS 13.
+                // NOTE: Remove when minimum version is bumped to iOS 14.
+                [self showMenuSheetFor:comment tableView:weakSelf.tableView sourceView:sourceView];
             } else {
                 [self shareComment:comment sourceView:sourceView];
             }

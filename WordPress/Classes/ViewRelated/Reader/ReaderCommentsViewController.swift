@@ -88,7 +88,7 @@ import UIKit
         }
     }
 
-    func shareComment(_ comment: Comment, sourceView: UIView) {
+    func shareComment(_ comment: Comment, sourceView: UIView?) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -98,26 +98,24 @@ import UIKit
         present(activityViewController, animated: true, completion: nil)
     }
 
-    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView) -> UIMenu {
-        return UIMenu(title: "", options: .displayInline, children: [
-            ReaderCommentMenu.unapprove.action {
-                // TODO: Unapprove comment
-            },
-            ReaderCommentMenu.spam.action {
-                // TODO: Spam comment
-            },
-            ReaderCommentMenu.trash.action {
-                // TODO: Trash comment
-            },
-            UIMenu(title: "", options: .displayInline, children: [
-                ReaderCommentMenu.edit.action {
-                    // TODO: Edit comment
-                },
-                ReaderCommentMenu.share.action { [weak self] in
-                    self?.shareComment(comment, sourceView: sourceView)
-                }
-            ])
-        ])
+    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+        return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
+            UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
+        })
+    }
+
+    /// Shows the contextual menu through `BottomSheetViewController`. This is fallback for iOS 13 since the menu can't be shown on tap, or programmatically.
+    /// NOTE: Remove this once we bump the minimum version to iOS 14.
+    ///
+    func showMenuSheet(for comment: Comment, tableView: UITableView, sourceView: UIView?) {
+        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+        let menuViewController = MenuSheetViewController(items: commentMenus.map { menuSection in
+            // Convert ReaderCommentMenu to MenuSheetViewController.MenuItem
+            menuSection.map { $0.toMenuItem }
+        })
+        let bottomSheet = BottomSheetViewController(childViewController: menuViewController)
+        bottomSheet.show(from: self, sourceView: sourceView)
     }
 }
 
@@ -130,45 +128,91 @@ private extension ReaderCommentsViewController {
                                                        + "Shown when the comment is written by the post author.")
     }
 
-    enum ReaderCommentMenu {
-        case unapprove
-        case spam
-        case trash
-        case edit
-        case share
+    func commentMenu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
+        return [
+            [
+                .unapprove {
+                    // TODO: Unapprove comment
+                },
+                .spam {
+                    // TODO: Unapprove comment
+                },
+                .trash {
+                    // TODO: Unapprove comment
+                }
+            ],
+            [
+                .edit {
+                    // TODO: Edit comment
+                },
+                .share { [weak self] in
+                    self?.shareComment(comment, sourceView: sourceView)
+                }
+            ]
+        ]
+    }
+}
 
-        var title: String {
-            switch self {
-            case .unapprove:
-                return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
-            case .spam:
-                return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
-            case .trash:
-                return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
-            case .edit:
-                return NSLocalizedString("Edit", comment: "Edits the comment")
-            case .share:
-                return NSLocalizedString("Share", comment: "Shares the comment URL")
-            }
+// MARK: - Reader Comment Menu
+
+enum ReaderCommentMenu {
+    case unapprove(_ handler: () -> Void)
+    case spam(_ handler: () -> Void)
+    case trash(_ handler: () -> Void)
+    case edit(_ handler: () -> Void)
+    case share(_ handler: () -> Void)
+
+    var title: String {
+        switch self {
+        case .unapprove:
+            return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
+        case .spam:
+            return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
+        case .trash:
+            return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
+        case .edit:
+            return NSLocalizedString("Edit", comment: "Edits the comment")
+        case .share:
+            return NSLocalizedString("Share", comment: "Shares the comment URL")
         }
+    }
 
-        var image: UIImage? {
-            switch self {
-            case .unapprove:
-                return .init(systemName: "x.circle")
-            case .spam:
-                return .init(systemName: "exclamationmark.octagon")
-            case .trash:
-                return .init(systemName: "trash")
-            case .edit:
-                return .init(systemName: "pencil")
-            case .share:
-                return .init(systemName: "square.and.arrow.up")
-            }
+    var image: UIImage? {
+        switch self {
+        case .unapprove:
+            return .init(systemName: "x.circle")
+        case .spam:
+            return .init(systemName: "exclamationmark.octagon")
+        case .trash:
+            return .init(systemName: "trash")
+        case .edit:
+            return .init(systemName: "pencil")
+        case .share:
+            return .init(systemName: "square.and.arrow.up")
         }
+    }
 
-        func action(handler: @escaping () -> Void) -> UIAction {
+    var toAction: UIAction {
+        switch self {
+        case .unapprove(let handler),
+                .spam(let handler),
+                .trash(let handler),
+                .edit(let handler),
+                .share(let handler):
             return UIAction(title: title, image: image) { _ in
+                handler()
+            }
+        }
+    }
+
+    var toMenuItem: MenuSheetViewController.MenuItem {
+        switch self {
+        case .unapprove(let handler),
+                .spam(let handler),
+                .trash(let handler),
+                .edit(let handler),
+                .share(let handler):
+            return MenuSheetViewController.MenuItem(title: title, image: image) {
                 handler()
             }
         }
