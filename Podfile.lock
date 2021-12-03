@@ -62,7 +62,7 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.0)
-  - Gutenberg (1.67.0):
+  - Gutenberg (1.66.0):
     - React (= 0.64.0)
     - React-CoreModules (= 0.64.0)
     - React-RCTImage (= 0.64.0)
@@ -427,7 +427,7 @@ PODS:
     - React-Core
   - RNSVG (9.13.7-wp-1):
     - React-Core
-  - RNTAztecView (1.67.0):
+  - RNTAztecView (1.66.0):
     - React-Core
     - WordPress-Aztec-iOS (~> 1.19.5)
   - Sentry (6.2.1):
@@ -480,7 +480,7 @@ PODS:
   - ZendeskSupportSDK (5.3.0):
     - ZendeskMessagingSDK (~> 3.8.2)
     - ZendeskSupportProvidersSDK (~> 5.3.0)
-  - ZIPFoundation (0.9.12)
+  - ZIPFoundation (0.9.13)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.0)
@@ -557,14 +557,14 @@ DEPENDENCIES:
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.0)
   - WordPressUI (~> 1.12.2)
-  - WPMediaPicker (~> 1.7.2)
+  - WPMediaPicker (~> 1.8.0-beta.1)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/96d1a0dacb490544fc2268b93e716cb1e23fb3ce/third-party-podspecs/Yoga.podspec.json`)
+  - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressUI
   trunk:
     - 1PasswordExtension
     - Alamofire
@@ -607,6 +607,7 @@ SPEC REPOS:
     - WordPressKit
     - WordPressMocks
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -752,7 +753,7 @@ SPEC CHECKSUMS:
   Gridicons: 17d660b97ce4231d582101b02f8280628b141c9a
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
-  Gutenberg: 51ce08213438819aaa37a0597e9e860292958ba4
+  Gutenberg: b7b9e6dfa18bf59497ec7f1a0f51d3cfeac54265
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: 9eab00cc89669b38858d42d5f30c810876b31344
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
@@ -800,7 +801,7 @@ SPEC CHECKSUMS:
   RNReanimated: de5b2ed087548c7a97d42e00aaaabc60d09e5e1a
   RNScreens: 6eaae52cb2c8125df482417e9b18ac19e5cd4ff6
   RNSVG: f1119936d843b227a357d64781ab2df398f8d6db
-  RNTAztecView: e09cdc4fca1f7e9a9f72b89bbf228fb4e0dcb7c2
+  RNTAztecView: 493f254859e356ef4708969524c2b2f954d7e8d8
   Sentry: 9b922b396b0e0bca8516a10e36b0ea3ebea5faf7
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
@@ -812,7 +813,7 @@ SPEC CHECKSUMS:
   WordPressKit: af274cd448033101df5beddd144ee3ad81063d92
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: a4b0308a6345d4dda20c8f7ad9317df4246b4a00
-  WordPressUI: c573f4b5c2e5d0ffcebe69ecf86ae75ab7b6ff4d
+  WordPressUI: 37370304040b8281809f43df736e9924c39ea0d4
   WPMediaPicker: b71345bed88eb1b9ad6313e3410795e0f1182f47
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 982b1e7bf7c0873643955853293b269e4487890e
@@ -823,8 +824,8 @@ SPEC CHECKSUMS:
   ZendeskSDKConfigurationsSDK: 8371b468db0d09e9198f6c5a97818826943ee1ee
   ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
-  ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
+  ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: d01ca2a52b33f413e3f5bb166945aae84d04ee2c
+PODFILE CHECKSUM: 9cf012652f77f060cd22f1ff6afca467255037c3
 
 COCOAPODS: 1.10.1
