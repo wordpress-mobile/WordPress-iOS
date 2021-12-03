@@ -70,13 +70,54 @@ import UIKit
             return
         }
 
+        cell.badgeTitle = comment.isFromPostAuthor() ? Constants.authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
         cell.hidesModerationBar = true
+
+        // if the comment can be moderated, show the context menu when tapping the accessory button.
+        // Note that accessoryButtonAction will be ignored when the menu is assigned.
+        if #available (iOS 14.0, *) {
+            cell.accessoryButton.showsMenuAsPrimaryAction = comment.allowsModeration()
+            cell.accessoryButton.menu = comment.allowsModeration() ? menu(for: comment, tableView: tableView, sourceView: cell.accessoryButton) : nil
+        }
+
         cell.configure(with: comment) { _ in
             tableView.performBatchUpdates({})
         }
+    }
+
+    func shareComment(_ comment: Comment, sourceView: UIView) {
+        guard let commentURL = comment.commentURL() else {
+            return
+        }
+
+        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = sourceView
+        present(activityViewController, animated: true, completion: nil)
+    }
+
+    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView) -> UIMenu {
+        return UIMenu(title: "", options: .displayInline, children: [
+            ReaderCommentMenu.unapprove.action {
+                // TODO: Unapprove comment
+            },
+            ReaderCommentMenu.spam.action {
+                // TODO: Spam comment
+            },
+            ReaderCommentMenu.trash.action {
+                // TODO: Trash comment
+            },
+            UIMenu(title: "", options: .displayInline, children: [
+                ReaderCommentMenu.edit.action {
+                    // TODO: Edit comment
+                },
+                ReaderCommentMenu.share.action { [weak self] in
+                    self?.shareComment(comment, sourceView: sourceView)
+                }
+            ])
+        ])
     }
 }
 
@@ -84,5 +125,52 @@ private extension ReaderCommentsViewController {
     struct Constants {
         static let indentationWidth: CGFloat = 15.0
         static let maxIndentationLevel: Int = 4
+
+        static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
+                                                       + "Shown when the comment is written by the post author.")
+    }
+
+    enum ReaderCommentMenu {
+        case unapprove
+        case spam
+        case trash
+        case edit
+        case share
+
+        var title: String {
+            switch self {
+            case .unapprove:
+                return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
+            case .spam:
+                return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
+            case .trash:
+                return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
+            case .edit:
+                return NSLocalizedString("Edit", comment: "Edits the comment")
+            case .share:
+                return NSLocalizedString("Share", comment: "Shares the comment URL")
+            }
+        }
+
+        var image: UIImage? {
+            switch self {
+            case .unapprove:
+                return .init(systemName: "x.circle")
+            case .spam:
+                return .init(systemName: "exclamationmark.octagon")
+            case .trash:
+                return .init(systemName: "trash")
+            case .edit:
+                return .init(systemName: "pencil")
+            case .share:
+                return .init(systemName: "square.and.arrow.up")
+            }
+        }
+
+        func action(handler: @escaping () -> Void) -> UIAction {
+            return UIAction(title: title, image: image) { _ in
+                handler()
+            }
+        }
     }
 }

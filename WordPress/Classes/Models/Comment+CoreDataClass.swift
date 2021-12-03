@@ -69,7 +69,7 @@ public class Comment: NSManagedObject {
 
     /// Convenience method to check if the current user can actually moderate.
     /// `canModerate` is only applicable when the site is dotcom-related (hosted or atomic). For self-hosted sites, default to true.
-    func allowsModeration() -> Bool {
+    @objc func allowsModeration() -> Bool {
         if let _ = post as? ReaderPost {
             return canModerate
         }
@@ -105,6 +105,16 @@ public class Comment: NSManagedObject {
 
     @objc func isTopLevelComment() -> Bool {
         return depth == 0
+    }
+
+    func isFromPostAuthor() -> Bool {
+        guard let postAuthorID = post?.authorID?.int32Value,
+              postAuthorID > 0,
+              authorID > 0 else {
+                  return false
+              }
+
+        return authorID == postAuthorID
     }
 }
 

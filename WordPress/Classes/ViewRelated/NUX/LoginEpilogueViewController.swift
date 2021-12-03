@@ -19,18 +19,13 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Create a new site button.
     ///
-    @IBOutlet weak var createANewSiteButton: FancyButton!
-
-    /// Skip button.
-    ///
-    @IBOutlet weak var skipButton: FancyButton!
+    @IBOutlet var createANewSiteButton: UIButton!
 
     /// Constraints on the table view container.
     /// Used to adjust the width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewBottomConstraintToSafeArea: NSLayoutConstraint!
-    @IBOutlet weak var tableViewBottomConstraintToButtonPanel: NSLayoutConstraint!
+    @IBOutlet weak var tableViewBottomContraint: NSLayoutConstraint!
 
     private var defaultTableViewMargin: CGFloat = 0
 
@@ -57,10 +52,6 @@ class LoginEpilogueViewController: UIViewController {
     /// Closure to be executed upon a new site creation.
     ///
     var onCreateNewSite: (() -> Void)?
-
-    /// Closure to be executed upon dismissal.
-    ///
-    var onDismiss: (() -> Void)?
 
     /// Site that was just connected to our awesome app.
     ///
@@ -89,7 +80,6 @@ class LoginEpilogueViewController: UIViewController {
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         setTableViewMargins(forWidth: view.frame.width)
         refreshInterface(with: credentials)
-        configureButtonPanel()
         WordPressAuthenticator.track(.loginEpilogueViewed)
 
         // If the user just signed in, refresh the A/B assignments
@@ -120,6 +110,11 @@ class LoginEpilogueViewController: UIViewController {
         return UIDevice.isPad() ? .all : .portrait
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configureButtonPanel()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setTableViewMargins(forWidth: size.width)
@@ -130,36 +125,10 @@ class LoginEpilogueViewController: UIViewController {
         setTableViewMargins(forWidth: view.frame.width)
     }
 
-    /// Setup: Button Panel
-    ///
-    func configureButtonPanel(showBackground: Bool = true) {
-        if showBackground {
-            topLineHeightConstraint.constant = .hairlineBorderWidth
-            buttonPanel.backgroundColor = .quaternaryBackground
-            topLine.isHidden = false
-            blurEffectView.effect = UIBlurEffect(style: blurEffect)
-            blurEffectView.isHidden = false
-            setupDividerLineIfNeeded()
-        } else {
-            buttonPanel.backgroundColor = .basicBackground
-            topLine.isHidden = true
-            blurEffectView.isHidden = true
-            dividerView?.isHidden = true
-        }
-    }
-
     func hideButtonPanel() {
         buttonPanel.isHidden = true
-        tableViewBottomConstraintToButtonPanel.isActive = false
-        tableViewBottomConstraintToSafeArea.isActive = true
-    }
-
-    func hideCreateANewSiteButton() {
         createANewSiteButton.isHidden = true
-    }
-
-    func showSkipButton() {
-        skipButton.isHidden = false
+        tableViewBottomContraint.constant = 0
     }
 
     // MARK: - Actions
@@ -183,26 +152,24 @@ private extension LoginEpilogueViewController {
     ///
     func refreshInterface(with credentials: AuthenticatorCredentials) {
         configureCreateANewSiteButton()
-        configureSkipButton()
     }
 
-    /// Setup: Create a new site button
+    /// Setup: Buttons
     ///
     func configureCreateANewSiteButton() {
-        createANewSiteButton.isPrimary = false
-        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "Title for the button that will show a prompt to create a new site."), for: .normal)
+        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "A button title"), for: .normal)
         createANewSiteButton.accessibilityIdentifier = "Create a new site"
     }
 
-    /// Setup: Skip button
+    /// Setup: Button Panel
     ///
-    func configureSkipButton() {
-        skipButton.isPrimary = true
-        skipButton.setTitle(NSLocalizedString("Skip", comment: "Title for the button that will skip creating a site and display the logged in view"), for: .normal)
-        skipButton.accessibilityIdentifier = "Skip"
-
-        // Skip button should be hidden by default
-        skipButton.isHidden = true
+    func configureButtonPanel() {
+        topLineHeightConstraint.constant = .hairlineBorderWidth
+        buttonPanel.backgroundColor = .quaternaryBackground
+        topLine.isHidden = false
+        blurEffectView.effect = UIBlurEffect(style: blurEffect)
+        blurEffectView.isHidden = false
+        setupDividerLineIfNeeded()
     }
 
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
@@ -250,11 +217,5 @@ private extension LoginEpilogueViewController {
 
     @IBAction func createANewSite() {
         createNewSite()
-    }
-
-    @IBAction func dismissEpilogue() {
-        tracker.track(click: .continue)
-        onDismiss?()
-        navigationController?.dismiss(animated: true)
     }
 }

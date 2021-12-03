@@ -240,7 +240,7 @@ class EditPostViewController: UIViewController {
             return
         }
 
-        let controller = PreviewWebKitViewController(post: post)
+        let controller = PreviewWebKitViewController(post: post, source: "edit_post_preview")
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
         if postPost.traitCollection.userInterfaceIdiom == .pad {

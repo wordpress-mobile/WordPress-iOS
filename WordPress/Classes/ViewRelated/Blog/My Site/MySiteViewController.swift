@@ -78,7 +78,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func subscribeToPostSignupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreation), name: .createSite, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
@@ -280,8 +280,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(canCreateWPComSite: defaultAccount() != nil) { [weak self] in
-            self?.launchSiteCreation()
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites", canCreateWPComSite: defaultAccount() != nil) { [weak self] in
+            self?.launchSiteCreation(source: "my_site_no_sites")
         } addSelfHostedSite: {
             WordPressAuthenticator.showLoginForSelfHostedSite(self)
         }
@@ -298,13 +298,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    func launchSiteCreation() {
+    func launchSiteCreationFromNotification() {
+        self.launchSiteCreation(source: "signup_epilogue")
+    }
+
+    func launchSiteCreation(source: String) {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
             return
         }
         present(wizard, animated: true)
-        WPAnalytics.track(.enhancedSiteCreationAccessed)
+        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
     }
 
     @objc

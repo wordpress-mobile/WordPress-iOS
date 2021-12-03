@@ -25,7 +25,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
     func testMissingPermalink() {
         let post = PostBuilder(context).drafted().build()
 
-        let vc = PreviewWebKitViewController(post: post, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_missing_permalink")
         XCTAssertEqual(vc.url!.absoluteString, "about:blank", "Should load blank page when no permalink is available")
     }
 
@@ -34,7 +34,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let post = PostBuilder(context).drafted().build()
         post.permaLink = "http://example.com/"
 
-        let vc = PreviewWebKitViewController(post: post, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_draft_toolbar")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
         XCTAssertTrue(items.contains(vc.publishButton), "Preview toolbar for draft should contain publish button.")
@@ -50,7 +50,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let post = PostBuilder(context).published().build()
         post.permaLink = "http://example.com/"
 
-        let vc = PreviewWebKitViewController(post: post, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_published_toolbar")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
         XCTAssertTrue(items.contains(vc.shareButton), "Preview toolbar for post should contain share button.")
@@ -65,7 +65,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let page = PageBuilder(context).build()
         page.permaLink = "http://example.com/"
 
-        let vc = PreviewWebKitViewController(post: page, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: page, previewURL: nil, source: "test_site_page")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
         XCTAssertFalse(items.contains(vc.publishButton), "Preview toolbar for page should not contain publish button.")

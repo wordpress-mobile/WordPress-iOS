@@ -403,6 +403,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Edit sharing buttons", comment: "Title for the edit sharing buttons section")
                 switchCell.on = self.buttonsSection.editing
                 switchCell.onChange = { newValue in
+                    WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: blog)
                     self.buttonsSection.editing = !self.buttonsSection.editing
                     self.updateButtonOrderAfterEditing()
                     self.reloadButtons()
@@ -445,6 +446,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Edit \"More\" button", comment: "Title for the edit more button section")
                 switchCell.on = self.moreSection.editing
                 switchCell.onChange = { newValue in
+                    WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: blog)
                     self.updateButtonOrderAfterEditing()
                     self.moreSection.editing = !self.moreSection.editing
                    self.reloadButtons()
@@ -697,6 +699,7 @@ import WordPressShared
             guard value != self.blog.settings!.sharingLabel else {
                 return
             }
+            WPAnalytics.track(.sharingButtonsLabelChanged, properties: [:], blog: blog)
             self.blog.settings!.sharingLabel = value
             self.saveBlogSettingsChanges(true)
         }

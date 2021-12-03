@@ -271,7 +271,6 @@ import Gridicons
         textView.contentInset = .zero
         textView.textContainerInset = .zero
         textView.autocorrectionType = .yes
-        textView.backgroundColor = Style.backgroundColor
         textView.textColor = Style.textColor
         textView.textContainer.lineFragmentPadding = 0
         textView.layoutManager.allowsNonContiguousLayout = false
