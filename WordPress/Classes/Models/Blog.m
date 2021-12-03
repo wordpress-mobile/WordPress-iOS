@@ -581,6 +581,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
+        case BlogFeatureTiledGallery:
+            return [self supportsTiledGallery];
         case BlogFeatureBlockEditorSettings:
             return [self supportsBlockEditorSettings];
         case BlogFeatureLayoutGrid:
@@ -691,6 +693,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsLayoutGrid
 {
     return self.isHostedAtWPcom || self.isAtomic;
+}
+
+- (BOOL)supportsTiledGallery
+{
+    return self.isHostedAtWPcom;
 }
 
 - (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
