@@ -28,7 +28,7 @@ struct JetpackNotFoundErrorViewModel: JetpackErrorViewModel {
             return
         }
 
-        let controller = WebViewControllerFactory.controller(url: url)
+        let controller = WebViewControllerFactory.controller(url: url, source: "jetpack_not_found")
         let navController = UINavigationController(rootViewController: controller)
 
         viewController?.present(navController, animated: true)

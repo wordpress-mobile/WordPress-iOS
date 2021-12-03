@@ -150,7 +150,7 @@ extension SiteSettingsViewController {
         guard let url =  URL(string: self.ampSupportURL) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "site_settings_amp_footer")
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

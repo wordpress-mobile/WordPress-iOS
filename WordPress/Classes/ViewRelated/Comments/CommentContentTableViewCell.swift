@@ -12,13 +12,13 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     /// A closure that's called when the accessory button is tapped.
     /// The button's view is sent as the closure's parameter for reference.
-    var accessoryButtonAction: ((UIView) -> Void)? = nil
+    @objc var accessoryButtonAction: ((UIView) -> Void)? = nil
 
-    var replyButtonAction: (() -> Void)? = nil
+    @objc var replyButtonAction: (() -> Void)? = nil
 
-    var likeButtonAction: (() -> Void)? = nil
+    @objc var likeButtonAction: (() -> Void)? = nil
 
-    var contentLinkTapAction: ((URL) -> Void)? = nil
+    @objc var contentLinkTapAction: ((URL) -> Void)? = nil
 
     /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
     var hidesModerationBar: Bool = false {
@@ -32,6 +32,20 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     var accessoryButtonType: AccessoryButtonType = .share {
         didSet {
             accessoryButton.setImage(accessoryButtonImage, for: .normal)
+        }
+    }
+
+    /// When supplied with a non-empty string, the cell will show a badge label beside the name label.
+    /// Note that the badge will be hidden when the title is nil or empty.
+    var badgeTitle: String? = nil {
+        didSet {
+            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
+                badgeLabel.isHidden = true
+                return
+            }
+
+            badgeLabel.setText(badgeTitle.localizedUppercase)
+            badgeLabel.isHidden = false
         }
     }
 
@@ -56,13 +70,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
 
-    // used for indentation
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
+    private var defaultLeadingMargin: CGFloat = 0
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var badgeLabel: BadgeLabel!
     @IBOutlet private weak var dateLabel: UILabel!
-    @IBOutlet private weak var accessoryButton: UIButton!
+    @IBOutlet private(set) weak var accessoryButton: UIButton!
 
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
@@ -140,6 +156,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Lifecycle
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // reset all button actions.
+        accessoryButtonAction = nil
+        replyButtonAction = nil
+        likeButtonAction = nil
+        contentLinkTapAction = nil
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureViews()
@@ -192,6 +218,24 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
     }
+
+    /// Configures the cell with a `Comment` object, to be displayed in the post details view.
+    ///
+    /// - Parameters:
+    ///   - comment: The `Comment` object to display.
+    ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
+    func configureForPostDetails(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
+        configure(with: comment, onContentLoaded: onContentLoaded)
+
+        hidesModerationBar = true
+        isCommentLikesEnabled = false
+        isCommentReplyEnabled = false
+        isAccessoryButtonEnabled = false
+
+        containerStackLeadingConstraint.constant = 0
+        containerStackTrailingConstraint.constant = 0
+    }
+
 }
 
 // MARK: - WKNavigationDelegate
@@ -265,10 +309,19 @@ private extension CommentContentTableViewCell {
 
     // assign base styles for all the cell components.
     func configureViews() {
+        // Store default margin for use in content layout.
+        defaultLeadingMargin = containerStackLeadingConstraint.constant
+
         selectionStyle = .none
 
         nameLabel?.font = Style.nameFont
         nameLabel?.textColor = Style.nameTextColor
+
+        badgeLabel?.font = Style.badgeFont
+        badgeLabel?.textColor = Style.badgeTextColor
+        badgeLabel?.backgroundColor = Style.badgeColor
+        badgeLabel?.adjustsFontForContentSizeCategory = true
+        badgeLabel?.adjustsFontSizeToFitWidth = true
 
         dateLabel?.font = Style.dateFont
         dateLabel?.textColor = Style.dateTextColor
@@ -366,7 +419,7 @@ private extension CommentContentTableViewCell {
     }
 
     func updateContainerLeadingConstraint() {
-        containerStackLeadingConstraint?.constant = indentationWidth * CGFloat(indentationLevel)
+        containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
     /// Updates the style and text of the Like button.

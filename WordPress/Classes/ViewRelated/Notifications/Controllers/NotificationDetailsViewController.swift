@@ -1350,6 +1350,7 @@ extension NotificationDetailsViewController {
         }
 
         refreshView(with: previous)
+        WPAnalytics.track(.notificationsPreviousTapped)
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1358,6 +1359,7 @@ extension NotificationDetailsViewController {
         }
 
         refreshView(with: next)
+        WPAnalytics.track(.notificationsNextTapped)
     }
 
     private func refreshView(with note: Notification) {
