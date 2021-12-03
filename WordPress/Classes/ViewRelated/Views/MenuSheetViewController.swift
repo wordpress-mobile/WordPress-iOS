@@ -53,10 +53,10 @@ extension MenuSheetViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard section < itemSource.count else {
+        guard let items = itemSource[safe: section] else {
             return 0
         }
-        return itemSource[section].count
+        return items.count
     }
 
     /// Override separator color in dark mode so it kinda matches the separator color in `UIContextMenu`.
@@ -77,9 +77,12 @@ extension MenuSheetViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = itemSource[indexPath.section][indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
+        guard let items = itemSource[safe: indexPath.section],
+              let item = items[safe: indexPath.row] else {
+                  return .init()
+              }
 
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
         cell.tintColor = .text
         cell.textLabel?.setText(item.title)
         cell.accessoryView = UIImageView(image: item.image?.withTintColor(.text))
@@ -90,8 +93,12 @@ extension MenuSheetViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let item = itemSource[indexPath.section][indexPath.row]
         dismiss(animated: true) {
+            guard let items = self.itemSource[safe: indexPath.section],
+                  let item = items[safe: indexPath.row] else {
+                      return
+                  }
+
             item.handler()
         }
     }
@@ -101,6 +108,7 @@ extension MenuSheetViewController {
 
 private extension MenuSheetViewController {
     struct Constants {
+        // maximum width follows the approximate width of `UIContextMenu`.
         static let maxWidth: CGFloat = 250
         static let tableSectionHeight: CGFloat = 8
         static let darkSeparatorColor = UIColor(fromRGBColorWithRed: 11, green: 11, blue: 11)
@@ -110,8 +118,8 @@ private extension MenuSheetViewController {
     func configureTable() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
 
+        // draw the separators from edge to edge.
         tableView.separatorInset = .zero
-        tableView.sectionHeaderHeight = 0
 
         // hide separators for the last row.
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0))
