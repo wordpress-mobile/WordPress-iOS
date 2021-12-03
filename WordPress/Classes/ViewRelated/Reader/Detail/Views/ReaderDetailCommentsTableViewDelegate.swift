@@ -60,7 +60,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        let title: String = {
+        header.titleLabel.text = {
             switch totalComments {
             case 0:
                 return Constants.comments
@@ -71,7 +71,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             }
         }()
 
-        header.titleLabel.text = title
         header.addBottomBorder(withColor: .divider)
         return header
     }
