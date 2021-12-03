@@ -581,12 +581,12 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
-        case BlogFeatureTiledGallery:
-            return [self supportsTiledGallery];
         case BlogFeatureBlockEditorSettings:
             return [self supportsBlockEditorSettings];
         case BlogFeatureLayoutGrid:
             return [self supportsLayoutGrid];
+        case BlogFeatureTiledGallery:
+            return [self supportsTiledGallery];
         case BlogFeatureFacebookEmbed:
             return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureInstagramEmbed:
