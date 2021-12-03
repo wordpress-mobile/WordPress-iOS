@@ -70,7 +70,7 @@ import UIKit
             return
         }
 
-        cell.badgeTitle = comment.isFromPostAuthor() ? Constants.authorBadgeText : nil
+        cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
@@ -88,6 +88,8 @@ import UIKit
         }
     }
 
+    /// Opens a share sheet, prompting the user to share the URL of the provided comment.
+    ///
     func shareComment(_ comment: Comment, sourceView: UIView?) {
         guard let commentURL = comment.commentURL() else {
             return
@@ -98,15 +100,10 @@ import UIKit
         present(activityViewController, animated: true, completion: nil)
     }
 
-    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> UIMenu {
-        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
-        return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
-            UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
-        })
-    }
-
-    /// Shows the contextual menu through `UIPopoverPresentationController`. This is fallback for iOS 13 since the menu can't be shown on tap,
-    /// or programmatically. NOTE: Remove this once we bump the minimum version to iOS 14.
+    /// Shows a contextual menu through `UIPopoverPresentationController`. This is a fallback implementation for iOS 13, since the menu can't be
+    /// shown programmatically or through a single tap.
+    ///
+    /// NOTE: Remove this once we bump the minimum version to iOS 14.
     ///
     func showMenuSheet(for comment: Comment, tableView: UITableView, sourceView: UIView?) {
         let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
@@ -126,6 +123,8 @@ import UIKit
     }
 }
 
+// MARK: - Popover Presentation Delegate
+
 extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate {
     // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
@@ -133,15 +132,35 @@ extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate 
     }
 }
 
+// MARK: - Private Helpers
+
 private extension ReaderCommentsViewController {
     struct Constants {
         static let indentationWidth: CGFloat = 15.0
         static let maxIndentationLevel: Int = 4
-
-        static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
-                                                       + "Shown when the comment is written by the post author.")
     }
 
+    /// Returns a `UIMenu` structure to be displayed when the accessory button is tapped.
+    /// Note that this should only be called on iOS version 14 and above.
+    ///
+    /// For example, given an comment menu list `[[Foo, Bar], [Baz]]`, it will generate a menu as below:
+    ///     ________
+    ///    | Foo   •|
+    ///    | Bar   •|
+    ///    |--------|
+    ///    | Baz   •|
+    ///     --------
+    ///
+    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+        return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
+            UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
+        })
+    }
+
+    /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
+    /// the order of comment menu will determine the order of appearance for the corresponding menu element.
+    ///
     func commentMenu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
         return [
             [
@@ -167,8 +186,16 @@ private extension ReaderCommentsViewController {
     }
 }
 
+// MARK: - Localization
+
+private extension String {
+    static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
+                                                   + "Shown when the comment is written by the post author.")
+}
+
 // MARK: - Reader Comment Menu
 
+/// Represents the available menu when the ellipsis accessory button on the comment cell is tapped.
 enum ReaderCommentMenu {
     case unapprove(_ handler: () -> Void)
     case spam(_ handler: () -> Void)
@@ -219,6 +246,7 @@ enum ReaderCommentMenu {
         }
     }
 
+    /// NOTE: Remove when minimum version is bumped to iOS 14.
     var toMenuItem: MenuSheetViewController.MenuItem {
         switch self {
         case .unapprove(let handler),
