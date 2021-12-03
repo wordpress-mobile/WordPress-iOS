@@ -1,9 +1,9 @@
 import UIKit
 import WordPressUI
 
-/// Provides a fallback implementation for showing `UIMenu` in iOS 13. Instead of showing a floating menu, this embeds
-/// the menu in a table view through `BottomSheetViewController`. Note that to simplify things, nested elements will be
-/// displayed as if `UIMenuOptions.displayInline` is applied.
+/// Provides a fallback implementation for showing `UIMenu` in iOS 13. To "mimic" the `UIContextMenu` appearance, this
+/// view controller should be presented modally with a `.popover` presentation style. Note that to simplify things,
+/// nested elements will be displayed as if `UIMenuOptions.displayInline` is applied.
 ///
 /// In iOS 13, `UIMenu` can only appear through long press gesture. There is no way to make it appear programmatically
 /// or through different gestures. However, in iOS 14 menus can be configured to appear on tap events. Refer to
@@ -25,7 +25,7 @@ class MenuSheetViewController: UITableViewController {
 
     required init(items: [[MenuItem]]) {
         self.itemSource = items
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .plain)
     }
 
     required init?(coder: NSCoder) {
@@ -34,8 +34,13 @@ class MenuSheetViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureTable()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        preferredContentSize = CGSize(width: min(tableView.contentSize.width, Constants.maxWidth), height: tableView.contentSize.height)
     }
 }
 
@@ -54,12 +59,31 @@ extension MenuSheetViewController {
         return itemSource[section].count
     }
 
+    /// Override separator color in dark mode so it kinda matches the separator color in `UIContextMenu`.
+    /// With system colors, somehow dark colors won't go darker below the cell's background color.
+    /// Note that returning nil means falling back to the default behavior.
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard traitCollection.userInterfaceStyle == .dark else {
+            return nil
+        }
+
+        let headerView = UIView()
+        headerView.backgroundColor = Constants.darkSeparatorColor
+        return headerView
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? tableView.sectionHeaderHeight : Constants.tableSectionHeight
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = itemSource[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
 
+        cell.tintColor = .text
         cell.textLabel?.setText(item.title)
         cell.accessoryView = UIImageView(image: item.image?.withTintColor(.text))
+
         return cell
     }
 
@@ -73,25 +97,23 @@ extension MenuSheetViewController {
     }
 }
 
-// MARK: - Drawer Presentable
-
-extension MenuSheetViewController: DrawerPresentable {
-    var allowsUserTransition: Bool {
-        false
-    }
-}
-
 // MARK: - Private Helpers
 
 private extension MenuSheetViewController {
     struct Constants {
+        static let maxWidth: CGFloat = 250
+        static let tableSectionHeight: CGFloat = 8
+        static let darkSeparatorColor = UIColor(fromRGBColorWithRed: 11, green: 11, blue: 11)
         static let cellIdentifier = "cell"
     }
 
     func configureTable() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
 
+        tableView.separatorInset = .zero
+        tableView.sectionHeaderHeight = 0
+
         // hide separators for the last row.
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0))
     }
 }

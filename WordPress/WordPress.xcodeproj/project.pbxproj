@@ -7944,6 +7944,7 @@
 				37EAAF4C1A11799A006D6306 /* CircularImageView.swift */,
 				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
 				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
+				FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */,
 				B5B410B51B1772B000CFCF8D /* NavigationTitleView.swift */,
 				982A4C3420227D6700B5518E /* NoResultsViewController.swift */,
 				98B33C87202283860071E1E2 /* NoResults.storyboard */,
@@ -10074,7 +10075,6 @@
 				5D42A401175E76A1005CFF05 /* WPImageViewController.h */,
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
 				C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */,
-				FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

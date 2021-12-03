@@ -105,8 +105,8 @@ import UIKit
         })
     }
 
-    /// Shows the contextual menu through `BottomSheetViewController`. This is fallback for iOS 13 since the menu can't be shown on tap, or programmatically.
-    /// NOTE: Remove this once we bump the minimum version to iOS 14.
+    /// Shows the contextual menu through `UIPopoverPresentationController`. This is fallback for iOS 13 since the menu can't be shown on tap,
+    /// or programmatically. NOTE: Remove this once we bump the minimum version to iOS 14.
     ///
     func showMenuSheet(for comment: Comment, tableView: UITableView, sourceView: UIView?) {
         let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
@@ -114,8 +114,22 @@ import UIKit
             // Convert ReaderCommentMenu to MenuSheetViewController.MenuItem
             menuSection.map { $0.toMenuItem }
         })
-        let bottomSheet = BottomSheetViewController(childViewController: menuViewController)
-        bottomSheet.show(from: self, sourceView: sourceView)
+
+        menuViewController.modalPresentationStyle = .popover
+        if let popoverPresentationController = menuViewController.popoverPresentationController {
+            popoverPresentationController.delegate = self
+            popoverPresentationController.sourceView = sourceView
+            popoverPresentationController.sourceRect = sourceView?.bounds ?? .null
+        }
+
+        present(menuViewController, animated: true)
+    }
+}
+
+extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate {
+    // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
+    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
