@@ -8,6 +8,7 @@ end
 
 # gem 'fastlane-plugin-wpmreleasetoolkit', '~> 2.1'
 # This comment avoids typing to switch to a development version for testing.
+ # TODO: Update to the next major version after: https://github.com/wordpress-mobile/release-toolkit/pull/319
 gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'develop'
 
 gem 'fastlane-plugin-sentry'

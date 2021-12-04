@@ -22,7 +22,7 @@ OUTPUT_GREEN="\033[32m"
 OUTPUT_BOLD="\033[1m"
 
 # Config files
-publicConfig=("Version.public.xcconfig") 
+publicConfig=("Version.public.xcconfig")
 internalConfig=("Version.internal.xcconfig")
 
 
@@ -34,7 +34,7 @@ function showUsage() {
     echo ""
     echo "   Available commands:"
     echo "      $CMD_GET_VERSION: reads the current version"
-    echo "      $CMD_BUMP_RELEASE: reads the current version, bumps the release digits and creates the new branch (works only on develop branch)"
+    echo "      $CMD_BUMP_RELEASE: reads the current version, bumps the release digits and creates the new branch (works only on trunk branch)"
     echo "      $CMD_BUMP_HOTFIX: reads the current version,  bumps the hotfix digit and updates the IDs (works only on release branch)"
     echo "      $CMD_BUMP_INTERNAL: reads the current version, bumps the internal build digit and updates the IDs (works only on release branch)"
     echo "      $CMD_CREATE (or $CMD_CREATE_SHORT): creates the new branch and updates the version IDs"
@@ -60,13 +60,13 @@ function showErrorMessage() {
 
 function showOkMessage() {
     message=$1
-    echo "$OUTPUT_GREEN$message$OUTPUT_NORM" 
+    echo "$OUTPUT_GREEN$message$OUTPUT_NORM"
     echo $message >> $logFile
 }
 
 function showTitleMessage() {
     message=$1
-    echo "$OUTPUT_BOLD$message$OUTPUT_NORM" 
+    echo "$OUTPUT_BOLD$message$OUTPUT_NORM"
     echo $message >> $logFile
 }
 
@@ -129,7 +129,7 @@ function verifyVersion() {
     for i in "${nvp[@]}"
     do
         if ! [[ $i =~ $IS_A_NUM_RE ]] ; then
-            showErrorMessage "Version value can only contains numbers" 
+            showErrorMessage "Version value can only contains numbers"
             exit 1
         fi
     done
@@ -199,21 +199,21 @@ function stopOnError() {
     exit 1
 }
 
-# Checks out develop, updates it to origin and creates the release branch
+# Checks out trunk, updates it to origin and creates the release branch
 function doBranching() {
-    git checkout develop >> $logFile 2>&1 || stopOnError
-    git pull origin develop >> $logFile 2>&1 || stopOnError
-    git show-ref --verify --quiet "refs/heads/$releaseBranch" >> $logFile 2>&1 
+    git checkout trunk >> $logFile 2>&1 || stopOnError
+    git pull origin trunk >> $logFile 2>&1 || stopOnError
+    git show-ref --verify --quiet "refs/heads/$releaseBranch" >> $logFile 2>&1
     if [ $? -eq 0 ]; then
         showMessage "Branch $releaseBranch already exists. Skipping creation."
         git checkout $releaseBranch >> $logFile 2>&1 || stopOnError
-        git pull origin $releaseBranch >> $logFile 2>&1 
+        git pull origin $releaseBranch >> $logFile 2>&1
     else
         git checkout -b $releaseBranch >> $logFile 2>&1 || stopOnError
 
         # Push to origin
         git push -u origin $releaseBranch >> $logFile 2>&1 || stopOnError
-    fi 
+    fi
 }
 
 # Updates the keys in download_metadata.swift and AppStoreStrings.po
@@ -238,7 +238,7 @@ function updateFastlaneDeliver() {
     fi
 }
 
-# Updates a list of config files with the provided version 
+# Updates a list of config files with the provided version
 function updateConfigFiles() {
     declare -a fileList=("${!1}")
     updateVer=$2
@@ -322,7 +322,7 @@ function getCurrentVersions() {
     currentVer=$tmp
 
     readVersion ${internalConfig[0]}
-    currentIntVer=$tmp 
+    currentIntVer=$tmp
     echo "Done."
 }
 
@@ -369,9 +369,9 @@ function checkBranch() {
     stopOnError
 }
 
-# Bump current release number (only on develop branch)
+# Bump current release number (only on trunk branch)
 function bumpRelease() {
-    checkBranch "develop"
+    checkBranch "trunk"
 
     # Bump release
     showMessage "Current version: $currentVer"
@@ -448,11 +448,11 @@ elif [ $cmd == $CMD_UPDATE ]; then
 elif [ $cmd == $CMD_BUMP_RELEASE ]; then
     bumpRelease
 elif [ $cmd == $CMD_BUMP_HOTFIX ]; then
-    bumpHotFix 
+    bumpHotFix
 elif [ $cmd == $CMD_BUMP_INTERNAL ]; then
-    bumpInternal 
+    bumpInternal
 elif [ $cmd == $CMD_GET_VERSION ]; then
-    echo $currentVer 
+    echo $currentVer
     echo $currentIntVer
 else
     showUsage

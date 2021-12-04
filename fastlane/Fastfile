@@ -105,7 +105,7 @@ platform :ios do
   # bundle exec fastlane code_freeze
   # bundle exec fastlane code_freeze skip_confirm:true
   #####################################################################################
-  desc 'Creates a new release branch from the current develop'
+  desc 'Creates a new release branch from the current trunk'
   lane :code_freeze do |options|
     gutenberg_dep_check
     old_version = ios_codefreeze_prechecks(options)
@@ -135,13 +135,13 @@ platform :ios do
   # bundle exec fastlane complete_code_freeze
   # bundle exec fastlane complete_code_freeze skip_confirm:true
   #####################################################################################
-  desc 'Creates a new release branch from the current develop'
+  desc 'Creates a new release branch from the current trunk'
   lane :complete_code_freeze do |options|
     ios_completecodefreeze_prechecks(options)
     generate_strings_file_for_glotpress
 
     UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
-    push_to_git_remote  
+    push_to_git_remote
     trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
   end
 
