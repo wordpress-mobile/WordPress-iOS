@@ -20,11 +20,13 @@ steps:
     command: ".buildkite/commands/installable-build-wordpress.sh"
     env: *common_env
     plugins: *common_plugins
+    if: build.pull_request.id != null
 
   - label: ":hammer_and_wrench: Jetpack Installable Build"
     command: ".buildkite/commands/installable-build-jetpack.sh"
     env: *common_env
     plugins: *common_plugins
+    if: build.pull_request.id != null
 
   #################
   # Build the app
