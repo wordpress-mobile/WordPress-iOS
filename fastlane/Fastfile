@@ -597,7 +597,7 @@ platform :ios do
 
     comment_on_pr(
       project: 'wordpress-mobile/wordpress-ios',
-      pr_number: ENV['BUILDKITE_PULL_REQUEST'],
+      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
       reuse_identifier: 'installable-build-link',
       body: comment_body
     )
