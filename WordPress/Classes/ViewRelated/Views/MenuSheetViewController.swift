@@ -20,11 +20,14 @@ class MenuSheetViewController: UITableViewController {
     }
 
     private let itemSource: [[MenuItem]]
+    private let orientation: UIDeviceOrientation // used to track if orientation changes.
 
     // MARK: Lifecycle
 
     required init(items: [[MenuItem]]) {
         self.itemSource = items
+        self.orientation = UIDevice.current.orientation
+
         super.init(style: .plain)
     }
 
@@ -42,6 +45,16 @@ class MenuSheetViewController: UITableViewController {
 
         preferredContentSize = CGSize(width: min(tableView.contentSize.width, Constants.maxWidth), height: tableView.contentSize.height)
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Dismiss the menu when the orientation changes. This mimics the behavior of UIContextMenu/UIMenu.
+        if UIDevice.current.orientation != orientation {
+            dismissMenu()
+        }
+    }
+
 }
 
 // MARK: - Table View
@@ -93,7 +106,7 @@ extension MenuSheetViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        dismiss(animated: true) {
+        dismissMenu {
             guard let items = self.itemSource[safe: indexPath.section],
                   let item = items[safe: indexPath.row] else {
                       return
@@ -124,5 +137,20 @@ private extension MenuSheetViewController {
 
         // hide separators for the last row.
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0))
+    }
+
+    func dismissMenu(completion: (() -> Void)? = nil) {
+        if let controller = popoverPresentationController {
+            controller.delegate?.presentationControllerWillDismiss?(controller)
+        }
+
+        dismiss(animated: true) {
+            defer {
+                if let controller = popoverPresentationController {
+                    controller.delegate?.presentationControllerDidDismiss?(controller)
+                }
+            }
+            completion?()
+        }
     }
 }
