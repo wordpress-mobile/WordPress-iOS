@@ -1244,6 +1244,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self newCommentThreadEnabled]) {
+        return UITableViewAutomaticDimension;
+    }
+
     NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
     if (cachedHeight.doubleValue) {
         return cachedHeight.doubleValue;
