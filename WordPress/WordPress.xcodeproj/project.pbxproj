@@ -8994,7 +8994,6 @@
 			isa = PBXGroup;
 			children = (
 				3FE77C8225B0CA89007DE9E5 /* LocalizableStrings.swift */,
-				3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -11184,6 +11183,7 @@
 				E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */,
 				594DB2931AB891A200E2E456 /* WPUserAgent.h */,
 				594DB2941AB891A200E2E456 /* WPUserAgent.m */,
+				3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */,
 				FF28B3EF1AEB251200E11AAE /* InfoPListTranslator.h */,
 				FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */,
 				85B125431B02937E008A3D95 /* UIAlertControllerProxy.h */,
