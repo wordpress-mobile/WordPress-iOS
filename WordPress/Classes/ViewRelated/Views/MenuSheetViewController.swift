@@ -146,7 +146,7 @@ private extension MenuSheetViewController {
 
         dismiss(animated: true) {
             defer {
-                if let controller = popoverPresentationController {
+                if let controller = self.popoverPresentationController {
                     controller.delegate?.presentationControllerDidDismiss?(controller)
                 }
             }
