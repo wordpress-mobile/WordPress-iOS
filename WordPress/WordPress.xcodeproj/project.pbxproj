@@ -25100,8 +25100,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/XCUITestHelpers";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.0;
+				branch = "is-fully-visible-on-screen";
+				kind = branch;
 			};
 		};
 		3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */ = {

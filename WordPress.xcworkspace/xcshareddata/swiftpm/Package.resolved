@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
         "state": {
           "branch": null,
-          "revision": "403f0855c7b7df567bb89d1ddada069b1dae62f8",
+          "revision": "2dd41adcf508ac65585bc0a0745717db26364573",
           "version": "1.0.0"
         }
       },
@@ -23,9 +23,9 @@
         "package": "XCUITestHelpers",
         "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
         "state": {
-          "branch": null,
-          "revision": "3212ac32f0a58ea10604b5cf31fe5450f908ff65",
-          "version": "0.3.0"
+          "branch": "is-fully-visible-on-screen",
+          "revision": "4107fa274059f72f5e093ef9b5b1db59bc0fdb05",
+          "version": null
         }
       }
     ]
