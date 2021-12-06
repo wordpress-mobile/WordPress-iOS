@@ -1,12 +1,14 @@
-* [*] Added a new About screen, with links to rate the app, share it with others, visit our Twitter profile, view our other apps, and more. [https://github.com/orgs/wordpress-mobile/projects/107]
-* [*] Editor: Show a compact notice when switching between HTML or Visual mode. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17521]
-* [*] Onboarding Improvements: Need a little help after login? We're here for you. We've made a few changes to the login flow that will make it easier for you to start managing your site or create a new one. [#17564]
-* [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
-* [***] Fixed crash that was sometimes triggered when deleting media. [#17559]
-* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications. [#17529]
-* [**] Block editor: Add clipboard link suggestion to image block and button block. [https://github.com/WordPress/gutenberg/pull/35972]
-* [*] Block editor: Embed block: Include link in block settings. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4189]
-* [**] Block editor: Fix tab titles translation of inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4248]
-* [**] Block editor: Gallery block: When a gallery block is added, the media options are auto opened for v2 of the Gallery block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4277]
-* [*] Block editor: Media & Text block: Fix an issue where the text font size would be bigger than expected in some cases. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4252]
+Good news, everyone—we fixed app crashes caused by uploading images while offline, deleting media, or seeing details for "Like" notifications.
 
+We made some big changes to the block editor so you can keep calm and publish on:
+
+- When you open the settings for a Button or Image block linked to a URL, the editor won't auto-populate a URL from your clipboard anymore. You'll now see a "Link To" suggestion so you can use the clipboard URL or enter a different one.
+- Create a Gallery block and your device's media options will automatically open, making it easier for you to add your images.
+- Adding a new block? If your device is set to a language other than English, the tabs in the inserter menu will now match your set language.
+- When you're using the Embed block, you won't see the "Edit" action in the toolbar. You can now change the URL by going into Block Settings instead.
+- In the post editor, switching from HTML mode to Visual mode will bring up a compact notice telling you about the switch.
+- You might have noticed your font size changing on its own in Media and Text blocks. We squashed the bug that was causing it.
+
+New to WordPress? Not to worry. Our login process makes it easier than ever to create and start managing your site.
+
+We also added a new About screen so you can rate and share the app (hint, hint), visit our Twitter profile and blog, view our other apps, and more.

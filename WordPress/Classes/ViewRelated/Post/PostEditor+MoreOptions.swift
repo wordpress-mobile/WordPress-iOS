@@ -92,14 +92,14 @@ extension PostEditor {
 
             let previewController: PreviewWebKitViewController
             if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
-                previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL)
+                previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL, source: "edit_post_more_preview")
             } else {
                 if self.post.permaLink == nil {
                     DDLogError("displayPreview: Post permalink is unexpectedly nil")
                     self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
                     return
                 }
-                previewController = PreviewWebKitViewController(post: self.post)
+                previewController = PreviewWebKitViewController(post: self.post, source: "edit_post_more_preview")
             }
             previewController.trackOpenEvent()
             let navWrapper = LightNavigationController(rootViewController: previewController)

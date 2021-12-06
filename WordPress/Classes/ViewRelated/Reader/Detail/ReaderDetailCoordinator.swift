@@ -63,7 +63,7 @@ class ReaderDetailCoordinator {
 
     /// Comment Service
     private let commentService: CommentService
-    private let commentsDisplayed: UInt = 2
+    private let commentsDisplayed: UInt = 1
 
     /// Used for `RequestAuthenticator` creation and likes filtering logic.
     private let accountService: AccountService
@@ -577,7 +577,7 @@ class ReaderDetailCoordinator {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_detail")
         let navController = LightNavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
     }

@@ -264,6 +264,7 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
     case sharingButtonsEditMoreButtonToggled
@@ -272,9 +273,30 @@ import Foundation
     // People
     case peopleFilterChanged
     case peopleUserInvited
+
     // Login: Epilogue
     case loginEpilogueChooseSiteTapped
     case loginEpilogueCreateNewSiteTapped
+
+    // WebKitView
+    case webKitViewDisplayed
+    case webKitViewDismissed
+    case webKitViewOpenInSafariTapped
+    case webKitViewReloadTapped
+    case webKitViewShareTapped
+    case webKitViewNavigatedBack
+    case webKitViewNavigatedForward
+
+    // Preview WebKitView
+    case previewWebKitViewDeviceChanged
+
+    // Add Site
+    case addSiteAlertDisplayed
+
+    // Change Username
+    case changeUsernameSearchPerformed
+    case changeUsernameDisplayed
+    case changeUsernameDismissed
 
     /// A String that represents the event
     var value: String {
@@ -739,11 +761,43 @@ import Foundation
             return "people_management_filter_changed"
         case .peopleUserInvited:
             return "people_management_user_invited"
+
         // Login: Epilogue
         case .loginEpilogueChooseSiteTapped:
             return "login_epilogue_choose_site_tapped"
         case .loginEpilogueCreateNewSiteTapped:
             return "login_epilogue_create_new_site_tapped"
+
+        // WebKitView
+        case .webKitViewDisplayed:
+            return "webkitview_displayed"
+        case .webKitViewDismissed:
+            return "webkitview_dismissed"
+        case .webKitViewOpenInSafariTapped:
+            return "webkitview_open_in_safari_tapped"
+        case .webKitViewReloadTapped:
+            return "webkitview_reload_tapped"
+        case .webKitViewShareTapped:
+            return "webkitview_share_tapped"
+        case .webKitViewNavigatedBack:
+            return "webkitview_navigated_back"
+        case .webKitViewNavigatedForward:
+            return "webkitview_navigated_forward"
+
+        case .previewWebKitViewDeviceChanged:
+            return "preview_webkitview_device_changed"
+
+        case .addSiteAlertDisplayed:
+            return "add_site_alert_displayed"
+
+        // Change Username
+        case .changeUsernameSearchPerformed:
+            return "change_username_search_performed"
+        case .changeUsernameDisplayed:
+            return "change_username_displayed"
+        case .changeUsernameDismissed:
+            return "change_username_dismissed"
+
         } // END OF SWITCH
     }
 
