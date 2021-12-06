@@ -1,5 +1,6 @@
 import ScreenObject
 import XCTest
+import XCUITestHelpers
 
 public class BlockEditorScreen: ScreenObject {
 
@@ -140,7 +141,7 @@ public class BlockEditorScreen: ScreenObject {
     public func dismissBlocksPickerIfNeeded() {
         // Determine whether the block picker is on screen using the visibility of the add block
         // button as a proxy
-        guard addBlockButton.isFullyVisibleOnScreen == false else { return }
+        guard addBlockButton.isFullyVisibleOnScreen() == false else { return }
 
         // Dismiss the block picker by swiping down
         app.swipeDown()
