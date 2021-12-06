@@ -23,8 +23,7 @@ APP_IDENTIFIER = 'com.automattic.jetpack'
     version_config_path = File.join(PROJECT_ROOT_FOLDER, "config", "Version.internal.xcconfig")
     versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
 
-    long_hash = Git.open(PROJECT_ROOT_FOLDER).revparse('HEAD')
-    short_hash = `git rev-parse --short #{long_hash}`.strip!
+    short_hash = last_git_commit[:abbreviated_commit_hash]
 
     build_number = [
       short_hash,
