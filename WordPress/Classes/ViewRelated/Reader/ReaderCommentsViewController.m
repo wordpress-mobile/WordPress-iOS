@@ -157,9 +157,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self configureViewConstraints];
     [self configureKeyboardManager];
 
-    if (![self newCommentThreadEnabled]) {
-        [self refreshAndSync];
-    }
+    [self refreshAndSync];
+
+//    if (![self newCommentThreadEnabled]) {
+//        [self refreshAndSync];
+//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -172,15 +174,15 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 
-    if ([self newCommentThreadEnabled]) {
-        [self refreshAndSync];
-    }
+//    if ([self newCommentThreadEnabled]) {
+//        [self refreshAndSync];
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 
     if (self.promptToAddComment) {
         [self.replyTextView becomeFirstResponder];

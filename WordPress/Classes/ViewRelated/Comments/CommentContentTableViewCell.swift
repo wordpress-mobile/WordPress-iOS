@@ -79,8 +79,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private(set) weak var accessoryButton: UIButton!
 
-    @IBOutlet private weak var webView: WKWebView!
-    @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var contentContainerView: UIView!
+    @IBOutlet private weak var contentContainerHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
@@ -103,16 +103,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         return templateString
     }()
 
-    /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
-    private static let resourceURL: URL? = {
-        Bundle.main.resourceURL
-    }()
-
-    /// Used to determine whether the cache is still valid or not.
-    private var commentContentCache: String? = nil
-
-    /// Caches the HTML content, to be reused when the orientation changed.
-    private var htmlContentCache: String? = nil
+    private var renderer: CommentContentRenderer?
 
     // MARK: Like Button State
 
@@ -163,6 +154,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         replyButtonAction = nil
         likeButtonAction = nil
         contentLinkTapAction = nil
+
+        onContentLoaded = nil
+
+        // reset content renderer.
+        renderer = nil
+        contentContainerView.subviews.forEach { $0.removeFromSuperview() }
     }
 
     override func awakeFromNib() {
@@ -196,7 +193,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isModerationEnabled = comment.allowsModeration()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: webView)
+        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: contentContainerView)
 
         // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
         // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
@@ -206,16 +203,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
         }
 
-        // optimize: do not reload if the content doesn't change.
-        if let contentCache = commentContentCache, contentCache == comment.content {
-            return
-        }
-
-        // Configure comment content.
+        // Content rendering
+        let renderer = WebCommentContentRenderer(comment: comment)
+        renderer.delegate = self
         self.onContentLoaded = onContentLoaded
-        webViewHeightConstraint.constant = 1 // reset webview height to handle cases where the new content requires the webview to shrink.
-        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
-        webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
+        self.renderer = renderer
+
+        // reset height constraint to handle cases where the new content requires the webview to shrink.
+        contentContainerHeightConstraint.constant = 1
+
+        let contentView = renderer.render()
+        contentContainerView.addSubview(contentView)
+        contentContainerView.pinSubviewToAllEdges(contentView)
     }
 
     /// Hide all actions for the comment.
@@ -230,47 +229,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
 }
 
-// MARK: - WKNavigationDelegate
+// MARK: - CommentContentRendererDelegate
 
-extension CommentContentTableViewCell: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // Wait until the HTML document finished loading.
-        // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
-        webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil else {
-                return
-            }
-
-            // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
-            // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
-            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
-                guard let height = height as? CGFloat else {
-                    return
-                }
-
-                // reset the webview to opaque again so the scroll indicator is visible.
-                webView.isOpaque = true
-
-                // update the web view height obtained from the evaluated Javascript.
-                self.webViewHeightConstraint.constant = height
-                self.onContentLoaded?(height)
-            }
-        }
+extension CommentContentTableViewCell: CommentContentRendererDelegate {
+    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
+        contentContainerHeightConstraint.constant = height
+        onContentLoaded?(height)
     }
 
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        switch navigationAction.navigationType {
-        case .other:
-            // allow local file requests.
-            decisionHandler(.allow)
-        default:
-            decisionHandler(.cancel)
-            guard let destinationURL = navigationAction.request.url,
-                  let linkTapAction = contentLinkTapAction else {
-                      return
-                  }
-            linkTapAction(destinationURL)
-        }
+    func renderer(_ renderer: CommentContentRenderer, interactedWithURL url: URL) {
+        contentLinkTapAction?(url)
     }
 }
 
@@ -319,10 +287,6 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
-        webView.navigationDelegate = self
-        webView.scrollView.bounces = false
-        webView.scrollView.showsVerticalScrollIndicator = false
-
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
         replyButton?.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -366,41 +330,6 @@ private extension CommentContentTableViewCell {
         }
 
         avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
-    }
-
-    /// Returns a formatted HTML string by loading the template for rich comment.
-    ///
-    /// The method will try to return cached content if possible, by detecting whether the content matches the previous content.
-    /// If it's different (e.g. due to edits), it will reprocess the HTML string.
-    ///
-    /// - Parameter content: The content value from the `Comment` object.
-    /// - Returns: Formatted HTML string to be displayed in the web view.
-    ///
-    func formattedHTMLString(for content: String) -> String {
-        // return the previous HTML string if the comment content is unchanged.
-        if let previousCommentContent = commentContentCache,
-           let previousHTMLString = htmlContentCache,
-           previousCommentContent == content {
-            return previousHTMLString
-        }
-
-        // otherwise: sanitize the content, cache it, and then return it.
-        guard let htmlTemplateFormat = Self.htmlTemplateFormat else {
-            DDLogError("\(Self.classNameWithoutNamespaces()): Failed to load HTML template format for comment content.")
-            return String()
-        }
-
-        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
-        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
-        let htmlContent = String(format: htmlTemplateFormat, content
-                                    .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
-                                    .trimmingCharacters(in: .whitespacesAndNewlines))
-
-        // cache the contents.
-        commentContentCache = content
-        htmlContentCache = htmlContent
-
-        return htmlContent
     }
 
     func updateModerationBarVisibility() {

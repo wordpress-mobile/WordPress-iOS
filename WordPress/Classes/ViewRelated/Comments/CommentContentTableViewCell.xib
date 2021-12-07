@@ -13,15 +13,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="120" id="KGk-i7-Jjw" customClass="CommentContentTableViewCell" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="353" id="KGk-i7-Jjw" customClass="CommentContentTableViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="353"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="353"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG" userLabel="Container Stack View">
-                        <rect key="frame" x="16" y="0.0" width="288" height="120"/>
+                        <rect key="frame" x="16" y="0.0" width="288" height="353"/>
                         <subviews>
                             <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="f2E-yC-BJS" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="288" height="119"/>
@@ -112,21 +112,18 @@
                                     <constraint firstAttribute="trailing" secondItem="1G8-cc-t5d" secondAttribute="trailing" constant="-12" id="xTt-ug-Tgu"/>
                                 </constraints>
                             </view>
-                            <wkWebView contentMode="scaleToFill" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="Je0-5Q-ty6">
-                                <rect key="frame" x="0.0" y="119" width="288" height="1"/>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="M0y-BK-TEh" userLabel="Content Container View">
+                                <rect key="frame" x="0.0" y="119" width="288" height="0.0"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="999" constant="1" id="dGD-8Q-LSr"/>
+                                    <constraint firstAttribute="height" id="t5W-a4-bo7"/>
                                 </constraints>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QT8-DO-J30" userLabel="Reaction Stack View">
-                                <rect key="frame" x="0.0" y="120" width="288" height="0.0"/>
+                                <rect key="frame" x="0.0" y="119" width="288" height="234"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="174.5" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="97" width="174.5" height="40"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
@@ -140,7 +137,7 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="762" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="179.5" y="0.0" width="53.5" height="0.0"/>
+                                        <rect key="frame" x="179.5" y="96.5" width="53.5" height="41"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
@@ -154,7 +151,7 @@
                                         </state>
                                     </button>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8GH-U7-J7H" userLabel="Spacer View">
-                                        <rect key="frame" x="238" y="0.0" width="50" height="0.0"/>
+                                        <rect key="frame" x="238" y="92" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" placeholder="YES" id="4wt-Z8-Xp5"/>
@@ -163,7 +160,7 @@
                                 </subviews>
                             </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Z-LV-01Y" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="120" width="288" height="83"/>
+                                <rect key="frame" x="0.0" y="353" width="288" height="83"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="qRm-Qi-IXu"/>
@@ -187,15 +184,15 @@
                 <outlet property="containerStackBottomConstraint" destination="jAu-U3-I4N" id="1Hk-Cp-fR5"/>
                 <outlet property="containerStackLeadingConstraint" destination="uFL-PF-ffo" id="6Ah-H9-d0b"/>
                 <outlet property="containerStackView" destination="hcN-S7-sLG" id="k9D-6a-BmR"/>
+                <outlet property="contentContainerHeightConstraint" destination="t5W-a4-bo7" id="2ox-vW-Kuh"/>
+                <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
                 <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="moderationBar" destination="T1Z-LV-01Y" id="YUL-ft-QkO"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>
                 <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
-                <outlet property="webView" destination="Je0-5Q-ty6" id="YaD-wp-E6W"/>
-                <outlet property="webViewHeightConstraint" destination="dGD-8Q-LSr" id="rBk-4R-GCz"/>
             </connections>
-            <point key="canvasLocation" x="131.8840579710145" y="235.71428571428569"/>
+            <point key="canvasLocation" x="131.8840579710145" y="313.72767857142856"/>
         </tableViewCell>
     </objects>
     <resources>
