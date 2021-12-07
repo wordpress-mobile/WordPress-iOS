@@ -199,9 +199,8 @@ class ReaderDetailCoordinator {
                                    topLevelComments: commentsDisplayed,
                                             success: { [weak self] _, totalComments in
                                                 self?.updateCommentsFor(post: post, totalComments: totalComments?.intValue ?? 0)
-                                            }, failure: { [weak self] error in
+                                            }, failure: { error in
                                                 DDLogError("Failed fetching post detail comments: \(String(describing: error))")
-                                                self?.view?.updateComments([], totalComments: 0)
                                             })
     }
 
