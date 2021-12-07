@@ -5,7 +5,7 @@ public class PasswordScreen: ScreenObject {
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
-            // // swiftlint:disable:next opening_brace
+            // swiftlint:disable:next opening_brace
             expectedElementGetters: [ { $0.secureTextFields["Password"] } ],
             app: app
         )
