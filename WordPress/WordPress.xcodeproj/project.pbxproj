@@ -144,6 +144,7 @@
 		098B8576275E76FE004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8577275E9765004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8578275FF975004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
+		098B8579275FFB21004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
@@ -18581,6 +18582,7 @@
 				74021A05202E1307006CC39F /* UIImage+Extensions.swift in Sources */,
 				74021A0D202E133D006CC39F /* ShareMediaFileManager.swift in Sources */,
 				CB1FD8D826E4BBAA00EDAF06 /* SharePostTypePickerViewController.swift in Sources */,
+				098B8579275FFB21004D299F /* AppLocalizedString.swift in Sources */,
 				74021A1E202E164D006CC39F /* CocoaLumberjack.swift in Sources */,
 				74E44AD52031E83C00556205 /* ExtensionNotificationManager.swift in Sources */,
 				74448F552044BC7600BD4CDA /* CategoryTree.swift in Sources */,
