@@ -873,11 +873,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.noResultsViewController removeFromView];
 
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
-
-    if ([self newCommentThreadEnabled]) {
-        self.tableView.separatorStyle = isTableViewEmpty ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
-    }
-
     if (!isTableViewEmpty) {
         return;
     }
