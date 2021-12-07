@@ -1178,7 +1178,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     if ([self newCommentThreadEnabled]) {
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
-        [self configureContentCell:cell comment:comment tableView:self.tableView];
+        [self configureContentCell:cell comment:comment indexPath:indexPath tableView:self.tableView];
 
         // show separator when the comment is the "last leaf" of its top-level comment.
         cell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
@@ -1189,7 +1189,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
             if ([comment allowsModeration]) {
                 // NOTE: Remove when minimum version is bumped to iOS 14.
-                [self showMenuSheetFor:comment tableView:weakSelf.tableView sourceView:sourceView];
+                [self showMenuSheetFor:comment indexPath:indexPath tableView:weakSelf.tableView sourceView:sourceView];
             } else {
                 [self shareComment:comment sourceView:sourceView];
             }

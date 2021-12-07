@@ -65,7 +65,7 @@ import UIKit
         return cell
     }
 
-    func configureContentCell(_ cell: UITableViewCell, comment: Comment, tableView: UITableView) {
+    func configureContentCell(_ cell: UITableViewCell, comment: Comment, indexPath: IndexPath, tableView: UITableView) {
         guard let cell = cell as? CommentContentTableViewCell else {
             return
         }
@@ -80,12 +80,40 @@ import UIKit
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         if #available (iOS 14.0, *) {
             cell.accessoryButton.showsMenuAsPrimaryAction = comment.allowsModeration()
-            cell.accessoryButton.menu = comment.allowsModeration() ? menu(for: comment, tableView: tableView, sourceView: cell.accessoryButton) : nil
+            cell.accessoryButton.menu = comment.allowsModeration() ? menu(for: comment,
+                                                                             indexPath: indexPath,
+                                                                             tableView: tableView,
+                                                                             sourceView: cell.accessoryButton) : nil
         }
 
         cell.configure(with: comment) { _ in
             tableView.performBatchUpdates({})
         }
+    }
+
+    func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
+        let editCommentTableViewController = EditCommentTableViewController(comment: comment) { [weak self] comment, commentChanged in
+            guard commentChanged else {
+                return
+            }
+
+            // optimistically update the comment in the thread with local changes.
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+
+            // track user's intent to edit the comment.
+            CommentAnalytics.trackCommentEdited(comment: comment)
+
+            self?.commentService.uploadComment(comment, success: {
+                // update the thread again in case the approval status changed.
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }, failure: { _ in
+                self?.displayNotice(title: .editCommentFailureNoticeText)
+            })
+        }
+
+        let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
+        navigationControllerToPresent.modalPresentationStyle = .fullScreen
+        present(navigationControllerToPresent, animated: true)
     }
 
     /// Opens a share sheet, prompting the user to share the URL of the provided comment.
@@ -105,8 +133,8 @@ import UIKit
     ///
     /// NOTE: Remove this once we bump the minimum version to iOS 14.
     ///
-    func showMenuSheet(for comment: Comment, tableView: UITableView, sourceView: UIView?) {
-        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+    func showMenuSheet(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) {
+        let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
         let menuViewController = MenuSheetViewController(items: commentMenus.map { menuSection in
             // Convert ReaderCommentMenu to MenuSheetViewController.MenuItem
             menuSection.map { $0.toMenuItem }
@@ -140,6 +168,10 @@ private extension ReaderCommentsViewController {
         static let maxIndentationLevel: Int = 4
     }
 
+    var commentService: CommentService {
+        return CommentService(managedObjectContext: ContextManager.shared.mainContext)
+    }
+
     /// Returns a `UIMenu` structure to be displayed when the accessory button is tapped.
     /// Note that this should only be called on iOS version 14 and above.
     ///
@@ -151,8 +183,8 @@ private extension ReaderCommentsViewController {
     ///    | Baz   •|
     ///     --------
     ///
-    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> UIMenu {
-        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+    func menu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
         return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
             UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
         })
@@ -161,7 +193,7 @@ private extension ReaderCommentsViewController {
     /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
     /// the order of comment menu will determine the order of appearance for the corresponding menu element.
     ///
-    func commentMenu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
+    func commentMenu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
         return [
             [
                 .unapprove {
@@ -175,8 +207,8 @@ private extension ReaderCommentsViewController {
                 }
             ],
             [
-                .edit {
-                    // TODO: Edit comment
+                .edit { [weak self] in
+                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: tableView)
                 },
                 .share { [weak self] in
                     self?.shareComment(comment, sourceView: sourceView)
@@ -191,6 +223,8 @@ private extension ReaderCommentsViewController {
 private extension String {
     static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
                                                    + "Shown when the comment is written by the post author.")
+    static let editCommentFailureNoticeText = NSLocalizedString("There has been an unexpected error while editing the comment",
+                                                                comment: "Error displayed if a comment fails to get updated")
 }
 
 // MARK: - Reader Comment Menu
