@@ -49,10 +49,6 @@ extension RichCommentContentRenderer: WPRichContentViewDelegate {
 private extension RichCommentContentRenderer {
     struct Constants {
         // Because a stackview is managing layout we tweak text insets to fine tune things.
-        // Insets:
-        // Top 2: Just a bit of vertical padding so the text isn't too close to the label above.
-        // Left -4: So the left edge of the text matches the left edge of the other views.
-        // Bottom -16: Removes some of the padding normally added to the bottom of a textview.
         static let textViewInsets = UIEdgeInsets(top: -8, left: -4, bottom: -24, right: 0)
     }
 
