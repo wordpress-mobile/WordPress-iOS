@@ -374,7 +374,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;
 
         // hide cell separator for the last row
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+        self.tableView.tableFooterView = [self tableFooterViewForHiddenSeparators];
 
     } else {
         UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
@@ -579,6 +579,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     return [Feature enabled:FeatureFlagNewCommentThread];
 }
+
+- (UIView *)tableFooterViewForHiddenSeparators
+{
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+}
+
 
 - (UIView *)cachedHeaderView {
     if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
@@ -851,7 +857,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.tableView.tableFooterView = footerView;
         
     } else {
-        self.tableView.tableFooterView = nil;
+        self.tableView.tableFooterView = [self newCommentThreadEnabled] ? [self tableFooterViewForHiddenSeparators] : nil;
         self.activityFooter = nil;
     }
 }
@@ -867,6 +873,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.noResultsViewController removeFromView];
 
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+
+    if ([self newCommentThreadEnabled]) {
+        self.tableView.separatorStyle = isTableViewEmpty ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    }
+
     if (!isTableViewEmpty) {
         return;
     }
