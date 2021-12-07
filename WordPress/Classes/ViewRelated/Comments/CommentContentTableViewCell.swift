@@ -156,10 +156,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         contentLinkTapAction = nil
 
         onContentLoaded = nil
-
-        // reset content renderer.
-        renderer = nil
-        contentContainerView.subviews.forEach { $0.removeFromSuperview() }
     }
 
     override func awakeFromNib() {
@@ -203,18 +199,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
         }
 
-        // Content rendering
-        let renderer = WebCommentContentRenderer(comment: comment)
-        renderer.delegate = self
+        // Configure content renderer.
         self.onContentLoaded = onContentLoaded
-        self.renderer = renderer
-
-        // reset height constraint to handle cases where the new content requires the webview to shrink.
-        contentContainerHeightConstraint.constant = 1
-
-        let contentView = renderer.render()
-        contentContainerView.addSubview(contentView)
-        contentContainerView.pinSubviewToAllEdges(contentView)
+        configureRendererIfNeeded(for: comment)
     }
 
     /// Hide all actions for the comment.
@@ -396,6 +383,37 @@ private extension CommentContentTableViewCell {
             completion()
         }
     }
+
+    // MARK: Content Rendering
+
+    func resetRenderedContents() {
+        renderer = nil
+        contentContainerView.subviews.forEach { $0.removeFromSuperview() }
+    }
+
+    func configureRendererIfNeeded(for comment: Comment) {
+        // skip creating the renderer if the content does not change.
+        // this prevents the cell to jump multiple times due to consecutive reloadData calls.
+        if let renderer = renderer, renderer.matchesContent(from: comment) {
+            return
+        }
+
+        // clean out any pre-existing renderer just to be sure.
+        resetRenderedContents()
+
+        let renderer = WebCommentContentRenderer(comment: comment)
+        renderer.delegate = self
+        self.renderer = renderer
+
+        // reset height constraint to handle cases where the new content requires the webview to shrink.
+        contentContainerHeightConstraint.constant = 1
+
+        let contentView = renderer.render()
+        contentContainerView.addSubview(contentView)
+        contentContainerView.pinSubviewToAllEdges(contentView)
+    }
+
+    // MARK: Button Actions
 
     @objc func accessoryButtonTapped() {
         accessoryButtonAction?(accessoryButton)

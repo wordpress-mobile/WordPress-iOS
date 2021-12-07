@@ -40,6 +40,15 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
         return webView
     }
+
+    func matchesContent(from comment: Comment) -> Bool {
+        // if content cache is still nil, then the comment hasn't been rendered yet.
+        guard let contentCache = commentContentCache else {
+            return false
+        }
+
+        return contentCache == comment.content
+    }
 }
 
 // MARK: - WKNavigationDelegate

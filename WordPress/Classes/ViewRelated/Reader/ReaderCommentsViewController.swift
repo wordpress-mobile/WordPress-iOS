@@ -87,7 +87,6 @@ import UIKit
         }
 
         cell.configure(with: comment) { _ in
-            print(">>> CONFIGURE CELL: \(comment.commentID)")
             handler.tableView.performBatchUpdates({})
         }
     }

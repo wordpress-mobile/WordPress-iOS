@@ -2,7 +2,10 @@ protocol CommentContentRenderer {
     var delegate: CommentContentRendererDelegate? { get set }
 
     init(comment: Comment)
+
     func render() -> UIView
+
+    func matchesContent(from comment: Comment) -> Bool
 }
 
 protocol CommentContentRendererDelegate: AnyObject {
