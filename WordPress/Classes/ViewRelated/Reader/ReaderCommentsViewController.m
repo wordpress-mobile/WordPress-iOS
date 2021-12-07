@@ -1186,6 +1186,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
         [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
 
+        // support for legacy content rendering method.
+        cell.richContentDelegate = self;
+
         // show separator when the comment is the "last leaf" of its top-level comment.
         cell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
 
@@ -1250,10 +1253,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self newCommentThreadEnabled]) {
-        return UITableViewAutomaticDimension;
-    }
-
     NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
     if (cachedHeight.doubleValue) {
         return cachedHeight.doubleValue;
@@ -1341,8 +1340,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     if (self.needsUpdateAttachmentsAfterScrolling) {
         self.needsUpdateAttachmentsAfterScrolling = NO;
 
-        for (ReaderCommentCell *cell in [self.tableView visibleCells]) {
-            [cell ensureTextViewLayout];
+        for (UITableViewCell *cell in [self.tableView visibleCells]) {
+            if ([cell isKindOfClass:[ReaderCommentCell class]]) {
+                [(ReaderCommentCell *)cell ensureTextViewLayout];
+            } else if ([cell isKindOfClass:[CommentContentTableViewCell class]]) {
+                [(CommentContentTableViewCell *)cell ensureRichContentTextViewLayout];
+            }
         }
         [self updateTableViewForAttachments];
     }
