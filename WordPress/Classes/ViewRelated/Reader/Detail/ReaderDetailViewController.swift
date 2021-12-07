@@ -390,9 +390,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-        commentsTableViewDelegate?.comments = comments
-        commentsTableViewDelegate?.totalComments = totalComments
-        commentsTableViewDelegate?.buttonDelegate = self
+        commentsTableViewDelegate?.updateWith(comments: comments,
+                                              totalComments: totalComments,
+                                              commentsEnabled: toolbar.commentButton.isEnabled,
+                                              buttonDelegate: self)
         commentsTableView.reloadData()
     }
 
@@ -1002,6 +1003,6 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         guard let post = post else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: self, promptToAddComment: commentsTableViewDelegate?.comments.count == 0)
+        ReaderCommentAction().execute(post: post, origin: self, promptToAddComment: commentsTableViewDelegate?.totalComments == 0)
     }
 }
