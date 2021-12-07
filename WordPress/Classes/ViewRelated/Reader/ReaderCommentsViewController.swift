@@ -65,7 +65,7 @@ import UIKit
         return cell
     }
 
-    func configureContentCell(_ cell: UITableViewCell, comment: Comment, indexPath: IndexPath, tableView: UITableView) {
+    func configureContentCell(_ cell: UITableViewCell, comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler) {
         guard let cell = cell as? CommentContentTableViewCell else {
             return
         }
@@ -82,38 +82,13 @@ import UIKit
             cell.accessoryButton.showsMenuAsPrimaryAction = comment.allowsModeration()
             cell.accessoryButton.menu = comment.allowsModeration() ? menu(for: comment,
                                                                              indexPath: indexPath,
-                                                                             tableView: tableView,
+                                                                             handler: handler,
                                                                              sourceView: cell.accessoryButton) : nil
         }
 
         cell.configure(with: comment) { _ in
-            tableView.performBatchUpdates({})
+            handler.tableView.performBatchUpdates({})
         }
-    }
-
-    func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
-        let editCommentTableViewController = EditCommentTableViewController(comment: comment) { [weak self] comment, commentChanged in
-            guard commentChanged else {
-                return
-            }
-
-            // optimistically update the comment in the thread with local changes.
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-
-            // track user's intent to edit the comment.
-            CommentAnalytics.trackCommentEdited(comment: comment)
-
-            self?.commentService.uploadComment(comment, success: {
-                // update the thread again in case the approval status changed.
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }, failure: { _ in
-                self?.displayNotice(title: .editCommentFailureNoticeText)
-            })
-        }
-
-        let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
-        navigationControllerToPresent.modalPresentationStyle = .fullScreen
-        present(navigationControllerToPresent, animated: true)
     }
 
     /// Opens a share sheet, prompting the user to share the URL of the provided comment.
@@ -133,8 +108,8 @@ import UIKit
     ///
     /// NOTE: Remove this once we bump the minimum version to iOS 14.
     ///
-    func showMenuSheet(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) {
-        let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
+    func showMenuSheet(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) {
+        let commentMenus = commentMenu(for: comment, indexPath: indexPath, handler: handler, sourceView: sourceView)
         let menuViewController = MenuSheetViewController(items: commentMenus.map { menuSection in
             // Convert ReaderCommentMenu to MenuSheetViewController.MenuItem
             menuSection.map { $0.toMenuItem }
@@ -183,8 +158,8 @@ private extension ReaderCommentsViewController {
     ///    | Baz   •|
     ///     --------
     ///
-    func menu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> UIMenu {
-        let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
+    func menu(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, indexPath: indexPath, handler: handler, sourceView: sourceView)
         return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
             UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
         })
@@ -193,28 +168,98 @@ private extension ReaderCommentsViewController {
     /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
     /// the order of comment menu will determine the order of appearance for the corresponding menu element.
     ///
-    func commentMenu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
+    func commentMenu(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) -> [[ReaderCommentMenu]] {
         return [
             [
-                .unapprove {
-                    // TODO: Unapprove comment
+                .unapprove { [weak self] in
+                    self?.moderateComment(comment, status: .pending, handler: handler)
                 },
-                .spam {
-                    // TODO: Unapprove comment
+                .spam { [weak self] in
+                    self?.moderateComment(comment, status: .spam, handler: handler)
                 },
-                .trash {
-                    // TODO: Unapprove comment
+                .trash { [weak self] in
+                    self?.moderateComment(comment, status: .unapproved, handler: handler)
                 }
             ],
             [
                 .edit { [weak self] in
-                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: tableView)
+                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: handler.tableView)
                 },
                 .share { [weak self] in
                     self?.shareComment(comment, sourceView: sourceView)
                 }
             ]
         ]
+    }
+
+    func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
+        let editCommentTableViewController = EditCommentTableViewController(comment: comment) { [weak self] comment, commentChanged in
+            guard commentChanged else {
+                return
+            }
+
+            // optimistically update the comment in the thread with local changes.
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+
+            // track user's intent to edit the comment.
+            CommentAnalytics.trackCommentEdited(comment: comment)
+
+            self?.commentService.uploadComment(comment, success: {
+                // update the thread again in case the approval status changed.
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }, failure: { _ in
+                self?.displayNotice(title: .editCommentFailureNoticeText)
+            })
+        }
+
+        let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
+        navigationControllerToPresent.modalPresentationStyle = .fullScreen
+        present(navigationControllerToPresent, animated: true)
+    }
+
+    func moderateComment(_ comment: Comment, status: CommentStatusType, handler: WPTableViewHandler) {
+        let successBlock: (String) -> Void = { [weak self] noticeText in
+            let context = comment.managedObjectContext ?? ContextManager.shared.mainContext
+
+            // decrement the ReaderPost's comment count.
+            if let post = self?.post, let commentCount = post.commentCount?.intValue {
+                post.commentCount = NSNumber(value: commentCount - 1)
+            }
+
+            // delete the comment from ReaderPost.
+            context.delete(comment)
+            ContextManager.shared.saveContextAndWait(context)
+
+            // Refresh the UI. The table view handler is needed because the fetched results delegate is set to nil.
+            handler.refreshTableViewPreservingOffset()
+            self?.displayNotice(title: noticeText)
+        }
+
+        switch status {
+        case .pending:
+            commentService.unapproveComment(comment) {
+                successBlock(.pendingSuccess)
+            } failure: { [weak self] _ in
+                self?.displayNotice(title: .pendingFailed)
+            }
+
+        case .spam:
+            commentService.spamComment(comment) {
+                successBlock(.spamSuccess)
+            } failure: { [weak self] _ in
+                self?.displayNotice(title: .spamFailed)
+            }
+
+        case .unapproved: // trash
+            commentService.trashComment(comment) {
+                successBlock(.trashSuccess)
+            } failure: { [weak self] _ in
+                self?.displayNotice(title: .trashFailed)
+            }
+
+        default:
+            break
+        }
     }
 }
 
@@ -225,6 +270,14 @@ private extension String {
                                                    + "Shown when the comment is written by the post author.")
     static let editCommentFailureNoticeText = NSLocalizedString("There has been an unexpected error while editing the comment",
                                                                 comment: "Error displayed if a comment fails to get updated")
+
+    // moderation messages
+    static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
+    static let pendingFailed = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
+    static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
+    static let spamFailed = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
+    static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
+    static let trashFailed = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
 }
 
 // MARK: - Reader Comment Menu

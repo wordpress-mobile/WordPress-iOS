@@ -913,7 +913,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     comment.status = currentStatus;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id <CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
