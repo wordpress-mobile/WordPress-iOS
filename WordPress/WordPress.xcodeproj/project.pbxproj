@@ -143,6 +143,7 @@
 		092C3802275E718100BBBDD9 /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8576275E76FE004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8577275E9765004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
+		098B8578275FF975004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
@@ -18665,6 +18666,7 @@
 				74402F2C2005337D00A1D4A2 /* ExtensionTransitioningManager.swift in Sources */,
 				74337EDD20054D5500777997 /* MainShareViewController.swift in Sources */,
 				CB48172A26E0D93D008C2D9B /* SharePostTypePickerViewController.swift in Sources */,
+				098B8578275FF975004D299F /* AppLocalizedString.swift in Sources */,
 				4020B2BE2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */,
 				74402F2E2005344700A1D4A2 /* ExtensionPresentationAnimator.swift in Sources */,
 				74D06FE91FE0782000AF1788 /* String+RegEx.swift in Sources */,
