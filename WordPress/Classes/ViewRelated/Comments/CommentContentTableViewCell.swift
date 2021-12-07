@@ -95,6 +95,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // This is public so its delegate can be set directly.
     @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
 
+    @IBOutlet private weak var highlightBarView: UIView!
+
     // MARK: Private Properties
 
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
@@ -170,6 +172,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureViews()
+    }
+
+    @objc func showHighlightedStyle(_ highlighted: Bool) {
+        backgroundColor = highlighted ? Style.highlightedBackgroundColor : nil
+        highlightBarView.backgroundColor = highlighted ? Style.highlightedBarBackgroundColor : .clear
     }
 
     // MARK: Public Methods

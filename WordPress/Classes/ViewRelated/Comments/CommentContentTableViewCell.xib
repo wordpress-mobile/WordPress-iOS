@@ -20,6 +20,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="353"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mNJ-fg-sKO" userLabel="Highlighted Bar View">
+                        <rect key="frame" x="0.0" y="0.0" width="5" height="353"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="5" id="zU4-st-LVq"/>
+                        </constraints>
+                    </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG" userLabel="Container Stack View">
                         <rect key="frame" x="16" y="0.0" width="288" height="353"/>
                         <subviews>
@@ -63,7 +70,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="HpE-B7-6wr" firstAttribute="top" secondItem="po6-3F-ppN" secondAttribute="top" id="1mu-S2-Bod"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hDo-cU-sWp" secondAttribute="trailing" id="Kgn-8h-iRl"/>
@@ -171,7 +178,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="hcN-S7-sLG" secondAttribute="trailing" id="2zy-oR-X5O"/>
+                    <constraint firstItem="mNJ-fg-sKO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="II8-F0-CBs"/>
+                    <constraint firstItem="mNJ-fg-sKO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eId-Od-5wj"/>
                     <constraint firstItem="hcN-S7-sLG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="esQ-oB-yxJ"/>
+                    <constraint firstAttribute="bottom" secondItem="mNJ-fg-sKO" secondAttribute="bottom" id="izD-cW-YFx"/>
                     <constraint firstAttribute="bottom" secondItem="hcN-S7-sLG" secondAttribute="bottom" id="jAu-U3-I4N"/>
                     <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="uFL-PF-ffo"/>
                 </constraints>
@@ -187,6 +197,7 @@
                 <outlet property="contentContainerHeightConstraint" destination="t5W-a4-bo7" id="2ox-vW-Kuh"/>
                 <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
                 <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
+                <outlet property="highlightBarView" destination="mNJ-fg-sKO" id="fjf-gA-HoE"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="moderationBar" destination="T1Z-LV-01Y" id="YUL-ft-QkO"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>

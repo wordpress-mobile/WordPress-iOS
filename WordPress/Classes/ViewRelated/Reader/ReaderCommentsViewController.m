@@ -74,6 +74,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
 @property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
 
+@property (nonatomic, strong) NSIndexPath *highlightedIndexPath;
+
 @end
 
 
@@ -972,8 +974,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             // seems that we may end up in slightly the wrong position.
             // If we then immediately scroll again, everything has been laid out, and we should end up
             // at the correct row. @frosty 2021-05-06
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         });
+
+        self.highlightedIndexPath = indexPath;
 
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;
@@ -1191,6 +1195,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     if ([self newCommentThreadEnabled]) {
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
         [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
+
+        if (self.highlightedIndexPath) {
+            [cell showHighlightedStyle:[indexPath isEqual:self.highlightedIndexPath]];
+        }
 
         // support for legacy content rendering method.
         cell.richContentDelegate = self;

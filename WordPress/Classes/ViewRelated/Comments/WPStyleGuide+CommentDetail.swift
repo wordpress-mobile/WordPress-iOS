@@ -39,6 +39,10 @@ extension WPStyleGuide {
             static let reactionButtonFont = CommentDetail.secondaryTextFont
             static let reactionButtonTextColor = CommentDetail.secondaryTextColor
 
+            // highlighted state
+            static let highlightedBackgroundColor = UIColor.muriel(name: .blue, .shade0)
+            static let highlightedBarBackgroundColor = UIColor.muriel(name: .blue, .shade40)
+
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
             private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .medium)
