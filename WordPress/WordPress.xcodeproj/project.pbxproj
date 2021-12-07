@@ -1475,7 +1475,6 @@
 		931215EE267F6799008C3B69 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
 		931215F2267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F1267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift */; };
 		931215F4267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
-		931430201E68B9C50014B6C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1C5B2131E54C28C00052319 /* Localizable.strings */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -7015,7 +7014,6 @@
 		E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlog32to33.swift; sourceTree = "<group>"; };
 		E16273E21B2AD89A00088AF7 /* MIGRATIONS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = MIGRATIONS.md; path = ../MIGRATIONS.md; sourceTree = "<group>"; };
 		E163AF9E1ED45B100035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E163AF9F1ED45B110035317E /* sk */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCellViewModel.swift; sourceTree = "<group>"; };
 		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E167745B1377F25500EE44DD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -7088,39 +7086,6 @@
 		E1C2260623901AAD0021D03C /* WordPressOrgRestApi+WordPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordPressOrgRestApi+WordPress.swift"; sourceTree = "<group>"; };
 		E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSettings.swift; sourceTree = "<group>"; };
 		E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSettingsTests.swift; sourceTree = "<group>"; };
-		E1C5B2121E54C28C00052319 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2141E54C37800052319 /* ar */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2151E54C37C00052319 /* bg */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2161E54C37F00052319 /* cs */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2171E54C38200052319 /* cy */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2181E54C3A200052319 /* ja */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2191E54C3A300052319 /* fr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21A1E54C3A500052319 /* de */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21B1E54C3A700052319 /* es */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21C1E54C3A900052319 /* it */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21D1E54C3AB00052319 /* pt */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21E1E54C3AC00052319 /* sv */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21F1E54C3AE00052319 /* zh-Hans */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B2201E54C3AF00052319 /* nb */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2211E54C3B100052319 /* tr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2221E54C3B200052319 /* id */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2231E54C3B300052319 /* zh-Hant */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B2241E54C3B500052319 /* hu */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2251E54C3B600052319 /* pl */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2261E54C3B700052319 /* ru */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2271E54C3B900052319 /* da */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2281E54C3BB00052319 /* th */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2291E54C3BC00052319 /* nl */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22A1E54C3C400052319 /* pt-BR */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B22B1E54C3C500052319 /* hr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22C1E54C3C700052319 /* he */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22D1E54C3C800052319 /* en-CA */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B22E1E54C3CA00052319 /* ro */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22F1E54C3CC00052319 /* sq */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2301E54C3CD00052319 /* is */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2311E54C3CF00052319 /* en-AU */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B2321E54C3D000052319 /* ko */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2331E54C3E500052319 /* en-GB */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1C9AA501C10419200732665 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Math.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
@@ -12822,7 +12787,6 @@
 				B50248BB1C96FFCC00AFBDED /* WordPressShare-Internal.entitlements */,
 				B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */,
 				B50248BE1C96FFCC00AFBDED /* WordPressSharePrefix.pch */,
-				E1C5B2131E54C28C00052319 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -15603,7 +15567,6 @@
 				E1AFA8C31E8E34230004A323 /* WordPressShare.js in Resources */,
 				74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */,
 				986FF29B214196A4005B28EC /* NoResults.storyboard in Resources */,
-				931430201E68B9C50014B6C6 /* Localizable.strings in Resources */,
 				433840C822C2BA6300CB13F8 /* AppImages.xcassets in Resources */,
 				435B762B2297484200511813 /* ColorPalette.xcassets in Resources */,
 			);
@@ -20922,48 +20885,6 @@
 			name = InfoPlist.strings;
 			path = Resources;
 			sourceTree = "<group>";
-		};
-		E1C5B2131E54C28C00052319 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E1C5B2121E54C28C00052319 /* Base */,
-				E1C5B2141E54C37800052319 /* ar */,
-				E1C5B2151E54C37C00052319 /* bg */,
-				E1C5B2161E54C37F00052319 /* cs */,
-				E1C5B2171E54C38200052319 /* cy */,
-				E1C5B2181E54C3A200052319 /* ja */,
-				E1C5B2191E54C3A300052319 /* fr */,
-				E1C5B21A1E54C3A500052319 /* de */,
-				E1C5B21B1E54C3A700052319 /* es */,
-				E1C5B21C1E54C3A900052319 /* it */,
-				E1C5B21D1E54C3AB00052319 /* pt */,
-				E1C5B21E1E54C3AC00052319 /* sv */,
-				E1C5B21F1E54C3AE00052319 /* zh-Hans */,
-				E1C5B2201E54C3AF00052319 /* nb */,
-				E1C5B2211E54C3B100052319 /* tr */,
-				E1C5B2221E54C3B200052319 /* id */,
-				E1C5B2231E54C3B300052319 /* zh-Hant */,
-				E1C5B2241E54C3B500052319 /* hu */,
-				E1C5B2251E54C3B600052319 /* pl */,
-				E1C5B2261E54C3B700052319 /* ru */,
-				E1C5B2271E54C3B900052319 /* da */,
-				E1C5B2281E54C3BB00052319 /* th */,
-				E1C5B2291E54C3BC00052319 /* nl */,
-				E1C5B22A1E54C3C400052319 /* pt-BR */,
-				E1C5B22B1E54C3C500052319 /* hr */,
-				E1C5B22C1E54C3C700052319 /* he */,
-				E1C5B22D1E54C3C800052319 /* en-CA */,
-				E1C5B22E1E54C3CA00052319 /* ro */,
-				E1C5B22F1E54C3CC00052319 /* sq */,
-				E1C5B2301E54C3CD00052319 /* is */,
-				E1C5B2311E54C3CF00052319 /* en-AU */,
-				E1C5B2321E54C3D000052319 /* ko */,
-				E1C5B2331E54C3E500052319 /* en-GB */,
-				E163AF9F1ED45B110035317E /* sk */,
-			);
-			name = Localizable.strings;
-			path = WordPressShareExtension;
-			sourceTree = SOURCE_ROOT;
 		};
 		E1D91454134A853D0089019C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
