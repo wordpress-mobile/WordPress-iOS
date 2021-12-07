@@ -41,7 +41,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
     /// Apply Bar Button
     ///
     fileprivate lazy var selectButton: UIBarButtonItem = {
-        let applyTitle = NSLocalizedString("Select", comment: "Select action on the app extension category picker screen. Saves the selected categories for the post.")
+        let applyTitle = AppLocalizedString("Select", comment: "Select action on the app extension category picker screen. Saves the selected categories for the post.")
         let button = UIBarButtonItem(title: applyTitle, style: .plain, target: self, action: #selector(selectWasPressed))
         button.accessibilityIdentifier = "Select Button"
         return button
@@ -50,7 +50,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension category picker screen.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel action on the app extension category picker screen.")
         let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
         button.accessibilityIdentifier = "Cancel Button"
         return button
