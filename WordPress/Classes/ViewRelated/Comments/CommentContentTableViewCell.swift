@@ -103,7 +103,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         return templateString
     }()
 
-    private var renderer: CommentContentRenderer?
+    private var renderer: CommentContentRenderer? = nil
 
     // MARK: Like Button State
 
