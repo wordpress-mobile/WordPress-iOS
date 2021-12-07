@@ -70,7 +70,7 @@ import UIKit
             return
         }
 
-        cell.badgeTitle = comment.isFromPostAuthor() ? Constants.authorBadgeText : nil
+        cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
@@ -88,7 +88,9 @@ import UIKit
         }
     }
 
-    func shareComment(_ comment: Comment, sourceView: UIView) {
+    /// Opens a share sheet, prompting the user to share the URL of the provided comment.
+    ///
+    func shareComment(_ comment: Comment, sourceView: UIView?) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -98,77 +100,161 @@ import UIKit
         present(activityViewController, animated: true, completion: nil)
     }
 
-    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView) -> UIMenu {
-        return UIMenu(title: "", options: .displayInline, children: [
-            ReaderCommentMenu.unapprove.action {
-                // TODO: Unapprove comment
-            },
-            ReaderCommentMenu.spam.action {
-                // TODO: Spam comment
-            },
-            ReaderCommentMenu.trash.action {
-                // TODO: Trash comment
-            },
-            UIMenu(title: "", options: .displayInline, children: [
-                ReaderCommentMenu.edit.action {
-                    // TODO: Edit comment
-                },
-                ReaderCommentMenu.share.action { [weak self] in
-                    self?.shareComment(comment, sourceView: sourceView)
-                }
-            ])
-        ])
+    /// Shows a contextual menu through `UIPopoverPresentationController`. This is a fallback implementation for iOS 13, since the menu can't be
+    /// shown programmatically or through a single tap.
+    ///
+    /// NOTE: Remove this once we bump the minimum version to iOS 14.
+    ///
+    func showMenuSheet(for comment: Comment, tableView: UITableView, sourceView: UIView?) {
+        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+        let menuViewController = MenuSheetViewController(items: commentMenus.map { menuSection in
+            // Convert ReaderCommentMenu to MenuSheetViewController.MenuItem
+            menuSection.map { $0.toMenuItem }
+        })
+
+        menuViewController.modalPresentationStyle = .popover
+        if let popoverPresentationController = menuViewController.popoverPresentationController {
+            popoverPresentationController.delegate = self
+            popoverPresentationController.sourceView = sourceView
+            popoverPresentationController.sourceRect = sourceView?.bounds ?? .null
+        }
+
+        present(menuViewController, animated: true)
     }
 }
+
+// MARK: - Popover Presentation Delegate
+
+extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate {
+    // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
+    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+// MARK: - Private Helpers
 
 private extension ReaderCommentsViewController {
     struct Constants {
         static let indentationWidth: CGFloat = 15.0
         static let maxIndentationLevel: Int = 4
-
-        static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
-                                                       + "Shown when the comment is written by the post author.")
     }
 
-    enum ReaderCommentMenu {
-        case unapprove
-        case spam
-        case trash
-        case edit
-        case share
+    /// Returns a `UIMenu` structure to be displayed when the accessory button is tapped.
+    /// Note that this should only be called on iOS version 14 and above.
+    ///
+    /// For example, given an comment menu list `[[Foo, Bar], [Baz]]`, it will generate a menu as below:
+    ///     ________
+    ///    | Foo   •|
+    ///    | Bar   •|
+    ///    |--------|
+    ///    | Baz   •|
+    ///     --------
+    ///
+    func menu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, tableView: tableView, sourceView: sourceView)
+        return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
+            UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
+        })
+    }
 
-        var title: String {
-            switch self {
-            case .unapprove:
-                return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
-            case .spam:
-                return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
-            case .trash:
-                return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
-            case .edit:
-                return NSLocalizedString("Edit", comment: "Edits the comment")
-            case .share:
-                return NSLocalizedString("Share", comment: "Shares the comment URL")
-            }
+    /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
+    /// the order of comment menu will determine the order of appearance for the corresponding menu element.
+    ///
+    func commentMenu(for comment: Comment, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
+        return [
+            [
+                .unapprove {
+                    // TODO: Unapprove comment
+                },
+                .spam {
+                    // TODO: Unapprove comment
+                },
+                .trash {
+                    // TODO: Unapprove comment
+                }
+            ],
+            [
+                .edit {
+                    // TODO: Edit comment
+                },
+                .share { [weak self] in
+                    self?.shareComment(comment, sourceView: sourceView)
+                }
+            ]
+        ]
+    }
+}
+
+// MARK: - Localization
+
+private extension String {
+    static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
+                                                   + "Shown when the comment is written by the post author.")
+}
+
+// MARK: - Reader Comment Menu
+
+/// Represents the available menu when the ellipsis accessory button on the comment cell is tapped.
+enum ReaderCommentMenu {
+    case unapprove(_ handler: () -> Void)
+    case spam(_ handler: () -> Void)
+    case trash(_ handler: () -> Void)
+    case edit(_ handler: () -> Void)
+    case share(_ handler: () -> Void)
+
+    var title: String {
+        switch self {
+        case .unapprove:
+            return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
+        case .spam:
+            return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
+        case .trash:
+            return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
+        case .edit:
+            return NSLocalizedString("Edit", comment: "Edits the comment")
+        case .share:
+            return NSLocalizedString("Share", comment: "Shares the comment URL")
         }
+    }
 
-        var image: UIImage? {
-            switch self {
-            case .unapprove:
-                return .init(systemName: "x.circle")
-            case .spam:
-                return .init(systemName: "exclamationmark.octagon")
-            case .trash:
-                return .init(systemName: "trash")
-            case .edit:
-                return .init(systemName: "pencil")
-            case .share:
-                return .init(systemName: "square.and.arrow.up")
-            }
+    var image: UIImage? {
+        switch self {
+        case .unapprove:
+            return .init(systemName: "x.circle")
+        case .spam:
+            return .init(systemName: "exclamationmark.octagon")
+        case .trash:
+            return .init(systemName: "trash")
+        case .edit:
+            return .init(systemName: "pencil")
+        case .share:
+            return .init(systemName: "square.and.arrow.up")
         }
+    }
 
-        func action(handler: @escaping () -> Void) -> UIAction {
+    var toAction: UIAction {
+        switch self {
+        case .unapprove(let handler),
+                .spam(let handler),
+                .trash(let handler),
+                .edit(let handler),
+                .share(let handler):
             return UIAction(title: title, image: image) { _ in
+                handler()
+            }
+        }
+    }
+
+    /// NOTE: Remove when minimum version is bumped to iOS 14.
+    var toMenuItem: MenuSheetViewController.MenuItem {
+        switch self {
+        case .unapprove(let handler),
+                .spam(let handler),
+                .trash(let handler),
+                .edit(let handler),
+                .share(let handler):
+            return MenuSheetViewController.MenuItem(title: title, image: image) {
                 handler()
             }
         }

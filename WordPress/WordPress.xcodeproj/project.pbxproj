@@ -4367,6 +4367,8 @@
 		FE23EB4C26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
 		FE25C235271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
+		FE32EFFF275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
+		FE32F000275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
 		FE39C135269C37C900EFB827 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
@@ -7585,6 +7587,7 @@
 		FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = richCommentTemplate.html; path = Resources/HTML/richCommentTemplate.html; sourceTree = "<group>"; };
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
+		FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSheetViewController.swift; sourceTree = "<group>"; };
 		FE39C133269C37C900EFB827 /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
@@ -7940,6 +7943,7 @@
 				37EAAF4C1A11799A006D6306 /* CircularImageView.swift */,
 				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
 				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
+				FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */,
 				B5B410B51B1772B000CFCF8D /* NavigationTitleView.swift */,
 				982A4C3420227D6700B5518E /* NoResultsViewController.swift */,
 				98B33C87202283860071E1E2 /* NoResults.storyboard */,
@@ -17584,6 +17588,7 @@
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				2481B17F260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */,
 				7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */,
+				FE32EFFF275914390040BE67 /* MenuSheetViewController.swift in Sources */,
 				3FC7F89E2612341900FD8728 /* UnifiedPrologueStatsContentView.swift in Sources */,
 				7D21280D251CF0850086DD2C /* EditPageViewController.swift in Sources */,
 				738B9A4F21B85CF20005062B /* SiteCreator.swift in Sources */,
@@ -19352,6 +19357,7 @@
 				FABB21612602FC2C00C8785C /* ReaderShowAttributionAction.swift in Sources */,
 				FABB21622602FC2C00C8785C /* LinkSettingsViewController.swift in Sources */,
 				9856A39E261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
+				FE32F000275914390040BE67 /* MenuSheetViewController.swift in Sources */,
 				FABB21632602FC2C00C8785C /* FeatureItemCell.swift in Sources */,
 				FABB21642602FC2C00C8785C /* WPRichContentView.swift in Sources */,
 				FABB21652602FC2C00C8785C /* MediaFileManager.swift in Sources */,
