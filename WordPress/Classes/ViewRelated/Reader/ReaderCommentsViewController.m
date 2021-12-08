@@ -81,17 +81,19 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 #pragma mark - Static Helpers
 
-+ (instancetype)controllerWithPost:(ReaderPost *)post
++ (instancetype)controllerWithPost:(ReaderPost *)post source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
+    controller.source = source;
     return controller;
 }
 
-+ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
++ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     [controller setupWithPostID:postID siteID:siteID];
+    [controller trackCommentsOpenedWithPostID:postID siteID:siteID source:source];
     return controller;
 }
 
@@ -117,7 +119,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return nil;
     }
 
-    return [self controllerWithPost:restoredPost];
+    return [self controllerWithPost:restoredPost source:ReaderCommentsSourcePostDetails];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -244,13 +246,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 }
 
 #pragma mark - Tracking methods
-
--(void)trackCommentsOpened {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
-    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
-    properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
-    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentsOpened properties:properties];
-}
 
 -(void)trackCommentLikedOrUnliked:(Comment *) comment {
     ReaderPost *post = self.post;
@@ -680,7 +675,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     _post = post;
-    [self trackCommentsOpened];
+
     if (_post.isWPCom || _post.isJetpack) {
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;

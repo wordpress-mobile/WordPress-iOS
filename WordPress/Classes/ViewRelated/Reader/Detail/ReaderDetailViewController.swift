@@ -286,7 +286,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             ReaderCommentAction().execute(post: post,
                                           origin: self,
                                           promptToAddComment: false,
-                                          navigateToCommentID: commentID)
+                                          navigateToCommentID: commentID,
+                                          source: .postDetails)
         }
     }
 
@@ -1003,6 +1004,10 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         guard let post = post else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: self, promptToAddComment: commentsTableViewDelegate.totalComments == 0)
+
+        ReaderCommentAction().execute(post: post,
+                                      origin: self,
+                                      promptToAddComment: commentsTableViewDelegate.totalComments == 0,
+                                      source: .postDetailsComments)
     }
 }
