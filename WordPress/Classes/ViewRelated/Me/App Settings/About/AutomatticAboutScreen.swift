@@ -62,7 +62,7 @@ class AutomatticAboutScreen: UIViewController {
 
         // Setting the frame once is needed so that the table view header will show.
         // This seems to be a table view bug although I'm not entirely sure.
-        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        headerView.frame.size.height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
 
         return headerView
     }()
@@ -138,8 +138,14 @@ class AutomatticAboutScreen: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeTopAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+
+        if let headerView = headerView {
+            headerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        }
+
+        updateHeaderSize()
 
         tableView.reloadData()
     }
@@ -171,6 +177,23 @@ class AutomatticAboutScreen: UIViewController {
         if isMovingToParent {
             configuration.willShow(viewController: self)
         }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateHeaderSize()
+    }
+
+    private func updateHeaderSize() {
+        guard let headerView = headerView else {
+            return
+        }
+
+        headerView.layoutIfNeeded()
+
+        headerView.frame.size.height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        tableView.tableHeaderView = headerView
     }
 
     // MARK: - Actions
