@@ -66,11 +66,11 @@ final class QuickStartPromptViewController: UIViewController {
         siteDescriptionLabel.textColor = .textSubtle
 
         promptTitleLabel.numberOfLines = 0
-        promptTitleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
+        promptTitleLabel.font = WPStyleGuide.fixedSerifFontForTextStyle(.title2, fontWeight: .semibold)
         promptTitleLabel.textColor = .text
 
         promptDescriptionLabel.numberOfLines = 0
-        promptDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        promptDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         promptDescriptionLabel.textColor = .textSubtle
 
         showMeAroundButton.isPrimary = true
