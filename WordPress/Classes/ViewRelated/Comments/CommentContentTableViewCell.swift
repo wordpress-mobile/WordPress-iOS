@@ -68,6 +68,23 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
+    /// A custom highlight style for the cell that is more controllable than `isHighlighted`.
+    /// Cell selection for this cell is disabled, and highlight style may be disabled based on the table view settings.
+    @objc var isEmphasized: Bool = false {
+        didSet {
+            backgroundColor = isEmphasized ? Style.highlightedBackgroundColor : nil
+            highlightBarView.backgroundColor = isEmphasized ? Style.highlightedBarBackgroundColor : .clear
+        }
+    }
+
+    @objc var isReplyHighlighted: Bool = false {
+        didSet {
+            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.buttonTintColor
+            replyButton?.setTitleColor(isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor, for: .normal)
+            replyButton?.setImage(isReplyHighlighted ? Style.highlightedReplyIconImage : Style.replyIconImage, for: .normal)
+        }
+    }
+
     // MARK: Constants
 
     private let customBottomSpacing: CGFloat = 10
@@ -160,6 +177,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        // reset all highlight states.
+        isEmphasized = false
+        isReplyHighlighted = false
+
         // reset all button actions.
         accessoryButtonAction = nil
         replyButtonAction = nil
@@ -172,11 +193,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureViews()
-    }
-
-    @objc func showHighlightedStyle(_ highlighted: Bool) {
-        backgroundColor = highlighted ? Style.highlightedBackgroundColor : nil
-        highlightBarView.backgroundColor = highlighted ? Style.highlightedBarBackgroundColor : .clear
     }
 
     // MARK: Public Methods

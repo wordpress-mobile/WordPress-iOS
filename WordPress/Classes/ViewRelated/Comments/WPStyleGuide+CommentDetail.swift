@@ -42,6 +42,7 @@ extension WPStyleGuide {
             // highlighted state
             static let highlightedBackgroundColor = UIColor.muriel(name: .blue, .shade0)
             static let highlightedBarBackgroundColor = UIColor.muriel(name: .blue, .shade40)
+            static let highlightedReplyButtonTintColor = UIColor.primary
 
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
@@ -59,6 +60,10 @@ extension WPStyleGuide {
                 let image = UIImage(systemName: name) ?? UIImage(named: name)
                 return image?.withConfiguration(reactionIconConfiguration).imageFlippedForRightToLeftLayoutDirection()
             }
+
+            static let highlightedReplyIconImage = UIImage(systemName: "arrowshape.turn.up.left.fill", withConfiguration: reactionIconConfiguration)?
+                .withTintColor(highlightedReplyButtonTintColor, renderingMode: .alwaysTemplate)
+                .imageFlippedForRightToLeftLayoutDirection()
         }
 
         public struct ReplyIndicator {

@@ -587,6 +587,46 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
 }
 
+- (void)setHighlightedIndexPath:(NSIndexPath *)highlightedIndexPath
+{
+    if (![self newCommentThreadEnabled]) {
+        _highlightedIndexPath = highlightedIndexPath;
+        return;
+    }
+
+    if (_highlightedIndexPath) {
+        CommentContentTableViewCell *previousCell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:_highlightedIndexPath];
+        previousCell.isEmphasized = NO;
+    }
+
+    if (highlightedIndexPath) {
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:highlightedIndexPath];
+        cell.isEmphasized = YES;
+    }
+
+    _highlightedIndexPath = highlightedIndexPath;
+}
+
+- (void)setIndexPathForCommentRepliedTo:(NSIndexPath *)indexPathForCommentRepliedTo
+{
+    if (![self newCommentThreadEnabled]) {
+        _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
+        return;
+    }
+
+    if (_indexPathForCommentRepliedTo) {
+        CommentContentTableViewCell *previousCell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:_indexPathForCommentRepliedTo];
+        previousCell.isReplyHighlighted = NO;
+    }
+
+    if (indexPathForCommentRepliedTo) {
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPathForCommentRepliedTo];
+        cell.isReplyHighlighted = YES;
+    }
+
+    self.highlightedIndexPath = indexPathForCommentRepliedTo;
+    _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
+}
 
 - (UIView *)cachedHeaderView {
     if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
@@ -1197,7 +1237,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
 
         if (self.highlightedIndexPath) {
-            [cell showHighlightedStyle:[indexPath isEqual:self.highlightedIndexPath]];
+            cell.isEmphasized = (indexPath == self.highlightedIndexPath);
+        }
+
+        if (self.indexPathForCommentRepliedTo) {
+            cell.isReplyHighlighted = (indexPath == self.indexPathForCommentRepliedTo);
         }
 
         // support for legacy content rendering method.
