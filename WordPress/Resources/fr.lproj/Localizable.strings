@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-29 09:26:53+0000 */
+/* Translation-Revision-Date: 2021-12-08 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "%1$@ pour corriger les menaces.";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d commentaire";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d commentaires";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "Partagez automatiquement les nouveaux articles sur vos médias sociaux pour attirer ce public sur votre site.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Famille Automattic";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Mises à jour automatiques";
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "Vérifiez les statistiques de votre site";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "Vérifiez le titre de votre site";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Vérification des achats…";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "Choisir une nouvelle icône d’application";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "Sélectionnez un site à ouvrir.";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Choisissez un thème";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Choisir une heure";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "Choisir une favicône unique";
 
 /* No comment provided by engineer. */
 "Choose audio" = "Choisir un fichier sonore";
@@ -1627,13 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "Terminé : vérifiez vos statistiques";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "Terminé : vérifiez le titre de votre site";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "Terminé : choisissez votre thème";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "Terminé : favicône unique choisie";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Terminé : continuez vers les réglages du site";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "Terminé : Passer en revue les pages du site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "Terminé : partage sur les réseaux sociaux";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Terminé : affichez votre site";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "Copier le lien dans le commentaire.";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "Copiez l’URL à partir du presse-papier, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "Copier le bloc";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "Brouillon";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "Rédigez un brouillon et publiez un article de blog.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack optimisera vos images et les servira depuis le serveur le plus proche de vos visiteurs. L’usage de notre réseau de livraison de contenu (CDN) accélérera la vitesse de chargement de votre site.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "Rejoignez-nous, où que vous soyez";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Rejoindre une conversation : commentez sur les articles des blogs auxquels vous êtes abonnés.";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "Icônes héritées";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "Mentions légales, etc.";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Laissez-nous vous aider";
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "Afficher les articles similaires";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "Me faire découvrir";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "Affiché";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "Contenu affiché dans l’onglet du navigateur de vos visiteurs et à d’autres endroits en ligne.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Affichée publiquement quand vous commentez sur des blogs.";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "Partage sur les réseaux sociaux";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Certains blocs ont des réglages supplémentaires. Appuyez sur l’icône des réglages en bas à droite du bloc pour afficher plus d’options.";

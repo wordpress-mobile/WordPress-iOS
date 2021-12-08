@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-02 09:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-08 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "脅威を修正するには、%1$@。";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d件のコメント";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d件のコメント";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "新しい投稿をソーシャルメディアに自動的に共有し、読者をサイトに誘導します。";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Automattic ファミリー";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "サイト統計情報を確認";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "サイトタイトルを確認する";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "購入を確認中…";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "新しいアイコンを選択";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "開くサイトを選択します。";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "テーマを選択";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "時間を選択";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "独自のサイトアイコンを選択する";
 
 /* No comment provided by engineer. */
 "Choose audio" = "音声ファイルを選択";
@@ -1627,13 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "完了 : サイトの統計情報を確認";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "完了: サイトタイトルを確認する";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "完了 : テーマを選択";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "完了: 独自のサイトアイコンを選択する";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "完了 : サイトの設定を続ける";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "完了: サイトページを確認";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "完了: ソーシャル共有";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "完了 : サイトを確認";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "コメントへのリンクをコピー";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "クリップボードから URL (%s) をコピーします";
 
 /* No comment provided by engineer. */
 "Copy block" = "ブロックをコピー";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "下書き";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "投稿の下書きを作成して公開してください。";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -3212,7 +3212,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "ほかのデバイスから";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "クリップボードから";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "この端末から";
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack が画像を最適化し、訪問者に最も近いところにあるサーバーから画像を提供します。WordPress.com のグローバルコンテンツ配信ネットワークを使用すると、サイトの読み込み速度が向上します。";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "どこからでも参加可能";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "フォロー中のブログの記事にコメントを書き、ディスカッションに参加してみましょう。";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "さらに詳しく ...";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "簡単なチュートリアルで基本を学びましょう。";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "左";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "レガシーアイコン";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "法的情報およびその他";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "お手伝いさせてください";
@@ -5620,7 +5620,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "クイックスタート";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "評価してください";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "App Store で評価";
@@ -6412,7 +6412,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "リンクを共有";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "友達と共有";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "関連記事を表示";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "表示";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "表示内容";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "訪問者のブラウザータブやオンライン上のその他の場所に表示されます。";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "ブログにコメントする際に公開表示されます。";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "ソーシャル";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "ソーシャル共有";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "一部のブロックには追加の設定があります。 ブロックの右下にある設定アイコンをタップしてその他のオプションを表示します。";
@@ -6879,10 +6879,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "ブロックエディターに切り替える";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "HTML モードに切り替えました";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "ビジュアルモードに切り替えました";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "見出し1のフォントサイズに変更する";
@@ -8129,7 +8129,7 @@ translators: Block name. %s: The localized block name */
 "View All" = "すべて表示";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
+"View All Comments" = "すべてのコメントを表示";
 
 /* Button label for viewing a post */
 "View Post" = "投稿を表示";
@@ -8238,7 +8238,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "待機中…";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "アプリでこのサイトを管理する方法を知りたいですか ?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8699,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "WordPress.org プラグインページ";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "求人情報";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "国別表示数の世界地図。";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "ブロックをタップし、ブロックの左下に表示される上下矢印をタップして他のブロックの上下に移動させることで、ブロックの配置を変更できます。";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "サイトはいつでも切り替えることができます。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "この設定は、「参加サイト」→「サイト設定」でいつでも変更できます。";
