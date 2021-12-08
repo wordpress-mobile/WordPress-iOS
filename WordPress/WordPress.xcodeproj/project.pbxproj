@@ -4369,6 +4369,10 @@
 		FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE32EFFF275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
 		FE32F000275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
+		FE32F002275F602E0040BE67 /* CommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */; };
+		FE32F003275F602E0040BE67 /* CommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */; };
+		FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */; };
+		FE32F007275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */; };
 		FE39C135269C37C900EFB827 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
@@ -7588,6 +7592,8 @@
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
 		FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSheetViewController.swift; sourceTree = "<group>"; };
+		FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContentRenderer.swift; sourceTree = "<group>"; };
+		FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCommentContentRenderer.swift; sourceTree = "<group>"; };
 		FE39C133269C37C900EFB827 /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
@@ -14597,6 +14603,15 @@
 			path = Sharing;
 			sourceTree = "<group>";
 		};
+		FE32F004275F60360040BE67 /* ContentRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				FE32F001275F602E0040BE67 /* CommentContentRenderer.swift */,
+				FE32F005275F62620040BE67 /* WebCommentContentRenderer.swift */,
+			);
+			path = ContentRenderer;
+			sourceTree = "<group>";
+		};
 		FE3D057C26C3D5A1002A51B0 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
@@ -14623,6 +14638,7 @@
 		FEA7948B26DD134400CEC520 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				FE32F004275F60360040BE67 /* ContentRenderer */,
 				FE43DAAD26DFAD1C00CFF595 /* CommentContentTableViewCell.swift */,
 				FE43DAAE26DFAD1C00CFF595 /* CommentContentTableViewCell.xib */,
 				FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */,
@@ -17934,6 +17950,7 @@
 				8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
 				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
+				FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				4326191522FCB9DC003C7642 /* MurielColor.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
@@ -18074,6 +18091,7 @@
 				9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */,
 				B06378C1253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift in Sources */,
 				4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */,
+				FE32F002275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
 				D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */,
 				17F11EDB268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
@@ -19770,6 +19788,7 @@
 				FABB22D22602FC2C00C8785C /* PostEditorState.swift in Sources */,
 				FABB22D32602FC2C00C8785C /* UICollectionViewCell+Tint.swift in Sources */,
 				FABB22D42602FC2C00C8785C /* ManagedPerson+CoreDataProperties.swift in Sources */,
+				FE32F003275F602E0040BE67 /* CommentContentRenderer.swift in Sources */,
 				FABB22D52602FC2C00C8785C /* TenorStrings.swift in Sources */,
 				FABB22D62602FC2C00C8785C /* PostEditor+MoreOptions.swift in Sources */,
 				FABB22D72602FC2C00C8785C /* NotificationSupportService.swift in Sources */,
@@ -20447,6 +20466,7 @@
 				3F3DD0B326FD176800F5F121 /* PresentationCard.swift in Sources */,
 				FABB253D2602FC2C00C8785C /* SiteVerticalsService.swift in Sources */,
 				FABB253E2602FC2C00C8785C /* ReaderBlockedSiteCell.swift in Sources */,
+				FE32F007275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
 				FABB253F2602FC2C00C8785C /* JetpackRestoreWarningViewController.swift in Sources */,
 				FABB25402602FC2C00C8785C /* SiteAssembly.swift in Sources */,
 				FABB25412602FC2C00C8785C /* ImageDimensionFetcher.swift in Sources */,
