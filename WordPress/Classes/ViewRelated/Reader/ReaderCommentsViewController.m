@@ -905,10 +905,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                        accessoryView:[self noResultsAccessoryView]];
 
     [self.noResultsViewController hideImageView:hideImageView];
-    [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
+
+    // when the table view is not yet properly initialized, use the view's frame instead to prevent wrong frame values.
+    if (self.tableView.window == nil) {
+        self.noResultsViewController.view.frame = self.view.frame;
+    } else {
+        self.noResultsViewController.view.frame = self.tableView.frame;
+    }
+
     [self.view insertSubview:self.noResultsViewController.view belowSubview:self.suggestionsTableView];
-    self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
