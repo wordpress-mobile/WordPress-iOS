@@ -130,6 +130,32 @@ import UIKit
 
         present(menuViewController, animated: true)
     }
+
+    // MARK: - Tracking
+
+    func trackCommentsOpened() {
+        var properties: [AnyHashable: Any] = [
+            WPAppAnalyticsKeySource: descriptionForSource(source)
+        ]
+
+        if let post = post {
+            properties[WPAppAnalyticsKeyPostID] = post.postID
+            properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        }
+
+        WPAnalytics.trackReader(.readerArticleCommentsOpened, properties: properties)
+    }
+
+    @objc func trackCommentsOpened(postID: NSNumber, siteID: NSNumber, source: ReaderCommentsSource) {
+        let properties: [AnyHashable: Any] = [
+            WPAppAnalyticsKeyPostID: postID,
+            WPAppAnalyticsKeyBlogID: siteID,
+            WPAppAnalyticsKeySource: descriptionForSource(source)
+        ]
+
+        WPAnalytics.trackReader(.readerArticleCommentsOpened, properties: properties)
+    }
+
 }
 
 // MARK: - Popover Presentation Delegate
@@ -267,6 +293,24 @@ private extension ReaderCommentsViewController {
             break
         }
     }
+
+    func descriptionForSource(_ source: ReaderCommentsSource) -> String {
+        switch source {
+        case .postCard:
+            return "reader_post_card"
+        case .postDetails:
+            return "reader_post_details"
+        case .postDetailsComments:
+            return "reader_post_details_comments"
+        case .commentNotification:
+            return "comment_notification"
+        case .mySiteComment:
+            return "my_site_comment"
+        default:
+            return "unknown"
+        }
+    }
+
 }
 
 // MARK: - Localization
