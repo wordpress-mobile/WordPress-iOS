@@ -22,8 +22,8 @@ extension TextList.Style {
 
     var accessibilityLabel: String {
         switch self {
-        case .ordered: return NSLocalizedString("Toggles the ordered list style", comment: "Accessibility Identifier for the Aztec Ordered List Style.")
-        case .unordered: return NSLocalizedString("Toggles the unordered list style", comment: "Accessibility Identifier for the Aztec Unordered List Style")
+        case .ordered: return AppLocalizedString("Toggles the ordered list style", comment: "Accessibility Identifier for the Aztec Ordered List Style.")
+        case .unordered: return AppLocalizedString("Toggles the unordered list style", comment: "Accessibility Identifier for the Aztec Unordered List Style")
         }
     }
 
