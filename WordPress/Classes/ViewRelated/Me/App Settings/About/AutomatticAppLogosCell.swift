@@ -21,6 +21,8 @@ class AutomatticAppLogosCell: UITableViewCell {
 
     func commonInit() {
         spriteKitView = SKView(frame: Metrics.sceneFrame)
+        spriteKitView.allowsTransparency = true
+
         logosScene = AppLogosScene()
 
         // Scene is resized to match the view
