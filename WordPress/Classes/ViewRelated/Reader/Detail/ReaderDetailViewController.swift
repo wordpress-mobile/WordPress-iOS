@@ -1004,7 +1004,7 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         guard let post = post else {
             return
         }
-        
+
         ReaderCommentAction().execute(post: post,
                                       origin: self,
                                       promptToAddComment: commentsTableViewDelegate.totalComments == 0,
