@@ -1,0 +1,14 @@
+Buenas noticias para todos: hemos corregido los fallos de la aplicación causados por la subida de imágenes mientras se está desconectado, el borrado de medios o la visualización de los detalles de los avisos de "Me gusta".
+
+Hemos hecho algunos grandes cambios en el editor de bloques, así que puedes mantener la calma y seguir publicando:
+
+- Cuando abres los ajustes de un bloque de botón o de imagen enlazado a una URL, el editor ya no rellena automáticamente una URL desde tu portapapeles. Ahora verás una sugerencia de "Enlazar a" para que puedas usar la URL del portapapeles o introducir una diferente.
+- Crea un bloque de galería y se abrirán automáticamente las opciones de medios de tu dispositivo, haciéndote más fácil añadir tus imágenes.
+- ¿Añadir un nuevo bloque? Si tu dispositivo está configurado en un idioma distinto al inglés, las pestañas del menú de inserción ahora coincidirán con el idioma configurado.
+- Cuando uses el bloque de incrustación, no verás la acción "Editar" en la barra de herramientas. En su lugar, ahora puedes cambiar la URL yendo a los ajustes del bloque.
+- En el editor de entradas, cambiar del modo HTML al modo visual presentará un aviso compacto informándote del cambio.
+- Puede que hayas notado el cambio por si solo del tamaño de tu fuente en los bloques de medios y de texto. Hemos eliminado el fallo que lo causaba.
+
+¿Eres nuevo en WordPress? No te preocupes. Nuestro proceso de acceso hace que sea más fácil que nunca crear y empezar a gestionar tu sitio.
+
+También hemos añadido una nueva pantalla "Acerca de" para que puedas valorar y compartir la aplicación (pista, pista), visitar nuestro perfil de Twitter y nuestro blog, ver nuestras otras aplicaciones y mucho más.
