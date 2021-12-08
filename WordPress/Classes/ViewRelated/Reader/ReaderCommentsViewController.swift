@@ -87,6 +87,12 @@ import UIKit
         }
 
         cell.configure(with: comment) { _ in
+            // don't adjust cell height when it's already scrolled out of viewport.
+            guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
+                  visibleIndexPaths.contains(indexPath) else {
+                      return
+                  }
+
             handler.tableView.performBatchUpdates({})
         }
     }

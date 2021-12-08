@@ -28,7 +28,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Back Bar Button
     ///
     fileprivate lazy var backButton: UIBarButtonItem = {
-        let backTitle = NSLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
+        let backTitle = AppLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
         let button = UIBarButtonItem(title: backTitle, style: .plain, target: self, action: #selector(backWasPressed))
         button.accessibilityIdentifier = "Back Button"
         return button
@@ -37,7 +37,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
         let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
         button.accessibilityIdentifier = "Cancel Button"
         return button
@@ -48,9 +48,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate lazy var publishButton: UIBarButtonItem = {
         let publishTitle: String
         if self.originatingExtension == .share {
-            publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+            publishTitle = AppLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
         } else {
-            publishTitle = NSLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
+            publishTitle = AppLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
         }
 
         let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(publishWasPressed))
@@ -407,14 +407,14 @@ fileprivate extension ShareModularViewController {
         switch moduleSection {
         case .type:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = NSLocalizedString("Type", comment: "Type menu item in share extension.")
+            cell.textLabel?.text = AppLocalizedString("Type", comment: "Type menu item in share extension.")
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Type"
             cell.isUserInteractionEnabled = true
             cell.detailTextLabel?.text = shareData.postType.title
         case .categories:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
+            cell.textLabel?.text = AppLocalizedString("Category", comment: "Category menu item in share extension.")
             cell.accessibilityLabel = "Category"
             if isFetchingCategories {
                 cell.isUserInteractionEnabled = false
@@ -445,7 +445,7 @@ fileprivate extension ShareModularViewController {
             }
         case .tags:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
+            cell.textLabel?.text = AppLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Tags"
             cell.isUserInteractionEnabled = true
@@ -453,7 +453,7 @@ fileprivate extension ShareModularViewController {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = .neutral(.shade70)
             } else {
-                cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.text =  AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
                 cell.detailTextLabel?.textColor = .neutral(.shade30)
             }
         case .summary:
@@ -883,12 +883,12 @@ fileprivate extension ShareModularViewController {
     }
 
     func showRetryAlert() {
-        let title: String = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message: String = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
-        let dismiss: String = NSLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
+        let title: String = AppLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message: String = AppLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
+        let dismiss: String = AppLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let acceptButtonText = NSLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
+        let acceptButtonText = AppLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
         let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
             self.savePostToRemoteSite()
         }
@@ -906,9 +906,9 @@ fileprivate extension ShareModularViewController {
     }
 
     func showPermissionsAlert() {
-        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message = NSLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
-        let dismiss = NSLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
+        let title = AppLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message = AppLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
+        let dismiss = AppLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -969,28 +969,28 @@ fileprivate extension ShareModularViewController {
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
         static let unknownDefaultCategoryID     = NSNumber(value: -1)
-        static let unknownDefaultCategoryName   = NSLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
+        static let unknownDefaultCategoryName   = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
     }
 
     struct SummaryText {
-        static let summaryPostPublishing    = NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
-        static let summaryDraftPostDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
-        static let summaryDraftPostSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
-        static let summaryDraftPostPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
-        static let summaryPagePublishing    = NSLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
-        static let summaryDraftPageDefault  = NSLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
-        static let summaryDraftPageSingular = NSLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
-        static let summaryDraftPagePlural   = NSLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
+        static let summaryPostPublishing    = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftPostDefault  = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryDraftPostSingular = AppLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
+        static let summaryDraftPostPlural   = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPagePublishing    = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
+        static let summaryDraftPageDefault  = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
+        static let summaryDraftPageSingular = AppLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
+        static let summaryDraftPagePlural   = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
     }
 
     struct StatusText {
-        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
-        static let publishingPostTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
-        static let savingPostTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
-        static let publishingPageTitle = NSLocalizedString("Publishing page...", comment: "A short message that informs the user a page is being published to the server from the share extension.")
-        static let savingPageTitle = NSLocalizedString("Saving page…", comment: "A short message that informs the user a draft page is being saved to the server from the share extension.")
-        static let cancellingTitle = NSLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
-        static let noSitesTitle = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
+        static let loadingTitle = AppLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
+        static let publishingPostTitle = AppLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        static let savingPostTitle = AppLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+        static let publishingPageTitle = AppLocalizedString("Publishing page...", comment: "A short message that informs the user a page is being published to the server from the share extension.")
+        static let savingPageTitle = AppLocalizedString("Saving page…", comment: "A short message that informs the user a draft page is being saved to the server from the share extension.")
+        static let cancellingTitle = AppLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
+        static let noSitesTitle = AppLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
     }
 }
 
