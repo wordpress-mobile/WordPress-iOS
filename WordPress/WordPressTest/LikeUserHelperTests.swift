@@ -2,6 +2,11 @@
 import XCTest
 
 class LikeUserHelperTests: XCTestCase {
+
+    let timeoutDuration: TimeInterval = 2
+
+    // MARK: Tests
+
     func createTestRemoteUserDictionary(withPreferredBlog hasPreferredBlog: Bool) -> [String: Any] {
         var remoteUserDictionary: [String: Any] = [
             "ID": 15,
@@ -42,7 +47,7 @@ class LikeUserHelperTests: XCTestCase {
             completionExpectation.fulfill()
         })
 
-        waitForExpectations(timeout: 0.1)
+        wait(for: [completionExpectation], timeout: timeoutDuration)
     }
 
     func testUpdatingExistingUserToRemovePreferredBlog() {
@@ -76,6 +81,6 @@ class LikeUserHelperTests: XCTestCase {
             completionExpectation.fulfill()
         })
 
-        waitForExpectations(timeout: 0.1)
+        wait(for: [completionExpectation], timeout: timeoutDuration)
     }
 }
