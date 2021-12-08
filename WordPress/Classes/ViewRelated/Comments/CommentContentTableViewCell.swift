@@ -9,7 +9,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     enum RenderMethod {
+        /// Uses WebKit to render the comment body.
         case web
+
+        /// Uses WPRichContent to render the comment body.
         case richContent
     }
 
@@ -178,6 +181,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
+    ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(with comment: Comment, renderMethod: RenderMethod = .web, onContentLoaded: ((CGFloat) -> Void)?) {
         nameLabel?.setText(comment.authorForDisplay())
@@ -224,8 +228,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     @objc func ensureRichContentTextViewLayout() {
-        guard let renderer = renderer,
-              renderMethod == .richContent,
+        guard renderMethod == .richContent,
               let richContentTextView = contentContainerView.subviews.first as? WPRichContentView else {
                   return
               }
