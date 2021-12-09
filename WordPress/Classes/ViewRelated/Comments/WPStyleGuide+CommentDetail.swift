@@ -40,7 +40,7 @@ extension WPStyleGuide {
             static let reactionButtonTextColor = CommentDetail.secondaryTextColor
 
             // highlighted state
-            static let highlightedBackgroundColor = UIColor.muriel(name: .blue, .shade0)
+            static let highlightedBackgroundColor = UIColor(light: .muriel(name: .blue, .shade0), dark: .muriel(name: .blue, .shade100)).withAlphaComponent(0.5)
             static let highlightedBarBackgroundColor = UIColor.muriel(name: .blue, .shade40)
             static let highlightedReplyButtonTintColor = UIColor.primary
 
