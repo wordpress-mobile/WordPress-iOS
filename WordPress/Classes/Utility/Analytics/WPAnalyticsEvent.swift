@@ -270,6 +270,10 @@ import Foundation
     case sharingButtonsEditMoreButtonToggled
     case sharingButtonsLabelChanged
 
+    // Comment Sharing
+    case readerArticleCommentShared
+    case siteCommentsCommentShared
+
     // People
     case peopleFilterChanged
     case peopleUserInvited
@@ -755,6 +759,12 @@ import Foundation
             return "sharing_buttons_edit_more_button_toggled"
         case .sharingButtonsLabelChanged:
             return "sharing_buttons_label_changed"
+
+        // Comment Sharing
+        case .readerArticleCommentShared:
+            return "reader_article_comment_shared"
+        case .siteCommentsCommentShared:
+            return "site_comments_comment_shared"
 
         // People
         case .peopleFilterChanged:

@@ -590,6 +590,9 @@ private extension CommentDetailViewController {
             return
         }
 
+        // track share intent.
+        WPAnalytics.track(.siteCommentsCommentShared)
+
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = senderView
         present(activityViewController, animated: true, completion: nil)
