@@ -360,7 +360,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             self.recentSiteService.touch(blog: blog)
 
             guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                if self.windowManager.isShowingFullscreenSignIn {
+                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                } else {
+                    self.windowManager.showAppUI(for: blog)
+                }
                 return
             }
 
