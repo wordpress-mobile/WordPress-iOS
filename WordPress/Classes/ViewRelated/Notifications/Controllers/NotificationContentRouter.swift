@@ -59,7 +59,7 @@ struct NotificationContentRouter {
             try coordinator.displayCommentsWithPostId(notification.metaPostID,
                                                       siteID: notification.metaSiteID,
                                                       commentID: commentID,
-                                                      source: .commentNotification)
+                                                      source: .commentLikeNotification)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }
