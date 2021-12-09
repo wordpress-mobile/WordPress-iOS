@@ -8,6 +8,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
     ReaderCommentsSourcePostDetailsComments,
     ReaderCommentsSourceCommentNotification,
     ReaderCommentsSourceMySiteComment,
+    ReaderCommentsSourceActivityLogDetail
 };
 
 
