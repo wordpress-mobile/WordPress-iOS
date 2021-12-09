@@ -706,7 +706,13 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)adjustNoResultViewPlacement
 {
     // calling this too early results in wrong tableView frame used for initial state
-    if(self.noResultsViewController.view.window == nil) {
+    if (self.noResultsViewController.view.window == nil) {
+        if (!self.splitViewController) {
+            // when the view controller is displayed without a splitViewController, assign the view's frame instead.
+            // assigning the view's frame when it's embedded in a splitViewController causes the NRV to be centered in the splitView instead of the view.
+            self.noResultsViewController.view.frame = self.view.frame;
+        }
+
         return;
     }
 
