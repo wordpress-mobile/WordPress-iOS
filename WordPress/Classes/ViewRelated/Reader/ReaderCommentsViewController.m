@@ -609,6 +609,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return;
     }
 
+    // un-highlight the cell if a highlighted Reply button is tapped.
+    if (_indexPathForCommentRepliedTo && indexPathForCommentRepliedTo && _indexPathForCommentRepliedTo == indexPathForCommentRepliedTo) {
+        [self tapRecognized:nil];
+        return;
+    }
+
     if (_indexPathForCommentRepliedTo) {
         CommentContentTableViewCell *previousCell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:_indexPathForCommentRepliedTo];
         previousCell.isReplyHighlighted = NO;
@@ -1102,12 +1108,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!indexPath) {
-        return;
-    }
-
-    // if a row is already selected don't allow selection of another
-    if (self.replyTextView.isFirstResponder) {
+    // in the new comment thread, we want to allow tapping the Reply button again to un-highlight the row.
+    if (![self newCommentThreadEnabled] && self.replyTextView.isFirstResponder) {
+        // if a row is already selected don't allow selection of another
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
         [self.replyTextView resignFirstResponder];
@@ -1115,7 +1118,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return;
     }
 
-    if (!self.canComment) {
+    if (!indexPath || !self.canComment) {
         return;
     }
 
