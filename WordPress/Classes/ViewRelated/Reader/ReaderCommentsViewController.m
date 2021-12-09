@@ -965,16 +965,23 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
         NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
 
-        // Dispatch to ensure the tableview has reloaded before we scroll
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if ([self newCommentThreadEnabled]) {
+            // Force the table view to be laid out first before scrolling to indexPath.
+            // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
+            [self.tableView layoutIfNeeded];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            // Yes, calling this twice is horrible.
-            // Our row heights are dynamically calculated, and the first time we perform a scroll it
-            // seems that we may end up in slightly the wrong position.
-            // If we then immediately scroll again, everything has been laid out, and we should end up
-            // at the correct row. @frosty 2021-05-06
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
-        });
+        } else {
+            // Dispatch to ensure the tableview has reloaded before we scroll
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                // Yes, calling this twice is horrible.
+                // Our row heights are dynamically calculated, and the first time we perform a scroll it
+                // seems that we may end up in slightly the wrong position.
+                // If we then immediately scroll again, everything has been laid out, and we should end up
+                // at the correct row. @frosty 2021-05-06
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
+            });
+        }
 
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;
