@@ -1,7 +1,7 @@
 
 protocol ContentCoordinator {
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?) throws
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL?) throws
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws
@@ -40,12 +40,12 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?) throws {
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
         guard let postID = postID, let siteID = siteID else {
             throw DisplayError.missingParameter
         }
 
-        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
+        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID, source: source)
         commentsViewController?.navigateToCommentID = commentID
         commentsViewController?.allowsPushingPostDetails = true
         controller?.navigationController?.pushViewController(commentsViewController!, animated: true)

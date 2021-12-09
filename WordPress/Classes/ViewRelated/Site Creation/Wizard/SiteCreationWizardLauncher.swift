@@ -48,9 +48,9 @@ final class SiteCreationWizardLauncher {
 
     /// Closure to be executed upon dismissal of the SiteAssemblyWizardContent.
     ///
-    private let onDismiss: ((Blog) -> Void)?
+    private let onDismiss: ((Blog, Bool) -> Void)?
 
-    init(onDismiss: ((Blog) -> Void)? = nil) {
+    init(onDismiss: ((Blog, Bool) -> Void)? = nil) {
         self.onDismiss = onDismiss
     }
 }

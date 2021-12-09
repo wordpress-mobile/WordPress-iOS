@@ -23,18 +23,18 @@ public class LoginEmailScreen: ScreenObject {
         )
     }
 
-    public func proceedWith(email: String) -> LinkOrPasswordScreen {
+    public func proceedWith(email: String) throws -> LinkOrPasswordScreen {
         emailTextField.tap()
         emailTextField.typeText(email)
         nextButton.tap()
 
-        return LinkOrPasswordScreen()
+        return try LinkOrPasswordScreen()
     }
 
-    func goToSiteAddressLogin() -> LoginSiteAddressScreen {
+    func goToSiteAddressLogin() throws -> LoginSiteAddressScreen {
         app.buttons["Self Hosted Login Button"].tap()
 
-        return LoginSiteAddressScreen()
+        return try LoginSiteAddressScreen()
     }
 
     static func isLoaded() -> Bool {

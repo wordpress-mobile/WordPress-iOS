@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
-
+import AutomatticAbout
 
 struct WebViewPresenter {
     func present(for url: URL, context: AboutItemActionContext) {

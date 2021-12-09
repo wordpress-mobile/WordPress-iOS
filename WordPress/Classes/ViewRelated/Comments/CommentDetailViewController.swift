@@ -478,7 +478,8 @@ private extension CommentDetailViewController {
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
-                                                          commentID: NSNumber(value: parentComment.commentID))
+                                                          commentID: NSNumber(value: parentComment.commentID),
+                                                          source: .mySiteComment)
     }
 
     func navigateToReplyComment() {
@@ -489,7 +490,8 @@ private extension CommentDetailViewController {
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
-                                                          commentID: NSNumber(value: replyID))
+                                                          commentID: NSNumber(value: replyID),
+                                                          source: .mySiteComment)
     }
 
     func navigateToPost() {

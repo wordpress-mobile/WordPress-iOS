@@ -475,10 +475,10 @@ private extension AllTimeViewController {
     // MARK: - Constants
 
     enum LocalizedText {
-        static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
-        static let views = NSLocalizedString("Views", comment: "Stats Views Label")
-        static let posts = NSLocalizedString("Posts", comment: "Stats Posts Label")
-        static let bestViews = NSLocalizedString("Best views ever", comment: "Stats 'Best views ever' Label")
+        static let visitors = AppLocalizedString("Visitors", comment: "Stats Visitors Label")
+        static let views = AppLocalizedString("Views", comment: "Stats Views Label")
+        static let posts = AppLocalizedString("Posts", comment: "Stats Posts Label")
+        static let bestViews = AppLocalizedString("Best views ever", comment: "Stats 'Best views ever' Label")
     }
 
     enum Constants {

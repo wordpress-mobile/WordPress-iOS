@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
@@ -170,10 +170,10 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="hcN-S7-sLG" secondAttribute="trailing" id="2zy-oR-X5O"/>
+                    <constraint firstAttribute="trailing" secondItem="hcN-S7-sLG" secondAttribute="trailing" constant="16" id="2zy-oR-X5O"/>
                     <constraint firstItem="hcN-S7-sLG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="esQ-oB-yxJ"/>
                     <constraint firstAttribute="bottom" secondItem="hcN-S7-sLG" secondAttribute="bottom" id="jAu-U3-I4N"/>
-                    <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="uFL-PF-ffo"/>
+                    <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="uFL-PF-ffo"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -183,6 +183,7 @@
                 <outlet property="badgeLabel" destination="hDo-cU-sWp" id="gVe-4c-TlR"/>
                 <outlet property="containerStackBottomConstraint" destination="jAu-U3-I4N" id="1Hk-Cp-fR5"/>
                 <outlet property="containerStackLeadingConstraint" destination="uFL-PF-ffo" id="6Ah-H9-d0b"/>
+                <outlet property="containerStackTrailingConstraint" destination="2zy-oR-X5O" id="dDR-lB-Nvs"/>
                 <outlet property="containerStackView" destination="hcN-S7-sLG" id="k9D-6a-BmR"/>
                 <outlet property="contentContainerHeightConstraint" destination="t5W-a4-bo7" id="2ox-vW-Kuh"/>
                 <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
