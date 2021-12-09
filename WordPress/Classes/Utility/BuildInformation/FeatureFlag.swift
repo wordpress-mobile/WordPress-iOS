@@ -68,7 +68,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newCommentThread:
             return false
         case .postDetailsComments:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 
