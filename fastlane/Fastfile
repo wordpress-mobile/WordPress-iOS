@@ -540,6 +540,8 @@ platform :ios do
   #####################################################################################
   desc 'Builds and uploads an installable build'
   lane :build_and_upload_installable_build do |options|
+    ensure_sentry_installed
+
     alpha_code_signing
 
     # Get the current build version, and update it if needed
@@ -620,6 +622,8 @@ platform :ios do
     ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless options[:skip_prechecks]
     ios_build_preflight unless options[:skip_prechecks]
 
+    ensure_sentry_installed
+
     internal_code_signing
 
     gym(
@@ -671,6 +675,7 @@ platform :ios do
     ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless options[:skip_prechecks]
     ios_build_preflight unless options[:skip_prechecks]
 
+    ensure_sentry_installed
     appstore_code_signing
 
     gym(
@@ -930,6 +935,10 @@ def read_version_from_config
     configuration = Xcodeproj::Config.new(config)
     configuration.attributes['VERSION_SHORT']
   end
+end
+
+def ensure_sentry_installed
+    UI.user_error('sentry-cli not installed') unless sh('command -v sentry-cli')
 end
 
 # Application-agnostic settings for the `upload_to_app_store` action, also
