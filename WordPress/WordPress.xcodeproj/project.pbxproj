@@ -24951,8 +24951,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/automattic/AutomatticAbout-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = "fix/misc-fixes";
+				kind = branch;
 			};
 		};
 		3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */ = {
