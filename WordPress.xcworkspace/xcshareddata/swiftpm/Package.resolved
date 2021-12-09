@@ -23,9 +23,9 @@
         "package": "XCUITestHelpers",
         "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
         "state": {
-          "branch": null,
-          "revision": "3212ac32f0a58ea10604b5cf31fe5450f908ff65",
-          "version": "0.3.0"
+          "branch": "wait-for-predicate",
+          "revision": "da6ae1eb8fdf8bae51bc6c1cff5c17fec25b0ba4",
+          "version": null
         }
       }
     ]
