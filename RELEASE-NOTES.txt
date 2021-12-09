@@ -1,6 +1,6 @@
 18.9
 -----
-
+* [**] Reader post details: a Comments snippet is now displayed after the post content. [#17650]
 
 18.8
 -----
