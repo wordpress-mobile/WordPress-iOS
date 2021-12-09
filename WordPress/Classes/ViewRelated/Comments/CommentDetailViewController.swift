@@ -105,7 +105,8 @@ class CommentDetailViewController: UIViewController {
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,
-                       normalColor: UIColor(light: .error, dark: .muriel(name: .red, .shade40)),
+                       normalColor: Constants.deleteButtonNormalColor,
+                       highlightedColor: Constants.deleteButtonHighlightColor,
                        buttonInsets: Constants.deleteButtonInsets)
         cell.delegate = self
         return cell
@@ -237,6 +238,8 @@ private extension CommentDetailViewController {
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
+        static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
+        static let deleteButtonHighlightColor: UIColor = .white
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
@@ -475,7 +478,8 @@ private extension CommentDetailViewController {
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
-                                                          commentID: NSNumber(value: parentComment.commentID))
+                                                          commentID: NSNumber(value: parentComment.commentID),
+                                                          source: .mySiteComment)
     }
 
     func navigateToReplyComment() {
@@ -486,7 +490,8 @@ private extension CommentDetailViewController {
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
-                                                          commentID: NSNumber(value: replyID))
+                                                          commentID: NSNumber(value: replyID),
+                                                          source: .mySiteComment)
     }
 
     func navigateToPost() {
@@ -508,7 +513,7 @@ private extension CommentDetailViewController {
             return
         }
 
-        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "comment_detail")
         let navigationControllerToPresent = UINavigationController(rootViewController: viewController)
 
         present(navigationControllerToPresent, animated: true, completion: nil)

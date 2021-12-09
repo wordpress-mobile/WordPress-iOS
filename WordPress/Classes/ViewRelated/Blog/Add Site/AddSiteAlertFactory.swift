@@ -7,6 +7,7 @@ class AddSiteAlertFactory: NSObject {
 
     @objc
     func makeAddSiteAlert(
+        source: String?,
         canCreateWPComSite: Bool,
         createWPComSite: @escaping () -> Void,
         addSelfHostedSite: @escaping () -> Void) -> UIAlertController {
@@ -19,6 +20,8 @@ class AddSiteAlertFactory: NSObject {
 
         alertController.addAction(addSelfHostedSiteAction(handler: addSelfHostedSite))
         alertController.addAction(cancelAction())
+
+        WPAnalytics.track(.addSiteAlertDisplayed, properties: ["source": source ?? "unknown"])
 
         return alertController
     }

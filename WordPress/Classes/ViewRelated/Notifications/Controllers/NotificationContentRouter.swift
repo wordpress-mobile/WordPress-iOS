@@ -16,7 +16,7 @@ struct NotificationContentRouter {
         do {
             try displayContent(of: range, with: url)
         } catch {
-            coordinator.displayWebViewWithURL(url)
+            coordinator.displayWebViewWithURL(url, source: "notifications")
         }
     }
 
@@ -31,7 +31,7 @@ struct NotificationContentRouter {
         do {
             try displayNotificationSource()
         } catch {
-            coordinator.displayWebViewWithURL(fallbackURL)
+            coordinator.displayWebViewWithURL(fallbackURL, source: "notifications")
         }
     }
 
@@ -58,7 +58,8 @@ struct NotificationContentRouter {
             let commentID = notification.metaCommentID ?? notification.metaReplyID
             try coordinator.displayCommentsWithPostId(notification.metaPostID,
                                                       siteID: notification.metaSiteID,
-                                                      commentID: commentID)
+                                                      commentID: commentID,
+                                                      source: .commentNotification)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }
@@ -77,7 +78,7 @@ struct NotificationContentRouter {
         case .comment:
             // Focus on the comment reply if it's set over the primary comment ID
             let commentID = notification.metaReplyID ?? notification.metaCommentID
-            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID, commentID: commentID)
+            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID, commentID: commentID, source: .commentNotification)
         case .stats:
             /// Backup notifications are configured as "stat" notifications
             /// For now this is just a workaround to fix the routing

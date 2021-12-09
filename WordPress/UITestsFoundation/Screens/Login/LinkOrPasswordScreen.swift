@@ -1,36 +1,34 @@
+import ScreenObject
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
 
-private struct ElementStringIDs {
-    static let passwordOption = "Use Password"
-    static let linkButton = "Send Link Button"
-}
+public class LinkOrPasswordScreen: ScreenObject {
 
-public class LinkOrPasswordScreen: BaseScreen {
-    let passwordOption: XCUIElement
-    let linkButton: XCUIElement
-
-    init() {
-        passwordOption = XCUIApplication().buttons[ElementStringIDs.passwordOption]
-        linkButton = XCUIApplication().buttons[ElementStringIDs.linkButton]
-
-        super.init(element: passwordOption)
+    let passwordOptionGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Use Password"]
+    }
+    let linkButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Send Link Button"]
     }
 
-    func proceedWithPassword() -> LoginPasswordScreen {
-        passwordOption.tap()
-
-        return LoginPasswordScreen()
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [passwordOptionGetter, linkButtonGetter], app: app)
     }
 
-    public func proceedWithLink() -> LoginCheckMagicLinkScreen {
-        linkButton.tap()
+    func proceedWithPassword() throws -> LoginPasswordScreen {
+        passwordOptionGetter(app).tap()
 
-        return LoginCheckMagicLinkScreen()
+        return try LoginPasswordScreen()
+    }
+
+    public func proceedWithLink() throws -> LoginCheckMagicLinkScreen {
+        linkButtonGetter(app).tap()
+
+        return try LoginCheckMagicLinkScreen()
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.passwordOption].exists
+        (try? LinkOrPasswordScreen().isLoaded) ?? false
     }
 }

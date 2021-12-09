@@ -206,7 +206,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
         guard let url =  URL(string: DateAndTimeFormatSettingsViewController.learnMoreUrl) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "site_settings_date_time_format_learn_more")
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

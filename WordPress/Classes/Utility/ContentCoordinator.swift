@@ -1,11 +1,11 @@
 
 protocol ContentCoordinator {
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?) throws
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL?) throws
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws
-    func displayWebViewWithURL(_ url: URL)
+    func displayWebViewWithURL(_ url: URL, source: String)
     func displayFullscreenImage(_ image: UIImage)
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws
@@ -40,12 +40,12 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?) throws {
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
         guard let postID = postID, let siteID = siteID else {
             throw DisplayError.missingParameter
         }
 
-        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
+        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID, source: source)
         commentsViewController?.navigateToCommentID = commentID
         commentsViewController?.allowsPushingPostDetails = true
         controller?.navigationController?.pushViewController(commentsViewController!, animated: true)
@@ -132,13 +132,13 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushViewController(browseViewController, animated: true)
     }
 
-    func displayWebViewWithURL(_ url: URL) {
+    func displayWebViewWithURL(_ url: URL, source: String) {
         if UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).canHandle(url: url) {
             UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).handle(url: url, source: .inApp(presenter: controller))
             return
         }
 
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: source)
         let navController = UINavigationController(rootViewController: webViewController)
         controller?.present(navController, animated: true)
     }

@@ -553,6 +553,7 @@ class WeeklyRoundupNotificationScheduler {
         let userInfo: [AnyHashable: Any] = [
             InteractiveNotificationsManager.blogIDKey: dotComID,
             InteractiveNotificationsManager.dateKey: periodEndDate,
+            PushNotificationsManager.Notification.typeKey: NotificationEventTracker.NotificationType.weeklyRoundup.rawValue
         ]
 
         scheduleNotification(

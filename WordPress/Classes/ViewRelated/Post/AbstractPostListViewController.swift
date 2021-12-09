@@ -928,7 +928,7 @@ class AbstractPostListViewController: UIViewController,
 
         let post = apost.hasRevision() ? apost.revision! : apost
 
-        let controller = PreviewWebKitViewController(post: post)
+        let controller = PreviewWebKitViewController(post: post, source: "posts_pages_view_post")
         controller.trackOpenEvent()
         // NOTE: We'll set the title to match the title of the View action button.
         // If the button title changes we should also update the title here.

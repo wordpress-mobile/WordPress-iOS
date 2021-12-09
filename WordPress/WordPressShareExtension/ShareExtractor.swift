@@ -21,7 +21,7 @@ struct ExtractedShare {
 
         if let url = url {
             rawLink = url.absoluteString.stringWithAnchoredLinks()
-            let attributionText = NSLocalizedString("Read on",
+            let attributionText = AppLocalizedString("Read on",
                                                     comment: "In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation.")
             readOnText = "<br>— \(attributionText) \(rawLink)"
         }

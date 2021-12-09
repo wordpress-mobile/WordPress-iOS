@@ -363,7 +363,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
-    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id<CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
 
     NSManagedObjectID *commentObjectID = comment.objectID;
@@ -892,6 +892,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 
+
+
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
@@ -911,7 +913,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     comment.status = currentStatus;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id <CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
@@ -1045,7 +1047,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
 
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    comment.author = [[service defaultWordPressComAccount] username];
+    WPAccount *account = [service defaultWordPressComAccount];
+    comment.author = account.username;
+    comment.authorID = [account.userID intValue];
     comment.content = content;
     comment.dateCreated = [NSDate date];
     comment.parentID = [parentID intValue];
@@ -1240,6 +1244,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     comment.commentID = [remoteComment.commentID intValue];
+    comment.authorID = [remoteComment.authorID intValue];
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
@@ -1269,6 +1274,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     RemoteComment *remoteComment = [RemoteComment new];
     remoteComment.commentID = [NSNumber numberWithInt:comment.commentID];
+    remoteComment.authorID = [NSNumber numberWithInt:comment.authorID];
     remoteComment.author = comment.author;
     remoteComment.authorEmail = comment.author_email;
     remoteComment.authorUrl = comment.author_url;
@@ -1290,6 +1296,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 
 #pragma mark - Remotes
+
+- (id<CommentServiceRemote>)remoteForComment:(Comment *)comment
+{
+    // If the comment is fetched through the Reader API, the blog will always be nil.
+    // Try to find the Blog locally first, as it should exist if the user has a role on the site.
+    if (comment.post && [comment.post isKindOfClass:[ReaderPost class]]) {
+        ReaderPost *readerPost = (ReaderPost *)comment.post;
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        return [self remoteForBlog:[blogService blogByHostname:readerPost.blogURL]];
+    }
+
+    return [self remoteForBlog:comment.blog];
+}
 
 - (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog
 {

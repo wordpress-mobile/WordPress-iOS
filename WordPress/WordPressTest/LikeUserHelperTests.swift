@@ -47,7 +47,7 @@ class LikeUserHelperTests: XCTestCase {
             completionExpectation.fulfill()
         })
 
-        wait(for: [completionExpectation], timeout: timeoutDuration)
+        waitForExpectations(timeout: 5)
     }
 
     func testUpdatingExistingUserToRemovePreferredBlog() {
@@ -81,6 +81,6 @@ class LikeUserHelperTests: XCTestCase {
             completionExpectation.fulfill()
         })
 
-        wait(for: [completionExpectation], timeout: timeoutDuration)
+        waitForExpectations(timeout: 5)
     }
 }
