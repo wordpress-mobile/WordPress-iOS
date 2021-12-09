@@ -3,10 +3,6 @@ import XCTest
 
 class LikeUserHelperTests: XCTestCase {
 
-    let timeoutDuration: TimeInterval = 2
-
-    // MARK: Tests
-
     func createTestRemoteUserDictionary(withPreferredBlog hasPreferredBlog: Bool) -> [String: Any] {
         var remoteUserDictionary: [String: Any] = [
             "ID": 15,
