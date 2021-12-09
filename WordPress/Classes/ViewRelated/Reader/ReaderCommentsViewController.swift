@@ -304,8 +304,12 @@ private extension ReaderCommentsViewController {
             return "reader_post_details_comments"
         case .commentNotification:
             return "comment_notification"
+        case .commentLikeNotification:
+            return "comment_like_notification"
         case .mySiteComment:
             return "my_site_comment"
+        case .activityLogDetail:
+            return "activity_log_detail"
         default:
             return "unknown"
         }
