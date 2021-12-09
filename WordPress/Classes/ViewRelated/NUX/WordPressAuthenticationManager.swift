@@ -1,6 +1,7 @@
 import Foundation
 import WordPressAuthenticator
 import Gridicons
+import UIKit
 
 
 // MARK: - WordPressAuthenticationManager
@@ -323,6 +324,17 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
+        let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
+            self?.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
+        }
+
+        // If adding a self-hosted site, skip the Epilogue
+        if let wporg = credentials.wporg,
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
+            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+            return
+        }
+
         if PostSignUpInterstitialViewController.shouldDisplay() {
             self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
             return
@@ -336,50 +348,17 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
 
-        let onDismissQuickStartPrompt: (Blog) -> Void = { [weak self] blog in
-
-            guard let self = self else {
-                return
-            }
-
-            onDismiss()
-
-            // If the quick start prompt has already been dismissed,
-            // then show the My Site screen for the specified blog
-            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                return
-            }
-
-            // Otherwise, show the My Site screen for the specified blog and after a short delay,
-            // trigger the Quick Start tour
-            self.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog)
-            })
-        }
-
         epilogueViewController.onBlogSelected = { [weak self] blog in
             guard let self = self else {
                 return
             }
 
-            // If the quick start prompt has already been dismissed,
-            // then show the My Site screen for the specified blog
-            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                } else {
-                    navigationController.dismiss(animated: true)
-                }
-
+            guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
                 return
             }
 
-            // Otherwise, show the Quick Start prompt
-            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismiss = onDismissQuickStartPrompt
-            navigationController.pushViewController(quickstartPrompt, animated: true)
+            self.presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
         }
 
         epilogueViewController.onCreateNewSite = {
@@ -389,6 +368,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             }
 
             navigationController.present(wizard, animated: true)
+            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
@@ -445,7 +425,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func shouldPresentSignupEpilogue() -> Bool {
         return true
     }
-
 
     /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
@@ -516,6 +495,46 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
+    }
+}
+
+// MARK: - Quick Start Prompt
+private extension WordPressAuthenticationManager {
+    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: ((Blog, Bool) -> Void)?) {
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
+            return
+        }
+
+        // Otherwise, show the Quick Start prompt
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        quickstartPrompt.onDismiss = onDismiss
+        navigationController.pushViewController(quickstartPrompt, animated: true)
+    }
+
+    func onDismissQuickStartPrompt(for blog: Blog, onDismiss: @escaping () -> Void) {
+        onDismiss()
+
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
+            self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            return
+        }
+
+        // Otherwise, show the My Site screen for the specified blog and after a short delay,
+        // trigger the Quick Start tour
+        self.windowManager.showAppUI(for: blog, completion: {
+            QuickStartTourGuide.shared.setupWithDelay(for: blog)
+        })
     }
 }
 

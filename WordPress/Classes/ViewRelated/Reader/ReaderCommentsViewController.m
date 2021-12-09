@@ -83,17 +83,19 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 #pragma mark - Static Helpers
 
-+ (instancetype)controllerWithPost:(ReaderPost *)post
++ (instancetype)controllerWithPost:(ReaderPost *)post source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
+    controller.source = source;
     return controller;
 }
 
-+ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
++ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     [controller setupWithPostID:postID siteID:siteID];
+    [controller trackCommentsOpenedWithPostID:postID siteID:siteID source:source];
     return controller;
 }
 
@@ -119,7 +121,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return nil;
     }
 
-    return [self controllerWithPost:restoredPost];
+    return [self controllerWithPost:restoredPost source:ReaderCommentsSourcePostDetails];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -246,13 +248,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 }
 
 #pragma mark - Tracking methods
-
--(void)trackCommentsOpened {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
-    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
-    properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
-    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentsOpened properties:properties];
-}
 
 -(void)trackCommentLikedOrUnliked:(Comment *) comment {
     ReaderPost *post = self.post;
@@ -728,7 +723,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     _post = post;
-    [self trackCommentsOpened];
+
     if (_post.isWPCom || _post.isJetpack) {
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
@@ -947,10 +942,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                        accessoryView:[self noResultsAccessoryView]];
 
     [self.noResultsViewController hideImageView:hideImageView];
-    [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
+
+    // when the table view is not yet properly initialized, use the view's frame instead to prevent wrong frame values.
+    if (self.tableView.window == nil) {
+        self.noResultsViewController.view.frame = self.view.frame;
+    } else {
+        self.noResultsViewController.view.frame = self.tableView.frame;
+    }
+
     [self.view insertSubview:self.noResultsViewController.view belowSubview:self.suggestionsTableView];
-    self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
@@ -1006,16 +1007,23 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
         NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
 
-        // Dispatch to ensure the tableview has reloaded before we scroll
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if ([self newCommentThreadEnabled]) {
+            // Force the table view to be laid out first before scrolling to indexPath.
+            // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
+            [self.tableView layoutIfNeeded];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            // Yes, calling this twice is horrible.
-            // Our row heights are dynamically calculated, and the first time we perform a scroll it
-            // seems that we may end up in slightly the wrong position.
-            // If we then immediately scroll again, everything has been laid out, and we should end up
-            // at the correct row. @frosty 2021-05-06
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        });
+        } else {
+            // Dispatch to ensure the tableview has reloaded before we scroll
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                // Yes, calling this twice is horrible.
+                // Our row heights are dynamically calculated, and the first time we perform a scroll it
+                // seems that we may end up in slightly the wrong position.
+                // If we then immediately scroll again, everything has been laid out, and we should end up
+                // at the correct row. @frosty 2021-05-06
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
+            });
+        }
 
         self.highlightedIndexPath = indexPath;
 

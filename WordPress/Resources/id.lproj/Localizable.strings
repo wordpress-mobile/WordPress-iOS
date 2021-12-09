@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 11:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-01 05:24:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "%1$@ untuk memperbaiki ancaman.";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d Komentar";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d Komentar";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "Secara otomatis bagikan pos baru ke media sosial Anda untuk menarik perhatian audiens di media sosial ke situs Anda.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Keluarga Automattic";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Pembaruan otomatis";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "Pilih ikon aplikasi baru";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "Pilih situs yang ingin dibuka";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Pilih tema";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Pilih waktu";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "Pilih ikon unik untuk situs Anda";
 
 /* No comment provided by engineer. */
 "Choose audio" = "Pilih audio";
@@ -1633,7 +1633,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Choose a theme" = "Selesai: Pilih tema";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "Selesai: Memilih ikon unik untuk situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Selesai: Lanjutkan penyiapan situs";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "Selesai: Tinjau laman situs";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "Selesai: Membagi ke media sosial";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Selesai: Lihat situs Anda";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "Salin Tautan ke Komentar";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "Salin URL dari papan klip, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "Salin blok";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "Naskah";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "Buat draf dan publikasikan artikel.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -2689,7 +2689,7 @@ translators: Block name. %s: The localized block name */
 "Enable in-app notifications" = "Aktifkan pemberitahuan dalam aplikasi";
 
 /* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Enable in-app notifications?";
+"Enable in-app notifications?" = "Aktifkan pemberitahuan dalam aplikasi?";
 
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Izinkan akses mikrofon untuk merekam suara di video Anda.";
@@ -3212,7 +3212,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "Dari perangkat lain";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "Dari papan klip";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "Dari perangkat ini";
@@ -3569,10 +3569,10 @@ translators: Block name. %s: The localized block name */
 "In order to share your published posts to your social media you need to enable the Publicize module." = "Untuk membagikan pos yang telah diposkan ke media sosial, Anda perlu mengaktifkan modul Publikasikan.";
 
 /* The app successfully disabled notifications for the subscription */
-"In-app notifications disabled" = "In-app notifications disabled";
+"In-app notifications disabled" = "Pemberitahuan dalam aplikasi dinonaktifkan";
 
 /* The app successfully enabled notifications for the subscription */
-"In-app notifications enabled" = "In-app notifications enabled";
+"In-app notifications enabled" = "Pemberitahuan dalam aplikasi diaktifkan";
 
 /* Describes a status of a plugin */
 "Inactive" = "Nonaktif";
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack akan mengoptimalkan gambar Anda dan menyajikannya dari lokasi server yang terdekat dengan pengunjung situs. Dengan menggunakan jaringan pengiriman konten global kami, kecepatan pemuatan situs Anda akan menjadi lebih cepat.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "Ikuti Dari Manapun";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Bergabung dengan percakapan: komentari pos dari blog yang Anda ikuti.";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "Pelajari selengkapnya...";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "Pelajari dasar-dasarnya dengan panduan cepat.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Rata Kiri";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "Ikon Lawas";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "Legal dan Lainnya";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Mari Kami Bantu";
@@ -5620,7 +5620,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "Mulai Cepat";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "Beri Rating";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Beri nilai kami di App Store";
@@ -6412,7 +6412,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "Bagikan tautan";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "Bagikan dengan Teman";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "Tampilkan Pos Terkait";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "Ajak saya berkeliling";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "Ditampilkan";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "Ditampilkan di tab peramban pengunjung Anda dan di tempat lain secara online.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Ditampilkan secara publik saat Anda mengomentari blog.";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Sosial";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "Berbagi melalui media sosial";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Beberapa blok memiliki pengaturan tambahan. Ketuk ikon pengaturan di kanan bawah blok untuk melihat pilihan lainnya.";
@@ -6879,10 +6879,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "Beralih ke penyunting blok";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "Beralih ke mode HTML";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "Beralih ke mode Visual";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Beralih ke Judul ukuran font 1";
@@ -8129,7 +8129,7 @@ translators: Block name. %s: The localized block name */
 "View All" = "Lihat Semua";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
+"View All Comments" = "Lihat Semua Komentar";
 
 /* Button label for viewing a post */
 "View Post" = "Lihat Pos";
@@ -8238,7 +8238,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "Menunggu...";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "Butuh sedikit bantuan dalam mengelola situs ini dengan aplikasi?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8699,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "Halaman Plugin WordPress.org";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "Berkarya Bersama Kami";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Peta dunia menampilkan kunjungan berdasarkan negara.";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Anda dapat mengatur ulang blok dengan mengetuk satu blok lalu mengetuk panah atas dan bawah yang muncul di sisi kiri bawah blok untuk memindahkannya ke atas atau ke bawah blok lain.";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "Anda dapat berganti situs kapan saja.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
@@ -8957,7 +8957,7 @@ translators: Block name. %s: The localized block name */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media Anda tidak dapat diekspor. If the problem persists you can contact us via the Me > layar Bantuan & Dukungan.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
-"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.";
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Domain baru Anda %@ sedang disiapkan. Perlu waktu hingga 30 menit agar domain anda mulai berfungsi.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Bawa pemberitahuan ke mana pun Anda pergi — lihat komentar dan suka seketika.";

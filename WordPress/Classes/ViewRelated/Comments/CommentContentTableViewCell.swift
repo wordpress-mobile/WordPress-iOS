@@ -9,7 +9,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     enum RenderMethod {
+        /// Uses WebKit to render the comment body.
         case web
+
+        /// Uses WPRichContent to render the comment body.
         case richContent
     }
 
@@ -94,8 +97,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
 
-    // used for indentation
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
+    private var defaultLeadingMargin: CGFloat = 0
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -201,6 +205,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
+    ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(with comment: Comment, renderMethod: RenderMethod = .web, onContentLoaded: ((CGFloat) -> Void)?) {
         nameLabel?.setText(comment.authorForDisplay())
@@ -236,19 +241,25 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         configureRendererIfNeeded(for: comment, renderMethod: renderMethod)
     }
 
-    /// Hide all actions for the comment.
-    /// NOTE: This must be called after configure or these values will be overwritten.
-    /// 
-    func hideAllActions() {
+    /// Configures the cell with a `Comment` object, to be displayed in the post details view.
+    ///
+    /// - Parameters:
+    ///   - comment: The `Comment` object to display.
+    ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
+    func configureForPostDetails(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
+        configure(with: comment, onContentLoaded: onContentLoaded)
+
         hidesModerationBar = true
         isCommentLikesEnabled = false
         isCommentReplyEnabled = false
         isAccessoryButtonEnabled = false
+
+        containerStackLeadingConstraint.constant = 0
+        containerStackTrailingConstraint.constant = 0
     }
 
     @objc func ensureRichContentTextViewLayout() {
-        guard let renderer = renderer,
-              renderMethod == .richContent,
+        guard renderMethod == .richContent,
               let richContentTextView = contentContainerView.subviews.first as? WPRichContentView else {
                   return
               }
@@ -299,6 +310,9 @@ private extension CommentContentTableViewCell {
 
     // assign base styles for all the cell components.
     func configureViews() {
+        // Store default margin for use in content layout.
+        defaultLeadingMargin = containerStackLeadingConstraint.constant
+
         selectionStyle = .none
 
         nameLabel?.font = Style.nameFont
@@ -367,7 +381,7 @@ private extension CommentContentTableViewCell {
     }
 
     func updateContainerLeadingConstraint() {
-        containerStackLeadingConstraint?.constant = indentationWidth * CGFloat(indentationLevel)
+        containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
     /// Updates the style and text of the Like button.

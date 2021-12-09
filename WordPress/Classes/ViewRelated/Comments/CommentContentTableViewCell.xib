@@ -46,7 +46,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="po6-3F-ppN" userLabel="Name Container View">
                                                 <rect key="frame" x="0.0" y="0.0" width="208" height="50"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HpE-B7-6wr" userLabel="Name Label">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HpE-B7-6wr" userLabel="Name Label">
                                                         <rect key="frame" x="0.0" y="0.0" width="169.5" height="50"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <nil key="highlightedColor"/>
@@ -177,13 +177,13 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="hcN-S7-sLG" secondAttribute="trailing" id="2zy-oR-X5O"/>
+                    <constraint firstAttribute="trailing" secondItem="hcN-S7-sLG" secondAttribute="trailing" constant="16" id="2zy-oR-X5O"/>
                     <constraint firstItem="mNJ-fg-sKO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="II8-F0-CBs"/>
                     <constraint firstItem="mNJ-fg-sKO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eId-Od-5wj"/>
                     <constraint firstItem="hcN-S7-sLG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="esQ-oB-yxJ"/>
                     <constraint firstAttribute="bottom" secondItem="mNJ-fg-sKO" secondAttribute="bottom" id="izD-cW-YFx"/>
                     <constraint firstAttribute="bottom" secondItem="hcN-S7-sLG" secondAttribute="bottom" id="jAu-U3-I4N"/>
-                    <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="uFL-PF-ffo"/>
+                    <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="uFL-PF-ffo"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -193,6 +193,7 @@
                 <outlet property="badgeLabel" destination="hDo-cU-sWp" id="gVe-4c-TlR"/>
                 <outlet property="containerStackBottomConstraint" destination="jAu-U3-I4N" id="1Hk-Cp-fR5"/>
                 <outlet property="containerStackLeadingConstraint" destination="uFL-PF-ffo" id="6Ah-H9-d0b"/>
+                <outlet property="containerStackTrailingConstraint" destination="2zy-oR-X5O" id="dDR-lB-Nvs"/>
                 <outlet property="containerStackView" destination="hcN-S7-sLG" id="k9D-6a-BmR"/>
                 <outlet property="contentContainerHeightConstraint" destination="t5W-a4-bo7" id="2ox-vW-Kuh"/>
                 <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
