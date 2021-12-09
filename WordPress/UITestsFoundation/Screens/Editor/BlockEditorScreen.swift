@@ -202,22 +202,3 @@ public class BlockEditorScreen: ScreenObject {
         return try BlockEditorScreen()
     }
 }
-
-// TODO: Move this to XCUITestHelpers or ScreenObject
-extension XCUIElement {
-
-    func waitFor(
-        predicateString: String,
-        timeout: TimeInterval = 10
-    ) -> XCTWaiter.Result {
-        XCTWaiter.wait(
-            for: [
-                XCTNSPredicateExpectation(
-                    predicate: NSPredicate(format: predicateString),
-                    object: self
-                )
-            ],
-            timeout: timeout
-        )
-    }
-}
