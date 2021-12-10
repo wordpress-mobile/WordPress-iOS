@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressShared
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
@@ -103,6 +104,9 @@ import UIKit
         guard let commentURL = comment.commentURL() else {
             return
         }
+
+        // track share intent.
+        WPAnalytics.track(.readerArticleCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = sourceView
