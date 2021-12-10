@@ -5,9 +5,9 @@
         "package": "AutomatticAbout",
         "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
         "state": {
-          "branch": "fix/misc-fixes",
-          "revision": "149f68dfb3c1084b6553d1ac36b7e2915a8a1469",
-          "version": null
+          "branch": null,
+          "revision": "36700103dc6070bfead85c6b25ad688d8f8c37ee",
+          "version": "1.0.1"
         }
       },
       {
