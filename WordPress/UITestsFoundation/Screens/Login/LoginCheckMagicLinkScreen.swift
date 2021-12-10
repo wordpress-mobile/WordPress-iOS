@@ -24,10 +24,10 @@ public class LoginCheckMagicLinkScreen: ScreenObject {
         return try LoginPasswordScreen()
     }
 
-    public func openMagicLoginLink() -> LoginEpilogueScreen {
+    public func openMagicLoginLink() throws -> LoginEpilogueScreen {
         openMagicLink()
 
-        return LoginEpilogueScreen()
+        return try LoginEpilogueScreen()
     }
 
     public static func isLoaded() -> Bool {
