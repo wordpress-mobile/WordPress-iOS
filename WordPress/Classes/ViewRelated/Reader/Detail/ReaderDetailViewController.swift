@@ -45,7 +45,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
-    var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
+    private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
@@ -286,7 +286,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             ReaderCommentAction().execute(post: post,
                                           origin: self,
                                           promptToAddComment: false,
-                                          navigateToCommentID: commentID)
+                                          navigateToCommentID: commentID,
+                                          source: .postDetails)
         }
     }
 
@@ -390,12 +391,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-        // TODO: if there are no comments, hide the commentsTableView.
-        commentsTableViewDelegate?.comments = comments
-        commentsTableViewDelegate?.totalComments = totalComments
-        commentsTableViewDelegate?.buttonDelegate = self
+        // Set the delegate here so the table isn't shown until fetching is complete.
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
+
+        commentsTableViewDelegate.updateWith(comments: comments,
+                                              totalComments: totalComments,
+                                              commentsEnabled: toolbar.commentButton.isEnabled,
+                                              buttonDelegate: self)
         commentsTableView.reloadData()
-        commentsTableView.invalidateIntrinsicContentSize()
     }
 
     deinit {
@@ -499,7 +503,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func hideLikesView() {
-        // Because the Related Posts table is constrained to the likesContainerView, simply hiding it leaves a gap.
+        // Because other components are constrained to the likesContainerView, simply hiding it leaves a gap.
         likesSummary.removeFromSuperview()
         likesContainerView.frame.size.height = 0
         view.setNeedsDisplay()
@@ -516,10 +520,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureCommentsTable() {
         commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
-
-        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
-        commentsTableView.delegate = commentsTableViewDelegate
-        commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableView.register(CommentContentTableViewCell.defaultNib,
+                                   forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
+                                   forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
     }
 
     private func configureRelatedPosts() {
@@ -1000,6 +1004,10 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         guard let post = post else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: self)
+
+        ReaderCommentAction().execute(post: post,
+                                      origin: self,
+                                      promptToAddComment: commentsTableViewDelegate.totalComments == 0,
+                                      source: .postDetailsComments)
     }
 }

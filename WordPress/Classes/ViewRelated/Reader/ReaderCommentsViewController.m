@@ -81,17 +81,19 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 #pragma mark - Static Helpers
 
-+ (instancetype)controllerWithPost:(ReaderPost *)post
++ (instancetype)controllerWithPost:(ReaderPost *)post source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
+    controller.source = source;
     return controller;
 }
 
-+ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
++ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
     [controller setupWithPostID:postID siteID:siteID];
+    [controller trackCommentsOpenedWithPostID:postID siteID:siteID source:source];
     return controller;
 }
 
@@ -117,7 +119,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return nil;
     }
 
-    return [self controllerWithPost:restoredPost];
+    return [self controllerWithPost:restoredPost source:ReaderCommentsSourcePostDetails];
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -157,7 +159,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self configureViewConstraints];
     [self configureKeyboardManager];
 
-    [self refreshAndSync];
+    if (![self newCommentThreadEnabled]) {
+        [self refreshAndSync];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -169,6 +173,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                              selector:@selector(handleApplicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+
+    if ([self newCommentThreadEnabled]) {
+        [self refreshAndSync];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -222,7 +230,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     // Update cached attributed strings when toggling light/dark mode.
     self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
-    [self refreshTableViewAndNoResultsView];
+
+    // Only refresh the table view when the size class changed (i.e. the device is rotated).
+    // In iOS 15, traitCollectionDidChange is always triggered upon navigation although there are no changes on the traitCollection,
+    // which could cause the NoResultsView to be misplaced.
+    if (self.traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass
+        || self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass) {
+        [self refreshTableViewAndNoResultsView];
+    }
 }
 
 #pragma mark - Split View Support
@@ -238,13 +253,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 }
 
 #pragma mark - Tracking methods
-
--(void)trackCommentsOpened {
-    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
-    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
-    properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
-    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentsOpened properties:properties];
-}
 
 -(void)trackCommentLikedOrUnliked:(Comment *) comment {
     ReaderPost *post = self.post;
@@ -368,7 +376,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;
 
         // hide cell separator for the last row
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+        self.tableView.tableFooterView = [self tableFooterViewForHiddenSeparators];
 
     } else {
         UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
@@ -574,6 +582,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return [Feature enabled:FeatureFlagNewCommentThread];
 }
 
+- (UIView *)tableFooterViewForHiddenSeparators
+{
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
+}
+
+
 - (UIView *)cachedHeaderView {
     if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
         _cachedHeaderView = [self configuredHeaderViewFor:self.tableView];
@@ -674,7 +688,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     _post = post;
-    [self trackCommentsOpened];
+
     if (_post.isWPCom || _post.isJetpack) {
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
@@ -845,7 +859,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.tableView.tableFooterView = footerView;
         
     } else {
-        self.tableView.tableFooterView = nil;
+        self.tableView.tableFooterView = [self newCommentThreadEnabled] ? [self tableFooterViewForHiddenSeparators] : nil;
         self.activityFooter = nil;
     }
 }
@@ -893,10 +907,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                        accessoryView:[self noResultsAccessoryView]];
 
     [self.noResultsViewController hideImageView:hideImageView];
-    [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
+
+    // when the table view is not yet properly initialized, use the view's frame instead to prevent wrong frame values.
+    if (self.tableView.window == nil) {
+        self.noResultsViewController.view.frame = self.view.frame;
+    } else {
+        self.noResultsViewController.view.frame = self.tableView.frame;
+    }
+
     [self.view insertSubview:self.noResultsViewController.view belowSubview:self.suggestionsTableView];
-    self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
@@ -952,16 +972,23 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
         NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
 
-        // Dispatch to ensure the tableview has reloaded before we scroll
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if ([self newCommentThreadEnabled]) {
+            // Force the table view to be laid out first before scrolling to indexPath.
+            // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
+            [self.tableView layoutIfNeeded];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            // Yes, calling this twice is horrible.
-            // Our row heights are dynamically calculated, and the first time we perform a scroll it
-            // seems that we may end up in slightly the wrong position.
-            // If we then immediately scroll again, everything has been laid out, and we should end up
-            // at the correct row. @frosty 2021-05-06
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
-        });
+        } else {
+            // Dispatch to ensure the tableview has reloaded before we scroll
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                // Yes, calling this twice is horrible.
+                // Our row heights are dynamically calculated, and the first time we perform a scroll it
+                // seems that we may end up in slightly the wrong position.
+                // If we then immediately scroll again, everything has been laid out, and we should end up
+                // at the correct row. @frosty 2021-05-06
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES ];
+            });
+        }
 
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;
@@ -1036,6 +1063,52 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                     sourceBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
 
+- (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!indexPath) {
+        return;
+    }
+
+    // if a row is already selected don't allow selection of another
+    if (self.replyTextView.isFirstResponder) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+        [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
+        return;
+    }
+
+    if (!self.canComment) {
+        return;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+    [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
+
+    self.indexPathForCommentRepliedTo = indexPath;
+    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self refreshReplyTextViewPlaceholder];
+}
+
+- (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    if (!comment.isLiked) {
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
+    }
+
+    __typeof(self) __weak weakSelf = self;
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+        [weakSelf trackCommentLikedOrUnliked:comment];
+    } failure:^(NSError *error) {
+        // in case of failure, revert the cell's like state.
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+}
 
 #pragma mark - Sync methods
 
@@ -1131,10 +1204,38 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     if ([self newCommentThreadEnabled]) {
-        [self configureContentCell:aCell comment:comment tableView:self.tableView];
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
+        [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
+
+        // support for legacy content rendering method.
+        cell.richContentDelegate = self;
 
         // show separator when the comment is the "last leaf" of its top-level comment.
-        aCell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
+        cell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
+
+        // configure button actions.
+        __weak __typeof(self) weakSelf = self;
+
+        cell.accessoryButtonAction = ^(UIView * _Nonnull sourceView) {
+            if ([comment allowsModeration]) {
+                // NOTE: Remove when minimum version is bumped to iOS 14.
+                [self showMenuSheetFor:comment indexPath:indexPath handler:weakSelf.tableViewHandler sourceView:sourceView];
+            } else {
+                [self shareComment:comment sourceView:sourceView];
+            }
+        };
+
+        cell.replyButtonAction = ^{
+            [weakSelf didTapReplyAtIndexPath:indexPath];
+        };
+
+        cell.likeButtonAction = ^{
+            [weakSelf didTapLikeForComment:comment atIndexPath:indexPath];
+        };
+
+        cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {
+            [weakSelf interactWithURL:url];
+        };
 
         return;
     }
@@ -1173,6 +1274,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // NOTE: When using a `CommentContentTableViewCell` with `.web` rendering method, this method needs to return `UITableViewAutomaticDimension`.
+    // Using cached estimated heights could get some cells to keep reloading their HTMLs indefinitely, causing the app to hang!
+
     NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
     if (cachedHeight.doubleValue) {
         return cachedHeight.doubleValue;
@@ -1260,8 +1364,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     if (self.needsUpdateAttachmentsAfterScrolling) {
         self.needsUpdateAttachmentsAfterScrolling = NO;
 
-        for (ReaderCommentCell *cell in [self.tableView visibleCells]) {
-            [cell ensureTextViewLayout];
+        for (UITableViewCell *cell in [self.tableView visibleCells]) {
+            if ([cell isKindOfClass:[ReaderCommentCell class]]) {
+                [(ReaderCommentCell *)cell ensureTextViewLayout];
+            } else if ([cell isKindOfClass:[CommentContentTableViewCell class]]) {
+                [(CommentContentTableViewCell *)cell ensureRichContentTextViewLayout];
+            }
         }
         [self updateTableViewForAttachments];
     }
@@ -1290,40 +1398,22 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 #pragma mark - ReaderCommentCell Delegate Methods
 
+// TODO: Remove ReaderCommentCell methods once the `newCommentThread` flag is removed.
+
 - (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
     NSURL *url = [comment authorURL];
     WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:url];
     [configuration authenticateWithDefaultAccount];
     [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments_author"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)cell:(ReaderCommentCell *)cell didTapReply:(Comment *)comment
 {
-    // if a row is already selected don't allow selection of another
-    if (self.replyTextView.isFirstResponder) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-        [self.replyTextView resignFirstResponder];
-#pragma clang diagnostic pop
-        return;
-    }
-
-    if (!self.canComment) {
-        return;
-    }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-    [self.replyTextView becomeFirstResponder];
-#pragma clang diagnostic pop
-
-    self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self refreshReplyTextViewPlaceholder];
+    [self didTapReplyAtIndexPath:[self.tableViewHandler.resultsController indexPathForObject:comment]];
 }
 
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
@@ -1414,7 +1504,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:linkURL];
     [configuration authenticateWithDefaultAccount];
     [configuration setAddsWPComReferrer:YES];
-    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

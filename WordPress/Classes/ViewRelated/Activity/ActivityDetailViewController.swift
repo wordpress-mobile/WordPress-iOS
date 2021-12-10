@@ -86,7 +86,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return
         }
 
-        let navController = UINavigationController(rootViewController: WebViewControllerFactory.controller(url: url))
+        let navController = UINavigationController(rootViewController: WebViewControllerFactory.controller(url: url, source: "activity_detail_warning"))
 
         present(navController, animated: true)
     }

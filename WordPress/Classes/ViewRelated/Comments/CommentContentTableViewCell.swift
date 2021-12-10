@@ -8,17 +8,27 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         case ellipsis
     }
 
+    enum RenderMethod {
+        /// Uses WebKit to render the comment body.
+        case web
+
+        /// Uses WPRichContent to render the comment body.
+        case richContent
+    }
+
     // MARK: - Public Properties
 
     /// A closure that's called when the accessory button is tapped.
     /// The button's view is sent as the closure's parameter for reference.
-    var accessoryButtonAction: ((UIView) -> Void)? = nil
+    @objc var accessoryButtonAction: ((UIView) -> Void)? = nil
 
-    var replyButtonAction: (() -> Void)? = nil
+    @objc var replyButtonAction: (() -> Void)? = nil
 
-    var likeButtonAction: (() -> Void)? = nil
+    @objc var likeButtonAction: (() -> Void)? = nil
 
-    var contentLinkTapAction: ((URL) -> Void)? = nil
+    @objc var contentLinkTapAction: ((URL) -> Void)? = nil
+
+    @objc weak var richContentDelegate: WPRichContentViewDelegate? = nil
 
     /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
     var hidesModerationBar: Bool = false {
@@ -32,6 +42,20 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     var accessoryButtonType: AccessoryButtonType = .share {
         didSet {
             accessoryButton.setImage(accessoryButtonImage, for: .normal)
+        }
+    }
+
+    /// When supplied with a non-empty string, the cell will show a badge label beside the name label.
+    /// Note that the badge will be hidden when the title is nil or empty.
+    var badgeTitle: String? = nil {
+        didSet {
+            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
+                badgeLabel.isHidden = true
+                return
+            }
+
+            badgeLabel.setText(badgeTitle.localizedUppercase)
+            badgeLabel.isHidden = false
         }
     }
 
@@ -56,16 +80,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
 
-    // used for indentation
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
+    private var defaultLeadingMargin: CGFloat = 0
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var badgeLabel: BadgeLabel!
     @IBOutlet private weak var dateLabel: UILabel!
-    @IBOutlet private weak var accessoryButton: UIButton!
+    @IBOutlet private(set) weak var accessoryButton: UIButton!
 
-    @IBOutlet private weak var webView: WKWebView!
-    @IBOutlet private weak var webViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var contentContainerView: UIView!
+    @IBOutlet private weak var contentContainerHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
@@ -88,16 +114,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         return templateString
     }()
 
-    /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
-    private static let resourceURL: URL? = {
-        Bundle.main.resourceURL
-    }()
+    private var renderer: CommentContentRenderer? = nil
 
-    /// Used to determine whether the cache is still valid or not.
-    private var commentContentCache: String? = nil
-
-    /// Caches the HTML content, to be reused when the orientation changed.
-    private var htmlContentCache: String? = nil
+    private var renderMethod: RenderMethod?
 
     // MARK: Like Button State
 
@@ -140,6 +159,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Lifecycle
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // reset all button actions.
+        accessoryButtonAction = nil
+        replyButtonAction = nil
+        likeButtonAction = nil
+        contentLinkTapAction = nil
+
+        onContentLoaded = nil
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureViews()
@@ -151,8 +182,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
+    ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    func configure(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
+    func configure(with comment: Comment, renderMethod: RenderMethod = .web, onContentLoaded: ((CGFloat) -> Void)?) {
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
@@ -171,7 +203,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isModerationEnabled = comment.allowsModeration()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: webView)
+        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: contentContainerView)
 
         // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
         // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
@@ -181,60 +213,50 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
         }
 
-        // optimize: do not reload if the content doesn't change.
-        if let contentCache = commentContentCache, contentCache == comment.content {
-            return
-        }
-
-        // Configure comment content.
+        // Configure content renderer.
         self.onContentLoaded = onContentLoaded
-        webViewHeightConstraint.constant = 1 // reset webview height to handle cases where the new content requires the webview to shrink.
-        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
-        webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
+        configureRendererIfNeeded(for: comment, renderMethod: renderMethod)
+    }
+
+    /// Configures the cell with a `Comment` object, to be displayed in the post details view.
+    ///
+    /// - Parameters:
+    ///   - comment: The `Comment` object to display.
+    ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
+    func configureForPostDetails(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
+        configure(with: comment, onContentLoaded: onContentLoaded)
+
+        hidesModerationBar = true
+        isCommentLikesEnabled = false
+        isCommentReplyEnabled = false
+        isAccessoryButtonEnabled = false
+
+        containerStackLeadingConstraint.constant = 0
+        containerStackTrailingConstraint.constant = 0
+    }
+
+    @objc func ensureRichContentTextViewLayout() {
+        guard renderMethod == .richContent,
+              let richContentTextView = contentContainerView.subviews.first as? WPRichContentView else {
+                  return
+              }
+
+        richContentTextView.updateLayoutForAttachments()
     }
 }
 
-// MARK: - WKNavigationDelegate
+// MARK: - CommentContentRendererDelegate
 
-extension CommentContentTableViewCell: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // Wait until the HTML document finished loading.
-        // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
-        webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil else {
-                return
-            }
-
-            // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
-            // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
-            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
-                guard let height = height as? CGFloat else {
-                    return
-                }
-
-                // reset the webview to opaque again so the scroll indicator is visible.
-                webView.isOpaque = true
-
-                // update the web view height obtained from the evaluated Javascript.
-                self.webViewHeightConstraint.constant = height
-                self.onContentLoaded?(height)
-            }
+extension CommentContentTableViewCell: CommentContentRendererDelegate {
+    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
+        if renderMethod == .web {
+            contentContainerHeightConstraint?.constant = height
         }
+        onContentLoaded?(height)
     }
 
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        switch navigationAction.navigationType {
-        case .other:
-            // allow local file requests.
-            decisionHandler(.allow)
-        default:
-            decisionHandler(.cancel)
-            guard let destinationURL = navigationAction.request.url,
-                  let linkTapAction = contentLinkTapAction else {
-                      return
-                  }
-            linkTapAction(destinationURL)
-        }
+    func renderer(_ renderer: CommentContentRenderer, interactedWithURL url: URL) {
+        contentLinkTapAction?(url)
     }
 }
 
@@ -265,10 +287,19 @@ private extension CommentContentTableViewCell {
 
     // assign base styles for all the cell components.
     func configureViews() {
+        // Store default margin for use in content layout.
+        defaultLeadingMargin = containerStackLeadingConstraint.constant
+
         selectionStyle = .none
 
         nameLabel?.font = Style.nameFont
         nameLabel?.textColor = Style.nameTextColor
+
+        badgeLabel?.font = Style.badgeFont
+        badgeLabel?.textColor = Style.badgeTextColor
+        badgeLabel?.backgroundColor = Style.badgeColor
+        badgeLabel?.adjustsFontForContentSizeCategory = true
+        badgeLabel?.adjustsFontSizeToFitWidth = true
 
         dateLabel?.font = Style.dateFont
         dateLabel?.textColor = Style.dateTextColor
@@ -276,10 +307,6 @@ private extension CommentContentTableViewCell {
         accessoryButton?.tintColor = Style.buttonTintColor
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
-
-        webView.navigationDelegate = self
-        webView.scrollView.bounces = false
-        webView.scrollView.showsVerticalScrollIndicator = false
 
         replyButton?.tintColor = Style.buttonTintColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
@@ -326,47 +353,12 @@ private extension CommentContentTableViewCell {
         avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
     }
 
-    /// Returns a formatted HTML string by loading the template for rich comment.
-    ///
-    /// The method will try to return cached content if possible, by detecting whether the content matches the previous content.
-    /// If it's different (e.g. due to edits), it will reprocess the HTML string.
-    ///
-    /// - Parameter content: The content value from the `Comment` object.
-    /// - Returns: Formatted HTML string to be displayed in the web view.
-    ///
-    func formattedHTMLString(for content: String) -> String {
-        // return the previous HTML string if the comment content is unchanged.
-        if let previousCommentContent = commentContentCache,
-           let previousHTMLString = htmlContentCache,
-           previousCommentContent == content {
-            return previousHTMLString
-        }
-
-        // otherwise: sanitize the content, cache it, and then return it.
-        guard let htmlTemplateFormat = Self.htmlTemplateFormat else {
-            DDLogError("\(Self.classNameWithoutNamespaces()): Failed to load HTML template format for comment content.")
-            return String()
-        }
-
-        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
-        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
-        let htmlContent = String(format: htmlTemplateFormat, content
-                                    .replacingOccurrences(of: String.emptyElementRegexPattern, with: String(), options: [.regularExpression])
-                                    .trimmingCharacters(in: .whitespacesAndNewlines))
-
-        // cache the contents.
-        commentContentCache = content
-        htmlContentCache = htmlContent
-
-        return htmlContent
-    }
-
     func updateModerationBarVisibility() {
         moderationBar.isHidden = !isModerationEnabled || hidesModerationBar
     }
 
     func updateContainerLeadingConstraint() {
-        containerStackLeadingConstraint?.constant = indentationWidth * CGFloat(indentationLevel)
+        containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
     /// Updates the style and text of the Like button.
@@ -425,6 +417,57 @@ private extension CommentContentTableViewCell {
             completion()
         }
     }
+
+    // MARK: Content Rendering
+
+    func resetRenderedContents() {
+        renderer = nil
+        contentContainerView.subviews.forEach { $0.removeFromSuperview() }
+    }
+
+    func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod) {
+        // skip creating the renderer if the content does not change.
+        // this prevents the cell to jump multiple times due to consecutive reloadData calls.
+        //
+        // note that this doesn't apply for `.richContent` method. Always reset the textView instead
+        // of reusing it to prevent crash. Ref: http://git.io/Jtl2U
+        if let renderer = renderer,
+           renderer.matchesContent(from: comment),
+           renderMethod == .web {
+            return
+        }
+
+        // clean out any pre-existing renderer just to be sure.
+        resetRenderedContents()
+
+        var renderer: CommentContentRenderer = {
+            switch renderMethod {
+            case .web:
+                return WebCommentContentRenderer(comment: comment)
+            case .richContent:
+                let renderer = RichCommentContentRenderer(comment: comment)
+                renderer.richContentDelegate = self.richContentDelegate
+                return renderer
+            }
+        }()
+        renderer.delegate = self
+        self.renderer = renderer
+        self.renderMethod = renderMethod
+
+        if renderMethod == .web {
+            // reset height constraint to handle cases where the new content requires the webview to shrink.
+            contentContainerHeightConstraint?.isActive = true
+            contentContainerHeightConstraint?.constant = 1
+        } else {
+            contentContainerHeightConstraint?.isActive = false
+        }
+
+        let contentView = renderer.render()
+        contentContainerView?.addSubview(contentView)
+        contentContainerView?.pinSubviewToAllEdges(contentView)
+    }
+
+    // MARK: Button Actions
 
     @objc func accessoryButtonTapped() {
         accessoryButtonAction?(accessoryButton)

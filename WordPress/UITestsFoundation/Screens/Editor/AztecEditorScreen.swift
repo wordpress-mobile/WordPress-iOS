@@ -1,6 +1,8 @@
+import ScreenObject
 import XCTest
 
-public class AztecEditorScreen: BaseScreen {
+public class AztecEditorScreen: ScreenObject {
+
     enum Mode {
         case rich
         case html
@@ -11,46 +13,31 @@ public class AztecEditorScreen: BaseScreen {
     }
 
     let mode: Mode
-    var textView: XCUIElement
+    private(set) var textView: XCUIElement
 
-    private var richTextField = "aztec-rich-text-view"
-    private var htmlTextField = "aztec-html-text-view"
+    private let richTextField = "aztec-rich-text-view"
+    private let htmlTextField = "aztec-html-text-view"
 
-    let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
-    let publishButton = XCUIApplication().buttons["Publish"]
-    let publishNowButton = XCUIApplication().buttons["Publish Now"]
-    let moreButton = XCUIApplication().buttons["more_post_options"]
-    let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
+    var mediaButton: XCUIElement { app.buttons["format_toolbar_insert_media"] }
+    var sourcecodeButton: XCUIElement { app.buttons["format_toolbar_toggle_html_view"] }
 
-    let titleView = XCUIApplication().textViews["Title"]
-    let contentPlaceholder = XCUIApplication().staticTexts["aztec-content-placeholder"]
+    private let textViewGetter: (String) -> (XCUIApplication) -> XCUIElement = { identifier in
+        return { app in
+            var textView = app.textViews[identifier]
 
-    let mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
-    let insertMediaButton = XCUIApplication().buttons["insert_media_button"]
-    let headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
-    let boldButton = XCUIApplication().buttons["format_toolbar_toggle_bold"]
-    let italicButton = XCUIApplication().buttons["format_toolbar_toggle_italic"]
-    let underlineButton = XCUIApplication().buttons["format_toolbar_toggle_underline"]
-    let strikethroughButton = XCUIApplication().buttons["format_toolbar_toggle_strikethrough"]
-    let blockquoteButton = XCUIApplication().buttons["format_toolbar_toggle_blockquote"]
-    let listButton = XCUIApplication().buttons["format_toolbar_toggle_list_unordered"]
-    let linkButton = XCUIApplication().buttons["format_toolbar_insert_link"]
-    let horizontalrulerButton = XCUIApplication().buttons["format_toolbar_insert_horizontal_ruler"]
-    let sourcecodeButton = XCUIApplication().buttons["format_toolbar_toggle_html_view"]
-    let moreToolbarButton = XCUIApplication().buttons["format_toolbar_insert_more"]
+            if textView.exists == false {
+                if app.otherElements[identifier].exists {
+                    textView = app.otherElements[identifier]
+                }
+            }
 
-    let unorderedListOption = XCUIApplication().buttons["Unordered List"]
-    let orderedListOption = XCUIApplication().buttons["Ordered List"]
+            return textView
+        }
+    }
 
-    // Action sheets
-    let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
-    let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"]
-    let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"]
-    let postHasChangesSheet = XCUIApplication().sheets["post-has-changes-alert"]
-
-    init(mode: Mode) {
-        var textField = ""
+    init(mode: Mode, app: XCUIApplication = XCUIApplication()) throws {
         self.mode = mode
+        let textField: String
         switch mode {
         case .rich:
             textField = richTextField
@@ -58,16 +45,12 @@ public class AztecEditorScreen: BaseScreen {
             textField = htmlTextField
         }
 
-        let app = XCUIApplication()
         textView = app.textViews[textField]
 
-        if !textView.exists {
-            if app.otherElements[textField].exists {
-                textView = app.otherElements[textField]
-            }
-        }
-
-        super.init(element: textView)
+        try super.init(
+            expectedElementGetters: [ textViewGetter(textField) ],
+            app: app
+        )
 
         showOptionsStrip()
     }
@@ -87,11 +70,12 @@ public class AztecEditorScreen: BaseScreen {
 
     @discardableResult
     func addList(type: String) -> AztecEditorScreen {
+        let listButton = app.buttons["format_toolbar_toggle_list_unordered"]
         tapToolbarButton(button: listButton)
         if type == "ul" {
-            unorderedListOption.tap()
+            app.buttons["Unordered List"].tap()
         } else if type == "ol" {
-            orderedListOption.tap()
+            app.buttons["Ordered List"].tap()
         }
 
         return self
@@ -114,6 +98,7 @@ public class AztecEditorScreen: BaseScreen {
      */
     @discardableResult
     func tapToolbarButton(button: XCUIElement) -> AztecEditorScreen {
+        let linkButton = app.buttons["format_toolbar_insert_link"]
         let swipeElement = mediaButton.isHittable ? mediaButton : linkButton
 
         if !button.exists || !button.isHittable {
@@ -148,21 +133,11 @@ public class AztecEditorScreen: BaseScreen {
     }
 
     /**
-     Switches between Rich and HTML view.
-     */
-    func switchContentView() -> AztecEditorScreen {
-        tapToolbarButton(button: sourcecodeButton)
-
-
-        return AztecEditorScreen(mode: mode.toggle())
-    }
-
-    /**
      Common method to type in different text fields
      */
     @discardableResult
-    func enterText(text: String) -> AztecEditorScreen {
-        contentPlaceholder.tap()
+    public func enterText(text: String) -> AztecEditorScreen {
+        app.staticTexts["aztec-content-placeholder"].tap()
         textView.typeText(text)
         return self
     }
@@ -171,7 +146,8 @@ public class AztecEditorScreen: BaseScreen {
      Enters text into title field.
      - Parameter text: the test to enter into the title
      */
-    func enterTextInTitle(text: String) -> AztecEditorScreen {
+    public func enterTextInTitle(text: String) -> AztecEditorScreen {
+        let titleView = app.textViews["Title"]
         titleView.tap()
         titleView.typeText(text)
 
@@ -222,10 +198,14 @@ public class AztecEditorScreen: BaseScreen {
 
         // Inject the first picture
         try MediaPickerAlbumScreen().selectImage(atIndex: 0)
-        insertMediaButton.tap()
+        app.buttons["insert_media_button"].tap()
 
         // Wait for upload to finish
-        waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
+        let uploadProgressBar = app.progressIndicators["Progress"]
+        XCTAssertEqual(
+            uploadProgressBar.waitFor(predicateString: "exists == false", timeout: 10),
+            .completed
+        )
 
         return self
     }
@@ -234,19 +214,23 @@ public class AztecEditorScreen: BaseScreen {
     public func closeEditor() {
         XCTContext.runActivity(named: "Close the Aztec editor") { (activity) in
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
+                let actionSheet = app.sheets.element(boundBy: 0)
                 if actionSheet.exists {
                     if XCUIDevice.isPad {
                         app.otherElements["PopoverDismissRegion"].tap()
                     } else {
-                        keepEditingButton.tap()
+                        app.sheets.buttons["Keep Editing"].tap()
                     }
                 }
             }
+
+            let editorCloseButton = app.navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
 
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
 
+                let postHasChangesSheet = app.sheets["post-has-changes-alert"]
                 let discardButton = XCUIDevice.isPad ? postHasChangesSheet.buttons.lastMatch : postHasChangesSheet.buttons.element(boundBy: 1)
 
                 if postHasChangesSheet.exists && (discardButton?.exists ?? false) {
@@ -255,13 +239,16 @@ public class AztecEditorScreen: BaseScreen {
                 }
             }
 
-            let editorClosed = waitFor(element: editorCloseButton, predicate: "isEnabled == false")
-            XCTAssert(editorClosed, "Aztec editor should be closed but is still loaded.")
+            XCTAssertEqual(
+                editorCloseButton.waitFor(predicateString: "isEnabled == false"),
+                .completed,
+                "Aztec editor should be closed but is still loaded."
+            )
         }
     }
 
-    func publish() throws -> EditorNoticeComponent {
-        publishButton.tap()
+    public func publish() throws -> EditorNoticeComponent {
+        app.buttons["Publish"].tap()
 
         try confirmPublish()
 
@@ -272,13 +259,14 @@ public class AztecEditorScreen: BaseScreen {
         if FancyAlertComponent.isLoaded() {
             try FancyAlertComponent().acceptAlert()
         } else {
-            publishNowButton.tap()
+            app.buttons["Publish Now"].tap()
         }
     }
 
     public func openPostSettings() throws -> EditorPostSettings {
-        moreButton.tap()
-        postSettingsButton.tap()
+        app.buttons["more_post_options"].tap()
+
+        app.sheets.buttons["Post Settings"].tap()
 
         return try EditorPostSettings()
     }
@@ -298,7 +286,7 @@ public class AztecEditorScreen: BaseScreen {
         return textView.value as! String
     }
 
-    static func isLoaded() -> Bool {
-        return XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"].exists
+    static func isLoaded(mode: Mode = .rich) -> Bool {
+        (try? AztecEditorScreen(mode: mode).isLoaded) ?? false
     }
 }

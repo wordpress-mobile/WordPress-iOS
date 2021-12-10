@@ -1,23 +1,16 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let usernameField = "login-epilogue-username-label"
-    static let siteUrlField = "siteUrl"
-    static let loginEpilogueTable = "login-epilogue-table"
-}
+public class LoginEpilogueScreen: ScreenObject {
 
-public class LoginEpilogueScreen: BaseScreen {
-    let usernameField: XCUIElement
-    let siteUrlField: XCUIElement
-    let loginEpilogueTable: XCUIElement
+    private let loginEpilogueTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["login-epilogue-table"]
+    }
 
-    init() {
-        let app = XCUIApplication()
-        usernameField = app.staticTexts[ElementStringIDs.usernameField]
-        siteUrlField = app.staticTexts[ElementStringIDs.siteUrlField]
-        loginEpilogueTable = app.tables[ElementStringIDs.loginEpilogueTable]
+    var loginEpilogueTable: XCUIElement { loginEpilogueTableGetter(app) }
 
-        super.init(element: loginEpilogueTable)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [loginEpilogueTableGetter], app: app)
     }
 
     public func continueWithSelectedSite() throws -> MySiteScreen {
@@ -41,12 +34,12 @@ public class LoginEpilogueScreen: BaseScreen {
     public func verifyEpilogueDisplays(username: String? = nil, siteUrl: String) -> LoginEpilogueScreen {
         if var expectedUsername = username {
             expectedUsername = "@\(expectedUsername)"
-            let actualUsername = usernameField.label
+            let actualUsername = app.staticTexts["login-epilogue-username-label"].label
             XCTAssertEqual(expectedUsername, actualUsername, "Username displayed is \(actualUsername) but should be \(expectedUsername)")
         }
 
         let expectedSiteUrl = getDisplayUrl(for: siteUrl)
-        let actualSiteUrl = siteUrlField.firstMatch.label
+        let actualSiteUrl = app.staticTexts["siteUrl"].firstMatch.label
         XCTAssertEqual(expectedSiteUrl, actualSiteUrl, "Site URL displayed is \(actualSiteUrl) but should be \(expectedSiteUrl)")
 
         return self
@@ -62,12 +55,11 @@ public class LoginEpilogueScreen: BaseScreen {
     }
 
     private func dismissQuickStartPromptIfNeeded() throws {
-        try XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { (activity) in
-            if QuickStartPromptScreen.isLoaded() {
-                Logger.log(message: "Dismising quick start prompt...", event: .i)
-                _ = try QuickStartPromptScreen().selectNoThanks()
-                return
-            }
+        try XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { _ in
+            guard QuickStartPromptScreen.isLoaded() else { return }
+
+            Logger.log(message: "Dismising quick start prompt...", event: .i)
+            _ = try QuickStartPromptScreen().selectNoThanks()
         }
     }
 }

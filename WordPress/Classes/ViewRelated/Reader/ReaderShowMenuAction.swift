@@ -62,10 +62,6 @@ final class ReaderShowMenuAction {
                                                     let subscribe = !topic.isSubscribedForPostNotifications
 
                                                     ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: subscribe, completion: {
-
-                                                        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
-                                                        WPAnalytics.track(event)
-
                                                         ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: true)
                                                     }, failure: { _ in
                                                         ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: false)

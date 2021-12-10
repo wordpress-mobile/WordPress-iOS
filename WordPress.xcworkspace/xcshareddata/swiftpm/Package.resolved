@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "AutomatticAbout",
+        "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
+        "state": {
+          "branch": null,
+          "revision": "36700103dc6070bfead85c6b25ad688d8f8c37ee",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "ScreenObject",
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {

@@ -7,6 +7,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = .basicBackground
         titleLabel.textColor = .text
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
     }

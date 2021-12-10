@@ -1,11 +1,14 @@
 import Foundation
+import WordPressKit
 
 @objc class AppConstants: NSObject {
     static let itunesAppID = "1565481562"
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
+    static let productBlogDisplayURL = "jetpack.com/blog"
     static let zendeskSourcePlatform = "mobile_-_jp_ios"
+    static let shareAppName: ShareAppName = .jetpack
     @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
