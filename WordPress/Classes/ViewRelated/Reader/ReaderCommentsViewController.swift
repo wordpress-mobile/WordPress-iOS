@@ -87,7 +87,7 @@ import WordPressShared
                                                                              sourceView: cell.accessoryButton) : nil
         }
 
-        cell.configure(with: comment) { _ in
+        cell.configure(with: comment, renderMethod: .richContent) { _ in
             // don't adjust cell height when it's already scrolled out of viewport.
             guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
                   visibleIndexPaths.contains(indexPath) else {
