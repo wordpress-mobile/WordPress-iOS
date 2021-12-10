@@ -1069,7 +1069,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
 
-        [weakSelf refreshTableViewAndNoResultsView];
+        // Dispatch is used here to address an issue in iOS 15 where some cells could disappear from the screen after `reloadData`.
+        // This seems to be affecting the Simulator environment only since I couldn't reproduce it on the device, but I'm fixing it just in case.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf refreshTableViewAndNoResultsView];
+        });
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
