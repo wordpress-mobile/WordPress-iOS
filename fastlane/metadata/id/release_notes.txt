@@ -1,0 +1,14 @@
+Buone notizie per tutti: abbiamo risolto gli arresti anomali dell'app causati dal caricamento di immagini offline, dall'eliminazione di elementi multimediali o dalla visualizzazione dei dettagli per le notifiche dei "Mi piace".
+
+Abbiamo apportato alcune grandi modifiche all'editor a blocchi in modo che tu possa mantenere la calma e pubblicare su:
+
+- Quando apri le impostazioni per un blocco Pulsante o Immagine collegato a un URL, l'editor non compilerà più automaticamente un URL dagli appunti. Ora visualizzerai un suggerimento "Collega a" in modo da poter usare l'URL degli appunti o inserirne uno diverso.
+- Crea un blocco Galleria e le opzioni degli elementi multimediali del tuo dispositivo si apriranno automaticamente, facilitandoti l'aggiunta delle tue immagini.
+- Stai aggiungendo un nuovo blocco? Se il tuo dispositivo è impostato su una lingua diversa dall'inglese, le schede nel menu dell'inseritore ora corrisponderanno alla lingua impostata.
+- Quando utilizzi il blocco Incorporamenti, non visualizzerai l'azione "Modifica" nella barra degli strumenti. Ora puoi modificare l'URL andando invece in Impostazioni del blocco.
+- Nell'editor degli articoli, passando dalla modalità HTML alla modalità visuale apparirà un avviso coinciso che informa del passaggio.
+- Potresti aver notato che la dimensione del carattere cambia da sola nei blocchi Media e testo. Abbiamo eliminato il bug che stava causando questa modifica.
+
+Nuovo su WordPress? Non preoccuparti. Il nostro processo di accesso rende più facile che mai creare e iniziare a gestire il tuo sito.
+
+Abbiamo anche aggiunto una nuova schermata Informazioni in modo da poter valutare e condividere l'app (suggerisci, suggerisci), visitare il nostro profilo Twitter e il blog, visualizzare le nostre altre app e altro ancora.

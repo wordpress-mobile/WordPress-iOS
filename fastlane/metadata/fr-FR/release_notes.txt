@@ -1,0 +1,14 @@
+Bonne nouvelle ! Nous avons résolu les incidents liés au chargement des images en étant hors ligne, à la suppression de médias ou à l’affichage détaillé des notifications « J’aime » dans l’application.
+
+Nous avons apporté d’importantes modifications à l’éditeur de blocs pour que vous puissiez continuer à publier en toute tranquillité :
+
+- Lorsque vous ouvrez les réglages d’un bloc de bouton ou d’image associé à une URL, l’éditeur n’ajoute plus automatiquement une URL à partir de votre presse-papier. Vous verrez désormais une suggestion « Lien vers » vous laissant le choix de sélectionner l’URL de votre presse-papier ou d’en saisir une autre.
+- Lorsque vous créez un bloc Galerie, les options multimédia de votre appareil s’ouvrent automatiquement pour faciliter l’ajout d’images.
+- Vous souhaitez ajouter un nouveau bloc ? Si la langue de votre appareil n’est pas l’anglais, les onglets du menu d’insertion apparaîtront désormais dans la langue définie.
+- Lorsque vous utilisez le bloc de contenu embarqué, l’action « Modifier » n’apparaîtra plus dans la barre d’outils. Vous pouvez désormais modifier l’URL à partir des réglages du bloc.
+- Dans l’éditeur d’article, vous recevrez une notification si vous passez du mode HTML au mode visuel.
+- Vous avez peut-être remarqué des changements de taille de police intempestifs dans les blocs de Média & texte. Nous avons corrigé le bug à l’origine de ce problème.
+
+Vous découvrez WordPress ? Pas d’inquiétude. Notre procédure de connexion vous permet de créer et de commencer à gérer votre site encore plus facilement.
+
+Nous avons également ajouté une nouvelle page À propos à partir de laquelle vous pouvez évaluer et partager l’application, consulter notre profil Twitter et notre blog, découvrir nos autres applications, etc.
