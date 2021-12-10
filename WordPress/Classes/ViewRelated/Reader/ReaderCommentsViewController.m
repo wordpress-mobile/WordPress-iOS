@@ -233,11 +233,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     // Update cached attributed strings when toggling light/dark mode.
     self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
 
-    // Only refresh the table view when the size class changed (i.e. the device is rotated).
+    // Only refresh the table view when any relevant trait collection properties changed.
     // In iOS 15, traitCollectionDidChange is always triggered upon navigation although there are no changes on the traitCollection,
     // which could cause the NoResultsView to be misplaced.
     if (self.traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass
-        || self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass) {
+        || self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass
+        || self.traitCollection.preferredContentSizeCategory != previousTraitCollection.preferredContentSizeCategory
+        || self.traitCollection.legibilityWeight != previousTraitCollection.legibilityWeight
+        || self.userInterfaceStyleChanged) {
         [self refreshTableViewAndNoResultsView];
     }
 }
