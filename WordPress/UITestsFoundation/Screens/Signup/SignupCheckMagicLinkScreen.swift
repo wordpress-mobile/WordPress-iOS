@@ -11,9 +11,9 @@ public class SignupCheckMagicLinkScreen: ScreenObject {
         )
     }
 
-    public func openMagicSignupLink() -> SignupEpilogueScreen {
+    public func openMagicSignupLink() throws -> SignupEpilogueScreen {
         openMagicLink()
 
-        return SignupEpilogueScreen()
+        return try SignupEpilogueScreen()
     }
 }

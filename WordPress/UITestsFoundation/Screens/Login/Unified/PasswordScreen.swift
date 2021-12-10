@@ -11,10 +11,10 @@ public class PasswordScreen: ScreenObject {
         )
     }
 
-    public func proceedWith(password: String) -> LoginEpilogueScreen {
+    public func proceedWith(password: String) throws -> LoginEpilogueScreen {
         _ = tryProceed(password: password)
 
-        return LoginEpilogueScreen()
+        return try LoginEpilogueScreen()
     }
 
     public func tryProceed(password: String) -> PasswordScreen {

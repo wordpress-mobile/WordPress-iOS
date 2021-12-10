@@ -1,39 +1,18 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let newAccountHeader = "New Account Header"
-    static let displayNameField = "Display Name Field"
-    static let usernameField = "Username Field"
-    static let passwordField = "Password Field"
-    // This is the Done button on the Login Epilogue
-    static let doneButton = "Done"
-    // This is the Done button on the Signup Epilogue
-    static let continueButton = "Done Button"
-}
+public class SignupEpilogueScreen: ScreenObject {
 
-public class SignupEpilogueScreen: BaseScreen {
-    let newAccountHeader: XCUIElement
-    let displayNameField: XCUIElement
-    let usernameField: XCUIElement
-    let passwordField: XCUIElement
-    let doneButton: XCUIElement
-    let continueButton: XCUIElement
-
-    init() {
-        let app = XCUIApplication()
-        newAccountHeader = app.staticTexts[ElementStringIDs.newAccountHeader]
-        displayNameField = app.textFields[ElementStringIDs.displayNameField]
-        usernameField = app.textFields[ElementStringIDs.usernameField]
-        passwordField = app.secureTextFields[ElementStringIDs.passwordField]
-        doneButton = app.buttons[ElementStringIDs.doneButton]
-        continueButton = app.buttons[ElementStringIDs.continueButton]
-
-        super.init(element: newAccountHeader)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.staticTexts["New Account Header"] } ],
+            app: app
+        )
     }
 
     public func verifyEpilogueContains(username: String, displayName: String) -> SignupEpilogueScreen {
-        let actualUsername = usernameField.value as! String
-        let actualDisplayName = displayNameField.value as! String
+        let actualUsername = app.textFields["Username Field"].value as! String
+        let actualDisplayName = app.textFields["Display Name Field"].value as! String
 
         XCTAssertEqual(username, actualUsername, "Username is set to \(actualUsername) but should be \(username)")
         XCTAssertEqual(displayName, actualDisplayName, "Display name is set to \(actualDisplayName) but should be \(displayName)")
@@ -42,15 +21,16 @@ public class SignupEpilogueScreen: BaseScreen {
     }
 
     public func setPassword(_ password: String) -> SignupEpilogueScreen {
+        let passwordField = app.secureTextFields["Password Field"]
         passwordField.tap()
         passwordField.typeText(password)
-        doneButton.tap()
+        app.buttons["Done"].tap()
 
         return self
     }
 
     public func continueWithSignup() throws -> MySiteScreen {
-        continueButton.tap()
+        app.buttons["Done Button"].tap()
 
         return try MySiteScreen()
     }
