@@ -6,6 +6,17 @@ import ScreenObject
 // than stored as a reference? 🤔
 public let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
 
+// Sometimes the Back Button in Navigation Bar is not recognized by XCUITest as an element.
+// This method identifies when it happens and uses a swipe back gesture instead of tapping the button.
+public func navigateBack() {
+    if XCUIApplication().navigationBars.element(boundBy: 0).buttons.count == 1 {
+        let leftEdge = XCUIApplication().coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0.5))
+        let center = XCUIApplication().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+
+        leftEdge.press(forDuration: 0.01, thenDragTo: center)
+    } else { navBackButton.tap() }
+}
+
 extension ScreenObject {
 
     // TODO: This was implemented on the original `BaseScreen` and is here just as a copy-paste for the transition.
