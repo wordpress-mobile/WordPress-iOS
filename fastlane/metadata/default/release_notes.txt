@@ -1,0 +1,14 @@
+Good news, everyone—we fixed app crashes caused by uploading images while offline, deleting media, or seeing details for "Like" notifications.
+
+We made some big changes to the block editor so you can keep calm and publish on:
+
+- When you open the settings for a Button or Image block linked to a URL, the editor won't auto-populate a URL from your clipboard anymore. You'll now see a "Link To" suggestion so you can use the clipboard URL or enter a different one.
+- Create a Gallery block and your device's media options will automatically open, making it easier for you to add your images.
+- Adding a new block? If your device is set to a language other than English, the tabs in the inserter menu will now match your set language.
+- When you're using the Embed block, you won't see the "Edit" action in the toolbar. You can now change the URL by going into Block Settings instead.
+- In the post editor, switching from HTML mode to Visual mode will bring up a compact notice telling you about the switch.
+- You might have noticed your font size changing on its own in Media and Text blocks. We squashed the bug that was causing it.
+
+New to WordPress? Not to worry. Our login process makes it easier than ever to create and start managing your site.
+
+We also added a new About screen so you can rate and share the app (hint, hint), visit our Twitter profile and blog, view our other apps, and more.

@@ -1,0 +1,14 @@
+Herkese iyi haberlerimiz var. Çevrimdışıyken resim yüklerken, medya silerken veya "Beğenme" bildirimlerinin ayrıntılarını görüntülerken oluşan uygulama kilitlenme durumlarını düzelttik.
+
+Gönderilerinizi huzurlu bir şekilde yayınlayabilmeniz için blok düzenleyicide bazı büyük değişiklikler yaptık:
+
+- Bir URL'ye bağlı bir Düğme veya Resim blokunun ayarlarını açtığınızda, düzenleyici artık bir URL'yi panonuzdan otomatik olarak doldurmaz. Artık pano URL'sini kullanabilmeniz veya farklı bir URL girebilmeniz için bir "Bağlantı" önerisi göreceksiniz.
+- Bir Galeri bloku oluşturduğunuzda, cihazınızın medya seçenekleri otomatik olarak açılır ve görsel eklemenizi kolaylaştırır.
+- Yeni bir blok mu ekliyorsunuz? Cihazınız İngilizce dışında bir dile ayarlanmışsa, ekleyici menüsündeki sekmeler artık ayarladığınız dille eşleşecektir.
+- Gömülü bloku kullanırken, araç çubuğunda "Düzenle" eylemi görüntülenmez. Artık bunun yerine Blok Ayarlarına giderek URL'yi değiştirebilirsiniz.
+- Gönderi düzenleyicide HTML modundan Görsel moda geçiş yaptığınızda geçiş hakkında size bilgi veren küçük bir uyarı görüntülenir.
+- Medya ve Metin bloklarında yazı tipi boyutunun kendi kendine değiştiğini fark etmiş olabilirsiniz. Buna neden olan hatayı giderdik.
+
+WordPress'te yeni misiniz? Endişe etmeyin. Giriş sürecimiz, sitenizi oluşturmayı ve yönetmeye başlamayı her zamankinden daha kolay hale getiriyor.
+
+Ayrıca, uygulamaya puan verip paylaşabilmeniz için (ipucu, ipucu) yeni bir Hakkında ekranı ekledik, Twitter profilimizi ve blogumuzu ziyaret edebilir, diğer uygulamalarınızı görüntüleyebilir ve daha bir çok şey yapabilirsiniz.

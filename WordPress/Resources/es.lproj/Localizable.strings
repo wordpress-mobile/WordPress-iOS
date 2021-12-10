@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-01 08:45:30+0000 */
+/* Translation-Revision-Date: 2021-12-07 07:34:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -5196,7 +5196,7 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid State" = "Por favor, introduce una provincia válida";
 
 /* Title of a prompt. */
-"Please enter a valid URL" = "Por favor introduce una URL válida";
+"Please enter a valid URL" = "Por favor, introduce una URL válida";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Introduce una dirección válida";

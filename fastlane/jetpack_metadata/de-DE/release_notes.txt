@@ -1,0 +1,14 @@
+Gute Neuigkeiten: Wir haben App-Abstürze, die durch den Offline-Upload von Bildern, das Löschen von Medien oder das Anzeigen von Details für „Gefällt mir“-Benachrichtigungen verursacht wurden, behoben.
+
+Wir haben umfassende Änderungen am Block-Editor vorgenommen, damit du unbesorgt Beiträge veröffentlichen kannst auf:
+
+- Wenn du die Einstellungen für einen mit einer URL verknüpften Button oder Bildblock öffnest, wird im Editor nicht mehr automatisch eine URL aus deiner Zwischenablage eingefügt. Du erhältst jetzt einen „Link zu“-Vorschlag, d. h., du kannst entweder die URL aus der Zwischenablage verwenden oder eine andere eingeben.
+- Wenn du einen Galerieblock erstellst, werden die Medienoptionen deines Geräts automatisch geöffnet. So kannst du deine Bilder einfacher hinzufügen.
+- Du möchtest einen neuen Block hinzufügen? Wenn auf deinem Gerät eine andere Sprache als Englisch eingestellt ist, entsprechen die Tabs im Inserter-Menü ab sofort deiner Gerätesprache.
+- Bei Verwendung des Embed-Blocks wird dir in der Toolbar nicht die Aktion „Bearbeiten“ angezeigt. Du kannst die URL ab sofort in den Blockeinstellungen ändern.
+- Wenn du im Beitragseditor vom HTML-Modus zum visuellen Modus wechselst, wird dir ein kurzer Hinweis zum Wechsel angezeigt.
+- Vielleicht hast du schon bemerkt, dass sich die Schriftgröße in „Medien und Text“-Blöcken automatisch ändert. Wir haben den Fehler, der dies verursacht hat, beseitigt.
+
+Bist du neu bei WordPress? Kein Grund zur Sorge. Mit unserem Anmeldeprozess ist es einfacher denn je, eine eigene Website zu erstellen und zu verwalten.
+
+Wir haben zudem eine neue Seite „Über“ hinzugefügt: Hier kannst du die App bewerten und teilen (das solltest du unbedingt tun), unser Profil und Blog auf Twitter besuchen, unsere anderen Apps ansehen und vieles mehr.

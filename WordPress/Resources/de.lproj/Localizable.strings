@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 13:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-08 11:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: de */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "%1$@, um Bedrohungen zu beheben.";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d Kommentar";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d Kommentare";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "Teile neue Beiträge automatisch in deinen sozialen Medien, um diese Zielgruppe auf deine Website zu holen.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Automattic-Familie";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische Updates";
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "Überprüfe deine Website-Statistiken";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "Deinen Website-Titel prüfen";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Überprüfe Käufe …";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "Wähle ein neues App-Icon";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "Wähle eine Website aus, die geöffnet werden soll.";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Wähle ein Theme";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Uhrzeit auswählen";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "Ein einzigartiges Website-Icon auswählen";
 
 /* No comment provided by engineer. */
 "Choose audio" = "Audio-Datei wählen";
@@ -1627,13 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "Abgeschlossen: Deine Website-Statistiken prüfen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "Abgeschlossen: Deinen Website-Titel prüfen";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "Abgeschlossen: Ein Theme auswählen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "Abgeschlossen: Ein einzigartiges Website-Icon auswählen";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Abgeschlossen: Mit der Website-Einrichtung fortfahren";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "Abgeschlossen: Website-Seiten prüfen";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "Abgeschlossen: Social Sharing";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Abgeschlossen: Anzeigen deiner Website";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "Link in Kommentar kopieren";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "Kopiere die URL aus der Zwischenablage: %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "Block kopieren";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "Entwurf";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "Entwirf und veröffentliche einen Beitrag.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -3212,7 +3212,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "Von einem anderen Gerät";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "Aus der Zwischenablage";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "Von diesem Gerät";
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack optimiert deine Bilder und stellt sie über den Server-Standort bereit, der am nächsten an deinen Website-Besuchern liegt. Unser globales Netzwerk für Content-Auslieferung verkürzt die Ladezeiten deiner Website.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "Von überall aus mitmachen";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Einer Unterhaltung beitreten: Kommentiere Beiträge aus Blogs, denen du folgst.";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "Mehr erfahren…";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "Lerne die Grundlagen mit einer kurzen Erklärung.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Links";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "Veraltete Icons";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "Rechtliches und mehr";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Wir helfen dir";
@@ -5620,7 +5620,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "Schnellstart";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "Bewerte uns";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Bewerte uns im App-Store";
@@ -6412,7 +6412,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "Link teilen";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "Mit Freunden teilen";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "Ähnliche Beiträge anzeigen";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "Zeig mir alles";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "Wird angezeigt";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "Wird auf dem Browser-Tab deines Besuchers und an anderen Stellen online angezeigt.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Wird öffentlich angezeigt, wenn du auf Blogs kommentierst.";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Social Media";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "Social Sharing";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Einige Blöcke verfügen über zusätzliche Einstellungen. Tippe auf das Einstellungs-Icon unten rechts im Block, um dir die Optionen anzusehen.";
@@ -6879,10 +6879,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "Zum Block-Editor wechseln";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "Zum HTML-Modus gewechselt";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "Zum visuellen Modus gewechselt";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Wechselt zur Schriftgröße der Überschrift 1";
@@ -8129,7 +8129,7 @@ translators: Block name. %s: The localized block name */
 "View All" = "Alles anzeigen";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
+"View All Comments" = "Alle Kommentare anzeigen";
 
 /* Button label for viewing a post */
 "View Post" = "Beitrag anzeigen";
@@ -8238,7 +8238,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "Warten …";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "Brauchst du ein wenig Hilfe dabei, diese Website mit der App zu verwalten?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8699,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "Plugin-Seite von WordPress.org";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "Werde Teil unseres Teams";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Weltkarte mit Aufrufen pro Land.";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Du kannst Blocks neu anordnen, indem du auf einen Block tippst und ihn dann mit den Pfeilen nach oben und unten, die unten links auf dem Block erscheinen, an die passende Stelle navigieren.";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "Du kannst die Websites jederzeit wechseln.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Unter „Meine Website“ &rarr; „Einstellungen“ kannst du dies jederzeit aktualisieren.";

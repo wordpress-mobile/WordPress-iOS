@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-01 05:24:35+0000 */
+/* Translation-Revision-Date: 2021-12-08 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "Periksa statistik situs Anda";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "Periksa judul situs Anda.";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Memeriksa pembelian...";
@@ -1627,7 +1627,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "Selesai: Periksa statistik situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "Selesai: Periksa judul situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "Selesai: Pilih tema";
