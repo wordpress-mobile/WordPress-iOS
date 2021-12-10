@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressShared
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
@@ -73,17 +74,17 @@ import UIKit
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
-        cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
+        cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
         cell.hidesModerationBar = true
 
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         if #available (iOS 14.0, *) {
-            cell.accessoryButton.showsMenuAsPrimaryAction = comment.allowsModeration()
-            cell.accessoryButton.menu = comment.allowsModeration() ? menu(for: comment,
-                                                                             indexPath: indexPath,
-                                                                             handler: handler,
-                                                                             sourceView: cell.accessoryButton) : nil
+            cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
+            cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment,
+                                                                                     indexPath: indexPath,
+                                                                                     handler: handler,
+                                                                                     sourceView: cell.accessoryButton) : nil
         }
 
         cell.configure(with: comment, renderMethod: .richContent) { _ in
@@ -103,6 +104,9 @@ import UIKit
         guard let commentURL = comment.commentURL() else {
             return
         }
+
+        // track share intent.
+        WPAnalytics.track(.readerArticleCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = sourceView
@@ -129,6 +133,10 @@ import UIKit
         }
 
         present(menuViewController, animated: true)
+    }
+
+    func isModerationMenuEnabled(for comment: Comment) -> Bool {
+        return comment.allowsModeration() && Feature.enabled(.commentThreadModerationMenu)
     }
 
     // MARK: - Tracking
@@ -304,8 +312,12 @@ private extension ReaderCommentsViewController {
             return "reader_post_details_comments"
         case .commentNotification:
             return "comment_notification"
+        case .commentLikeNotification:
+            return "comment_like_notification"
         case .mySiteComment:
             return "my_site_comment"
+        case .activityLogDetail:
+            return "activity_log_detail"
         default:
             return "unknown"
         }

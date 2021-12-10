@@ -49,13 +49,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Note that the badge will be hidden when the title is nil or empty.
     var badgeTitle: String? = nil {
         didSet {
-            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
-                badgeLabel.isHidden = true
-                return
-            }
+            let title: String = {
+                if let title = badgeTitle {
+                    return title.localizedUppercase
+                }
+                return String()
+            }()
 
-            badgeLabel.setText(badgeTitle.localizedUppercase)
-            badgeLabel.isHidden = false
+            badgeLabel.setText(title)
+            badgeLabel.isHidden = title.isEmpty
+            badgeLabel.updateConstraintsIfNeeded()
         }
     }
 
