@@ -74,17 +74,17 @@ import WordPressShared
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
-        cell.accessoryButtonType = comment.allowsModeration() ? .ellipsis : .share
+        cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
         cell.hidesModerationBar = true
 
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         if #available (iOS 14.0, *) {
-            cell.accessoryButton.showsMenuAsPrimaryAction = comment.allowsModeration()
-            cell.accessoryButton.menu = comment.allowsModeration() ? menu(for: comment,
-                                                                             indexPath: indexPath,
-                                                                             handler: handler,
-                                                                             sourceView: cell.accessoryButton) : nil
+            cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
+            cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment,
+                                                                                     indexPath: indexPath,
+                                                                                     handler: handler,
+                                                                                     sourceView: cell.accessoryButton) : nil
         }
 
         cell.configure(with: comment, renderMethod: .richContent) { _ in
@@ -133,6 +133,10 @@ import WordPressShared
         }
 
         present(menuViewController, animated: true)
+    }
+
+    func isModerationMenuEnabled(for comment: Comment) -> Bool {
+        return comment.allowsModeration() && Feature.enabled(.commentThreadModerationMenu)
     }
 
     // MARK: - Tracking
