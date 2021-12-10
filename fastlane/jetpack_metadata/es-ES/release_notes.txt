@@ -1,6 +1,6 @@
-Buenas noticias: hemos corregido los errores de la aplicación que se producían cuando se subían imágenes sin conexión, o al mismo tiempo que se eliminaban medios o se visualizaban los detalles de las notificaciones de "Me gusta".
+Buenas noticias: hemos corregido los errores de la aplicación que se producían cuando se subían imágenes sin conexión, se eliminaban medios o se visualizaban los detalles de las notificaciones de "Me gusta".
 
-Hemos hecho algunos cambios importantes en el editor de bloques para que puedas seguir publicando con tranquilidad:
+Hemos realizado algunos cambios importantes en el editor de bloques para que puedas seguir publicando con tranquilidad:
 
 - Al abrir los ajustes de un bloque de botón o imagen enlazado a una URL, el editor ya no completará de manera automática la URL en el portapapeles. En cambio, verás una sugerencia de "Enlace a" para que puedas utilizar la URL del portapapeles o introducir una diferente.
 - Al crear un bloque de Galería, las opciones de medios de tu dispositivo se abrirán automáticamente, facilitándote la tarea de añadir las imágenes.
