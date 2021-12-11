@@ -74,6 +74,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
 @property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
 
+@property (nonatomic, strong) NSIndexPath *highlightedIndexPath;
+
 @end
 
 
@@ -230,14 +232,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     // Update cached attributed strings when toggling light/dark mode.
     self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
-
-    // Only refresh the table view when the size class changed (i.e. the device is rotated).
-    // In iOS 15, traitCollectionDidChange is always triggered upon navigation although there are no changes on the traitCollection,
-    // which could cause the NoResultsView to be misplaced.
-    if (self.traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass
-        || self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass) {
-        [self refreshTableViewAndNoResultsView];
-    }
+    [self refreshTableViewAndNoResultsView];
 }
 
 #pragma mark - Split View Support
@@ -587,6 +582,52 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
 }
 
+- (void)setHighlightedIndexPath:(NSIndexPath *)highlightedIndexPath
+{
+    if (![self newCommentThreadEnabled]) {
+        _highlightedIndexPath = highlightedIndexPath;
+        return;
+    }
+
+    if (_highlightedIndexPath) {
+        CommentContentTableViewCell *previousCell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:_highlightedIndexPath];
+        previousCell.isEmphasized = NO;
+    }
+
+    if (highlightedIndexPath) {
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:highlightedIndexPath];
+        cell.isEmphasized = YES;
+    }
+
+    _highlightedIndexPath = highlightedIndexPath;
+}
+
+- (void)setIndexPathForCommentRepliedTo:(NSIndexPath *)indexPathForCommentRepliedTo
+{
+    if (![self newCommentThreadEnabled]) {
+        _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
+        return;
+    }
+
+    // un-highlight the cell if a highlighted Reply button is tapped.
+    if (_indexPathForCommentRepliedTo && indexPathForCommentRepliedTo && _indexPathForCommentRepliedTo == indexPathForCommentRepliedTo) {
+        [self tapRecognized:nil];
+        return;
+    }
+
+    if (_indexPathForCommentRepliedTo) {
+        CommentContentTableViewCell *previousCell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:_indexPathForCommentRepliedTo];
+        previousCell.isReplyHighlighted = NO;
+    }
+
+    if (indexPathForCommentRepliedTo) {
+        CommentContentTableViewCell *cell = (CommentContentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPathForCommentRepliedTo];
+        cell.isReplyHighlighted = YES;
+    }
+
+    self.highlightedIndexPath = indexPathForCommentRepliedTo;
+    _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
+}
 
 - (UIView *)cachedHeaderView {
     if (!_cachedHeaderView && [self newCommentThreadEnabled]) {
@@ -990,6 +1031,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             });
         }
 
+        self.highlightedIndexPath = indexPath;
+
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;
     }
@@ -1026,7 +1069,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
 
-        [weakSelf refreshTableViewAndNoResultsView];
+        // Dispatch is used here to address an issue in iOS 15 where some cells could disappear from the screen after `reloadData`.
+        // This seems to be affecting the Simulator environment only since I couldn't reproduce it on the device, but I'm fixing it just in case.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf refreshTableViewAndNoResultsView];
+        });
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -1065,12 +1112,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!indexPath) {
-        return;
-    }
-
-    // if a row is already selected don't allow selection of another
-    if (self.replyTextView.isFirstResponder) {
+    // in the new comment thread, we want to allow tapping the Reply button again to un-highlight the row.
+    if (![self newCommentThreadEnabled] && self.replyTextView.isFirstResponder) {
+        // if a row is already selected don't allow selection of another
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
         [self.replyTextView resignFirstResponder];
@@ -1078,7 +1122,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return;
     }
 
-    if (!self.canComment) {
+    if (!indexPath || !self.canComment) {
         return;
     }
 
@@ -1206,6 +1250,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     if ([self newCommentThreadEnabled]) {
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
         [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
+
+        if (self.highlightedIndexPath) {
+            cell.isEmphasized = (indexPath == self.highlightedIndexPath);
+        }
+
+        if (self.indexPathForCommentRepliedTo) {
+            cell.isReplyHighlighted = (indexPath == self.indexPathForCommentRepliedTo);
+        }
 
         // support for legacy content rendering method.
         cell.richContentDelegate = self;

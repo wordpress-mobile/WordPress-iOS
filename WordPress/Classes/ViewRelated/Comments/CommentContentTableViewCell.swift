@@ -49,13 +49,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Note that the badge will be hidden when the title is nil or empty.
     var badgeTitle: String? = nil {
         didSet {
-            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
-                badgeLabel.isHidden = true
-                return
-            }
+            let title: String = {
+                if let title = badgeTitle {
+                    return title.localizedUppercase
+                }
+                return String()
+            }()
 
-            badgeLabel.setText(badgeTitle.localizedUppercase)
-            badgeLabel.isHidden = false
+            badgeLabel.setText(title)
+            badgeLabel.isHidden = title.isEmpty
+            badgeLabel.updateConstraintsIfNeeded()
         }
     }
 
@@ -68,6 +71,23 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override var indentationLevel: Int {
         didSet {
             updateContainerLeadingConstraint()
+        }
+    }
+
+    /// A custom highlight style for the cell that is more controllable than `isHighlighted`.
+    /// Cell selection for this cell is disabled, and highlight style may be disabled based on the table view settings.
+    @objc var isEmphasized: Bool = false {
+        didSet {
+            backgroundColor = isEmphasized ? Style.highlightedBackgroundColor : nil
+            highlightBarView.backgroundColor = isEmphasized ? Style.highlightedBarBackgroundColor : .clear
+        }
+    }
+
+    @objc var isReplyHighlighted: Bool = false {
+        didSet {
+            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.buttonTintColor
+            replyButton?.setTitleColor(isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor, for: .normal)
+            replyButton?.setImage(isReplyHighlighted ? Style.highlightedReplyIconImage : Style.replyIconImage, for: .normal)
         }
     }
 
@@ -98,6 +118,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // This is public so its delegate can be set directly.
     @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
+
+    @IBOutlet private weak var highlightBarView: UIView!
 
     // MARK: Private Properties
 
@@ -161,6 +183,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        // reset all highlight states.
+        isEmphasized = false
+        isReplyHighlighted = false
 
         // reset all button actions.
         accessoryButtonAction = nil

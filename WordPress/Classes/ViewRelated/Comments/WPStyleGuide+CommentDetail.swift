@@ -39,6 +39,11 @@ extension WPStyleGuide {
             static let reactionButtonFont = CommentDetail.secondaryTextFont
             static let reactionButtonTextColor = CommentDetail.secondaryTextColor
 
+            // highlighted state
+            static let highlightedBackgroundColor = UIColor(light: .muriel(name: .blue, .shade0), dark: .muriel(name: .blue, .shade100)).withAlphaComponent(0.5)
+            static let highlightedBarBackgroundColor = UIColor.muriel(name: .blue, .shade40)
+            static let highlightedReplyButtonTintColor = UIColor.primary
+
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
             private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .medium)
@@ -55,6 +60,10 @@ extension WPStyleGuide {
                 let image = UIImage(systemName: name) ?? UIImage(named: name)
                 return image?.withConfiguration(reactionIconConfiguration).imageFlippedForRightToLeftLayoutDirection()
             }
+
+            static let highlightedReplyIconImage = UIImage(systemName: "arrowshape.turn.up.left.fill", withConfiguration: reactionIconConfiguration)?
+                .withTintColor(highlightedReplyButtonTintColor, renderingMode: .alwaysTemplate)
+                .imageFlippedForRightToLeftLayoutDirection()
         }
 
         public struct ReplyIndicator {
