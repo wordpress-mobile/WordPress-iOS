@@ -67,7 +67,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .aboutScreen:
             return true
         case .newCommentThread:
-            return false
+            return true
         case .postDetailsComments:
             return true
         case .commentThreadModerationMenu:
