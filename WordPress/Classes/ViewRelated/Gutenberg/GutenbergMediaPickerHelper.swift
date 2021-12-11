@@ -32,7 +32,14 @@ class GutenbergMediaPickerHelper: NSObject {
     ///
     fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
-    fileprivate lazy var mediaPickerOptions: WPMediaPickerOptions = {
+    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
+
+    init(context: UIViewController, post: AbstractPost) {
+        self.context = context
+        self.post = post
+    }
+
+    fileprivate func defaultMediaPickerOptions() -> WPMediaPickerOptions {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.image]
@@ -42,13 +49,6 @@ class GutenbergMediaPickerHelper: NSObject {
         options.allowMultipleSelection = false
         options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
         return options
-    }()
-
-    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
-
-    init(context: UIViewController, post: AbstractPost) {
-        self.context = context
-        self.post = post
     }
 
     func presentMediaPickerFullScreen(animated: Bool,
@@ -59,7 +59,11 @@ class GutenbergMediaPickerHelper: NSObject {
 
         didPickMediaCallback = callback
 
-        let picker = WPNavigationMediaPickerViewController()
+        let mediaPickerOptions = defaultMediaPickerOptions()
+        mediaPickerOptions.filter = filter
+        mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
+
+        let picker = WPNavigationMediaPickerViewController(options: mediaPickerOptions)
         navigationPicker = picker
         switch dataSourceType {
         case .device:
@@ -73,8 +77,6 @@ class GutenbergMediaPickerHelper: NSObject {
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
-        mediaPickerOptions.filter = filter
-        mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
         picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
@@ -91,7 +93,7 @@ class GutenbergMediaPickerHelper: NSObject {
 
     private lazy var cameraPicker: WPMediaPickerViewController = {
         let cameraPicker = WPMediaPickerViewController()
-        cameraPicker.options = mediaPickerOptions
+        cameraPicker.options = defaultMediaPickerOptions()
         cameraPicker.mediaPickerDelegate = self
         cameraPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         return cameraPicker
