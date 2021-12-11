@@ -6,6 +6,7 @@
 * [**] Accessibility: VoiceOver improvements on Activity Log and Schedule Post calendars [#17756, #17761]
 * [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
 * [*] Self-hosted login: Improved error messages. [#17724]
+* [*] Block editor: Fixed an issue where videos thumbnails could show when selecting images, and vice versa. [#17670]
 
 19.0
 -----
