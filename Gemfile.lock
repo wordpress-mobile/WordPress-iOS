@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:wordpress-mobile/release-toolkit
-  revision: eccf5a273276e976cd42c66590af087d1654037f
+  revision: 31187cfd1e671a6f686466066b9deb67f864358c
   branch: develop
   specs:
-    fastlane-plugin-wpmreleasetoolkit (2.1.0)
+    fastlane-plugin-wpmreleasetoolkit (2.2.0)
       activesupport (~> 5)
       bigdecimal (~> 1.4)
       chroma (= 0.2.0)
@@ -258,7 +258,7 @@ GEM
     octokit (4.21.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
-    oj (3.13.9)
+    oj (3.13.10)
     optimist (3.0.1)
     options (2.3.2)
     optparse (0.1.1)
@@ -271,7 +271,7 @@ GEM
     public_suffix (4.0.6)
     racc (1.6.0)
     rake (13.0.6)
-    rake-compiler (1.1.1)
+    rake-compiler (1.1.6)
       rake
     rchardet (1.8.0)
     representable (3.1.1)
