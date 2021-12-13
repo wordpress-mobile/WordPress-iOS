@@ -1,0 +1,14 @@
+We hebben goed nieuws! We hebben het crashen van de app opgelost dat werd veroorzaakt door afbeeldingen offline uploaden, verwijderen van media of details te bekijken van 'Vind ik leuk'-meldingen.
+
+We hebben enkele grote wijzigingen doorgevoerd in de blokeditor, dus blijf kalm en blijf publiceren:
+
+- Als je de instellingen voor een Knop- of Afbeeldingblok opent dat is gekoppeld aan een URL, vult de editor niet meer automatisch een URL van je klembord in. Je ziet nu een suggestie 'Doorsturen naar', zodat je de klembord-URL kunt gebruiken of toch een andere kunt invoeren.
+- Wanneer je een Galerijblok aanmaakt, opent je apparaat automatisch de mediaopties, zodat je gemakkelijker je afbeeldingen kunt toevoegen.
+- Nieuw blok toevoegen? Als je apparaat is ingesteld op een andere taal dan het Engels, komen de tabbladen in het invoegermenu nu overeen met je gekozen taal.
+- Bij gebruik van een Insluitblok zie je geen optie voor 'Bewerken' in de werkbalk. Je kunt de URl wijzigen door in plaats daarvan naar Blokinstellingen te gaan.
+- Als je in de berichteneditor schakelt van HTML-modus naar Visuele modus, krijg je een beknopt bericht te zien met melding van de schakeling.
+- Misschien heb je gemerkt dat de grootte van je lettertype uit zichzelf wijzigt in Media- en Tekstblokken. De bug die dat veroorzaakte, is nu weggehaald.
+
+Nieuw bij WordPress? Geen zorgen. Met ons aanmeldproces was nog nooit zo gemakkelijk om een site aan te maken en te beheren.
+
+We hebben ook een nieuw 'Over'-scherm toegevoegd, zodat je de app kunt beoordelen en delen (hint, hint), ons Twitter-profiel en blog kunt bezoeken, onze andere apps kunt bekijken en nog veel meer.

@@ -1,0 +1,14 @@
+Boas notícias, pessoal: corrigimos as falhas do aplicativo causadas ao carregar imagens offline, excluir mídias ou ver os detalhes de notificações de curtida.
+
+Fizemos algumas mudanças importantes no editor de blocos para você poder continuar publicando tranquilamente:
+
+- Quando você abrir as configurações de um bloco de botões ou de imagem vinculado a uma URL, o editor não preencherá mais automaticamente uma URL da sua área de transferência. Você verá uma sugestão "Vincular a", para que possa usar a URL da área de transferência ou digitar uma nova.
+- Quando você criar um bloco de galeria, as opções de mídia do seu dispositivo se abrirão automaticamente, tornando a inclusão de imagens mais fácil.
+- Vai adicionar um novo bloco? Se o seu dispositivo estiver configurado em um idioma diferente do inglês, as guias do menu de inserção corresponderão ao idioma definido.
+- Quando utilizar o bloco de mídia incorporada, você não verá a ação "Editar" na barra de ferramentas. Agora, é possível alterar a URL acessando as Configurações do bloco.
+- No editor de posts, alterar do modo HTML para o Visual fará surgir um aviso comunicando sobre a mudança.
+- Você pode ter percebido uma alteração automática no tamanho da fonte nos blocos de mídia e texto. Nós eliminamos o bug que causava essa alteração.
+
+Novo no WordPress? Não se preocupe. Com nosso processo de login, ficou mais fácil do que nunca criar e começar a gerenciar o seu site.
+
+Incluímos também uma tela "Sobre", para que você possa classificar e compartilhar o aplicativo (atenção para a dica), visitar nosso perfil no Twitter e o nosso blog, visualizar os nossos outros aplicativos e muito mais.
