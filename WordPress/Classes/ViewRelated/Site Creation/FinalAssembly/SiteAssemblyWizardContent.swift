@@ -32,6 +32,12 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
+    /// UseDefaults helper for quick start settings
+    private let quickStartSettings: QuickStartSettings
+
+    /// Closure to be executed upon dismissal
+    private let onDismiss: ((Blog, Bool) -> Void)?
+
     // MARK: SiteAssemblyWizardContent
 
     /// The designated initializer.
@@ -39,9 +45,16 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// - Parameters:
     ///   - creator: the in-flight creation instance
     ///   - service: the service to use for initiating site creation
-    init(creator: SiteCreator, service: SiteAssemblyService) {
+    ///   - quickStartSettings: the UserDefaults helper for quick start settings
+    ///   - onDismiss: the closure to be executed upon dismissal
+    init(creator: SiteCreator,
+         service: SiteAssemblyService,
+         quickStartSettings: QuickStartSettings = QuickStartSettings(),
+         onDismiss: ((Blog, Bool) -> Void)? = nil) {
         self.siteCreator = creator
         self.service = service
+        self.quickStartSettings = quickStartSettings
+        self.onDismiss = onDismiss
         self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
@@ -215,19 +228,28 @@ extension SiteAssemblyWizardContent: NetworkStatusDelegate {
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        dismissTapped(viaDone: true) { [createdBlog, weak self] in
-            guard let blog = createdBlog else {
-                return
-            }
+
+        guard let blog = createdBlog else {
+            return
+        }
+
+        if let onDismiss = onDismiss {
+            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+            quickstartPrompt.onDismiss = onDismiss
+            navigationController?.pushViewController(quickstartPrompt, animated: true)
+            return
+        }
+
+        dismissTapped(viaDone: true) { [blog, weak self] in
             SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
             WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
 
-            self?.showQuickStartAlert(for: blog)
+            self?.showQuickStartPrompt(for: blog)
         }
     }
 
-    private func showQuickStartAlert(for blog: Blog) {
-        guard !UserDefaults.standard.quickStartWasDismissedPermanently else {
+    private func showQuickStartPrompt(for blog: Blog) {
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
             return
         }
 
@@ -235,9 +257,12 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog)
-        fancyAlert.modalPresentationStyle = .custom
-        fancyAlert.transitioningDelegate = tabBar
-        tabBar.present(fancyAlert, animated: true)
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        quickstartPrompt.onDismiss = { blog, showQuickStart in
+            if showQuickStart {
+                QuickStartTourGuide.shared.setupWithDelay(for: blog)
+            }
+        }
+        tabBar.present(quickstartPrompt, animated: true)
     }
 }

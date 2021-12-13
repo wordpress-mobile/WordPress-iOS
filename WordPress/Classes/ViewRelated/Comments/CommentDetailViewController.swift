@@ -102,40 +102,12 @@ class CommentDetailViewController: UIViewController {
         return cell
     }()
 
-    private lazy var deleteButton: UIButton = {
-        let button = UIButton()
-        let buttonColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(.deleteButtonText, for: .normal)
-        button.setTitleColor(buttonColor, for: .normal)
-        button.setTitleColor(.white, for: .highlighted)
-        button.setBackgroundImage(UIImage.renderBackgroundImage(fill: .clear, border: buttonColor), for: .normal)
-        button.setBackgroundImage(.renderBackgroundImage(fill: buttonColor, border: buttonColor), for: .highlighted)
-
-        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.numberOfLines = 0
-
-        // add constraints to the title label, so the button can contain it properly in multi-line cases.
-        if let label = button.titleLabel {
-            button.pinSubviewToAllEdgeMargins(label)
-        }
-
-        button.on(.touchUpInside) { [weak self] _ in
-            self?.deleteButtonTapped()
-        }
-
-        return button
-    }()
-
-    private lazy var deleteButtonCell: UITableViewCell = {
-        let cell = UITableViewCell()
-        cell.selectionStyle = .none
-        cell.accessibilityTraits = .button
-
-        cell.contentView.addSubview(deleteButton)
-        cell.contentView.pinSubviewToAllEdges(deleteButton, insets: Constants.deleteButtonInsets)
-
+    private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
+        let cell = BorderedButtonTableViewCell()
+        cell.configure(buttonTitle: .deleteButtonText,
+                       normalColor: UIColor(light: .error, dark: .muriel(name: .red, .shade40)),
+                       buttonInsets: Constants.deleteButtonInsets)
+        cell.delegate = self
         return cell
     }()
 
@@ -264,7 +236,6 @@ private extension CommentDetailViewController {
         static let tableHorizontalInset: CGFloat = 20.0
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
-
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
     }
 
@@ -398,14 +369,12 @@ private extension CommentDetailViewController {
     func configureHeaderCell() {
         // if the comment is a reply, show the author of the parent comment.
         if let parentComment = self.parentComment {
-            headerCell.textLabel?.text = String(format: .replyCommentTitleFormat, parentComment.authorForDisplay())
-            headerCell.detailTextLabel?.text = parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines)
-            return
+            return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
+                                        subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
         }
 
         // otherwise, if this is a comment to a post, show the post title instead.
-        headerCell.textLabel?.text = .postCommentTitleText
-        headerCell.detailTextLabel?.text = comment.titleForDisplay()
+        headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
@@ -631,12 +600,9 @@ private extension String {
     static let textCellIdentifier = "textCell"
 
     // MARK: Localization
-    static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
-                                                            + "The title of the post will displayed below this string. "
-                                                            + "Example: Comment on \n My First Post")
-    static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
-                                                           + "%1$@ is a placeholder for the comment author that's been replied to."
-                                                           + "Example: Reply to Pamela Nguyen")
+    static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
+                                                          + "%1$@ is a placeholder for the comment author."
+                                                          + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
@@ -859,7 +825,7 @@ private extension CommentDetailViewController {
     func configureReplyView() {
         let replyView = ReplyTextView(width: view.frame.width)
 
-        replyView.placeholder = String(format: .replyCommentTitleFormat, comment.authorForDisplay())
+        replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyView.delegate = self
         replyView.onReply = { [weak self] content in
@@ -988,6 +954,16 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.hideSuggestions()
+    }
+
+}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+
+extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
+
+    func buttonTapped() {
+        deleteButtonTapped()
     }
 
 }

@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 /// Helper class for creating LikeUser objects.
 /// Used by PostService and CommentService when fetching likes for posts/comments.
@@ -19,8 +20,10 @@ import Foundation
         liker.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
         liker.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
         liker.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0
-        liker.preferredBlog = createPreferredBlogFrom(remotePreferredBlog: remoteUser.preferredBlog, forUser: liker, context: context)
         liker.dateFetched = Date()
+
+        updatePreferredBlog(for: liker, with: remoteUser, context: context)
+
         return liker
     }
 
@@ -36,22 +39,23 @@ import Foundation
         return try? context.fetch(request).first
     }
 
-    private class func createPreferredBlogFrom(remotePreferredBlog: RemoteLikeUserPreferredBlog?,
-                                 forUser user: LikeUser,
-                                 context: NSManagedObjectContext) -> LikeUserPreferredBlog? {
+    private class func updatePreferredBlog(for user: LikeUser, with remoteUser: RemoteLikeUser, context: NSManagedObjectContext) {
+        guard let remotePreferredBlog = remoteUser.preferredBlog else {
+            if let existingPreferredBlog = user.preferredBlog {
+                context.deleteObject(existingPreferredBlog)
+                user.preferredBlog = nil
+            }
 
-        guard let remotePreferredBlog = remotePreferredBlog,
-              let preferredBlog = user.preferredBlog ?? NSEntityDescription.insertNewObject(forEntityName: "LikeUserPreferredBlog", into: context) as? LikeUserPreferredBlog else {
-            return nil
+            return
         }
+
+        let preferredBlog = user.preferredBlog ?? LikeUserPreferredBlog(context: context)
 
         preferredBlog.blogUrl = remotePreferredBlog.blogUrl
         preferredBlog.blogName = remotePreferredBlog.blogName
         preferredBlog.iconUrl = remotePreferredBlog.iconUrl
         preferredBlog.blogID = remotePreferredBlog.blogID?.int64Value ?? 0
         preferredBlog.user = user
-
-        return preferredBlog
     }
 
     class func purgeStaleLikes() {

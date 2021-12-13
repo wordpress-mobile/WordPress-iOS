@@ -209,7 +209,7 @@ public class AztecEditorScreen: BaseScreen {
      Select Image from Camera Roll by its ID. Starts with 0
      Simulator range: 0..4
      */
-    func addImageByOrder(id: Int) -> AztecEditorScreen {
+    func addImageByOrder(id: Int) throws -> AztecEditorScreen {
         tapToolbarButton(button: mediaButton)
 
         // Allow access to device media
@@ -221,7 +221,7 @@ public class AztecEditorScreen: BaseScreen {
         }
 
         // Inject the first picture
-        MediaPickerAlbumScreen().selectImage(atIndex: 0)
+        try MediaPickerAlbumScreen().selectImage(atIndex: 0)
         insertMediaButton.tap()
 
         // Wait for upload to finish

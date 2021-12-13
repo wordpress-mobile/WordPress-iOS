@@ -1,13 +1,14 @@
-La identificación en dos pasos ahora viene con seguridad adicional. Tendrás que desbloquear tu dispositivo para aprobar o rechazar los avisos.
-Hemos ampliado el ajuste "Enlace a" del bloque de imágenes para incluir las opciones "Archivo de medios" y "Página de adjuntos" además de la opción preexistente "URL personalizada".
-Hemos corregido un problema que hacía que la interfaz se bloqueara cuando los usuarios copiaban y pegaban listas desde Microsoft Word.
+Buenas noticias para todos: hemos corregido los fallos de la aplicación causados por la subida de imágenes mientras se está desconectado, el borrado de medios o la visualización de los detalles de los avisos de "Me gusta".
 
-Cuando te dirijas a "Mi sitio > Comentarios", verás un nuevo aspecto y detalles incluso más novedosos de los comentarios, incluyendo:
+Hemos hecho algunos grandes cambios en el editor de bloques, así que puedes mantener la calma y seguir publicando:
 
-- Un vistazo del título de la entrada o del comentario principal, dependiendo si el autor ha dejado un comentario en la entrada o ha respondido a un comentario existente.
-- Contenido enriquecido para que puedas ver cada comentario tal y como lo ha escrito el autor.
-- Un botón para compartir los comentarios aprobados.
-- Los usuarios con perfiles de administrador o editor pueden ver el correo electrónico y las direcciones IP de los autores de los comentarios.
-- Dirección web táctil para visitar la URL del autor (en lugar de la imagen de su avatar).
+- Cuando abres los ajustes de un bloque de botón o de imagen enlazado a una URL, el editor ya no rellena automáticamente una URL desde tu portapapeles. Ahora verás una sugerencia de "Enlazar a" para que puedas usar la URL del portapapeles o introducir una diferente.
+- Crea un bloque de galería y se abrirán automáticamente las opciones de medios de tu dispositivo, haciéndote más fácil añadir tus imágenes.
+- ¿Añadir un nuevo bloque? Si tu dispositivo está configurado en un idioma distinto al inglés, las pestañas del menú de inserción ahora coincidirán con el idioma configurado.
+- Cuando uses el bloque de incrustación, no verás la acción "Editar" en la barra de herramientas. En su lugar, ahora puedes cambiar la URL yendo a los ajustes del bloque.
+- En el editor de entradas, cambiar del modo HTML al modo visual presentará un aviso compacto informándote del cambio.
+- Puede que hayas notado el cambio por si solo del tamaño de tu fuente en los bloques de medios y de texto. Hemos eliminado el fallo que lo causaba.
 
-Por último, hemos actualizado la interfaz de usuario de la vista de la respuesta en pantalla minimizada y en pantalla completa. ¡Se ve muy bien!
+¿Eres nuevo en WordPress? No te preocupes. Nuestro proceso de acceso hace que sea más fácil que nunca crear y empezar a gestionar tu sitio.
+
+También hemos añadido una nueva pantalla "Acerca de" para que puedas valorar y compartir la aplicación (pista, pista), visitar nuestro perfil de Twitter y nuestro blog, ver nuestras otras aplicaciones y mucho más.

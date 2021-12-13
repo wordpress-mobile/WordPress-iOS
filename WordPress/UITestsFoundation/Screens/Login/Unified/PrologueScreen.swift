@@ -17,7 +17,8 @@ public class PrologueScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [continueButtonGetter, siteAddressButtonGetter],
-            app: app
+            app: app,
+            waitTimeout: 3
         )
     }
 

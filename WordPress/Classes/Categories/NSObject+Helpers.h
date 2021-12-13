@@ -6,4 +6,5 @@
 
 + (nonnull NSString *)classNameWithoutNamespaces;
 
+- (void)debounce:(SEL)selector afterDelay:(NSTimeInterval)timeInterval;
 @end

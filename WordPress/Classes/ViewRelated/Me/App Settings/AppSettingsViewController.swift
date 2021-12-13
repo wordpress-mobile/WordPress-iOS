@@ -133,6 +133,8 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate func clearMediaCache() {
+        WPAnalytics.track(.appSettingsClearMediaCacheTapped)
+
         setMediaCacheRowDescription(status: .clearingCache)
         MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
@@ -148,11 +150,18 @@ class AppSettingsViewController: UITableViewController {
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
 
-            var properties = [String: AnyObject]()
-            properties["enabled"] = (value != Int.max) as AnyObject
-            properties["value"] = value as Int as AnyObject
-            WPAnalytics.track(.appSettingsImageOptimizationChanged, withProperties: properties)
+            self.debounce(#selector(self.trackImageSizeChanged), afterDelay: 0.5)
         }
+    }
+
+    @objc func trackImageSizeChanged() {
+        let value = MediaSettings().maxImageSizeSetting
+
+        var properties = [String: AnyObject]()
+        properties["enabled"] = (value != Int.max) as AnyObject
+        properties["value"] = value as Int as AnyObject
+
+        WPAnalytics.track(.appSettingsImageOptimizationChanged, withProperties: properties)
     }
 
     func pushVideoResolutionSettings() -> ImmuTableAction {
@@ -260,6 +269,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
+            WPAnalytics.track(.privacySettingsOpened)
+
             let controller = PrivacySettingsViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
@@ -267,6 +278,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { [weak self] row in
+            WPAnalytics.track(.appSettingsOpenDeviceSettingsTapped)
+
             if let targetURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(targetURL)
 
@@ -280,19 +293,23 @@ class AppSettingsViewController: UITableViewController {
 
     func clearSiriActivityDonations() -> ImmuTableAction {
         return { [tableView] _ in
+            WPAnalytics.track(.appSettingsClearSiriSuggestionsTapped)
+
             tableView?.deselectSelectedRowWithAnimation(true)
 
             if #available(iOS 12.0, *) {
                 NSUserActivity.deleteAllSavedUserActivities {}
             }
 
-            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
+            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", value: "Successfully cleared Siri Shortcut Suggestions", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 
     func clearSpotlightCache() -> ImmuTableAction {
         return { [weak self] row in
+            WPAnalytics.track(.appSettingsClearSpotlightIndexTapped)
+
             self?.tableView.deselectSelectedRowWithAnimation(true)
             SearchManager.shared.deleteAllSearchableItems()
             let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
@@ -428,7 +445,7 @@ private extension AppSettingsViewController {
 
         if #available(iOS 12.0, *) {
             let siriClearCacheRow = DestructiveButtonRow(
-                title: NSLocalizedString("Siri Reset Prompt", comment: "Label for button that clears user activities donated to Siri."),
+                title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
                 action: clearSiriActivityDonations(),
                 accessibilityIdentifier: "spotlightClearCacheButton")
 

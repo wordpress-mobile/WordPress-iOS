@@ -1,34 +1,32 @@
+import ScreenObject
 import XCTest
 
-public class MediaPickerAlbumScreen: BaseScreen {
-    let mediaCollection: XCUIElement
-    let insertButton: XCUIElement
+public class MediaPickerAlbumScreen: ScreenObject {
+    let mediaCollectionGetter: (XCUIApplication) -> XCUIElement = {
+        $0.collectionViews["MediaCollection"]
+    }
 
-    public init() {
-        let app = XCUIApplication()
-        mediaCollection = app.collectionViews["MediaCollection"]
-        insertButton = app.buttons["SelectedActionButton"]
-
-        super.init(element: mediaCollection)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [mediaCollectionGetter], app: app)
     }
 
     public func selectImage(atIndex index: Int) {
-        let selectedImage = mediaCollection.cells.element(boundBy: index)
+        let selectedImage = mediaCollectionGetter(app).cells.element(boundBy: index)
         XCTAssertTrue(selectedImage.waitForExistence(timeout: 5), "Selected image did not load")
         selectedImage.tap()
     }
 
     func insertSelectedImage() {
-        insertButton.tap()
+        app.buttons["SelectedActionButton"].tap()
     }
 
-    public static func isLoaded() -> Bool {
+    public static func isLoaded(app: XCUIApplication = XCUIApplication()) -> Bool {
         // Check if the media picker is loaded as a component within the editor
         // and only return true if the media picker is a full screen
-        if XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].exists {
+        if app.navigationBars["Azctec Editor Navigation Bar"].exists {
             return false
         }
 
-        return XCUIApplication().collectionViews["MediaCollection"].exists
+        return (try? MediaPickerAlbumScreen().isLoaded) ?? false
     }
 }

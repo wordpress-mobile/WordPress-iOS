@@ -44,10 +44,10 @@ class WordPressScreenshotGeneration: XCTestCase {
         let postEditorScreenshot = try postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
         if XCUIDevice.isPad {
-            BlockEditorScreen()
+            try BlockEditorScreen()
                 .thenTakeScreenshot(1, named: "Editor")
         } else {
-            BlockEditorScreen()
+            try BlockEditorScreen()
                 .openBlockPicker()
                 .thenTakeScreenshot(1, named: "Editor-With-BlockPicker")
                 .closeBlockPicker()
@@ -62,9 +62,9 @@ class WordPressScreenshotGeneration: XCTestCase {
                 .gotoPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
-            BlockEditorScreen().selectBlock(containingText: "Ingredients")
+            try BlockEditorScreen().selectBlock(containingText: "Ingredients")
             sleep(imagesWaitTime) // wait for post images to load
-            BlockEditorScreen().thenTakeScreenshot(7, named: "Editor-With-Keyboard")
+            try BlockEditorScreen().thenTakeScreenshot(7, named: "Editor-With-Keyboard")
             ipadScreenshot.close()
         } else {
             postList.pop()
@@ -77,7 +77,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(4, named: "MySite")
 
         // Get Media screenshot
-        _ = mySite.gotoMediaScreen()
+        _ = try mySite.goToMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
         mySite.thenTakeScreenshot(6, named: "Media")
 
@@ -95,13 +95,13 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
         try TabNavComponent()
-            .gotoReaderScreen()
+            .goToReaderScreen()
             .openDiscover()
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
         let notificationList = try TabNavComponent()
-            .gotoNotificationsScreen()
+            .goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
             notificationList

@@ -169,7 +169,12 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
         refreshNoResultsView()
-        WPAnalytics.track(.openedPeople)
+
+        guard let blog = blog else {
+            return
+        }
+
+        WPAppAnalytics.track(.openedPeople, with: blog)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

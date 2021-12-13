@@ -1,13 +1,14 @@
-Tvåstegsinloggningen har nu blivit säkrare. För att bekräfta eller avböja aviseringar måste du först låsa upp din enhet.
-Vi har utökat inställningen ”länka till” för bildblocket så att den nu utöver det tidigare alternativet ”anpassad URL” också omfattar ”mediafilen” och ”sidan för bilagan”.
-Vi har rättat ett problem som gjorde att gränssnittet slutade fungera när användare klistrade in listor som de kopierat från Microsoft Word.
+Glada nyheter, allihopa – vi har åtgärdat appkrascher som orsakades av bilduppladdning i offline-läge, borttagning av media eller visning av information för "Gilla"-aviseringar.
 
-När du går till Min webbplats > Kommentarer möts du av en uppdaterad design och ännu bättre information om kommentarerna, inklusive:
+Vi har gjort några stora ändringar av blockredigeraren, så du kan vara lugn och publicera vidare:
 
-- Förhandsvisning av inläggsrubriken eller den besvarade kommentaren, beroende på om det var en kommentar på inlägget eller ett svar på en annan kommentar.
-- Formaterat innehåll, så att varje kommentar ser ut just som dess författare utformade den.
-- En knapp för delning av kommentarer som godkänts.
-- Användare med någon av rollerna administratör eller redaktör kan se kommentarsförfattarens e-postadress och IP-adress.
-- Man kan trycka på webbadressen för att besöka den (i stället för författarikonen).
+- När du öppnar inställningarna för ett knapp- eller bildblock som är länkat till en URL kommer redigeraren inte längre att klistra in en URL från dina urklipp automatiskt. Du kommer nu att se förslaget "Länka till" och kunna välja att antingen använda urklipps-URL:en eller ange en annan URL.
+- När du skapar ett galleriblock öppnas mediaalternativen för din enhet automatiskt, vilket gör det enklare för dig att lägga till dina bilder.
+- Ska du lägga till ett nytt block? Om din enhet är inställd på ett annat språk än engelska kommer flikarna i infogarmenyn nu att matcha ditt inställda språk.
+- När du använder inbäddningsblocket kommer åtgärden "Redigera" inte att visas i verktygsfältet. Du kan nu istället ändra URL:en genom att gå till blockinställningarna.
+- När du växlar från HTML-läge till visuellt läge i inläggsredigeraren kommer det att visas en avisering som meddelar dig om detta.
+- Du kanske har noterat att textstorleken ibland har ändrat sig av sig själv i dina media- och textblock. Vi har åtgärdat felet som orsakade detta.
 
-Slutligen har vi fräschat upp gränssnittet där man svarar, både i minimerat läge och på helskärm ser det riktigt stiligt ut!
+Är du ny på WordPress? Oroa dig inte. Vår inloggningsprocess gör det enklare än någonsin att skapa och börja hantera din webbplats.
+
+Vi har också lagt till en ny Om-skärm där du kan betygsätta och dela appen (blink, blink), besöka vår Twitter-profil och blogg, visa våra övriga appar, med mera.

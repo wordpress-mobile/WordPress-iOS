@@ -2,7 +2,9 @@ import UIKit
 import WordPressKit
 import CocoaLumberjack
 
-protocol SettingsController: ImmuTableController {}
+protocol SettingsController: ImmuTableController {
+    var trackingKey: String { get }
+}
 
 // MARK: - Actions
 extension SettingsController {
@@ -55,6 +57,8 @@ extension SettingsController {
             let change = changeType(value)
             service.saveChange(change)
             DDLogDebug("\(title) changed: \(value)")
+
+            trackChangeIfNeeded(row)
         }
 
         return controller
@@ -76,8 +80,19 @@ extension SettingsController {
             let change = changeType(value)
             service.saveChange(change)
             DDLogDebug("\(title) changed: \(value)")
+
+            trackChangeIfNeeded(row)
         }
 
         return controller
+    }
+
+    private func trackChangeIfNeeded(_ row: EditableTextRow) {
+        // Don't track if the field name isn't specified
+        guard let fieldName = row.fieldName else {
+            return
+        }
+
+        WPAnalytics.trackSettingsChange(trackingKey, fieldName: fieldName)
     }
 }

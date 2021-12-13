@@ -210,6 +210,56 @@ import Foundation
     case domainsRegistrationFormSubmitted
     case domainsPurchaseWebviewViewed
 
+    // My Site: No sites view displayed
+    case mySiteNoSitesViewDisplayed
+    case mySiteNoSitesViewActionTapped
+    case mySiteNoSitesViewHidden
+
+    // Site Switcher
+    case mySiteSiteSwitcherTapped
+    case siteSwitcherDisplayed
+    case siteSwitcherDismissed
+    case siteSwitcherToggleEditTapped
+    case siteSwitcherAddSiteTapped
+    case siteSwitcherSearchPerformed
+    case siteSwitcherToggleBlogVisible
+
+    // Post List
+    case postListShareAction
+    case postListSetAsPostsPageAction
+    case postListSetHomePageAction
+
+    // Reader: Filter Sheet
+    case readerFilterSheetDisplayed
+    case readerFilterSheetDismissed
+    case readerFilterSheetItemSelected
+    case readerFilterSheetCleared
+
+    // Reader: Manage
+    case readerManageViewDisplayed
+    case readerManageViewDismissed
+
+    // App Settings
+    case settingsDidChange
+
+    // Account Close
+    case accountCloseTapped
+    case accountCloseCompleted
+
+    // App Settings
+    case appSettingsClearMediaCacheTapped
+    case appSettingsClearSpotlightIndexTapped
+    case appSettingsClearSiriSuggestionsTapped
+    case appSettingsOpenDeviceSettingsTapped
+
+    // Privacy Settings
+    case privacySettingsOpened
+    case privacySettingsReportCrashesToggled
+
+    // Login: Epilogue
+    case loginEpilogueChooseSiteTapped
+    case loginEpilogueCreateNewSiteTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -574,7 +624,83 @@ import Foundation
             return "domains_registration_form_submitted"
         case .domainsPurchaseWebviewViewed:
             return "domains_purchase_webview_viewed"
-        }
+
+        // My Site No Sites View
+        case .mySiteNoSitesViewDisplayed:
+            return "my_site_no_sites_view_displayed"
+        case .mySiteNoSitesViewActionTapped:
+            return "my_site_no_sites_view_action_tapped"
+        case .mySiteNoSitesViewHidden:
+            return "my_site_no_sites_view_hidden"
+
+        // Site Switcher
+        case .mySiteSiteSwitcherTapped:
+            return "my_site_site_switcher_tapped"
+        case .siteSwitcherDisplayed:
+            return "site_switcher_displayed"
+        case .siteSwitcherDismissed:
+            return "site_switcher_dismissed"
+        case .siteSwitcherToggleEditTapped:
+            return "site_switcher_toggle_edit_tapped"
+        case .siteSwitcherAddSiteTapped:
+            return "site_switcher_add_site_tapped"
+        case .siteSwitcherSearchPerformed:
+            return "site_switcher_search_performed"
+        case .siteSwitcherToggleBlogVisible:
+            return "site_switcher_toggle_blog_visible"
+        case .postListShareAction:
+            return "post_list_button_pressed"
+        case .postListSetAsPostsPageAction:
+            return "post_list_button_pressed"
+        case .postListSetHomePageAction:
+            return "post_list_button_pressed"
+
+        // Reader: Filter Sheet
+        case .readerFilterSheetDisplayed:
+            return "reader_filter_sheet_displayed"
+        case .readerFilterSheetDismissed:
+            return "reader_filter_sheet_dismissed"
+        case .readerFilterSheetItemSelected:
+            return "reader_filter_sheet_item_selected"
+        case .readerFilterSheetCleared:
+            return "reader_filter_sheet_cleared"
+
+        // Reader: Manage View
+        case .readerManageViewDisplayed:
+            return "reader_manage_view_displayed"
+        case .readerManageViewDismissed:
+            return "reader_manage_view_dismissed"
+
+        // App Settings
+        case .settingsDidChange:
+            return "settings_did_change"
+        case .appSettingsClearMediaCacheTapped:
+            return "app_settings_clear_media_cache_tapped"
+        case .appSettingsClearSpotlightIndexTapped:
+            return "app_settings_clear_spotlight_index_tapped"
+        case .appSettingsClearSiriSuggestionsTapped:
+            return "app_settings_clear_siri_suggestions_tapped"
+        case .appSettingsOpenDeviceSettingsTapped:
+            return "app_settings_open_device_settings_tapped"
+
+        // Privacy Settings
+        case .privacySettingsOpened:
+            return "privacy_settings_opened"
+        case .privacySettingsReportCrashesToggled:
+            return "privacy_settings_report_crashes_toggled"
+
+        // Account Close
+        case .accountCloseTapped:
+            return "account_close_tapped"
+        case .accountCloseCompleted:
+            return "account_close_completed"
+
+        // Login: Epilogue
+        case .loginEpilogueChooseSiteTapped:
+            return "login_epilogue_choose_site_tapped"
+        case .loginEpilogueCreateNewSiteTapped:
+            return "login_epilogue_create_new_site_tapped"
+        } // END OF SWITCH
     }
 
     /**
@@ -592,6 +718,12 @@ import Foundation
             return ["via": "tenor"]
         case .editorAddedPhotoViaTenor:
             return ["via": "tenor"]
+        case .postListShareAction:
+            return ["button": "share"]
+        case .postListSetAsPostsPageAction:
+            return ["button": "set_posts_page"]
+        case .postListSetHomePageAction:
+            return ["button": "set_homepage"]
         default:
             return nil
         }
@@ -735,4 +867,18 @@ extension WPAnalytics {
         }
     }
 
+    @objc static func trackSettingsChange(_ page: String, fieldName: String) {
+        Self.trackSettingsChange(page, fieldName: fieldName, value: nil)
+    }
+
+    @objc static func trackSettingsChange(_ page: String, fieldName: String, value: Any?) {
+        var properties: [AnyHashable: Any] = ["page": page, "field_name": fieldName]
+
+        if let value = value {
+            let additionalProperties: [AnyHashable: Any] = ["value": value]
+            properties.merge(additionalProperties) { (_, new) in new }
+        }
+
+        WPAnalytics.track(.settingsDidChange, properties: properties)
+    }
 }

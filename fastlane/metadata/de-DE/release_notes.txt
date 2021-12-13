@@ -1,13 +1,14 @@
-Die Zwei-Schritt-Authentifizierung ist jetzt noch sicherer. Du musst dein Gerät entsperren, um Benachrichtigungen zu genehmigen oder abzulehnen.
-Der Einstellung „Link zu“ im Bildblock wurden neben der vorhandenen Option „Individuelle URL“ die Optionen „Mediendatei“ und „Anhang-Seite“ hinzugefügt.
-Das Problem, das zum Absturz der Benutzeroberfläche führte, wenn Benutzer aus Microsoft Word kopierte Listen einfügen wollten, wurde behoben.
+Gute Neuigkeiten: Wir haben App-Abstürze, die durch den Offline-Upload von Bildern, das Löschen von Medien oder das Anzeigen von Details für „Gefällt mir“-Benachrichtigungen verursacht wurden, behoben.
 
-Der Bereich „Meine Website > Kommentare“ hat einen frischen Look und zusätzliche Kommentardetails erhalten, u. a.:
+Wir haben umfassende Änderungen am Block-Editor vorgenommen, damit du unbesorgt Beiträge veröffentlichen kannst auf:
 
-- Eine Vorschau auf den Beitragstitel oder den übergeordneten Kommentar, je nachdem, ob der Autor einen Kommentar zum Beitrag hinterlassen hat oder auf einen vorhandenen Kommentar geantwortet hat
-- Formatierten Inhalt, damit jeder Kommentar so angezeigt wird, wie der Autor ihn verfasst hat
-- Einen Teilen-Button für genehmigte Kommentare
-- Anzeige der E-Mail- und IP-Adresse des Autors für Benutzer mit Administrator- oder Redakteurrolle
-- Antippbare Web-Adresse zum Aufrufen der URL des Autors (statt eines Avatarbilds)
+- Wenn du die Einstellungen für einen mit einer URL verknüpften Button oder Bildblock öffnest, wird im Editor nicht mehr automatisch eine URL aus deiner Zwischenablage eingefügt. Du erhältst jetzt einen „Link zu“-Vorschlag, d. h., du kannst entweder die URL aus der Zwischenablage verwenden oder eine andere eingeben.
+- Wenn du einen Galerieblock erstellst, werden die Medienoptionen deines Geräts automatisch geöffnet. So kannst du deine Bilder einfacher hinzufügen.
+- Du möchtest einen neuen Block hinzufügen? Wenn auf deinem Gerät eine andere Sprache als Englisch eingestellt ist, entsprechen die Tabs im Inserter-Menü ab sofort deiner Gerätesprache.
+- Bei Verwendung des Embed-Blocks wird dir in der Toolbar nicht die Aktion „Bearbeiten“ angezeigt. Du kannst die URL ab sofort in den Blockeinstellungen ändern.
+- Wenn du im Beitragseditor vom HTML-Modus zum visuellen Modus wechselst, wird dir ein kurzer Hinweis zum Wechsel angezeigt.
+- Vielleicht hast du schon bemerkt, dass sich die Schriftgröße in „Medien und Text“-Blöcken automatisch ändert. Wir haben den Fehler, der dies verursacht hat, beseitigt.
 
-Außerdem haben wir der Benutzeroberfläche eine die Anzeige von Antworten in minimierter und Vollbildansicht hinzugefügt. Schicker Look!
+Bist du neu bei WordPress? Kein Grund zur Sorge. Mit unserem Anmeldeprozess ist es einfacher denn je, eine eigene Website zu erstellen und zu verwalten.
+
+Wir haben zudem eine neue Seite „Über“ hinzugefügt: Hier kannst du die App bewerten und teilen (das solltest du unbedingt tun), unser Profil und Blog auf Twitter besuchen, unsere anderen Apps ansehen und vieles mehr.

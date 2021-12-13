@@ -1,17 +1,16 @@
+import ScreenObject
 import XCTest
 
-public class MediaScreen: BaseScreen {
+public class MediaScreen: ScreenObject {
 
-    private struct ElementIDs {
-        static let mediaGridView = "MediaCollection"
-    }
-
-    public init() {
-        let mediaGrid = XCUIApplication().collectionViews[ElementIDs.mediaGridView]
-        super.init(element: mediaGrid)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.collectionViews["MediaCollection"] } ],
+            app: app
+        )
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().tables[ElementIDs.mediaGridView].exists
+        (try? MediaScreen().isLoaded) ?? false
     }
 }

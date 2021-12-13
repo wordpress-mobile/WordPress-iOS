@@ -1,5 +1,9 @@
 extension WPTabBarController {
 
+    func showBlogDetails(for blog: Blog) {
+        mySitesCoordinator.showBlogDetails(for: blog)
+    }
+
     @objc func showPageEditor(forBlog: Blog? = nil) {
         showPageEditor(blog: forBlog)
     }
