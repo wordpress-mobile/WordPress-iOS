@@ -418,7 +418,7 @@ platform :ios do
     en_lproj = 'WordPress/Resources/en.lproj'
     ios_generate_strings_file_from_code(
       paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
-      exclude: ['*Vendor*', 'WordPress/WordPressTest/I18n.swift', 'WordPress/WordPressStatsWidgets/Views/Localization/AppLocalizedString.swift'],
+      exclude: ['*Vendor*', 'WordPress/WordPressTest/I18n.swift', 'WordPress/WordPressStatsWidgets/Views/Localization/AppLocalizedString.swift', 'WordPress/Classes/Utility/AppLocalizedString.swift'],
       routines: ['AppLocalizedString'],
       output_dir: en_lproj
     )
