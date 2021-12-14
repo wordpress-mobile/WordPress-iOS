@@ -68,9 +68,13 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
     // If the user signs up using the Jetpack app (through SIWA, for example)
     // We show right away the screen explaining that they do not have Jetpack sites
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
+        let windowManager = WordPressAppDelegate.shared?.windowManager
+
+        windowManager?.dismissFullscreenSignIn()
+
         let viewModel = JetpackNoSitesErrorViewModel()
         let controller = errorViewController(with: viewModel)
-        navigationController.present(controller, animated: true)
+        windowManager?.show(controller, completion: nil)
     }
 
     // MARK: - Private: Helpers
