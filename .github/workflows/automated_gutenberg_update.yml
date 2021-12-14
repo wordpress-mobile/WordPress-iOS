@@ -1,0 +1,83 @@
+on:
+  workflow_dispatch:
+    inputs:
+      gutenbergMobileShaOrPrUrl:
+        description: "The SHA or PR Url for the Mobile Gutenberg commit to build."
+        required: true
+      prTitle:
+        description: "The title of the pull request."
+        required: true
+        default: "test"
+      prBody:
+        description: "The body of the pull request."
+        required: true
+        default: "test"
+      headBranch:
+        description: "The branch to commit build changes."
+        required: true
+        default: "test"
+      baseBranch:
+        description: "The branch into which the build will be merged."
+        required: false
+        default: "develop"
+
+jobs:
+  update_gutenberg:
+    runs-on: macos-11
+    name: Update Gutenberg
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HEAD: ${{ github.event.inputs.headBranch }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Find Gutenberg Mobile commit
+        id: gbm_pr
+        run: |
+          sha_or_url=${{ github.event.inputs.gutenbergMobileShaOrPrUrl}}
+          sha=$(echo $sha_or_url | xargs)
+
+          if [[ $sha_or_url =~ 'https://github.com' ]] ;then
+            api_path=$( echo $sha_or_url | sed -E 's/https:\/\/github.com\/(.*)pull([0-9]*)/\1pulls\2/' )
+            sha=$(gh api repos/$api_path  --jq '.head.sha')
+            echo ::set-output name=url::$sha_or_url
+          fi
+
+          echo ::set-output name=sha::$sha
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORDPRESS_MOBILE_GITHUB_TOKEN }}
+
+      - name: Checkout Branch
+        run: |
+          git config pull.ff only
+          git pull origin $HEAD && git switch $HEAD || git switch -c $HEAD
+
+      - name: Update Podfile
+        run: |
+          gbm_sha=${{ steps.gbm_pr.outputs.sha }}
+          sed -i '' -E "s/gutenberg :(commit|tag) => '(.*)'/gutenberg :commit => '$gbm_sha'/" Podfile
+
+      - name: Install Gems and Pods
+        id: bundle
+        run: |
+          bundle install && bundle exec pod install
+          echo ::set-output name=didChange::$(git diff --exit-code && echo "false" || echo "true")
+
+      - name: Push Changes and Create Pull Request
+        id: ios_pr
+        if: ${{ steps.bundle.outputs.didChange == 'true' }}
+        run: |
+          git commit -am "Update Gutenberg to ${{steps.gbm_pr.outputs.sha}}" && git push origin $HEAD
+          url=$(gh pr create \
+          --title "${{ github.event.inputs.prTitle }}" \
+          --body "${{ github.event.inputs.prBody }}" \
+          --base "${{ github.event.inputs.baseBranch }}" | tail -1)
+
+          $? && echo ::set-output name=url::$url
+
+      - name: Update Mobile Gutenberg PR
+        if: ${{ steps.ios_pr.outputs.url && steps.gbm_pr.outputs.url }}
+        run: |
+          gh pr comment ${{ steps.gbm_pr.outputs.url }} --body "Sychronized iOS PR ${{ steps.ios_pr.outputs.url }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORDPRESS_MOBILE_GITHUB_TOKEN }}
