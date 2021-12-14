@@ -17,12 +17,16 @@ class WordPressAuthenticationManager: NSObject {
 
     private let quickStartSettings: QuickStartSettings
 
+    private let recentSiteService: RecentSitesService
+
     init(windowManager: WindowManager,
          authenticationHandler: AuthenticationHandler? = nil,
-         quickStartSettings: QuickStartSettings = QuickStartSettings()) {
+         quickStartSettings: QuickStartSettings = QuickStartSettings(),
+         recentSiteService: RecentSitesService = RecentSitesService()) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
         self.quickStartSettings = quickStartSettings
+        self.recentSiteService = recentSiteService
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -353,8 +357,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
+            self.recentSiteService.touch(blog: blog)
+
             guard self.quickStartSettings.isQuickStartAvailable(for: blog) else {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                if self.windowManager.isShowingFullscreenSignIn {
+                    self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                } else {
+                    self.windowManager.showAppUI(for: blog)
+                }
                 return
             }
 

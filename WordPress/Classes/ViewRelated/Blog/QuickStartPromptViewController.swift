@@ -59,18 +59,26 @@ final class QuickStartPromptViewController: UIViewController {
     private func applyStyles() {
         siteTitleLabel.numberOfLines = 0
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        siteTitleLabel.adjustsFontForContentSizeCategory = true
+        siteTitleLabel.adjustsFontSizeToFitWidth = true
         siteTitleLabel.textColor = .text
 
         siteDescriptionLabel.numberOfLines = 0
         siteDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        siteDescriptionLabel.adjustsFontForContentSizeCategory = true
+        siteDescriptionLabel.adjustsFontSizeToFitWidth = true
         siteDescriptionLabel.textColor = .textSubtle
 
         promptTitleLabel.numberOfLines = 0
-        promptTitleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
+        promptTitleLabel.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
+        promptTitleLabel.adjustsFontForContentSizeCategory = true
+        promptTitleLabel.adjustsFontSizeToFitWidth = true
         promptTitleLabel.textColor = .text
 
         promptDescriptionLabel.numberOfLines = 0
-        promptDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        promptDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        promptDescriptionLabel.adjustsFontForContentSizeCategory = true
+        promptDescriptionLabel.adjustsFontSizeToFitWidth = true
         promptDescriptionLabel.textColor = .textSubtle
 
         showMeAroundButton.isPrimary = true

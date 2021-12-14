@@ -8,6 +8,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         case ellipsis
     }
 
+    enum RenderMethod {
+        /// Uses WebKit to render the comment body.
+        case web
+
+        /// Uses WPRichContent to render the comment body.
+        case richContent
+    }
+
     // MARK: - Public Properties
 
     /// A closure that's called when the accessory button is tapped.
@@ -19,6 +27,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @objc var likeButtonAction: (() -> Void)? = nil
 
     @objc var contentLinkTapAction: ((URL) -> Void)? = nil
+
+    @objc weak var richContentDelegate: WPRichContentViewDelegate? = nil
 
     /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
     var hidesModerationBar: Bool = false {
@@ -39,13 +49,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Note that the badge will be hidden when the title is nil or empty.
     var badgeTitle: String? = nil {
         didSet {
-            guard let badgeTitle = badgeTitle, !badgeTitle.isEmpty else {
-                badgeLabel.isHidden = true
-                return
-            }
+            let title: String = {
+                if let title = badgeTitle {
+                    return title.localizedUppercase
+                }
+                return String()
+            }()
 
-            badgeLabel.setText(badgeTitle.localizedUppercase)
-            badgeLabel.isHidden = false
+            badgeLabel.setText(title)
+            badgeLabel.isHidden = title.isEmpty
+            badgeLabel.updateConstraintsIfNeeded()
         }
     }
 
@@ -58,6 +71,23 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override var indentationLevel: Int {
         didSet {
             updateContainerLeadingConstraint()
+        }
+    }
+
+    /// A custom highlight style for the cell that is more controllable than `isHighlighted`.
+    /// Cell selection for this cell is disabled, and highlight style may be disabled based on the table view settings.
+    @objc var isEmphasized: Bool = false {
+        didSet {
+            backgroundColor = isEmphasized ? Style.highlightedBackgroundColor : nil
+            highlightBarView.backgroundColor = isEmphasized ? Style.highlightedBarBackgroundColor : .clear
+        }
+    }
+
+    @objc var isReplyHighlighted: Bool = false {
+        didSet {
+            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.buttonTintColor
+            replyButton?.setTitleColor(isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor, for: .normal)
+            replyButton?.setImage(isReplyHighlighted ? Style.highlightedReplyIconImage : Style.replyIconImage, for: .normal)
         }
     }
 
@@ -89,6 +119,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // This is public so its delegate can be set directly.
     @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
 
+    @IBOutlet private weak var highlightBarView: UIView!
+
     // MARK: Private Properties
 
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
@@ -105,6 +137,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }()
 
     private var renderer: CommentContentRenderer? = nil
+
+    private var renderMethod: RenderMethod?
 
     // MARK: Like Button State
 
@@ -150,6 +184,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        // reset all highlight states.
+        isEmphasized = false
+        isReplyHighlighted = false
+
         // reset all button actions.
         accessoryButtonAction = nil
         replyButtonAction = nil
@@ -170,8 +208,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
+    ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    func configure(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
+    func configure(with comment: Comment, renderMethod: RenderMethod = .web, onContentLoaded: ((CGFloat) -> Void)?) {
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
@@ -202,7 +241,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // Configure content renderer.
         self.onContentLoaded = onContentLoaded
-        configureRendererIfNeeded(for: comment)
+        configureRendererIfNeeded(for: comment, renderMethod: renderMethod)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -222,13 +261,23 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         containerStackTrailingConstraint.constant = 0
     }
 
+    @objc func ensureRichContentTextViewLayout() {
+        guard renderMethod == .richContent,
+              let richContentTextView = contentContainerView.subviews.first as? WPRichContentView else {
+                  return
+              }
+
+        richContentTextView.updateLayoutForAttachments()
+    }
 }
 
 // MARK: - CommentContentRendererDelegate
 
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
     func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
-        contentContainerHeightConstraint.constant = height
+        if renderMethod == .web {
+            contentContainerHeightConstraint?.constant = height
+        }
         onContentLoaded?(height)
     }
 
@@ -402,26 +451,46 @@ private extension CommentContentTableViewCell {
         contentContainerView.subviews.forEach { $0.removeFromSuperview() }
     }
 
-    func configureRendererIfNeeded(for comment: Comment) {
+    func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod) {
         // skip creating the renderer if the content does not change.
         // this prevents the cell to jump multiple times due to consecutive reloadData calls.
-        if let renderer = renderer, renderer.matchesContent(from: comment) {
+        //
+        // note that this doesn't apply for `.richContent` method. Always reset the textView instead
+        // of reusing it to prevent crash. Ref: http://git.io/Jtl2U
+        if let renderer = renderer,
+           renderer.matchesContent(from: comment),
+           renderMethod == .web {
             return
         }
 
         // clean out any pre-existing renderer just to be sure.
         resetRenderedContents()
 
-        let renderer = WebCommentContentRenderer(comment: comment)
+        var renderer: CommentContentRenderer = {
+            switch renderMethod {
+            case .web:
+                return WebCommentContentRenderer(comment: comment)
+            case .richContent:
+                let renderer = RichCommentContentRenderer(comment: comment)
+                renderer.richContentDelegate = self.richContentDelegate
+                return renderer
+            }
+        }()
         renderer.delegate = self
         self.renderer = renderer
+        self.renderMethod = renderMethod
 
-        // reset height constraint to handle cases where the new content requires the webview to shrink.
-        contentContainerHeightConstraint.constant = 1
+        if renderMethod == .web {
+            // reset height constraint to handle cases where the new content requires the webview to shrink.
+            contentContainerHeightConstraint?.isActive = true
+            contentContainerHeightConstraint?.constant = 1
+        } else {
+            contentContainerHeightConstraint?.isActive = false
+        }
 
         let contentView = renderer.render()
-        contentContainerView.addSubview(contentView)
-        contentContainerView.pinSubviewToAllEdges(contentView)
+        contentContainerView?.addSubview(contentView)
+        contentContainerView?.pinSubviewToAllEdges(contentView)
     }
 
     // MARK: Button Actions

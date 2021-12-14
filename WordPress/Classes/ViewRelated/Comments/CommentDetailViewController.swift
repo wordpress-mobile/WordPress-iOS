@@ -478,7 +478,8 @@ private extension CommentDetailViewController {
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
-                                                          commentID: NSNumber(value: parentComment.commentID))
+                                                          commentID: NSNumber(value: parentComment.commentID),
+                                                          source: .mySiteComment)
     }
 
     func navigateToReplyComment() {
@@ -489,7 +490,8 @@ private extension CommentDetailViewController {
 
         try? contentCoordinator.displayCommentsWithPostId(NSNumber(value: comment.postID),
                                                           siteID: siteID,
-                                                          commentID: NSNumber(value: replyID))
+                                                          commentID: NSNumber(value: replyID),
+                                                          source: .mySiteComment)
     }
 
     func navigateToPost() {
@@ -587,6 +589,9 @@ private extension CommentDetailViewController {
         guard let commentURL = comment.commentURL() else {
             return
         }
+
+        // track share intent.
+        WPAnalytics.track(.siteCommentsCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = senderView

@@ -9,7 +9,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
 
     private var totalRows = 0
-    private var hideButton = false
+    private var hideButton = true
 
     private var comments: [Comment] = [] {
         didSet {

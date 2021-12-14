@@ -178,7 +178,6 @@ private extension WPRichContentView {
             "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
             "a { color: #\(style.linkColorHex); text-decoration: none; } " +
             "a:active { color: #\(style.linkColorActiveHex); } " +
-            "img.emoji { vertical-align: baseline; max-width: 1rem; } " +
             ".wp-block-table { margin: 0; padding: 0; } " +
             "table { border-collapse: collapse }" +
             "td { padding: 0.25em 0.25em 0.75em; min-width: 11em; vertical-align: top; } " +

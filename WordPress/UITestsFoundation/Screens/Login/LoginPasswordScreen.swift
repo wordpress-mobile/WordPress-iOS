@@ -13,10 +13,10 @@ class LoginPasswordScreen: ScreenObject {
         try super.init(expectedElementGetters: [passwordTextFieldGetter], app: app)
     }
 
-    func proceedWith(password: String) -> LoginEpilogueScreen {
+    func proceedWith(password: String) throws -> LoginEpilogueScreen {
         _ = tryProceed(password: password)
 
-        return LoginEpilogueScreen()
+        return try LoginEpilogueScreen()
     }
 
     func tryProceed(password: String) -> LoginPasswordScreen {
