@@ -82,6 +82,12 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         ].compactMap { $0 }
     }
 
+    override func onGutenbergReadyStyles() -> [WKUserScript] {
+        return [
+            loadCustomStyles(named: "external-style-overrides")
+        ].compactMap { $0 }
+    }
+
     override func onGutenbergReady() {
         super.onGutenbergReady()
         navigationItem.rightBarButtonItem?.isEnabled = true
@@ -98,6 +104,16 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
             assertionFailure("Failed to load `\(name)` JS script for Unsupported Block Editor: \(error)")
             return nil
         }
+    }
+
+    private func loadCustomStyles(named name: String, with argument: String? = nil) -> WKUserScript? {
+        do {
+            let source = SourceFile(name: name, type: .css)
+            return try "window.injectCss(`\(source.getContent())`)".toJsScript()
+        } catch {
+            assertionFailure("Failed to load `\(name)` CSS script for Unsupported Block Editor: \(error)")
+            return nil
+         }
     }
 
     private func addNavigationBarElements() {
