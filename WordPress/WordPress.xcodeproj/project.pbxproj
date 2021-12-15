@@ -16862,8 +16862,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nrake lint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellPath = /bin/zsh;
+			shellScript = "# We need to source `~/.zshrc` to ensure `bundle exec` will work and find the current bundle\n# that you installed via your zsh Terminal, especially if you are using `rbenv`. \n[ -f ~/.zshrc ] && source ~/.zshrc\n\nbundle exec rake lint\n";
 		};
 		FFC3F6FA1B0DBF1E00EFC359 /* Update Plist Preprocessor file */ = {
 			isa = PBXShellScriptBuildPhase;
