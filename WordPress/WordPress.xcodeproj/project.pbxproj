@@ -1544,7 +1544,6 @@
 		93F7214F271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7214E271831820021A09F /* SiteStatsPinnedItemStore.swift */; };
 		93F72150271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7214E271831820021A09F /* SiteStatsPinnedItemStore.swift */; };
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
-		976E325EAC3B33524407BFC0 /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		9801E682274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801E681274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift */; };
 		9801E683274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801E681274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift */; };
 		9801E685274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9801E684274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib */; };
@@ -7741,7 +7740,6 @@
 			files = (
 				3FA640622670CE260064401E /* UITestsFoundation.framework in Frameworks */,
 				2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */,
-				976E325EAC3B33524407BFC0 /* Pods_WordPressScreenshotGeneration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15011,7 +15009,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					096A92F526E29FFF00448C68 = {
