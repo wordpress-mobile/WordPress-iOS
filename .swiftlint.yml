@@ -81,6 +81,13 @@ custom_rules:
   swiftui_localization:
     name: "SwiftUI Localization"
     regex: 'LocalizedStringKey'
-    message: "Using `LocalizedStringKey` is incompatible with our tooling and doesn't allow you to provide a hint/context comment for translators either. Please use `NSLocalizedString` instead, even with SwiftUI code."
+    message: "Using `LocalizedStringKey` is incompatible with our tooling and doesn't allow you to provide a hint/context comment for translators either. Please use `AppLocalizedString` instead, even with SwiftUI code."
     severity: error
-    excluded: '.*Widgets/.*'
+
+  app_localized_string:
+    name: "App Localization"
+    regex: 'NSLocalizedString\('
+    message: "Prefer using `AppLocalizedString` instead of `NSLocalizedString`, to enforce lookup of the .strings from the main app bundle — even when called from within Widgets or App Extensions."
+    severity: error
+    included: ".*\\.swift" # AppLocalizedString top-level method is not exposed to Objective-C
+    excluded: "WordPressTest/.*" # Unit Tests don't need the requirement as they're not referencing the app bundle anyway
