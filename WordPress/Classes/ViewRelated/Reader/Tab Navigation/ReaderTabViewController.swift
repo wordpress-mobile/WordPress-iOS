@@ -163,7 +163,7 @@ extension ReaderTabViewController {
 // MARK: - Constants
 extension ReaderTabViewController {
     private enum ReaderTabConstants {
-        static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let title = AppLocalizedString("Reader", comment: "The default title of the Reader")
         static let settingsButtonIdentifier = "ReaderSettingsButton"
         static let searchButtonAccessibilityIdentifier = "ReaderSearchBarButton"
         static let storyBoardInitError = "Storyboard instantiation not supported"

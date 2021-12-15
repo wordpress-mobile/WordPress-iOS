@@ -7,7 +7,7 @@ class PrivacySettingsViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("Privacy Settings", comment: "Privacy Settings Title")
+        navigationItem.title = AppLocalizedString("Privacy Settings", comment: "Privacy Settings Title")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,53 +53,53 @@ class PrivacySettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
         let collectInformation = SwitchRow(
-            title: NSLocalizedString("Collect information", comment: "Label for switch to turn on/off sending app usage data"),
+            title: AppLocalizedString("Collect information", comment: "Label for switch to turn on/off sending app usage data"),
             value: !WPAppAnalytics.userHasOptedOut(),
             icon: .gridicon(.stats),
             onChange: usageTrackingChanged
         )
 
         let shareInfoText = PaddedInfoRow(
-            title: NSLocalizedString("Share information with our analytics tool about your use of services while logged in to your WordPress.com account.", comment: "Informational text for Collect Information setting")
+            title: AppLocalizedString("Share information with our analytics tool about your use of services while logged in to your WordPress.com account.", comment: "Informational text for Collect Information setting")
         )
 
         let shareInfoLink = PaddedLinkRow(
-            title: NSLocalizedString("Learn more", comment: "Link to cookie policy"),
+            title: AppLocalizedString("Learn more", comment: "Link to cookie policy"),
             action: openCookiePolicy()
         )
 
         let privacyText = PaddedInfoRow(
-            title: NSLocalizedString("This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.", comment: "Informational text for the privacy policy link")
+            title: AppLocalizedString("This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.", comment: "Informational text for the privacy policy link")
         )
 
         let privacyLink = PaddedLinkRow(
-            title: NSLocalizedString("Read privacy policy", comment: "Link to privacy policy"),
+            title: AppLocalizedString("Read privacy policy", comment: "Link to privacy policy"),
             action: openPrivacyPolicy()
         )
 
         let ccpaLink = PaddedLinkRow(
-            title: NSLocalizedString("Privacy notice for California users", comment: "Link to the CCPA privacy notice for residents of California."),
+            title: AppLocalizedString("Privacy notice for California users", comment: "Link to the CCPA privacy notice for residents of California."),
             action: openCCPANotice()
         )
 
         let otherTracking = PaddedInfoRow(
-            title: NSLocalizedString("We use other tracking tools, including some from third parties. Read about these and how to control them.", comment: "Informational text about link to other tracking tools")
+            title: AppLocalizedString("We use other tracking tools, including some from third parties. Read about these and how to control them.", comment: "Informational text about link to other tracking tools")
         )
 
         let otherTrackingLink = PaddedLinkRow(
-            title: NSLocalizedString("Learn more", comment: "Link to cookie policy"),
+            title: AppLocalizedString("Learn more", comment: "Link to cookie policy"),
             action: openCookiePolicy()
         )
 
         let reportCrashes = SwitchRow(
-            title: NSLocalizedString("Crash reports", comment: "Label for switch to turn on/off sending crashes info"),
+            title: AppLocalizedString("Crash reports", comment: "Label for switch to turn on/off sending crashes info"),
             value: !UserSettings.userHasOptedOutOfCrashLogging,
             icon: .gridicon(.bug),
             onChange: crashReportingChanged
         )
 
         let reportCrashesInfoText = PaddedInfoRow(
-            title: NSLocalizedString("To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports.", comment: "Informational text for Report Crashes setting")
+            title: AppLocalizedString("To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports.", comment: "Informational text for Report Crashes setting")
         )
 
         return ImmuTable(sections: [

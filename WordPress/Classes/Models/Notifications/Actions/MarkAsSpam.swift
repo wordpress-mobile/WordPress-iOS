@@ -1,7 +1,7 @@
 /// Encapsulates logic to mark a comment as spam
 class MarkAsSpam: DefaultNotificationActionCommand {
-    static let title = NSLocalizedString("Spam", comment: "Marks comment as spam.")
-    static let hint = NSLocalizedString("Mark as spam.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam.")
+    static let title = AppLocalizedString("Spam", comment: "Marks comment as spam.")
+    static let hint = AppLocalizedString("Mark as spam.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam.")
 
     override var actionTitle: String {
         return MarkAsSpam.title

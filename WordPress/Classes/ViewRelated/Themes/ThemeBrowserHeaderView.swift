@@ -125,18 +125,18 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     }
 
     fileprivate func setTextForLabels() {
-        currentThemeLabel.text = NSLocalizedString("Current Theme",
+        currentThemeLabel.text = AppLocalizedString("Current Theme",
                                                    comment: "Current Theme text that appears in Theme Browser Header")
 
-        let customizeButtonText = NSLocalizedString("Customize",
+        let customizeButtonText = AppLocalizedString("Customize",
                                                     comment: "Customize button that appears in Theme Browser Header")
         customizeButton.setTitle(customizeButtonText, for: .normal)
 
-        let detailsButtonText = NSLocalizedString("Details",
+        let detailsButtonText = AppLocalizedString("Details",
                                                   comment: "Details button that appears in the Theme Browser Header")
         detailsButton.setTitle(detailsButtonText, for: .normal)
 
-        let supportButtonText = NSLocalizedString("Support",
+        let supportButtonText = AppLocalizedString("Support",
                                                   comment: "Support button that appears in the Theme Browser Header")
         supportButton.setTitle(supportButtonText, for: .normal)
     }
@@ -173,7 +173,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     }
 
     @IBAction func didTapSearchTypeButton(_ sender: UIButton) {
-        let title = NSLocalizedString("Show themes:", comment: "Alert title picking theme type to browse")
+        let title = AppLocalizedString("Show themes:", comment: "Alert title picking theme type to browse")
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
         ThemeType.types.forEach { type in

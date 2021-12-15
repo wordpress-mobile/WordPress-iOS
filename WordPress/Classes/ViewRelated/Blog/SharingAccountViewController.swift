@@ -76,9 +76,9 @@ import WordPressShared
 
 
     fileprivate func showNoResultsViewController() {
-        let title = NSLocalizedString("No Accounts Found",
+        let title = AppLocalizedString("No Accounts Found",
                                       comment: "Title of an error message. There were no third-party service accounts found to setup sharing.")
-        let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
+        let message = AppLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
                                         comment: "An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
         noResultsViewController.configure(title: title, subtitle: message)
     }
@@ -118,7 +118,7 @@ import WordPressShared
         // Build the section for connected accounts
         rows = rowsForConnectedKeyringAccounts(connectedAccounts)
         if rows.count > 0 {
-            let title = NSLocalizedString("Connected", comment: "Adjective. The title of a list of third-part sharing service account names.")
+            let title = AppLocalizedString("Connected", comment: "Adjective. The title of a list of third-part sharing service account names.")
             let section = ImmuTableSection(headerText: title, rows: rows, footerText: nil)
             sections.append(section)
         }
@@ -138,11 +138,11 @@ import WordPressShared
             return nil
         }
 
-        var title =  NSLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name")
+        var title =  AppLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name")
         title = NSString(format: title as NSString, publicizeService.label) as String
 
-        let manyAccountFooter = NSLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "Instructional text about the Sharing feature.")
-        let oneAccountFooter = NSLocalizedString("Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", comment: "Instructional text about the Sharing feature.")
+        let manyAccountFooter = AppLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "Instructional text about the Sharing feature.")
+        let oneAccountFooter = AppLocalizedString("Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", comment: "Instructional text about the Sharing feature.")
         let footer = rows.count > 1 ? manyAccountFooter : oneAccountFooter
 
         return ImmuTableSection(headerText: title, rows: rows, footerText: footer)

@@ -35,64 +35,64 @@ public enum PostEditorAction {
     var publishActionLabel: String {
         switch self {
         case .publish:
-            return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
+            return AppLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
         case .publishNow:
-            return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
+            return AppLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
         case .save:
-            return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
+            return AppLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
         case .saveAsDraft:
-            return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+            return AppLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
         case .schedule:
-            return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
+            return AppLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
         case .submitForReview:
-            return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
+            return AppLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
         case .update:
-            return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
+            return AppLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
         }
     }
 
     var publishingActionQuestionLabel: String {
         switch self {
         case .publish:
-            return NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
+            return AppLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
         case .publishNow:
-            return NSLocalizedString("Are you sure you want to publish now?", comment: "Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing.")
+            return AppLocalizedString("Are you sure you want to publish now?", comment: "Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing.")
         case .save:
-            return NSLocalizedString("Are you sure you want to save?", comment: "Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing.")
+            return AppLocalizedString("Are you sure you want to save?", comment: "Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing.")
         case .saveAsDraft:
-            return NSLocalizedString("Are you sure you want to save as draft?", comment: "Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing.")
+            return AppLocalizedString("Are you sure you want to save as draft?", comment: "Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing.")
         case .schedule:
-            return NSLocalizedString("Are you sure you want to schedule?", comment: "Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing")
+            return AppLocalizedString("Are you sure you want to schedule?", comment: "Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing")
         case .submitForReview:
-            return NSLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
+            return AppLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
         case .update:
-            return NSLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
+            return AppLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
         }
     }
 
     var publishingActionLabel: String {
         switch self {
         case .publish, .publishNow:
-            return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
+            return AppLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
         case .save, .saveAsDraft:
-            return NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
+            return AppLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
         case .schedule:
-            return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
+            return AppLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
         case .submitForReview:
-            return NSLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
+            return AppLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
         case .update:
-            return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
+            return AppLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
         }
     }
 
     var publishingErrorLabel: String {
         switch self {
         case .publish, .publishNow:
-            return NSLocalizedString("Error occurred during publishing", comment: "Text displayed in notice while a post is being published.")
+            return AppLocalizedString("Error occurred during publishing", comment: "Text displayed in notice while a post is being published.")
         case .schedule:
-            return NSLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
+            return AppLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
         case .save, .saveAsDraft, .submitForReview, .update:
-            return NSLocalizedString("Error occurred during saving", comment: "Text displayed in notice after attempting to save a draft post and an error occurred.")
+            return AppLocalizedString("Error occurred during saving", comment: "Text displayed in notice after attempting to save a draft post and an error occurred.")
         }
     }
 

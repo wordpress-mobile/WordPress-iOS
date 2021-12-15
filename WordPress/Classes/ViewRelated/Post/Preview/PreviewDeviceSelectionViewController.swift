@@ -13,11 +13,11 @@ class PreviewDeviceSelectionViewController: UIViewController {
         var title: String {
             switch self {
             case .desktop:
-                return NSLocalizedString("Desktop", comment: "Title for the desktop web preview")
+                return AppLocalizedString("Desktop", comment: "Title for the desktop web preview")
             case .tablet:
-                return NSLocalizedString("Tablet", comment: "Title for the tablet web preview")
+                return AppLocalizedString("Tablet", comment: "Title for the tablet web preview")
             case .mobile:
-                return NSLocalizedString("Mobile", comment: "Title for the mobile web preview")
+                return AppLocalizedString("Mobile", comment: "Title for the mobile web preview")
             }
         }
 

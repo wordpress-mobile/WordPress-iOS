@@ -127,7 +127,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
             return nil
         }
 
-        let buttonTitle = NSLocalizedString("Skip", comment: "Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.")
+        let buttonTitle = AppLocalizedString("Skip", comment: "Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.")
         let skip = UIContextualAction(style: .destructive, title: buttonTitle) { [weak self] (_, _, _) in
             self?.tableView(tableView, completeTourAt: indexPath)
         }

@@ -12,9 +12,9 @@ extension PostChartType {
     var accessibleDescription: String {
         switch self {
         case .latest:
-            return NSLocalizedString("Bar Chart depicting visitors for your latest post", comment: "This description is used to set the accessibility label for the chart in the Insights view.")
+            return AppLocalizedString("Bar Chart depicting visitors for your latest post", comment: "This description is used to set the accessibility label for the chart in the Insights view.")
         case .selected:
-            return NSLocalizedString("Bar Chart depicting visitors for this post", comment: "This description is used to set the accessibility label for the chart in the Post Stats view.")
+            return AppLocalizedString("Bar Chart depicting visitors for this post", comment: "This description is used to set the accessibility label for the chart in the Post Stats view.")
         }
     }
 }

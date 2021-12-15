@@ -25,7 +25,7 @@ class PostNoticeNavigationCoordinator {
 
         let controller = PreviewWebKitViewController(post: page, source: "post_notice_preview")
         controller.trackOpenEvent()
-        controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
+        controller.navigationItem.title = AppLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
         let navigationController = LightNavigationController(rootViewController: controller)
         if presenter.traitCollection.userInterfaceIdiom == .pad {

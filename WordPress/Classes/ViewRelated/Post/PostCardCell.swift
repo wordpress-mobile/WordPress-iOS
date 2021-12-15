@@ -317,7 +317,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         let post = viewModel.post
 
         let titleAndDateChunk: String = {
-            let format = NSLocalizedString("%@, %@.", comment: "Accessibility label for a post in the post list." +
+            let format = AppLocalizedString("%@, %@.", comment: "Accessibility label for a post in the post list." +
                     " The parameters are the title, and date respectively." +
                     " For example, \"Let it Go, 1 hour ago.\"")
             return String(format: format, post.titleForDisplay(), post.dateStringForDisplay())
@@ -328,13 +328,13 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             guard !author.isEmpty else {
                 return nil
             }
-            let format = NSLocalizedString("By %@.", comment: "Accessibility label for the post author in the post list." +
+            let format = AppLocalizedString("By %@.", comment: "Accessibility label for the post author in the post list." +
                 " The parameter is the author name. For example, \"By Elsa.\"")
             return String(format: format, author)
         }()
 
         let stickyChunk =
-            post.isStickyPost ? NSLocalizedString("Sticky.", comment: "Accessibility label for a sticky post in the post list.") : nil
+            post.isStickyPost ? AppLocalizedString("Sticky.", comment: "Accessibility label for a sticky post in the post list.") : nil
 
         let statusChunk: String? = {
             guard let status = viewModel.status else {
@@ -350,7 +350,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
                 return nil
             }
 
-            let format = NSLocalizedString("Excerpt. %@.", comment: "Accessibility label for a post's excerpt in the post list." +
+            let format = AppLocalizedString("Excerpt. %@.", comment: "Accessibility label for a post's excerpt in the post list." +
                 " The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\"")
             return String(format: format, excerpt)
         }()
@@ -383,17 +383,17 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupLabels() {
-        retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
+        retryButton.setTitle(AppLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
         retryButton.setImage(.gridicon(.refresh, size: CGSize(width: 18, height: 18)), for: .normal)
 
-        cancelAutoUploadButton.setTitle(NSLocalizedString("Cancel", comment: "Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post."),
+        cancelAutoUploadButton.setTitle(AppLocalizedString("Cancel", comment: "Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post."),
                                         for: .normal)
 
-        editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
+        editButton.setTitle(AppLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
 
-        viewButton.setTitle(NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web."), for: .normal)
+        viewButton.setTitle(AppLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web."), for: .normal)
 
-        moreButton.setTitle(NSLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
+        moreButton.setTitle(AppLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
     }
 
     private func setupSelectedBackgroundView() {

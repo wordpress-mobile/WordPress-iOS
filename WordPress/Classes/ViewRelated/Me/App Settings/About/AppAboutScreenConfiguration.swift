@@ -86,14 +86,14 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum TextContent {
-        static let rateUs             = NSLocalizedString("Rate Us", comment: "Title for button allowing users to rate the app in the App Store")
-        static let share              = NSLocalizedString("Share with Friends", comment: "Title for button allowing users to share information about the app with friends, such as via Messages")
-        static let twitter            = NSLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
-        static let blog               = NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress product blog")
-        static let legalAndMore       = NSLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
-        static let automatticFamily   = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
-        static let workWithUs         = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
-        static let workWithUsSubtitle = NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world")
+        static let rateUs             = AppLocalizedString("Rate Us", comment: "Title for button allowing users to rate the app in the App Store")
+        static let share              = AppLocalizedString("Share with Friends", comment: "Title for button allowing users to share information about the app with friends, such as via Messages")
+        static let twitter            = AppLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
+        static let blog               = AppLocalizedString("Blog", comment: "Title of a button that displays the WordPress product blog")
+        static let legalAndMore       = AppLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
+        static let automatticFamily   = AppLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
+        static let workWithUs         = AppLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
+        static let workWithUsSubtitle = AppLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world")
     }
 
     private enum Links {
@@ -143,10 +143,10 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     }
 
     private enum Titles {
-        static let termsOfService     = NSLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
-        static let privacyPolicy      = NSLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
-        static let sourceCode         = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
-        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknoledgements")
+        static let termsOfService     = AppLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
+        static let privacyPolicy      = AppLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
+        static let sourceCode         = AppLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
+        static let acknowledgements   = AppLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknoledgements")
     }
 
     private enum Links {

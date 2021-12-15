@@ -32,7 +32,7 @@ class JetpackConnectionWebViewController: UIViewController {
         webView = WKWebView(frame: .zero, configuration: configuration)
         super.init(nibName: nil, bundle: nil)
         webView.navigationDelegate = self
-        title = NSLocalizedString("Set up Jetpack", comment: "Title for the Jetpack Installation & Connection")
+        title = AppLocalizedString("Set up Jetpack", comment: "Title for the Jetpack Installation & Connection")
     }
 
     required init?(coder aDecoder: NSCoder) {

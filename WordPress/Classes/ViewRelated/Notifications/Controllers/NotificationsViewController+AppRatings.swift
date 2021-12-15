@@ -6,11 +6,11 @@ extension NotificationsViewController {
     static let contactURL = "https://support.wordpress.com/contact/"
 
     func setupAppRatings() {
-        inlinePromptView.setupHeading(NSLocalizedString("What do you think about WordPress?",
+        inlinePromptView.setupHeading(AppLocalizedString("What do you think about WordPress?",
                                                         comment: "This is the string we display when prompting the user to review the app"))
-        let yesTitle = NSLocalizedString("I Like It",
+        let yesTitle = AppLocalizedString("I Like It",
                                          comment: "This is one of the buttons we display inside of the prompt to review the app")
-        let noTitle = NSLocalizedString("Could Be Better",
+        let noTitle = AppLocalizedString("Could Be Better",
                                         comment: "This is one of the buttons we display inside of the prompt to review the app")
 
         inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
@@ -32,7 +32,7 @@ extension NotificationsViewController {
 
         // 1. Show the thank-you, then hide it after a few seconds
         hideInlinePrompt(delay: 3.0)
-        inlinePromptView.showBigHeading(title: NSLocalizedString("Great!\n We love to hear from happy users \n😁",
+        inlinePromptView.showBigHeading(title: AppLocalizedString("Great!\n We love to hear from happy users \n😁",
                                                                  comment: "This is the text we display to the user after they've indicated they like the app"))
 
         // 2. Show the app store ratings alert
@@ -52,11 +52,11 @@ extension NotificationsViewController {
 
         // Let's try to find out why they don't like the app
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.inlinePromptView.setupHeading(NSLocalizedString("Could you tell us how we could improve?",
+            self?.inlinePromptView.setupHeading(AppLocalizedString("Could you tell us how we could improve?",
                                                                   comment: "This is the text we display to the user when we ask them for a review and they've indicated they don't like the app"))
-            let yesTitle = NSLocalizedString("Send Feedback",
+            let yesTitle = AppLocalizedString("Send Feedback",
                                              comment: "This is one of the buttons we display when prompting the user for a review")
-            let noTitle = NSLocalizedString("No Thanks",
+            let noTitle = AppLocalizedString("No Thanks",
                                             comment: "This is one of the buttons we display when prompting the user for a review")
             self?.inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
                 self?.gatherFeedback()

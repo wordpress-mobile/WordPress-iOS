@@ -209,7 +209,7 @@ private extension UserProfileSheetViewController {
 
     enum Constants {
         static let userInfoSection = 0
-        static let siteSectionTitle = NSLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
+        static let siteSectionTitle = AppLocalizedString("Site", comment: "Header for a single site, shown in Notification user profile.").localizedUppercase
         static let iPadBottomPadding: CGFloat = 10
         static let iPhoneBottomPadding: CGFloat = 40
     }

@@ -27,12 +27,12 @@ private extension LoginEpilogueChooseSiteTableViewCell {
     }
 
     func setupTitleLabel() {
-        titleLabel.text = NSLocalizedString("Choose a site to open.", comment: "A text for title label on Login epilogue screen")
+        titleLabel.text = AppLocalizedString("Choose a site to open.", comment: "A text for title label on Login epilogue screen")
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
     }
 
     func setupSubtitleLabel() {
-        subtitleLabel.text = NSLocalizedString("You can switch sites at any time.", comment: "A text for subtitle label on Login epilogue screen")
+        subtitleLabel.text = AppLocalizedString("You can switch sites at any time.", comment: "A text for subtitle label on Login epilogue screen")
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         subtitleLabel.textColor = .secondaryLabel
     }

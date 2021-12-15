@@ -118,7 +118,7 @@ class ReaderCommentCell: UITableViewCell {
         replyButton.setImage(icon, for: .normal)
         replyButton.setImage(icon, for: .highlighted)
 
-        let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
+        let title = AppLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, for: .normal)
     }
 
@@ -239,9 +239,9 @@ class ReaderCommentCell: UITableViewCell {
     }
 
     private struct LikesTitles {
-        static let plural = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
-        static let singular = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
-        static let none = NSLocalizedString("Like", comment: "Button title to Like a comment.")
+        static let plural = AppLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+        static let singular = AppLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+        static let none = AppLocalizedString("Like", comment: "Button title to Like a comment.")
 
     }
 

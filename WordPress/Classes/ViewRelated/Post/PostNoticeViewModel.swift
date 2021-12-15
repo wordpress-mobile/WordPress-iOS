@@ -81,16 +81,16 @@ struct PostNoticeViewModel {
 
         switch status {
         case .draft:
-            return NSLocalizedString("Page draft uploaded", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
+            return AppLocalizedString("Page draft uploaded", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
         case .scheduled:
-            return NSLocalizedString("Page scheduled", comment: "Title of notification displayed when a page has been successfully scheduled.")
+            return AppLocalizedString("Page scheduled", comment: "Title of notification displayed when a page has been successfully scheduled.")
         case .pending:
-            return NSLocalizedString("Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
+            return AppLocalizedString("Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
         default:
             if page.isFirstTimePublish {
-                return NSLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
+                return AppLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
             } else {
-                return NSLocalizedString("Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
+                return AppLocalizedString("Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
             }
         }
     }
@@ -100,16 +100,16 @@ struct PostNoticeViewModel {
 
         switch status {
         case .draft:
-            return NSLocalizedString("Post draft uploaded", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
+            return AppLocalizedString("Post draft uploaded", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
         case .scheduled:
-            return NSLocalizedString("Post scheduled", comment: "Title of notification displayed when a post has been successfully scheduled.")
+            return AppLocalizedString("Post scheduled", comment: "Title of notification displayed when a post has been successfully scheduled.")
         case .pending:
-            return NSLocalizedString("Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
+            return AppLocalizedString("Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
         default:
             if post.isFirstTimePublish {
-                return NSLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
+                return AppLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
             } else {
-                return NSLocalizedString("Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
+                return AppLocalizedString("Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
             }
         }
     }
@@ -183,9 +183,9 @@ struct PostNoticeViewModel {
         var title: String {
             switch self {
             case .publish:
-                return NSLocalizedString("Publish", comment: "Button title. Publishes a post.")
+                return AppLocalizedString("Publish", comment: "Button title. Publishes a post.")
             case .view:
-                return NSLocalizedString("View", comment: "Button title. Displays a summary / sharing screen for a specific post.")
+                return AppLocalizedString("View", comment: "Button title. Displays a summary / sharing screen for a specific post.")
             }
         }
     }
@@ -254,7 +254,7 @@ struct PostNoticeViewModel {
     }
 
     enum FailureActionTitles {
-        static let retry = NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
-        static let cancel = NSLocalizedString("Cancel", comment: "Button title. Cancels automatic uploading of the post when the device is back online.")
+        static let retry = AppLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
+        static let cancel = AppLocalizedString("Cancel", comment: "Button title. Cancels automatic uploading of the post when the device is back online.")
     }
 }

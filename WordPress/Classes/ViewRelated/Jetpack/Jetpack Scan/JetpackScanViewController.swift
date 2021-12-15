@@ -29,12 +29,12 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = NSLocalizedString("Scan", comment: "Title of the view")
+        self.title = AppLocalizedString("Scan", comment: "Title of the view")
 
         configureTableView()
         coordinator.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("History", comment: "Title of a navigation button that opens the scan history view"),
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: AppLocalizedString("History", comment: "Title of a navigation button that opens the scan history view"),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(showHistory))
@@ -136,7 +136,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     func showJetpackSettings(with siteID: Int) {
         guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
 
-            let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            let title = AppLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
             displayNotice(title: title)
             return
         }
@@ -339,31 +339,31 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
 
     private struct NoResultsText {
         struct loading {
-            static let title = NSLocalizedString("Loading Scan...", comment: "Text displayed while loading the scan section for a site")
+            static let title = AppLocalizedString("Loading Scan...", comment: "Text displayed while loading the scan section for a site")
         }
 
         struct scanStartError {
-            static let title = NSLocalizedString("Something went wrong", comment: "Title for the error view when the scan start has failed")
-            static let subtitle = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Error message shown when the scan start has failed.")
+            static let title = AppLocalizedString("Something went wrong", comment: "Title for the error view when the scan start has failed")
+            static let subtitle = AppLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Error message shown when the scan start has failed.")
         }
 
         struct multisiteError {
-            static let title = NSLocalizedString("WordPress multisites are not supported", comment: "Title for label when the user's site is a multisite.")
-            static let subtitle = NSLocalizedString("We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.", comment: "Description for label when the user's site is a multisite.")
+            static let title = AppLocalizedString("WordPress multisites are not supported", comment: "Title for label when the user's site is a multisite.")
+            static let subtitle = AppLocalizedString("We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.", comment: "Description for label when the user's site is a multisite.")
             static let imageName = "jetpack-scan-state-error"
         }
 
         struct error {
-            static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading scan status")
-            static let subtitle = NSLocalizedString("There was an error loading the scan status", comment: "Text displayed when there is a failure loading the status")
+            static let title = AppLocalizedString("Oops", comment: "Title for the view when there's an error loading scan status")
+            static let subtitle = AppLocalizedString("There was an error loading the scan status", comment: "Text displayed when there is a failure loading the status")
         }
 
         struct noConnection {
-            static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-            static let subtitle = NSLocalizedString("An active internet connection is required to view Jetpack Scan", comment: "Error message shown when trying to view the scan status and there is no internet connection.")
+            static let title = AppLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+            static let subtitle = AppLocalizedString("An active internet connection is required to view Jetpack Scan", comment: "Error message shown when trying to view the scan status and there is no internet connection.")
         }
 
-        static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the scan status again")
-        static let contactSupportButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let tryAgainButtonText = AppLocalizedString("Try again", comment: "Button label for trying to retrieve the scan status again")
+        static let contactSupportButtonText = AppLocalizedString("Contact support", comment: "Button label for contacting support")
     }
 }

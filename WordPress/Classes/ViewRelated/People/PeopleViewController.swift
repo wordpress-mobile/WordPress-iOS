@@ -283,11 +283,11 @@ private extension PeopleViewController {
         var title: String {
             switch self {
             case .users:
-                return NSLocalizedString("Users", comment: "Blog Users")
+                return AppLocalizedString("Users", comment: "Blog Users")
             case .followers:
-                return NSLocalizedString("Followers", comment: "Blog Followers")
+                return AppLocalizedString("Followers", comment: "Blog Followers")
             case .viewers:
-                return NSLocalizedString("Viewers", comment: "Blog Viewers")
+                return AppLocalizedString("Viewers", comment: "Blog Viewers")
             }
         }
 
@@ -480,10 +480,10 @@ private extension PeopleViewController {
 
     func noResultsTitle() -> String {
         if isInitialLoad {
-            return NSLocalizedString("Loading People...", comment: "Text displayed while loading site People.")
+            return AppLocalizedString("Loading People...", comment: "Text displayed while loading site People.")
         }
 
-        let noPeopleFormat = NSLocalizedString("No %@ yet", comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
+        let noPeopleFormat = AppLocalizedString("No %@ yet", comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
         let noPeople = String(format: noPeopleFormat, filter.title.lowercased())
 
         return connectionAvailable() ? noPeople : noConnectionMessage()
@@ -535,7 +535,7 @@ private extension PeopleViewController {
     }
 
     func setupView() {
-        title = NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
+        title = AppLocalizedString("People", comment: "Noun. Title of the people management feature.")
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,

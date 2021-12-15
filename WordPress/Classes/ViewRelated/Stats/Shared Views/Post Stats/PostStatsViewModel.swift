@@ -39,7 +39,7 @@ class PostStatsViewModel: Observable {
         return df
     }()
 
-    private let weekFormat = NSLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
+    private let weekFormat = AppLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
 
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
 

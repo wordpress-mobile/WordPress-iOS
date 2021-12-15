@@ -163,7 +163,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private func setupAccessibility() {
         menuButton.accessibilityLabel =
-            NSLocalizedString("More", comment: "Accessibility label for the More button in Post List (compact view).")
+            AppLocalizedString("More", comment: "Accessibility label for the More button in Post List (compact view).")
     }
 
     private enum Constants {

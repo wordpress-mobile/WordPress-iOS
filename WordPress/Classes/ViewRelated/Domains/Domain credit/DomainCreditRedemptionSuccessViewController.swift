@@ -204,10 +204,10 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     private let subtitleFont = UIFont.preferredFont(forTextStyle: .title3)
 
     private enum TextContent {
-        static let title = NSLocalizedString("Congratulations on your purchase!", comment: "Title of domain name purchase success screen")
-        static let domainDetailsString = NSLocalizedString("Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.",
+        static let title = AppLocalizedString("Congratulations on your purchase!", comment: "Title of domain name purchase success screen")
+        static let domainDetailsString = AppLocalizedString("Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.",
                                                            comment: "Details about recently acquired domain on domain credit redemption success screen")
-        static let doneButtonTitle = NSLocalizedString("Done",
+        static let doneButtonTitle = AppLocalizedString("Done",
                                                        comment: "Done button title")
     }
 
@@ -220,6 +220,6 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     private enum Accessibility {
         static let doneButtonIdentifier = "DomainsSuccessDoneButton"
-        static let doneButtonHint = NSLocalizedString("Dismiss screen", comment: "Accessibility hint for a done button that dismisses the current modal screen")
+        static let doneButtonHint = AppLocalizedString("Dismiss screen", comment: "Accessibility hint for a done button that dismisses the current modal screen")
     }
 }

@@ -172,17 +172,17 @@ private extension ChangeUsernameViewController {
     }
 
     enum Constants {
-        static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
-        static let username = NSLocalizedString("Username", comment: "The header and main title")
+        static let actionButtonTitle = AppLocalizedString("Save", comment: "Settings Text save button title")
+        static let username = AppLocalizedString("Username", comment: "The header and main title")
         static let cellIdentifier = "SearchTableViewCell"
 
         enum Alert {
-            static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
-            static let title = NSLocalizedString("Careful!", comment: "Alert title.")
-            static let message = NSLocalizedString("You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.", comment: "Alert message.")
-            static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
-            static let change = NSLocalizedString("Change username", comment: "Change button.")
-            static let confirm = NSLocalizedString("Confirm username", comment: "Alert text field placeholder.")
+            static let loading = AppLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
+            static let title = AppLocalizedString("Careful!", comment: "Alert title.")
+            static let message = AppLocalizedString("You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.", comment: "Alert message.")
+            static let cancel = AppLocalizedString("Cancel", comment: "Cancel button.")
+            static let change = AppLocalizedString("Change username", comment: "Change button.")
+            static let confirm = AppLocalizedString("Confirm username", comment: "Alert text field placeholder.")
         }
     }
 }

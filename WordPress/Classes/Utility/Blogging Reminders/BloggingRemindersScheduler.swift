@@ -336,9 +336,9 @@ class BloggingRemindersScheduler {
     }
 
     private enum TextContent {
-        static let noTitleNotificationTitle = NSLocalizedString("It's time to blog!", comment: "Title of a notification displayed prompting the user to create a new blog post")
-        static let notificationTitle = NSLocalizedString("It's time to blog on %@!",
+        static let noTitleNotificationTitle = AppLocalizedString("It's time to blog!", comment: "Title of a notification displayed prompting the user to create a new blog post")
+        static let notificationTitle = AppLocalizedString("It's time to blog on %@!",
                                                          comment: "Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title.")
-        static let notificationBody = NSLocalizedString("This is your reminder to blog today ✍️", comment: "The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text.")
+        static let notificationBody = AppLocalizedString("This is your reminder to blog today ✍️", comment: "The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text.")
     }
 }

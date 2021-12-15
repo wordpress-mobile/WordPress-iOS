@@ -223,7 +223,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             }
 
             if shouldPostStateUpdates(for: site) {
-                let notice = Notice(title: NSLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
+                let notice = Notice(title: AppLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
                                                              comment: "Text displayed when a site restore takes too long."))
                 actionDispatcher.dispatch(NoticeAction.post(notice))
             }
@@ -244,7 +244,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             }
 
             if shouldPostStateUpdates(for: site) {
-                let notice = Notice(title: NSLocalizedString("Your backup is taking longer than usual, please check again in a few minutes.",
+                let notice = Notice(title: AppLocalizedString("Your backup is taking longer than usual, please check again in a few minutes.",
                                                              comment: "Text displayed when a site backup takes too long."))
                 actionDispatcher.dispatch(NoticeAction.post(notice))
             }
@@ -413,13 +413,13 @@ private extension ActivityStore {
         fetchRewindStatus(site: site)
 
         let notice: Notice
-        let title = NSLocalizedString("Your site is being restored",
+        let title = AppLocalizedString("Your site is being restored",
                                       comment: "Title of a message displayed when user starts a restore operation")
 
         if let activity = getActivity(site: site, rewindID: rewindID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Restoring to %@", comment: "Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: AppLocalizedString("Restoring to %@", comment: "Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
@@ -435,13 +435,13 @@ private extension ActivityStore {
         }
 
         let notice: Notice
-        let title = NSLocalizedString("Your site has been succesfully restored",
+        let title = AppLocalizedString("Your site has been succesfully restored",
                                       comment: "Title of a message displayed when a site has finished rewinding")
 
         if let activity = getActivity(site: site, rewindID: restoreID) {
             let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
 
-            let message = String(format: NSLocalizedString("Restored to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            let message = String(format: AppLocalizedString("Restored to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
             notice = Notice(title: title, message: message)
         } else {
             notice = Notice(title: title)
@@ -454,10 +454,10 @@ private extension ActivityStore {
         let message: String
         switch error {
         case ActivityStoreError.rewindAlreadyRunning:
-            message = NSLocalizedString("There's a restore currently in progress, please wait before starting next one",
+            message = AppLocalizedString("There's a restore currently in progress, please wait before starting next one",
                                         comment: "Text displayed when user tries to start a restore when there is already one running")
         default:
-            message = NSLocalizedString("Unable to restore your site, please try again later or contact support.",
+            message = AppLocalizedString("Unable to restore your site, please try again later or contact support.",
                                         comment: "Text displayed when a site restore fails.")
         }
 

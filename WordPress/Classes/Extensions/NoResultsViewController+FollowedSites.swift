@@ -2,9 +2,9 @@ import Foundation
 
 extension NoResultsViewController {
     private struct Constants {
-        static let noFollowedSitesTitle = NSLocalizedString("No followed sites", comment: "Title for the no followed sites result screen")
-        static let noFollowedSitesSubtitle = NSLocalizedString("When you follow sites, you’ll see their content here.", comment: "Subtitle for the no followed sites result screen")
-        static let noFollowedSitesButtonTitle = NSLocalizedString("Discover Sites", comment: "Title for button on the no followed sites result screen")
+        static let noFollowedSitesTitle = AppLocalizedString("No followed sites", comment: "Title for the no followed sites result screen")
+        static let noFollowedSitesSubtitle = AppLocalizedString("When you follow sites, you’ll see their content here.", comment: "Subtitle for the no followed sites result screen")
+        static let noFollowedSitesButtonTitle = AppLocalizedString("Discover Sites", comment: "Title for button on the no followed sites result screen")
 
         static let noFollowedSitesImage = "wp-illustration-following-empty-results"
     }

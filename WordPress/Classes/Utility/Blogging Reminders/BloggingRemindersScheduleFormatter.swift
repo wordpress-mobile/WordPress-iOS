@@ -140,39 +140,39 @@ private extension BloggingRemindersScheduleFormatter {
     }
 
     enum TextContent {
-        static let shortNoRemindersDescription = NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
+        static let shortNoRemindersDescription = AppLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
 
-        static let longNoRemindersDescription = NSLocalizedString("You have no reminders set.", comment: "Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders.")
+        static let longNoRemindersDescription = AppLocalizedString("You have no reminders set.", comment: "Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders.")
 
         // Ideally we should use stringsdict to translate plurals, but GlotPress currently doesn't support this.
-        static let oneReminderLongDescriptionWithTime = NSLocalizedString("You'll get a reminder to blog <strong>once</strong> a week on %@ at %@.",
+        static let oneReminderLongDescriptionWithTime = AppLocalizedString("You'll get a reminder to blog <strong>once</strong> a week on %@ at %@.",
                                                               comment: "Blogging Reminders description confirming a user's choices. The placeholder will be replaced at runtime with a day of the week. The HTML markup is used to bold the word 'once'.")
 
-        static let manyRemindersLongDescriptionWithTime = NSLocalizedString("You'll get reminders to blog %@ times a week on %@.",
+        static let manyRemindersLongDescriptionWithTime = AppLocalizedString("You'll get reminders to blog %@ times a week on %@.",
                                                               comment: "Blogging Reminders description confirming a user's choices. The first placeholder will be populated with a count of the number of times a week they'll be reminded. The second will be a formatted list of days. For example: 'You'll get reminders to blog 2 times a week on Monday and Tuesday.")
 
-        static let oneReminderShortDescriptionWithTime = NSLocalizedString("<strong>Once</strong> a week at %@",
+        static let oneReminderShortDescriptionWithTime = AppLocalizedString("<strong>Once</strong> a week at %@",
                                                                             comment: "Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags.")
 
-        static let twoRemindersShortDescriptionWithTime = NSLocalizedString("<strong>Twice</strong> a week at %@",
+        static let twoRemindersShortDescriptionWithTime = AppLocalizedString("<strong>Twice</strong> a week at %@",
                                                                             comment: "Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags.")
 
-        static let manyRemindersShortDescriptionWithTime = NSLocalizedString("<strong>%d</strong> times a week at %@",
+        static let manyRemindersShortDescriptionWithTime = AppLocalizedString("<strong>%d</strong> times a week at %@",
                                                                              comment: "A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags.")
 
-        static let everydayRemindersShortDescriptionWithTime = NSLocalizedString("Every day at %@",
+        static let everydayRemindersShortDescriptionWithTime = AppLocalizedString("Every day at %@",
                                                                                  comment: "Short title telling the user they will receive a blogging reminder every day of the week.")
 
-        static let oneReminderShortDescription = NSLocalizedString("<strong>Once</strong> a week",
+        static let oneReminderShortDescription = AppLocalizedString("<strong>Once</strong> a week",
                                                                             comment: "Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags.")
 
-        static let twoRemindersShortDescription = NSLocalizedString("<strong>Twice</strong> a week",
+        static let twoRemindersShortDescription = AppLocalizedString("<strong>Twice</strong> a week",
                                                                             comment: "Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags.")
 
-        static let manyRemindersShortDescription = NSLocalizedString("<strong>%d</strong> times a week",
+        static let manyRemindersShortDescription = AppLocalizedString("<strong>%d</strong> times a week",
                                                                              comment: "A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags.")
 
-        static let everydayRemindersShortDescription = NSLocalizedString("Every day",
+        static let everydayRemindersShortDescription = AppLocalizedString("Every day",
                                                                                  comment: "Short title telling the user they will receive a blogging reminder every day of the week.")
     }
 }

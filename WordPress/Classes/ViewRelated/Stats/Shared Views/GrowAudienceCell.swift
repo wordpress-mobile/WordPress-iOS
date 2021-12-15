@@ -141,17 +141,17 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     private enum Strings {
 
         static let viewsCountDescriptionSingular =
-            NSLocalizedString("View to your site so far", comment: "Description for view count. Singular.")
+            AppLocalizedString("View to your site so far", comment: "Description for view count. Singular.")
 
         static let viewsCountDescriptionPlural =
-            NSLocalizedString("Views to your site so far", comment: "Description for view count. Singular.")
+            AppLocalizedString("Views to your site so far", comment: "Description for view count. Singular.")
 
         static let tipTitle =
-            NSLocalizedString("A tip to grow your audience",
+            AppLocalizedString("A tip to grow your audience",
                               comment: "A hint to users about growing the audience for their site, when their site doesn't have many views yet.")
 
         static let dismissButtonTitle =
-            NSLocalizedString("Dismiss", comment: "Title for button that will dismiss the Grow Your Audience card.")
+            AppLocalizedString("Dismiss", comment: "Title for button that will dismiss the Grow Your Audience card.")
 
         static func getViewsCountDescription(viewsCount: Int) -> String {
             return viewsCount == 1 ? viewsCountDescriptionSingular : viewsCountDescriptionPlural
@@ -164,62 +164,62 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
         enum Social {
             static let detailsTitle =
-                NSLocalizedString("Automatically share new posts to your social media to start bringing that audience over to your site.",
+                AppLocalizedString("Automatically share new posts to your social media to start bringing that audience over to your site.",
                                   comment: "A detailed message to users about growing the audience for their site through enabling post sharing.")
 
             static let actionButtonTitle =
-                NSLocalizedString("Enable post sharing", comment: "Title for button that will open up the social media Sharing screen.")
+                AppLocalizedString("Enable post sharing", comment: "Title for button that will open up the social media Sharing screen.")
 
             static let completedTipTitle =
-                NSLocalizedString("Sharing is set up!",
+                AppLocalizedString("Sharing is set up!",
                                   comment: "A hint to users that they've set up post sharing.")
 
             static let completedDetailsTitle =
-                NSLocalizedString("When you publish your next post it will be automatically shared to your connected networks.",
+                AppLocalizedString("When you publish your next post it will be automatically shared to your connected networks.",
                                   comment: "A detailed message to users indicating that they've set up post sharing.")
 
             static let completedActionButtonTitle =
-                NSLocalizedString("Connect more networks", comment: "Title for button that will open up the social media Sharing screen.")
+                AppLocalizedString("Connect more networks", comment: "Title for button that will open up the social media Sharing screen.")
         }
 
         enum BloggingReminders {
             static let detailsTitle =
-                NSLocalizedString("Posting regularly can help build an audience. Reminders help keep you on track.",
+                AppLocalizedString("Posting regularly can help build an audience. Reminders help keep you on track.",
                                   comment: "A detailed message to users about growing the audience for their site through blogging reminders.")
 
             static let actionButtonTitle =
-                NSLocalizedString("Set up blogging reminders", comment: "Title for button that will open up the blogging reminders screen.")
+                AppLocalizedString("Set up blogging reminders", comment: "Title for button that will open up the blogging reminders screen.")
 
             static let completedTipTitle =
-                NSLocalizedString("You set up blogging reminders",
+                AppLocalizedString("You set up blogging reminders",
                                   comment: "A hint to users that they've set up blogging reminders.")
 
             static let completedDetailsTitle =
-                NSLocalizedString("Keep blogging and check back to see visitors arriving at your site.",
+                AppLocalizedString("Keep blogging and check back to see visitors arriving at your site.",
                                   comment: "A detailed message to users indicating that they've set up blogging reminders.")
 
             static let completedActionButtonTitle =
-                NSLocalizedString("Edit reminders", comment: "Title for button that will open up the blogging reminders screen.")
+                AppLocalizedString("Edit reminders", comment: "Title for button that will open up the blogging reminders screen.")
         }
 
         enum ReaderDiscover {
             static let detailsTitle =
-                NSLocalizedString("Connect with other bloggers by following, liking and commenting on their posts.",
+                AppLocalizedString("Connect with other bloggers by following, liking and commenting on their posts.",
                                   comment: "A detailed message to users about growing the audience for their site through reader discover.")
 
             static let actionButtonTitle =
-                NSLocalizedString("Discover blogs to follow", comment: "Title for button that will open up the follow topics screen.")
+                AppLocalizedString("Discover blogs to follow", comment: "Title for button that will open up the follow topics screen.")
 
             static let completedTipTitle =
-                NSLocalizedString("You've connected with other blogs",
+                AppLocalizedString("You've connected with other blogs",
                                   comment: "A hint to users that they've set up reader discover.")
 
             static let completedDetailsTitle =
-                NSLocalizedString("Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.",
+                AppLocalizedString("Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.",
                                   comment: "A detailed message to users indicating that they've set up reader discover.")
 
             static let completedActionButtonTitle =
-                NSLocalizedString("Do it again", comment: "Title for button that will open up the follow topics screen.")
+                AppLocalizedString("Do it again", comment: "Title for button that will open up the follow topics screen.")
         }
     }
 

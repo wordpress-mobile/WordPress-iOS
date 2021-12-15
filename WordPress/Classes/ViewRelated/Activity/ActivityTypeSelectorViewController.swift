@@ -42,7 +42,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
             self?.updateNoResults()
         }
 
-        title = NSLocalizedString("Filter by activity type", comment: "Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users)")
+        title = AppLocalizedString("Filter by activity type", comment: "Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users)")
     }
 
     private func configureTableView() {
@@ -52,7 +52,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
     }
 
     private func setupNavButtons() {
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+        let doneButton = UIBarButtonItem(title: AppLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
         navigationItem.setRightBarButton(doneButton, animated: false)
 
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel)), animated: false)

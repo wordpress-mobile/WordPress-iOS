@@ -26,6 +26,6 @@ class CountriesMapCell: UITableViewCell, NibLoadable, Accessible {
     }
 
     func prepareForVoiceOver() {
-        accessibilityLabel = NSLocalizedString("World map showing views by country.", comment: "Accessibility label for the Stats' world map.")
+        accessibilityLabel = AppLocalizedString("World map showing views by country.", comment: "Accessibility label for the Stats' world map.")
     }
 }

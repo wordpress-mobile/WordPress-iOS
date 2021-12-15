@@ -1,7 +1,7 @@
 /// Encapsulates logic to trash a comment
 class TrashComment: DefaultNotificationActionCommand {
-    static let title = NSLocalizedString("Trash", comment: "Trashes the comment")
-    static let hint = NSLocalizedString("Moves the comment to the Trash.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash.")
+    static let title = AppLocalizedString("Trash", comment: "Trashes the comment")
+    static let hint = AppLocalizedString("Moves the comment to the Trash.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash.")
 
     override var actionTitle: String {
         return TrashComment.title

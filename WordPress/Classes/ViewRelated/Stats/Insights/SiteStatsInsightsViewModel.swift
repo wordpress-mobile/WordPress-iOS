@@ -279,10 +279,10 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     var followTopicsViewController: ReaderSelectInterestsViewController {
-        let configuration = ReaderSelectInterestsConfiguration(title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
+        let configuration = ReaderSelectInterestsConfiguration(title: AppLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
                                                                subtitle: nil,
                                                                buttonTitle: nil,
-                                                               loading: NSLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
+                                                               loading: AppLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
         )
 
         let context = ContextManager.sharedInstance().mainContext
@@ -303,29 +303,29 @@ class SiteStatsInsightsViewModel: Observable {
 private extension SiteStatsInsightsViewModel {
 
     struct AllTimeStats {
-        static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
-        static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
-        static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
-        static let bestViewsEverTitle = NSLocalizedString("Best views ever", comment: "All Time Stats 'Best views ever' label")
+        static let postsTitle = AppLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
+        static let viewsTitle = AppLocalizedString("Views", comment: "All Time Stats 'Views' label")
+        static let visitorsTitle = AppLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
+        static let bestViewsEverTitle = AppLocalizedString("Best views ever", comment: "All Time Stats 'Best views ever' label")
     }
 
     struct MostPopularStats {
-        static let bestDay = NSLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
-        static let bestHour = NSLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
+        static let bestDay = AppLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
+        static let bestHour = AppLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
     }
 
     struct FollowerTotals {
-        static let total = NSLocalizedString("Total", comment: "Label for total followers")
-        static let wordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
-        static let email = NSLocalizedString("Email", comment: "Label for email followers")
-        static let social = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
+        static let total = AppLocalizedString("Total", comment: "Label for total followers")
+        static let wordPress = AppLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
+        static let email = AppLocalizedString("Email", comment: "Label for email followers")
+        static let social = AppLocalizedString("Social", comment: "Follower Totals label for social media followers")
     }
 
     struct TodaysStats {
-        static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
-        static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
-        static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
-        static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
+        static let viewsTitle = AppLocalizedString("Views", comment: "Today's Stats 'Views' label")
+        static let visitorsTitle = AppLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
+        static let likesTitle = AppLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
+        static let commentsTitle = AppLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {

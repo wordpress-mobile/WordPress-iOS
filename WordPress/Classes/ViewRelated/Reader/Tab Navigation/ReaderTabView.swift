@@ -165,7 +165,7 @@ extension ReaderTabView {
         containerView.pinSubviewToAllEdges(childController.view)
 
         if viewModel.shouldShowCommentSpotlight {
-            let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
+            let title = AppLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
             childController.displayNotice(title: title)
         }
     }
@@ -344,7 +344,7 @@ private extension ReaderTabView {
 
         static let tabBarAnimationsDuration = 0.2
 
-        static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
+        static let defaultFilterButtonTitle = AppLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
         static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
@@ -368,6 +368,6 @@ extension ReaderTabView {
     private enum Accessibility {
         static let filterButtonIdentifier = "ReaderFilterButton"
         static let resetButtonIdentifier = "ReaderResetButton"
-        static let resetFilterButtonLabel = NSLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
+        static let resetFilterButtonLabel = AppLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
     }
 }

@@ -16,8 +16,8 @@ import Gridicons
 
         var title: String {
             switch self {
-            case .posts: return NSLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
-            case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
+            case .posts: return AppLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
+            case .sites: return AppLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
             }
         }
 
@@ -110,7 +110,7 @@ import Gridicons
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
+        navigationItem.title = AppLocalizedString("Search", comment: "Title of the Reader's search feature")
         navigationItem.largeTitleDisplayMode = .never
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
@@ -172,7 +172,7 @@ import Gridicons
 
     @objc func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
-        let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
+        let placeholderText = AppLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
 
         searchBar.becomeFirstResponder()
@@ -189,7 +189,7 @@ import Gridicons
     }
 
     @objc func configureLabel() {
-        let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
+        let text = AppLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
         let rawAttributes = WPNUXUtility.titleAttributes(with: .neutral(.shade50)) as! [String: Any]
         let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
         label.numberOfLines = 2

@@ -8,7 +8,7 @@ public typealias GutenbergMediaPickerHelperCallback = ([WPMediaAsset]?) -> Void
 class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate struct Constants {
-        static let mediaPickerInsertText = NSLocalizedString(
+        static let mediaPickerInsertText = AppLocalizedString(
             "Insert %@",
             comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted."
         )
@@ -76,7 +76,7 @@ class GutenbergMediaPickerHelper: NSObject {
         mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
-        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
+        picker.previewActionTitle = AppLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
     }

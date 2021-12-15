@@ -120,7 +120,7 @@ import WordPressFlux
         didSet {
             if tagSlug != nil {
                 // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
-                title = NSLocalizedString("Topic", comment: "Topic page title")
+                title = AppLocalizedString("Topic", comment: "Topic page title")
 
                 fetchTagTopic()
             }
@@ -632,12 +632,12 @@ import WordPressFlux
 
     private func configureTitleForTopic() {
         guard let topic = readerTopic else {
-            title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+            title = AppLocalizedString("Reader", comment: "The default title of the Reader")
             return
         }
 
         if ReaderHelpers.isTopicTag(topic) {
-             title = NSLocalizedString("Topic", comment: "Topic page title")
+             title = AppLocalizedString("Topic", comment: "Topic page title")
         } else {
             title = topic.title
         }
@@ -954,9 +954,9 @@ import WordPressFlux
 
     private func syncFillingGap(_ indexPath: IndexPath) {
         if !canSync() {
-            let alertTitle = NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
-            let alertMessage = NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
-            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+            let alertTitle = AppLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
+            let alertMessage = AppLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
+            let cancelTitle = AppLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
             let alertController = UIAlertController(title: alertTitle,
                 message: alertMessage,
                 preferredStyle: .alert)
@@ -966,9 +966,9 @@ import WordPressFlux
             return
         }
         if let syncHelper = syncHelper, syncHelper.isSyncing {
-            let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
-            let alertMessage = NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
-            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+            let alertTitle = AppLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
+            let alertMessage = AppLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
+            let cancelTitle = AppLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
             let alertController = UIAlertController(title: alertTitle,
                 message: alertMessage,
                 preferredStyle: .alert)
@@ -1626,11 +1626,11 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+        return AppLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
+        let keyWordString = AppLocalizedString("wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
                                               comment: "This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 
@@ -1777,13 +1777,13 @@ extension ReaderStreamViewController {
     }
 
     struct ResultsStatusText {
-        static let fetchingPostsTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        static let loadingStreamTitle = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
-        static let loadingErrorTitle = NSLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
-        static let loadingErrorMessage = NSLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
-        static let manageSitesButtonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
-        static let followingButtonTitle = NSLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
-        static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        static let fetchingPostsTitle = AppLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        static let loadingStreamTitle = AppLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
+        static let loadingErrorTitle = AppLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
+        static let loadingErrorMessage = AppLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
+        static let manageSitesButtonTitle = AppLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
+        static let followingButtonTitle = AppLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
+        static let noConnectionTitle = AppLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
     }
 
     var readerEmptyImageName: String {
@@ -1819,7 +1819,7 @@ extension ReaderStreamViewController: NetworkAwareUI {
     }
 
     func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
+        return AppLocalizedString("No internet connection. Some content may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Reader without an internet connection.")
     }
 }
@@ -1960,9 +1960,9 @@ private extension ReaderStreamViewController {
     }
 
     enum NoTopicConstants {
-        static let retryButtonTitle = NSLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
-        static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
-        static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
+        static let retryButtonTitle = AppLocalizedString("Retry", comment: "title for action that tries to connect to the reader after a loading error.")
+        static let contentErrorTitle = AppLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
+        static let contentErrorSubtitle = AppLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let contentErrorImage = "cloud"
     }
 }

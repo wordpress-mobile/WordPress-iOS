@@ -446,25 +446,25 @@ extension InteractiveNotificationsManager {
         var description: String {
             switch self {
             case .commentApprove:
-                return NSLocalizedString("Approve", comment: "Approve comment (verb)")
+                return AppLocalizedString("Approve", comment: "Approve comment (verb)")
             case .commentLike:
-                return NSLocalizedString("Like", comment: "Like (verb)")
+                return AppLocalizedString("Like", comment: "Like (verb)")
             case .commentReply:
-                return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
+                return AppLocalizedString("Reply", comment: "Reply to a comment (verb)")
             case .mediaWritePost:
-                return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
+                return AppLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
             case .mediaRetry:
-                return NSLocalizedString("Retry", comment: "Opens the media library .")
+                return AppLocalizedString("Retry", comment: "Opens the media library .")
             case .postRetry:
-                return NSLocalizedString("Retry", comment: "Retries the upload of a user's post.")
+                return AppLocalizedString("Retry", comment: "Retries the upload of a user's post.")
             case .postView:
-                return NSLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
+                return AppLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
             case .shareEditPost:
-                return NSLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
+                return AppLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
             case .approveLogin:
-                return NSLocalizedString("Approve", comment: "Verb. Approves a 2fa authentication challenge, and logs in a user.")
+                return AppLocalizedString("Approve", comment: "Verb. Approves a 2fa authentication challenge, and logs in a user.")
             case .denyLogin:
-                return NSLocalizedString("Deny", comment: "Verb. Denies a 2fa authentication challenge.")
+                return AppLocalizedString("Deny", comment: "Verb. Denies a 2fa authentication challenge.")
             }
         }
 
@@ -513,8 +513,8 @@ extension InteractiveNotificationsManager {
                 return UNTextInputNotificationAction(identifier: identifier,
                                                      title: description,
                                                      options: notificationActionOptions,
-                                                     textInputButtonTitle: NSLocalizedString("Reply", comment: "Verb. Button title. Reply to a comment."),
-                                                     textInputPlaceholder: NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view"))
+                                                     textInputButtonTitle: AppLocalizedString("Reply", comment: "Verb. Button title. Reply to a comment."),
+                                                     textInputPlaceholder: AppLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view"))
             default:
                 return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)
             }

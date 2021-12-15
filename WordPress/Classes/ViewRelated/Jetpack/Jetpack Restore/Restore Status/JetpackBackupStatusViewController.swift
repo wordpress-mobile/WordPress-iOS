@@ -29,12 +29,12 @@ class JetpackBackupStatusViewController: BaseRestoreStatusViewController {
         self.downloadID = downloadID
 
         let restoreStatusConfiguration = JetpackRestoreStatusConfiguration(
-            title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Status screen"),
+            title: AppLocalizedString("Backup", comment: "Title for Jetpack Backup Status screen"),
             iconImage: .gridicon(.history),
-            messageTitle: NSLocalizedString("Currently creating a downloadable backup of your site", comment: "Title for the Jetpack Backup Status message."),
-            messageDescription: NSLocalizedString("We're creating a downloadable backup of your site from %1$@.", comment: "Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date."),
-            hint: NSLocalizedString("No need to wait around. We'll notify you when your backup is ready.", comment: "A hint to users about creating a downloadable backup of their site."),
-            primaryButtonTitle: NSLocalizedString("Let me know when finished!", comment: "Title for the button that will dismiss this view."),
+            messageTitle: AppLocalizedString("Currently creating a downloadable backup of your site", comment: "Title for the Jetpack Backup Status message."),
+            messageDescription: AppLocalizedString("We're creating a downloadable backup of your site from %1$@.", comment: "Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date."),
+            hint: AppLocalizedString("No need to wait around. We'll notify you when your backup is ready.", comment: "A hint to users about creating a downloadable backup of their site."),
+            primaryButtonTitle: AppLocalizedString("Let me know when finished!", comment: "Title for the button that will dismiss this view."),
             placeholderProgressTitle: nil,
             progressDescription: nil
         )

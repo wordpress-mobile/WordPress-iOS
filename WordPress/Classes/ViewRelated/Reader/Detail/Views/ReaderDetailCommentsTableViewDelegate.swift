@@ -119,13 +119,13 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     struct Constants {
-        static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
-        static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
-        static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
-        static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
-        static let singularCommentFormat = NSLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let pluralCommentsFormat = NSLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let comments = NSLocalizedString("Comments", comment: "Comments table header label.")
+        static let noComments = AppLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
+        static let closedComments = AppLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
+        static let viewAllButtonTitle = AppLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
+        static let leaveCommentButtonTitle = AppLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
+        static let singularCommentFormat = AppLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
+        static let pluralCommentsFormat = AppLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
+        static let comments = AppLocalizedString("Comments", comment: "Comments table header label.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
 }

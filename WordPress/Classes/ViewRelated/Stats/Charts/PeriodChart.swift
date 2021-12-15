@@ -11,13 +11,13 @@ extension StatsPeriodFilterDimension {
     var accessibleDescription: String {
         switch self {
         case .views:
-            return NSLocalizedString("Bar Chart depicting Views for selected period, Visitors superimposed", comment: "This description is used to set the accessibility label for the Period chart, with Views selected.")
+            return AppLocalizedString("Bar Chart depicting Views for selected period, Visitors superimposed", comment: "This description is used to set the accessibility label for the Period chart, with Views selected.")
         case .visitors:
-            return NSLocalizedString("Bar Chart depicting Visitors for the selected period.", comment: "This description is used to set the accessibility label for the Period chart, with Visitors selected.")
+            return AppLocalizedString("Bar Chart depicting Visitors for the selected period.", comment: "This description is used to set the accessibility label for the Period chart, with Visitors selected.")
         case .likes:
-            return NSLocalizedString("Bar Chart depicting Likes for the selected period.", comment: "This description is used to set the accessibility label for the Period chart, with Likes selected.")
+            return AppLocalizedString("Bar Chart depicting Likes for the selected period.", comment: "This description is used to set the accessibility label for the Period chart, with Likes selected.")
         case .comments:
-            return NSLocalizedString("Bar Chart depicting Comments for the selected period.", comment: "This description is used to set the accessibility label for the Period chart, with Comments selected.")
+            return AppLocalizedString("Bar Chart depicting Comments for the selected period.", comment: "This description is used to set the accessibility label for the Period chart, with Comments selected.")
         }
     }
 }
@@ -115,10 +115,10 @@ private final class PeriodChartDataTransformer {
         var chartData = [BarChartData]()
 
         let viewsDataSet = BarChartDataSet(values: viewEntries,
-                                           label: NSLocalizedString("Views", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
+                                           label: AppLocalizedString("Views", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
                                            valueFormatter: dataSetValueFormatter)
         let visitorsDataSet = BarChartDataSet(values: visitorEntries,
-                                              label: NSLocalizedString("Visitors", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
+                                              label: AppLocalizedString("Visitors", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
                                               valueFormatter: dataSetValueFormatter)
         let viewsDataSets = [ viewsDataSet, visitorsDataSet ]
         let viewsChartData = BarChartData(dataSets: viewsDataSets)
@@ -196,7 +196,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let secondaryHighlightColor: UIColor?
     let labelColor: UIColor                         = .neutral(.shade30)
     let legendColor: UIColor?                       = .primary(.shade60)
-    let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
+    let legendTitle: String?                        = AppLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = .neutral(.shade5)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()

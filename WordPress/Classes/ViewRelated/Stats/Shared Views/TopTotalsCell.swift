@@ -348,11 +348,11 @@ extension TopTotalsCell: Accessible {
         let dataTitle = dataSubtitleLabel.text
 
         if let itemTitle = itemTitle, let dataTitle = dataTitle {
-            let descriptionFormat = NSLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+            let descriptionFormat = AppLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle)
         } else {
             if let title = (itemTitle ?? dataTitle) {
-                let descriptionFormat = NSLocalizedString("Table showing %@", comment: "Accessibility of stats table. Placeholder will be populated with name of data shown in table.")
+                let descriptionFormat = AppLocalizedString("Table showing %@", comment: "Accessibility of stats table. Placeholder will be populated with name of data shown in table.")
                 accessibilityLabel = String(format: descriptionFormat, title)
             }
         }

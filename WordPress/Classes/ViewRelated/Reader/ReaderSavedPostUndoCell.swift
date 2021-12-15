@@ -15,8 +15,8 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     weak var delegate: ReaderPostUndoCellDelegate?
 
     private enum Strings {
-        static let removed = NSLocalizedString("Removed", comment: "Label indicating a post has been removed from Saved For Later")
-        static let undo = NSLocalizedString("Undo", comment: "Undo action")
+        static let removed = AppLocalizedString("Removed", comment: "Label indicating a post has been removed from Saved For Later")
+        static let undo = AppLocalizedString("Undo", comment: "Undo action")
     }
 
     override func awakeFromNib() {

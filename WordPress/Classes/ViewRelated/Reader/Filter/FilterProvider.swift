@@ -119,15 +119,15 @@ extension ReaderSiteTopic {
         let titleFunction: (FilterProvider.State?) -> String = { state in
             switch state {
             case .loading, .error, .none:
-                return NSLocalizedString("Sites", comment: "Sites Filter Tab Title")
+                return AppLocalizedString("Sites", comment: "Sites Filter Tab Title")
             case .ready(let items):
                 let filteredItems = FilterProvider.filterItems(items, siteType: siteType)
-                return String(format: NSLocalizedString("Sites (%lu)", comment: "Sites Filter Tab Title with Count"), filteredItems.count)
+                return String(format: AppLocalizedString("Sites (%lu)", comment: "Sites Filter Tab Title with Count"), filteredItems.count)
             }
         }
 
-        let emptyTitle = NSLocalizedString("Add a site", comment: "No Tags View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific site by following it.", comment: "No Sites View Label")
+        let emptyTitle = AppLocalizedString("Add a site", comment: "No Tags View Button Label")
+        let emptyActionTitle = AppLocalizedString("You can follow posts on a specific site by following it.", comment: "No Sites View Label")
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "SitesFilterTab",
@@ -221,8 +221,8 @@ extension ReaderSiteTopic {
         static let cornerRadius: CGFloat = 15
         static let viewSize: CGFloat = 30
         static let labelPadding: CGFloat = 20
-        static let singularUnseen = NSLocalizedString("%1$d unseen post", comment: "Format string for single unseen post count. The %1$d is a placeholder for the count.")
-        static let pluralUnseen = NSLocalizedString("%1$d unseen posts", comment: "Format string for plural unseen posts count. The %1$d is a placeholder for the count.")
+        static let singularUnseen = AppLocalizedString("%1$d unseen post", comment: "Format string for single unseen post count. The %1$d is a placeholder for the count.")
+        static let pluralUnseen = AppLocalizedString("%1$d unseen posts", comment: "Format string for plural unseen posts count. The %1$d is a placeholder for the count.")
     }
 
 }
@@ -233,14 +233,14 @@ extension ReaderTagTopic {
         let titleFunction: (FilterProvider.State?) -> String = { state in
             switch state {
             case .loading, .error, .none:
-                return NSLocalizedString("Topics", comment: "Topics Filter Tab Title")
+                return AppLocalizedString("Topics", comment: "Topics Filter Tab Title")
             case .ready(let items):
-                return String(format: NSLocalizedString("Topics (%lu)", comment: "Topics Filter Tab Title with Count"), items.count)
+                return String(format: AppLocalizedString("Topics (%lu)", comment: "Topics Filter Tab Title with Count"), items.count)
             }
         }
 
-        let emptyTitle = NSLocalizedString("Add a topic", comment: "No Topics View Button Label")
-        let emptyActionTitle = NSLocalizedString("You can follow posts on a specific subject by adding a topic.", comment: "No Topics View Label")
+        let emptyTitle = AppLocalizedString("Add a topic", comment: "No Topics View Button Label")
+        let emptyActionTitle = AppLocalizedString("You can follow posts on a specific subject by adding a topic.", comment: "No Topics View Label")
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",

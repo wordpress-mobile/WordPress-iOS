@@ -45,7 +45,7 @@ struct PeopleCellViewModel {
     }
 
     var superAdminText: String {
-        return NSLocalizedString("Super Admin", comment: "User role badge")
+        return AppLocalizedString("Super Admin", comment: "User role badge")
     }
 
     var superAdminBorderColor: UIColor {

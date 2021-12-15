@@ -369,37 +369,37 @@ class AutomatedTransferHelper {
     private struct Constants {
 
         struct PromptMessages {
-            static let installFirstPluginPrompt = NSLocalizedString("Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site.", comment: "Message displayed in an alert when user tries to install a first plugin on their site.")
-            static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel button.")
-            static let alertInstall = NSLocalizedString("Install", comment: "Confirmation button displayd in alert displayed when user installs their first plugin.")
-            static let installAlmostDone = NSLocalizedString("We're doing the final setup—almost done…", comment: "Title of progress label displayed when a first plugin on a site is almost done installing.")
+            static let installFirstPluginPrompt = AppLocalizedString("Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site.", comment: "Message displayed in an alert when user tries to install a first plugin on their site.")
+            static let alertCancel = AppLocalizedString("Cancel", comment: "Cancel button.")
+            static let alertInstall = AppLocalizedString("Install", comment: "Confirmation button displayd in alert displayed when user installs their first plugin.")
+            static let installAlmostDone = AppLocalizedString("We're doing the final setup—almost done…", comment: "Title of progress label displayed when a first plugin on a site is almost done installing.")
         }
 
         struct EligibilityErrors {
-            static let eligibilityUnverifiedEmailError = NSLocalizedString("Plugin feature requires a verified email address.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityExcessiveUsageError = NSLocalizedString("Plugin cannot be installed due to disk space limitations.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityNoBusinessPlanError = NSLocalizedString("Plugin feature requires a business plan.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityVIPSitesError = NSLocalizedString("Plugin cannot be installed on VIP sites.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityNotAdminError = NSLocalizedString("Plugin feature requires admin privileges.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityNotDomainOwnerError = NSLocalizedString("Plugin feature requires primary domain subscription to be associated with this user.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityNoCustomDomainError = NSLocalizedString("Plugin feature requires a custom domain.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityGreyListedError = NSLocalizedString("Plugin feature requires the site to be in good standing.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityPrivateSiteError = NSLocalizedString("Plugin feature requires the site to be public.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-            static let eligibilityEligibilityGenericError = NSLocalizedString("Plugin feature is not available for this site.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityUnverifiedEmailError = AppLocalizedString("Plugin feature requires a verified email address.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityExcessiveUsageError = AppLocalizedString("Plugin cannot be installed due to disk space limitations.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNoBusinessPlanError = AppLocalizedString("Plugin feature requires a business plan.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityVIPSitesError = AppLocalizedString("Plugin cannot be installed on VIP sites.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNotAdminError = AppLocalizedString("Plugin feature requires admin privileges.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNotDomainOwnerError = AppLocalizedString("Plugin feature requires primary domain subscription to be associated with this user.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNoCustomDomainError = AppLocalizedString("Plugin feature requires a custom domain.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityGreyListedError = AppLocalizedString("Plugin feature requires the site to be in good standing.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityPrivateSiteError = AppLocalizedString("Plugin feature requires the site to be public.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityEligibilityGenericError = AppLocalizedString("Plugin feature is not available for this site.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
         }
 
         struct PluginNameStrings {
             // Strings that take plugin name in as a parameter.
             static func progressHudTitle(_ pluginName: String) -> String {
-                return String(format: NSLocalizedString("Installing %@…", comment: "Title of a progress view displayed while the first plugin for a site is being installed."), pluginName)
+                return String(format: AppLocalizedString("Installing %@…", comment: "Title of a progress view displayed while the first plugin for a site is being installed."), pluginName)
             }
 
             static func genericErrorMessage(_ pluginName: String) -> String {
-                return String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), pluginName)
+                return String(format: AppLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), pluginName)
             }
 
             static func successMessage(_ pluginName: String) -> String {
-                return String(format: NSLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), pluginName)
+                return String(format: AppLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), pluginName)
             }
         }
 

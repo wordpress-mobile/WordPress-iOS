@@ -216,15 +216,15 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
-        let title = NSLocalizedString("Skip Quick Start", comment: "Title shown in alert to confirm skipping all quick start items")
-        let message = NSLocalizedString("The quick start tour will guide you through building a basic site. Are you sure you want to skip? ",
+        let title = AppLocalizedString("Skip Quick Start", comment: "Title shown in alert to confirm skipping all quick start items")
+        let message = AppLocalizedString("The quick start tour will guide you through building a basic site. Are you sure you want to skip? ",
                                             comment: "Description shown in alert to confirm skipping all quick start items")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when canceling alert in quick start"))
+        alertController.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Button label when canceling alert in quick start"))
 
-        let skipAction = alertController.addDefaultActionWithTitle(NSLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
+        let skipAction = alertController.addDefaultActionWithTitle(AppLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
             let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
             let completedIDs = completedTours.map { $0.tourID }
 

@@ -57,9 +57,9 @@ class LinkSettingsViewController: UITableViewController {
     }
 
     private func setupNavigation() {
-        title = NSLocalizedString("Link Settings", comment: "Noun. Title for screen in editor that allows to configure link options")
-        let insertTitle = NSLocalizedString("Insert", comment: "Label action for inserting a link on the editor")
-        let updateTitle = NSLocalizedString("Update", comment: "Label action for updating a link on the editor")
+        title = AppLocalizedString("Link Settings", comment: "Noun. Title for screen in editor that allows to configure link options")
+        let insertTitle = AppLocalizedString("Insert", comment: "Label action for inserting a link on the editor")
+        let updateTitle = AppLocalizedString("Update", comment: "Label action for updating a link on the editor")
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelChanges))
 
@@ -82,22 +82,22 @@ class LinkSettingsViewController: UITableViewController {
     private func setupViewModel() {
         ImmuTable.registerRows([EditableTextRow.self, SwitchRow.self, DestructiveButtonRow.self], tableView: tableView)
 
-        let urlRow = EditableTextRow(title: NSLocalizedString("URL", comment: "URL text field placeholder"),
+        let urlRow = EditableTextRow(title: AppLocalizedString("URL", comment: "URL text field placeholder"),
                                      value: linkSettings.url,
                                      action: editURL)
-        let textRow = EditableTextRow(title: NSLocalizedString("Link Text", comment: "Noun. Label for the text of a link in the editor"),
+        let textRow = EditableTextRow(title: AppLocalizedString("Link Text", comment: "Noun. Label for the text of a link in the editor"),
                                       value: linkSettings.text,
                                       action: editTitle)
-        let openInNewWindowRow = SwitchRow(title: NSLocalizedString("Open in a new Window/Tab", comment: "Label for the description of openening a link using a new window"),
+        let openInNewWindowRow = SwitchRow(title: AppLocalizedString("Open in a new Window/Tab", comment: "Label for the description of openening a link using a new window"),
                                            value: linkSettings.openInNewWindow,
                                            onChange: editOpenInNewWindow)
 
 
-        let linkToExistingContentRow = EditableTextRow(title: NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site"),
+        let linkToExistingContentRow = EditableTextRow(title: AppLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site"),
                                       value: titleOfExistingContent(),
                                       action: selectExistingContent)
 
-        let removeLinkRow = DestructiveButtonRow(title: NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor"),
+        let removeLinkRow = DestructiveButtonRow(title: AppLocalizedString("Remove Link", comment: "Label action for removing a link from the editor"),
                                               action: removeLink,
                                               accessibilityIdentifier: "RemoveLink")
 
@@ -164,7 +164,7 @@ class LinkSettingsViewController: UITableViewController {
             strongSelf.navigationController?.popViewController(animated: true)
             strongSelf.reloadViewModel()
         })
-        selectPostViewController.title = NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site")
+        selectPostViewController.title = AppLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site")
         navigationController?.pushViewController(selectPostViewController, animated: true)
     }
 

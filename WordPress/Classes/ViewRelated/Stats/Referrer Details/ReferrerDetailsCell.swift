@@ -35,7 +35,7 @@ extension ReferrerDetailsCell: Accessible {
             accessibilityLabel = "\(referrer), \(views)"
         }
         accessibilityTraits = [.staticText, .button]
-        accessibilityHint = NSLocalizedString("Tap to display referrer web page.", comment: "Accessibility hint for referrer details row.")
+        accessibilityHint = AppLocalizedString("Tap to display referrer web page.", comment: "Accessibility hint for referrer details row.")
     }
 }
 

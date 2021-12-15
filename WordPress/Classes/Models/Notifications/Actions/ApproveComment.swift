@@ -1,13 +1,13 @@
 /// Encapsulates logic to approve a cooment
 class ApproveComment: DefaultNotificationActionCommand {
     enum TitleStrings {
-        static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")
-        static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+        static let approve = AppLocalizedString("Approve", comment: "Approves a Comment")
+        static let unapprove = AppLocalizedString("Unapprove", comment: "Unapproves a Comment")
     }
 
     enum TitleHints {
-        static let approve = NSLocalizedString("Approves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to approve a comment")
-        static let unapprove = NSLocalizedString("Unapproves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment")
+        static let approve = AppLocalizedString("Approves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to approve a comment")
+        static let unapprove = AppLocalizedString("Unapproves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment")
     }
 
     override var actionTitle: String {

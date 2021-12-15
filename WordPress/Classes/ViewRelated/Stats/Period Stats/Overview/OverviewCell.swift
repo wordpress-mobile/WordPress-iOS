@@ -56,7 +56,7 @@ struct OverviewTabData: FilterTabBarItem {
     }
 
     var differenceLabel: String {
-        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%)")
+        let stringFormat = AppLocalizedString("%@%@ (%@%%)", comment: "Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%)")
         return String.localizedStringWithFormat(stringFormat,
                                                 difference < 0 ? "" : "+",
                                                 difference.abbreviatedString(),

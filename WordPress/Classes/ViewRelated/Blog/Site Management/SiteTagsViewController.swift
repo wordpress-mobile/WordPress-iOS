@@ -99,7 +99,7 @@ final class SiteTagsViewController: UITableViewController {
     }
 
     private func applyTitle() {
-        title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
+        title = AppLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
     }
 
     private func setupTable() {
@@ -259,9 +259,9 @@ extension SiteTagsViewController: NSFetchedResultsControllerDelegate {
 // MARK: - Navigation to Tag details
 extension SiteTagsViewController {
     fileprivate func navigate(to tag: PostTag?) {
-        let titleSectionHeader = NSLocalizedString("Tag", comment: "Section header for tag name in Tag Details View.")
-        let subtitleSectionHeader = NSLocalizedString("Description", comment: "Section header for tag name in Tag Details View.")
-        let titleErrorFooter = NSLocalizedString("Name Required", comment: "Error to be displayed when a tag is empty")
+        let titleSectionHeader = AppLocalizedString("Tag", comment: "Section header for tag name in Tag Details View.")
+        let subtitleSectionHeader = AppLocalizedString("Description", comment: "Section header for tag name in Tag Details View.")
+        let titleErrorFooter = AppLocalizedString("Name Required", comment: "Error to be displayed when a tag is empty")
         let content = SettingsTitleSubtitleController.Content(title: tag?.name,
                                                               subtitle: tag?.tagDescription,
                                                               titleHeader: titleSectionHeader,
@@ -342,14 +342,14 @@ extension SiteTagsViewController {
     }
 
     fileprivate func displayAlertForExistingTag(_ tag: PostTag) {
-        let title =  NSLocalizedString("Tag already exists",
+        let title =  AppLocalizedString("Tag already exists",
                                        comment: "Title of the alert indicating that a tag with that name already exists.")
         let tagName = tag.name ?? ""
-        let message = String(format: NSLocalizedString("A tag named '%@' already exists.",
+        let message = String(format: AppLocalizedString("A tag named '%@' already exists.",
                                                        comment: "Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag"),
                              tagName)
 
-        let acceptTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+        let acceptTitle = AppLocalizedString("OK", comment: "Alert dismissal title")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(acceptTitle)
         present(alertController, animated: true)
@@ -364,10 +364,10 @@ extension SiteTagsViewController {
     }
 
     private func confirmation() -> SettingsTitleSubtitleController.Confirmation {
-        let confirmationTitle = NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
-        let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
-        let actionTitle = NSLocalizedString("Delete", comment: "Delete")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        let confirmationTitle = AppLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
+        let confirmationSubtitle = AppLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
+        let actionTitle = AppLocalizedString("Delete", comment: "Delete")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Alert dismissal title")
         let trashIcon = UIImage.gridicon(.trash)
 
         return SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
@@ -470,11 +470,11 @@ private extension SiteTagsViewController {
     }
 
     struct NoResultsText {
-        static let noTagsTitle = NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
-        static let noTagsMessage = NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
-        static let createButtonTitle = NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
-        static let loadingTitle = NSLocalizedString("Loading...", comment: "Loading tags.")
-        static let noResultsTitle = NSLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
+        static let noTagsTitle = AppLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+        static let noTagsMessage = AppLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
+        static let createButtonTitle = AppLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+        static let loadingTitle = AppLocalizedString("Loading...", comment: "Loading tags.")
+        static let noResultsTitle = AppLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
     }
 
 }

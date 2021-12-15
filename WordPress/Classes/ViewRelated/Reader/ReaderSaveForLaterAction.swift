@@ -3,12 +3,12 @@ import WordPressFlux
 /// Encapsulates saving a post for later
 final class ReaderSaveForLaterAction {
     private enum Strings {
-        static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
-        static let postRemoved = NSLocalizedString("Post removed.", comment: "Title of the notification presented in Reader when a post is removed from save for later")
-        static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
-        static let undo = NSLocalizedString("Undo", comment: "Button in the notification presented in Reader when a post removed from saved for later")
-        static let addToSavedError = NSLocalizedString("Could not save post for later", comment: "Title of a prompt.")
-        static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
+        static let postSaved = AppLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
+        static let postRemoved = AppLocalizedString("Post removed.", comment: "Title of the notification presented in Reader when a post is removed from save for later")
+        static let viewAll = AppLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
+        static let undo = AppLocalizedString("Undo", comment: "Button in the notification presented in Reader when a post removed from saved for later")
+        static let addToSavedError = AppLocalizedString("Could not save post for later", comment: "Title of a prompt.")
+        static let removeFromSavedError = AppLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
 
     var visibleConfirmation: Bool

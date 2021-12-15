@@ -64,15 +64,15 @@ extension Comment {
         var description: String {
             switch self {
             case .Months:
-                return NSLocalizedString("Older than a Month", comment: "Comments Months Section Header")
+                return AppLocalizedString("Older than a Month", comment: "Comments Months Section Header")
             case .Weeks:
-                return NSLocalizedString("Older than a Week", comment: "Comments Weeks Section Header")
+                return AppLocalizedString("Older than a Week", comment: "Comments Weeks Section Header")
             case .Days:
-                return NSLocalizedString("Older than 2 days", comment: "Comments +2 Days Section Header")
+                return AppLocalizedString("Older than 2 days", comment: "Comments +2 Days Section Header")
             case .Yesterday:
-                return NSLocalizedString("Yesterday", comment: "Comments Yesterday Section Header")
+                return AppLocalizedString("Yesterday", comment: "Comments Yesterday Section Header")
             case .Today:
-                return NSLocalizedString("Today", comment: "Comments Today Section Header")
+                return AppLocalizedString("Today", comment: "Comments Today Section Header")
             }
         }
     }

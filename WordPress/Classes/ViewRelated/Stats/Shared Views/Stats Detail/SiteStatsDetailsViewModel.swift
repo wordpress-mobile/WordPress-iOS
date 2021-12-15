@@ -643,7 +643,7 @@ private extension SiteStatsDetailsViewModel {
             // We want to insert the "Unknown search terms" item only if there's anything to show in the first place — if the
             // section is empty, it doesn't make sense to insert it here.
 
-            let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
+            let unknownSearchTerm = StatsTotalRowData(name: AppLocalizedString("Unknown search terms",
                                                                               comment: "Search Terms label for 'unknown search terms'."),
                                                       data: searchTerms.hiddenSearchTermsCount.abbreviatedString(),
                                                       statSection: .periodSearchTerms)

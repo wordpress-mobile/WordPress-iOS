@@ -24,7 +24,7 @@ extension AbstractPost {
 
         // Publish Immediately shows hard coded string
         if shouldPublishImmediately() {
-            return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
+            return AppLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
         }
 
         return dateCreated?.toMediumString(inTimeZone: timeZone)

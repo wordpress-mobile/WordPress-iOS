@@ -61,7 +61,7 @@ extension SiteSettingsViewController {
     // MARK: - Homepage Settings
 
     @objc var homepageSettingsCell: SettingTableViewCell? {
-        let cell = SettingTableViewCell(label: NSLocalizedString("Homepage Settings", comment: "Label for Homepage Settings site settings section"), editable: true, reuseIdentifier: nil)
+        let cell = SettingTableViewCell(label: AppLocalizedString("Homepage Settings", comment: "Label for Homepage Settings site settings section"), editable: true, reuseIdentifier: nil)
         cell?.textValue = blog.homepageType?.title
         return cell
     }
@@ -92,11 +92,11 @@ extension SiteSettingsViewController {
 
     @objc func showPostPerPageSetting() {
         let pickerViewController = SettingsPickerViewController(style: .grouped)
-        pickerViewController.title = NSLocalizedString("Posts per Page", comment: "Posts per Page Title")
+        pickerViewController.title = AppLocalizedString("Posts per Page", comment: "Posts per Page Title")
         pickerViewController.switchVisible = false
-        pickerViewController.selectionText = NSLocalizedString("The number of posts to show per page.",
+        pickerViewController.selectionText = AppLocalizedString("The number of posts to show per page.",
                                                                comment: "Text above the selection of the number of posts to show per blog page")
-        pickerViewController.pickerFormat = NSLocalizedString("%d posts", comment: "Number of posts")
+        pickerViewController.pickerFormat = AppLocalizedString("%d posts", comment: "Number of posts")
         pickerViewController.pickerMinimumValue = minNumberOfPostPerPage
         if let currentValue = blog.settings?.postsPerPage as? Int {
             pickerViewController.pickerSelectedValue = currentValue
@@ -123,7 +123,7 @@ extension SiteSettingsViewController {
     @objc(getTrafficSettingsSectionFooterView)
     func trafficSettingsSectionFooterView() -> UIView {
         let footer = makeFooterView()
-        footer.textLabel?.text = NSLocalizedString("Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
+        footer.textLabel?.text = AppLocalizedString("Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
                                                    comment: "Footer for AMP Traffic Site Setting, should match Calypso.")
         footer.textLabel?.isUserInteractionEnabled = true
 
@@ -135,7 +135,7 @@ extension SiteSettingsViewController {
     @objc(getEditorSettingsSectionFooterView)
     func editorSettingsSectionFooterView() -> UIView {
         let footer = makeFooterView()
-        footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
+        footer.textLabel?.text = AppLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
         return footer
     }
 
@@ -256,38 +256,38 @@ extension SiteSettingsViewController {
     // MARK: - Cell Configuration
 
     private func configureCellForTitle(_ cell: SettingTableViewCell) {
-        let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+        let name = blog.settings?.name ?? AppLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
 
         cell.editable = blog.isAdmin
-        cell.textLabel?.text = NSLocalizedString("Site Title", comment: "Label for site title blog setting")
+        cell.textLabel?.text = AppLocalizedString("Site Title", comment: "Label for site title blog setting")
         cell.textValue = name
     }
 
     private func configureCellForTagline(_ cell: SettingTableViewCell) {
-        let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+        let tagline = blog.settings?.tagline ?? AppLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
 
         cell.editable = blog.isAdmin
-        cell.textLabel?.text = NSLocalizedString("Tagline", comment: "Label for tagline blog setting")
+        cell.textLabel?.text = AppLocalizedString("Tagline", comment: "Label for tagline blog setting")
         cell.textValue = tagline
     }
 
     private func configureCellForURL(_ cell: SettingTableViewCell) {
         let url: String = {
             guard let url = blog.url else {
-                return NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
+                return AppLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
             }
 
             return url
         }()
 
         cell.editable = false
-        cell.textLabel?.text = NSLocalizedString("Address", comment: "Label for url blog setting")
+        cell.textLabel?.text = AppLocalizedString("Address", comment: "Label for url blog setting")
         cell.textValue = url
     }
 
     private func configureCellForPrivacy(_ cell: SettingTableViewCell) {
         cell.editable = blog.isAdmin
-        cell.textLabel?.text = NSLocalizedString("Privacy", comment: "Label for the privacy setting")
+        cell.textLabel?.text = AppLocalizedString("Privacy", comment: "Label for the privacy setting")
         cell.textValue = BlogSiteVisibilityHelper.titleForCurrentSiteVisibility(of: blog)
     }
 
@@ -299,23 +299,23 @@ extension SiteSettingsViewController {
         } else {
             // Since the settings can be nil, we need to handle the scenario... but it
             // really should not be possible to reach this line.
-            name = NSLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
+            name = AppLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
         }
 
         cell.editable = blog.isAdmin
-        cell.textLabel?.text = NSLocalizedString("Language", comment: "Label for the privacy setting")
+        cell.textLabel?.text = AppLocalizedString("Language", comment: "Label for the privacy setting")
         cell.textValue = name
     }
 
     private func configureCellForTimezone(_ cell: SettingTableViewCell) {
         cell.editable = blog.isAdmin
-        cell.textLabel?.text = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
+        cell.textLabel?.text = AppLocalizedString("Time Zone", comment: "Label for the timezone setting")
         cell.textValue = timezoneLabel()
     }
 
     private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
         cell.editable = true
-        cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
+        cell.textLabel?.text = AppLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.minimumScaleFactor = 0.5
         cell.accessoryType = .none
@@ -342,10 +342,10 @@ extension SiteSettingsViewController {
 
         let siteTitleViewController = SettingsTextViewController(
             text: blog.settings?.name ?? "",
-            placeholder: NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site"),
+            placeholder: AppLocalizedString("A title for the site", comment: "Placeholder text for the title of a site"),
             hint: "")
 
-        siteTitleViewController.title = NSLocalizedString("Site Title", comment: "Title for screen that show site title editor")
+        siteTitleViewController.title = AppLocalizedString("Site Title", comment: "Title for screen that show site title editor")
         siteTitleViewController.onValueChanged = { [weak self] value in
             guard let self = self,
                   let cell = self.tableView.cellForRow(at: indexPath) else {
@@ -373,10 +373,10 @@ extension SiteSettingsViewController {
 
         let siteTaglineViewController = SettingsTextViewController(
             text: blog.settings?.tagline ?? "",
-            placeholder: NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site"),
-            hint: NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline"))
+            placeholder: AppLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site"),
+            hint: AppLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline"))
 
-        siteTaglineViewController.title = NSLocalizedString("Tagline", comment: "Title for screen that show tagline editor")
+        siteTaglineViewController.title = AppLocalizedString("Tagline", comment: "Title for screen that show tagline editor")
         siteTaglineViewController.onValueChanged = { [weak self] value in
             guard let self = self,
                   let cell = self.tableView.cellForRow(at: indexPath) else {

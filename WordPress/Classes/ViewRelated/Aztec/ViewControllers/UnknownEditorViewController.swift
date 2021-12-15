@@ -10,14 +10,14 @@ class UnknownEditorViewController: UIViewController {
     /// Save Bar Button
     ///
     fileprivate(set) var saveButton: UIBarButtonItem = {
-        let saveTitle = NSLocalizedString("Save", comment: "Save Action")
+        let saveTitle = AppLocalizedString("Save", comment: "Save Action")
         return UIBarButtonItem(title: saveTitle, style: .plain, target: self, action: #selector(saveWasPressed))
     }()
 
     /// Cancel Bar Button
     ///
     fileprivate(set) var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel Action")
         return UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
     }()
 
@@ -84,7 +84,7 @@ class UnknownEditorViewController: UIViewController {
 private extension UnknownEditorViewController {
 
     func setupNavigationBar() {
-        title = NSLocalizedString("Unknown HTML", comment: "Title for Unknown HTML Editor")
+        title = AppLocalizedString("Unknown HTML", comment: "Title for Unknown HTML Editor")
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = saveButton
 
@@ -100,7 +100,7 @@ private extension UnknownEditorViewController {
         layoutManager.addTextContainer(container)
 
         editorView = UITextView(frame: .zero, textContainer: container)
-        editorView.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        editorView.accessibilityLabel = AppLocalizedString("HTML Content", comment: "Post HTML content")
         editorView.accessibilityIdentifier = "HTMLContentView"
         editorView.autocorrectionType = .no
         editorView.delegate = self

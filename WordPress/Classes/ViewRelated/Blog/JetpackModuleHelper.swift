@@ -44,7 +44,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
             title: title,
             attributedTitle: nil,
             noConnectionTitle: nil,
-            buttonTitle: NSLocalizedString("Enable", comment: "Title of button to enable publicize."),
+            buttonTitle: AppLocalizedString("Enable", comment: "Title of button to enable publicize."),
             subtitle: subtitle,
             noConnectionSubtitle: nil,
             attributedSubtitle: nil,
@@ -88,6 +88,6 @@ extension JetpackModuleHelper: NoResultsViewControllerDelegate {
 
 private extension JetpackModuleHelper {
     struct Constants {
-        static let error = NSLocalizedString("The module couldn't be activated.", comment: "Error shown when a module can not be enabled")
+        static let error = AppLocalizedString("The module couldn't be activated.", comment: "Error shown when a module can not be enabled")
     }
 }

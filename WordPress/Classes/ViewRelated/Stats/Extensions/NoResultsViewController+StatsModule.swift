@@ -23,15 +23,15 @@ extension NoResultsViewController {
     private enum Strings {
 
         enum statsModuleDisabled {
-            static let title = NSLocalizedString("Looking for stats?", comment: "Title for the error view when the stats module is disabled.")
-            static let subtitle = NSLocalizedString("Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.", comment:
+            static let title = AppLocalizedString("Looking for stats?", comment: "Title for the error view when the stats module is disabled.")
+            static let subtitle = AppLocalizedString("Enable site stats to see detailed information about your traffic, likes, comments, and subscribers.", comment:
                                                       "Error message shown when trying to view Stats and the stats module is disabled.")
-            static let buttonTitle = NSLocalizedString("Enable Site Stats", comment: "Title for the button that will enable the site stats module.")
+            static let buttonTitle = AppLocalizedString("Enable Site Stats", comment: "Title for the button that will enable the site stats module.")
 
         }
 
         enum activatingStatsModule {
-            static let title = NSLocalizedString("Enabling Site Stats...", comment: "Text displayed while activating the site stats module.")
+            static let title = AppLocalizedString("Enabling Site Stats...", comment: "Text displayed while activating the site stats module.")
         }
     }
 

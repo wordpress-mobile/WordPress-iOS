@@ -34,7 +34,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         selectedBackgroundView?.backgroundColor = .clear
 
         accessibilityTraits = .button
-        accessibilityHint = NSLocalizedString("Selects this domain to use for your site.",
+        accessibilityHint = AppLocalizedString("Selects this domain to use for your site.",
                                               comment: "Accessibility hint for a domain in the Site Creation domains list.")
     }
 

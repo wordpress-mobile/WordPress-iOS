@@ -16,7 +16,7 @@ class PluginDirectoryViewController: UITableViewController {
 
         super.init(style: .plain)
         tableViewModel = viewModel.tableViewModel(presenter: self)
-        title = NSLocalizedString("Plugins", comment: "Title for the plugin directory")
+        title = AppLocalizedString("Plugins", comment: "Title for the plugin directory")
     }
 
     required init?(coder aDecoder: NSCoder) {

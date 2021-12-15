@@ -83,14 +83,14 @@ struct PostListEditorPresenter {
     /// A dialog giving the user the choice between loading the current version a post or its autosaved version.
     private static func autosaveOptionsViewController(forSaveDate saveDate: Date, autosaveDate: Date, didTapOption: @escaping (_ loadAutosaveRevision: Bool) -> Void) -> UIAlertController {
 
-        let title = NSLocalizedString("Which version would you like to edit?", comment: "Title displayed in popup when user has the option to load unsaved changes")
+        let title = AppLocalizedString("Which version would you like to edit?", comment: "Title displayed in popup when user has the option to load unsaved changes")
 
         let saveDateFormatted = dateAndTime(for: saveDate)
         let autosaveDateFormatted = dateAndTime(for: autosaveDate)
-        let message = String(format: NSLocalizedString("You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n", comment: "Message displayed in popup when user has the option to load unsaved changes. \n is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively."), saveDateFormatted, autosaveDateFormatted)
+        let message = String(format: AppLocalizedString("You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n", comment: "Message displayed in popup when user has the option to load unsaved changes. \n is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively."), saveDateFormatted, autosaveDateFormatted)
 
-        let loadSaveButtonTitle = NSLocalizedString("From this device", comment: "Button title displayed in popup indicating date of change on device")
-        let fromAutosaveButtonTitle = NSLocalizedString("From another device", comment: "Button title displayed in popup indicating date of change on another device")
+        let loadSaveButtonTitle = AppLocalizedString("From this device", comment: "Button title displayed in popup indicating date of change on device")
+        let fromAutosaveButtonTitle = AppLocalizedString("From another device", comment: "Button title displayed in popup indicating date of change on another device")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: loadSaveButtonTitle, style: .default) { _ in
@@ -108,13 +108,13 @@ struct PostListEditorPresenter {
     /// A dialog giving the user the choice between copying the current version of the post or resolving conflicts with edit.
     private static func copyConflictsResolutionViewController(didTapOption: @escaping (_ copyLocal: Bool, _ cancel: Bool) -> Void) -> UIAlertController {
 
-        let title = NSLocalizedString("Post sync conflict", comment: "Title displayed in popup when user tries to copy a post with unsaved changes")
+        let title = AppLocalizedString("Post sync conflict", comment: "Title displayed in popup when user tries to copy a post with unsaved changes")
 
-        let message = NSLocalizedString("The post you are trying to copy has two versions that are in conflict or you recently made changes but didn\'t save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.", comment: "Message displayed in popup when user tries to copy a post with conflicts")
+        let message = AppLocalizedString("The post you are trying to copy has two versions that are in conflict or you recently made changes but didn\'t save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.", comment: "Message displayed in popup when user tries to copy a post with conflicts")
 
-        let editFirstButtonTitle = NSLocalizedString("Edit the post first", comment: "Button title displayed in popup indicating that the user edits the post first")
-        let copyLocalButtonTitle = NSLocalizedString("Copy the version from this app", comment: "Button title displayed in popup indicating the user copied the local copy")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel button.")
+        let editFirstButtonTitle = AppLocalizedString("Edit the post first", comment: "Button title displayed in popup indicating that the user edits the post first")
+        let copyLocalButtonTitle = AppLocalizedString("Copy the version from this app", comment: "Button title displayed in popup indicating the user copied the local copy")
+        let cancelButtonTitle = AppLocalizedString("Cancel", comment: "Cancel button.")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: editFirstButtonTitle, style: .default) { _ in

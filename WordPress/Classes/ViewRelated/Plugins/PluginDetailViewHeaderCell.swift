@@ -33,7 +33,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
         let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary(.shade40)]
 
-        let string = NSLocalizedString("by %@", comment: "Used when displaying author of a plugin.")
+        let string = AppLocalizedString("by %@", comment: "Used when displaying author of a plugin.")
         let attrString = NSMutableAttributedString(string: String(format: string, author), attributes: defaultAttributes)
 
         attrString.addAttributes(authorAttributes, range: NSRange(attrString.string.range(of: author)!, in: attrString.string))

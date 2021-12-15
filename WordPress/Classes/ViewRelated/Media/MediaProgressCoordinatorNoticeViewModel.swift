@@ -63,7 +63,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       message: message,
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
-                      actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
+                      actionTitle: AppLocalizedString("Retry", comment: "User action to retry media upload."),
                       tag: MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag,
                       actionHandler: { _ in
                         for media in self.failedMedia {
@@ -99,8 +99,8 @@ struct MediaProgressCoordinatorNoticeViewModel {
     var title: String {
         if uploadSuccessful {
             return pluralize(successfulMedia.count,
-                             singular: NSLocalizedString("Media uploaded (1 file)", comment: "Alert displayed to the user when a single media item has uploaded successfully."),
-                             plural: NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully."))
+                             singular: AppLocalizedString("Media uploaded (1 file)", comment: "Alert displayed to the user when a single media item has uploaded successfully."),
+                             plural: AppLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully."))
         } else {
             return failedMediaDescription
         }
@@ -118,7 +118,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
         if uploadSuccessful {
             return successfulUploadsDescription
         } else {
-            return NSLocalizedString("Upload failed", comment: "System notification displayed to the user when media files have failed to upload.")
+            return AppLocalizedString("Upload failed", comment: "System notification displayed to the user when media files have failed to upload.")
         }
     }
 
@@ -132,27 +132,27 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
     private var successfulUploadsDescription: String {
         return pluralize(successfulMedia.count,
-                         singular: NSLocalizedString("1 file successfully uploaded", comment: "System notification displayed to the user when a single media item has uploaded successfully."),
-                         plural: NSLocalizedString("%ld files successfully uploaded", comment: "System notification displayed to the user when multiple media items have uploaded successfully."))
+                         singular: AppLocalizedString("1 file successfully uploaded", comment: "System notification displayed to the user when a single media item has uploaded successfully."),
+                         plural: AppLocalizedString("%ld files successfully uploaded", comment: "System notification displayed to the user when multiple media items have uploaded successfully."))
     }
 
     private var failedMediaDescription: String {
         if isPostMedia {
             return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
-                             singular: NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
-                             plural: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
+                             singular: AppLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
+                             plural: AppLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
         } else {
             return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
-                             singular: NSLocalizedString("1 post, 1 file not uploaded", comment: "Alert displayed to the user when a single media item attached to a post has failed to upload."),
-                             plural: NSLocalizedString("1 post, %ld files not uploaded", comment: "Alert displayed to the user when multiple media items attached to a post have failed to upload."))
+                             singular: AppLocalizedString("1 post, 1 file not uploaded", comment: "Alert displayed to the user when a single media item attached to a post has failed to upload."),
+                             plural: AppLocalizedString("1 post, %ld files not uploaded", comment: "Alert displayed to the user when multiple media items attached to a post have failed to upload."))
         }
     }
 
     var actionTitle: String {
         if uploadSuccessful {
-            return NSLocalizedString("Write Post", comment: "Button title. Opens the editor to write a new post.")
+            return AppLocalizedString("Write Post", comment: "Button title. Opens the editor to write a new post.")
         } else {
-            return NSLocalizedString("Retry", comment: "Button title, displayed when media has failed to upload. Allows the user to try the upload again.")
+            return AppLocalizedString("Retry", comment: "Button title, displayed when media has failed to upload. Allows the user to try the upload again.")
         }
     }
 

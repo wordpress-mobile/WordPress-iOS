@@ -67,7 +67,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = NSLocalizedString("Manage", comment: "Page title for the screen to manage your list of followed sites.")
+        self.title = AppLocalizedString("Manage", comment: "Page title for the screen to manage your list of followed sites.")
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
@@ -124,7 +124,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
 
     @objc func configureSearchBar() {
-        let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
+        let placeholderText = AppLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).placeholder = placeholderText
         WPStyleGuide.configureSearchBar(searchBar)
 
@@ -136,7 +136,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.keyboardType = .URL
         searchBar.setImage(clearImage, for: .clear, state: UIControl.State())
         searchBar.setImage(addOutline, for: .search, state: UIControl.State())
-        searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
+        searchBar.searchTextField.accessibilityLabel = AppLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
         searchBar.searchTextField.accessibilityValue = nil
         searchBar.searchTextField.accessibilityHint = placeholderText
     }
@@ -215,7 +215,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         service.toggleFollowing(forSite: site, success: { [weak self] follow in
             let siteURL = URL(string: site.siteURL)
-            let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
+            let notice = Notice(title: AppLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
                                 message: siteURL?.host,
                                 feedbackType: .success)
             self?.post(notice)
@@ -225,7 +225,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }, failure: { [weak self] (follow, error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
 
-            let notice = Notice(title: NSLocalizedString("Could not unfollow site", comment: "Title of a prompt."),
+            let notice = Notice(title: AppLocalizedString("Could not unfollow site", comment: "Title of a prompt."),
                                 message: error?.localizedDescription,
                                 feedbackType: .error)
             self?.post(notice)
@@ -235,14 +235,14 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     @objc func followSite(_ site: String) {
         guard let url = urlFromString(site) else {
-            let title = NSLocalizedString("Please enter a valid URL", comment: "Title of a prompt.")
+            let title = AppLocalizedString("Please enter a valid URL", comment: "Title of a prompt.")
             promptWithTitle(title, message: "")
             return
         }
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.followSite(by: url, success: { [weak self] in
-            let notice = Notice(title: NSLocalizedString("Followed site", comment: "User followed a site."),
+            let notice = Notice(title: AppLocalizedString("Followed site", comment: "User followed a site."),
                                 message: url.host,
                                 feedbackType: .success)
             self?.post(notice)
@@ -253,7 +253,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }, failure: { [weak self] error in
             DDLogError("Could not follow site: \(String(describing: error))")
 
-            let title = error?.localizedDescription ?? NSLocalizedString("Could not follow site", comment: "Title of a prompt.")
+            let title = error?.localizedDescription ?? AppLocalizedString("Could not follow site", comment: "Title of a prompt.")
             let notice = Notice(title: title,
                                 message: url.host,
                                 feedbackType: .error)
@@ -317,7 +317,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
     @objc func promptWithTitle(_ title: String, message: String) {
-        let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
+        let buttonTitle = AppLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
@@ -369,7 +369,7 @@ private extension ReaderFollowedSitesViewController {
     }
 
     struct NoResultsText {
-        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
+        static let loadingTitle = AppLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
     }
 
     func startListeningToNotifications() {
@@ -424,7 +424,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
             button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
             button.imageView?.tintColor = UIColor.success
             button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
-            let unfollowSiteString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
+            let unfollowSiteString = AppLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a site")
             button.accessibilityLabel = String(format: unfollowSiteString, site.title)
             cell.accessoryView = button
             cell.accessibilityElements = [button]
@@ -464,7 +464,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
-            return NSLocalizedString("Followed Sites", comment: "Section title for sites the user has followed.")
+            return AppLocalizedString("Followed Sites", comment: "Section title for sites the user has followed.")
         }
         return nil
     }
@@ -499,7 +499,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView,
                    titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
+        return AppLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
     }
 
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {

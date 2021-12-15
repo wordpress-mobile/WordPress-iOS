@@ -99,12 +99,12 @@ struct TimeZoneSelectorViewModel: Observable {
     }
 
     struct LocalizedText {
-        static let loadingTitle = NSLocalizedString("Loading...", comment: "Text displayed while loading time zones")
-        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading time zones")
-        static let errorSubtitle = NSLocalizedString("There was an error loading time zones", comment: "Error message when time zones can't be loaded")
-        static let buttonText = NSLocalizedString("Contact support", comment: "Title of a button. A call to action to contact support for assistance.")
-        static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required", comment: "Error message when loading failed because there's no connection")
+        static let loadingTitle = AppLocalizedString("Loading...", comment: "Text displayed while loading time zones")
+        static let errorTitle = AppLocalizedString("Oops", comment: "Title for the view when there's an error loading time zones")
+        static let errorSubtitle = AppLocalizedString("There was an error loading time zones", comment: "Error message when time zones can't be loaded")
+        static let buttonText = AppLocalizedString("Contact support", comment: "Title of a button. A call to action to contact support for assistance.")
+        static let noConnectionTitle = AppLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let noConnectionSubtitle = AppLocalizedString("An active internet connection is required", comment: "Error message when loading failed because there's no connection")
     }
 
 }
@@ -141,7 +141,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         self.viewModel = TimeZoneSelectorViewModel(state: .loading, selectedValue: selectedValue, filter: nil)
         super.init(style: .grouped)
         searchController.searchResultsUpdater = self
-        title = NSLocalizedString("Time Zone", comment: "Title for the time zone selector")
+        title = AppLocalizedString("Time Zone", comment: "Title for the time zone selector")
     }
 
     required init?(coder aDecoder: NSCoder) {

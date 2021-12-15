@@ -99,7 +99,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Notification Settings button
     lazy var notificationSettingsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: .gridicon(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
-        button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
+        button.accessibilityLabel = AppLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
         return button
     }()
 
@@ -406,7 +406,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         let isRead = note.read
 
-        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
+        let title = isRead ? AppLocalizedString("Mark Unread", comment: "Marks a notification as unread") : AppLocalizedString("Mark Read", comment: "Marks a notification as unread")
 
         let action = UIContextualAction(style: .normal, title: title, handler: { (action, view, completionHandler) in
             if isRead {
@@ -508,7 +508,7 @@ private extension NotificationsViewController {
         // we are using a space character because we need a non-empty string to ensure a smooth
         // transition back, with large titles enabled.
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
-        navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
+        navigationItem.title = AppLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
     func updateNavigationItems() {
@@ -1037,7 +1037,7 @@ extension NotificationsViewController: NetworkAwareUI {
     }
 
     func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
+        return AppLocalizedString("No internet connection. Some content may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Notifications without an internet connection.")
     }
 }
@@ -1270,16 +1270,16 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     private static func accessibilityHint(for note: Notification) -> String? {
         switch note.kind {
         case .comment:
-            return NSLocalizedString("Shows details and moderation actions.",
+            return AppLocalizedString("Shows details and moderation actions.",
                                      comment: "Accessibility hint for a comment notification.")
         case .commentLike, .like:
-            return NSLocalizedString("Shows all likes.",
+            return AppLocalizedString("Shows all likes.",
                                      comment: "Accessibility hint for a post or comment “like” notification.")
         case .follow:
-            return NSLocalizedString("Shows all followers",
+            return AppLocalizedString("Shows all followers",
                                      comment: "Accessibility hint for a follow notification.")
         case .matcher, .newPost:
-            return NSLocalizedString("Shows the post",
+            return AppLocalizedString("Shows the post",
                                      comment: "Accessibility hint for a match/mention on a post notification.")
         default:
             return nil
@@ -1390,7 +1390,7 @@ private extension NotificationsViewController {
     }
 
     var noConnectionTitleText: String {
-        return NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        return AppLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
     }
 
     var noResultsTitleText: String {
@@ -1640,11 +1640,11 @@ extension NotificationsViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
+        return AppLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, notifications, alerts, updates",
+        let keyWordString = AppLocalizedString("wordpress, notifications, alerts, updates",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 
@@ -1710,11 +1710,11 @@ private extension NotificationsViewController {
 
         var title: String {
             switch self {
-            case .none:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
-            case .unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
-            case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
-            case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
-            case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            case .none:     return AppLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
+            case .unread:   return AppLocalizedString("Unread", comment: "Filters Unread Notifications")
+            case .comment:  return AppLocalizedString("Comments", comment: "Filters Comments Notifications")
+            case .follow:   return AppLocalizedString("Follows", comment: "Filters Follows Notifications")
+            case .like:     return AppLocalizedString("Likes", comment: "Filters Likes Notifications")
             }
         }
 
@@ -1730,29 +1730,29 @@ private extension NotificationsViewController {
 
         var noResultsTitle: String {
             switch self {
-            case .none:     return NSLocalizedString("No notifications yet",
+            case .none:     return AppLocalizedString("No notifications yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
-            case .unread:   return NSLocalizedString("You're all up to date!",
+            case .unread:   return AppLocalizedString("You're all up to date!",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
-            case .comment:  return NSLocalizedString("No comments yet",
+            case .comment:  return AppLocalizedString("No comments yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("No followers yet",
+            case .follow:   return AppLocalizedString("No followers yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
-            case .like:     return NSLocalizedString("No likes yet",
+            case .like:     return AppLocalizedString("No likes yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
             }
         }
 
         var noResultsMessage: String {
             switch self {
-            case .none:     return NSLocalizedString("Get active! Comment on posts from blogs you follow.",
+            case .none:     return AppLocalizedString("Get active! Comment on posts from blogs you follow.",
                                                      comment: "Displayed in the Notifications Tab as a message, when there are no notifications")
-            case .unread:   return NSLocalizedString("Reignite the conversation: write a new post.",
+            case .unread:   return AppLocalizedString("Reignite the conversation: write a new post.",
                                                      comment: "Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications")
-            case .comment:  return NSLocalizedString("Join a conversation: comment on posts from blogs you follow.",
+            case .comment:  return AppLocalizedString("Join a conversation: comment on posts from blogs you follow.",
                                                      comment: "Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications")
             case .follow,
-                 .like:     return NSLocalizedString("Get noticed: comment on posts you've read.",
+                 .like:     return AppLocalizedString("Get noticed: comment on posts you've read.",
                                                      comment: "Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications")
             }
         }
@@ -1762,9 +1762,9 @@ private extension NotificationsViewController {
             case .none,
                  .comment,
                  .follow,
-                 .like:     return NSLocalizedString("Go to Reader",
+                 .like:     return AppLocalizedString("Go to Reader",
                                                      comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-            case .unread:   return NSLocalizedString("Create a Post",
+            case .unread:   return AppLocalizedString("Create a Post",
                                                      comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
             }
         }

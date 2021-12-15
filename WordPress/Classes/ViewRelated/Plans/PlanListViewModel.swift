@@ -10,14 +10,14 @@ enum PlanListViewModel {
     var noResultsViewModel: NoResultsViewController.Model? {
         switch self {
         case .loading:
-            return NoResultsViewController.Model(title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
+            return NoResultsViewController.Model(title: AppLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
                                                  accessoryView: PlansLoadingIndicatorView())
         case .ready:
             return nil
         case .error:
-            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
-                                                 subtitle: NSLocalizedString("There was an error loading plans", comment: "Text displayed when there is a failure loading the plan list"),
-                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
+            return NoResultsViewController.Model(title: AppLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
+                                                 subtitle: AppLocalizedString("There was an error loading plans", comment: "Text displayed when there is a failure loading the plan list"),
+                                                 buttonText: AppLocalizedString("Contact support", comment: "Button label for contacting support"))
         }
     }
 
@@ -45,7 +45,7 @@ enum PlanListViewModel {
             })
             return ImmuTable(sections: [
                 ImmuTableSection(
-                    headerText: NSLocalizedString("WordPress.com Plans", comment: "Title for the Plans list header"),
+                    headerText: AppLocalizedString("WordPress.com Plans", comment: "Title for the Plans list header"),
                     rows: rows,
                     footerText: String())
                 ])

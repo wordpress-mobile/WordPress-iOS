@@ -380,13 +380,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     private func prepareActionButtonsForVoiceOver() {
         let isSavedForLater = post?.isSavedForLater ?? false
-        saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
-        saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+        saveForLaterButton.accessibilityLabel = isSavedForLater ? AppLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : AppLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
+        saveForLaterButton.accessibilityHint = isSavedForLater ? AppLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : AppLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
     }
 
     private func prepareReblogForVoiceOver() {
-        reblogButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
-        reblogButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        reblogButton.accessibilityLabel = AppLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        reblogButton.accessibilityHint = AppLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         reblogButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 }

@@ -74,7 +74,7 @@ class QuickStartChecklistHeader: UIView {
 }
 
 private enum Constant {
-    static let title = NSLocalizedString("Complete (%i)", comment: "The table view header title that displays the number of completed tasks")
+    static let title = AppLocalizedString("Complete (%i)", comment: "The table view header title that displays the number of completed tasks")
 }
 
 // MARK: - Accessible
@@ -102,13 +102,13 @@ extension QuickStartChecklistHeader: Accessible {
         let accessibilityLabelFormat: String
 
         if collapse {
-            accessibilityHintText = NSLocalizedString("Collapses the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
+            accessibilityHintText = AppLocalizedString("Collapses the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
 
-            accessibilityLabelFormat = NSLocalizedString("Expanded, %i completed tasks, toggling collapses the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
+            accessibilityLabelFormat = AppLocalizedString("Expanded, %i completed tasks, toggling collapses the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
         } else {
-            accessibilityHintText = NSLocalizedString("Expands the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
+            accessibilityHintText = AppLocalizedString("Expands the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
 
-            accessibilityLabelFormat = NSLocalizedString("Collapsed, %i completed tasks, toggling expands the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
+            accessibilityLabelFormat = AppLocalizedString("Collapsed, %i completed tasks, toggling expands the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
         }
 
         accessibilityHint = accessibilityHintText

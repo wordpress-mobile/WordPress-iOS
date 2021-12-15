@@ -29,13 +29,13 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     private struct Strings {
-        static let collapseButtonTitle: String = NSLocalizedString("Hide", comment: "Title of a button used to collapse a group")
+        static let collapseButtonTitle: String = AppLocalizedString("Hide", comment: "Title of a button used to collapse a group")
 
-        static let expandButtonAccessbilityHint: String = NSLocalizedString("Tap to see all the tags for this post", comment: "VoiceOver Hint to inform the user what action the expand button performs")
+        static let expandButtonAccessbilityHint: String = AppLocalizedString("Tap to see all the tags for this post", comment: "VoiceOver Hint to inform the user what action the expand button performs")
 
-        static let collapseButtonAccessbilityHint: String = NSLocalizedString("Tap to collapse the post tags", comment: "Accessibility hint to inform the user what action the hide button performs")
+        static let collapseButtonAccessbilityHint: String = AppLocalizedString("Tap to collapse the post tags", comment: "Accessibility hint to inform the user what action the hide button performs")
 
-         static let accessbilityHint: String = NSLocalizedString("Tap to view posts for this tag", comment: "Accessibility hint to inform the user what action the post tag chip performs")
+         static let accessbilityHint: String = AppLocalizedString("Tap to view posts for this tag", comment: "Accessibility hint to inform the user what action the post tag chip performs")
     }
 
     weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?

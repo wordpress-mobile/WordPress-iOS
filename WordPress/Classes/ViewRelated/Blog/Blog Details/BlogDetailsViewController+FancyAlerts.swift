@@ -118,12 +118,12 @@ extension BlogDetailsViewController {
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {
-        let detailFormatStr = NSLocalizedString("%1$d of %2$d completed",
+        let detailFormatStr = AppLocalizedString("%1$d of %2$d completed",
                                                 comment: "Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
 
-        let customizeTitle = NSLocalizedString("Customize Your Site",
+        let customizeTitle = AppLocalizedString("Customize Your Site",
                                                comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-        let customizeHint = NSLocalizedString("A series of steps showing you how to add a theme, site icon and more.",
+        let customizeHint = AppLocalizedString("A series of steps showing you how to add a theme, site icon and more.",
                                               comment: "A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button.")
         let customizeRow = BlogDetailsRow(title: customizeTitle,
                                           identifier: QuickStartListTitleCell.reuseIdentifier,
@@ -138,9 +138,9 @@ extension BlogDetailsViewController {
         customizeRow.detail = String(format: detailFormatStr, customizeDetailCount, QuickStartTourGuide.customizeListTours.count)
         customizeRow.quickStartTitleState = customizeDetailCount == QuickStartTourGuide.customizeListTours.count ? .completed : .customizeIncomplete
 
-        let growTitle = NSLocalizedString("Grow Your Audience",
+        let growTitle = AppLocalizedString("Grow Your Audience",
                                           comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-        let growHint = NSLocalizedString("A series of steps to assist with growing your site's audience.",
+        let growHint = AppLocalizedString("A series of steps to assist with growing your site's audience.",
                                          comment: "A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button.")
         let growRow = BlogDetailsRow(title: growTitle,
                                      identifier: QuickStartListTitleCell.reuseIdentifier,
@@ -155,7 +155,7 @@ extension BlogDetailsViewController {
         growRow.detail = String(format: detailFormatStr, growDetailCount, QuickStartTourGuide.growListTours.count)
         growRow.quickStartTitleState = growDetailCount == QuickStartTourGuide.growListTours.count ? .completed : .growIncomplete
 
-        let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
+        let sectionTitle = AppLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
         let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)
         section.showQuickStartMenu = true
         return section

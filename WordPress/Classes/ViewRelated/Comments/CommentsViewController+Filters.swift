@@ -10,12 +10,12 @@ extension CommentsViewController {
 
         var title: String {
             switch self {
-            case .all: return NSLocalizedString("All", comment: "Title of all Comments filter.")
-            case .pending: return NSLocalizedString("Pending", comment: "Title of pending Comments filter.")
-            case .unreplied: return NSLocalizedString("Unreplied", comment: "Title of unreplied Comments filter.")
-            case .approved: return NSLocalizedString("Approved", comment: "Title of approved Comments filter.")
-            case .spam: return NSLocalizedString("Spam", comment: "Title of spam Comments filter.")
-            case .trashed: return NSLocalizedString("Trashed", comment: "Title of trashed Comments filter.")
+            case .all: return AppLocalizedString("All", comment: "Title of all Comments filter.")
+            case .pending: return AppLocalizedString("Pending", comment: "Title of pending Comments filter.")
+            case .unreplied: return AppLocalizedString("Unreplied", comment: "Title of unreplied Comments filter.")
+            case .approved: return AppLocalizedString("Approved", comment: "Title of approved Comments filter.")
+            case .spam: return AppLocalizedString("Spam", comment: "Title of spam Comments filter.")
+            case .trashed: return AppLocalizedString("Trashed", comment: "Title of trashed Comments filter.")
             }
         }
 

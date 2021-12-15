@@ -100,12 +100,12 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     func prepareForVoiceOver() {
         dateLabel.accessibilityLabel = displayDateAccessibilityLabel()
 
-        backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
-        backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
+        backButton.accessibilityLabel = AppLocalizedString("Previous period", comment: "Accessibility label")
+        backButton.accessibilityHint = AppLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
         backButton.accessibilityTraits = backButton.isEnabled ? [.button] : [.button, .notEnabled]
 
-        forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
-        forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+        forwardButton.accessibilityLabel = AppLocalizedString("Next period", comment: "Accessibility label")
+        forwardButton.accessibilityHint = AppLocalizedString("Tap to select the next period", comment: "Accessibility hint")
         forwardButton.accessibilityTraits = forwardButton.isEnabled ? [.button] : [.button, .notEnabled]
 
         accessibilityElements = [
@@ -171,10 +171,10 @@ private extension SiteStatsTableHeaderView {
         let (fromDate, toDate) = components
 
         if let toDate = toDate {
-            let format = NSLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
+            let format = AppLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
             return .localizedStringWithFormat(format, fromDate, toDate)
         } else {
-            let format = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
+            let format = AppLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
             return .localizedStringWithFormat(format, fromDate)
         }
     }

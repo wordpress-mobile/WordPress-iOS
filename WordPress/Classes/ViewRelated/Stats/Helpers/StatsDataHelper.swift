@@ -197,11 +197,11 @@ extension Date {
         let minutes = components.minute ?? 0
 
         if days >= DateBreakpoints.aboutYearAndAHalf {
-            return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), Int(round(Float(days) / Float(365))))
+            return String(format: AppLocalizedString("%d years", comment: "Age between dates over one year."), Int(round(Float(days) / Float(365))))
         }
 
         if days >= DateBreakpoints.almostAYear {
-            return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
+            return String(format: AppLocalizedString("a year", comment: "Age between dates equaling one year."))
         }
 
         if days >= DateBreakpoints.monthAndAHalf {
@@ -209,32 +209,32 @@ extension Date {
             let months = components.month ?? 0
             let days = components.day ?? 0
             let adjustedMonths = days > DateBreakpoints.halfAMonth ? months + 1 : months
-            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), adjustedMonths)
+            return String(format: AppLocalizedString("%d months", comment: "Age between dates over one month."), adjustedMonths)
         }
 
         if days >= DateBreakpoints.almostAMonth {
-            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month."))
+            return String(format: AppLocalizedString("a month", comment: "Age between dates equaling one month."))
         }
 
         if days > 1 || (days == 1 && hours >= DateBreakpoints.halfADay) {
             let totalHours = (days * 24) + hours
-            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), Int(round(Float(totalHours) / Float(24))))
+            return String(format: AppLocalizedString("%d days", comment: "Age between dates over one day."), Int(round(Float(totalHours) / Float(24))))
         }
 
         if days == 1 || hours > DateBreakpoints.almostADay {
-            return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
+            return String(format: AppLocalizedString("a day", comment: "Age between dates equaling one day."))
         }
 
         if hours > 1 || (hours == 1 && minutes >= DateBreakpoints.halfAnHour) {
             let totalMinutes = (hours * 60) + minutes
-            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), Int(round(Float(totalMinutes) / Float(60))))
+            return String(format: AppLocalizedString("%d hours", comment: "Age between dates over one hour."), Int(round(Float(totalMinutes) / Float(60))))
         }
 
         if hours == 1 || minutes >= DateBreakpoints.almostAnHour {
-            return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
+            return String(format: AppLocalizedString("an hour", comment: "Age between dates equaling one hour."))
         }
 
-        return NSLocalizedString("< 1 hour", comment: "Age between dates less than one hour.")
+        return AppLocalizedString("< 1 hour", comment: "Age between dates less than one hour.")
     }
 
     private struct DateBreakpoints {
@@ -302,7 +302,7 @@ extension TimeZone {
         let displayMinutes = minutes > 0 ? ":\(minutes)" : ""
         let sign = hours < 0 ? "-" : "+"
 
-        let timezoneString = NSLocalizedString("Site timezone (UTC%@%d%@)",
+        let timezoneString = AppLocalizedString("Site timezone (UTC%@%d%@)",
                                                comment: "Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`.")
 
         return String.localizedStringWithFormat(timezoneString,

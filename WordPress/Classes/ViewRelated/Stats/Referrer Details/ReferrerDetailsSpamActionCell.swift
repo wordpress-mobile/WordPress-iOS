@@ -24,10 +24,10 @@ extension ReferrerDetailsSpamActionCell {
         actionLabel.isHidden = isLoading
 
         if markAsSpam {
-            actionLabel.text = NSLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
+            actionLabel.text = AppLocalizedString("Mark as spam", comment: "Action title for marking referrer as spam")
             actionLabel.textColor = Style.negativeColor
         } else {
-            actionLabel.text = NSLocalizedString("Mark as not spam", comment: "Action title for unmarking referrer as spam")
+            actionLabel.text = AppLocalizedString("Mark as not spam", comment: "Action title for unmarking referrer as spam")
             actionLabel.textColor = Style.positiveColor
         }
 
@@ -45,8 +45,8 @@ extension ReferrerDetailsSpamActionCell: Accessible {
         }
         accessibilityTraits = [.button]
 
-        let markHint = NSLocalizedString("Tap to mark referrer as spam.", comment: "Accessibility hint for referrer action row.")
-        let unmarkHint = NSLocalizedString("Tap to mark referrer as not spam.", comment: "Accessibility hint for referrer action row.")
+        let markHint = AppLocalizedString("Tap to mark referrer as spam.", comment: "Accessibility hint for referrer action row.")
+        let unmarkHint = AppLocalizedString("Tap to mark referrer as not spam.", comment: "Accessibility hint for referrer action row.")
         accessibilityHint = markAsSpam ? markHint : unmarkHint
     }
 }

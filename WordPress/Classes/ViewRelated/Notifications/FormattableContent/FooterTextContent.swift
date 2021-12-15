@@ -3,7 +3,7 @@ import Foundation
 class FooterTextContent: FormattableTextContent {
     override init(text: String, ranges: [FormattableContentRange], actions: [FormattableContentAction]?) {
         if text == "You replied to this comment." {
-            let localizedText = NSLocalizedString("You replied to this comment.", comment: "Notification text - below a comment notification detail")
+            let localizedText = AppLocalizedString("You replied to this comment.", comment: "Notification text - below a comment notification detail")
 
             /// Now that we have localized the text, the clickable link range is not accurate
             /// and could cause an out-of-bounds error. Recalculate the range as the entire phrase.

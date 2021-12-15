@@ -278,7 +278,7 @@ class Post: AbstractPost {
         }
 
         if isRevision() {
-            let localOnly = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
+            let localOnly = AppLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
 
             if let tempStatusString = statusString, !tempStatusString.isEmpty {
                 statusString = String(format: "%@, %@", tempStatusString, localOnly)
@@ -295,7 +295,7 @@ class Post: AbstractPost {
         title = title.stringByDecodingXMLCharacters()
 
         if title.count == 0 && contentPreviewForDisplay().count == 0 && !hasRemote() {
-            title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
+            title = AppLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
         }
 
         return title

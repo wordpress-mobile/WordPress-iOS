@@ -14,7 +14,7 @@ private struct Row: ImmuTableRow {
     var type: RowType
     var title: String {
         switch type {
-        case .topLevel: return NSLocalizedString("Top level", comment: "Cell title for the Top Level option case")
+        case .topLevel: return AppLocalizedString("Top level", comment: "Cell title for the Top Level option case")
         case .child: return page?.titleForDisplay() ?? ""
         }
     }
@@ -99,17 +99,17 @@ class ParentPageSettingsViewController: UIViewController {
 
         let rows = pages.map { Row(page: $0, type: .child) }
         self.rows = [ImmuTableSection(rows: [Row()]),
-                     ImmuTableSection(headerText: NSLocalizedString("Pages", comment: "This is the section title"), rows: rows)]
+                     ImmuTableSection(headerText: AppLocalizedString("Pages", comment: "This is the section title"), rows: rows)]
     }
 
 
     // MARK: - Private methods
 
     private func setupUI() {
-        navigationItem.title = NSLocalizedString("Set Parent", comment: "Navigation title displayed on the navigation bar")
+        navigationItem.title = AppLocalizedString("Set Parent", comment: "Navigation title displayed on the navigation bar")
 
-        cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
-        doneButton.title = NSLocalizedString("Done", comment: "Text displayed by the right navigation button title")
+        cancelButton.title = AppLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
+        doneButton.title = AppLocalizedString("Done", comment: "Text displayed by the right navigation button title")
 
         searchBar.delegate = self
 
@@ -202,7 +202,7 @@ class ParentPageSettingsViewController: UIViewController {
                 return
             }
 
-            noResultsViewController.configureForNoSearchResults(title: NSLocalizedString("No pages matching your search",
+            noResultsViewController.configureForNoSearchResults(title: AppLocalizedString("No pages matching your search",
                                                                                          comment: "Text displayed when there's no matching with the text search"))
 
             addChild(noResultsViewController)
@@ -232,7 +232,7 @@ class ParentPageSettingsViewController: UIViewController {
         WPAnalytics.track(.pageSetParentDonePressed)
 
         SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Updating...",
+        SVProgressHUD.show(withStatus: AppLocalizedString("Updating...",
                                                          comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
         let parentId: NSNumber? = selectedPage.parentID
         selectedPage.parentID = selectedRow?.page?.postID
@@ -241,7 +241,7 @@ class ParentPageSettingsViewController: UIViewController {
 
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
-                SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring saving",
+                SVProgressHUD.showDismissibleError(withStatus: AppLocalizedString("Error occurred\nduring saving",
                                                                                  comment: "Text displayed in HUD after attempting to save a draft post and an error occurred."))
                 self?.selectedPage.parentID = parentId
             } else {

@@ -17,7 +17,7 @@ class AppSettingsViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
+        navigationItem.title = AppLocalizedString("App Settings", comment: "App Settings Title")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -115,13 +115,13 @@ class AppSettingsViewController: UITableViewController {
     fileprivate func setMediaCacheRowDescription(status: MediaCacheSettingsStatus) {
         switch status {
         case .clearingCache:
-            mediaCacheRowDescription = NSLocalizedString("Clearing...", comment: "Label for size of media while it's being cleared.")
+            mediaCacheRowDescription = AppLocalizedString("Clearing...", comment: "Label for size of media while it's being cleared.")
         case .calculatingSize:
-            mediaCacheRowDescription = NSLocalizedString("Calculating...", comment: "Label for size of media while it's being calculated.")
+            mediaCacheRowDescription = AppLocalizedString("Calculating...", comment: "Label for size of media while it's being calculated.")
         case .unknown:
-            mediaCacheRowDescription = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
+            mediaCacheRowDescription = AppLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
         case .empty:
-            mediaCacheRowDescription = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
+            mediaCacheRowDescription = AppLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
         }
     }
 
@@ -179,7 +179,7 @@ class AppSettingsViewController: UITableViewController {
             let currentVideoResolution = MediaSettings().maxVideoSizeSetting
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
-                                                  SettingsSelectionTitleKey: NSLocalizedString("Resolution", comment: "The largest resolution allowed for uploading"),
+                                                  SettingsSelectionTitleKey: AppLocalizedString("Resolution", comment: "The largest resolution allowed for uploading"),
                                                   SettingsSelectionTitlesKey: titles,
                                                   SettingsSelectionValuesKey: values] as [String: Any]
 
@@ -217,7 +217,7 @@ class AppSettingsViewController: UITableViewController {
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: AppAppearance.default.rawValue,
                                                   SettingsSelectionCurrentValueKey: currentStyle.rawValue,
-                                                  SettingsSelectionTitleKey: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
+                                                  SettingsSelectionTitleKey: AppLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
                                                   SettingsSelectionTitlesKey: titles,
                                                   SettingsSelectionValuesKey: rawValues] as [String: Any]
 
@@ -301,7 +301,7 @@ class AppSettingsViewController: UITableViewController {
                 NSUserActivity.deleteAllSavedUserActivities {}
             }
 
-            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", value: "Successfully cleared Siri Shortcut Suggestions", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
+            let notice = Notice(title: AppLocalizedString("Siri Reset Confirmation", value: "Successfully cleared Siri Shortcut Suggestions", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
@@ -312,7 +312,7 @@ class AppSettingsViewController: UITableViewController {
 
             self?.tableView.deselectSelectedRowWithAnimation(true)
             SearchManager.shared.deleteAllSearchableItems()
-            let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
+            let notice = Notice(title: AppLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
                                 feedbackType: .success)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
@@ -337,11 +337,11 @@ extension AppSettingsViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("App Settings", comment: "Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+        return AppLocalizedString("App Settings", comment: "Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, me, app settings, settings, cache, media, about, upload, usage, statistics",
+        let keyWordString = AppLocalizedString("wordpress, me, app settings, settings, cache, media, about, upload, usage, statistics",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 
@@ -384,23 +384,23 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 // MARK: - Table Sections Private Extension
 private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
-        let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
+        let mediaHeader = AppLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
         let imageSizingRow = ImageSizingRow(
-            title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
+            title: AppLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: imageSizeChanged())
 
         let videoSizingRow = NavigationItemRow(
-            title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
+            title: AppLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
             detail: MediaSettings().maxVideoSizeSetting.description,
             action: pushVideoResolutionSettings())
 
-        let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
+        let mediaCacheRow = TextRow(title: AppLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
                                     value: mediaCacheRowDescription)
 
         let mediaClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
+            title: AppLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
             action: { [weak self] row in
                 self?.clearMediaCache()
             },
@@ -414,27 +414,27 @@ private extension AppSettingsViewController {
                 mediaCacheRow,
                 mediaClearCacheRow
             ],
-            footerText: NSLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
+            footerText: AppLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
                                           comment: "Explanatory text for clearing device media cache.")
         )
     }
 
     func privacyTableSection() -> ImmuTableSection {
-        let privacyHeader = NSLocalizedString("Privacy", comment: "Privacy settings section header")
+        let privacyHeader = AppLocalizedString("Privacy", comment: "Privacy settings section header")
 
         let mediaRemoveLocation = SwitchRow(
-            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
+            title: AppLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
             value: Bool(MediaSettings().removeLocationSetting),
             onChange: mediaRemoveLocationChanged()
         )
 
         let privacySettings = NavigationItemRow(
-            title: NSLocalizedString("Privacy Settings", comment: "Link to privacy settings page"),
+            title: AppLocalizedString("Privacy Settings", comment: "Link to privacy settings page"),
             action: openPrivacySettings()
         )
 
         let spotlightClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
+            title: AppLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
 
@@ -445,7 +445,7 @@ private extension AppSettingsViewController {
 
         if #available(iOS 12.0, *) {
             let siriClearCacheRow = DestructiveButtonRow(
-                title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
+                title: AppLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
                 action: clearSiriActivityDonations(),
                 accessibilityIdentifier: "spotlightClearCacheButton")
 
@@ -453,7 +453,7 @@ private extension AppSettingsViewController {
         }
 
         tableRows.append(mediaRemoveLocation)
-        let removeLocationFooterText = NSLocalizedString("Removes location metadata from photos before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded media.")
+        let removeLocationFooterText = AppLocalizedString("Removes location metadata from photos before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded media.")
 
         return ImmuTableSection(
             headerText: privacyHeader,
@@ -463,21 +463,21 @@ private extension AppSettingsViewController {
     }
 
     func otherTableSection() -> ImmuTableSection {
-        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
+        let otherHeader = AppLocalizedString("Other", comment: "Link to About section (contains info about the app)")
 
         let debugRow = NavigationItemRow(
-            title: NSLocalizedString("Debug", comment: "Navigates to debug menu only available in development builds"),
+            title: AppLocalizedString("Debug", comment: "Navigates to debug menu only available in development builds"),
             icon: .gridicon(.bug),
             action: pushDebugMenu()
         )
 
         let iconRow = NavigationItemRow(
-            title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
+            title: AppLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
             action: pushAppIconSwitcher()
         )
 
         let settingsRow = NavigationItemRow(
-            title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
+            title: AppLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
         )
 
@@ -504,13 +504,13 @@ private extension AppSettingsViewController {
         if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
-            let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
+            let whatIsNewRow = NavigationItemRow(title: AppLocalizedString("What's New in WordPress",
                                                                           comment: "Opens the What's New / Feature Announcement modal"),
                                                  action: presentWhatIsNew())
             rows.append(whatIsNewRow)
         }
 
-        let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
+        let appearanceRow = NavigationItemRow(title: AppLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
 
         rows.insert(appearanceRow, at: 0)
 

@@ -33,7 +33,7 @@ class DestructiveAlertHelper: DestructiveAlertHelperLogic {
             $0.addTarget(self, action: #selector(self?.textFieldDidChange), for: .editingChanged)
         }
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Alert dismissal title")
         alert.addCancelActionWithTitle(cancelTitle)
         self.alert = alert
 

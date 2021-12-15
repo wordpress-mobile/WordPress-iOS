@@ -148,7 +148,7 @@ final class SiteAssemblyWizardContent: UIViewController {
     private func installButtonViewController() {
         buttonViewController.delegate = self
 
-        let primaryButtonText = NSLocalizedString("Done",
+        let primaryButtonText = AppLocalizedString("Done",
                                                   comment: "Tapping a button with this label allows the user to exit the Site Creation flow")
         buttonViewController.setButtonTitles(primary: primaryButtonText)
 

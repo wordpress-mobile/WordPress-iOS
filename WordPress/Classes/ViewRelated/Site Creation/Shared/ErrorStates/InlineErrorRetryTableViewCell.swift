@@ -47,7 +47,7 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
             label.textColor = .primary
             label.textAlignment = .center
 
-            label.text = NSLocalizedString("Retry", comment: "Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation")
+            label.text = AppLocalizedString("Retry", comment: "Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation")
             label.sizeToFit()
 
             return label

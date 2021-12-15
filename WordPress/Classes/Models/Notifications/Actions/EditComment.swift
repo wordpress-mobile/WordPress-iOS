@@ -1,7 +1,7 @@
 /// Encapsulates logic to Edit a comment
 class EditComment: DefaultNotificationActionCommand {
-    static let title = NSLocalizedString("Edit", comment: "Edits a Comment")
-    static let hint = NSLocalizedString("Edits the comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment.")
+    static let title = AppLocalizedString("Edit", comment: "Edits a Comment")
+    static let hint = AppLocalizedString("Edits the comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment.")
 
     override var actionTitle: String {
         return EditComment.title

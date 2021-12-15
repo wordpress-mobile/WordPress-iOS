@@ -24,7 +24,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Posting Activity", comment: "Title for stats Posting Activity view.")
+        title = AppLocalizedString("Posting Activity", comment: "Title for stats Posting Activity view.")
         addLegend()
         applyStyles()
 
@@ -127,7 +127,7 @@ private extension PostingActivityViewController {
     }
 
     struct PostCountLabels {
-        static let singular = NSLocalizedString("%d Post", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular).")
-        static let plural = NSLocalizedString("%d Posts", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural).")
+        static let singular = AppLocalizedString("%d Post", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular).")
+        static let plural = AppLocalizedString("%d Posts", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural).")
     }
 }

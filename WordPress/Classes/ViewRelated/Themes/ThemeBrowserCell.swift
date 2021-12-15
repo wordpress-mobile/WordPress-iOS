@@ -36,19 +36,19 @@ public enum ThemeAction {
     var title: String {
         switch self {
         case .activate:
-            return NSLocalizedString("Activate", comment: "Theme Activate action title")
+            return AppLocalizedString("Activate", comment: "Theme Activate action title")
         case .active:
-            return NSLocalizedString("Active", comment: "Label for active Theme")
+            return AppLocalizedString("Active", comment: "Label for active Theme")
         case .customize:
-            return NSLocalizedString("Customize", comment: "Theme Customize action title")
+            return AppLocalizedString("Customize", comment: "Theme Customize action title")
         case .details:
-            return NSLocalizedString("Details", comment: "Theme Details action title")
+            return AppLocalizedString("Details", comment: "Theme Details action title")
         case .support:
-            return NSLocalizedString("Support", comment: "Theme Support action title")
+            return AppLocalizedString("Support", comment: "Theme Support action title")
         case .tryCustomize:
-            return NSLocalizedString("Try & Customize", comment: "Theme Try & Customize action title")
+            return AppLocalizedString("Try & Customize", comment: "Theme Try & Customize action title")
         case .view:
-            return NSLocalizedString("View", comment: "Theme View action title")
+            return AppLocalizedString("View", comment: "Theme View action title")
         }
     }
 
@@ -153,7 +153,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
-                infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
+                infoLabel.text = AppLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
                 infoBar.backgroundColor = Styles.inactiveCellBackgroundColor
@@ -257,7 +257,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
             })
         }
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action title")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel action title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
 
         alertController.modalPresentationStyle = .popover
@@ -294,7 +294,7 @@ extension ThemeBrowserCell: Accessible {
 
     private func prepareActionButtonForVoiceOver() {
         actionButton.isAccessibilityElement = true
-        actionButton.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        actionButton.accessibilityLabel = AppLocalizedString("More", comment: "Action button to display more available options")
         actionButton.accessibilityTraits = .button
     }
 

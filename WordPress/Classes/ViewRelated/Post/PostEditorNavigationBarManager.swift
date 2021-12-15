@@ -38,7 +38,7 @@ class PostEditorNavigationBarManager {
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
         button.frame = CGRect(origin: .zero, size: image.size)
-        button.accessibilityLabel = NSLocalizedString("More Options", comment: "Action button to display more available options")
+        button.accessibilityLabel = AppLocalizedString("More Options", comment: "Action button to display more available options")
         button.accessibilityIdentifier = "more_post_options"
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
         button.setContentHuggingPriority(.required, for: .horizontal)
@@ -78,7 +78,7 @@ class PostEditorNavigationBarManager {
     ///
     private lazy var mediaUploadingButton: WPUploadStatusButton = {
         let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: delegate?.uploadingButtonSize ?? .zero))
-        button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
+        button.setTitle(AppLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
         button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -88,7 +88,7 @@ class PostEditorNavigationBarManager {
     /// Preview Generating Button
     ///
     private lazy var previewGeneratingView: LoadingStatusView = {
-        let view = LoadingStatusView(title: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
+        let view = LoadingStatusView(title: AppLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
         return view
     }()
 
@@ -106,7 +106,7 @@ class PostEditorNavigationBarManager {
     ///
     lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
-        cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
+        cancelItem.accessibilityLabel = AppLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
     }()

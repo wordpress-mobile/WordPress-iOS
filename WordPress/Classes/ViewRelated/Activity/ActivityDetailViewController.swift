@@ -160,16 +160,16 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return
         }
 
-        title = NSLocalizedString("Event", comment: "Title for the activity detail view")
+        title = AppLocalizedString("Event", comment: "Title for the activity detail view")
         nameLabel.text = activity.actor?.displayName
         roleLabel.text = activity.actor?.role.localizedCapitalized
 
         textView.attributedText = formattableActivity?.formattedContent(using: ActivityContentStyles())
         summaryLabel.text = activity.summary
 
-        rewindButton.setTitle(NSLocalizedString("Restore", comment: "Title for button allowing user to restore their Jetpack site"),
+        rewindButton.setTitle(AppLocalizedString("Restore", comment: "Title for button allowing user to restore their Jetpack site"),
                                                 for: .normal)
-        backupButton.setTitle(NSLocalizedString("Download backup", comment: "Title for button allowing user to backup their Jetpack site"),
+        backupButton.setTitle(AppLocalizedString("Download backup", comment: "Title for button allowing user to backup their Jetpack site"),
                                                 for: .normal)
 
         let dateFormatter = ActivityDateFormatting.longDateFormatter(for: site, withTime: false)

@@ -35,7 +35,7 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static let descriptionMap = [
-            MonthDY.rawValue: NSLocalizedString("December 17, 2017", comment: "Only December needs to be translated"),
+            MonthDY.rawValue: AppLocalizedString("December 17, 2017", comment: "Only December needs to be translated"),
             YMD.rawValue: "2017-12-17",
             MDY.rawValue: "12/17/2017",
             DMY.rawValue: "17/12/2017"

@@ -38,7 +38,7 @@ class WhatIsNewView: UIView {
         button.contentEdgeInsets = UIEdgeInsets(top: Appearance.backButtonInset, left: Appearance.backButtonInset, bottom: 0, right: 0)
         button.setImage(UIImage.gridicon(.arrowLeft), for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        button.accessibilityLabel = NSLocalizedString("Back", comment: "Dismiss view")
+        button.accessibilityLabel = AppLocalizedString("Back", comment: "Dismiss view")
         button.tintColor = Appearance.backButtonTintColor
         return button
     }()
@@ -273,6 +273,6 @@ private extension WhatIsNewView {
 private extension WhatIsNewView {
     enum Accessibility {
         static let continueButtonIdentifier = "AnnouncementsContinueButton"
-        static let continueButtonHint = NSLocalizedString("Dismiss announcements", comment: "Accessibility hint for the continue button in the Feature Announcements screen.")
+        static let continueButtonHint = AppLocalizedString("Dismiss announcements", comment: "Accessibility hint for the continue button in the Feature Announcements screen.")
     }
 }

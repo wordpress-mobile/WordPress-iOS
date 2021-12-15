@@ -62,7 +62,7 @@ extension UIBarButtonItem {
     ///   - target: target of the action to execute when the button is pressed
     ///   - action: selector of the action to execute when the button is pressed
     convenience init(target: Any?, action: Selector) {
-        self.init(title: NSLocalizedString("Done", comment: "Title of the Done button on the me page"),
+        self.init(title: AppLocalizedString("Done", comment: "Title of the Done button on the me page"),
                   style: .done,
                   target: target,
                   action: action)
@@ -71,8 +71,8 @@ extension UIBarButtonItem {
 
     /// Adds accessibility traits for the `Me` bar button item
     private func makeDoneButtonAccessible() {
-        accessibilityLabel = NSLocalizedString("Done", comment: "Accessibility label for the Done button in the Me screen.")
-        accessibilityHint = NSLocalizedString("Close the Me screen", comment: "Accessibility hint the  Done button in the Me screen.")
+        accessibilityLabel = AppLocalizedString("Done", comment: "Accessibility label for the Done button in the Me screen.")
+        accessibilityHint = AppLocalizedString("Close the Me screen", comment: "Accessibility hint the  Done button in the Me screen.")
         accessibilityIdentifier = "doneBarButton"
         accessibilityTraits = UIAccessibilityTraits.button
         isAccessibilityElement = true

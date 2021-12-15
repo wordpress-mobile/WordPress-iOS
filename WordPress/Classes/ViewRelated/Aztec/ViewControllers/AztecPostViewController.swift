@@ -151,7 +151,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func setupRichTextView(_ textView: TextView) {
         textView.load(WordPressPlugin())
 
-        let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
+        let accessibilityLabel = AppLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
         let linkAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
@@ -201,7 +201,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate(set) lazy var placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
+        label.text = AppLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
         label.textColor = Colors.placeholder
         label.font = Fonts.regular
         label.isUserInteractionEnabled = false
@@ -222,7 +222,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     private func setupHTMLTextView(_ textView: UITextView) {
-        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        let accessibilityLabel = AppLocalizedString("HTML Content", comment: "Post HTML content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
         textView.isHidden = true
@@ -255,7 +255,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let textView =
             UIApplication.shared.isCreatingScreenshots() ? UITextViewWithoutCaret() : UITextView()
 
-        textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
+        textView.accessibilityLabel = AppLocalizedString("Title", comment: "Post title")
         textView.accessibilityIdentifier = "aztec-editor-title"
         textView.delegate = self
         textView.font = Fonts.title
@@ -274,7 +274,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Placeholder Label
     ///
     fileprivate(set) lazy var titlePlaceholderLabel: UILabel = {
-        let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        let placeholderText = AppLocalizedString("Title", comment: "Placeholder for the post title.")
         let titlePlaceholderLabel = UILabel()
 
         let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Colors.placeholder, .font: Fonts.title]
@@ -564,15 +564,15 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func showDeprecationNotice() {
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
-            title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
+            title: AppLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
             handler: { alert, _ in
                 alert.dismiss(animated: true, completion: nil)
             }
         )
 
         let config = FancyAlertViewController.Config(
-            titleText: NSLocalizedString("Try the new Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
-            bodyText: NSLocalizedString("We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.", comment: "The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            titleText: AppLocalizedString("Try the new Block Editor", comment: "The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
+            bodyText: AppLocalizedString("We’ll be removing the classic editor for new posts soon, but this won’t affect editing any of your existing posts or pages. Get a head start by enabling the Block Editor now in site settings.", comment: "The message of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app."),
             headerImage: nil,
             dividerPosition: .top,
             defaultButton: okButton,
@@ -968,22 +968,22 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if richTextView.isFirstResponder {
             return [
-                UIKeyCommand(action: #selector(toggleBold), input: "B", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleItalic), input: "I", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleStrikethrough), input: "S", modifierFlags: [.command], discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleUnderline(_:)), input: "U", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleBlockquote), input: "Q", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleLink), input: "K", modifierFlags: .command, discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
-                UIKeyCommand(action: #selector(presentMediaPickerWasPressed), input: "M", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleUnorderedList), input: "U", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleOrderedList), input: "O", modifierFlags: [.command, .alternate], discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
-                UIKeyCommand(action: #selector(toggleEditingMode), input: "H", modifierFlags: [.command, .shift], discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+                UIKeyCommand(action: #selector(toggleBold), input: "B", modifierFlags: .command, discoverabilityTitle: AppLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleItalic), input: "I", modifierFlags: .command, discoverabilityTitle: AppLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleStrikethrough), input: "S", modifierFlags: [.command], discoverabilityTitle: AppLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleUnderline(_:)), input: "U", modifierFlags: .command, discoverabilityTitle: AppLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleBlockquote), input: "Q", modifierFlags: [.command, .alternate], discoverabilityTitle: AppLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleLink), input: "K", modifierFlags: .command, discoverabilityTitle: AppLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
+                UIKeyCommand(action: #selector(presentMediaPickerWasPressed), input: "M", modifierFlags: [.command, .alternate], discoverabilityTitle: AppLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleUnorderedList), input: "U", modifierFlags: [.command, .alternate], discoverabilityTitle: AppLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleOrderedList), input: "O", modifierFlags: [.command, .alternate], discoverabilityTitle: AppLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
+                UIKeyCommand(action: #selector(toggleEditingMode), input: "H", modifierFlags: [.command, .shift], discoverabilityTitle: AppLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
             ]
         }
 
         if htmlTextView.isFirstResponder {
             return [
-                UIKeyCommand(action: #selector(toggleEditingMode), input: "H", modifierFlags: [.command, .shift], discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+                UIKeyCommand(action: #selector(toggleEditingMode), input: "H", modifierFlags: [.command, .shift], discoverabilityTitle: AppLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
             ]
         }
 
@@ -1208,21 +1208,21 @@ private extension AztecPostViewController {
             return
         }
 
-        let title = NSLocalizedString("What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?", comment: "Title displayed via UIAlertController when a user inserts a document into a post.")
+        let title = AppLocalizedString("What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?", comment: "Title displayed via UIAlertController when a user inserts a document into a post.")
 
         let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an alert.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancels an alert.")
         alertController.addCancelActionWithTitle(cancelTitle)
 
-        let attachAsLinkTitle = NSLocalizedString("Attach File as Link", comment: "Alert option to embed a doc link into a blog post.")
+        let attachAsLinkTitle = AppLocalizedString("Attach File as Link", comment: "Alert option to embed a doc link into a blog post.")
         alertController.addDefaultActionWithTitle(attachAsLinkTitle) { [weak self] _ in
             guard let strongSelf = self else { return }
             strongSelf.insertExternalMediaWithURL(documentURL)
         }
 
-        let addContentsToPostTitle = NSLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
+        let addContentsToPostTitle = AppLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
 
         let addContentsActionHandler: (() -> Void)
         if uti == String(kUTTypePDF) {
@@ -1265,7 +1265,7 @@ private extension AztecPostViewController {
 
         if editorView.editingMode == .richText {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
-            let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
+            let textCounterTitle = String(format: AppLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
 
             alert.title = textCounterTitle
         }
@@ -1817,7 +1817,7 @@ extension AztecPostViewController {
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
         toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         let gridButton = UIBarButtonItem(image: .gridicon(.grid), style: .plain, target: self, action: #selector(mediaAddShowFullScreen))
-        gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
+        gridButton.accessibilityLabel = AppLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
         toolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -1927,7 +1927,7 @@ extension AztecPostViewController {
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
-        picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
+        picker.previewActionTitle = AppLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
@@ -2145,7 +2145,7 @@ extension AztecPostViewController {
             transform = .identity
         case .media:
             accessibilityIdentifier = "format_toolbar_close_media"
-            accessibilityLabel = NSLocalizedString("Close Media Picker", comment: "Accessibility label for button that closes the media picker on formatting toolbar")
+            accessibilityLabel = AppLocalizedString("Close Media Picker", comment: "Accessibility label for button that closes the media picker on formatting toolbar")
 
             transform = CGAffineTransform(rotationAngle: Constants.Animations.formatBarMediaButtonRotationAngle)
         }
@@ -3046,7 +3046,7 @@ extension AztecPostViewController {
 
     func displayUnableToPlayVideoAlert() {
         let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        alertController.addAction(UIAlertAction(title: AppLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
         present(alertController, animated: true)
         return
     }
@@ -3410,14 +3410,14 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight            = CGFloat(44.0)
-        static let mediaPickerInsertTextDefault = NSLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
-        static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
-        static let mediaPickerInsertAccessibilityLabel = NSLocalizedString("Insert selected", comment: "Default accessibility label for the media picker insert button.")
+        static let mediaPickerInsertTextDefault = AppLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
+        static let mediaPickerInsertText    = AppLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerInsertAccessibilityLabel = AppLocalizedString("Insert selected", comment: "Default accessibility label for the media picker insert button.")
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
-        static let mediaGIFBadgeTitle       = NSLocalizedString("GIF", comment: "Badge title displayed on GIF images in the editor.")
+        static let mediaGIFBadgeTitle       = AppLocalizedString("GIF", comment: "Badge title displayed on GIF images in the editor.")
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
         static let mediaMessageAttributes: [NSAttributedString.Key: Any] = {
             let paragraphStyle = NSMutableParagraphStyle()
@@ -3437,32 +3437,32 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let gutenbergTitle = NSLocalizedString(
+        static let gutenbergTitle = AppLocalizedString(
             "Switch to block editor",
             comment: "Switches from the classic editor to block editor."
         )
-        static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
-        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
-        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
-        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
-        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let htmlTitle = AppLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = AppLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = AppLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let historyTitle = AppLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
+        static let postSettingsTitle = AppLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let pageSettingsTitle = AppLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
+        static let keepEditingTitle = AppLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 
     struct MediaAttachmentActionSheet {
-        static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
-        static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
-        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
-        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
-        static let settingsActionTitle = NSLocalizedString("Media Settings", comment: "User action to edit media settings.")
-        static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
-        static let playVideoActionTitle = NSLocalizedString("Play video", comment: "User action to play a video on the editor.")
-        static let removeImageActionTitle = NSLocalizedString("Remove image", comment: "User action to remove image.")
-        static let removeVideoActionTitle = NSLocalizedString("Remove video", comment: "User action to remove video.")
-        static let failedMediaActionTitle = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
+        static let title = AppLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        static let dismissActionTitle = AppLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let stopUploadActionTitle = AppLocalizedString("Stop upload", comment: "User action to stop upload.")
+        static let retryUploadActionTitle = AppLocalizedString("Retry", comment: "User action to retry media upload.")
+        static let retryAllFailedUploadsActionTitle = AppLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let settingsActionTitle = AppLocalizedString("Media Settings", comment: "User action to edit media settings.")
+        static let editActionTitle = AppLocalizedString("Edit", comment: "User action to edit media details.")
+        static let playVideoActionTitle = AppLocalizedString("Play video", comment: "User action to play a video on the editor.")
+        static let removeImageActionTitle = AppLocalizedString("Remove image", comment: "User action to remove image.")
+        static let removeVideoActionTitle = AppLocalizedString("Remove video", comment: "User action to remove video.")
+        static let failedMediaActionTitle = AppLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
     }
 
     struct Colors {
@@ -3494,15 +3494,15 @@ extension AztecPostViewController {
     }
 
     struct MediaUploadingCancelAlert {
-        static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is canceling an upload.")
-        static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
-        static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
-        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+        static let title = AppLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is canceling an upload.")
+        static let message = AppLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+        static let acceptTitle  = AppLocalizedString("Yes", comment: "Yes")
+        static let cancelTitle  = AppLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
     }
 
     struct MediaUnableToPlayVideoAlert {
-        static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is canceling an upload.")
-        static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
+        static let title = AppLocalizedString("Unable to play video", comment: "Dialog box title for when the user is canceling an upload.")
+        static let message = AppLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 
 }

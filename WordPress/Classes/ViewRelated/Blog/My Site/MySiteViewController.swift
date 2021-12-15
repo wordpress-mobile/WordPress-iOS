@@ -97,7 +97,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .always
-        navigationItem.title = NSLocalizedString("My Site", comment: "Title of My Site tab")
+        navigationItem.title = AppLocalizedString("My Site", comment: "Title of My Site tab")
 
         // Workaround:
         //
@@ -229,10 +229,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func configureNoResultsView() {
-        noResultsViewController.configure(title: NSLocalizedString(
+        noResultsViewController.configure(title: AppLocalizedString(
                                             "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.",
                                             comment: "Text shown when the account has no sites."),
-                                          buttonTitle: NSLocalizedString(
+                                          buttonTitle: AppLocalizedString(
                                             "Add new site",
                                             comment: "Title of button to add a new site."),
                                           image: "mysites-nosites")

@@ -36,21 +36,21 @@ import WordPressKit
 extension AppConstants {
 
     struct Settings {
-        static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+        static let aboutTitle = AppLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
     }
 
     struct Login {
-        static let continueButtonTitle = NSLocalizedString(
+        static let continueButtonTitle = AppLocalizedString(
             "Continue With WordPress.com",
             comment: "Button title. Takes the user to the login with WordPress.com flow."
         )
     }
 
     struct Logout {
-        static let alertTitle = NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
+        static let alertTitle = AppLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
     }
 
     struct Zendesk {
-        static let ticketSubject = NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
+        static let ticketSubject = AppLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
     }
 }

@@ -80,12 +80,12 @@ import Foundation
         switch selectionMode {
         case .post:
             navigationItem.rightBarButtonItem = rightBarButtonItem
-            title = NSLocalizedString("Post Categories", comment: "Title for selecting categories for a post")
+            title = AppLocalizedString("Post Categories", comment: "Title for selecting categories for a post")
         case .parent:
             navigationItem.rightBarButtonItem = rightBarButtonItem
-            title = NSLocalizedString("Parent Category", comment: "Title for selecting parent category of a category")
+            title = AppLocalizedString("Parent Category", comment: "Title for selecting parent category of a category")
         case .blogDefault:
-            title = NSLocalizedString("Default Category", comment: "Title for selecting a default category for a post")
+            title = AppLocalizedString("Default Category", comment: "Title for selecting a default category for a post")
         }
     }
 
@@ -170,7 +170,7 @@ import Foundation
     private func configureNoCategoryRow(cell: WPTableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
         cell.textLabel?.textAlignment = .natural
-        cell.textLabel?.text = NSLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
+        cell.textLabel?.text = AppLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
         if selectedCategories.isEmpty {
             cell.accessoryType = selectedCategories.isEmpty ? .checkmark : .none
         }  else {

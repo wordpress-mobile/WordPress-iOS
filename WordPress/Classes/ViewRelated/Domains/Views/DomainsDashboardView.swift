@@ -131,36 +131,36 @@ private extension DomainsDashboardView {
 
     enum TextContent {
         // Navigation bar
-        static let navigationTitle = NSLocalizedString("Site Domains", comment: "Title of the Domains Dashboard.")
+        static let navigationTitle = AppLocalizedString("Site Domains", comment: "Title of the Domains Dashboard.")
         // Site address section
         static func primarySiteSectionFooter(_ paidPlan: Bool) -> String {
-            paidPlan ? "" : NSLocalizedString("Your primary site address is what visitors will see in their address bar when visiting your website.",
+            paidPlan ? "" : AppLocalizedString("Your primary site address is what visitors will see in their address bar when visiting your website.",
                                                                         comment: "Footer of the primary site section in the Domains Dashboard.")
         }
 
-        static let siteAddressTitle = NSLocalizedString("Your free WordPress.com address is",
+        static let siteAddressTitle = AppLocalizedString("Your free WordPress.com address is",
                                                         comment: "Title of the site address section in the Domains Dashboard.")
-        static let primaryAddressLabel = NSLocalizedString("Primary site address",
+        static let primaryAddressLabel = AppLocalizedString("Primary site address",
                                                            comment: "Primary site address label, used in the site address section of the Domains Dashboard.")
 
         // Domains section
-        static let domainsListSectionHeader: String = NSLocalizedString("Your Site Domains",
+        static let domainsListSectionHeader: String = AppLocalizedString("Your Site Domains",
                                                                               comment: "Header of the domains list section in the Domains Dashboard.")
-        static let paidPlanDomainSectionFooter: String = NSLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.",
+        static let paidPlanDomainSectionFooter: String = AppLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.",
                                                                            comment: "Footer of the free domain registration section for a paid plan.")
 
-        static let additionalRedirectedDomainTitle: String = NSLocalizedString("Add a domain",
+        static let additionalRedirectedDomainTitle: String = AppLocalizedString("Add a domain",
                                                                                comment: "Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard.")
 
-        static let firstRedirectedDomainTitle: String = NSLocalizedString("Get your domain",
+        static let firstRedirectedDomainTitle: String = AppLocalizedString("Get your domain",
                                                                           comment: "Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard.")
-        static let firstRedirectedDomainDescription = NSLocalizedString("Domains purchased on this site will redirect users to ",
+        static let firstRedirectedDomainDescription = AppLocalizedString("Domains purchased on this site will redirect users to ",
                                                                   comment: "Description for the first domain purchased with a free plan.")
-        static let firstPaidPlanRegistrationTitle: String = NSLocalizedString("Claim your free domain",
+        static let firstPaidPlanRegistrationTitle: String = AppLocalizedString("Claim your free domain",
                                                                                    comment: "Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard.")
-        static let firstPaidPlanRegistrationDescription = NSLocalizedString("You have a free one-year domain registration with your plan",
+        static let firstPaidPlanRegistrationDescription = AppLocalizedString("You have a free one-year domain registration with your plan",
                                                                   comment: "Description for the first domain purchased with a paid plan.")
-        static let firstSearchDomainButtonTitle = NSLocalizedString("Search for a domain",
+        static let firstSearchDomainButtonTitle = AppLocalizedString("Search for a domain",
                                                                     comment: "title of the button that searches the first domain.")
 
         static func firstDomainTitle(_ canRegisterDomainWithPaidPlan: Bool) -> String {

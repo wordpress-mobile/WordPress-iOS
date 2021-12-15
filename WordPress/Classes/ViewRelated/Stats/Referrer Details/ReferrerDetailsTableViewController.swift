@@ -69,8 +69,8 @@ extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
         data.isReferrerSpam = isSpam
         updateViewModel()
 
-        let markedText = NSLocalizedString("marked as spam", comment: "Indicating that referrer was marked as spam")
-        let unmarkedText = NSLocalizedString("unmarked as spam", comment: "Indicating that referrer was unmarked as spam")
+        let markedText = AppLocalizedString("marked as spam", comment: "Indicating that referrer was marked as spam")
+        let unmarkedText = AppLocalizedString("unmarked as spam", comment: "Indicating that referrer was unmarked as spam")
         let text = isSpam ? markedText : unmarkedText
         displayNotice(title: "\(referrerDomain) \(text)")
     }
@@ -78,8 +78,8 @@ extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
     func changingSpamStateForReferrerDomainFailed(oldValue: Bool) {
         setLoadingState(false)
 
-        let markText = NSLocalizedString("Couldn't mark as spam", comment: "Indicating that referrer couldn't be marked as spam")
-        let unmarkText = NSLocalizedString("Couldn't unmark as spam", comment: "Indicating that referrer couldn't be unmarked as spam")
+        let markText = AppLocalizedString("Couldn't mark as spam", comment: "Indicating that referrer couldn't be marked as spam")
+        let unmarkText = AppLocalizedString("Couldn't unmark as spam", comment: "Indicating that referrer couldn't be unmarked as spam")
         let text = oldValue ? unmarkText : markText
         displayNotice(title: text)
     }

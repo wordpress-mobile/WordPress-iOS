@@ -208,21 +208,21 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
         if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
             accessibilityTraits = .button
-            accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint")
+            accessibilityHint = AppLocalizedString("Tap to customize insights", comment: "Accessibility hint")
             return
         }
 
         let showDisclosure = rowData?.showDisclosure ?? false
         accessibilityTraits = (showDisclosure) ? .button : .staticText
-        accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
+        accessibilityHint = (showDisclosure) ? AppLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
 
         switch (showDisclosure, hasChildRows) {
         case (true, true):
             accessibilityHint = expanded
-                                    ? NSLocalizedString("Expanded. Tap to collapse.", comment: "Accessibility hint")
-                                    : NSLocalizedString("Collapsed. Tap to expand.", comment: "Accessibility hint")
+                                    ? AppLocalizedString("Expanded. Tap to collapse.", comment: "Accessibility hint")
+                                    : AppLocalizedString("Collapsed. Tap to expand.", comment: "Accessibility hint")
         case (true, false):
-            accessibilityHint = NSLocalizedString("Tap for more detail.", comment: "Accessibility hint")
+            accessibilityHint = AppLocalizedString("Tap for more detail.", comment: "Accessibility hint")
         default:
             break
         }

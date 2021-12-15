@@ -95,11 +95,11 @@ class PluginDirectoryViewModel: Observable {
         let model: NoResultsViewController.Model
 
         if isFetching(for: query) {
-            model = NoResultsViewController.Model(title: NSLocalizedString("Loading plugins...", comment: "Messaged displayed when fetching plugins."),
+            model = NoResultsViewController.Model(title: AppLocalizedString("Loading plugins...", comment: "Messaged displayed when fetching plugins."),
                                                   accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            model = NoResultsViewController.Model(title: NSLocalizedString("Error loading plugins", comment: "Messaged displayed when fetching plugins failed."),
-                                                  buttonText: NSLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
+            model = NoResultsViewController.Model(title: AppLocalizedString("Error loading plugins", comment: "Messaged displayed when fetching plugins failed."),
+                                                  buttonText: AppLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
         }
 
         noResultsView.bindViewModel(model)
@@ -113,8 +113,8 @@ class PluginDirectoryViewModel: Observable {
         }
 
 
-        let title = NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins")
-        let secondaryTitle = NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins")
+        let title = AppLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins")
+        let secondaryTitle = AppLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins")
         let query = PluginQuery.all(site: site)
 
         if let installed = installedPlugins {
@@ -136,7 +136,7 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private func featuredRow(presenter: PluginPresenter & PluginListPresenter) -> ImmuTableRow? {
-        let title = NSLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins")
+        let title = AppLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins")
 
         if let featured = featuredPlugins {
             return CollectionViewContainerRow(title: title,
@@ -158,8 +158,8 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private func popularRow(presenter: PluginPresenter & PluginListPresenter) -> ImmuTableRow? {
-        let title = NSLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins")
-        let secondaryTitle = NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins")
+        let title = AppLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins")
+        let secondaryTitle = AppLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins")
         let query = PluginQuery.feed(type: .popular)
 
         if let popular = popularPlugins {
@@ -182,8 +182,8 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private func newRow(presenter: PluginPresenter & PluginListPresenter) -> ImmuTableRow? {
-        let title = NSLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins")
-        let secondaryTitle = NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins")
+        let title = AppLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins")
+        let secondaryTitle = AppLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins")
         let query = PluginQuery.feed(type: .newest)
 
         if let new = newPlugins {

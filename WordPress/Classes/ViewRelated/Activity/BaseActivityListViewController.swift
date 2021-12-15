@@ -235,7 +235,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     private func setupDateFilter() {
-        dateFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
+        dateFilterChip.resetButton.accessibilityLabel = AppLocalizedString("Reset Date Range filter", comment: "Accessibility label for the reset date range button")
 
         dateFilterChip.tapped = { [unowned self] in
             WPAnalytics.track(self.configuration.filterbarRangeButtonTapped)
@@ -250,7 +250,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     }
 
     private func setupActivityTypeFilter() {
-        activityTypeFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Activity Type filter", comment: "Accessibility label for the reset activity type button")
+        activityTypeFilterChip.resetButton.accessibilityLabel = AppLocalizedString("Reset Activity Type filter", comment: "Accessibility label for the reset activity type button")
 
         activityTypeFilterChip.tapped = { [weak self] in
             guard let self = self else {
@@ -298,7 +298,7 @@ extension BaseActivityListViewController: UITableViewDelegate {
         }
 
         cell.separator.isHidden = true
-        cell.titleLabel.text = NSLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
+        cell.titleLabel.text = AppLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
 
         return cell
     }
@@ -379,7 +379,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
         if rewindStatus?.state == .active {
-            let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+            let restoreTitle = AppLocalizedString("Restore", comment: "Title displayed for restore action.")
 
             let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
                                                                        activity: activity,
@@ -391,7 +391,7 @@ extension BaseActivityListViewController: ActivityPresenter {
             })
         }
 
-        let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
+        let backupTitle = AppLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
         backupOptionsVC.backupStatusDelegate = self
         backupOptionsVC.presentedFrom = configuration.identifier
@@ -399,7 +399,7 @@ extension BaseActivityListViewController: ActivityPresenter {
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
         alertController.addCancelActionWithTitle(cancelTitle)
 
         if let presentationController = alertController.popoverPresentationController {

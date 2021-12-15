@@ -109,8 +109,8 @@ private extension UIBarButtonItem {
 private extension UIBarButtonItem {
     /// Adds accessibility traits for the `Me` bar button item
     func makeMeButtonAccessible() {
-        accessibilityLabel = NSLocalizedString("Me", comment: "Accessibility label for the Me button in My Site.")
-        accessibilityHint = NSLocalizedString("Open the Me Section", comment: "Accessibility hint the Me button in My Site.")
+        accessibilityLabel = AppLocalizedString("Me", comment: "Accessibility label for the Me button in My Site.")
+        accessibilityHint = AppLocalizedString("Open the Me Section", comment: "Accessibility hint the Me button in My Site.")
         accessibilityIdentifier = "meBarButton"
         accessibilityTraits = UIAccessibilityTraits.button
         isAccessibilityElement = true

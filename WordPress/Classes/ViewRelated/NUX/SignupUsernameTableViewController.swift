@@ -29,7 +29,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
-        navigationItem.title = NSLocalizedString("Pick username", comment: "Title for selecting a new username in the site creation flow.")
+        navigationItem.title = AppLocalizedString("Pick username", comment: "Title for selecting a new username in the site creation flow.")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +80,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
             return NSAttributedString(string: "")
         }
 
-        let baseDescription = String(format: NSLocalizedString("Your current username is %@. With few exceptions, others will only ever see your display name, %@.", comment: "Instructional text that displays the current username and display name."), currentUsername, displayName)
+        let baseDescription = String(format: AppLocalizedString("Your current username is %@. With few exceptions, others will only ever see your display name, %@.", comment: "Instructional text that displays the current username and display name."), currentUsername, displayName)
         guard let rangeOfUsername = baseDescription.range(of: currentUsername),
             let rangeOfDisplayName = baseDescription.range(of: displayName) else {
                 return NSAttributedString(string: baseDescription)
@@ -210,7 +210,7 @@ extension SignupUsernameTableViewController {
             fatalError()
         }
 
-        cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
+        cell.placeholder = AppLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         cell.delegate = self
         cell.selectionStyle = .none
         cell.textField.leftViewImage = UIImage(named: "icon-post-search-highlight")

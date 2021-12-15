@@ -126,7 +126,7 @@ private extension Comment {
     }
 
     func authorName() -> String {
-        return !author.isEmpty ? author : NSLocalizedString("Anonymous", comment: "the comment has an anonymous author.")
+        return !author.isEmpty ? author : AppLocalizedString("Anonymous", comment: "the comment has an anonymous author.")
     }
 
     // The REST endpoint response contains both content and rawContent.
@@ -151,7 +151,7 @@ extension Comment: PostContentProvider {
 
     public func titleForDisplay() -> String {
         let title = post?.postTitle ?? postTitle
-        return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
+        return !title.isEmpty ? title.stringByDecodingXMLCharacters() : AppLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
     @objc public func authorForDisplay() -> String {

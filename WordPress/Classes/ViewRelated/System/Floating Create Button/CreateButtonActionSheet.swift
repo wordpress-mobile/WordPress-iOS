@@ -7,7 +7,7 @@ protocol ActionSheetItem {
 class CreateButtonActionSheet: ActionSheetViewController {
 
     enum Constants {
-        static let title = NSLocalizedString("Create New", comment: "Create New header text")
+        static let title = AppLocalizedString("Create New", comment: "Create New header text")
     }
 
     init(actions: [ActionSheetItem]) {

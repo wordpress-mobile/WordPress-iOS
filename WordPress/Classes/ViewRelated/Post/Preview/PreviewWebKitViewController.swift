@@ -31,8 +31,8 @@ class PreviewWebKitViewController: WebKitViewController {
 
     lazy var previewButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
-        button.title = NSLocalizedString("Preview Device", comment: "Title for web preview device switching button")
-        button.accessibilityHint = NSLocalizedString("Change the device type used for preview", comment: "Accessibility hint for web preview device switching button")
+        button.title = AppLocalizedString("Preview Device", comment: "Title for web preview device switching button")
+        button.accessibilityHint = AppLocalizedString("Change the device type used for preview", comment: "Accessibility hint for web preview device switching button")
         return button
     }()
 
@@ -164,10 +164,10 @@ class PreviewWebKitViewController: WebKitViewController {
     // MARK: Button Actions
 
     @objc private func publishButtonPressed(_ sender: UIBarButtonItem) {
-        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
+        let title = AppLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = AppLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
 
         let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
@@ -241,9 +241,9 @@ class PreviewWebKitViewController: WebKitViewController {
 
         static let deviceLabelBackgroundColor = UIColor.text.withAlphaComponent(0.8)
 
-        static let noPreviewTitle = NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
+        static let noPreviewTitle = AppLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
 
-        static let publishButtonTitle = NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
+        static let publishButtonTitle = AppLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
 
         static let publishButtonColor = UIColor.primary
 

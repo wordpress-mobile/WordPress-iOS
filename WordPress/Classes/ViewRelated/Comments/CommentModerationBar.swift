@@ -223,13 +223,13 @@ enum ModerationButtonType {
     var label: String {
         switch self {
         case .pending:
-            return NSLocalizedString("Pending", comment: "Button title for Pending comment state.")
+            return AppLocalizedString("Pending", comment: "Button title for Pending comment state.")
         case .approved:
-            return NSLocalizedString("Approved", comment: "Button title for Approved comment state.")
+            return AppLocalizedString("Approved", comment: "Button title for Approved comment state.")
         case .spam:
-            return NSLocalizedString("Spam", comment: "Button title for Spam comment state.")
+            return AppLocalizedString("Spam", comment: "Button title for Spam comment state.")
         case .trash:
-            return NSLocalizedString("Trash", comment: "Button title for Trash comment state.")
+            return AppLocalizedString("Trash", comment: "Button title for Trash comment state.")
         }
     }
 

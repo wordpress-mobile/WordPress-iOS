@@ -127,7 +127,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     public static func closeButton(target: Any?, action: Selector) -> UIBarButtonItem {
         let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         closeButton.layer.cornerRadius = 15
-        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        closeButton.accessibilityLabel = AppLocalizedString("Close", comment: "Dismisses the current screen")
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         closeButton.addTarget(target, action: action, for: .touchUpInside)
 
@@ -432,7 +432,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
                                      title: title,
                                      subtitle: subtitle,
                                      noConnectionSubtitle: subtitle,
-                                     buttonTitle: NSLocalizedString("Retry", comment: "A prompt to attempt the failed network request again"),
+                                     buttonTitle: AppLocalizedString("Retry", comment: "A prompt to attempt the failed network request again"),
                                      customizationBlock: { (noResultsController) in
                                         noResultsController.delegate = resultsDelegate
                                      })

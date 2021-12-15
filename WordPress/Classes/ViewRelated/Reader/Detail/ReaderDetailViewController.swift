@@ -852,8 +852,8 @@ private extension ReaderDetailViewController {
     }
 
     struct LoadingText {
-        static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
-        static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
+        static let errorLoadingTitle = AppLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
+        static let errorLoadingPostURLButtonTitle = AppLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
     }
 
 }
@@ -983,13 +983,13 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
 extension ReaderDetailViewController {
 
     private struct Strings {
-        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
-        static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
-        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
-        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
-        static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
-        static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
+        static let backButtonAccessibilityLabel = AppLocalizedString("Back", comment: "Spoken accessibility label")
+        static let dismissButtonAccessibilityLabel = AppLocalizedString("Dismiss", comment: "Spoken accessibility label")
+        static let safariButtonAccessibilityLabel = AppLocalizedString("Open in Safari", comment: "Spoken accessibility label")
+        static let shareButtonAccessibilityLabel = AppLocalizedString("Share", comment: "Spoken accessibility label")
+        static let moreButtonAccessibilityLabel = AppLocalizedString("More", comment: "Spoken accessibility label")
+        static let localPostsSectionTitle = AppLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
+        static let globalPostsSectionTitle = AppLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
     }
 }
 

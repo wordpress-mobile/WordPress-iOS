@@ -18,18 +18,18 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
     init(site: JetpackSiteRef, activity: Activity, isAwaitingCredentials: Bool) {
 
-        let highlightedSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
-        let warningFormat = NSLocalizedString("%1$@ to enable one click site restores from backups.", comment: "Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'.")
+        let highlightedSubstring = AppLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
+        let warningFormat = AppLocalizedString("%1$@ to enable one click site restores from backups.", comment: "Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'.")
         let warningString = String(format: warningFormat, highlightedSubstring)
         let warningButtonTitle = HighlightedText(substring: highlightedSubstring, string: warningString)
 
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
-            title: NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen"),
+            title: AppLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen"),
             iconImage: UIImage.gridicon(.history),
-            messageTitle: NSLocalizedString("Restore site", comment: "Label that describes the restore site action"),
-            messageDescription: NSLocalizedString("%1$@ is the selected point for your restore.", comment: "Description for the restore action. $1$@ is a placeholder for the selected date."),
-            generalSectionHeaderText: NSLocalizedString("Choose the items to restore", comment: "Restorable items: general section title"),
-            buttonTitle: NSLocalizedString("Restore to this point", comment: "Button title for restore site action"),
+            messageTitle: AppLocalizedString("Restore site", comment: "Label that describes the restore site action"),
+            messageDescription: AppLocalizedString("%1$@ is the selected point for your restore.", comment: "Description for the restore action. $1$@ is a placeholder for the selected date."),
+            generalSectionHeaderText: AppLocalizedString("Choose the items to restore", comment: "Restorable items: general section title"),
+            buttonTitle: AppLocalizedString("Restore to this point", comment: "Button title for restore site action"),
             warningButtonTitle: isAwaitingCredentials ? warningButtonTitle : nil,
             isRestoreTypesConfigurable: !isAwaitingCredentials
         )
@@ -64,7 +64,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     override func detailActionButtonTapped() {
         guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: site.siteID) else {
 
-            let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            let title = AppLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
 
             displayNotice(title: title)
 

@@ -45,15 +45,15 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static let descriptionMap = [
-            disabled.rawValue: NSLocalizedString("No comments", comment: "An option in a list. Automatically approve no comments."),
-            fromKnownUsers.rawValue: NSLocalizedString("Known user's comments", comment: "An option in a list. Automatically approve comments from known users."),
-            everything.rawValue: NSLocalizedString("All comments", comment: "An option in a list. Automatically approve all comments")
+            disabled.rawValue: AppLocalizedString("No comments", comment: "An option in a list. Automatically approve no comments."),
+            fromKnownUsers.rawValue: AppLocalizedString("Known user's comments", comment: "An option in a list. Automatically approve comments from known users."),
+            everything.rawValue: AppLocalizedString("All comments", comment: "An option in a list. Automatically approve all comments")
         ]
 
         fileprivate static let hintsMap = [
-            disabled.rawValue: NSLocalizedString("Require manual approval for everyone's comments.", comment: "Explains the effect of the 'No comments' auto approval setting."),
-            fromKnownUsers.rawValue: NSLocalizedString("Automatically approve if the user has a previously approved comment.", comment: "Explains the effect of the 'Known users' auto approval setting"),
-            everything.rawValue: NSLocalizedString("Automatically approve everyone's comments.", comment: "Explains the effect of the 'All comments' auto approval setting")
+            disabled.rawValue: AppLocalizedString("Require manual approval for everyone's comments.", comment: "Explains the effect of the 'No comments' auto approval setting."),
+            fromKnownUsers.rawValue: AppLocalizedString("Automatically approve if the user has a previously approved comment.", comment: "Explains the effect of the 'Known users' auto approval setting"),
+            everything.rawValue: AppLocalizedString("Automatically approve everyone's comments.", comment: "Explains the effect of the 'All comments' auto approval setting")
         ]
     }
 
@@ -91,8 +91,8 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static var descriptionMap = [
-            ascending.rawValue: NSLocalizedString("Oldest first", comment: "Sort Order"),
-            descending.rawValue: NSLocalizedString("Newest first", comment: "Sort Order")
+            ascending.rawValue: AppLocalizedString("Oldest first", comment: "Sort Order"),
+            descending.rawValue: AppLocalizedString("Newest first", comment: "Sort Order")
         ]
     }
 
@@ -169,10 +169,10 @@ extension BlogSettings {
         fileprivate static let maximumValue  = 10
 
         fileprivate static var descriptionMap: [Int: String] {
-            let descriptionFormat = NSLocalizedString("%@ levels", comment: "Comments Threading Levels")
+            let descriptionFormat = AppLocalizedString("%@ levels", comment: "Comments Threading Levels")
             var optionsMap = [Int: String]()
 
-            optionsMap[disabledValue] = NSLocalizedString("Disabled", comment: "Adjective. Comment threading is disabled.")
+            optionsMap[disabledValue] = AppLocalizedString("Disabled", comment: "Adjective. Comment threading is disabled.")
 
             for currentLevel in minimumValue...maximumValue {
                 let level = NumberFormatter.localizedString(from: NSNumber(value: currentLevel), number: .spellOut)

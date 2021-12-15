@@ -36,15 +36,15 @@ class MediaSettings: NSObject {
         var description: String {
             switch self {
             case .size640x480:
-                return NSLocalizedString("480p", comment: "Indicates a video will be resized to 640x480 when uploaded.")
+                return AppLocalizedString("480p", comment: "Indicates a video will be resized to 640x480 when uploaded.")
             case .size1280x720:
-                return NSLocalizedString("720p", comment: "Indicates a video will be resized to HD 1280x720 when uploaded.")
+                return AppLocalizedString("720p", comment: "Indicates a video will be resized to HD 1280x720 when uploaded.")
             case .size1920x1080:
-                return NSLocalizedString("1080p", comment: "Indicates a video will be resized to Full HD 1920x1080 when uploaded.")
+                return AppLocalizedString("1080p", comment: "Indicates a video will be resized to Full HD 1920x1080 when uploaded.")
             case .size3840x2160:
-                return NSLocalizedString("4K", comment: "Indicates a video will be resized to 4K 3840x2160 when uploaded.")
+                return AppLocalizedString("4K", comment: "Indicates a video will be resized to 4K 3840x2160 when uploaded.")
             case(.sizeOriginal):
-                return NSLocalizedString("Original", comment: "Indicates a video will use its original size when uploaded.")
+                return AppLocalizedString("Original", comment: "Indicates a video will use its original size when uploaded.")
             }
         }
 

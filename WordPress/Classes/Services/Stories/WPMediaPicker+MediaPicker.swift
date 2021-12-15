@@ -16,9 +16,9 @@ class PortraitTabBarController: UITabBarController {
 class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker {
 
     private struct Constants {
-        static let photosTabBarTitle: String = NSLocalizedString("Photos", comment: "Tab bar title for the Photos tab in Media Picker")
+        static let photosTabBarTitle: String = AppLocalizedString("Photos", comment: "Tab bar title for the Photos tab in Media Picker")
         static let photosTabBarIcon: UIImage? = .gridicon(.imageMultiple)
-        static let mediaPickerTabBarTitle: String = NSLocalizedString("Media", comment: "Tab bar title for the Media tab in Media Picker")
+        static let mediaPickerTabBarTitle: String = AppLocalizedString("Media", comment: "Tab bar title for the Media tab in Media Picker")
         static let mediaPickerTabBarIcon: UIImage? = UIImage(named: "icon-wp")?.af_imageAspectScaled(toFit: CGSize(width: 30, height: 30))
     }
 
@@ -142,8 +142,8 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
             case .failure(let error):
                 picker.selectedAssets = selected
 
-                let title = NSLocalizedString("Failed Media Export", comment: "Error title when picked media cannot be imported into stories.")
-                let message = NSLocalizedString("Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Error message when picked media cannot be imported into stories.")
+                let title = AppLocalizedString("Failed Media Export", comment: "Error title when picked media cannot be imported into stories.")
+                let message = AppLocalizedString("Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Error message when picked media cannot be imported into stories.")
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
                     alert.dismiss(animated: true, completion: nil)

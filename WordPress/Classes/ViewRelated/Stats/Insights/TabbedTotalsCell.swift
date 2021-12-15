@@ -48,7 +48,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     private lazy var noResultsViewController: NoResultsViewController = {
        let controller = NoResultsViewController.controller()
-        controller.configure(title: NSLocalizedString("No data yet", comment: "Text shown when there is no data to display in the stats list view."))
+        controller.configure(title: AppLocalizedString("No data yet", comment: "Text shown when there is no data to display in the stats list view."))
         controller.hideImageView(true)
         return controller
     }()

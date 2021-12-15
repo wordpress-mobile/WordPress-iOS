@@ -74,7 +74,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
 
-        let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
+        let buttonTitle = AppLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControl.State())
         let buttonBackgroundImage = UIImage(color: .listBackground)
         clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControl.State())
@@ -146,12 +146,12 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
 
     @IBAction func handleClearButtonTapped(_ sender: UIButton) {
-        let alert = UIAlertController(title: NSLocalizedString("Clear Search History", comment: "Title of an alert prompt."),
-                                      message: NSLocalizedString("Would you like to clear your search history?", comment: "Asks the user if they would like to clear their search history."),
+        let alert = UIAlertController(title: AppLocalizedString("Clear Search History", comment: "Title of an alert prompt."),
+                                      message: AppLocalizedString("Would you like to clear your search history?", comment: "Asks the user if they would like to clear their search history."),
                                       preferredStyle: .alert)
 
-        alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button title. Cancels a pending action."))
-        alert.addDefaultActionWithTitle(NSLocalizedString("Yes", comment: "Button title. Confirms that the user wants to proceed with a pending action.")) { (action) in
+        alert.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Button title. Cancels a pending action."))
+        alert.addDefaultActionWithTitle(AppLocalizedString("Yes", comment: "Button title. Confirms that the user wants to proceed with a pending action.")) { (action) in
             self.clearSearchHistory()
         }
 
@@ -228,6 +228,6 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
 
 
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return NSLocalizedString("Delete", comment: "Title of a delete button")
+        return AppLocalizedString("Delete", comment: "Title of a delete button")
     }
 }

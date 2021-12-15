@@ -32,7 +32,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("Media Settings", comment: "Media Settings Title")
+        navigationItem.title = AppLocalizedString("Media Settings", comment: "Media Settings Title")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -70,30 +70,30 @@ class AztecAttachmentViewController: UITableViewController {
     // MARK: - Model mapping
 
     func tableViewModel() -> ImmuTable {
-        let displaySettingsHeader = NSLocalizedString("Web Display Settings", comment: "The title of the option group for editing an image's size, alignment, etc. on the image details screen.")
+        let displaySettingsHeader = AppLocalizedString("Web Display Settings", comment: "The title of the option group for editing an image's size, alignment, etc. on the image details screen.")
 
         let alignmentRow = EditableTextRow(
-            title: NSLocalizedString("Alignment", comment: "Image alignment option title."),
+            title: AppLocalizedString("Alignment", comment: "Image alignment option title."),
             value: alignment?.localizedString ?? ImageAttachment.Alignment.none.localizedString,
             action: displayAlignmentSelector)
 
         let linkToRow = EditableTextRow(
-            title: NSLocalizedString("Link To", comment: "Image link option title."),
+            title: AppLocalizedString("Link To", comment: "Image link option title."),
             value: linkURL?.absoluteString ?? "",
             action: displayLinkTextfield)
 
         let sizeRow = EditableTextRow(
-            title: NSLocalizedString("Size", comment: "Image size option title."),
+            title: AppLocalizedString("Size", comment: "Image size option title."),
             value: size.localizedString,
             action: displaySizeSelector)
 
         let altRow = EditableTextRow(
-            title: NSLocalizedString("Alt Text", comment: "Image alt attribute option title."),
+            title: AppLocalizedString("Alt Text", comment: "Image alt attribute option title."),
             value: alt ?? "",
             action: displayAltTextfield)
 
         let captionRow = EditableAttributedTextRow(
-            title: NSLocalizedString("Caption", comment: "Image caption field label (for editing)"),
+            title: AppLocalizedString("Caption", comment: "Image caption field label (for editing)"),
             value: caption ?? NSAttributedString(),
             action: displayCaptionTextfield)
 
@@ -116,7 +116,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
-        let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
+        let hint = AppLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
 
         pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
             guard let `self` = self else {
@@ -130,7 +130,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     private func displayCaptionTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableAttributedTextRow
-        let hint = NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings.")
+        let hint = AppLocalizedString("Image Caption", comment: "Hint for image caption on image settings.")
 
         pushSettingsController(for: editableRow, hint: hint) { [weak self] value in
             guard let `self` = self else {
@@ -144,7 +144,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     private func displayLinkTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
-        let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
+        let hint = AppLocalizedString("Image Link", comment: "Hint for image link on image settings.")
 
         pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { [weak self] value in
             guard let `self` = self else {
@@ -168,7 +168,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let dict: [String: Any] = [
             SettingsSelectionDefaultValueKey: alignment ?? ImageAttachment.Alignment.none,
-            SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment: "Title of the screen for choosing an image's alignment."),
+            SettingsSelectionTitleKey: AppLocalizedString("Alignment", comment: "Title of the screen for choosing an image's alignment."),
             SettingsSelectionTitlesKey: titles,
             SettingsSelectionValuesKey: values,
             SettingsSelectionCurrentValueKey: currentValue ?? ImageAttachment.Alignment.none
@@ -200,7 +200,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let dict: [String: Any] = [
             SettingsSelectionDefaultValueKey: size,
-            SettingsSelectionTitleKey: NSLocalizedString("Image Size", comment: "Title of the screen for choosing an image's size."),
+            SettingsSelectionTitleKey: AppLocalizedString("Image Size", comment: "Title of the screen for choosing an image's size."),
             SettingsSelectionTitlesKey: titles,
             SettingsSelectionValuesKey: values,
             SettingsSelectionCurrentValueKey: currentValue
@@ -274,10 +274,10 @@ extension ImageAttachment.Alignment {
 
     var localizedString: String {
         switch self {
-        case .left: return NSLocalizedString("Left", comment: "Left alignment for an image. Should be the same as in core WP.")
-        case .center: return NSLocalizedString("Center", comment: "Center alignment for an image. Should be the same as in core WP.")
-        case .right: return NSLocalizedString("Right", comment: "Right alignment for an image. Should be the same as in core WP.")
-        case .none: return NSLocalizedString("None", comment: "No alignment for an image (default). Should be the same as in core WP.")
+        case .left: return AppLocalizedString("Left", comment: "Left alignment for an image. Should be the same as in core WP.")
+        case .center: return AppLocalizedString("Center", comment: "Center alignment for an image. Should be the same as in core WP.")
+        case .right: return AppLocalizedString("Right", comment: "Right alignment for an image. Should be the same as in core WP.")
+        case .none: return AppLocalizedString("None", comment: "No alignment for an image (default). Should be the same as in core WP.")
         }
     }
 }
@@ -286,11 +286,11 @@ extension ImageAttachment.Size {
 
     var localizedString: String {
         switch self {
-        case .thumbnail: return NSLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP.")
-        case .medium: return NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP.")
-        case .large: return NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP.")
-        case .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
-        case .none: return NSLocalizedString("None", comment: "No size class defined for the image. Should be the same as in core WP.")
+        case .thumbnail: return AppLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP.")
+        case .medium: return AppLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP.")
+        case .large: return AppLocalizedString("Large", comment: "Large image size. Should be the same as in core WP.")
+        case .full: return AppLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
+        case .none: return AppLocalizedString("None", comment: "No size class defined for the image. Should be the same as in core WP.")
         }
     }
 }

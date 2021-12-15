@@ -95,25 +95,25 @@ extension FancyAlertViewController {
     }
 
     private enum Strings {
-        static let titleText = NSLocalizedString("Confirm your email first",
+        static let titleText = AppLocalizedString("Confirm your email first",
                                                  comment: "Title of alert prompting users to verify their accounts while attempting to publish")
 
-        static let bodyText = NSLocalizedString("You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.",
+        static let bodyText = AppLocalizedString("You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.",
                                                 comment: "Body of alert prompting users to verify their accounts while attempting to publish")
 
-        static let resendEmail = NSLocalizedString("Resend",
+        static let resendEmail = AppLocalizedString("Resend",
                                                    comment: "Title of secondary button on alert prompting verify their accounts while attempting to publish")
 
-        static let ok = NSLocalizedString("OK",
+        static let ok = AppLocalizedString("OK",
                                           comment: "Title of primary button on alert prompting verify their accounts while attempting to publish")
 
-        static let emailSentSuccesfully = NSLocalizedString("Verification email sent, check your inbox.",
+        static let emailSentSuccesfully = AppLocalizedString("Verification email sent, check your inbox.",
                                                  comment: "Message shown when a verification email was re-sent succesfully")
 
-        static let emailSendingFailedAlreadyVerified = NSLocalizedString("Error sending verification email. Are you already verified?",
+        static let emailSendingFailedAlreadyVerified = AppLocalizedString("Error sending verification email. Are you already verified?",
                                                                          comment: "Message shown when there was an error trying to re-send email verification and we suspect the user has already verified in the meantime")
 
-        static let emailSendingFailedGeneric = NSLocalizedString("Error sending verification email. Check your connection and try again.",
+        static let emailSendingFailedGeneric = AppLocalizedString("Error sending verification email. Check your connection and try again.",
                                                                  comment: "Generic message shown when there was an error trying to re-send email verification.")
 
     }

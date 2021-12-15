@@ -73,7 +73,7 @@ open class AboutViewController: UITableViewController {
             return
         }
 
-        let title = NSLocalizedString("Close", comment: "Dismiss the current view")
+        let title = AppLocalizedString("Close", comment: "Dismiss the current view")
         let style = WPStyleGuide.barButtonStyleForBordered()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: style, target: self, action: #selector(AboutViewController.dismissWasPressed(_:)))
     }
@@ -357,23 +357,23 @@ extension AboutViewController: ShareAppContentPresenterDelegate {
 
 private extension String {
     // view controller
-    static let navigationTitleText = NSLocalizedString("About", comment: "About this app (information page title)")
-    static let navigationDismissButtonText = NSLocalizedString("Close", comment: "Dismiss the current view")
+    static let navigationTitleText = AppLocalizedString("About", comment: "About this app (information page title)")
+    static let navigationDismissButtonText = AppLocalizedString("Close", comment: "Dismiss the current view")
 
     // reuse identifiers
     static let defaultReuseIdentifier = "reuseIdentifierValue1"
     static let buttonReuseIdentifier = SingleButtonTableViewCell.defaultReuseID
 
     // table view strings
-    static let versionRowText = NSLocalizedString("Version", comment: "Displays the version of the App")
-    static let termsOfServiceRowText = NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web")
-    static let privacyPolicyRowText = NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web")
-    static let twitterRowText = NSLocalizedString("Twitter", comment: "Launches the Twitter App")
-    static let blogRowText = NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog")
-    static let sourceCodeRowText = NSLocalizedString("Source Code", comment: "Opens the Github Repository Web")
-    static let rateUsRowText = NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store")
-    static let acknowledgementsRowText = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
-    static let footerTitleTextFormat = NSLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
+    static let versionRowText = AppLocalizedString("Version", comment: "Displays the version of the App")
+    static let termsOfServiceRowText = AppLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web")
+    static let privacyPolicyRowText = AppLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web")
+    static let twitterRowText = AppLocalizedString("Twitter", comment: "Launches the Twitter App")
+    static let blogRowText = AppLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog")
+    static let sourceCodeRowText = AppLocalizedString("Source Code", comment: "Opens the Github Repository Web")
+    static let rateUsRowText = AppLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store")
+    static let acknowledgementsRowText = AppLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
+    static let footerTitleTextFormat = AppLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
 }
 
 private extension AboutViewController {

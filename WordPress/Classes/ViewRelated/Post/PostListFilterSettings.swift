@@ -19,9 +19,9 @@ class PostListFilterSettings: NSObject {
         var stringValue: String {
             switch self {
             case .mine:
-                return NSLocalizedString("Me", comment: "Label for the post author filter. This filter shows posts only authored by the current user.")
+                return AppLocalizedString("Me", comment: "Label for the post author filter. This filter shows posts only authored by the current user.")
             case .everyone:
-                return NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
+                return AppLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
             }
         }
     }

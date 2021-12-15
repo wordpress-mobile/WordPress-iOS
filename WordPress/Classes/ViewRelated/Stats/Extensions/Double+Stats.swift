@@ -42,7 +42,7 @@ extension Double {
             struct Cache {
                 static let units: [Unit] = {
                     var units: [Unit] = []
-                    // Note: using `AppLocalizedString` here (instead of `NSLocalizedString`) to ensure that strings
+                    // Note: using `AppLocalizedString` here (instead of `AppLocalizedString`) to ensure that strings
                     // will be looked up from the app's _own_ `Localizable.strings` file, even when this file is used
                     // as part of an _App Extension_ (especially our various stats Widgets which also use this file)
 

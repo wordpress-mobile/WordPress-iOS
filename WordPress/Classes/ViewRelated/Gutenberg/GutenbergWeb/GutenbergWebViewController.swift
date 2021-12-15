@@ -101,7 +101,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     }
 
     private func addNavigationBarElements() {
-        let buttonTitle = NSLocalizedString("Continue", comment: "Apply changes localy to single block edition in the web block editor")
+        let buttonTitle = AppLocalizedString("Continue", comment: "Apply changes localy to single block edition in the web block editor")
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: buttonTitle,
             style: .done,
@@ -112,8 +112,8 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     }
 
     private func showLoadingMessage() {
-        let title = NSLocalizedString("Loading the block editor.", comment: "Loading message shown while the Unsupported Block Editor is loading.")
-        let subtitle = NSLocalizedString("Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.", comment: "Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly.")
+        let title = AppLocalizedString("Loading the block editor.", comment: "Loading message shown while the Unsupported Block Editor is loading.")
+        let subtitle = AppLocalizedString("Please ensure the block editor is enabled on your site. If it is not enabled, it will not load.", comment: "Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly.")
         configureAndDisplayNoResults(on: view, title: title, subtitle: subtitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
@@ -130,8 +130,8 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     }
 
     private func showTroubleshootingInstructions() {
-        let title = NSLocalizedString("Unable to load the block editor right now.", comment: "Title message shown when the Unsupported Block Editor fails to load.")
-        let subtitle = NSLocalizedString("Please ensure the block editor is enabled on your site and try again.", comment: "Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again.")
+        let title = AppLocalizedString("Unable to load the block editor right now.", comment: "Title message shown when the Unsupported Block Editor fails to load.")
+        let subtitle = AppLocalizedString("Please ensure the block editor is enabled on your site and try again.", comment: "Subtitle message shown when the Unsupported Block Editor fails to load. It asks users to verify that the block editor is enabled on their site before trying again.")
         // This does nothing if the "no results" screen is not currently displayed, which is the intended behavior
         updateNoResults(title: title, subtitle: subtitle, image: "cloud")
     }

@@ -33,9 +33,9 @@ private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     }
 
     if headerView.gravatarImageView.image == defaultImage {
-        headerView.gravatarButton.setTitle(NSLocalizedString("Add a Profile Photo", comment: "Add a profile photo to Me > My Profile"), for: .normal)
+        headerView.gravatarButton.setTitle(AppLocalizedString("Add a Profile Photo", comment: "Add a profile photo to Me > My Profile"), for: .normal)
     } else {
-        headerView.gravatarButton.setTitle(NSLocalizedString("Update Profile Photo", comment: "Update profile photo in Me > My Profile"), for: .normal)
+        headerView.gravatarButton.setTitle(AppLocalizedString("Update Profile Photo", comment: "Update profile photo in Me > My Profile"), for: .normal)
     }
     return headerView
 }
@@ -60,7 +60,7 @@ private class MyProfileController: SettingsController {
 
     // MARK: - ImmuTableController
 
-    let title = NSLocalizedString("My Profile", comment: "My Profile view title")
+    let title = AppLocalizedString("My Profile", comment: "My Profile view title")
 
     var immuTableRows: [ImmuTableRow.Type] {
         return [EditableTextRow.self]
@@ -112,28 +112,28 @@ private class MyProfileController: SettingsController {
 
     func mapViewModel(_ settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let firstNameRow = EditableTextRow(
-            title: NSLocalizedString("First Name", comment: "My Profile first name label"),
+            title: AppLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
             action: presenter.push(editText(AccountSettingsChange.firstName, service: service)),
             fieldName: "first_name")
 
         let lastNameRow = EditableTextRow(
-            title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
+            title: AppLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
             action: presenter.push(editText(AccountSettingsChange.lastName, service: service)),
             fieldName: "last_name")
 
         let displayNameRow = EditableTextRow(
-            title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
+            title: AppLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
             action: presenter.push(editText(AccountSettingsChange.displayName, service: service)),
             fieldName: "display_name")
 
         let aboutMeRow = EditableTextRow(
-            title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
+            title: AppLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
             action: presenter.push(editMultilineText(AccountSettingsChange.aboutMe,
-                hint: NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
+                hint: AppLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
                 service: service)),
             fieldName: "about_me")
 

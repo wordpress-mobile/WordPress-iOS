@@ -91,7 +91,7 @@ private extension CommentsTableViewCell {
     }
 
     func attributedTitle() -> NSAttributedString {
-        let titleFormat = NSLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
+        let titleFormat = AppLocalizedString("%1$@ on %2$@", comment: "Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title.")
 
         let replacementMap = [
             "%1$@": NSAttributedString(string: author, attributes: Style.titleBoldAttributes),

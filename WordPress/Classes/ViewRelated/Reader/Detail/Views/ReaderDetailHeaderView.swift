@@ -165,7 +165,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     private func configureByLabel() {
-        byLabel.text = NSLocalizedString("By ", comment: "Label for the post author in the post detail.")
+        byLabel.text = AppLocalizedString("By ", comment: "Label for the post author in the post detail.")
     }
 
     private func configureAuthorLabel() {
@@ -240,16 +240,16 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
 
         blogNameButton.isAccessibilityElement = true
         blogNameButton.accessibilityTraits = [.staticText, .button]
-        blogNameButton.accessibilityHint = NSLocalizedString("Shows the site's posts.", comment: "Accessibility hint for the site name and URL button on Reader's Post Details.")
+        blogNameButton.accessibilityHint = AppLocalizedString("Shows the site's posts.", comment: "Accessibility hint for the site name and URL button on Reader's Post Details.")
         if let label = blogNameLabel(post) {
             blogNameButton.accessibilityLabel = label
         }
     }
 
     private func prepareMenuForVoiceOver() {
-        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader's post details")
+        menuButton.accessibilityLabel = AppLocalizedString("More", comment: "Accessibility label for the More button on Reader's post details")
         menuButton.accessibilityTraits = UIAccessibilityTraits.button
-        menuButton.accessibilityHint = NSLocalizedString("Shows more options.", comment: "Accessibility hint for the More button on Reader's post details")
+        menuButton.accessibilityHint = AppLocalizedString("Shows more options.", comment: "Accessibility hint for the More button on Reader's post details")
     }
 
     private func blogNameLabel(_ post: ReaderPost) -> String? {
@@ -260,11 +260,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
         }
 
         guard let postedOn = post.dateCreated?.toMediumString() else {
-            let format = NSLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
+            let format = AppLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
             return String(format: format, postedIn, postedAtURL, postedBy)
         }
 
-        let format = NSLocalizedString("Posted in %@, at %@, by %@, %@", comment: "Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date")
+        let format = AppLocalizedString("Posted in %@, at %@, by %@, %@", comment: "Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date")
         return String(format: format, postedIn, postedAtURL, postedBy, postedOn)
     }
 

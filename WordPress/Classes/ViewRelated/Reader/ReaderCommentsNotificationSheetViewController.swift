@@ -289,16 +289,16 @@ private extension ReaderCommentsNotificationSheetViewController {
 // MARK: - Localization
 
 private extension String {
-    static let descriptionTextForDisabledNotifications = NSLocalizedString("You’re following this conversation. "
+    static let descriptionTextForDisabledNotifications = AppLocalizedString("You’re following this conversation. "
                                                                             + "You will receive an email whenever a new comment is made.",
                                                                            comment: "Describes the expected behavior when the user enables in-app "
                                                                             + "notifications in Reader Comments.")
-    static let descriptionTextForEnabledNotifications = NSLocalizedString("You’re following this conversation. "
+    static let descriptionTextForEnabledNotifications = AppLocalizedString("You’re following this conversation. "
                                                                             + "You will receive an email and a notification whenever a new comment is made.",
                                                                           comment: "Describes the expected behavior when the user disables in-app "
                                                                             + "notifications in Reader Comments.")
-    static let notificationSwitchLabelText = NSLocalizedString("Enable in-app notifications",
+    static let notificationSwitchLabelText = AppLocalizedString("Enable in-app notifications",
                                                                comment: "Describes a switch component that toggles in-app notifications for a followed post.")
-    static let unfollowButtonTitle = NSLocalizedString("Unfollow conversation",
+    static let unfollowButtonTitle = AppLocalizedString("Unfollow conversation",
                                                        comment: "Title for a button that unsubscribes the user from the post.")
 }

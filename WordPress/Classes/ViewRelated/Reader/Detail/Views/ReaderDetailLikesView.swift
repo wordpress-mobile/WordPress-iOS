@@ -157,21 +157,21 @@ private extension ReaderDetailLikesView {
     }
 
     struct SummaryLabelFormats {
-        static let onlySelf = NSLocalizedString("_You_ like this.",
+        static let onlySelf = AppLocalizedString("_You_ like this.",
                                                 comment: "Describes that the current user is the only one liking a post."
                                                     + " The underscores denote underline and is not displayed.")
-        static let singularWithSelf = NSLocalizedString("_You and %1$d blogger_ like this.",
+        static let singularWithSelf = AppLocalizedString("_You and %1$d blogger_ like this.",
                                                         comment: "Describes that the current user and one other user like a post."
                                                             + " %1$d is the number of likes, excluding the like by current user."
                                                             + " The underscores denote underline and is not displayed.")
-        static let pluralWithSelf = NSLocalizedString("_You and %1$d bloggers_ like this.",
+        static let pluralWithSelf = AppLocalizedString("_You and %1$d bloggers_ like this.",
                                                       comment: "Plural format string for displaying the number of post likes, including the like from the current user."
                                                         + " %1$d is the number of likes, excluding the like by current user."
                                                         + " The underscores denote underline and is not displayed.")
-        static let singular = NSLocalizedString("_%1$d blogger_ likes this.",
+        static let singular = AppLocalizedString("_%1$d blogger_ likes this.",
                                                 comment: "Describes that only one user likes a post. "
                                                     + " %1$d is the number of likes. The underscores denote underline and is not displayed.")
-        static let plural = NSLocalizedString("_%1$d bloggers_ like this.",
+        static let plural = AppLocalizedString("_%1$d bloggers_ like this.",
                                               comment: "Plural format string for displaying the number of post likes."
                                                 + " %1$d is the number of likes. The underscores denote underline and is not displayed.")
     }

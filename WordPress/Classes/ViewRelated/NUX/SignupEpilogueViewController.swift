@@ -323,16 +323,16 @@ private extension SignupEpilogueViewController {
     }
 
     enum ButtonTitle {
-        static let title = NSLocalizedString("Done", comment: "Button text on site creation epilogue page to proceed to My Sites.")
+        static let title = AppLocalizedString("Done", comment: "Button text on site creation epilogue page to proceed to My Sites.")
         // TODO: change UI Test when change this
         static let accessibilityId = "Done Button"
     }
 
     enum HUDMessages {
-        static let changingDisplayName = NSLocalizedString("Changing display name", comment: "Shown while the app waits for the display name changing web service to return.")
-        static let changingUsername = NSLocalizedString("Changing username", comment: "Shown while the app waits for the username changing web service to return.")
-        static let changingPassword = NSLocalizedString("Changing password", comment: "Shown while the app waits for the password changing web service to return.")
-        static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure changing the password.")
+        static let changingDisplayName = AppLocalizedString("Changing display name", comment: "Shown while the app waits for the display name changing web service to return.")
+        static let changingUsername = AppLocalizedString("Changing username", comment: "Shown while the app waits for the username changing web service to return.")
+        static let changingPassword = AppLocalizedString("Changing password", comment: "Shown while the app waits for the password changing web service to return.")
+        static let changePasswordGenericError = AppLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure changing the password.")
     }
 
 }

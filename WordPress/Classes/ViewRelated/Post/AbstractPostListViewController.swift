@@ -768,13 +768,13 @@ class AbstractPostListViewController: UIViewController,
         if !connectionAvailable() {
             handleConnectionError()
         } else {
-            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            let title = AppLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingNotice(title: title, error: error)
         }
     }
 
     @objc func promptForPassword() {
-        let message = NSLocalizedString("The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", comment: "Error message informing a user about an invalid password.")
+        let message = AppLocalizedString("The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", comment: "Error message informing a user about an invalid password.")
 
         // bad login/pass combination
         let editSiteViewController = SiteSettingsViewController(blog: blog)
@@ -785,7 +785,7 @@ class AbstractPostListViewController: UIViewController,
         navController.modalTransitionStyle = .crossDissolve
         navController.modalPresentationStyle = .formSheet
 
-        WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: "An error message."), message: message, withSupportButton: true) { _ in
+        WPError.showAlert(withTitle: AppLocalizedString("Unable to Connect", comment: "An error message."), message: message, withSupportButton: true) { _ in
             self.present(navController, animated: true)
         }
     }
@@ -898,10 +898,10 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Actions
 
     @objc func publishPost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
-        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
+        let title = AppLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = AppLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
 
         let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
@@ -932,7 +932,7 @@ class AbstractPostListViewController: UIViewController,
         controller.trackOpenEvent()
         // NOTE: We'll set the title to match the title of the View action button.
         // If the button title changes we should also update the title here.
-        controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
+        controller.navigationItem.title = AppLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
         let navWrapper = LightNavigationController(rootViewController: controller)
         if navigationController?.traitCollection.userInterfaceIdiom == .pad {
             navWrapper.modalPresentationStyle = .fullScreen

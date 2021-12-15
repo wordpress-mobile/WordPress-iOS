@@ -340,9 +340,9 @@ extension SiteStatsDetailTableViewController: NoResultsViewHost {
     }
 
     private enum NoResultConstants {
-        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
-        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
-        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+        static let errorTitle = AppLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = AppLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = AppLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
     }
 }
 

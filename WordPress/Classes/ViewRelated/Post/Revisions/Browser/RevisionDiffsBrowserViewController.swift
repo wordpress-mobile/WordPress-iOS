@@ -20,7 +20,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
     private lazy var doneBarButtonItem: UIBarButtonItem = {
         let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
-        doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
+        doneItem.title = AppLocalizedString("Done", comment: "Label on button to dismiss revisions view")
         doneItem.on() { [weak self] _ in
             WPAnalytics.track(.postRevisionsDetailCancelled)
             self?.dismiss(animated: true)
@@ -33,7 +33,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
         button.frame = CGRect(origin: .zero, size: image.size)
-        button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        button.accessibilityLabel = AppLocalizedString("More", comment: "Action button to display more available options")
         button.on(.touchUpInside) { [weak self] _ in
             self?.moreWasPressed()
         }
@@ -42,7 +42,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }()
 
     private lazy var loadBarButtonItem: UIBarButtonItem = {
-        let title = NSLocalizedString("Load", comment: "Title of the screen that load selected the revisions.")
+        let title = AppLocalizedString("Load", comment: "Title of the screen that load selected the revisions.")
         let loadItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)
         loadItem.on() { [weak self] _ in
             self?.loadRevision()
@@ -96,9 +96,9 @@ class RevisionDiffsBrowserViewController: UIViewController {
         var title: String {
             switch self {
             case .html:
-                return NSLocalizedString("Switch to HTML Preview", comment: "Switches the Content to HTML Preview")
+                return AppLocalizedString("Switch to HTML Preview", comment: "Switches the Content to HTML Preview")
             case .visual:
-                return NSLocalizedString("Switch to Visual Preview", comment: "Switches the Content to Rich Text Preview")
+                return AppLocalizedString("Switch to Visual Preview", comment: "Switches the Content to Rich Text Preview")
             }
         }
 
@@ -144,7 +144,7 @@ private extension RevisionDiffsBrowserViewController {
     private func setupNavbarItems() {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, loadBarButtonItem]
-        navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
+        navigationItem.title = AppLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
         strokeView.backgroundColor = .divider
         revisionContainer.backgroundColor = .listForeground
     }
@@ -240,7 +240,7 @@ private extension RevisionDiffsBrowserViewController {
         alert.addDefaultActionWithTitle(contentPreviewState.toggle().title) { [unowned self] _ in
             self.triggerPreviewState()
         }
-        alert.addCancelActionWithTitle(NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\"."))
+        alert.addCancelActionWithTitle(AppLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\"."))
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
         present(alert, animated: true)
     }

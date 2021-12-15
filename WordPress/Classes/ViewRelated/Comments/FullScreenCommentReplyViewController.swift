@@ -157,18 +157,18 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
                                            target: self,
                                            action: #selector(btnExitFullscreenPressed))
 
-            leftItem.accessibilityLabel = NSLocalizedString("Exit Full Screen",
+            leftItem.accessibilityLabel = AppLocalizedString("Exit Full Screen",
                                                             comment: "Accessibility Label for the exit full screen button on the full screen comment reply mode")
             return leftItem
         })()
 
         navigationItem.rightBarButtonItem = ({
-            let rightItem = UIBarButtonItem(title: NSLocalizedString("Reply", comment: "Reply to a comment."),
+            let rightItem = UIBarButtonItem(title: AppLocalizedString("Reply", comment: "Reply to a comment."),
                                             style: .plain,
                                             target: self,
                                             action: #selector(btnSavePressed))
 
-            rightItem.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
+            rightItem.accessibilityLabel = AppLocalizedString("Reply", comment: "Accessibility label for the reply button")
             rightItem.isEnabled = false
             replyButton = rightItem
             return rightItem

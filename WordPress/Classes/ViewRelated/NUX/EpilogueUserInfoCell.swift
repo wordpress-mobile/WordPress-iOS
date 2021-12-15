@@ -113,7 +113,7 @@ private extension EpilogueUserInfoCell {
         usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
         accessibilityTraits = .none
 
-        let accessibilityFormat = NSLocalizedString("Account Information. %@. %@.", comment: "Accessibility description for account information after logging in.")
+        let accessibilityFormat = AppLocalizedString("Account Information. %@. %@.", comment: "Accessibility description for account information after logging in.")
         accessibilityLabel = String(format: accessibilityFormat, fullNameLabel.text ?? "", usernameLabel.text ?? "")
 
         fullNameLabel.isAccessibilityElement = false
@@ -127,10 +127,10 @@ private extension EpilogueUserInfoCell {
 
     func configureSignupAccessibility() {
         gravatarButton.isAccessibilityElement = true
-        let accessibilityDescription = NSLocalizedString("Add account image.", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
+        let accessibilityDescription = AppLocalizedString("Add account image.", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
         gravatarButton.accessibilityLabel = accessibilityDescription
 
-        let accessibilityHint = NSLocalizedString("Add image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
+        let accessibilityHint = AppLocalizedString("Add image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
         gravatarButton.accessibilityHint = accessibilityHint
     }
 

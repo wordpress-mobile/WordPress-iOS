@@ -59,11 +59,11 @@ class PostCardStatusViewModel: NSObject {
     var status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
-            return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
+            return AppLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
             return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
-            return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
+            return AppLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if !post.hasLocalChanges() && post.hasAutosaveRevision {
             return StatusMessages.hasUnsavedChanges
         } else {
@@ -259,15 +259,15 @@ class PostCardStatusViewModel: NSObject {
     }
 
     private enum Constants {
-        static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+        static let stickyLabel = AppLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
     }
 
     enum StatusMessages {
-        static let uploadFailed = NSLocalizedString("Upload failed",
+        static let uploadFailed = AppLocalizedString("Upload failed",
                                                             comment: "Message displayed on a post's card when the post has failed to upload")
-        static let localChanges = NSLocalizedString("Local changes",
+        static let localChanges = AppLocalizedString("Local changes",
                                                             comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-        static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
+        static let hasUnsavedChanges = AppLocalizedString("You've made unsaved changes to this post",
                                                             comment: "Message displayed on a post's card when the post has unsaved changes")
     }
 }

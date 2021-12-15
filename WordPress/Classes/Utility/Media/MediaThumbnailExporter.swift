@@ -90,7 +90,7 @@ class MediaThumbnailExporter: MediaExporter {
         var description: String {
             switch self {
             default:
-                return NSLocalizedString("Thumbnail unavailable.", comment: "Message shown if a thumbnail preview of a media item unavailable.")
+                return AppLocalizedString("Thumbnail unavailable.", comment: "Message shown if a thumbnail preview of a media item unavailable.")
             }
         }
     }

@@ -251,9 +251,9 @@ class AccountSettingsService {
         var errorMessage: String? {
             switch self {
             case .stalled:
-                return NSLocalizedString("We are having trouble loading data", comment: "Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed")
+                return AppLocalizedString("We are having trouble loading data", comment: "Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed")
             case .failed:
-                return NSLocalizedString("We had trouble loading data", comment: "Error message displayed when a refresh failed")
+                return AppLocalizedString("We had trouble loading data", comment: "Error message displayed when a refresh failed")
             case .idle, .refreshing:
                 return nil
             }

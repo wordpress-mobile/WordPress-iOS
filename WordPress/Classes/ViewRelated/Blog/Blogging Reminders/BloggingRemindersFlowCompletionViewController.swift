@@ -239,14 +239,14 @@ extension BloggingRemindersFlowCompletionViewController: ChildDrawerPositionable
 // MARK: - Constants
 
 private enum TextContent {
-    static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
+    static let completionTitle = AppLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
 
-    static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
+    static let remindersRemovedTitle = AppLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
 
-    static let completionUpdateHint = NSLocalizedString("You can update this any time via My Site > Site Settings",
+    static let completionUpdateHint = AppLocalizedString("You can update this any time via My Site > Site Settings",
                                                         comment: "Prompt shown on the completion screen of the Blogging Reminders Settings screen.")
 
-    static let doneButtonTitle = NSLocalizedString("Done", comment: "Title for a Done button.")
+    static let doneButtonTitle = AppLocalizedString("Done", comment: "Title for a Done button.")
 }
 
 private enum Images {

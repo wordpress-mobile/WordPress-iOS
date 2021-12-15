@@ -40,7 +40,7 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Setup Helpers
 
     fileprivate func setupNavigationItem() {
-        title = NSLocalizedString("Notification Settings", comment: "Title displayed in the Notification settings")
+        title = AppLocalizedString("Notification Settings", comment: "Title displayed in the Notification settings")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
     }
 
@@ -157,11 +157,11 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Error Handling
 
     fileprivate func handleLoadError() {
-        let title       = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
-        let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
+        let title       = AppLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
+        let message     = AppLocalizedString("There has been a problem while loading your Notification Settings",
                                             comment: "Displayed after Notification Settings failed to load")
-        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
-        let retryText   = NSLocalizedString("Try Again", comment: "Try Again. Action")
+        let cancelText  = AppLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText   = AppLocalizedString("Try Again", comment: "Try Again. Action")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -399,10 +399,10 @@ open class NotificationSettingsViewController: UIViewController {
 
     fileprivate func paginationRowDescription(_ path: IndexPath) -> String {
         if isDisplayMoreRow(path) {
-            return NSLocalizedString("View all…", comment: "Displays More Rows")
+            return AppLocalizedString("View all…", comment: "Displays More Rows")
         }
 
-        return NSLocalizedString("View less…", comment: "Displays Less Rows")
+        return AppLocalizedString("View less…", comment: "Displays Less Rows")
     }
 
     fileprivate func toggleDisplayMore(at index: IndexPath) {
@@ -456,11 +456,11 @@ open class NotificationSettingsViewController: UIViewController {
         func headerText() -> String {
             switch self {
             case .blog:
-                return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
+                return AppLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
             case .followedSites:
-                return NSLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
+                return AppLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
             case .other:
-                return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
+                return AppLocalizedString("Other", comment: "Displayed in the Notification Settings View")
             case .wordPressCom:
                 return String()
             }
@@ -469,15 +469,15 @@ open class NotificationSettingsViewController: UIViewController {
         func footerText() -> String {
             switch self {
             case .blog:
-                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
+                return AppLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
                                          comment: "Notification Settings for your own blogs")
             case .followedSites:
-                return NSLocalizedString("Customize your followed site settings for New Posts and Comments",
+                return AppLocalizedString("Customize your followed site settings for New Posts and Comments",
                                          comment: "Notification Settings for your followed sites")
             case .other:
                 return String()
             case .wordPressCom:
-                return NSLocalizedString("We’ll always send important emails regarding your account, " +
+                return AppLocalizedString("We’ll always send important emails regarding your account, " +
                     "but you can get some helpful extras, too.",
                     comment: "Title displayed in the Notification Settings for WordPress.com")
             }
@@ -528,11 +528,11 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Notification Settings", comment: "Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+        return AppLocalizedString("Notification Settings", comment: "Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, me, notification, notification settings, settings, comments, email, ping, follow, customize, customise",
+        let keyWordString = AppLocalizedString("wordpress, me, notification, notification settings, settings, comments, email, ping, follow, customize, customise",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notification Settings' screen within the 'Me' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 

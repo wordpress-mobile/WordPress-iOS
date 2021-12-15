@@ -312,14 +312,14 @@ import WordPressShared
     private var inProgressChange: HomepageChange? = nil
 
     fileprivate enum Strings {
-        static let title = NSLocalizedString("Homepage Settings", comment: "Title for the Homepage Settings screen")
-        static let footerText = NSLocalizedString("Choose from a homepage that displays your latest posts (classic blog) or a fixed / static page.", comment: "Explanatory text for Homepage Settings homepage type selection.")
-        static let homepage = NSLocalizedString("Homepage", comment: "Title for setting which shows the current page assigned as a site's homepage")
-        static let homepagePicker = NSLocalizedString("Choose Homepage", comment: "Title for selecting a new homepage")
-        static let postsPage = NSLocalizedString("Posts Page", comment: "Title for setting which shows the current page assigned as a site's posts page")
-        static let postsPagePicker = NSLocalizedString("Choose Posts Page", comment: "Title for selecting a new posts page")
-        static let choosePagesHeaderText = NSLocalizedString("Choose Pages", comment: "Title for settings section which allows user to select their home page and posts page")
-        static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
-        static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
+        static let title = AppLocalizedString("Homepage Settings", comment: "Title for the Homepage Settings screen")
+        static let footerText = AppLocalizedString("Choose from a homepage that displays your latest posts (classic blog) or a fixed / static page.", comment: "Explanatory text for Homepage Settings homepage type selection.")
+        static let homepage = AppLocalizedString("Homepage", comment: "Title for setting which shows the current page assigned as a site's homepage")
+        static let homepagePicker = AppLocalizedString("Choose Homepage", comment: "Title for selecting a new homepage")
+        static let postsPage = AppLocalizedString("Posts Page", comment: "Title for setting which shows the current page assigned as a site's posts page")
+        static let postsPagePicker = AppLocalizedString("Choose Posts Page", comment: "Title for selecting a new posts page")
+        static let choosePagesHeaderText = AppLocalizedString("Choose Pages", comment: "Title for settings section which allows user to select their home page and posts page")
+        static let updateErrorTitle = AppLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
+        static let updateErrorMessage = AppLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
     }
 }

@@ -303,8 +303,8 @@ extension WPStyleGuide {
             button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 
             // Strings
-            let normalText = NSLocalizedString("Follow", comment: "Prompt to follow a blog.")
-            let selectedText = NSLocalizedString("Following", comment: "User is following the blog.")
+            let normalText = AppLocalizedString("Follow", comment: "Prompt to follow a blog.")
+            let selectedText = AppLocalizedString("Following", comment: "User is following the blog.")
 
             button.setTitle(normalText, for: .normal)
             button.setTitle(selectedText, for: .selected)
@@ -312,7 +312,7 @@ extension WPStyleGuide {
 
             // Default accessibility label and hint.
             button.accessibilityLabel = normalText
-            button.accessibilityHint = NSLocalizedString("Follows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
+            button.accessibilityHint = AppLocalizedString("Follows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
         }
 
 

@@ -28,7 +28,7 @@ private extension LoginEpilogueDividerView {
     func setupTitleLabel() {
         dividerLabel.textColor = .divider
         dividerLabel.font = .preferredFont(forTextStyle: .footnote)
-        dividerLabel.text = NSLocalizedString("Or", comment: "Divider on initial auth view separating auth options.").localizedUppercase
+        dividerLabel.text = AppLocalizedString("Or", comment: "Divider on initial auth view separating auth options.").localizedUppercase
         dividerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(dividerLabel)
         NSLayoutConstraint.activate([

@@ -241,11 +241,11 @@ class PluginListViewModel: Observable {
     var title: String {
         switch query {
         case .all:
-            return NSLocalizedString("Manage", comment: "Screen title, where users can see all their installed plugins.")
+            return AppLocalizedString("Manage", comment: "Screen title, where users can see all their installed plugins.")
         case .feed(.popular):
-            return NSLocalizedString("Popular", comment: "Screen title, where users can see the most popular plugins")
+            return AppLocalizedString("Popular", comment: "Screen title, where users can see the most popular plugins")
         case .feed(.newest):
-            return NSLocalizedString("Newest", comment: "Screen title, where users can see the newest plugins")
+            return AppLocalizedString("Newest", comment: "Screen title, where users can see the newest plugins")
         case .feed(.search(let term)):
             return term
         case .featured, .directoryEntry:
@@ -311,13 +311,13 @@ class PluginListViewModel: Observable {
     }
 
     private struct NoResultsText {
-        static let loadingTitle = NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site")
-        static let noResultsTitle = NSLocalizedString("No plugins found", comment: "Text displayed when search for plugins returns no results")
-        static let errorTitle = NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`.")
-        static let errorSubtitle = NSLocalizedString("There was an error loading plugins", comment: "Text displayed when there is a failure loading plugins")
-        static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
-        static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
+        static let loadingTitle = AppLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site")
+        static let noResultsTitle = AppLocalizedString("No plugins found", comment: "Text displayed when search for plugins returns no results")
+        static let errorTitle = AppLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`.")
+        static let errorSubtitle = AppLocalizedString("There was an error loading plugins", comment: "Text displayed when there is a failure loading plugins")
+        static let errorButtonText = AppLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let noConnectionTitle = AppLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let noConnectionSubtitle = AppLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
     }
 
 }

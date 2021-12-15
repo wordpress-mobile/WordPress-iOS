@@ -2,24 +2,24 @@
 class StoriesIntroViewController: WhatIsNewViewController {
 
     enum Constants {
-        static let headerTitle = NSLocalizedString("Introducing Story Posts", comment: "Stories intro header title")
-        static let continueButtonTitle = NSLocalizedString("Create Story Post", comment: "Stories intro continue button title")
+        static let headerTitle = AppLocalizedString("Introducing Story Posts", comment: "Stories intro header title")
+        static let continueButtonTitle = AppLocalizedString("Create Story Post", comment: "Stories intro continue button title")
 
-        static let exampleHeaderTitle = NSLocalizedString("A new way to create and publish engaging content on your site.", comment: "Story Intro welcome title")
+        static let exampleHeaderTitle = AppLocalizedString("A new way to create and publish engaging content on your site.", comment: "Story Intro welcome title")
 
         static let example1Image = UIImage(named: "stories_intro_cover_1")
-        static let example1Description = NSLocalizedString("How to create a story post", comment: "How to create story description")
+        static let example1Description = AppLocalizedString("How to create a story post", comment: "How to create story description")
         static let example1URL = URL(string: "https://wpstories.wordpress.com/2021/02/09/story-demo-03/")
 
         static let example2Image = UIImage(named: "stories_intro_cover_2")
-        static let example2Description = NSLocalizedString("Example story title", comment: "Example story title description")
+        static let example2Description = AppLocalizedString("Example story title", comment: "Example story title description")
         static let example2URL = URL(string: "https://wpstories.wordpress.com/2020/12/02/story-demo-02/")
 
-        static let announcement1Title = NSLocalizedString("Now stories are for everyone", comment: "First story intro item title")
-        static let announcement1Description = NSLocalizedString("Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.", comment: "First story intro item description")
+        static let announcement1Title = AppLocalizedString("Now stories are for everyone", comment: "First story intro item title")
+        static let announcement1Description = AppLocalizedString("Combine photos, videos, and text to create engaging and tappable story posts that your visitors will love.", comment: "First story intro item description")
 
-        static let announcement2Title = NSLocalizedString("Story posts don't disappear", comment: "Second story intro item description")
-        static let announcement2Description = NSLocalizedString("They're published as a new blog post on your site so your audience never misses out on a thing.", comment: "Second story intro item description")
+        static let announcement2Title = AppLocalizedString("Story posts don't disappear", comment: "Second story intro item description")
+        static let announcement2Description = AppLocalizedString("They're published as a new blog post on your site so your audience never misses out on a thing.", comment: "Second story intro item description")
     }
 
     init(continueTapped: @escaping () -> Void, openURL: @escaping (URL) -> Void) {

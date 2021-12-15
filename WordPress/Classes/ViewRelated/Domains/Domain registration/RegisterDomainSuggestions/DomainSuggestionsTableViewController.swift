@@ -40,7 +40,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
     }
 
     var searchFieldPlaceholder: String {
-        return NSLocalizedString(
+        return AppLocalizedString(
             "Type to get more suggestions",
             comment: "Register domain - Search field placeholder for the Suggested Domain screen"
         )
@@ -91,7 +91,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
-        navigationItem.title = NSLocalizedString("Create New Site", comment: "Title for the site creation flow.")
+        navigationItem.title = AppLocalizedString("Create New Site", comment: "Title for the site creation flow.")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -143,7 +143,7 @@ class DomainSuggestionsTableViewController: UITableViewController {
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
 
         SVProgressHUD.setContainerView(tableView)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
+        SVProgressHUD.show(withStatus: AppLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
         service.getFullyQuotedDomainSuggestions(query: searchTerm,
                                                 domainSuggestionType: domainSuggestionType,
@@ -307,7 +307,7 @@ extension DomainSuggestionsTableViewController {
         textLabel.adjustsFontSizeToFitWidth = true
         textLabel.minimumScaleFactor = 0.5
 
-        let template = NSLocalizedString("Domains purchased on this site will redirect to %@", comment: "Description for the first domain purchased with a free plan.")
+        let template = AppLocalizedString("Domains purchased on this site will redirect to %@", comment: "Description for the first domain purchased with a free plan.")
         let formatted = String(format: template, freeSiteAddress)
         let attributed = NSMutableAttributedString(string: formatted, attributes: [:])
 
@@ -406,7 +406,7 @@ extension DomainSuggestionsTableViewController {
 
     private func attributedFreeForTheFirstYear() -> NSAttributedString {
         NSAttributedString(
-            string: NSLocalizedString("Free for the first year ", comment: "Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit."),
+            string: AppLocalizedString("Free for the first year ", comment: "Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit."),
             attributes: [.font: freeForFirstYearFont, .foregroundColor: UIColor.muriel(name: .green, .shade50)])
     }
 
@@ -428,7 +428,7 @@ extension DomainSuggestionsTableViewController {
 
     private func attributedPerYearPostfix(for suggestion: FullyQuotedDomainSuggestion, hasDomainCredit: Bool) -> NSAttributedString {
         NSAttributedString(
-            string: NSLocalizedString(" / year", comment: "Per-year postfix shown after a domain's cost."),
+            string: AppLocalizedString(" / year", comment: "Per-year postfix shown after a domain's cost."),
             attributes: perYearPostfixAttributes(striked: mustStrikeRegularPrice(suggestion, hasDomainCredit: hasDomainCredit)))
     }
 
@@ -483,8 +483,8 @@ private extension DomainSuggestionsTableViewController {
     }
 
     func instantiateNoResultsViewController() {
-        let title = NSLocalizedString("We couldn't find any available address with the words you entered - let's try again.", comment: "Primary message shown when there are no domains that match the user entered text.")
-        let subtitle = NSLocalizedString("Enter different words above and we'll look for an address that matches it.", comment: "Secondary message shown when there are no domains that match the user entered text.")
+        let title = AppLocalizedString("We couldn't find any available address with the words you entered - let's try again.", comment: "Primary message shown when there are no domains that match the user entered text.")
+        let subtitle = AppLocalizedString("Enter different words above and we'll look for an address that matches it.", comment: "Secondary message shown when there are no domains that match the user entered text.")
 
         noResultsViewController = NoResultsViewController.controllerWith(title: title, buttonTitle: nil, subtitle: subtitle)
     }

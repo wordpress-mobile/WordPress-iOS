@@ -4,23 +4,23 @@ import Foundation
 extension GutenbergViewController {
 
     enum InfoDialog {
-        static let postMessage = NSLocalizedString(
+        static let postMessage = AppLocalizedString(
             "You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’.",
             comment: "Popup content about why this post is being opened in block editor"
         )
-        static let pageMessage = NSLocalizedString(
+        static let pageMessage = AppLocalizedString(
             "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’.",
             comment: "Popup content about why this post is being opened in block editor"
         )
-        static let phase2Message = NSLocalizedString(
+        static let phase2Message = AppLocalizedString(
             "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.",
             comment: "Popup content about why this post is being opened in block editor"
         )
-        static let title = NSLocalizedString(
+        static let title = AppLocalizedString(
             "Block editor enabled",
             comment: "Popup title about why this post is being opened in block editor"
         )
-        static let okButtonTitle   = NSLocalizedString("OK", comment: "OK button to close the informative dialog on Gutenberg editor")
+        static let okButtonTitle   = AppLocalizedString("OK", comment: "OK button to close the informative dialog on Gutenberg editor")
     }
 
     func showInformativeDialogIfNecessary() {

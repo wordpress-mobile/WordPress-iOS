@@ -19,8 +19,8 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private lazy var headerData: SiteCreationHeaderData = {
-        let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
-        let subtitle = NSLocalizedString("This helps us make recommendations. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
+        let title = AppLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
+        let subtitle = AppLocalizedString("This helps us make recommendations. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
         let dashSubtitle = subtitle.replacingMatches(of: "--", with: "\u{2014}")
         return SiteCreationHeaderData(title: title, subtitle: dashSubtitle)
     }()
@@ -59,7 +59,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func applyTitle() {
-        title = NSLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
+        title = AppLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
     }
 
     private func setupBackground() {
@@ -139,7 +139,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func cancelButton() -> UIBarButtonItem {
-        let literal = NSLocalizedString("Cancel", comment: "Cancel button. Site creation modal popover.")
+        let literal = AppLocalizedString("Cancel", comment: "Cancel button. Site creation modal popover.")
         return UIBarButtonItem(title: literal, style: .plain, target: self, action: #selector(cancelSiteCreation))
     }
 
@@ -257,7 +257,7 @@ extension SiteSegmentsWizardContent: Accessible {
     }
 
     private func prepareTableForVoiceOver() {
-        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list")
+        table.accessibilityLabel = AppLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list")
     }
 
     private func postScreenChangedForVoiceOver() {

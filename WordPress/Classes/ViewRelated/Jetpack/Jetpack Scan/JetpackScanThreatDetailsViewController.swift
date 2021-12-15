@@ -272,9 +272,9 @@ extension JetpackScanThreatDetailsViewController {
 extension JetpackScanThreatDetailsViewController {
 
     private enum Strings {
-        static let title = NSLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
-        static let ok = NSLocalizedString("OK", comment: "OK button for alert")
-        static let cancel = NSLocalizedString("Cancel", comment: "Cancel button for alert")
-        static let jetpackSettingsNotice = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+        static let title = AppLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
+        static let ok = AppLocalizedString("OK", comment: "OK button for alert")
+        static let cancel = AppLocalizedString("Cancel", comment: "Cancel button for alert")
+        static let jetpackSettingsNotice = AppLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
     }
 }

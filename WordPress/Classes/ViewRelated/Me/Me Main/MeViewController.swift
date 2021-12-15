@@ -12,7 +12,7 @@ class MeViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
+        navigationItem.title = AppLocalizedString("Me", comment: "Me page title")
         MeViewController.configureRestoration(on: self)
         clearsSelectionOnViewWillAppear = false
     }
@@ -448,11 +448,11 @@ extension MeViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
+        return AppLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, me, settings, account, notification log out, logout, log in, login, help, support",
+        let keyWordString = AppLocalizedString("wordpress, me, settings, account, notification log out, logout, log in, login, help, support",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 
@@ -488,27 +488,27 @@ extension MeViewController: GravatarUploader {
 
 private extension MeViewController {
     enum RowTitles {
-        static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
-        static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
-        static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
-        static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
-        static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
-        static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
+        static let appSettings = AppLocalizedString("App Settings", comment: "Link to App Settings section")
+        static let myProfile = AppLocalizedString("My Profile", comment: "Link to My Profile section")
+        static let accountSettings = AppLocalizedString("Account Settings", comment: "Link to Account Settings section")
+        static let support = AppLocalizedString("Help & Support", comment: "Link to Help section")
+        static let logIn = AppLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
+        static let logOut = AppLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
         static let about = AppConstants.Settings.aboutTitle
     }
 
     enum HeaderTitles {
-        static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+        static let wpAccount = AppLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
     }
 
     enum LogoutAlert {
         static let defaultTitle = AppConstants.Logout.alertTitle
-        static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+        static let unsavedTitleSingular = AppLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
-        static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+        static let unsavedTitlePlural = AppLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                           comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!)")
-        static let cancelAction = NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action.")
-        static let logoutAction = NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
+        static let cancelAction = AppLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action.")
+        static let logoutAction = AppLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
     }
 }
 

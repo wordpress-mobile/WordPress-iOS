@@ -86,5 +86,5 @@ class TimeSelectionButton: UIButton {
         self.selectedTime = selectedTime
     }
 
-    static let title = NSLocalizedString("Notification time", comment: "Title for the time picker button in Blogging Reminders.")
+    static let title = AppLocalizedString("Notification time", comment: "Title for the time picker button in Blogging Reminders.")
 }

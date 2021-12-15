@@ -122,17 +122,17 @@ struct ImageSizeModel: MediaSizeModel {
 
     var valueText: String {
         if value == maxValue {
-            return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
+            return AppLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
         }
-        let format = NSLocalizedString("%dx%dpx", comment: "Max image size in pixels (e.g. 300x300px)")
+        let format = AppLocalizedString("%dx%dpx", comment: "Max image size in pixels (e.g. 300x300px)")
         return String(format: format, value, value)
     }
 
     var accessibleText: String {
         if value == maxValue {
-            return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
+            return AppLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
         }
-        let format = NSLocalizedString("%d pixels", comment: "Sepoken image size in pixels (e.g. 300 pixels)")
+        let format = AppLocalizedString("%d pixels", comment: "Sepoken image size in pixels (e.g. 300 pixels)")
         return String(format: format, value)
     }
 

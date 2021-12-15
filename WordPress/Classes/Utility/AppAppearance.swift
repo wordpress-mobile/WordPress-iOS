@@ -68,11 +68,11 @@ extension UIUserInterfaceStyle {
     var appearanceDescription: String {
         switch self {
         case .light:
-            return NSLocalizedString("Light", comment: "Title for the app appearance setting for light mode")
+            return AppLocalizedString("Light", comment: "Title for the app appearance setting for light mode")
         case .dark:
-            return NSLocalizedString("Dark", comment: "Title for the app appearance setting for dark mode")
+            return AppLocalizedString("Dark", comment: "Title for the app appearance setting for dark mode")
         case .unspecified:
-            return NSLocalizedString("System default", comment: "Title for the app appearance setting (light / dark mode) that uses the system default value")
+            return AppLocalizedString("System default", comment: "Title for the app appearance setting (light / dark mode) that uses the system default value")
         @unknown default:
             return ""
         }

@@ -1118,14 +1118,14 @@ private extension ZendeskUtils {
     }
 
     struct LocalizedText {
-        static let alertMessageWithName = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
-        static let alertMessage = NSLocalizedString("Please enter your email address.", comment: "Instructions for alert asking for email.")
-        static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
-        static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
-        static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
-        static let emailAccessibilityLabel = NSLocalizedString("Email", comment: "Accessibility label for the Email text field.")
-        static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
-        static let nameAccessibilityLabel = NSLocalizedString("Name", comment: "Accessibility label for the Email text field.")
+        static let alertMessageWithName = AppLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
+        static let alertMessage = AppLocalizedString("Please enter your email address.", comment: "Instructions for alert asking for email.")
+        static let alertSubmit = AppLocalizedString("OK", comment: "Submit button on prompt for user information.")
+        static let alertCancel = AppLocalizedString("Cancel", comment: "Cancel prompt for user information.")
+        static let emailPlaceholder = AppLocalizedString("Email", comment: "Email address text field placeholder")
+        static let emailAccessibilityLabel = AppLocalizedString("Email", comment: "Accessibility label for the Email text field.")
+        static let namePlaceholder = AppLocalizedString("Name", comment: "Name text field placeholder")
+        static let nameAccessibilityLabel = AppLocalizedString("Name", comment: "Accessibility label for the Email text field.")
     }
 
 }

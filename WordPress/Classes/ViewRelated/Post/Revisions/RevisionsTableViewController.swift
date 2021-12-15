@@ -66,7 +66,7 @@ class RevisionsTableViewController: UITableViewController {
 
 private extension RevisionsTableViewController {
     private func setupUI() {
-        navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
+        navigationItem.title = AppLocalizedString("History", comment: "Title of the post history screen")
 
         let cellNib = UINib(nibName: RevisionsTableViewCell.classNameWithoutNamespaces(),
                             bundle: Bundle(for: RevisionsTableViewCell.self))
@@ -152,7 +152,7 @@ private extension RevisionsTableViewController {
             return
         }
 
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading...", comment: "Text displayed in HUD while a revision post is loading."))
+        SVProgressHUD.show(withStatus: AppLocalizedString("Loading...", comment: "Text displayed in HUD while a revision post is loading."))
 
         let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.getPostWithID(revision.revisionId, for: blog, success: { post in
@@ -162,7 +162,7 @@ private extension RevisionsTableViewController {
             self.navigationController?.popViewController(animated: true)
         }, failure: { error in
             DDLogError("Error loading revision: \(error.localizedDescription)")
-            SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
+            SVProgressHUD.showDismissibleError(withStatus: AppLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
         })
     }
 }
@@ -322,10 +322,10 @@ private extension Date {
 
 
 struct NoResultsText {
-    static let loadingTitle = NSLocalizedString("Loading history...", comment: "Displayed while a call is loading the history.")
-    static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load the history again. It appears if the loading call fails.")
-    static let noResultsTitle = NSLocalizedString("No history yet", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
-    static let noResultsSubtitle = NSLocalizedString("When you make changes in the editor you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error.")
-    static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the history")
-    static let errorSubtitle = NSLocalizedString("There was an error loading the history", comment: "Text displayed when there is a failure loading the history.")
+    static let loadingTitle = AppLocalizedString("Loading history...", comment: "Displayed while a call is loading the history.")
+    static let reloadButtonTitle = AppLocalizedString("Try again", comment: "Re-load the history again. It appears if the loading call fails.")
+    static let noResultsTitle = AppLocalizedString("No history yet", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
+    static let noResultsSubtitle = AppLocalizedString("When you make changes in the editor you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error.")
+    static let errorTitle = AppLocalizedString("Oops", comment: "Title for the view when there's an error loading the history")
+    static let errorSubtitle = AppLocalizedString("There was an error loading the history", comment: "Text displayed when there is a failure loading the history.")
 }

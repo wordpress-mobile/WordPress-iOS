@@ -60,10 +60,10 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
         super.init(
             analyticsLocation: "site_creation",
-            mainTitle: NSLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
-            prompt: NSLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
-            primaryActionTitle: NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
-            secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected homepage design")
+            mainTitle: AppLocalizedString("Choose a design", comment: "Title for the screen to pick a design and homepage for a site."),
+            prompt: AppLocalizedString("Pick your favorite homepage layout. You can edit and customize it later.", comment: "Prompt for the screen to pick a design and homepage for a site."),
+            primaryActionTitle: AppLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"),
+            secondaryActionTitle: AppLocalizedString("Preview", comment: "Title for button to preview a selected homepage design")
         )
     }
 
@@ -73,7 +73,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.backButtonTitle = NSLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = AppLocalizedString("Design", comment: "Shortened version of the main title to be used in back navigation")
         fetchSiteDesigns()
         configureCloseButton()
         configureSkipButton()
@@ -100,7 +100,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: NSLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
+        let skip = UIBarButtonItem(title: AppLocalizedString("Skip", comment: "Continue without making a selection"), style: .done, target: self, action: #selector(skipButtonTapped))
         navigationItem.rightBarButtonItem = skip
     }
 
@@ -111,7 +111,7 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
     }
 
     private func configureCloseButton() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: AppLocalizedString("Cancel", comment: "Cancel site creation"), style: .done, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc func skipButtonTapped(_ sender: Any) {
@@ -157,8 +157,8 @@ class SiteDesignContentCollectionViewController: FilterableCategoriesViewControl
 
     private func handleError(_ error: Error) {
         SiteCreationAnalyticsHelper.trackError(error)
-        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
-        let subtitleText = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
+        let titleText = AppLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = AppLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 }

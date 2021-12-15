@@ -15,7 +15,7 @@ class PostTagPickerViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         textView.text = normalizeInitialTags(tags: originalTags)
         textViewDidChange(textView)
-        title = NSLocalizedString("Tags", comment: "Title for the tag selector view")
+        title = AppLocalizedString("Tags", comment: "Title for the tag selector view")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -63,14 +63,14 @@ class PostTagPickerViewController: UIViewController {
         // Don't add extra padding so text aligns with suggestions
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
-        textView.accessibilityLabel = NSLocalizedString("Add new tags, separated by commas.", comment: "Voiceover accessibility label for the tags field in blog post settings.")
+        textView.accessibilityLabel = AppLocalizedString("Add new tags, separated by commas.", comment: "Voiceover accessibility label for the tags field in blog post settings.")
         textView.accessibilityIdentifier = "add-tags"
 
         view.addSubview(tableView)
         textViewContainer.addSubview(textView)
         view.addSubview(textViewContainer)
 
-        descriptionLabel.text = NSLocalizedString("Tags help tell readers what a post is about. Separate different tags with commas.", comment: "Label explaining why users might want to add tags.")
+        descriptionLabel.text = AppLocalizedString("Tags help tell readers what a post is about. Separate different tags with commas.", comment: "Label explaining why users might want to add tags.")
         descriptionLabel.numberOfLines = 0
         WPStyleGuide.configureLabelForRegularFontStyle(descriptionLabel)
         descriptionLabel.textColor = .textSubtle
@@ -108,7 +108,7 @@ class PostTagPickerViewController: UIViewController {
 
         keyboardObserver.tableView = tableView
 
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Done button title"), style: .plain, target: self, action: #selector(doneButtonPressed))
+        let doneButton = UIBarButtonItem(title: AppLocalizedString("Done", comment: "Done button title"), style: .plain, target: self, action: #selector(doneButtonPressed))
         navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
@@ -203,7 +203,7 @@ private extension PostTagPickerViewController {
     func tagsFailedLoading(error: Error) {
         DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
-        WPError.showNetworkingNotice(title: NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error as NSError)
+        WPError.showNetworkingNotice(title: AppLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error as NSError)
     }
 }
 
@@ -379,7 +379,7 @@ private class LoadingDataSource: NSObject, PostTagPickerDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LoadingDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.configureTableViewSuggestionCell(cell)
-        cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading tags")
+        cell.textLabel?.text = AppLocalizedString("Loading...", comment: "Loading tags")
         cell.selectionStyle = .none
         return cell
     }

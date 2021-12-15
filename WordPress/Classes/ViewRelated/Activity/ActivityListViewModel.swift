@@ -211,7 +211,7 @@ class ActivityListViewModel: Observable {
 
     func dateRangeDescription() -> String? {
         guard after != nil || before != nil else {
-            return NSLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
+            return AppLocalizedString("Date Range", comment: "Label of a button that displays a calendar")
         }
 
         let format = shouldDisplayFullYear(with: after, and: before) ? "MMM d, yyyy" : "MMM d"
@@ -240,15 +240,15 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
-        let headingMessage = NSLocalizedString("We successfully created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
+        let headingMessage = AppLocalizedString("We successfully created a backup of your site as of %@", comment: "Message displayed when a backup has finished")
         downloadPromptView.setupHeading(String.init(format: headingMessage, arguments: [longDateFormatterWithTime.string(from: backupPoint)]))
 
-        let downloadTitle = NSLocalizedString("Download", comment: "Download button title")
+        let downloadTitle = AppLocalizedString("Download", comment: "Download button title")
         downloadPromptView.setupYesButton(title: downloadTitle) { _ in
             UIApplication.shared.open(downloadURL)
         }
 
-        let dismissTitle = NSLocalizedString("Dismiss", comment: "Dismiss button title")
+        let dismissTitle = AppLocalizedString("Dismiss", comment: "Dismiss button title")
         downloadPromptView.setupNoButton(title: dismissTitle) { [weak self] button in
             guard let self = self else {
                 return
@@ -262,9 +262,9 @@ class ActivityListViewModel: Observable {
 
     func activityTypeDescription() -> String? {
         if selectedGroups.isEmpty {
-            return NSLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
+            return AppLocalizedString("Activity Type", comment: "Label for the Activity Type filter button")
         } else if selectedGroups.count > 1 {
-            return String.localizedStringWithFormat(NSLocalizedString("Activity Type (%1$d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), selectedGroups.count)
+            return String.localizedStringWithFormat(AppLocalizedString("Activity Type (%1$d)", comment: "Label for the Activity Type filter button when there are more than 1 activity type selected"), selectedGroups.count)
         }
 
         return selectedGroups.first?.name
@@ -297,13 +297,13 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
-        let title = NSLocalizedString("Backing up site", comment: "Title of the cell displaying status of a backup in progress")
+        let title = AppLocalizedString("Backing up site", comment: "Title of the cell displaying status of a backup in progress")
         let summary: String
         let progress = max(Float(backupProgress) / 100, 0.05)
         // We don't want to show a completely empty progress bar — it'd seem something is broken. 5% looks acceptable
         // for the starting state.
 
-        summary = NSLocalizedString("Creating downloadable backup", comment: "Description of the cell displaying status of a backup in progress")
+        summary = AppLocalizedString("Creating downloadable backup", comment: "Description of the cell displaying status of a backup in progress")
 
         let rewindRow = RewindStatusRow(
             title: title,
@@ -311,7 +311,7 @@ class ActivityListViewModel: Observable {
             progress: progress
         )
 
-        return ImmuTableSection(headerText: NSLocalizedString("Backup", comment: "Title of section showing backup status"),
+        return ImmuTableSection(headerText: AppLocalizedString("Backup", comment: "Title of section showing backup status"),
                                 rows: [rewindRow],
                                 footerText: nil)
     }
@@ -321,7 +321,7 @@ class ActivityListViewModel: Observable {
             return nil
         }
 
-        let title = NSLocalizedString("Currently restoring your site", comment: "Title of the cell displaying status of a rewind in progress")
+        let title = AppLocalizedString("Currently restoring your site", comment: "Title of the cell displaying status of a rewind in progress")
         let summary: String
         let progress = max(Float(restore.progress) / 100, 0.05)
         // We don't want to show a completely empty progress bar — it'd seem something is broken. 5% looks acceptable
@@ -330,7 +330,7 @@ class ActivityListViewModel: Observable {
         if let rewindPoint = store.getActivity(site: site, rewindID: restore.id) {
             let dateString = mediumDateFormatterWithTime.string(from: rewindPoint.published)
 
-            let messageFormat = NSLocalizedString("Restoring to %@",
+            let messageFormat = AppLocalizedString("Restoring to %@",
                                                   comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
 
             summary = String(format: messageFormat, dateString)
@@ -344,7 +344,7 @@ class ActivityListViewModel: Observable {
             progress: progress
         )
 
-        let headerText = NSLocalizedString("Restore", comment: "Title of section showing restore status")
+        let headerText = AppLocalizedString("Restore", comment: "Title of section showing restore status")
 
         return ImmuTableSection(headerText: headerText,
                                 rows: [rewindRow],
@@ -352,15 +352,15 @@ class ActivityListViewModel: Observable {
     }
 
     private struct NoResultsText {
-        static let noActivitiesSubtitle = NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log")
-        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
-        static let errorSubtitle = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
-        static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
-        static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection.")
-        static let noGroupsTitle = NSLocalizedString("No activities available", comment: "Title for the view when there aren't any Activities Types to display in the Activity Log Types picker")
-        static let noGroupsSubtitle = NSLocalizedString("No activities recorded in the selected date range.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
-        static let groupsErrorButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the activities type again")
+        static let noActivitiesSubtitle = AppLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log")
+        static let errorTitle = AppLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
+        static let errorSubtitle = AppLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
+        static let errorButtonText = AppLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let noConnectionTitle = AppLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let noConnectionSubtitle = AppLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection.")
+        static let noGroupsTitle = AppLocalizedString("No activities available", comment: "Title for the view when there aren't any Activities Types to display in the Activity Log Types picker")
+        static let noGroupsSubtitle = AppLocalizedString("No activities recorded in the selected date range.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
+        static let groupsErrorButtonText = AppLocalizedString("Try again", comment: "Button label for trying to retrieve the activities type again")
     }
 
     // MARK: - Date/Time handling

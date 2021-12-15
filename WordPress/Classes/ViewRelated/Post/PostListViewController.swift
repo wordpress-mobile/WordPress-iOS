@@ -153,7 +153,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
+        title = AppLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
         configureFilterBarTopConstraint()
         updateGhostableTableViewOptions()
@@ -346,8 +346,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func showCompactOrDefault() {
         updateGhostableTableViewOptions()
 
-        postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
-        postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
+        postsViewButtonItem.accessibilityLabel = AppLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
+        postsViewButtonItem.accessibilityValue = isCompact ? AppLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : AppLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
         postsViewButtonItem.image = postViewIcon
 
         if isViewOnScreen() {
@@ -588,9 +588,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func presentAlertForPostBeingUploaded() {
-        let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
+        let message = AppLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
 
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+        let alertCancel = AppLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
@@ -598,20 +598,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
-        var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
+        var message = AppLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
 
         switch filter.filterType {
         case .published:
-            message = NSLocalizedString("Post Restored to Published", comment: "Prompts the user that a restored post was moved to the published list.")
+            message = AppLocalizedString("Post Restored to Published", comment: "Prompts the user that a restored post was moved to the published list.")
             break
         case .scheduled:
-            message = NSLocalizedString("Post Restored to Scheduled", comment: "Prompts the user that a restored post was moved to the scheduled list.")
+            message = AppLocalizedString("Post Restored to Scheduled", comment: "Prompts the user that a restored post was moved to the scheduled list.")
             break
         default:
             break
         }
 
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+        let alertCancel = AppLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
@@ -676,7 +676,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func trash(_ post: AbstractPost) {
         guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
+            let offlineMessage = AppLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
             ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
             return
         }
@@ -687,15 +687,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let titleText: String
 
         if post.status == .trash {
-            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
+            cancelText = AppLocalizedString("Cancel", comment: "Cancels an Action")
+            deleteText = AppLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
+            titleText = AppLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
+            messageText = AppLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
         } else {
-            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
-            titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
+            cancelText = AppLocalizedString("Cancel", comment: "Cancels an Action")
+            deleteText = AppLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
+            titleText = AppLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
+            messageText = AppLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
         }
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
@@ -794,7 +794,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some posts may be unavailable while offline.",
+        return AppLocalizedString("No internet connection. Some posts may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Site Posts without an internet connection.")
     }
 
@@ -874,16 +874,16 @@ private extension PostListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
-        static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        static let noMatchesTitle = NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
-        static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-        static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-        static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
-        static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-        static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
-        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
-        static let searchPosts = NSLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
+        static let buttonTitle = AppLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
+        static let fetchingTitle = AppLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        static let noMatchesTitle = AppLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
+        static let noDraftsTitle = AppLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        static let noScheduledTitle = AppLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        static let noTrashedTitle = AppLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
+        static let noPublishedTitle = AppLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        static let noConnectionTitle: String = AppLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
+        static let noConnectionSubtitle: String = AppLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
+        static let searchPosts = AppLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
     }
 }
 

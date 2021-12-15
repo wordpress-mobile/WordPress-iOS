@@ -350,23 +350,23 @@ class JetpackScanCoordinator {
 
     private struct Strings {
         struct scanNotice {
-            static let title = NSLocalizedString("Scan Finished", comment: "Title for a notice informing the user their scan has completed")
-            static let message = NSLocalizedString("No threats found", comment: "Message for a notice informing the user their scan completed and no threats were found")
-            static let messageThreatsFound = NSLocalizedString("%d potential threats found", comment: "Message for a notice informing the user their scan completed and %d threats were found")
-            static let messageSingleThreatFound = NSLocalizedString("1 potential threat found", comment: "Message for a notice informing the user their scan completed and 1 threat was found")
+            static let title = AppLocalizedString("Scan Finished", comment: "Title for a notice informing the user their scan has completed")
+            static let message = AppLocalizedString("No threats found", comment: "Message for a notice informing the user their scan completed and no threats were found")
+            static let messageThreatsFound = AppLocalizedString("%d potential threats found", comment: "Message for a notice informing the user their scan completed and %d threats were found")
+            static let messageSingleThreatFound = AppLocalizedString("1 potential threat found", comment: "Message for a notice informing the user their scan completed and 1 threat was found")
         }
 
         struct jetpackSettingsNotice {
-            static let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            static let title = AppLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
         }
 
-        static let fixAllAlertTitleFormat = NSLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
-        static let fixAllSingleAlertTitle = NSLocalizedString("Please confirm you want to fix this threat", comment: "Confirmation title presented before fixing a single threat")
-        static let fixAllAlertTitleMessage = NSLocalizedString("Jetpack will be fixing all the detected active threats.", comment: "Confirmation message presented before fixing all the threats, displays the number of threats to be fixed")
-        static let fixAllSingleAlertMessage = NSLocalizedString("Jetpack will be fixing the detected active threat.", comment: "Confirmation message presented before fixing a single threat")
+        static let fixAllAlertTitleFormat = AppLocalizedString("Please confirm you want to fix all %1$d active threats", comment: "Confirmation title presented before fixing all the threats, displays the number of threats to be fixed")
+        static let fixAllSingleAlertTitle = AppLocalizedString("Please confirm you want to fix this threat", comment: "Confirmation title presented before fixing a single threat")
+        static let fixAllAlertTitleMessage = AppLocalizedString("Jetpack will be fixing all the detected active threats.", comment: "Confirmation message presented before fixing all the threats, displays the number of threats to be fixed")
+        static let fixAllSingleAlertMessage = AppLocalizedString("Jetpack will be fixing the detected active threat.", comment: "Confirmation message presented before fixing a single threat")
 
-        static let fixAllAlertCancelButtonTitle = NSLocalizedString("Cancel", comment: "Button title, cancel fixing all threats")
-        static let fixAllAlertConfirmButtonTitle = NSLocalizedString("Fix all threats", comment: "Button title, confirm fixing all threats")
+        static let fixAllAlertCancelButtonTitle = AppLocalizedString("Cancel", comment: "Button title, cancel fixing all threats")
+        static let fixAllAlertConfirmButtonTitle = AppLocalizedString("Fix all threats", comment: "Button title, confirm fixing all threats")
     }
 
     private enum ErrorButtonAction {

@@ -26,7 +26,7 @@ class CalendarViewController: UIViewController {
 
     private enum Constants {
         static let headerPadding: CGFloat = 16
-        static let endDateLabel = NSLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
+        static let endDateLabel = AppLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
     }
 
     /// Creates a full screen year calendar controller
@@ -45,7 +45,7 @@ class CalendarViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        title = NSLocalizedString("Choose date range", comment: "Title to choose date range in a calendar")
+        title = AppLocalizedString("Choose date range", comment: "Title to choose date range in a calendar")
 
         // Configure Calendar
         let calendar = Calendar.current
@@ -101,7 +101,7 @@ class CalendarViewController: UIViewController {
     }
 
     private func setupNavButtons() {
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+        let doneButton = UIBarButtonItem(title: AppLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
         navigationItem.setRightBarButton(doneButton, animated: false)
 
         navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel)), animated: false)
@@ -200,7 +200,7 @@ class CalendarViewController: UIViewController {
     }
 
     private func resetLabels() {
-        startDateLabel.text = NSLocalizedString("Start Date", comment: "Placeholder for the start date in calendar range selection")
+        startDateLabel.text = AppLocalizedString("Start Date", comment: "Placeholder for the start date in calendar range selection")
 
         separatorDateLabel.text = "-"
 

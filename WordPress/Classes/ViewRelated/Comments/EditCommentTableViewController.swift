@@ -133,7 +133,7 @@ private extension EditCommentTableViewController {
     }
 
     func setupNavBar() {
-        title = NSLocalizedString("Edit Comment", comment: "View title when editing a comment.")
+        title = AppLocalizedString("Edit Comment", comment: "View title when editing a comment.")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
         updateDoneButton()
@@ -184,9 +184,9 @@ private extension EditCommentTableViewController {
     }
 
     func showConfirmationAlert() {
-        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.")
-        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
+        let title = AppLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.")
+        let discardTitle = AppLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
+        let keepEditingTitle = AppLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author cancelled editing a Comment.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(keepEditingTitle)
@@ -224,13 +224,13 @@ private extension EditCommentTableViewController {
         var header: String {
             switch self {
             case .name:
-                return NSLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase
+                return AppLocalizedString("Name", comment: "Header for a comment author's name, shown when editing a comment.").localizedUppercase
             case .webAddress:
-                return NSLocalizedString("Web Address", comment: "Header for a comment author's web address, shown when editing a comment.").localizedUppercase
+                return AppLocalizedString("Web Address", comment: "Header for a comment author's web address, shown when editing a comment.").localizedUppercase
             case .emailAddress:
-                return NSLocalizedString("Email Address", comment: "Header for a comment author's email address, shown when editing a comment.").localizedUppercase
+                return AppLocalizedString("Email Address", comment: "Header for a comment author's email address, shown when editing a comment.").localizedUppercase
             case .comment:
-                return NSLocalizedString("Comment", comment: "Header for a comment's content, shown when editing a comment.").localizedUppercase
+                return AppLocalizedString("Comment", comment: "Header for a comment's content, shown when editing a comment.").localizedUppercase
             }
         }
     }

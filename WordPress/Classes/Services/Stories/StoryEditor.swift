@@ -146,8 +146,8 @@ class StoryEditor: CameraController {
         Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
         Kanvas.KanvasImages.shared = KanvasCustomUI.shared.cameraImages()
         Kanvas.KanvasStrings.shared = KanvasStrings(
-            cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
-            cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
+            cameraPermissionsTitleLabel: AppLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
+            cameraPermissionsDescriptionLabel: AppLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
         )
 
         let saveDirectory: URL?

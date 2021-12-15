@@ -47,7 +47,7 @@ class JetpackRestoreWarningViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Warning", comment: "Title for Jetpack Restore Warning screen")
+        title = AppLocalizedString("Warning", comment: "Title for Jetpack Restore Warning screen")
         configureWarningView()
     }
 
@@ -94,15 +94,15 @@ extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {
     }
 
     func showRestoreAlreadyRunning() {
-        let title = NSLocalizedString("There's a restore currently in progress, please wait before starting the next one", comment: "Text displayed when user tries to start a restore when there is already one running")
+        let title = AppLocalizedString("There's a restore currently in progress, please wait before starting the next one", comment: "Text displayed when user tries to start a restore when there is already one running")
         let notice = Notice(title: title)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
         WPAnalytics.track(.restoreError, properties: ["cause": "other"])
     }
 
     func showRestoreRequestFailed() {
-        let errorTitle = NSLocalizedString("Restore failed", comment: "Title for error displayed when restoring a site fails.")
-        let errorMessage = NSLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
+        let errorTitle = AppLocalizedString("Restore failed", comment: "Title for error displayed when restoring a site fails.")
+        let errorMessage = AppLocalizedString("We couldn't restore your site. Please try again later.", comment: "Message for error displayed when restoring a site fails.")
         let notice = Notice(title: errorTitle, message: errorMessage)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
         WPAnalytics.track(.restoreError, properties: ["cause": "remote"])

@@ -13,11 +13,11 @@ open class AppIconViewController: UITableViewController {
         var title: String? {
             switch self {
             case .currentColorfulBackground:
-                return NSLocalizedString("Colorful backgrounds", comment: "Title displayed for selection of custom app icons that have colorful backgrounds.")
+                return AppLocalizedString("Colorful backgrounds", comment: "Title displayed for selection of custom app icons that have colorful backgrounds.")
             case .currentLightBackground:
-                return NSLocalizedString("Light backgrounds", comment: "Title displayed for selection of custom app icons that have white backgrounds.")
+                return AppLocalizedString("Light backgrounds", comment: "Title displayed for selection of custom app icons that have white backgrounds.")
             case .legacy:
-                return NSLocalizedString("Legacy Icons", comment: "Title displayed for selection of custom app icons that may be removed in a future release of the app.")
+                return AppLocalizedString("Legacy Icons", comment: "Title displayed for selection of custom app icons that may be removed in a future release of the app.")
             }
         }
     }
@@ -34,7 +34,7 @@ open class AppIconViewController: UITableViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("App Icon", comment: "Title of screen to change the app's icon")
+        title = AppLocalizedString("App Icon", comment: "Title of screen to change the app's icon")
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)

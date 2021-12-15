@@ -161,11 +161,11 @@ class JetpackScanHistoryCoordinator {
         var title: String {
             switch self {
                 case .all:
-                    return NSLocalizedString("All", comment: "Displays all of the historical threats")
+                    return AppLocalizedString("All", comment: "Displays all of the historical threats")
                 case .fixed:
-                    return NSLocalizedString("Fixed", comment: "Displays the fixed threats")
+                    return AppLocalizedString("Fixed", comment: "Displays the fixed threats")
                 case .ignored:
-                    return NSLocalizedString("Ignored", comment: "Displays the ignored threats")
+                    return AppLocalizedString("Ignored", comment: "Displays the ignored threats")
             }
         }
 

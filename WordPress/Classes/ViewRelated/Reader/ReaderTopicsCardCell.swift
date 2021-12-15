@@ -50,7 +50,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
     }
 
     private struct Constants {
-        static let title = NSLocalizedString("You might like", comment: "A suggestion of topics the user might like")
+        static let title = AppLocalizedString("You might like", comment: "A suggestion of topics the user might like")
 
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.defaultReuseID
     }

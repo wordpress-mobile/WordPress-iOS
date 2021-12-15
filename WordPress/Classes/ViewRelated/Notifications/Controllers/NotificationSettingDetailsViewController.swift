@@ -42,11 +42,11 @@ class NotificationSettingDetailsViewController: UITableViewController {
     private var siteName: String {
         switch settings!.channel {
         case .wordPressCom:
-            return NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+            return AppLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
         case .other:
-            return NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
+            return AppLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
         default:
-            return settings?.blog?.settings?.name ?? NSLocalizedString("Unnamed Site", comment: "Displayed when a site has no name")
+            return settings?.blog?.settings?.name ?? AppLocalizedString("Unnamed Site", comment: "Displayed when a site has no name")
         }
     }
 
@@ -145,16 +145,16 @@ class NotificationSettingDetailsViewController: UITableViewController {
             case .Device:
                 if let blog = settings.blog {
                     // This should only be added for the device push notifications settings view
-                    rows.append(TextSettingsRow(kind: .Text, description: NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting"), value: schedule(for: blog), onTap: { [weak self] in
+                    rows.append(TextSettingsRow(kind: .Text, description: AppLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting"), value: schedule(for: blog), onTap: { [weak self] in
                         self?.presentBloggingRemindersFlow()
                     }))
                 }
 
-                return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for push notifications that appear on your mobile device.", comment: "Descriptive text for the Push Notifications Settings"))]
+                return [SettingsSection(rows: rows, footerText: AppLocalizedString("Settings for push notifications that appear on your mobile device.", comment: "Descriptive text for the Push Notifications Settings"))]
             case .Email:
-                return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for notifications that are sent to the email tied to your account.", comment: "Descriptive text for the Email Notifications Settings"))]
+                return [SettingsSection(rows: rows, footerText: AppLocalizedString("Settings for notifications that are sent to the email tied to your account.", comment: "Descriptive text for the Email Notifications Settings"))]
             case .Timeline:
-                return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for notifications that appear in the Notifications tab.", comment: "Descriptive text for the Notifications Tab Settings"))]
+                return [SettingsSection(rows: rows, footerText: AppLocalizedString("Settings for notifications that appear in the Notifications tab.", comment: "Descriptive text for the Notifications Tab Settings"))]
             }
         }
 
@@ -173,10 +173,10 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     private func sectionsForDisabledDeviceStream() -> [SettingsSection] {
-        let description     = NSLocalizedString("Go to iOS Settings", comment: "Opens WPiOS Settings.app Section")
+        let description     = AppLocalizedString("Go to iOS Settings", comment: "Opens WPiOS Settings.app Section")
         let row             = TextSettingsRow(kind: .Text, description: description, value: "")
 
-        let footerText      = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
+        let footerText      = AppLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
                                                 "Toggle \"Allow Notifications\" to turn them back on.",
                                                 comment: "Suggests to enable Push Notification Settings in Settings.app")
         let section         = SettingsSection(rows: [row], footerText: footerText)
@@ -188,10 +188,10 @@ class NotificationSettingDetailsViewController: UITableViewController {
         defer {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
-        let description     = NSLocalizedString("Allow push notifications", comment: "Shown to the user in settings when they haven't yet allowed or denied push notifications")
+        let description     = AppLocalizedString("Allow push notifications", comment: "Shown to the user in settings when they haven't yet allowed or denied push notifications")
         let row             = TextSettingsRow(kind: .Text, description: description, value: "")
 
-        let footerText      = NSLocalizedString("Allow WordPress to send you push notifications",
+        let footerText      = AppLocalizedString("Allow WordPress to send you push notifications",
                                                 comment: "Suggests the user allow push notifications. Appears within app settings.")
         let section         = SettingsSection(rows: [row], footerText: footerText)
 
@@ -333,11 +333,11 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     private func handleUpdateError() {
-        let title       = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
-        let message     = NSLocalizedString("There has been an unexpected error while updating your Notification Settings",
+        let title       = AppLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
+        let message     = AppLocalizedString("There has been an unexpected error while updating your Notification Settings",
                                             comment: "Displayed after a failed Notification Settings call")
-        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
-        let retryText   = NSLocalizedString("Retry", comment: "Retry. Action")
+        let cancelText  = AppLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText   = AppLocalizedString("Retry", comment: "Retry. Action")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -364,7 +364,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     private func schedule(for blog: Blog) -> String {
         guard let scheduler = try? BloggingRemindersScheduler() else {
-            return NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
+            return AppLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
         }
 
         let formatter = BloggingRemindersScheduleFormatter()

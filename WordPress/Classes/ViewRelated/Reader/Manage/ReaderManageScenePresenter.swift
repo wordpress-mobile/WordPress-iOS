@@ -20,11 +20,11 @@ class ReaderManageScenePresenter: ScenePresenter {
         var tabbedItem: TabbedViewController.TabbedItem {
             switch self {
             case .tags:
-                return TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Topics", comment: "Followed Topics Title"),
+                return TabbedViewController.TabbedItem(title: AppLocalizedString("Followed Topics", comment: "Followed Topics Title"),
                                                                viewController: makeViewController(),
                                                                accessibilityIdentifier: "FollowedTags")
             case .sites:
-                return TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites", comment: "Followed Sites Title"),
+                return TabbedViewController.TabbedItem(title: AppLocalizedString("Followed Sites", comment: "Followed Sites Title"),
                                                                 viewController: makeViewController(),
                                                                 accessibilityIdentifier: "FollowedSites")
             }
@@ -68,7 +68,7 @@ private extension ReaderManageScenePresenter {
             NotificationCenter.default.post(name: .readerManageControllerWasDismissed, object: self)
             WPAnalytics.track(.readerManageViewDismissed)
         })
-        tabbedViewController.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
+        tabbedViewController.title =  AppLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
         if let section = selectedSection, let firstSelection = sections.firstIndex(of: section) {
             tabbedViewController.selection = firstSelection
         }

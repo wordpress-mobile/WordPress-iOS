@@ -25,22 +25,22 @@ final class PersonViewController: UITableViewController {
         var title: String {
             switch self {
             case .User:
-                return NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+                return AppLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
             case .Follower:
-                return NSLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
+                return AppLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
             case .Viewer:
-                return NSLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
+                return AppLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
             }
         }
 
         var name: String {
             switch self {
             case .User:
-                return NSLocalizedString("user", comment: "Noun. Describes a site's user.")
+                return AppLocalizedString("user", comment: "Noun. Describes a site's user.")
             case .Follower:
-                return NSLocalizedString("follower", comment: "Noun. Describes a site's follower.")
+                return AppLocalizedString("follower", comment: "Noun. Describes a site's follower.")
             case .Viewer:
-                return NSLocalizedString("viewer", comment: "Noun. Describes a site's viewer.")
+                return AppLocalizedString("viewer", comment: "Noun. Describes a site's viewer.")
             }
         }
     }
@@ -202,12 +202,12 @@ private extension PersonViewController {
     }
 
     func removeWasPressed() {
-        let titleFormat = NSLocalizedString("Remove @%@", comment: "Remove Person Alert Title")
+        let titleFormat = AppLocalizedString("Remove @%@", comment: "Remove Person Alert Title")
         let titleText = String(format: titleFormat, person.username)
         let name = person.firstName?.nonEmptyString() ?? person.username
         let message = warningTextForRemovingPerson(name)
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
-        let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel Action")
+        let removeTitle = AppLocalizedString("Remove", comment: "Remove Action")
 
         let alert = UIAlertController(title: titleText, message: message, preferredStyle: .alert)
 
@@ -236,18 +236,18 @@ private extension PersonViewController {
         var messageFirstLine: String
         switch screenMode {
         case .User:
-            let text = NSLocalizedString("If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site.",
+            let text = AppLocalizedString("If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site.",
                                          comment: "First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string.")
             messageFirstLine = String.localizedStringWithFormat(text, name, name)
         case .Follower:
-            messageFirstLine = NSLocalizedString("If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
+            messageFirstLine = AppLocalizedString("If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
                                                  comment: "First line of remove follower warning in confirmation dialog.")
         case .Viewer:
-            messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
+            messageFirstLine = AppLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
                                                  comment: "First line of remove viewer warning in confirmation dialog.")
         }
 
-        let messageSecondLineText = NSLocalizedString("Would you still like to remove this person?",
+        let messageSecondLineText = AppLocalizedString("Would you still like to remove this person?",
                                                       comment: "Second line of Remove user/follower/viewer warning in confirmation dialog.")
 
         return messageFirstLine + "\n\n" + messageSecondLineText
@@ -324,9 +324,9 @@ private extension PersonViewController {
             return
         }
 
-        let errorTitleFormat = NSLocalizedString("Error removing %@", comment: "Title of error dialog when removing a site owner fails.")
+        let errorTitleFormat = AppLocalizedString("Error removing %@", comment: "Title of error dialog when removing a site owner fails.")
         let errorTitleText = String(format: errorTitleFormat, userName)
-        let errorMessage = NSLocalizedString("The user you are trying to remove is the owner of this site. " +
+        let errorMessage = AppLocalizedString("The user you are trying to remove is the owner of this site. " +
                                              "Please contact support for assistance.",
                                              comment: "Error message shown when user attempts to remove the site owner.")
         WPError.showAlert(withTitle: errorTitleText, message: errorMessage, withSupportButton: true)
@@ -361,10 +361,10 @@ private extension PersonViewController {
     }
 
     func retryUpdatingRole(_ newRole: String) {
-        let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
-        let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
-        let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
-        let localizedError      = NSLocalizedString("There was an error updating @%@", comment: "Updating Role failed error message")
+        let retryTitle          = AppLocalizedString("Retry", comment: "Retry updating User's Role")
+        let cancelTitle         = AppLocalizedString("Cancel", comment: "Cancel updating User's Role")
+        let title               = AppLocalizedString("Sorry!", comment: "Update User Failed Title")
+        let localizedError      = AppLocalizedString("There was an error updating @%@", comment: "Updating Role failed error message")
         let messageText         = String(format: localizedError, person.username)
 
         let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .alert)
@@ -427,34 +427,34 @@ private extension PersonViewController {
 
     func configureRemoveCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
-        let removeFormat     = NSLocalizedString("Remove @%@", comment: "Remove User. Verb")
+        let removeFormat     = AppLocalizedString("Remove @%@", comment: "Remove User. Verb")
         let removeText       = String(format: removeFormat, person.username)
         cell.textLabel?.text = removeText as String
         cell.isHidden        = !isRemoveEnabled
     }
 
     func configureFirstNameCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text       = NSLocalizedString("First Name", comment: "User's First Name")
+        cell.textLabel?.text       = AppLocalizedString("First Name", comment: "User's First Name")
         cell.detailTextLabel?.text = person.firstName
         cell.isHidden              = isFullnamePrivate
         cell.isUserInteractionEnabled = false
     }
 
     func configureLastNameCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text       = NSLocalizedString("Last Name", comment: "User's Last Name")
+        cell.textLabel?.text       = AppLocalizedString("Last Name", comment: "User's Last Name")
         cell.detailTextLabel?.text = person.lastName
         cell.isHidden              = isFullnamePrivate
         cell.isUserInteractionEnabled = false
     }
 
     func configureDisplayNameCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text       = NSLocalizedString("Display Name", comment: "User's Display Name")
+        cell.textLabel?.text       = AppLocalizedString("Display Name", comment: "User's Display Name")
         cell.detailTextLabel?.text = person.displayName
         cell.isUserInteractionEnabled = false
     }
 
     func configureRoleCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text          = NSLocalizedString("Role", comment: "User's Role")
+        cell.textLabel?.text          = AppLocalizedString("Role", comment: "User's Role")
         cell.detailTextLabel?.text    = role?.name
 
         let enabled                   = isPromoteEnabled

@@ -9,7 +9,7 @@ class SiteDesignPreviewViewController: TemplatePreviewViewController {
         self.siteDesign = siteDesign
         super.init(demoURL: siteDesign.demoURL, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
         delegate = self
-        title = NSLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
+        title = AppLocalizedString("Preview", comment: "Title for screen to preview a selected homepage design")
     }
 
     required init?(coder: NSCoder) {

@@ -19,11 +19,11 @@ public enum ThemeType {
     var title: String {
         switch self {
         case .all:
-            return NSLocalizedString("All", comment: "Browse all themes selection title")
+            return AppLocalizedString("All", comment: "Browse all themes selection title")
         case .free:
-            return NSLocalizedString("Free", comment: "Browse free themes selection title")
+            return AppLocalizedString("Free", comment: "Browse free themes selection title")
         case .premium:
-            return NSLocalizedString("Premium", comment: "Browse premium themes selection title")
+            return AppLocalizedString("Premium", comment: "Browse premium themes selection title")
         }
     }
 
@@ -151,7 +151,7 @@ public protocol ThemePresenter: AnyObject {
 
     fileprivate var themesHeader: ThemeBrowserSectionHeaderView? {
         didSet {
-            themesHeader?.descriptionLabel.text = NSLocalizedString("WordPress.com Themes",
+            themesHeader?.descriptionLabel.text = AppLocalizedString("WordPress.com Themes",
                                                                     comment: "Title for the WordPress.com themes section, should be the same as in Calypso").localizedUppercase
             themesHeader?.themeCount = totalThemeCount > 0 ? totalThemeCount : themeCount
         }
@@ -159,7 +159,7 @@ public protocol ThemePresenter: AnyObject {
 
     fileprivate var customThemesHeader: ThemeBrowserSectionHeaderView? {
         didSet {
-            customThemesHeader?.descriptionLabel.text = NSLocalizedString("Uploaded themes",
+            customThemesHeader?.descriptionLabel.text = AppLocalizedString("Uploaded themes",
                                                                           comment: "Title for the user uploaded themes section, should be the same as in Calypso").localizedUppercase
             customThemesHeader?.themeCount = totalCustomThemeCount > 0 ? totalCustomThemeCount : customThemeCount
         }
@@ -238,8 +238,8 @@ public protocol ThemePresenter: AnyObject {
     private var noResultsViewController: NoResultsViewController?
 
     private struct NoResultsTitles {
-        static let noThemes = NSLocalizedString("No themes matching your search", comment: "Text displayed when theme name search has no matches")
-        static let fetchingThemes = NSLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
+        static let noThemes = AppLocalizedString("No themes matching your search", comment: "Text displayed when theme name search has no matches")
+        static let fetchingThemes = AppLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
     }
 
     private var noResultsShown: Bool {
@@ -291,7 +291,7 @@ public protocol ThemePresenter: AnyObject {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
+        title = AppLocalizedString("Themes", comment: "Title of Themes browser page")
 
         WPStyleGuide.configureColors(view: view, collectionView: collectionView)
 
@@ -800,11 +800,11 @@ public protocol ThemePresenter: AnyObject {
 
                 self?.collectionView?.reloadData()
 
-                let successTitle = NSLocalizedString("Theme Activated", comment: "Title of alert when theme activation succeeds")
-                let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
+                let successTitle = AppLocalizedString("Theme Activated", comment: "Title of alert when theme activation succeeds")
+                let successFormat = AppLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
-                let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                let manageTitle = AppLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
+                let okTitle = AppLocalizedString("OK", comment: "Alert dismissal title")
 
                 self?.updateActivateButton(isLoading: false)
 
@@ -822,8 +822,8 @@ public protocol ThemePresenter: AnyObject {
             failure: { [weak self] (error) in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
-                let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                let errorTitle = AppLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
+                let okTitle = AppLocalizedString("OK", comment: "Alert dismissal title")
 
                 self?.activityIndicator.stopAnimating()
                 self?.activateButton?.customView = nil

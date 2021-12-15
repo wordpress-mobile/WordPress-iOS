@@ -17,7 +17,7 @@ class AddInsightTableViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("Add New Stats Card", comment: "Add New Stats Card view title")
+        navigationItem.title = AppLocalizedString("Add New Stats Card", comment: "Add New Stats Card view title")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -111,11 +111,11 @@ private extension AddInsightTableViewController {
         var title: String {
             switch self {
             case .general:
-                return NSLocalizedString("General", comment: "Add New Stats Card category title")
+                return AppLocalizedString("General", comment: "Add New Stats Card category title")
             case .postsAndPages:
-                return NSLocalizedString("Posts and Pages", comment: "Add New Stats Card category title")
+                return AppLocalizedString("Posts and Pages", comment: "Add New Stats Card category title")
             case .activity:
-                return NSLocalizedString("Activity", comment: "Add New Stats Card category title")
+                return AppLocalizedString("Activity", comment: "Add New Stats Card category title")
             }
         }
 

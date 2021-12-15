@@ -30,7 +30,7 @@ struct PublishSettingsViewModel {
         if let date = date, !post.shouldPublishImmediately() {
             return dateTimeFormatter.string(from: date)
         } else {
-            return NSLocalizedString("Immediately", comment: "Undated post time label")
+            return AppLocalizedString("Immediately", comment: "Undated post time label")
         }
     }
 
@@ -136,7 +136,7 @@ private struct DateAndTimeRow: ImmuTableRow {
 
     var noticeMessage: String?
 
-    let title = NSLocalizedString("Publish", comment: "Title for the publish settings view")
+    let title = AppLocalizedString("Publish", comment: "Title for the publish settings view")
 
     var immuTableRows: [ImmuTableRow.Type] {
         return [
@@ -167,7 +167,7 @@ private struct DateAndTimeRow: ImmuTableRow {
             switch cell {
             case .dateTime:
                 return DateAndTimeRow(
-                    title: NSLocalizedString("Date and Time", comment: "Date and Time"),
+                    title: AppLocalizedString("Date and Time", comment: "Date and Time"),
                     detail: viewModel.detailString,
                     accessibilityIdentifier: "Date and Time Row",
                     action: presenter.present(dateTimeCalendarViewController(with: viewModel))

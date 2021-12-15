@@ -515,11 +515,11 @@ private extension CommentContentTableViewCell {
 // MARK: - Localization
 
 private extension String {
-    static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
-    static let noLikes = NSLocalizedString("Like", comment: "Button title to Like a comment.")
-    static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. "
+    static let reply = AppLocalizedString("Reply", comment: "Reply to a comment.")
+    static let noLikes = AppLocalizedString("Like", comment: "Button title to Like a comment.")
+    static let singularLikeFormat = AppLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. "
                                                         + "%1$d is a placeholder for the number of Likes.")
-    static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
+    static let pluralLikesFormat = AppLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
                                                 + "%1$d is a placeholder for the number of Likes.")
 
     // pattern that detects empty HTML elements (including HTML comments within).

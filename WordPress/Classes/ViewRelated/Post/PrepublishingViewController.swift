@@ -437,11 +437,11 @@ class PrepublishingViewController: UITableViewController {
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
-        static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
-        static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
-        static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
-        static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
-        static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
+        static let publishNow = AppLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
+        static let scheduleNow = AppLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
+        static let publishDateLabel = AppLocalizedString("Publish Date", comment: "Label for Publish date")
+        static let scheduledLabel = AppLocalizedString("Scheduled for", comment: "Scheduled for [date]")
+        static let titlePlaceholder = AppLocalizedString("Title", comment: "Placeholder for title")
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
 }
@@ -516,11 +516,11 @@ private extension PrepublishingOption {
         case .schedule:
             self.init(id: .schedule, title: PrepublishingViewController.Constants.publishDateLabel, type: .value)
         case .categories:
-            self.init(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"), type: .value)
+            self.init(id: .categories, title: AppLocalizedString("Categories", comment: "Label for Categories"), type: .value)
         case .visibility:
-            self.init(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
+            self.init(id: .visibility, title: AppLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
         case .tags:
-            self.init(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
+            self.init(id: .tags, title: AppLocalizedString("Tags", comment: "Label for Tags"), type: .value)
         }
     }
 }

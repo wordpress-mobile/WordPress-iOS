@@ -11,7 +11,7 @@ class SitePromptView: UIView {
 
     @IBOutlet weak var sitePrompt: UILabel! {
         didSet {
-            sitePrompt.text = NSLocalizedString("example.com", comment: "Provides a sample of what a domain name looks like.")
+            sitePrompt.text = AppLocalizedString("example.com", comment: "Provides a sample of what a domain name looks like.")
         }
     }
 

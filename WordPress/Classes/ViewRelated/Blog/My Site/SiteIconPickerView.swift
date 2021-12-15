@@ -274,11 +274,11 @@ struct SiteIconPickerView: View {
     // MARK: - Constants
 
     private enum TextContent {
-        static let title = NSLocalizedString("Create a site icon", comment: "Title for the Site Icon Picker")
-        static let hint = NSLocalizedString("Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.", comment: "Subtitle for the Site Icon Picker")
-        static let emojiSectionTitle = NSLocalizedString("Emoji", comment: "Title for the Emoji section")
-        static let colorSectionTitle = NSLocalizedString("Background Color", comment: "Title for the Background Color section")
-        static let saveButtonTitle = NSLocalizedString("Save", comment: "Title for the button that will save the site icon")
+        static let title = AppLocalizedString("Create a site icon", comment: "Title for the Site Icon Picker")
+        static let hint = AppLocalizedString("Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.", comment: "Subtitle for the Site Icon Picker")
+        static let emojiSectionTitle = AppLocalizedString("Emoji", comment: "Title for the Emoji section")
+        static let colorSectionTitle = AppLocalizedString("Background Color", comment: "Title for the Background Color section")
+        static let saveButtonTitle = AppLocalizedString("Save", comment: "Title for the button that will save the site icon")
     }
 
     private enum Metrics {

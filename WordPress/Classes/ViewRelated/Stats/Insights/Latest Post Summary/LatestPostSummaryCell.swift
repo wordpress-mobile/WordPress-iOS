@@ -76,7 +76,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable, Accessible {
 
     func prepareForVoiceOver() {
         actionButton.accessibilityLabel =
-            NSLocalizedString("View more", comment: "Accessibility label for the View more button in Stats' Post Summary.")
+            AppLocalizedString("View more", comment: "Accessibility label for the View more button in Stats' Post Summary.")
     }
 }
 
@@ -192,16 +192,16 @@ private extension LatestPostSummaryCell {
     }
 
     struct CellStrings {
-        static let summaryPostInfo = NSLocalizedString("It's been %@ since %@ was published. ", comment: "Latest post summary text including placeholder for time and the post title.")
-        static let summaryPerformance = NSLocalizedString("Here's how the post performed so far.", comment: "Appended to latest post summary text when the post has data.")
-        static let summaryNoData = NSLocalizedString("Get the ball rolling and increase your post views by sharing your post.", comment: "Appended to latest post summary text when the post does not have data.")
-        static let summaryNoPosts = NSLocalizedString("You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here.", comment: "Latest post summary text when there are no posts.")
-        static let views = NSLocalizedString("Views", comment: "Label for post views count.")
-        static let likes = NSLocalizedString("Likes", comment: "Label for post likes count.")
-        static let comments = NSLocalizedString("Comments", comment: "Label for post comments count.")
-        static let viewMore = NSLocalizedString("View more", comment: "Label for viewing more post information.")
-        static let sharePost = NSLocalizedString("Share Post", comment: "Label for action to share post.")
-        static let createPost = NSLocalizedString("Create Post", comment: "Label for action to create a new post.")
+        static let summaryPostInfo = AppLocalizedString("It's been %@ since %@ was published. ", comment: "Latest post summary text including placeholder for time and the post title.")
+        static let summaryPerformance = AppLocalizedString("Here's how the post performed so far.", comment: "Appended to latest post summary text when the post has data.")
+        static let summaryNoData = AppLocalizedString("Get the ball rolling and increase your post views by sharing your post.", comment: "Appended to latest post summary text when the post does not have data.")
+        static let summaryNoPosts = AppLocalizedString("You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here.", comment: "Latest post summary text when there are no posts.")
+        static let views = AppLocalizedString("Views", comment: "Label for post views count.")
+        static let likes = AppLocalizedString("Likes", comment: "Label for post likes count.")
+        static let comments = AppLocalizedString("Comments", comment: "Label for post comments count.")
+        static let viewMore = AppLocalizedString("View more", comment: "Label for viewing more post information.")
+        static let sharePost = AppLocalizedString("Share Post", comment: "Label for action to share post.")
+        static let createPost = AppLocalizedString("Create Post", comment: "Label for action to create a new post.")
     }
 
     // MARK: - Button Handling

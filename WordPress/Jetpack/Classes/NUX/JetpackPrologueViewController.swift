@@ -33,7 +33,7 @@ class JetpackPrologueViewController: UIViewController {
         view.addSubview(starFieldView)
         view.layer.addSublayer(gradientLayer)
 
-        titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
+        titleLabel.text = AppLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
         titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
         titleLabel.font = JetpackPrologueStyleGuide.Title.font
 

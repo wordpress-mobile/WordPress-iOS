@@ -13,27 +13,27 @@ extension NSNotification.Name {
 
 private struct Constants {
     // I18N Strings
-    static let welcomeTitleText = NSLocalizedString(
+    static let welcomeTitleText = AppLocalizedString(
         "Welcome to WordPress",
         comment: "Post Signup Interstitial Title Text"
     )
 
-    static let subTitleText = NSLocalizedString(
+    static let subTitleText = AppLocalizedString(
         "Whatever you want to create or share, we'll help you do it right here.",
         comment: "Post Signup Interstitial Subtitle Text"
     )
 
-    static let createSiteButtonTitleText = NSLocalizedString(
+    static let createSiteButtonTitleText = AppLocalizedString(
         "Create a new site",
         comment: "Title for a button that when tapped starts the site creation process"
     )
 
-    static let addSelfHostedButtonTitleText = NSLocalizedString(
+    static let addSelfHostedButtonTitleText = AppLocalizedString(
         "Add a self-hosted site",
         comment: "Title for a button that when tapped starts the add self-hosted site process"
     )
 
-    static let cancelButtonTitleText = NSLocalizedString(
+    static let cancelButtonTitleText = AppLocalizedString(
         "Not right now",
         comment: "Title for a button that when tapped cancels the site creation process"
     )

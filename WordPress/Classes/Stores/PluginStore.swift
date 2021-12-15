@@ -421,7 +421,7 @@ private extension PluginStore {
             pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
-                let message = String(format: NSLocalizedString("Error activating %@.", comment: "There was an error activating a plugin, placeholder is the plugin name"), plugin.name)
+                let message = String(format: AppLocalizedString("Error activating %@.", comment: "There was an error activating a plugin, placeholder is the plugin name"), plugin.name)
                 self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = false
@@ -443,7 +443,7 @@ private extension PluginStore {
             pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
-                let message = String(format: NSLocalizedString("Error deactivating %@.", comment: "There was an error deactivating a plugin, placeholder is the plugin name"), plugin.name)
+                let message = String(format: AppLocalizedString("Error deactivating %@.", comment: "There was an error deactivating a plugin, placeholder is the plugin name"), plugin.name)
                 self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = true
@@ -465,7 +465,7 @@ private extension PluginStore {
             pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
-                let message = String(format: NSLocalizedString("Error enabling autoupdates for %@.", comment: "There was an error enabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
+                let message = String(format: AppLocalizedString("Error enabling autoupdates for %@.", comment: "There was an error enabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
                 self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = false
@@ -487,7 +487,7 @@ private extension PluginStore {
             pluginID: plugin.state.id,
             success: {},
             failure: { [weak self] (error) in
-                let message = String(format: NSLocalizedString("Error disabling autoupdates for %@.", comment: "There was an error disabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
+                let message = String(format: AppLocalizedString("Error disabling autoupdates for %@.", comment: "There was an error disabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
                 self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = true
@@ -529,14 +529,14 @@ private extension PluginStore {
                     state.updatesInProgress[site]?.remove(installedPlugin.id)
                 }
 
-                let message = String(format: NSLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
+                let message = String(format: AppLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
                 ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
                 ActionDispatcher.dispatch(PluginAction.activateAndEnableAutoupdates(id: installedPlugin.id, site: site))
             },
             failure: { [weak self] error in
                 self?.state.updatesInProgress[site]?.remove(plugin.slug)
 
-                let message = String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), plugin.name)
+                let message = String(format: AppLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), plugin.name)
                 self?.notifyRemoteError(message: message, error: error)
         })
     }
@@ -571,7 +571,7 @@ private extension PluginStore {
                         updatedPlugin.updateState = .available(version)
                     })
                     state.updatesInProgress[site]?.remove(pluginID)
-                    let message = String(format: NSLocalizedString("Error updating %@.", comment: "There was an error updating a plugin, placeholder is the plugin name"), plugin.name)
+                    let message = String(format: AppLocalizedString("Error updating %@.", comment: "There was an error updating a plugin, placeholder is the plugin name"), plugin.name)
                     self?.notifyRemoteError(message: message, error: error)
                 })
         })
@@ -591,7 +591,7 @@ private extension PluginStore {
         }
 
         let failure: (Error) -> Void = { [weak self] (error) in
-            let message = String(format: NSLocalizedString("Error removing %@.", comment: "There was an error removing a plugin, placeholder is the plugin name"), plugin.name)
+            let message = String(format: AppLocalizedString("Error removing %@.", comment: "There was an error removing a plugin, placeholder is the plugin name"), plugin.name)
             self?.notifyRemoteError(message: message, error: error)
             self?.refreshPlugins(site: site)
         }

@@ -359,10 +359,10 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     enum ManageInsightConstants {
-        static let moveUp = NSLocalizedString("Move up", comment: "Option to move Insight up in the view.")
-        static let moveDown = NSLocalizedString("Move down", comment: "Option to move Insight down in the view.")
-        static let remove = NSLocalizedString("Remove from insights", comment: "Option to remove Insight from view.")
-        static let cancel = NSLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
+        static let moveUp = AppLocalizedString("Move up", comment: "Option to move Insight up in the view.")
+        static let moveDown = AppLocalizedString("Move down", comment: "Option to move Insight down in the view.")
+        static let remove = AppLocalizedString("Remove from insights", comment: "Option to remove Insight from view.")
+        static let cancel = AppLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
     }
 
     // MARK: - Grow Audience Helpers
@@ -534,7 +534,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let nc = UINavigationController(rootViewController: vc)
         nc.modalPresentationStyle = .formSheet
         present(nc, animated: true) { [weak self] in
-            let text = NSLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
+            let text = AppLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
             self?.displayNotice(title: text)
         }
 
@@ -681,12 +681,12 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
     }
 
     private enum NoResultConstants {
-        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
-        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
-        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
-        static let noInsightsTitle = NSLocalizedString("No insights added yet", comment: "Title displayed when the user has removed all Insights from display.")
-        static let noInsightsSubtitle = NSLocalizedString("Only see the most relevant stats. Add insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
-        static let manageInsightsButtonTitle = NSLocalizedString("Add stats card", comment: "Button title displayed when the user has removed all Insights from display.")
+        static let errorTitle = AppLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = AppLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = AppLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+        static let noInsightsTitle = AppLocalizedString("No insights added yet", comment: "Title displayed when the user has removed all Insights from display.")
+        static let noInsightsSubtitle = AppLocalizedString("Only see the most relevant stats. Add insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
+        static let manageInsightsButtonTitle = AppLocalizedString("Add stats card", comment: "Button title displayed when the user has removed all Insights from display.")
     }
 }
 

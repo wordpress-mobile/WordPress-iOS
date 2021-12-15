@@ -290,10 +290,10 @@ public enum JetpackLoginPromptType {
     var message: String {
         switch self {
         case .stats:
-            return NSLocalizedString("To use stats on your site, you'll need to install the Jetpack plugin.",
+            return AppLocalizedString("To use stats on your site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from stats")
         case .notifications:
-            return NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.",
+            return AppLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from notifications")
         }
     }
@@ -315,20 +315,20 @@ private enum JetpackWebviewType {
 
 private enum Constants {
     enum Buttons {
-        static let termsAndConditions = NSLocalizedString("Terms and Conditions", comment: "The underlined title sentence")
-        static let termsAndConditionsTitle = String.localizedStringWithFormat(NSLocalizedString("By setting up Jetpack you agree to our\n%@",
+        static let termsAndConditions = AppLocalizedString("Terms and Conditions", comment: "The underlined title sentence")
+        static let termsAndConditionsTitle = String.localizedStringWithFormat(AppLocalizedString("By setting up Jetpack you agree to our\n%@",
                                                                                                 comment: "Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break \n. Also there is a placeholder %@ which is: Terms and Conditions"), termsAndConditions)
-        static let faqTitle = NSLocalizedString("Jetpack FAQ", comment: "Title of the button which opens the Jetpack FAQ page.")
-        static let jetpackInstallTitle = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation.")
-        static let loginTitle = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
+        static let faqTitle = AppLocalizedString("Jetpack FAQ", comment: "Title of the button which opens the Jetpack FAQ page.")
+        static let jetpackInstallTitle = AppLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation.")
+        static let loginTitle = AppLocalizedString("Log in", comment: "Title of a button for signing in.")
     }
 
     enum Jetpack {
-        static let isUpdated = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! " +
+        static let isUpdated = AppLocalizedString("Looks like you have Jetpack set up on your site. Congrats! " +
             "Log in with your WordPress.com credentials to enable " +
             "Stats and Notifications.",
                                                       comment: "Message asking the user to sign into Jetpack with WordPress.com credentials")
-        static let updateRequired = String.localizedStringWithFormat(NSLocalizedString("Jetpack %@ or later is required. " +
+        static let updateRequired = String.localizedStringWithFormat(AppLocalizedString("Jetpack %@ or later is required. " +
             "Do you want to update Jetpack?",
                                                                                               comment: "Message stating the minimum required " +
                                                                                                 "version for Jetpack and asks the user " +

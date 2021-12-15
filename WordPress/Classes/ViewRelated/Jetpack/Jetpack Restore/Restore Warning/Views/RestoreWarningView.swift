@@ -62,9 +62,9 @@ class RestoreWarningView: UIView, NibLoadable {
     }
 
     private enum Strings {
-        static let title = NSLocalizedString("Warning", comment: "Noun. Title for Jetpack Restore warning.")
-        static let descriptionFormat = NSLocalizedString("Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.", comment: "Description for the confirm restore action. %1$@ is a placeholder for the selected date.")
-        static let confirmButtonTitle = NSLocalizedString("Confirm", comment: "Verb. Title for Jetpack Restore confirm button.")
-        static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Verb. Title for Jetpack Restore cancel button.")
+        static let title = AppLocalizedString("Warning", comment: "Noun. Title for Jetpack Restore warning.")
+        static let descriptionFormat = AppLocalizedString("Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then.", comment: "Description for the confirm restore action. %1$@ is a placeholder for the selected date.")
+        static let confirmButtonTitle = AppLocalizedString("Confirm", comment: "Verb. Title for Jetpack Restore confirm button.")
+        static let cancelButtonTitle = AppLocalizedString("Cancel", comment: "Verb. Title for Jetpack Restore cancel button.")
     }
 }

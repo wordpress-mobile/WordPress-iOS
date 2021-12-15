@@ -58,7 +58,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
     }
 
     private func configureView() {
-        title = NSLocalizedString("Register domain",
+        title = AppLocalizedString("Register domain",
                                   comment: "Title for the Register domain screen")
 
         configureTableView()
@@ -111,7 +111,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
     }
 
     private func showAlert(title: String? = nil, message: String) {
-        let alertCancel = NSLocalizedString(
+        let alertCancel = AppLocalizedString(
             "OK",
             comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt."
         )

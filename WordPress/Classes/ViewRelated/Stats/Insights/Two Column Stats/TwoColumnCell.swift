@@ -41,7 +41,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
 
     func prepareForVoiceOver() {
         viewMoreButton.accessibilityLabel =
-            NSLocalizedString("View more", comment: "Accessibility label for View more button in Stats.")
+            AppLocalizedString("View more", comment: "Accessibility label for View more button in Stats.")
     }
 }
 
@@ -51,7 +51,7 @@ private extension TwoColumnCell {
 
     func applyStyles() {
         viewMoreView.backgroundColor = .listForeground
-        viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
+        viewMoreLabel.text = AppLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = Style.actionTextColor
         Style.configureCell(self)
         Style.configureViewAsSeparator(topSeparatorLine)

@@ -177,7 +177,7 @@ class PluginViewModel: Observable {
 
         guard isHostedAtWPCom || capabilities?.modify == true else {
             // If we know about versions, but we can't update/install the plugin, just show the version number.
-            return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
+            return TextRow(title: AppLocalizedString("Plugin version", comment: "Version of an installed plugin"),
                            value: version)
         }
 
@@ -188,7 +188,7 @@ class PluginViewModel: Observable {
                 return nil
             }
 
-            let message = String(format: NSLocalizedString("Version %@", comment: "Version of a plugin to install"), version)
+            let message = String(format: AppLocalizedString("Version %@", comment: "Version of a plugin to install"), version)
 
             guard !isInstallingPlugin else {
                 return TextWithButtonIndicatingActivityRow(
@@ -199,7 +199,7 @@ class PluginViewModel: Observable {
             return TextWithButtonRow(
                 title: message,
                 subtitle: nil,
-                actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
+                actionLabel: AppLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
 
                     // If the site isn't hosted at .com, then we have a straight-forward process on how to handle it.
@@ -216,7 +216,7 @@ class PluginViewModel: Observable {
                     } else {
 
                         guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
-                            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: AppLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
                             return
                         }
 
@@ -234,24 +234,24 @@ class PluginViewModel: Observable {
         switch plugin.state.updateState {
         case .updated:
             versionRow = TextRow(
-                title: String(format: NSLocalizedString("Version %@", comment: "Version of an installed plugin"), version),
-                value: NSLocalizedString("Installed", comment: "Indicates the state of the plugin")
+                title: String(format: AppLocalizedString("Version %@", comment: "Version of an installed plugin"), version),
+                value: AppLocalizedString("Installed", comment: "Indicates the state of the plugin")
             )
         case .available(let newVersion):
-            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
-            let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
+            let message = String(format: AppLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
+            let subtitle = String(format: AppLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
 
             versionRow = TextWithButtonRow(
                 title: message,
                 subtitle: subtitle,
-                actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
+                actionLabel: AppLocalizedString("Update", comment: "Button label to update a plugin"),
                 onButtonTap: { [unowned self] (_) in
                     ActionDispatcher.dispatch(PluginAction.update(id: plugin.id, site: self.site))
                 }
             )
         case .updating(let newVersion):
-            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
-            let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
+            let message = String(format: AppLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
+            let subtitle = String(format: AppLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
 
             versionRow = TextWithButtonIndicatingActivityRow(
                 title: message,
@@ -299,7 +299,7 @@ class PluginViewModel: Observable {
             activationPlugin.state.deactivateAllowed else { return nil }
 
         return SwitchRow(
-            title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
+            title: AppLocalizedString("Active", comment: "Whether a plugin is active on a site"),
             value: activationPlugin.state.active,
             onChange: { [unowned self] (active) in
                 self.setActive(active, for: activationPlugin)
@@ -317,7 +317,7 @@ class PluginViewModel: Observable {
             !autoUpdatePlugin.state.automanaged else { return nil }
 
         return SwitchRow(
-            title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
+            title: AppLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
             value: autoUpdatePlugin.state.autoupdate,
             onChange: { [unowned self] (autoupdate) in
                 self.setAutoupdate(autoupdate, for: autoUpdatePlugin)
@@ -331,7 +331,7 @@ class PluginViewModel: Observable {
             siteCapabilities.modify && pluginToRemove.state.deactivateAllowed else { return nil }
 
         return  DestructiveButtonRow(
-            title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
+            title: AppLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
             action: { [unowned self] _ in
                 let alert = self.confirmRemovalAlert(plugin: pluginToRemove)
                 self.present?(alert)
@@ -347,7 +347,7 @@ class PluginViewModel: Observable {
         }
 
         return LinkRow(
-            title: NSLocalizedString("Settings", comment: "Link to plugin's Settings"),
+            title: AppLocalizedString("Settings", comment: "Link to plugin's Settings"),
             action: { [unowned self] _ in
                 self.presentBrowser(for: settingsURL)
             }
@@ -358,7 +358,7 @@ class PluginViewModel: Observable {
         guard let url = state?.directoryURL, directoryEntry != nil else { return nil }
 
         return LinkRow(
-            title: NSLocalizedString("WordPress.org Plugin Page", comment: "Link to a WordPress.org page for the plugin"),
+            title: AppLocalizedString("WordPress.org Plugin Page", comment: "Link to a WordPress.org page for the plugin"),
             action: { [unowned self] _ in
                 self.presentBrowser(for: url)
         })
@@ -368,7 +368,7 @@ class PluginViewModel: Observable {
         guard let homeURL = state?.homeURL else { return nil }
 
         return LinkRow(
-            title: NSLocalizedString("Plugin Homepage", comment: "Link to a plugin's home page"),
+            title: AppLocalizedString("Plugin Homepage", comment: "Link to a plugin's home page"),
             action: { [unowned self] _ in
                 self.presentBrowser(for: homeURL)
         })
@@ -378,7 +378,7 @@ class PluginViewModel: Observable {
         guard let text = directoryEntry?.descriptionText else { return nil }
 
         return ExpandableRow(
-            title: NSLocalizedString("Description", comment: "Title of section that contains plugins' description"),
+            title: AppLocalizedString("Description", comment: "Title of section that contains plugins' description"),
             expandedText: setHTMLTextAttributes(text),
             expanded: descriptionExpandedStatus,
             action: { [unowned self] row in
@@ -394,7 +394,7 @@ class PluginViewModel: Observable {
         guard let text = directoryEntry?.installationText else { return nil }
 
         return ExpandableRow(
-            title: NSLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
+            title: AppLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
             expandedText: setHTMLTextAttributes(text),
             expanded: installationExpandedStatus,
             action: { [unowned self] row in
@@ -410,7 +410,7 @@ class PluginViewModel: Observable {
         guard let text = directoryEntry?.changelogText else { return nil }
 
         return ExpandableRow(
-            title: NSLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
+            title: AppLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
             expandedText: setHTMLTextAttributes(text),
             expanded: changeLogExpandedStatus,
             action: { [unowned self] row in
@@ -426,7 +426,7 @@ class PluginViewModel: Observable {
         guard let text = directoryEntry?.faqText else { return nil }
 
         return ExpandableRow(
-            title: NSLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
+            title: AppLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
             expandedText: setHTMLTextAttributes(text),
             expanded: faqExpandedStatus,
             action: { [unowned self] row in
@@ -483,13 +483,13 @@ class PluginViewModel: Observable {
     }
 
     private func confirmRegisterDomainAlert(for directoryEntry: PluginDirectoryEntry) -> UIAlertController {
-        let title = NSLocalizedString("Install Plugin", comment: "Install Plugin dialog title.")
-        let message = NSLocalizedString("To install plugins, you need to have a custom domain associated with your site.", comment: "Install Plugin dialog text.")
-        let registerDomainActionTitle = NSLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
+        let title = AppLocalizedString("Install Plugin", comment: "Install Plugin dialog title.")
+        let message = AppLocalizedString("To install plugins, you need to have a custom domain associated with your site.", comment: "Install Plugin dialog text.")
+        let registerDomainActionTitle = AppLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain")) { _ in
+        alertController.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Cancel registering a domain")) { _ in
             WPAnalytics.track(.automatedTransferCustomDomainDialogCancelled)
         }
 
@@ -505,27 +505,27 @@ class PluginViewModel: Observable {
         let question: String
         if let siteTitle = getSiteTitle() {
             question = String(
-                format: NSLocalizedString("Are you sure you want to remove %1$@ from %2$@?", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title."),
+                format: AppLocalizedString("Are you sure you want to remove %1$@ from %2$@?", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title."),
                 plugin.name,
                 siteTitle)
         } else {
             question = String(
-                format: NSLocalizedString("Are you sure you want to remove %1$@?", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name."),
+                format: AppLocalizedString("Are you sure you want to remove %1$@?", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name."),
                 plugin.name)
         }
         let disclaimer: String
         if plugin.state.active {
-            disclaimer = NSLocalizedString("This will deactivate the plugin and delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's active")
+            disclaimer = AppLocalizedString("This will deactivate the plugin and delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's active")
         } else {
-            disclaimer = NSLocalizedString("This will delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's inactive")
+            disclaimer = AppLocalizedString("This will delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's inactive")
         }
         let message = "\(question)\n\(disclaimer)"
         let alert = UIAlertController(
-            title: NSLocalizedString("Remove Plugin?", comment: "Title for the alert to confirm a plugin removal"),
+            title: AppLocalizedString("Remove Plugin?", comment: "Title for the alert to confirm a plugin removal"),
             message: message, preferredStyle: .alert)
-        alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel removing a plugin"))
+        alert.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Cancel removing a plugin"))
         alert.addDestructiveActionWithTitle(
-            NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
+            AppLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
                 ActionDispatcher.dispatch(PluginAction.remove(id: plugin.id, site: self.site))
             }
@@ -544,7 +544,7 @@ class PluginViewModel: Observable {
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
 
-                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: AppLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
                 return
             }
 
@@ -669,18 +669,18 @@ class PluginViewModel: Observable {
 
 private extension String {
     enum UnknownError {
-        static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the plugin")
-        static let description = NSLocalizedString("There was an error loading this plugin", comment: "Text displayed when there is a failure loading the plugin")
-        static let buttonTitle = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let title = AppLocalizedString("Oops", comment: "Title for the view when there's an error loading the plugin")
+        static let description = AppLocalizedString("There was an error loading this plugin", comment: "Text displayed when there is a failure loading the plugin")
+        static let buttonTitle = AppLocalizedString("Contact support", comment: "Button label for contacting support")
     }
 
     enum NoConnectionError {
-        static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-        static let description = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message when the user tries to visualize a plugin without internet connection")
+        static let title = AppLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let description = AppLocalizedString("An active internet connection is required to view plugins", comment: "Error message when the user tries to visualize a plugin without internet connection")
     }
 
     enum Loading {
-        static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
+        static let title = AppLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
     }
 }
 

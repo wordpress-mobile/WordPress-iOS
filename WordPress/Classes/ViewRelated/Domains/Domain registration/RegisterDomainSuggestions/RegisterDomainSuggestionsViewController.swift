@@ -363,11 +363,11 @@ extension RegisterDomainSuggestionsViewController {
 
     enum TextContent {
 
-        static let title = NSLocalizedString("Search domains",
+        static let title = AppLocalizedString("Search domains",
                                              comment: "Search domain - Title for the Suggested domains screen")
-        static let primaryButtonTitle = NSLocalizedString("Select domain",
+        static let primaryButtonTitle = AppLocalizedString("Select domain",
                                                           comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
-        static let supportButtonTitle = NSLocalizedString("Help", comment: "Help button")
+        static let supportButtonTitle = AppLocalizedString("Help", comment: "Help button")
     }
 
     enum Constants {

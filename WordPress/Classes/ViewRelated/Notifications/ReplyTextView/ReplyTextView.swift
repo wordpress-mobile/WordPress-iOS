@@ -151,8 +151,8 @@ import Gridicons
         // We can't reply without an internet connection
         let appDelegate = WordPressAppDelegate.shared
         guard appDelegate!.connectionAvailable else {
-            let title = NSLocalizedString("No Connection", comment: "Title of error prompt when no internet connection is available.")
-            let message = NSLocalizedString("The Internet connection appears to be offline.",
+            let title = AppLocalizedString("No Connection", comment: "Title of error prompt when no internet connection is available.")
+            let message = AppLocalizedString("The Internet connection appears to be offline.",
                                             comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
             WPError.showAlert(withTitle: title, message: message)
             textView.resignFirstResponder()
@@ -282,13 +282,13 @@ import Gridicons
         // Fullscreen toggle button
         fullscreenToggleButton.setImage(.gridicon(.chevronUp), for: .normal)
         fullscreenToggleButton.tintColor = .listIcon
-        fullscreenToggleButton.accessibilityLabel = NSLocalizedString("Enter Full Screen",
+        fullscreenToggleButton.accessibilityLabel = AppLocalizedString("Enter Full Screen",
                                                                       comment: "Accessibility Label for the enter full screen button on the comment reply text view")
 
         // Reply button
         replyButton.setTitleColor(Style.replyButtonColor, for: .normal)
-        replyButton.titleLabel?.text = NSLocalizedString("Reply", comment: "Reply to a comment.")
-        replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
+        replyButton.titleLabel?.text = AppLocalizedString("Reply", comment: "Reply to a comment.")
+        replyButton.accessibilityLabel = AppLocalizedString("Reply", comment: "Accessibility label for the reply button")
         refreshReplyButton()
 
         // Background

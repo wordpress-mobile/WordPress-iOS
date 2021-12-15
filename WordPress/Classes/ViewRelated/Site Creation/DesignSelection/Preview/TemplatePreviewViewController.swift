@@ -97,7 +97,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
         primaryActionButton.backgroundColor = accentColor
         primaryActionButton.layer.cornerRadius = 8
-        primaryActionButton.setTitle(NSLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"), for: .normal)
+        primaryActionButton.setTitle(AppLocalizedString("Choose", comment: "Title for the button to progress with the selected site homepage design"), for: .normal)
     }
 
     private func configurePreviewDeviceButton() {
@@ -138,7 +138,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     private func handleError(_ error: Error) {
         delegate?.previewError(error)
         configureAndDisplayNoResults(on: webView,
-                                     title: NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection."))
+                                     title: AppLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection."))
         progressBar.animatableSetIsHidden(true)
         removeProgressObserver()
     }

@@ -30,7 +30,7 @@ class JetpackScanHistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = NSLocalizedString("Scan History", comment: "Title of the view")
+        self.title = AppLocalizedString("Scan History", comment: "Title of the view")
 
         configureTableView()
         configureFilterTabBar()
@@ -257,35 +257,35 @@ extension JetpackScanHistoryViewController: NoResultsViewControllerDelegate {
 
     private struct NoResultsText {
         struct loading {
-            static let title = NSLocalizedString("Loading Scan History...", comment: "Text displayed while loading the scan history for a site")
+            static let title = AppLocalizedString("Loading Scan History...", comment: "Text displayed while loading the scan history for a site")
         }
 
         struct noHistory {
-            static let title = NSLocalizedString("No history yet", comment: "Title for the view when there aren't any history items to display")
+            static let title = AppLocalizedString("No history yet", comment: "Title for the view when there aren't any history items to display")
         }
 
         struct error {
-            static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
-            static let subtitle = NSLocalizedString("There was an error loading the scan history", comment: "Text displayed when there is a failure loading the history feed")
-            static let buttonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+            static let title = AppLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
+            static let subtitle = AppLocalizedString("There was an error loading the scan history", comment: "Text displayed when there is a failure loading the history feed")
+            static let buttonText = AppLocalizedString("Contact support", comment: "Button label for contacting support")
         }
 
         struct noConnection {
-            static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-            static let subtitle = NSLocalizedString("An active internet connection is required to view the history", comment: "Error message shown when trying to view the Scan History feature and there is no internet connection.")
+            static let title = AppLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+            static let subtitle = AppLocalizedString("An active internet connection is required to view the history", comment: "Error message shown when trying to view the Scan History feature and there is no internet connection.")
         }
 
         struct noFixedThreats {
-            static let title = NSLocalizedString("No fixed threats", comment: "Title for the view when there aren't any fixed threats to display")
-            static let subtitle = NSLocalizedString("So far, there are no fixed threats on your site.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
+            static let title = AppLocalizedString("No fixed threats", comment: "Title for the view when there aren't any fixed threats to display")
+            static let subtitle = AppLocalizedString("So far, there are no fixed threats on your site.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
         }
 
         struct noIgnoredThreats {
-            static let title = NSLocalizedString("No ignored threats", comment: "Title for the view when there aren't any ignored threats to display")
-            static let subtitle = NSLocalizedString("So far, there are no ignored threats on your site.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
+            static let title = AppLocalizedString("No ignored threats", comment: "Title for the view when there aren't any ignored threats to display")
+            static let subtitle = AppLocalizedString("So far, there are no ignored threats on your site.", comment: "Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker")
         }
 
-        static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the history again")
+        static let tryAgainButtonText = AppLocalizedString("Try again", comment: "Button label for trying to retrieve the history again")
     }
 }
 

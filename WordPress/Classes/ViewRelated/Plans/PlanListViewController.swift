@@ -20,7 +20,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     override init(style: UITableView.Style) {
         super.init(style: .grouped)
-        title = NSLocalizedString("Plans", comment: "Title for the plan selector")
+        title = AppLocalizedString("Plans", comment: "Title for the plan selector")
         // Need to use `super` to work around a Swift compiler bug
         // https://bugs.swift.org/browse/SR-3465
         super.restorationIdentifier = PlanListViewController.restorationIdentifier

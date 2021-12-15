@@ -84,7 +84,7 @@ class BodyContentGroup: FormattableContentGroup {
     }
 
     private class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
-        let text = NSLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
+        let text = AppLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
         let textRange = NSRange(location: 0, length: text.count)
         let zeroRange = NSRange(location: 0, length: 0)
 

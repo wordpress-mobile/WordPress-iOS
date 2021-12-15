@@ -57,8 +57,8 @@ class SignupEpilogueCell: UITableViewCell {
 
     override var accessibilityLabel: String? {
         get {
-            let emptyValue = NSLocalizedString("Empty", comment: "Accessibility value presented in the signup epilogue for an empty value.")
-            let secureTextValue = NSLocalizedString("Secure text", comment: "Accessibility value presented in the signup epilogue for a password value.")
+            let emptyValue = AppLocalizedString("Empty", comment: "Accessibility value presented in the signup epilogue for an empty value.")
+            let secureTextValue = AppLocalizedString("Secure text", comment: "Accessibility value presented in the signup epilogue for a password value.")
 
             let labelValue = cellLabel.text ?? emptyValue
 

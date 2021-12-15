@@ -137,10 +137,10 @@ final class QuickStartPromptViewController: UIViewController {
 extension QuickStartPromptViewController {
 
     private enum Strings {
-        static let promptTitle = NSLocalizedString("Want a little help managing this site with the app?", comment: "Title for a prompt asking if users want to try out the quick start checklist.")
-        static let promptDescription = NSLocalizedString("Learn the basics with a quick walk through.", comment: "Description for a prompt asking if users want to try out the quick start checklist.")
-        static let showMeAroundButtonTitle = NSLocalizedString("Show me around", comment: "Button title. When tapped, the quick start checklist will be shown.")
-        static let noThanksButtonTitle = NSLocalizedString("No thanks", comment: "Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed.")
+        static let promptTitle = AppLocalizedString("Want a little help managing this site with the app?", comment: "Title for a prompt asking if users want to try out the quick start checklist.")
+        static let promptDescription = AppLocalizedString("Learn the basics with a quick walk through.", comment: "Description for a prompt asking if users want to try out the quick start checklist.")
+        static let showMeAroundButtonTitle = AppLocalizedString("Show me around", comment: "Button title. When tapped, the quick start checklist will be shown.")
+        static let noThanksButtonTitle = AppLocalizedString("No thanks", comment: "Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed.")
     }
 
 }

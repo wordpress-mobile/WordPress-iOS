@@ -71,15 +71,15 @@ class PostPostViewController: UIViewController {
 
         view.alpha = WPAlphaZero
 
-        shareButton.setTitle(NSLocalizedString("Share", comment: "Button label to share a post"), for: .normal)
+        shareButton.setTitle(AppLocalizedString("Share", comment: "Button label to share a post"), for: .normal)
         shareButton.accessibilityIdentifier = "sharePostButton"
         shareButton.setImage(.gridicon(.shareiOS, size: CGSize(width: 18, height: 18)), for: .normal)
         shareButton.tintColor = .white
 
         shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
-        editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
+        editButton.setTitle(AppLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
         editButton.accessibilityIdentifier = "editPostButton"
-        viewButton.setTitle(NSLocalizedString("View Post", comment: "Button label for viewing a post"), for: .normal)
+        viewButton.setTitle(AppLocalizedString("View Post", comment: "Button label for viewing a post"), for: .normal)
         viewButton.accessibilityIdentifier = "viewPostButton"
 
         configureForPost()
@@ -162,12 +162,12 @@ class PostPostViewController: UIViewController {
         titleLabel.accessibilityIdentifier = "postTitle"
 
         if post.isScheduled() {
-            let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for.")
+            let format = AppLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for.")
             postStatusLabel.text = String(format: format, post.dateStringForDisplay())
             postStatusLabel.accessibilityIdentifier = "scheduledPostStatusLabel"
             shareButton.isHidden = true
         } else {
-            postStatusLabel.text = NSLocalizedString("Published just now on", comment: "Precedes the name of the blog just posted on")
+            postStatusLabel.text = AppLocalizedString("Published just now on", comment: "Precedes the name of the blog just posted on")
             postStatusLabel.accessibilityIdentifier = "publishedPostStatusLabel"
             shareButton.isHidden = false
         }

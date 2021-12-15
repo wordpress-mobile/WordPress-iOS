@@ -30,7 +30,7 @@ class AddSiteAlertFactory: NSObject {
 
     private func addSelfHostedSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
-            title: NSLocalizedString("Add self-hosted site", comment: "Add self-hosted site button"),
+            title: AppLocalizedString("Add self-hosted site", comment: "Add self-hosted site button"),
             style: .default,
             handler: { _ in
                 handler()
@@ -39,13 +39,13 @@ class AddSiteAlertFactory: NSObject {
 
     private func cancelAction() -> UIAlertAction {
         return UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Cancel button"),
+            title: AppLocalizedString("Cancel", comment: "Cancel button"),
             style: .cancel)
     }
 
     private func createWPComSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
-            title: NSLocalizedString("Create WordPress.com site", comment: "Create WordPress.com site button"),
+            title: AppLocalizedString("Create WordPress.com site", comment: "Create WordPress.com site button"),
             style: .default,
             handler: { _ in
                 handler()

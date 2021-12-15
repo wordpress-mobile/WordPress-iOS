@@ -63,17 +63,17 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
                                    style: .plain,
                                    target: self,
                                    action: #selector(closeButtonPressed))
-        item.accessibilityLabel = NSLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
+        item.accessibilityLabel = AppLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
         return item
     }()
-    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
+    private lazy var publishButton = UIBarButtonItem(title: AppLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
+        chosenValueRow.titleLabel.text = AppLocalizedString("Choose a date", comment: "Label for Publish date picker")
 
-        let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
+        let nextButton = UIBarButtonItem(title: AppLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
         navigationItem.setRightBarButton(nextButton, animated: false)
 
         setup(topView: chosenValueRow, pickerView: calendarMonthView)
@@ -182,9 +182,9 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
+        chosenValueRow.titleLabel.text = AppLocalizedString("Choose a time", comment: "Label for Publish time picker")
         chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+        let doneButton = UIBarButtonItem(title: AppLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
 
         setup(topView: chosenValueRow, pickerView: datePicker)
 

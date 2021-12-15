@@ -219,9 +219,9 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func show(_ error: Error?) {
-        let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
+        let alertController = UIAlertController(title: nil, message: AppLocalizedString("There was a problem loading the media item.",
                                                                                        comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media item."))
+        alertController.addCancelActionWithTitle(AppLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media item."))
         alertController.presentFromRootViewController()
     }
 }

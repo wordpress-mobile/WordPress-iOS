@@ -28,7 +28,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func automanaged() -> UIView {
         let color = UIColor.neutral(.shade40)
-        let text = NSLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
+        let text = AppLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: nil, tintColor: color, text: text)
     }
@@ -36,7 +36,7 @@ struct PluginDirectoryAccessoryItem {
     private static func active() -> UIView {
         let icon = UIImage.gridicon(.checkmark, size: Constants.imageSize)
         let color = UIColor.success
-        let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
+        let text = AppLocalizedString("Active", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
@@ -44,7 +44,7 @@ struct PluginDirectoryAccessoryItem {
     private static func inactive() -> UIView {
         let icon = UIImage.gridicon(.cross, size: Constants.imageSize)
         let color = UIColor.neutral(.shade40)
-        let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
+        let text = AppLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
@@ -52,7 +52,7 @@ struct PluginDirectoryAccessoryItem {
     private static func needsUpdate() -> UIView {
         let icon = UIImage.gridicon(.sync, size: Constants.imageSize)
         let color = UIColor.warning
-        let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
+        let text = AppLocalizedString("Needs Update", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
@@ -60,7 +60,7 @@ struct PluginDirectoryAccessoryItem {
     private static func updating() -> UIView {
         let icon = UIImage.gridicon(.sync, size: Constants.imageSize)
         let color = UIColor.warning
-        let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
+        let text = AppLocalizedString("Updating", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }

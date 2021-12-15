@@ -42,8 +42,8 @@ class PostingActivityLegend: UIView, NibLoadable {
 private extension PostingActivityLegend {
 
     func applyStyles() {
-        fewerPostsLabel.text = NSLocalizedString("Fewer Posts", comment: "Label for the posting activity legend.")
-        morePostsLabel.text = NSLocalizedString("More Posts", comment: "Label for the posting activity legend.")
+        fewerPostsLabel.text = AppLocalizedString("Fewer Posts", comment: "Label for the posting activity legend.")
+        morePostsLabel.text = AppLocalizedString("More Posts", comment: "Label for the posting activity legend.")
         Style.configureLabelAsPostingLegend(fewerPostsLabel)
         Style.configureLabelAsPostingLegend(morePostsLabel)
     }

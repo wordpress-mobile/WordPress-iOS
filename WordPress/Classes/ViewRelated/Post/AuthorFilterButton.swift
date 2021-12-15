@@ -10,9 +10,9 @@ private extension AuthorFilterType {
     var accessibilityValue: String {
         switch self {
         case .everyone:
-            return NSLocalizedString("Showing everyone's posts", comment: "Voiceover description for the post list filter which shows posts for all users on a site.")
+            return AppLocalizedString("Showing everyone's posts", comment: "Voiceover description for the post list filter which shows posts for all users on a site.")
         case .user:
-            return NSLocalizedString("Showing just my posts", comment: "Voiceover description for the post list filter which shows posts for just the current user on a site.")
+            return AppLocalizedString("Showing just my posts", comment: "Voiceover description for the post list filter which shows posts for just the current user on a site.")
         }
     }
 }
@@ -120,8 +120,8 @@ extension AuthorFilterButton: Accessible {
     func prepareForVoiceOver() {
         isAccessibilityElement = true
         accessibilityTraits = UIAccessibilityTraits.button
-        accessibilityLabel = NSLocalizedString("Author Filter", comment: "Voiceover description of a button that allows the user to filter posts by author.")
-        accessibilityHint = NSLocalizedString("Select to change the current author filter.", comment: "Voiceover hint for a button that allows the user to filter posts by author.")
+        accessibilityLabel = AppLocalizedString("Author Filter", comment: "Voiceover description of a button that allows the user to filter posts by author.")
+        accessibilityHint = AppLocalizedString("Select to change the current author filter.", comment: "Voiceover hint for a button that allows the user to filter posts by author.")
         accessibilityValue = filterType.accessibilityValue
     }
 }

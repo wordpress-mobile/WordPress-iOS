@@ -22,9 +22,9 @@ class CameraHandler: CameraControllerDelegate {
     }
 
     private func showDiscardAlert(on: UIViewController, discard: @escaping () -> Void) {
-        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-        let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let title = AppLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+        let cancelTitle = AppLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let discardTitle = AppLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.view.accessibilityIdentifier = "post-has-changes-alert"

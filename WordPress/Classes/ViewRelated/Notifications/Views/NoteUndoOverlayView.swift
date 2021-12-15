@@ -46,7 +46,7 @@ class NoteUndoOverlayView: UIView {
 
         // Button
         undoButton.titleLabel?.font = Style.noteUndoTextFont
-        undoButton.setTitle(NSLocalizedString("Undo", comment: "Revert an operation"), for: UIControl.State())
+        undoButton.setTitle(AppLocalizedString("Undo", comment: "Revert an operation"), for: UIControl.State())
         undoButton.setTitleColor(Style.noteUndoTextColor, for: UIControl.State())
     }
 

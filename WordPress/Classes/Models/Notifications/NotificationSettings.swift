@@ -84,11 +84,11 @@ open class NotificationSettings {
         func description() -> String {
             switch self {
             case .blog:
-                return NSLocalizedString("WordPress Blog", comment: "Settings for a Wordpress Blog")
+                return AppLocalizedString("WordPress Blog", comment: "Settings for a Wordpress Blog")
             case .other:
-                return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
+                return AppLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
             case .wordPressCom:
-                return NSLocalizedString("Email from WordPress.com", comment: "Notification Settings Channel")
+                return AppLocalizedString("Email from WordPress.com", comment: "Notification Settings Channel")
             }
         }
     }
@@ -126,11 +126,11 @@ open class NotificationSettings {
             func description() -> String {
                 switch self {
                 case .Timeline:
-                    return NSLocalizedString("Notifications Tab", comment: "WordPress.com Notifications Timeline")
+                    return AppLocalizedString("Notifications Tab", comment: "WordPress.com Notifications Timeline")
                 case .Email:
-                    return NSLocalizedString("Email", comment: "Email Notifications Channel")
+                    return AppLocalizedString("Email", comment: "Email Notifications Channel")
                 case .Device:
-                    return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
+                    return AppLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
                 }
             }
 
@@ -167,36 +167,36 @@ open class NotificationSettings {
         static let weeklyRoundup    = "weekly_roundup"
 
         static let localizedDescriptionMap = [
-            commentAdded: NSLocalizedString("Comments on my site",
+            commentAdded: AppLocalizedString("Comments on my site",
                                             comment: "Setting: indicates if New Comments will be notified"),
-            commentLiked: NSLocalizedString("Likes on my comments",
+            commentLiked: AppLocalizedString("Likes on my comments",
                                             comment: "Setting: indicates if Comment Likes will be notified"),
-            postLiked: NSLocalizedString("Likes on my posts",
+            postLiked: AppLocalizedString("Likes on my posts",
                                          comment: "Setting: indicates if Replies to your comments will be notified"),
-            follower: NSLocalizedString("Site follows",
+            follower: AppLocalizedString("Site follows",
                                         comment: "Setting: indicates if New Follows will be notified"),
-            achievement: NSLocalizedString("Site achievements",
+            achievement: AppLocalizedString("Site achievements",
                                            comment: "Setting: indicates if Achievements will be notified"),
-            mention: NSLocalizedString("Username mentions",
+            mention: AppLocalizedString("Username mentions",
                                        comment: "Setting: indicates if Mentions will be notified"),
-            commentReplied: NSLocalizedString("Replies to your comments",
+            commentReplied: AppLocalizedString("Replies to your comments",
                                               comment: "Setting: indicates if Replies to Comments will be notified"),
-            marketing: NSLocalizedString("Suggestions",
+            marketing: AppLocalizedString("Suggestions",
                                          comment: "Setting: WordPress.com Suggestions"),
-            research: NSLocalizedString("Research",
+            research: AppLocalizedString("Research",
                                         comment: "Setting: WordPress.com Surveys"),
-            community: NSLocalizedString("Community",
+            community: AppLocalizedString("Community",
                                          comment: "Setting: WordPress.com Community"),
-            weeklyRoundup: NSLocalizedString("Weekly Roundup",
+            weeklyRoundup: AppLocalizedString("Weekly Roundup",
                                              comment: "Setting: indicates if the site reports its Weekly Roundup"),
         ]
 
         static let localizedDetailsMap = [
-            marketing: NSLocalizedString("Tips for getting the most out of WordPress.com.",
+            marketing: AppLocalizedString("Tips for getting the most out of WordPress.com.",
                                          comment: "WordPress.com Marketing Footer Text"),
-            research: NSLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
+            research: AppLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
                                         comment: "WordPress.com Research Footer Text"),
-            community: NSLocalizedString("Information on WordPress.com courses and events (online & in-person).",
+            community: AppLocalizedString("Information on WordPress.com courses and events (online & in-person).",
                                          comment: "WordPress.com Community Footer Text")
         ]
     }

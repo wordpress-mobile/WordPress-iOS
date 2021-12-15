@@ -35,19 +35,19 @@ extension BlogDetailsViewController {
         }
 
         let actionItems: [ActionRow.Item] = [
-            .init(image: .gridicon(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
+            .init(image: .gridicon(.statsAlt), title: AppLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showStats(from: .button)
             },
-            .init(image: .gridicon(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
+            .init(image: .gridicon(.posts), title: AppLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showPostList(from: .button)
             },
-            .init(image: .gridicon(.image), title: NSLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library.")) { [weak self] in
+            .init(image: .gridicon(.image), title: AppLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showMediaLibrary(from: .button)
             },
-            .init(image: .gridicon(.pages), title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
+            .init(image: .gridicon(.pages), title: AppLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
                 self?.showPageList(from: .button)
             }
@@ -103,13 +103,13 @@ extension BlogDetailsViewController {
     }
 
     enum SiteTitleStrings {
-        static let siteTitleHint = NSLocalizedString("The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes.", comment: "Description of the purpose of a site's title.")
-        static let notAnAdminHint = NSLocalizedString("The Site Title can only be changed by a user with the administrator role.", comment: "Message informing the user that the site title can only be changed by an administrator user.")
-        static let placeholderText = NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
-        static let defaultSiteTitle = NSLocalizedString("Site Title", comment: "Default title for a site")
-        static let settingsViewControllerTitle = NSLocalizedString("Site Title", comment: "Title for screen that show site title editor")
-        static let titleChangeSuccessfulMessage = NSLocalizedString("Site title changed successfully", comment: "Confirmation that the user successfully changed the site's title")
-        static let settingsSaveErrorTitle = NSLocalizedString("Error updating site title", comment: "Error message informing the user that their site's title could not be changed")
-        static let settingsSaveErrorMessage = NSLocalizedString("Please try again later", comment: "Used on an error alert to prompt the user to try again")
+        static let siteTitleHint = AppLocalizedString("The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes.", comment: "Description of the purpose of a site's title.")
+        static let notAnAdminHint = AppLocalizedString("The Site Title can only be changed by a user with the administrator role.", comment: "Message informing the user that the site title can only be changed by an administrator user.")
+        static let placeholderText = AppLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+        static let defaultSiteTitle = AppLocalizedString("Site Title", comment: "Default title for a site")
+        static let settingsViewControllerTitle = AppLocalizedString("Site Title", comment: "Title for screen that show site title editor")
+        static let titleChangeSuccessfulMessage = AppLocalizedString("Site title changed successfully", comment: "Confirmation that the user successfully changed the site's title")
+        static let settingsSaveErrorTitle = AppLocalizedString("Error updating site title", comment: "Error message informing the user that their site's title could not be changed")
+        static let settingsSaveErrorMessage = AppLocalizedString("Please try again later", comment: "Used on an error alert to prompt the user to try again")
     }
 }

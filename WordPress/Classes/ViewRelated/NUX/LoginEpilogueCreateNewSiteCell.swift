@@ -41,7 +41,7 @@ private extension LoginEpilogueCreateNewSiteCell {
     }
 
     func setupCreateNewSiteButton() {
-        createNewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "A button title"), for: .normal)
+        createNewSiteButton.setTitle(AppLocalizedString("Create a new site", comment: "A button title"), for: .normal)
         createNewSiteButton.accessibilityIdentifier = "Create a new site"
         createNewSiteButton.isPrimary = false
         createNewSiteButton.addTarget(self, action: #selector(didTapCreateNewSiteButton), for: .touchUpInside)

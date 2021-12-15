@@ -37,9 +37,9 @@ extension AppConstants {
     struct Settings {
         static let aboutTitle: String = {
             if FeatureFlag.aboutScreen.enabled {
-                return NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+                return AppLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
             } else {
-                return NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
+                return AppLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
             }
         }()
     }
@@ -49,10 +49,10 @@ extension AppConstants {
     }
 
     struct Logout {
-        static let alertTitle = NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
+        static let alertTitle = AppLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
     }
 
     struct Zendesk {
-        static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+        static let ticketSubject = AppLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
     }
 }

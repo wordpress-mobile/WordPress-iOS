@@ -70,7 +70,7 @@ fileprivate extension AbstractPost {
     }
 
     func generateTitle(from postTitle: String?) -> String {
-        let noTitleText = NSLocalizedString("No Title", comment: "Label used for posts without a title in spotlight search.")
+        let noTitleText = AppLocalizedString("No Title", comment: "Label used for posts without a title in spotlight search.")
         var title = "(\(noTitleText))"
         if let postTitle = postTitle, !postTitle.isEmpty {
             title = postTitle

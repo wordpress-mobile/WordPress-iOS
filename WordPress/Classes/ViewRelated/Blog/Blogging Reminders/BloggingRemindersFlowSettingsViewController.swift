@@ -604,19 +604,19 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
 
 // MARK: - Constants
 private enum TextContent {
-    static let settingsPrompt = NSLocalizedString("Select the days you want to blog on",
+    static let settingsPrompt = AppLocalizedString("Select the days you want to blog on",
                                                   comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
-    static let settingsUpdatePrompt = NSLocalizedString("You can update this anytime",
+    static let settingsUpdatePrompt = AppLocalizedString("You can update this anytime",
                                                         comment: "Prompt shown on the Blogging Reminders Settings screen.")
 
-    static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
+    static let nextButtonTitle = AppLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
 
-    static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
+    static let updateButtonTitle = AppLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
 
-    static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
+    static let tipPanelTitle = AppLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
 
-    static let tipPanelDescription = NSLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
+    static let tipPanelDescription = AppLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
 }
 
 private enum Images {

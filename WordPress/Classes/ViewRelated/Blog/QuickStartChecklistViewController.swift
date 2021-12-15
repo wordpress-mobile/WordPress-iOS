@@ -64,7 +64,7 @@ class QuickStartChecklistViewController: UITableViewController {
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
 
-        let accessibleFormat = NSLocalizedString("Dismiss %@ Quick Start step", comment: "Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step.")
+        let accessibleFormat = AppLocalizedString("Dismiss %@ Quick Start step", comment: "Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step.")
         cancelButton.accessibilityLabel = String(format: accessibleFormat, self.configuration.title)
 
         return UIBarButtonItem(customView: cancelButton)
@@ -205,8 +205,8 @@ private enum Constants {
     static let closeButtonModalImage = UIImage.gridicon(.cross)
     static let estimatedRowHeight: CGFloat = 90.0
     static let successScreenFadeAnimationDuration: TimeInterval = 0.3
-    static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
-    static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
-    static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
-    static let tasksCompleteScreenSubtitle = NSLocalizedString("Congratulations on completing your list. A job well done.", comment: "Subtitle of the congratulation screen that appears when all the tasks are completed")
+    static let customizeYourSite = AppLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
+    static let growYourAudience = AppLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
+    static let tasksCompleteScreenTitle = AppLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
+    static let tasksCompleteScreenSubtitle = AppLocalizedString("Congratulations on completing your list. A job well done.", comment: "Subtitle of the congratulation screen that appears when all the tasks are completed")
 }

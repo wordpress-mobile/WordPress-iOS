@@ -14,7 +14,7 @@ class PlanComparisonViewController: PagedViewController {
 
     lazy fileprivate var cancelXButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
-        button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
+        button.accessibilityLabel = AppLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
     }()

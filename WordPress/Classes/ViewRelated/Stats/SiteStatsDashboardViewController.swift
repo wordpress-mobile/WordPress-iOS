@@ -10,11 +10,11 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
     // This is public as it is needed by FilterTabBarItem.
     var title: String {
         switch self {
-        case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
-        case .days: return NSLocalizedString("Days", comment: "Title of Days stats filter.")
-        case .weeks: return NSLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
-        case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
-        case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
+        case .insights: return AppLocalizedString("Insights", comment: "Title of Insights stats filter.")
+        case .days: return AppLocalizedString("Days", comment: "Title of Days stats filter.")
+        case .weeks: return AppLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
+        case .months: return AppLocalizedString("Months", comment: "Title of Months stats filter.")
+        case .years: return AppLocalizedString("Years", comment: "Title of Years stats filter.")
         }
     }
 

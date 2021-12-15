@@ -132,19 +132,19 @@ private extension UnifiedPrologueReaderContentView {
 
     enum Strings {
         static let feedTopTitle: String = "Pamela Nguyen"
-        static let feedMiddleTitle: String = NSLocalizedString("Web News", comment: "Example Reader feed title")
-        static let feedBottomTitle: String = NSLocalizedString("Rock 'n Roll Weekly", comment: "Example Reader feed title")
+        static let feedMiddleTitle: String = AppLocalizedString("Web News", comment: "Example Reader feed title")
+        static let feedBottomTitle: String = AppLocalizedString("Rock 'n Roll Weekly", comment: "Example Reader feed title")
 
-        static let tagArt: String = NSLocalizedString("Art", comment: "An example tag used in the login prologue screens.")
-        static let tagCooking: String = NSLocalizedString("Cooking", comment: "An example tag used in the login prologue screens.")
-        static let tagFootball: String = NSLocalizedString("Football", comment: "An example tag used in the login prologue screens.")
-        static let tagGardening: String = NSLocalizedString("Gardening", comment: "An example tag used in the login prologue screens.")
-        static let tagMusic: String = NSLocalizedString("Music", comment: "An example tag used in the login prologue screens.")
-        static let tagPolitics: String = NSLocalizedString("Politics", comment: "An example tag used in the login prologue screens.")
+        static let tagArt: String = AppLocalizedString("Art", comment: "An example tag used in the login prologue screens.")
+        static let tagCooking: String = AppLocalizedString("Cooking", comment: "An example tag used in the login prologue screens.")
+        static let tagFootball: String = AppLocalizedString("Football", comment: "An example tag used in the login prologue screens.")
+        static let tagGardening: String = AppLocalizedString("Gardening", comment: "An example tag used in the login prologue screens.")
+        static let tagMusic: String = AppLocalizedString("Music", comment: "An example tag used in the login prologue screens.")
+        static let tagPolitics: String = AppLocalizedString("Politics", comment: "An example tag used in the login prologue screens.")
 
-        static let firstPostTitle: String = NSLocalizedString("My Top Ten Cafes", comment: "Example post title used in the login prologue screens.")
-        static let secondPostTitle: String = NSLocalizedString("The World's Best Fans", comment: "Example post title used in the login prologue screens. This is a post about football fans.")
-        static let thirdPostTitle: String = NSLocalizedString("Museums to See In London", comment: "Example post title used in the login prologue screens.")
+        static let firstPostTitle: String = AppLocalizedString("My Top Ten Cafes", comment: "Example post title used in the login prologue screens.")
+        static let secondPostTitle: String = AppLocalizedString("The World's Best Fans", comment: "Example post title used in the login prologue screens. This is a post about football fans.")
+        static let thirdPostTitle: String = AppLocalizedString("Museums to See In London", comment: "Example post title used in the login prologue screens.")
     }
 }
 

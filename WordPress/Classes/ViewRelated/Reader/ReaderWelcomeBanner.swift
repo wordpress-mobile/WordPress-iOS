@@ -37,7 +37,7 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
     }
 
     private func configureWelcomeLabel() {
-        welcomeLabel.text = NSLocalizedString("Welcome to Reader. Discover millions of blogs at your fingertips.", comment: "Welcome message shown under Discover in the Reader just the 1st time the user sees it")
+        welcomeLabel.text = AppLocalizedString("Welcome to Reader. Discover millions of blogs at your fingertips.", comment: "Welcome message shown under Discover in the Reader just the 1st time the user sees it")
     }
 
     private func showExtraDotsIfNeeded() {

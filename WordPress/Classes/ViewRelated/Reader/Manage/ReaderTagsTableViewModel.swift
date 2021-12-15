@@ -65,7 +65,7 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
             return nil
         }
 
-        let title = NSLocalizedString("Discover more topics", comment: "Button title. Tapping shows the Follow Topics screen.")
+        let title = AppLocalizedString("Discover more topics", comment: "Button title. Tapping shows the Follow Topics screen.")
         footer.actionButton.setTitle(title, for: .normal)
 
         footer.actionButtonHandler = { [weak self] in
@@ -96,15 +96,15 @@ extension ReaderTagsTableViewModel {
     /// Presents a new view controller for subscribing to a new tag.
     private func showAddTag() {
 
-        let placeholder = NSLocalizedString("Add any topic", comment: "Placeholder text. A call to action for the user to type any topic to which they would like to subscribe.")
+        let placeholder = AppLocalizedString("Add any topic", comment: "Placeholder text. A call to action for the user to type any topic to which they would like to subscribe.")
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
-        controller.title = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
+        controller.title = AppLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
         controller.onValueChanged = { [weak self] value in
             self?.follow(tagName: value)
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
-        controller.actionText = NSLocalizedString("Add Topic", comment: "Button Title. Tapping subscribes the user to a new topic.")
+        controller.actionText = AppLocalizedString("Add Topic", comment: "Button Title. Tapping subscribes the user to a new topic.")
         controller.onActionPress = { [weak self] in
             self?.dismissModal()
         }
@@ -121,10 +121,10 @@ extension ReaderTagsTableViewModel {
     /// Presents a new view controller for selecting topics to follow.
     private func showSelectInterests() {
         let configuration = ReaderSelectInterestsConfiguration(
-            title: NSLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
+            title: AppLocalizedString("Follow topics", comment: "Screen title. Reader select interests title label text."),
             subtitle: nil,
             buttonTitle: nil,
-            loading: NSLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
+            loading: AppLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
         )
 
         let topics = tableViewHandler.resultsController.fetchedObjects as? [ReaderTagTopic] ?? []
@@ -174,10 +174,10 @@ extension ReaderTagsTableViewModel {
 
             generator.notificationOccurred(.error)
 
-            let title = NSLocalizedString("Could Not Follow Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
+            let title = AppLocalizedString("Could Not Follow Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+            alert.addCancelActionWithTitle(AppLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
             alert.presentFromRootViewController()
         }, source: "manage")
     }
@@ -191,10 +191,10 @@ extension ReaderTagsTableViewModel {
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 
-            let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
+            let title = AppLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+            alert.addCancelActionWithTitle(AppLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
             alert.presentFromRootViewController()
         }
     }

@@ -59,9 +59,9 @@ private extension ReaderDetailLikesListController {
     }
 
     struct TitleFormats {
-        static let singular = NSLocalizedString("%1$d Like",
+        static let singular = AppLocalizedString("%1$d Like",
                                                 comment: "Singular format string for view title displaying the number of post likes. %1$d is the number of likes.")
-        static let plural = NSLocalizedString("%1$d Likes",
+        static let plural = AppLocalizedString("%1$d Likes",
                                               comment: "Plural format string for view title displaying the number of post likes. %1$d is the number of likes.")
     }
 

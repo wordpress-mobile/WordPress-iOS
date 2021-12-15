@@ -45,7 +45,7 @@ class MediaImageExporter: MediaExporter {
         var description: String {
             switch self {
             default:
-                return NSLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
+                return AppLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
             }
         }
     }

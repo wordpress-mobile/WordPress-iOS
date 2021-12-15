@@ -40,7 +40,7 @@ class LikesListController: NSObject {
     private var lastFetchedDate: String?
     private var excludeUserIDs: [NSNumber]?
 
-    private let errorTitle = NSLocalizedString("Error loading likes",
+    private let errorTitle = AppLocalizedString("Error loading likes",
                                                comment: "Text displayed when there is a failure loading notification likes.")
 
     private var hasMoreLikes: Bool {

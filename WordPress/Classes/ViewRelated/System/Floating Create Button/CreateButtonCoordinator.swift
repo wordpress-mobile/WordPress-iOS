@@ -12,7 +12,7 @@ import WordPressFlux
 
     var button: FloatingActionButton = {
         let button = FloatingActionButton(image: .gridicon(.create))
-        button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
+        button.accessibilityLabel = AppLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         return button
     }()
@@ -23,7 +23,7 @@ import WordPressFlux
 
     private func notice(for blog: Blog) -> Notice {
         let showsStories = blog.supports(.stories)
-        let title = showsStories ? NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
+        let title = showsStories ? AppLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : AppLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
         let notice = Notice(title: title,
                             message: "",
                             style: ToolTipNoticeStyle()) { [weak self] _ in
@@ -183,7 +183,7 @@ import WordPressFlux
 
     @objc func showCreateButton(for blog: Blog) {
         let showsStories = blog.supports(.stories)
-        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
+        button.accessibilityHint = showsStories ? AppLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : AppLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
         showCreateButton(notice: notice(for: blog))
     }
 

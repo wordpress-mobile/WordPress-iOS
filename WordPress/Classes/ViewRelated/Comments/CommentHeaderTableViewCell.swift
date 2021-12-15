@@ -69,12 +69,12 @@ class CommentHeaderTableViewCell: UITableViewCell, Reusable {
 // MARK: Localization
 
 private extension String {
-    static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
+    static let postCommentTitleText = AppLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
                                                             + "The title of the post will displayed below this string. "
                                                             + "Example: Comment on \n My First Post")
-    static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
+    static let replyCommentTitleFormat = AppLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
                                                            + "%1$@ is a placeholder for the comment author that's been replied to."
                                                            + "Example: Reply to Pamela Nguyen")
-    static let commentThreadTitleText = NSLocalizedString("Comments on", comment: "Sentence fragment. "
+    static let commentThreadTitleText = AppLocalizedString("Comments on", comment: "Sentence fragment. "
                                                           + "The full phrase is 'Comments on' followed by the title of a post on a separate line.")
 }

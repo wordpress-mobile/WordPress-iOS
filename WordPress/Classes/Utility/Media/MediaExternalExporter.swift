@@ -19,7 +19,7 @@ enum MediaExternalExporterError: MediaExportError {
     var description: String {
         switch self {
         case .unknownError:
-            return NSLocalizedString("The item could not be added to the Media Library.", comment: "Message shown when an asset failed to load while trying to add it to the Media library.")
+            return AppLocalizedString("The item could not be added to the Media Library.", comment: "Message shown when an asset failed to load while trying to add it to the Media library.")
         }
     }
 }

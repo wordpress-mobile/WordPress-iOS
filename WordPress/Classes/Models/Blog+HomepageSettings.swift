@@ -7,9 +7,9 @@ enum HomepageType: String {
     var title: String {
         switch self {
         case .page:
-            return NSLocalizedString("Static Homepage", comment: "Name of setting configured when a site uses a static page as its homepage")
+            return AppLocalizedString("Static Homepage", comment: "Name of setting configured when a site uses a static page as its homepage")
         case .posts:
-            return NSLocalizedString("Classic Blog", comment: "Name of setting configured when a site uses a list of blog posts as its homepage")
+            return AppLocalizedString("Classic Blog", comment: "Name of setting configured when a site uses a list of blog posts as its homepage")
         }
     }
 

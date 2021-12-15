@@ -33,7 +33,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Speed up your site", comment: "Title for the Speed up your site Settings Screen")
+        title = AppLocalizedString("Speed up your site", comment: "Title for the Speed up your site Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         reloadViewModel()
@@ -53,12 +53,12 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
 
-        let serveImagesFromOurServers = SwitchRow(title: NSLocalizedString("Serve images from our servers",
+        let serveImagesFromOurServers = SwitchRow(title: AppLocalizedString("Serve images from our servers",
                                                                            comment: "Title for the Serve images from our servers setting"),
                                                   value: self.settings.jetpackServeImagesFromOurServers,
                                                   onChange: self.serveImagesFromOurServersValueChanged())
 
-        let lazyLoadImages = SwitchRow(title: NSLocalizedString("\"Lazy-load\" images",
+        let lazyLoadImages = SwitchRow(title: AppLocalizedString("\"Lazy-load\" images",
                                                           comment: "Title for the lazy load images setting"),
                                        value: self.settings.jetpackLazyLoadImages,
                                        onChange: self.lazyLoadImagesValueChanged())
@@ -67,7 +67,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: "",
                 rows: [serveImagesFromOurServers],
-                footerText: NSLocalizedString("Jetpack will optimize your images and serve them from the server " +
+                footerText: AppLocalizedString("Jetpack will optimize your images and serve them from the server " +
                                               "location nearest to your visitors. Using our global content delivery " +
                                               "network will boost the loading speed of your site.",
                                               comment: "Footer for the Serve images from our servers setting")),
@@ -76,7 +76,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: "",
                 rows: [lazyLoadImages],
-                footerText: NSLocalizedString("Improve your site's speed by only loading images visible on the screen. " +
+                footerText: AppLocalizedString("Improve your site's speed by only loading images visible on the screen. " +
                                               "New images will load just before they scroll into view. This prevents " +
                                               "viewers from having to download all the images on a page all at once, " +
                                               "even ones they can't see.",
@@ -127,9 +127,9 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
     }
 
     fileprivate func refreshSettingsAfterSavingError() {
-        let errorTitle = NSLocalizedString("Error updating speed up site settings",
+        let errorTitle = AppLocalizedString("Error updating speed up site settings",
                                            comment: "Title of error dialog when updating speed up site settings fail.")
-        let errorMessage = NSLocalizedString("Please contact support for assistance.",
+        let errorMessage = AppLocalizedString("Please contact support for assistance.",
                                              comment: "Message displayed on an error alert to prompt the user to contact support")
         WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
         refreshSettings()

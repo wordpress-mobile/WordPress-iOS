@@ -134,7 +134,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         super.updateAndPerformFetchRequest()
 
-        title = NSLocalizedString("Pages", comment: "Title of the screen showing the list of pages for a blog.")
+        title = AppLocalizedString("Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
 
@@ -435,7 +435,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func showSitePostPageUneditableNotice() {
-        let sitePostPageUneditableNotice =  NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
+        let sitePostPageUneditableNotice =  AppLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
         let notice = Notice(title: sitePostPageUneditableNotice, feedbackType: .warning)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
@@ -549,9 +549,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Alert
 
     func presentAlertForPageBeingUploaded() {
-        let message = NSLocalizedString("This page is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
+        let message = AppLocalizedString("This page is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
 
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+        let alertCancel = AppLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
@@ -583,20 +583,20 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
-        var message = NSLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
+        var message = AppLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
 
         switch filter.filterType {
         case .published:
-            message = NSLocalizedString("Page Restored to Published", comment: "Prompts the user that a restored page was moved to the published list.")
+            message = AppLocalizedString("Page Restored to Published", comment: "Prompts the user that a restored page was moved to the published list.")
         break
         case .scheduled:
-            message = NSLocalizedString("Page Restored to Scheduled", comment: "Prompts the user that a restored page was moved to the scheduled list.")
+            message = AppLocalizedString("Page Restored to Scheduled", comment: "Prompts the user that a restored page was moved to the scheduled list.")
             break
         default:
             break
         }
 
-        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+        let alertCancel = AppLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
@@ -608,13 +608,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
         let objectID = page.objectID
 
-        let retryButtonTitle = NSLocalizedString("Retry", comment: "Label for a button that attempts to re-upload a page that previously failed to upload.")
-        let viewButtonTitle = NSLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
-        let draftButtonTitle = NSLocalizedString("Move to Draft", comment: "Label for a button that moves a page to the draft folder")
-        let publishButtonTitle = NSLocalizedString("Publish Immediately", comment: "Label for a button that moves a page to the published folder, publishing with the current date/time.")
-        let trashButtonTitle = NSLocalizedString("Move to Trash", comment: "Label for a button that moves a page to the trash folder")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Label for a cancel button")
-        let deleteButtonTitle = NSLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
+        let retryButtonTitle = AppLocalizedString("Retry", comment: "Label for a button that attempts to re-upload a page that previously failed to upload.")
+        let viewButtonTitle = AppLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
+        let draftButtonTitle = AppLocalizedString("Move to Draft", comment: "Label for a button that moves a page to the draft folder")
+        let publishButtonTitle = AppLocalizedString("Publish Immediately", comment: "Label for a button that moves a page to the published folder, publishing with the current date/time.")
+        let trashButtonTitle = AppLocalizedString("Move to Trash", comment: "Label for a button that moves a page to the trash folder")
+        let cancelButtonTitle = AppLocalizedString("Cancel", comment: "Label for a cancel button")
+        let deleteButtonTitle = AppLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
@@ -770,7 +770,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let buttonTitle = NSLocalizedString("Edit", comment: "Label for a button that opens the Edit Page view controller")
+        let buttonTitle = AppLocalizedString("Edit", comment: "Label for a button that opens the Edit Page view controller")
         controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(page.objectID) {
                 self?.editPage(page)
@@ -783,7 +783,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let buttonTitle = NSLocalizedString("Duplicate", comment: "Label for page duplicate option. Tapping creates a copy of the page.")
+        let buttonTitle = AppLocalizedString("Duplicate", comment: "Label for page duplicate option. Tapping creates a copy of the page.")
         controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(page.objectID) {
                 self?.copyPage(page)
@@ -799,7 +799,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         let objectID = page.objectID
-        let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
+        let setParentButtonTitle = AppLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
         controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(objectID) {
                 self?.setParent(for: page, at: index)
@@ -825,7 +825,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func handleSetParentSuccess() {
-        let setParentSuccefullyNotice =  NSLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
+        let setParentSuccefullyNotice =  AppLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
         let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
@@ -871,7 +871,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let setHomepageButtonTitle = NSLocalizedString("Set as Homepage", comment: "Label for a button that sets the selected page as the site's Homepage")
+        let setHomepageButtonTitle = AppLocalizedString("Set as Homepage", comment: "Label for a button that sets the selected page as the site's Homepage")
         controller.addActionWithTitle(setHomepageButtonTitle, style: .default, handler: { [weak self] _ in
             if let pageID = page.postID?.intValue {
                 self?.beginRefreshingManually()
@@ -904,7 +904,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let setPostsPageButtonTitle = NSLocalizedString("Set as Posts Page", comment: "Label for a button that sets the selected page as the site's Posts page")
+        let setPostsPageButtonTitle = AppLocalizedString("Set as Posts Page", comment: "Label for a button that sets the selected page as the site's Posts page")
         controller.addActionWithTitle(setPostsPageButtonTitle, style: .default, handler: { [weak self] _ in
             if let pageID = page.postID?.intValue {
                 self?.beginRefreshingManually()
@@ -938,24 +938,24 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func handleTrashPage(_ post: AbstractPost) {
         guard ReachabilityUtils.isInternetReachable() else {
-            let offlineMessage = NSLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
+            let offlineMessage = AppLocalizedString("Unable to trash pages while offline. Please try again later.", comment: "Message that appears when a user tries to trash a page while their device is offline.")
             ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
             return
         }
 
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+        let cancelText = AppLocalizedString("Cancel", comment: "Cancels an Action")
         let deleteText: String
         let messageText: String
         let titleText: String
 
         if post.status == .trash {
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
+            deleteText = AppLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
+            titleText = AppLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a page from the trash.")
+            messageText = AppLocalizedString("Are you sure you want to permanently delete this page?", comment: "Message of the confirmation alert when deleting a page from the trash.")
         } else {
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
-            titleText = NSLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
+            deleteText = AppLocalizedString("Move to Trash", comment: "Trash option in the trash page confirmation alert.")
+            titleText = AppLocalizedString("Trash this page?", comment: "Title of the trash page confirmation alert.")
+            messageText = AppLocalizedString("Are you sure you want to trash this page?", comment: "Message of the trash page confirmation alert.")
         }
 
         let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
@@ -1006,15 +1006,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - NetworkAwareUI
 
     override func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some pages may be unavailable while offline.",
+        return AppLocalizedString("No internet connection. Some pages may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Site Pages without an internet connection.")
     }
 
     struct HomepageSettingsText {
-        static let updateErrorTitle = NSLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
-        static let updateErrorMessage = NSLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
-        static let updateHomepageSuccessTitle = NSLocalizedString("Homepage successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
-        static let updatePostsPageSuccessTitle = NSLocalizedString("Posts page successfully updated", comment: "Message informing the user that their static homepage for posts was set successfully")
+        static let updateErrorTitle = AppLocalizedString("Unable to update homepage settings", comment: "Error informing the user that their homepage settings could not be updated")
+        static let updateErrorMessage = AppLocalizedString("Please try again later.", comment: "Prompt for the user to retry a failed action again later")
+        static let updateHomepageSuccessTitle = AppLocalizedString("Homepage successfully updated", comment: "Message informing the user that their static homepage page was set successfully")
+        static let updatePostsPageSuccessTitle = AppLocalizedString("Posts page successfully updated", comment: "Message informing the user that their static homepage for posts was set successfully")
     }
 }
 
@@ -1085,16 +1085,16 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
-        static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
-        static let noMatchesTitle = NSLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
-        static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-        static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
-        static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
-        static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-        static let searchPages = NSLocalizedString("Search pages", comment: "Text displayed when the search controller will be presented")
-        static let noConnectionTitle: String = NSLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
-        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
+        static let buttonTitle = AppLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
+        static let fetchingTitle = AppLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
+        static let noMatchesTitle = AppLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
+        static let noDraftsTitle = AppLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
+        static let noScheduledTitle = AppLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
+        static let noTrashedTitle = AppLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
+        static let noPublishedTitle = AppLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
+        static let searchPages = AppLocalizedString("Search pages", comment: "Text displayed when the search controller will be presented")
+        static let noConnectionTitle: String = AppLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
+        static let noConnectionSubtitle: String = AppLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
     }
 
 }

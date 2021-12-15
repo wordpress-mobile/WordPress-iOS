@@ -149,17 +149,17 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func stringForPostAttribution(_ authorName: String?, blogName: String?) -> String {
         var str = ""
         if (authorName != nil) && (blogName != nil) {
-            let pattern = NSLocalizedString("Originally posted by %@ on %@",
+            let pattern = AppLocalizedString("Originally posted by %@ on %@",
                 comment: "Used to attribute a post back to its original author and blog.  The '%@' characters are placholders for the author's name, and the author's blog repsectively.")
             str = String(format: pattern, authorName!, blogName!)
 
         } else if authorName != nil {
-            let pattern = NSLocalizedString("Originally posted by %@",
+            let pattern = AppLocalizedString("Originally posted by %@",
                 comment: "Used to attribute a post back to its original author.  The '%@' characters are a placholder for the author's name.")
             str = String(format: pattern, authorName!)
 
         } else if blogName != nil {
-            let pattern = NSLocalizedString("Originally posted on %@",
+            let pattern = AppLocalizedString("Originally posted on %@",
                 comment: "Used to attribute a post back to its original blog.  The '%@' characters are a placholder for the blog name.")
             str = String(format: pattern, blogName!)
         }
@@ -170,9 +170,9 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func patternForSiteAttribution(_ verbose: Bool) -> String {
         var pattern: String
         if verbose {
-            pattern = NSLocalizedString("Visit %@ for more", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = AppLocalizedString("Visit %@ for more", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         } else {
-            pattern = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = AppLocalizedString("Visit %@", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         }
         return pattern
     }

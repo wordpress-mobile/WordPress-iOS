@@ -470,8 +470,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     private func presentEditingModeSwitchedNotice() {
         let message = mode == .html
-            ? NSLocalizedString("Switched to HTML mode", comment: "Message of the notice shown when toggling the HTML editor mode")
-            : NSLocalizedString("Switched to Visual mode", comment: "Message of the notice shown when toggling the Visual editor mode")
+            ? AppLocalizedString("Switched to HTML mode", comment: "Message of the notice shown when toggling the HTML editor mode")
+            : AppLocalizedString("Switched to Visual mode", comment: "Message of the notice shown when toggling the Visual editor mode")
         gutenberg.showNotice(message)
     }
 
@@ -498,7 +498,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             post.isDraft(),
             post.remoteStatus == AbstractPostRemoteStatus.local else { return }
 
-        let message = post.hasContent() ? NSLocalizedString("Page created", comment: "Notice that a page with content has been created") : NSLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
+        let message = post.hasContent() ? AppLocalizedString("Page created", comment: "Notice that a page with content has been created") : AppLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
         gutenberg.showNotice(message)
     }
 
@@ -705,16 +705,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
-        let alertController = UIAlertController(title: NSLocalizedString("Featured Image Already Set", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
-                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+        let alertController = UIAlertController(title: AppLocalizedString("Featured Image Already Set", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                message: AppLocalizedString("You already have a featured image set. Do you want to replace it?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
-        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
+        let replaceAction = UIAlertAction(title: AppLocalizedString("Replace", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
         alertController.addAction(replaceAction)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button to cancel the replacement of a featured image."))
+        alertController.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Button to cancel the replacement of a featured image."))
 
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = view.bounds
@@ -756,8 +756,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         } catch let error {
             switch error {
             case StoryEditor.EditorCreationError.unsupportedDevice:
-                let title = NSLocalizedString("Unsupported Device", comment: "Title for stories unsupported device error.")
-                let message = NSLocalizedString("The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
+                let title = AppLocalizedString("Unsupported Device", comment: "Title for stories unsupported device error.")
+                let message = AppLocalizedString("The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.", comment: "Message for stories unsupported device error.")
                 let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
                     controller.dismiss(animated: true, completion: nil)
@@ -765,8 +765,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 controller.addAction(dismiss)
                 present(controller, animated: true, completion: nil)
             default:
-                let title = NSLocalizedString("Unable to Create Stories Editor", comment: "Title for stories unknown error.")
-                let message = NSLocalizedString("There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Message for stories unknown error.")
+                let title = AppLocalizedString("Unable to Create Stories Editor", comment: "Title for stories unknown error.")
+                let message = AppLocalizedString("There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Message for stories unknown error.")
                 let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
                     controller.dismiss(animated: true, completion: nil)
@@ -960,8 +960,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func showUnsupportedBlockUnexpectedErrorAlert() {
         WPError.showAlert(
-            withTitle: NSLocalizedString("Error", comment: "Generic error alert title"),
-            message: NSLocalizedString("There has been an unexpected error.", comment: "Generic error alert message"),
+            withTitle: AppLocalizedString("Error", comment: "Generic error alert title"),
+            message: AppLocalizedString("There has been an unexpected error.", comment: "Generic error alert message"),
             withSupportButton: false
         )
     }
@@ -1289,17 +1289,17 @@ private extension GutenbergViewController {
 private extension GutenbergViewController {
 
     struct EmptyPostActionSheet {
-        static let titlePost = NSLocalizedString("Can't publish an empty post", comment: "Alert message that is shown when trying to publish empty post")
-        static let titlePage = NSLocalizedString("Can't publish an empty page", comment: "Alert message that is shown when trying to publish empty page")
-        static let message = NSLocalizedString("Please add some content before trying to publish.", comment: "Suggestion to add content before trying to publish post or page")
+        static let titlePost = AppLocalizedString("Can't publish an empty post", comment: "Alert message that is shown when trying to publish empty post")
+        static let titlePage = AppLocalizedString("Can't publish an empty page", comment: "Alert message that is shown when trying to publish empty page")
+        static let message = AppLocalizedString("Please add some content before trying to publish.", comment: "Suggestion to add content before trying to publish post or page")
     }
 
     struct MediaAttachmentActionSheet {
-        static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
-        static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
-        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
-        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let title = AppLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        static let dismissActionTitle = AppLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let stopUploadActionTitle = AppLocalizedString("Stop upload", comment: "User action to stop upload.")
+        static let retryUploadActionTitle = AppLocalizedString("Retry", comment: "User action to retry media upload.")
+        static let retryAllFailedUploadsActionTitle = AppLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
     }
 }
 

@@ -46,11 +46,11 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
 
         super.init(
             analyticsLocation: "page_picker",
-            mainTitle: NSLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
-            prompt: NSLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
-            primaryActionTitle: NSLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),
-            secondaryActionTitle: NSLocalizedString("Preview", comment: "Title for button to preview a selected layout"),
-            defaultActionTitle: NSLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
+            mainTitle: AppLocalizedString("Choose a Layout", comment: "Title for the screen to pick a template for a page"),
+            prompt: AppLocalizedString("Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page.", comment: "Prompt for the screen to pick a template for a page"),
+            primaryActionTitle: AppLocalizedString("Create Page", comment: "Title for button to make a page with the contents of the selected layout"),
+            secondaryActionTitle: AppLocalizedString("Preview", comment: "Title for button to preview a selected layout"),
+            defaultActionTitle: AppLocalizedString("Create Blank Page", comment: "Title for button to make a blank page")
         )
     }
 
@@ -60,7 +60,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.backButtonTitle = NSLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
+        navigationItem.backButtonTitle = AppLocalizedString("Choose layout", comment: "Shortened version of the main title to be used in back navigation")
         fetchLayouts()
         configureCloseButton()
         configurePreviewDeviceButton()
@@ -124,8 +124,8 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     private func handleErrors(_ error: Error) {
         guard resultsController.isEmpty() else { return }
         isLoading = false
-        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
-        let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
+        let titleText = AppLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let subtitleText = AppLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }
 

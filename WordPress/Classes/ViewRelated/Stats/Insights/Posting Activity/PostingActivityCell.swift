@@ -38,7 +38,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable, Accessible {
 
     func prepareForVoiceOver() {
         viewMoreButton.accessibilityLabel =
-            NSLocalizedString("View more", comment: "Accessibility label for viewing more posting activity.")
+            AppLocalizedString("View more", comment: "Accessibility label for viewing more posting activity.")
     }
 
     override var accessibilityElements: [Any]? {
@@ -55,7 +55,7 @@ private extension PostingActivityCell {
 
     func applyStyles() {
         viewMoreView.backgroundColor = .listForeground
-        viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more posting activity.")
+        viewMoreLabel.text = AppLocalizedString("View more", comment: "Label for viewing more posting activity.")
         viewMoreLabel.textColor = Style.actionTextColor
         Style.configureCell(self)
         Style.configureViewAsSeparator(topSeparatorLine)

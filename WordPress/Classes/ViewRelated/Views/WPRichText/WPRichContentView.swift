@@ -194,7 +194,7 @@ private extension WPRichContentView {
         } catch let error {
             DDLogError("Error converting post content to attributed string: \(error)")
         }
-        let text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
+        let text = AppLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
         return NSAttributedString(string: text)
     }
 

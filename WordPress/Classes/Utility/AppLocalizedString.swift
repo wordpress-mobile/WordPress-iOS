@@ -25,19 +25,19 @@ extension Bundle {
 }
 
 /// Use this to express *intent* on your API that the string you are manipulating / returning is intended to already be localized
-/// and its value to have been provided via a call to `NSLocalizedString` or `AppLocalizedString`.
+/// and its value to have been provided via a call to `AppLocalizedString` or `AppLocalizedString`.
 ///
 /// Semantically speaking, a method taking or returning a `LocalizedString` is signaling that you can display said UI string
 /// to the end user, without the need to be treated as a key to be localized. The string is expected to already have been localized
-/// at that point of the code, via a call to `NSLocalizedString`, `AppLocalizedString` or similar upstream in the code.
+/// at that point of the code, via a call to `AppLocalizedString`, `AppLocalizedString` or similar upstream in the code.
 ///
 /// - Note: Remember though that, as a `typealias`, this won't provide any compile-time guarantee.
 typealias LocalizedString = String
 
-/// Use this function instead of `NSLocalizedString` to reference localized strings **from the app bundle** – especially
+/// Use this function instead of `AppLocalizedString` to reference localized strings **from the app bundle** – especially
 /// when using localized strings from the code of an app extension.
 ///
-/// You should use this `AppLocalizedString` method in place of `NSLocalizedString` especially when calling it
+/// You should use this `AppLocalizedString` method in place of `AppLocalizedString` especially when calling it
 /// from App Extensions and Widgets, in order to reference strings whose localization live in the app bundle's `.strings` file
 /// (rather than the AppExtension's own bundle).
 ///

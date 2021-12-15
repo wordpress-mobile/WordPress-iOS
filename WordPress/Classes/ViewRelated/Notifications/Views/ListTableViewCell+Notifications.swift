@@ -58,8 +58,8 @@ private extension ListTableViewCell {
     typealias Style = WPStyleGuide.Notifications
 
     struct Localization {
-        static let undoButtonText = NSLocalizedString("Undo", comment: "Revert an operation")
-        static let undoButtonHint = NSLocalizedString("Reverts the action performed on this notification.",
+        static let undoButtonText = AppLocalizedString("Undo", comment: "Revert an operation")
+        static let undoButtonHint = AppLocalizedString("Reverts the action performed on this notification.",
                                                       comment: "Accessibility hint describing what happens if the undo button is tapped.")
     }
 }

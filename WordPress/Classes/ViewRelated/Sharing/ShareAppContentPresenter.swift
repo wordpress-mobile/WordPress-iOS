@@ -148,7 +148,7 @@ private extension ShareAppContentPresenter {
 
 private extension String {
     static let sourceParameterKey = "source"
-    static let failureNoticeText = NSLocalizedString("Something went wrong. Please try again.",
+    static let failureNoticeText = AppLocalizedString("Something went wrong. Please try again.",
                                                      comment: "Error message shown when user tries to share the app with others, "
                                                         + "but failed due to unknown errors.")
 }

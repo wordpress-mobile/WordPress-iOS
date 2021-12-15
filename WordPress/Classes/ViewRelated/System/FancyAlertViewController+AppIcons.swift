@@ -2,9 +2,9 @@ import UIKit
 
 extension FancyAlertViewController {
     private struct Strings {
-        static let titleText = NSLocalizedString("New Custom App Icons", comment: "Title of alert informing users about the Reader Save for Later feature.")
-        static let bodyText = NSLocalizedString("We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.", comment: "Body text of alert informing users about the Reader Save for Later feature.")
-        static let newIconButtonTitle = NSLocalizedString("Choose a new app icon", comment: "OK Button title shown in alert informing users about the Reader Save for Later feature.")
+        static let titleText = AppLocalizedString("New Custom App Icons", comment: "Title of alert informing users about the Reader Save for Later feature.")
+        static let bodyText = AppLocalizedString("We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.", comment: "Body text of alert informing users about the Reader Save for Later feature.")
+        static let newIconButtonTitle = AppLocalizedString("Choose a new app icon", comment: "OK Button title shown in alert informing users about the Reader Save for Later feature.")
         static let dismissTitle = "Keep my current app icon"
     }
 

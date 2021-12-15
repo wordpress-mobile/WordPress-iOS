@@ -14,14 +14,14 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     // MARK: - Properties: table content
 
     @objc let headerView: TableViewHeaderDetailView = {
-        let header = NSLocalizedString("Let Us Help", comment: "Heading for instructions on Start Over settings page")
+        let header = AppLocalizedString("Let Us Help", comment: "Heading for instructions on Start Over settings page")
         /// GlotPress breaks if iOS keys are longer than 256 characters.
         /// So lets split it to keep GlotPress happy :) GH: #15353
-        let detail1 = NSLocalizedString("If you want a site but do not want any of the posts and pages you have now, " +
+        let detail1 = AppLocalizedString("If you want a site but do not want any of the posts and pages you have now, " +
                                         "our support team can delete your posts, pages, media, and comments for you.",
                                         comment: "Detailed instructions on Start Over settings page. This is the first paragraph.")
         let doubleNewline = "\n\n"
-        let detail2 = NSLocalizedString("This will keep your site and URL active, " +
+        let detail2 = AppLocalizedString("This will keep your site and URL active, " +
                                         "but give you a fresh start on your content creation. " +
                                         "Just contact us to have your current content cleared out.",
                                         comment: "Detailed instructions on Start Over settings page. This is the second paragraph.")
@@ -31,7 +31,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     }()
 
     @objc let contactCell: UITableViewCell = {
-        let contactTitle = NSLocalizedString("Contact Support", comment: "Button to contact support on Start Over settings page")
+        let contactTitle = AppLocalizedString("Contact Support", comment: "Button to contact support on Start Over settings page")
 
         let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
         actionCell.textLabel?.text = contactTitle
@@ -57,7 +57,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     override open func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Start Over", comment: "Title of Start Over settings page")
+        title = AppLocalizedString("Start Over", comment: "Title of Start Over settings page")
 
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.estimatedSectionHeaderHeight = 100.0
@@ -144,13 +144,13 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     }
 
     @objc func showAlertToSendEmail() {
-        let title = String(format: NSLocalizedString("Contact us at %@", comment: "Alert title for contact us alert, placeholder for help email address, inserted at run time."), mailRecipient)
-        let message = NSLocalizedString("\nPlease send us an email to have your content cleared out.", comment: "Message to ask the user to send us an email to clear their content.")
+        let title = String(format: AppLocalizedString("Contact us at %@", comment: "Alert title for contact us alert, placeholder for help email address, inserted at run time."), mailRecipient)
+        let message = AppLocalizedString("\nPlease send us an email to have your content cleared out.", comment: "Message to ask the user to send us an email to clear their content.")
 
         let alertController =  UIAlertController(title: title,
                                                  message: message,
                                                  preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("OK",
+        alertController.addCancelActionWithTitle(AppLocalizedString("OK",
                                                  comment: "Button title. An acknowledgement of the message displayed in a prompt."))
         alertController.presentFromRootViewController()
     }

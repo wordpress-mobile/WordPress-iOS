@@ -94,9 +94,9 @@ extension PostEditor {
 }
 
 private struct SwitchSiteAlert {
-    static let title                    = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
-    static let message                  = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+    static let title                    = AppLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
+    static let message                  = AppLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
 
-    static let acceptTitle              = NSLocalizedString("OK", comment: "Accept Action")
-    static let cancelTitle              = NSLocalizedString("Cancel", comment: "Cancel Action")
+    static let acceptTitle              = AppLocalizedString("OK", comment: "Accept Action")
+    static let cancelTitle              = AppLocalizedString("Cancel", comment: "Cancel Action")
 }

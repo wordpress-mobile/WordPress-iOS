@@ -11,7 +11,7 @@ class WPMediaEditor: MediaEditor {
     var editingAlreadyPublishedImage: Bool = false {
         didSet {
             if editingAlreadyPublishedImage {
-                hub.doneButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
+                hub.doneButton.setTitle(AppLocalizedString("Done", comment: "Done editing an image"), for: .normal)
             }
         }
     }
@@ -24,10 +24,10 @@ class WPMediaEditor: MediaEditor {
     override var styles: MediaEditorStyles {
         get {
             return [
-                .insertLabel: NSLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
-                .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
-                .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
-                .errorLoadingImageMessage: NSLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
+                .insertLabel: AppLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
+                .doneLabel: AppLocalizedString("Done", comment: "Done editing an image"),
+                .cancelLabel: AppLocalizedString("Cancel", comment: "Cancel editing an image"),
+                .errorLoadingImageMessage: AppLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
                 .resetIcon: UIImage.gridicon(.undo),
                 .doneIcon: UIImage.gridicon(.checkmark),

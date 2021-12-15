@@ -554,7 +554,7 @@ private extension CommentDetailViewController {
                                         self?.refreshData()
                                      },
                                      failure: { [weak self] error in
-                                        let message = NSLocalizedString("There has been an unexpected error while editing your comment",
+                                        let message = AppLocalizedString("There has been an unexpected error while editing your comment",
                                                                         comment: "Error displayed if a comment fails to get updated")
                                         self?.displayNotice(title: message)
                                      })
@@ -608,14 +608,14 @@ private extension String {
     static let textCellIdentifier = "textCell"
 
     // MARK: Localization
-    static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
+    static let replyPlaceholderFormat = AppLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
                                                           + "%1$@ is a placeholder for the comment author."
                                                           + "Example: Reply to Pamela Nguyen")
-    static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
-    static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
-    static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
-    static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
-    static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
+    static let replyIndicatorLabelText = AppLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
+    static let webAddressLabelText = AppLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
+    static let emailAddressLabelText = AppLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
+    static let ipAddressLabelText = AppLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
+    static let deleteButtonText = AppLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
 }
 
 
@@ -728,17 +728,17 @@ private extension CommentDetailViewController {
     }
 
     struct ModerationMessages {
-        static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
-        static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
-        static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
-        static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
-        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
-        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
-        static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
-        static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
-        static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
-        static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
-        static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
+        static let pendingSuccess = AppLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
+        static let pendingFail = AppLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
+        static let approveSuccess = AppLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
+        static let approveFail = AppLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
+        static let spamSuccess = AppLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
+        static let spamFail = AppLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
+        static let trashSuccess = AppLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
+        static let trashFail = AppLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
+        static let deleteSuccess = AppLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
+        static let deleteFail = AppLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
+        static let next = AppLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
     }
 
 }
@@ -834,7 +834,7 @@ private extension CommentDetailViewController {
         let replyView = ReplyTextView(width: view.frame.width)
 
         replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        replyView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyView.accessibilityIdentifier = AppLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyView.delegate = self
         replyView.onReply = { [weak self] content in
             self?.createReply(content: content)
@@ -931,8 +931,8 @@ private extension CommentDetailViewController {
     }
 
     struct ReplyMessages {
-        static let successMessage = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-        static let failureMessage = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
+        static let successMessage = AppLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+        static let failureMessage = AppLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
     }
 
 }

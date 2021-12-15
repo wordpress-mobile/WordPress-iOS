@@ -21,7 +21,7 @@ class RevisionsTableViewFooter: UIView {
             return
         }
 
-        let text = NSLocalizedString("Post created on %@", comment: "The footer text appears within the footer displaying when the post has been created.")
+        let text = AppLocalizedString("Post created on %@", comment: "The footer text appears within the footer displaying when the post has been created.")
         footerLabel.text = String.localizedStringWithFormat(text, stringDate)
     }
 }

@@ -292,8 +292,8 @@ struct AddInsightStatRow: ImmuTableRow {
     let enabled: Bool
     let action: ImmuTableAction?
 
-    let enabledHint = NSLocalizedString("Select to add this stat to Insights.", comment: "Accessibility hint for stat available to add to Insights.")
-    let disabledHint = NSLocalizedString("Stat is already displayed in Insights.", comment: "Accessibility hint for stat not available to add to Insights.")
+    let enabledHint = AppLocalizedString("Select to add this stat to Insights.", comment: "Accessibility hint for stat available to add to Insights.")
+    let disabledHint = AppLocalizedString("Stat is already displayed in Insights.", comment: "Accessibility hint for stat not available to add to Insights.")
 
     func configureCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)

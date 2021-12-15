@@ -46,7 +46,7 @@ open class DeleteSiteViewController: UITableViewController {
         super.viewDidLoad()
 
         assert(blog != nil)
-        title = NSLocalizedString("Delete Site", comment: "Title of settings page for deleting a site")
+        title = AppLocalizedString("Delete Site", comment: "Title of settings page for deleting a site")
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 500.0
@@ -77,7 +77,7 @@ open class DeleteSiteViewController: UITableViewController {
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         siteTitleLabel.text = blog.displayURL as String?
         siteTitleSubText.textColor = .neutral(.shade70)
-        siteTitleSubText.text = NSLocalizedString("will be unavailable in the future.",
+        siteTitleSubText.text = AppLocalizedString("will be unavailable in the future.",
                                                   comment: "Second part of delete screen title stating [the site] will be unavailable in the future.")
     }
 
@@ -88,37 +88,37 @@ open class DeleteSiteViewController: UITableViewController {
         sectionTwoHeader.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         sectionTwoColumnItems.forEach({ $0.textColor = .neutral(.shade70) })
 
-        sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
+        sectionTwoHeader.text = AppLocalizedString("these items will be deleted:",
                                                   comment: "Header of delete screen section listing things that will be deleted.").localizedUppercase
 
-        sectionTwoColumnOneItem.text = NSLocalizedString("• Posts",
+        sectionTwoColumnOneItem.text = AppLocalizedString("• Posts",
                                                          comment: "Item 1 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnTwoItem.text = NSLocalizedString("• Users & Authors",
+        sectionTwoColumnTwoItem.text = AppLocalizedString("• Users & Authors",
                                                          comment: "Item 2 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnOneItem2.text = NSLocalizedString("• Pages",
+        sectionTwoColumnOneItem2.text = AppLocalizedString("• Pages",
                                                           comment: "Item 3 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnTwoItem2.text = NSLocalizedString("• Domains",
+        sectionTwoColumnTwoItem2.text = AppLocalizedString("• Domains",
                                                           comment: "Item 4 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnOneItem3.text = NSLocalizedString("• Media",
+        sectionTwoColumnOneItem3.text = AppLocalizedString("• Media",
                                                           comment: "Item 5 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnTwoItem3.text = NSLocalizedString("• Purchased Upgrades",
+        sectionTwoColumnTwoItem3.text = AppLocalizedString("• Purchased Upgrades",
                                                           comment: "Item 6 of delete screen section listing things that will be deleted.")
     }
 
     /// One time setup of third section (main body)
     ///
     fileprivate func setupMainBodySection() {
-        let paragraph1 = NSLocalizedString("This action <b>can not</b> be undone. Deleting the site will remove all " +
+        let paragraph1 = AppLocalizedString("This action <b>can not</b> be undone. Deleting the site will remove all " +
                                            "content, contributors, domains, and upgrades from the site.",
                                             comment: "Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important " +
                                                      "the localized 'can not' text be surrounded with the HTML '<b>' tags.")
 
-        let paragraph2 = NSLocalizedString("If you're unsure about what will be deleted or need any help, not to worry, " +
+        let paragraph2 = AppLocalizedString("If you're unsure about what will be deleted or need any help, not to worry, " +
                                            "our support team is here to answer any questions you may have.",
                                            comment: "Paragraph 2 of 2 of main text body for the delete screen.")
 
@@ -142,7 +142,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         let contactButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
                                                                      .underlineStyle: NSUnderlineStyle.single.rawValue]
-        supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support",
+        supportButton.setAttributedTitle(NSAttributedString(string: AppLocalizedString("Contact Support",
                                                             comment: "Button label for contacting support"),
                                                             attributes: contactButtonAttributes),
                                                             for: .normal)
@@ -156,7 +156,7 @@ open class DeleteSiteViewController: UITableViewController {
         deleteButtonContainerView.backgroundColor = .listForeground
 
         let trashIcon = UIImage.gridicon(.trash)
-        deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
+        deleteSiteButton.setTitle(AppLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
         deleteSiteButton.tintColor = .error
         deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error), for: .normal)
         deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error(.shade70)), for: .highlighted)
@@ -200,11 +200,11 @@ open class DeleteSiteViewController: UITableViewController {
             return nil
         }
 
-        let title = NSLocalizedString("Confirm Delete Site",
+        let title = AppLocalizedString("Confirm Delete Site",
                                       comment: "Title of Delete Site confirmation alert")
-        let message = NSLocalizedString("\nTo confirm, please re-enter your site's address before deleting.\n\n",
+        let message = AppLocalizedString("\nTo confirm, please re-enter your site's address before deleting.\n\n",
                                         comment: "Message of Delete Site confirmation alert; substitution is site's host.")
-        let destructiveActionTitle = NSLocalizedString("Permanently Delete Site",
+        let destructiveActionTitle = AppLocalizedString("Permanently Delete Site",
                                                        comment: "Delete Site confirmation action title")
 
         return alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: deleteSiteConfirmed)
@@ -215,7 +215,7 @@ open class DeleteSiteViewController: UITableViewController {
     /// - Note: This is permanent and cannot be reversed by user
     ///
     fileprivate func deleteSiteConfirmed() {
-        let status = NSLocalizedString("Deleting site…", comment: "Overlay message displayed while deleting site")
+        let status = AppLocalizedString("Deleting site…", comment: "Overlay message displayed while deleting site")
         SVProgressHUD.setDefaultMaskType(.black)
         SVProgressHUD.show(withStatus: status)
 
@@ -225,7 +225,7 @@ open class DeleteSiteViewController: UITableViewController {
         service.deleteSiteForBlog(blog,
                                   success: { [weak self] in
                                     WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
-                                    let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
+                                    let status = AppLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
                                     SVProgressHUD.showDismissibleSuccess(withStatus: status)
 
                                     self?.updateNavigationStackAfterSiteDeletion()
@@ -240,10 +240,10 @@ open class DeleteSiteViewController: UITableViewController {
                                     WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, with: trackedBlog)
                                     SVProgressHUD.dismiss()
 
-                                    let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
+                                    let errorTitle = AppLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
                                     let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
 
-                                    let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                                    let okTitle = AppLocalizedString("OK", comment: "Alert dismissal title")
                                     alertController.addDefaultActionWithTitle(okTitle, handler: nil)
 
                                     alertController.presentFromRootViewController()

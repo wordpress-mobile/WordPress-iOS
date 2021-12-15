@@ -788,7 +788,7 @@ private extension ReaderPostCardCell {
     }
 
     func cardAccessibilityHint() -> String {
-        return NSLocalizedString("Shows the post content", comment: "Accessibility hint for the Reader Cell")
+        return AppLocalizedString("Shows the post content", comment: "Accessibility hint for the Reader Cell")
     }
 
     func prepareHeaderButtonForVoiceOver() {
@@ -813,26 +813,26 @@ private extension ReaderPostCardCell {
     }
 
     func authorNameAndBlogTitle(name: String, title: String) -> String {
-        let format = NSLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
+        let format = AppLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
 
         return String(format: format, name, title)
     }
 
     func headerButtonAccessibilityHint(title: String) -> String {
-        let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
+        let format = AppLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
         return String(format: format, title)
     }
 
     func prepareSaveForLaterForVoiceOver() {
         let isSavedForLater = contentProvider?.isSavedForLater() ?? false
-        saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
-        saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+        saveForLaterButton.accessibilityLabel = isSavedForLater ? AppLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : AppLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
+        saveForLaterButton.accessibilityHint = isSavedForLater ? AppLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : AppLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
         saveForLaterButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
     func prepareCommentsForVoiceOver() {
         commentActionButton.accessibilityLabel = commentsLabel()
-        commentActionButton.accessibilityHint = NSLocalizedString("Shows comments", comment: "Spoken accessibility hint for Comments buttons")
+        commentActionButton.accessibilityHint = AppLocalizedString("Shows comments", comment: "Spoken accessibility hint for Comments buttons")
         commentActionButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
@@ -843,11 +843,11 @@ private extension ReaderPostCardCell {
     }
 
     func singularCommentFormat() -> String {
-        return NSLocalizedString("%@ comment", comment: "Accessibility label for comments button (singular)")
+        return AppLocalizedString("%@ comment", comment: "Accessibility label for comments button (singular)")
     }
 
     func pluralCommentFormat() -> String {
-        return NSLocalizedString("%@ comments", comment: "Accessibility label for comments button (plural)")
+        return AppLocalizedString("%@ comments", comment: "Accessibility label for comments button (plural)")
     }
 
     func prepareLikeForVoiceOver() {
@@ -869,12 +869,12 @@ private extension ReaderPostCardCell {
     }
 
     func isLikedLabel() -> String {
-        let postInMyLikes = NSLocalizedString("This post is in My Likes", comment: "Post is in my likes. Accessibility label")
+        let postInMyLikes = AppLocalizedString("This post is in My Likes", comment: "Post is in my likes. Accessibility label")
         return appendLikedCount(label: postInMyLikes)
     }
 
     func isNotLikedLabel() -> String {
-        let postNotInMyLikes = NSLocalizedString("This post is not in My Likes", comment: "Post is not in my likes. Accessibility label")
+        let postNotInMyLikes = AppLocalizedString("This post is not in My Likes", comment: "Post is not in my likes. Accessibility label")
         return appendLikedCount(label: postNotInMyLikes)
     }
 
@@ -891,22 +891,22 @@ private extension ReaderPostCardCell {
     }
 
     func doubleTapToUnlike() -> String {
-        return NSLocalizedString("Removes this post from My Likes", comment: "Removes a post from My Likes. Spoken Hint.")
+        return AppLocalizedString("Removes this post from My Likes", comment: "Removes a post from My Likes. Spoken Hint.")
     }
 
     func doubleTapToLike() -> String {
-        return NSLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
+        return AppLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
     }
 
     func prepareMenuForVoiceOver() {
-        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
-        menuButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
+        menuButton.accessibilityLabel = AppLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
+        menuButton.accessibilityHint = AppLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
         menuButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
     func prepareReblogForVoiceOver() {
-        reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
-        reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        reblogActionButton.accessibilityLabel = AppLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        reblogActionButton.accessibilityHint = AppLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
         reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
@@ -915,11 +915,11 @@ private extension ReaderPostCardCell {
     }
 
     func followingLabel() -> String {
-        return NSLocalizedString("Following", comment: "Accessibility label for following buttons.")
+        return AppLocalizedString("Following", comment: "Accessibility label for following buttons.")
     }
 
     func notFollowingLabel() -> String {
-        return NSLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
+        return AppLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
     }
 
     func followHint() -> String {
@@ -927,11 +927,11 @@ private extension ReaderPostCardCell {
     }
 
     func unfollow() -> String {
-        return NSLocalizedString("Unfollows blog", comment: "Spoken hint describing action for selected following buttons.")
+        return AppLocalizedString("Unfollows blog", comment: "Spoken hint describing action for selected following buttons.")
     }
 
     func follow() -> String {
-        return NSLocalizedString("Follows blog", comment: "Spoken hint describing action for unselected following buttons.")
+        return AppLocalizedString("Follows blog", comment: "Spoken hint describing action for unselected following buttons.")
     }
 
     func followButtonIsSelected() -> Bool {

@@ -30,11 +30,11 @@ extension NotificationsViewController {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.inlineKey])
         }
 
-        inlinePromptView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
+        inlinePromptView.setupHeading(AppLocalizedString("We'll notify you when you get followers, comments, and likes.",
                                                         comment: "This is the string we display when asking the user to approve push notifications"))
-        let yesTitle = NSLocalizedString("Allow notifications",
+        let yesTitle = AppLocalizedString("Allow notifications",
                                          comment: "Button label for approving our request to allow push notifications")
-        let noTitle = NSLocalizedString("Not now",
+        let noTitle = AppLocalizedString("Not now",
                                         comment: "Button label for denying our request to allow push notifications")
 
         inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
@@ -77,11 +77,11 @@ extension NotificationsViewController {
 
         showInlinePrompt()
 
-        inlinePromptView.setupHeading(NSLocalizedString("Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on.",
+        inlinePromptView.setupHeading(AppLocalizedString("Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on.",
                                                         comment: "This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them."))
-        let yesTitle = NSLocalizedString("Go to iOS Settings",
+        let yesTitle = AppLocalizedString("Go to iOS Settings",
                                          comment: "Button label for going to settings to approve push notifications")
-        let noTitle = NSLocalizedString("No thanks",
+        let noTitle = AppLocalizedString("No thanks",
                                         comment: "Button label for denying our request to re-allow push notifications")
 
         inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in

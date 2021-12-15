@@ -247,15 +247,15 @@ extension BloggingRemindersPushPromptViewController: ChildDrawerPositionable {
 // MARK: - Constants
 
 private enum TextContent {
-    static let title = NSLocalizedString("Turn on push notifications", comment: "Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications.")
+    static let title = AppLocalizedString("Turn on push notifications", comment: "Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications.")
 
-    static let prompt = NSLocalizedString("To use blogging reminders, you'll need to turn on push notifications.",
+    static let prompt = AppLocalizedString("To use blogging reminders, you'll need to turn on push notifications.",
                                                     comment: "Prompt telling users that they need to enable push notifications on their device to use the blogging reminders feature.")
 
-    static let hint = NSLocalizedString("Go to Settings → Notifications → WordPress, and toggle Allow Notifications.",
+    static let hint = AppLocalizedString("Go to Settings → Notifications → WordPress, and toggle Allow Notifications.",
                                                     comment: "Instruction telling the user how to enable notifications in their device's system Settings app. The section names here should match those in Settings.")
 
-    static let turnOnButtonTitle = NSLocalizedString("Turn on notifications", comment: "Title for a button which takes the user to the WordPress app's settings in the system Settings app.")
+    static let turnOnButtonTitle = AppLocalizedString("Turn on notifications", comment: "Title for a button which takes the user to the WordPress app's settings in the system Settings app.")
 }
 
 private enum Images {

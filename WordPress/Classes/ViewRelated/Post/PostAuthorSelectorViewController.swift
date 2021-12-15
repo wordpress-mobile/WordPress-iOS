@@ -24,7 +24,7 @@ import UIKit
 
         let authorsDict: [AnyHashable: Any] = [
             "DefaultValue": currentAuthorID,
-            "Title": NSLocalizedString("Author", comment: "Author label."),
+            "Title": AppLocalizedString("Author", comment: "Author label."),
             "Titles": authors.map { $0.displayName },
             "Values": authors.map { $0.userID },
             "CurrentValue": currentAuthorID

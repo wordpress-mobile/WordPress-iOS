@@ -60,9 +60,9 @@ class MySitesCoordinator: NSObject {
         let tabBarImage = AppStyleGuide.mySiteTabIcon
         navigationController.tabBarItem.image = tabBarImage
         navigationController.tabBarItem.selectedImage = tabBarImage
-        navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        navigationController.tabBarItem.accessibilityLabel = AppLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
-        navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
+        navigationController.tabBarItem.title = AppLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
 
         return navigationController
     }()

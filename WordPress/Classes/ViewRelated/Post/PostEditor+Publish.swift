@@ -263,7 +263,7 @@ extension PublishingEditor {
     ///
     fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
         let title = action.publishingActionQuestionLabel
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
+        let keepEditingTitle = AppLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = action.publishActionLabel
         let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
@@ -385,13 +385,13 @@ extension PublishingEditor {
     }
 
     func showPostHasChangesAlert() {
-        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-        let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already saved draft.")
-        let updatePostTitle = NSLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
-        let updatePageTitle = NSLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
-        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let title = AppLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+        let cancelTitle = AppLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let saveTitle = AppLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let updateTitle = AppLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already saved draft.")
+        let updatePostTitle = AppLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
+        let updatePageTitle = AppLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
+        let discardTitle = AppLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.view.accessibilityIdentifier = "post-has-changes-alert"
@@ -637,20 +637,20 @@ struct PostEditorDebouncerConstants {
 }
 
 private struct MediaUploadingAlert {
-    static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
-    static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-    static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+    static let title = AppLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
+    static let message = AppLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+    static let acceptTitle  = AppLocalizedString("OK", comment: "Accept Action")
 }
 
 private struct PostUploadingAlert {
-    static let title = NSLocalizedString("Uploading post", comment: "Title for alert when trying to preview a post before the uploading process is complete.")
-    static let message = NSLocalizedString("Your post is currently being uploaded. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to preview a post before the upload process is complete.")
-    static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+    static let title = AppLocalizedString("Uploading post", comment: "Title for alert when trying to preview a post before the uploading process is complete.")
+    static let message = AppLocalizedString("Your post is currently being uploaded. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to preview a post before the upload process is complete.")
+    static let acceptTitle  = AppLocalizedString("OK", comment: "Accept Action")
 }
 
 private struct FailedMediaRemovalAlert {
-    static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
-    static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-    static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
-    static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    static let title = AppLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
+    static let message = AppLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+    static let acceptTitle  = AppLocalizedString("Yes", comment: "Accept Action")
+    static let cancelTitle  = AppLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
 }

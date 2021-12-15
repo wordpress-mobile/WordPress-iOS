@@ -250,8 +250,8 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
 
-        previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
-        nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
+        previousNavigationButton.accessibilityLabel = AppLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        nextNavigationButton.accessibilityLabel = AppLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
     }
 }
 
@@ -401,7 +401,7 @@ extension NotificationDetailsViewController {
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
+        tableView.accessibilityIdentifier   = AppLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
         tableView.backgroundColor           = note.isBadge ? .ungroupedListBackground : .listBackground
     }
 
@@ -451,9 +451,9 @@ extension NotificationDetailsViewController {
         let previousReply = NotificationReplyStore.shared.loadReply(for: note.notificationId)
         let replyTextView = ReplyTextView(width: view.frame.width)
 
-        replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
+        replyTextView.placeholder = AppLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
         replyTextView.text = previousReply
-        replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        replyTextView.accessibilityIdentifier = AppLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
         replyTextView.onReply = { [weak self] content in
             let group = self?.note.contentGroup(ofKind: .comment)
@@ -774,7 +774,7 @@ private extension NotificationDetailsViewController {
         cell.isApproved             = commentBlock.isCommentApproved
 
         // Add comment author's name to Reply placeholder.
-        let placeholderFormat = NSLocalizedString("Reply to %1$@",
+        let placeholderFormat = AppLocalizedString("Reply to %1$@",
                                                   comment: "Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.")
         replyTextView.placeholder = String(format: placeholderFormat, cell.name ?? String())
 
@@ -1170,7 +1170,7 @@ private extension NotificationDetailsViewController {
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             if success {
                 WPAppAnalytics.track(.notificationsCommentRepliedTo)
-                let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+                let message = AppLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
                 self?.displayNotice(title: message)
             } else {
                 generator.notificationOccurred(.error)
@@ -1212,7 +1212,7 @@ private extension NotificationDetailsViewController {
     }
 
     func displayReplyError(with block: FormattableCommentContent, content: String) {
-        let message = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
+        let message = AppLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
         displayNotice(title: message)
     }
 }
@@ -1250,10 +1250,10 @@ private extension NotificationDetailsViewController {
     }
 
     func displayCommentUpdateErrorWithBlock(_ block: FormattableCommentContent, content: String) {
-        let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
+        let message     = AppLocalizedString("There has been an unexpected error while updating your comment",
                                             comment: "Displayed whenever a Comment Update Fails")
-        let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
-        let retryTitle  = NSLocalizedString("Try Again", comment: "Retry")
+        let cancelTitle = AppLocalizedString("Give Up", comment: "Cancel")
+        let retryTitle  = AppLocalizedString("Try Again", comment: "Retry")
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(cancelTitle) { action in

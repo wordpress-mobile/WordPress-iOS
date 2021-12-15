@@ -85,7 +85,7 @@ extension PostEditor {
             navigationBarManager.reloadTitleView(navigationBarManager.blogTitleViewLabel)
 
             if error != nil {
-                let title = NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" )
+                let title = AppLocalizedString("Preview Unavailable", comment: "Title on display preview error" )
                 self.displayPreviewNotAvailable(title: title)
                 return
             }
@@ -96,7 +96,7 @@ extension PostEditor {
             } else {
                 if self.post.permaLink == nil {
                     DDLogError("displayPreview: Post permalink is unexpectedly nil")
-                    self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
+                    self.displayPreviewNotAvailable(title: AppLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
                     return
                 }
                 previewController = PreviewWebKitViewController(post: self.post, source: "edit_post_more_preview")

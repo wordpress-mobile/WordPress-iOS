@@ -88,10 +88,10 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
     private func modelForBrowsing() -> ImmuTable {
         return ImmuTable(sections: [
             ImmuTableSection(
-                headerText: NSLocalizedString("Popular languages", comment: "Section title for Popular Languages"),
+                headerText: AppLocalizedString("Popular languages", comment: "Section title for Popular Languages"),
                 rows: database.popular.map(model(language:))),
             ImmuTableSection(
-                headerText: NSLocalizedString("All languages", comment: "Section title for All Languages"),
+                headerText: AppLocalizedString("All languages", comment: "Section title for All Languages"),
                 rows: database.all.map(model(language:)))
             ])
     }

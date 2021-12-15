@@ -5,9 +5,9 @@ extension FancyAlertViewController {
     typealias ButtonConfig = FancyAlertViewController.Config.ButtonConfig
 
     private struct Strings {
-        static let titleText = NSLocalizedString("Save Posts for Later", comment: "Title of alert informing users about the Reader Save for Later feature.")
-        static let bodyText = NSLocalizedString("Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.", comment: "Body text of alert informing users about the Reader Save for Later feature.")
-        static let okTitle = NSLocalizedString("OK", comment: "OK Button title shown in alert informing users about the Reader Save for Later feature.")
+        static let titleText = AppLocalizedString("Save Posts for Later", comment: "Title of alert informing users about the Reader Save for Later feature.")
+        static let bodyText = AppLocalizedString("Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.", comment: "Body text of alert informing users about the Reader Save for Later feature.")
+        static let okTitle = AppLocalizedString("OK", comment: "OK Button title shown in alert informing users about the Reader Save for Later feature.")
     }
 
     static func presentReaderSavedPostsAlertControllerIfNecessary(from origin: UIViewController & UIViewControllerTransitioningDelegate) {

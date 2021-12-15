@@ -14,14 +14,14 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         self.backup = backup
 
         let restoreCompleteConfiguration = JetpackRestoreCompleteConfiguration(
-            title: NSLocalizedString("Backup", comment: "Title for Jetpack Backup Complete screen"),
+            title: AppLocalizedString("Backup", comment: "Title for Jetpack Backup Complete screen"),
             iconImage: .gridicon(.history),
             iconImageColor: .success,
-            messageTitle: NSLocalizedString("Your backup is now available for download", comment: "Title for the Jetpack Backup Complete message."),
-            messageDescription: NSLocalizedString("We successfully created a backup of your site from %1$@.", comment: "Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date."),
-            primaryButtonTitle: NSLocalizedString("Download file", comment: "Title for the button that will download the backup file."),
-            secondaryButtonTitle: NSLocalizedString("Share link", comment: "Title for the button that will share the link for the downlodable backup file"),
-            hint: NSLocalizedString("We've also emailed you a link to your file.", comment: "A hint to users indicating a link to the downloadable backup file has also been sent to their email.")
+            messageTitle: AppLocalizedString("Your backup is now available for download", comment: "Title for the Jetpack Backup Complete message."),
+            messageDescription: AppLocalizedString("We successfully created a backup of your site from %1$@.", comment: "Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date."),
+            primaryButtonTitle: AppLocalizedString("Download file", comment: "Title for the button that will download the backup file."),
+            secondaryButtonTitle: AppLocalizedString("Share link", comment: "Title for the button that will share the link for the downlodable backup file"),
+            hint: AppLocalizedString("We've also emailed you a link to your file.", comment: "A hint to users indicating a link to the downloadable backup file has also been sent to their email.")
         )
 
         super.init(site: site, activity: activity, configuration: restoreCompleteConfiguration)
@@ -55,7 +55,7 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
         guard let url = backup.url,
               let downloadURL = URL(string: url) else {
 
-            let title = NSLocalizedString("Unable to download file", comment: "Message displayed when opening the link to the downloadable backup fails.")
+            let title = AppLocalizedString("Unable to download file", comment: "Message displayed when opening the link to the downloadable backup fails.")
             let notice = Notice(title: title)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
 
@@ -70,7 +70,7 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
               let downloadURL = URL(string: url),
               let activities = WPActivityDefaults.defaultActivities() as? [UIActivity] else {
 
-            let title = NSLocalizedString("Unable to share link", comment: "Message displayed when sharing a link to the downloadable backup fails.")
+            let title = AppLocalizedString("Unable to share link", comment: "Message displayed when sharing a link to the downloadable backup fails.")
             let notice = Notice(title: title)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
 

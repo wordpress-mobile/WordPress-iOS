@@ -17,7 +17,7 @@ extension GutenbergViewController {
 
         if mode == .richText, let contentInfo = contentInfo {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
-            let textCounterTitle = String(format: NSLocalizedString("Content Structure\nBlocks: %li, Words: %li, Characters: %li", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
+            let textCounterTitle = String(format: AppLocalizedString("Content Structure\nBlocks: %li, Words: %li, Characters: %li", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
 
             alert.title = textCounterTitle
         }
@@ -116,14 +116,14 @@ extension GutenbergViewController {
 
 extension GutenbergViewController {
     struct MoreSheetAlert {
-        static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
-        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
-        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
-        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
-        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let htmlTitle = AppLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = AppLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = AppLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let historyTitle = AppLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
+        static let postSettingsTitle = AppLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let pageSettingsTitle = AppLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
+        static let keepEditingTitle = AppLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
-        static let editorHelpTitle = NSLocalizedString("Help & Support", comment: "Open editor help options")
+        static let editorHelpTitle = AppLocalizedString("Help & Support", comment: "Open editor help options")
     }
 }

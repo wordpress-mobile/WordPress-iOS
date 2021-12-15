@@ -26,7 +26,7 @@ class PostStatsTitleCell: UITableViewCell, NibLoadable {
 private extension PostStatsTitleCell {
 
     func applyStyles() {
-        titleLabel.text = NSLocalizedString("Showing stats for:", comment: "Label on Post Stats view indicating which post the stats are for.")
+        titleLabel.text = AppLocalizedString("Showing stats for:", comment: "Label on Post Stats view indicating which post the stats are for.")
 
         labelsView.backgroundColor = .listForeground
 

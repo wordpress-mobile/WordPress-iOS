@@ -35,7 +35,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
                                style: .plain,
                                target: self,
                                action: #selector(goBack))
-        button.title = NSLocalizedString("Back", comment: "Previous web page")
+        button.title = AppLocalizedString("Back", comment: "Previous web page")
         return button
     }()
     @objc lazy var forwardButton: UIBarButtonItem = {
@@ -43,7 +43,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
                                style: .plain,
                                target: self,
                                action: #selector(goForward))
-        button.title = NSLocalizedString("Forward", comment: "Next web page")
+        button.title = AppLocalizedString("Forward", comment: "Next web page")
         return button
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
@@ -51,7 +51,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
                                style: .plain,
                                target: self,
                                action: #selector(share))
-        button.title = NSLocalizedString("Share", comment: "Button label to share a web page")
+        button.title = AppLocalizedString("Share", comment: "Button label to share a web page")
         return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
@@ -59,18 +59,18 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
-        button.title = NSLocalizedString("Safari", comment: "Button label to open web page in Safari")
-        button.accessibilityHint = NSLocalizedString("Opens the web page in Safari", comment: "Accessibility hint to open web page in Safari")
+        button.title = AppLocalizedString("Safari", comment: "Button label to open web page in Safari")
+        button.accessibilityHint = AppLocalizedString("Opens the web page in Safari", comment: "Accessibility hint to open web page in Safari")
         return button
     }()
     @objc lazy var refreshButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: .gridicon(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
-        button.title = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
+        button.title = AppLocalizedString("Refresh", comment: "Button label to refres a web page")
         return button
     }()
     @objc lazy var closeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        button.title = AppLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
         return button
     }()
 
@@ -266,7 +266,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     private func setupNavBarTitleView() {
-        titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
+        titleView.titleLabel.text = AppLocalizedString("Loading...", comment: "Loading. Verb")
 
         titleView.titleLabel.textColor = navBarTitleColor
         titleView.subtitleLabel.textColor = .neutral(.shade30)
@@ -480,7 +480,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
 
         // Accessibility values which emulate those found in Safari
-        navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")
+        navigationItem.accessibilityLabel = AppLocalizedString("Title", comment: "Accessibility label for web page preview title")
         navigationItem.titleView?.accessibilityValue = titleView.titleLabel.text
         navigationItem.titleView?.accessibilityTraits = .updatesFrequently
     }

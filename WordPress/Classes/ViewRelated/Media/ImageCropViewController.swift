@@ -29,19 +29,19 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
 
         // Title
-        title = NSLocalizedString("Resize & Crop", comment: "Screen title. Resize and crop an image.")
+        title = AppLocalizedString("Resize & Crop", comment: "Screen title. Resize and crop an image.")
 
         view.backgroundColor = .basicBackground
 
         // Setup: NavigationItem
-        let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image")
+        let useButtonTitle = AppLocalizedString("Use", comment: "Use the current image")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: useButtonTitle,
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(cropWasPressed))
 
         if shouldShowCancelButton {
-            let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel the crop")
+            let cancelButtonTitle = AppLocalizedString("Cancel", comment: "Cancel the crop")
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
                                                                style: .plain,
                                                                target: self,

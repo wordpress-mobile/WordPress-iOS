@@ -26,17 +26,17 @@ class MediaAssetExporter: MediaExporter {
         var description: String {
             switch self {
             case .unsupportedPHAssetMediaType:
-                return NSLocalizedString("The item could not be added to the Media Library.", comment: "Message shown when an asset failed to load while trying to add it to the Media library.")
+                return AppLocalizedString("The item could not be added to the Media Library.", comment: "Message shown when an asset failed to load while trying to add it to the Media library.")
             case .expectedPHAssetImageType,
                  .failedLoadingPHImageManagerRequest,
                  .unavailablePHAssetImageResource:
-                return NSLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
+                return AppLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
             case .expectedPHAssetVideoType,
                  .unavailablePHAssetVideoResource,
                  .failedRequestingVideoExportSession:
-                return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
+                return AppLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             case .expectedPHAssetGIFType:
-                return NSLocalizedString("The GIF could not be added to the Media Library.", comment: "Message shown when a GIF failed to load while trying to add it to the Media library.")
+                return AppLocalizedString("The GIF could not be added to the Media Library.", comment: "Message shown when a GIF failed to load while trying to add it to the Media library.")
             }
         }
     }

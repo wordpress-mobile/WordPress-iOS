@@ -45,7 +45,7 @@ class JetpackRemoteInstallViewController: UIViewController {
 
 private extension JetpackRemoteInstallViewController {
     func setupNavigationBar() {
-        title = NSLocalizedString("Jetpack", comment: "Title for the Jetpack Installation")
+        title = AppLocalizedString("Jetpack", comment: "Title for the Jetpack Installation")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(cancel))

@@ -9,7 +9,7 @@ class LayoutPreviewViewController: TemplatePreviewViewController {
         self.completion = completion
         super.init(demoURL: layout.demoUrl, selectedPreviewDevice: selectedPreviewDevice, onDismissWithDeviceSelected: onDismissWithDeviceSelected)
         delegate = self
-        title = NSLocalizedString("Preview", comment: "Title for screen to preview a static content.")
+        title = AppLocalizedString("Preview", comment: "Title for screen to preview a static content.")
     }
 
     required init?(coder: NSCoder) {
@@ -18,7 +18,7 @@ class LayoutPreviewViewController: TemplatePreviewViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        primaryActionButton.setTitle(NSLocalizedString("Create Page", comment: "Button for selecting the current page template."), for: .normal)
+        primaryActionButton.setTitle(AppLocalizedString("Create Page", comment: "Button for selecting the current page template."), for: .normal)
     }
 }
 

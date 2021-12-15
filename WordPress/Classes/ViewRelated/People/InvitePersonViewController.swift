@@ -229,7 +229,7 @@ class InvitePersonViewController: UITableViewController {
         guard Section.inviteLink == Section(rawValue: section) else {
             return nil
         }
-        return NSLocalizedString("Invite Link", comment: "Title for the Invite Link section of the Invite Person screen.")
+        return AppLocalizedString("Invite Link", comment: "Title for the Invite Link section of the Invite Person screen.")
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -302,9 +302,9 @@ class InvitePersonViewController: UITableViewController {
             return
         }
 
-        let title = NSLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
-        let placeholder = NSLocalizedString("Email or Username…", comment: "A placeholder for the username textfield.")
-        let hint = NSLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
+        let title = AppLocalizedString("Recipient", comment: "Invite Person: Email or Username Edition Title")
+        let placeholder = AppLocalizedString("Email or Username…", comment: "A placeholder for the username textfield.")
+        let hint = AppLocalizedString("Email or Username of the person that should receive your invitation.", comment: "Username Placeholder")
 
         textViewController.title = title
         textViewController.text = usernameOrEmail
@@ -337,8 +337,8 @@ class InvitePersonViewController: UITableViewController {
             return
         }
 
-        let title = NSLocalizedString("Message", comment: "Invite Message Editor's Title")
-        let hintFormat = NSLocalizedString("Optional message up to %1$d characters to be included in the invitation.", comment: "Invite: Message Hint. %1$d is the maximum number of characters allowed.")
+        let title = AppLocalizedString("Message", comment: "Invite Message Editor's Title")
+        let hintFormat = AppLocalizedString("Optional message up to %1$d characters to be included in the invitation.", comment: "Invite: Message Hint. %1$d is the maximum number of characters allowed.")
         let hint = String(format: hintFormat, messageCharacterLimit)
 
         textViewController.title = title
@@ -383,12 +383,12 @@ class InvitePersonViewController: UITableViewController {
         var footerText: String? {
             switch self {
             case .role:
-                return NSLocalizedString("Learn more about roles", comment: "Footer text for Invite People role field.")
+                return AppLocalizedString("Learn more about roles", comment: "Footer text for Invite People role field.")
             case .message:
                 // messageCharacterLimit cannot be accessed here, so the caller will insert it in the string.
-                return NSLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
+                return AppLocalizedString("Optional: Enter a custom message up to %1$d characters to be sent with your invitation.", comment: "Footer text for Invite People message field. %1$d is the maximum number of characters allowed.")
             case .inviteLink:
-                return NSLocalizedString("Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.", comment: "Footer text for Invite Links section of the Invite People screen.")
+                return AppLocalizedString("Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.", comment: "Footer text for Invite Links section of the Invite People screen.")
             default:
                 return nil
             }
@@ -440,7 +440,7 @@ extension InvitePersonViewController {
         }
 
         service.sendInvitation(recipient, role: role, message: message, success: {
-            let success = NSLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
+            let success = AppLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
             SVProgressHUD.showDismissibleSuccess(withStatus: success)
 
             WPAnalytics.track(.peopleUserInvited, properties: ["role": role], blog: blog)
@@ -452,9 +452,9 @@ extension InvitePersonViewController {
     }
 
     @objc func handleSendError(_ onRetry: @escaping (() -> Void)) {
-        let message = NSLocalizedString("There has been an unexpected error while sending your Invitation", comment: "Invite Failed Message")
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let retryText = NSLocalizedString("Try Again", comment: "Retries an Action")
+        let message = AppLocalizedString("There has been an unexpected error while sending your Invitation", comment: "Invite Failed Message")
+        let cancelText = AppLocalizedString("Cancel", comment: "Cancels an Action")
+        let retryText = AppLocalizedString("Try Again", comment: "Retries an Action")
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
@@ -539,17 +539,17 @@ private extension InvitePersonViewController {
         }
 
         let messageMap: [PeopleServiceRemote.ResponseError: String] = [
-            .invalidInputError: NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
+            .invalidInputError: AppLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
                                                   comment: "People: Invitation Error"),
-            .userAlreadyHasRoleError: NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
+            .userAlreadyHasRoleError: AppLocalizedString("The user already has the specified role. Please, try assigning a different role.",
                                                         comment: "People: Invitation Error"),
-            .unknownError: NSLocalizedString("Unknown error has occurred",
+            .unknownError: AppLocalizedString("Unknown error has occurred",
                                              comment: "People: Invitation Error")
         ]
 
         let message = messageMap[error] ?? messageMap[.unknownError]!
-        let title = NSLocalizedString("Sorry!", comment: "Invite Validation Alert")
-        let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+        let title = AppLocalizedString("Sorry!", comment: "Invite Validation Alert")
+        let okTitle = AppLocalizedString("OK", comment: "Alert dismissal title")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alert.addDefaultActionWithTitle(okTitle)
@@ -588,7 +588,7 @@ private extension InvitePersonViewController {
 
     func refreshGenerateShareCell() {
         if blog.inviteLinks?.count == 0 {
-            generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
+            generateShareCell.textLabel?.text = AppLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
             generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         } else {
             generateShareCell.textLabel?.attributedText = createAttributedShareInviteText()
@@ -613,7 +613,7 @@ private extension InvitePersonViewController {
                                    y: (font.capHeight - image.size.height)/2,
                                    width: image.size.width,
                                    height: image.size.height)
-        let textStr = NSAttributedString(string: NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)
+        let textStr = NSAttributedString(string: AppLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)
         let attrStr = NSMutableAttributedString(attachment: attachment)
         attrStr.append(NSAttributedString(string: " "))
         attrStr.append(textStr)
@@ -625,7 +625,7 @@ private extension InvitePersonViewController {
             return
         }
 
-        currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
+        currentInviteCell.textLabel?.text = AppLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
         currentInviteCell.textLabel?.textColor = .text
 
         // sortedInviteLinks and availableRoles should be complimentary. We can cheat a little and
@@ -645,7 +645,7 @@ private extension InvitePersonViewController {
             return
         }
 
-        expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
+        expirationCell.textLabel?.text = AppLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
         expirationCell.textLabel?.textColor = .text
 
         let formatter = DateFormatter()
@@ -657,7 +657,7 @@ private extension InvitePersonViewController {
     }
 
     func refreshDisableLinkCell() {
-        disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
+        disableLinksCell.textLabel?.text = AppLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
         disableLinksCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         disableLinksCell.textLabel?.textColor = .error
         disableLinksCell.textLabel?.textAlignment = .center
@@ -696,7 +696,7 @@ private extension InvitePersonViewController {
         }, failure: { [weak self] error in
             self?.bumpStat(event: .inviteLinksGenerate, error: error)
             self?.updatingInviteLinks = false
-            self?.displayNotice(title: NSLocalizedString("Unable to create new invite links.", comment: "An error message shown when there is an issue creating new invite links."))
+            self?.displayNotice(title: AppLocalizedString("Unable to create new invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error generating invite links. \(error)")
         })
     }
@@ -719,11 +719,11 @@ private extension InvitePersonViewController {
             return
         }
 
-        let title = NSLocalizedString("Disable invite link", comment: "Title. Title of a prompt to disable group invite links.")
-        let message = NSLocalizedString("Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?", comment: "Warning message about disabling group invite links.")
+        let title = AppLocalizedString("Disable invite link", comment: "Title. Title of a prompt to disable group invite links.")
+        let message = AppLocalizedString("Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?", comment: "Warning message about disabling group invite links.")
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title. Title of a cancel button. Tapping disnisses an alert."))
-        let action = UIAlertAction(title: NSLocalizedString("Disable", comment: "Title. Title of a button that will disable group invite links when tapped."),
+        controller.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Title. Title of a cancel button. Tapping disnisses an alert."))
+        let action = UIAlertAction(title: AppLocalizedString("Disable", comment: "Title. Title of a button that will disable group invite links when tapped."),
                                    style: .destructive) { [weak self] _ in
             self?.disableInviteLinks()
         }
@@ -745,7 +745,7 @@ private extension InvitePersonViewController {
         }, failure: { [weak self] error in
             self?.bumpStat(event: .inviteLinksDisable, error: error)
             self?.updatingInviteLinks = false
-            self?.displayNotice(title: NSLocalizedString("Unable to disable invite links.", comment: "An error message shown when there is an issue creating new invite links."))
+            self?.displayNotice(title: AppLocalizedString("Unable to disable invite links.", comment: "An error message shown when there is an issue creating new invite links."))
             DDLogError("Error disabling invite links. \(error)")
         })
     }
@@ -798,7 +798,7 @@ private extension InvitePersonViewController {
     }
 
     func setupRoleCell() {
-        roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+        roleCell.textLabel?.text = AppLocalizedString("Role", comment: "User's Role")
         roleCell.textLabel?.textColor = .text
         roleCell.accessoryType = .disclosureIndicator
         WPStyleGuide.configureTableViewCell(roleCell)
@@ -812,19 +812,19 @@ private extension InvitePersonViewController {
     }
 
     func setupPlaceholderLabel() {
-        placeholderLabel.text = NSLocalizedString("Custom message…", comment: "Placeholder for Invite People message field.")
+        placeholderLabel.text = AppLocalizedString("Custom message…", comment: "Placeholder for Invite People message field.")
         placeholderLabel.font = WPStyleGuide.tableviewTextFont()
         placeholderLabel.textColor = UIColor.textPlaceholder
     }
 
     func setupNavigationBar() {
-        title = NSLocalizedString("Invite People", comment: "Invite People Title")
+        title = AppLocalizedString("Invite People", comment: "Invite People Title")
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(cancelWasPressed))
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Invite", comment: "Send Person Invite"),
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: AppLocalizedString("Invite", comment: "Send Person Invite"),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(sendWasPressed))
@@ -849,7 +849,7 @@ private extension InvitePersonViewController {
 
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
-            usernameCell.textLabel?.text = NSLocalizedString("Email or Username…", comment: "Invite Username Placeholder")
+            usernameCell.textLabel?.text = AppLocalizedString("Email or Username…", comment: "Invite Username Placeholder")
             usernameCell.textLabel?.textColor = .textPlaceholder
             return
         }

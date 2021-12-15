@@ -33,7 +33,7 @@ open class JetpackConnectionViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Manage Connection", comment: "Title for the Jetpack Manage Connection Screen")
+        title = AppLocalizedString("Manage Connection", comment: "Title for the Jetpack Manage Connection Screen")
         ImmuTable.registerRows([DestructiveButtonRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         reloadViewModel()
@@ -54,7 +54,7 @@ open class JetpackConnectionViewController: UITableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        let disconnectRow = DestructiveButtonRow(title: NSLocalizedString("Disconnect from WordPress.com",
+        let disconnectRow = DestructiveButtonRow(title: AppLocalizedString("Disconnect from WordPress.com",
                                                                           comment: "Disconnect from WordPress.com button"),
                                                  action: self.disconnectJetpackTapped(),
                                                  accessibilityIdentifier: "disconnectFromWordPress.comButton")
@@ -62,7 +62,7 @@ open class JetpackConnectionViewController: UITableViewController {
             ImmuTableSection(
                 headerText: "",
                 rows: [disconnectRow],
-                footerText: NSLocalizedString("Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials.",
+                footerText: AppLocalizedString("Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials.",
                                               comment: "Explanatory text bellow the Disconnect from WordPress.com button")
             )])
     }
@@ -72,14 +72,14 @@ open class JetpackConnectionViewController: UITableViewController {
     func disconnectJetpackTapped() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            let message = NSLocalizedString("Are you sure you want to disconnect Jetpack from the site?",
+            let message = AppLocalizedString("Are you sure you want to disconnect Jetpack from the site?",
                                             comment: "Message prompting the user to confirm that they want to disconnect Jetpack from the site.")
 
             let alertController = UIAlertController(title: nil,
                                                     message: message,
                                                     preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action."))
-            alertController.addDestructiveActionWithTitle(NSLocalizedString("Disconnect",
+            alertController.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action."))
+            alertController.addDestructiveActionWithTitle(AppLocalizedString("Disconnect",
                                                                             comment: "Title for button that disconnects Jetpack from the site"),
                                                           handler: { action in
                                                               self.disconnectJetpack()
@@ -106,9 +106,9 @@ open class JetpackConnectionViewController: UITableViewController {
                                                    }
                                                },
                                                failure: { error in
-                                                   let errorTitle = NSLocalizedString("Error disconnecting Jetpack",
+                                                   let errorTitle = AppLocalizedString("Error disconnecting Jetpack",
                                                                                       comment: "Title of error dialog when disconnecting jetpack fails.")
-                                                   let errorMessage = NSLocalizedString("Please contact support for assistance.",
+                                                   let errorMessage = AppLocalizedString("Please contact support for assistance.",
                                                                                         comment: "Message displayed on an error alert to prompt the user to contact support")
                                                    WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
                                                    DDLogError("Error disconnecting Jetpack: \(String(describing: error))")

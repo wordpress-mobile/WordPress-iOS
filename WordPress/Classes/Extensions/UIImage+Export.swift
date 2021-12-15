@@ -34,14 +34,14 @@ extension UIImage {
             let imageRef = self.cgImage
             else {
                 throw errorForCode(.failedToWrite,
-                                   failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
+                                   failureReason: AppLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
                 )
         }
         CGImageDestinationSetProperties(destination, properties as CFDictionary?)
         CGImageDestinationAddImage(destination, imageRef, finalMetadata as CFDictionary?)
         if !CGImageDestinationFinalize(destination) {
             throw errorForCode(.failedToWrite,
-                               failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
+                               failureReason: AppLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
             )
         }
     }

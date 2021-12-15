@@ -13,14 +13,14 @@ import UIKit
         self.post = post
 
         let titles: NSArray = [
-            NSLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-            NSLocalizedString("Password protected", comment: "Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
-            NSLocalizedString("Private", comment: "Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
+            AppLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+            AppLocalizedString("Password protected", comment: "Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
+            AppLocalizedString("Private", comment: "Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
         ]
 
         let visiblityDict: [AnyHashable: Any] = [
-            "DefaultValue": NSLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-            "Title": NSLocalizedString("Visibility", comment: "Visibility label"),
+            "DefaultValue": AppLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+            "Title": AppLocalizedString("Visibility", comment: "Visibility label"),
             "Titles": titles,
             "Values": titles,
             "CurrentValue": post.titleForVisibility

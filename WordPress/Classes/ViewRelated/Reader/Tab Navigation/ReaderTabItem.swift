@@ -45,9 +45,9 @@ extension ReaderTabItem {
     }
 
     private enum Titles {
-        static let followingTitle = NSLocalizedString("Following", comment: "Title of the Following Reader tab")
-        static let likesTitle = NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
-        static let savedTitle = NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
+        static let followingTitle = AppLocalizedString("Following", comment: "Title of the Following Reader tab")
+        static let likesTitle = AppLocalizedString("Likes", comment: "Title of the Likes Reader tab")
+        static let savedTitle = AppLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
         static let emptyTitle = ""
     }
 }

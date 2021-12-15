@@ -90,7 +90,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
             _ = blogId
             title = streamSettings.blog?.settings?.name ?? streamSettings.channel.description()
         case .other:
-            title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
+            title = AppLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:
             // Note: WordPress.com is not expected here!
             break
@@ -151,7 +151,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
         cell.imageView?.image       = imageForStreamKind(stream.kind)
         cell.imageView?.tintColor   = .neutral(.shade20)
         cell.textLabel?.text        = stream.kind.description()
-        cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
+        cell.detailTextLabel?.text  = disabled ? AppLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .disclosureIndicator
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -184,15 +184,15 @@ class NotificationSettingStreamsViewController: UITableViewController {
     }
 
     private func displayPushNotificationsAlert() {
-        let title   = NSLocalizedString("Push Notifications have been turned off in iOS Settings",
+        let title   = AppLocalizedString("Push Notifications have been turned off in iOS Settings",
                                         comment: "Displayed when Push Notifications are disabled (iOS 7)")
-        let message = NSLocalizedString("To enable notifications:\n\n" +
+        let message = AppLocalizedString("To enable notifications:\n\n" +
                                         "1. Open **iOS Settings**\n" +
                                         "2. Tap **Notifications**\n" +
                                         "3. Select **WordPress**\n" +
                                         "4. Turn on **Allow Notifications**",
                                         comment: "Displayed when Push Notifications are disabled (iOS 7)")
-        let button = NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
+        let button = AppLocalizedString("Dismiss", comment: "Dismiss the AlertView")
 
         let alert = AlertView(title: title, message: message, button: button)
         alert.show()
@@ -204,13 +204,13 @@ class NotificationSettingStreamsViewController: UITableViewController {
     private func footerForStream(_ stream: NotificationSettings.Stream) -> String {
         switch stream.kind {
         case .Device:
-            return NSLocalizedString("Settings for push notifications that appear on your mobile device.",
+            return AppLocalizedString("Settings for push notifications that appear on your mobile device.",
                 comment: "Descriptive text for the Push Notifications Settings")
         case .Email:
-            return NSLocalizedString("Settings for notifications that are sent to the email tied to your account.",
+            return AppLocalizedString("Settings for notifications that are sent to the email tied to your account.",
                 comment: "Descriptive text for the Email Notifications Settings")
         case .Timeline:
-            return NSLocalizedString("Settings for notifications that appear in the Notifications tab.",
+            return AppLocalizedString("Settings for notifications that appear in the Notifications tab.",
                 comment: "Descriptive text for the Notifications Tab Settings")
         }
     }

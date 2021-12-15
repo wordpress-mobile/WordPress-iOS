@@ -59,15 +59,15 @@ extension Notification {
         var description: String {
             switch self {
             case .Months:
-                return NSLocalizedString("Older than a Month", comment: "Notifications Months Section Header")
+                return AppLocalizedString("Older than a Month", comment: "Notifications Months Section Header")
             case .Weeks:
-                return NSLocalizedString("Older than a Week", comment: "Notifications Weeks Section Header")
+                return AppLocalizedString("Older than a Week", comment: "Notifications Weeks Section Header")
             case .Days:
-                return NSLocalizedString("Older than 2 days", comment: "Notifications +2 Days Section Header")
+                return AppLocalizedString("Older than 2 days", comment: "Notifications +2 Days Section Header")
             case .Yesterday:
-                return NSLocalizedString("Yesterday", comment: "Notifications Yesterday Section Header")
+                return AppLocalizedString("Yesterday", comment: "Notifications Yesterday Section Header")
             case .Today:
-                return NSLocalizedString("Today", comment: "Notifications Today Section Header")
+                return AppLocalizedString("Today", comment: "Notifications Today Section Header")
             }
         }
     }

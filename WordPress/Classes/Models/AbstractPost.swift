@@ -82,17 +82,17 @@ extension AbstractPost {
     static func title(forStatus status: String) -> String {
         switch status {
         case PostStatusDraft:
-            return NSLocalizedString("Draft", comment: "Name for the status of a draft post.")
+            return AppLocalizedString("Draft", comment: "Name for the status of a draft post.")
         case PostStatusPending:
-            return NSLocalizedString("Pending review", comment: "Name for the status of a post pending review.")
+            return AppLocalizedString("Pending review", comment: "Name for the status of a post pending review.")
         case PostStatusPrivate:
-            return NSLocalizedString("Private", comment: "Name for the status of a post that is marked private.")
+            return AppLocalizedString("Private", comment: "Name for the status of a post that is marked private.")
         case PostStatusPublish:
-            return NSLocalizedString("Published", comment: "Name for the status of a published post.")
+            return AppLocalizedString("Published", comment: "Name for the status of a published post.")
         case PostStatusTrash:
-            return NSLocalizedString("Trashed", comment: "Name for the status of a trashed post")
+            return AppLocalizedString("Trashed", comment: "Name for the status of a trashed post")
         case PostStatusScheduled:
-            return NSLocalizedString("Scheduled", comment: "Name for the status of a scheduled post")
+            return AppLocalizedString("Scheduled", comment: "Name for the status of a scheduled post")
         default:
             return status
         }

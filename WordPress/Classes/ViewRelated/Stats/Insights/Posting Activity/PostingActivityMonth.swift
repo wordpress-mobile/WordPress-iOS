@@ -252,14 +252,14 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
 
     private enum Strings {
         static let noPosts =
-            NSLocalizedString("No posts.",
+            AppLocalizedString("No posts.",
                               comment: "Accessibility value for a Stats' Posting Activity Month if there are no posts.")
         static let dayAndPostsSingular =
-            NSLocalizedString("%@. 1 post.",
+            AppLocalizedString("%@. 1 post.",
                               comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
                                 + " The first parameter is day (e.g. November 2019).")
         static let dayAndPostsPlural =
-            NSLocalizedString("%@. %d posts.",
+            AppLocalizedString("%@. %d posts.",
                               comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
                                 + " The first parameter is day (e.g. November 2019). The second parameter is the number of posts.")
     }

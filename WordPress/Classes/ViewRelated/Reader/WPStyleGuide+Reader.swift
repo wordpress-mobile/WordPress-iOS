@@ -456,14 +456,14 @@ extension WPStyleGuide {
     /// - Parameter button: the button to apply the title to
     /// - Parameter showTitle: if  true, will show the button label (default: true), if false, the label will be empty (button with no label)
     @objc public class func applyReaderReblogActionButtonTitle(_ button: UIButton, showTitle: Bool = true) {
-        let title = showTitle ? NSLocalizedString("Reblog", comment: "Text for the 'Reblog' button.") : ""
+        let title = showTitle ? AppLocalizedString("Reblog", comment: "Text for the 'Reblog' button.") : ""
         button.setTitle(title, for: .normal)
         button.setTitle(title, for: .highlighted)
     }
 
     @objc public class func likeCountForDisplay(_ count: Int) -> String {
-        let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
-        let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
+        let likeStr = AppLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
+        let likesStr = AppLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
 
         if count == 0 {
             return likeStr
@@ -475,8 +475,8 @@ extension WPStyleGuide {
     }
 
     @objc public class func commentCountForDisplay(_ count: Int) -> String {
-        let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
-        let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
+        let commentStr = AppLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
+        let commentsStr = AppLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
         if count == 0 {
             return commentStr
@@ -489,9 +489,9 @@ extension WPStyleGuide {
 
     @objc public class func savePostStringForDisplay(_ isSaved: Bool) -> String {
         if isSaved {
-            return NSLocalizedString("Saved", comment: "Title of action button for a Reader post that has been saved to read later.")
+            return AppLocalizedString("Saved", comment: "Title of action button for a Reader post that has been saved to read later.")
         } else {
-            return NSLocalizedString("Save", comment: "Title of action button to save a Reader post to read later.")
+            return AppLocalizedString("Save", comment: "Title of action button to save a Reader post to read later.")
         }
     }
 
@@ -582,9 +582,9 @@ extension WPStyleGuide {
         }
 
         struct Text {
-            static let accessibilityHint = NSLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
-            static let followStringForDisplay =  NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-            static let followingStringForDisplay = NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+            static let accessibilityHint = AppLocalizedString("Follows the tag.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag.")
+            static let followStringForDisplay =  AppLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+            static let followingStringForDisplay = AppLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
         }
     }
 

@@ -81,7 +81,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
+        title = AppLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
         registerChangeObserver()
         registerUploadCoordinatorObserver()
@@ -259,16 +259,16 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     @objc private func trashTapped() {
         let message: String
         if selectedAssets.count == 1 {
-            message = NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
+            message = AppLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
         } else {
-            message = NSLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
+            message = AppLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
         }
 
         let alertController = UIAlertController(title: nil,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. Button title. Tapping cancels an action."))
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)"), handler: { action in
+        alertController.addCancelActionWithTitle(AppLocalizedString("Cancel", comment: "Verb. Button title. Tapping cancels an action."))
+        alertController.addDestructiveActionWithTitle(AppLocalizedString("Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)"), handler: { action in
             self.deleteSelectedItems()
         })
 
@@ -283,7 +283,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         let updateProgress = { (progress: Progress?) in
             let fractionCompleted = progress?.fractionCompleted ?? 0
-            SVProgressHUD.showProgress(Float(fractionCompleted), status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
+            SVProgressHUD.showProgress(Float(fractionCompleted), status: AppLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
         }
 
         SVProgressHUD.setDefaultMaskType(.clear)
@@ -297,17 +297,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                                        onProgress: updateProgress,
                                        success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
-            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            SVProgressHUD.showSuccess(withStatus: AppLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
         },
                                        failure: {
-            SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
+            SVProgressHUD.showError(withStatus: AppLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
     }
 
     fileprivate func presentRetryOptions(for media: Media) {
         let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
+        alertController.addDestructiveActionWithTitle(AppLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
             MediaCoordinator.shared.delete(media: [media])
         }
 
@@ -316,18 +316,18 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 alertController.message = error.localizedDescription
             }
             if media.absoluteLocalURL != nil {
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
+                alertController.addDefaultActionWithTitle(AppLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
                     let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary))
                     MediaCoordinator.shared.retryMedia(media, analyticsInfo: info)
                 }
             } else {
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
+                alertController.addDefaultActionWithTitle(AppLocalizedString("Delete", comment: "User action to delete media.")) { _ in
                     MediaCoordinator.shared.delete(media: [media])
                 }
             }
         }
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. Button title. Tapping dismisses a prmopt."))
+        alertController.addCancelActionWithTitle(AppLocalizedString("Dismiss", comment: "Verb. Button title. Tapping dismisses a prmopt."))
 
         present(alertController, animated: true)
     }
@@ -599,7 +599,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
         let nserror = error as NSError
         if let mediaLibrary = self.blog.media, !mediaLibrary.isEmpty {
-            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            let title = AppLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingNotice(title: title, error: nserror)
         }
         return true

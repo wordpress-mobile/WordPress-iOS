@@ -71,7 +71,7 @@ class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfo
             return nil
         }
 
-        cell.titleLabel?.text = NSLocalizedString("Account Details", comment: "Header for account details, shown after signing up.").localizedUppercase
+        cell.titleLabel?.text = AppLocalizedString("Account Details", comment: "Header for account details, shown after signing up.").localizedUppercase
         cell.titleLabel?.accessibilityIdentifier = "New Account Header"
         cell.accessibilityLabel = cell.titleLabel?.text
 
@@ -88,7 +88,7 @@ class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfo
 
         cell.titleLabel?.numberOfLines = 0
         cell.topConstraint.constant = Constants.footerTopMargin
-        cell.titleLabel?.text = NSLocalizedString("You can always log in with a link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+        cell.titleLabel?.text = AppLocalizedString("You can always log in with a link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
         cell.accessibilityLabel = cell.titleLabel?.text
 
         return cell
@@ -208,16 +208,16 @@ private extension SignupEpilogueTableViewController {
         switch cellType {
         case .displayName:
             cell.configureCell(forType: .displayName,
-                               labelText: NSLocalizedString("Display Name", comment: "Display Name label text."),
+                               labelText: AppLocalizedString("Display Name", comment: "Display Name label text."),
                                fieldValue: dataSource?.customDisplayName ?? epilogueUserInfo?.fullName)
         case .username:
             cell.configureCell(forType: .username,
-                               labelText: NSLocalizedString("Username", comment: "Username label text."),
+                               labelText: AppLocalizedString("Username", comment: "Username label text."),
                                fieldValue: dataSource?.username ?? epilogueUserInfo?.username)
         case .password:
             cell.configureCell(forType: .password,
                                fieldValue: dataSource?.password,
-                               fieldPlaceholder: NSLocalizedString("Password (optional)", comment: "Password field placeholder text"))
+                               fieldPlaceholder: AppLocalizedString("Password (optional)", comment: "Password field placeholder text"))
         }
 
         cell.delegate = self

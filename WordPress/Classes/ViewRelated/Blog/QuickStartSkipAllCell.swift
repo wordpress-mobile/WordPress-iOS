@@ -5,7 +5,7 @@ class QuickStartSkipAllCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let title = NSLocalizedString("Skip All", comment: "Label for button that will allow the user to skip all items in the Quick Start checklist")
+        let title = AppLocalizedString("Skip All", comment: "Label for button that will allow the user to skip all items in the Quick Start checklist")
         skipAllLabel?.text = title
     }
 

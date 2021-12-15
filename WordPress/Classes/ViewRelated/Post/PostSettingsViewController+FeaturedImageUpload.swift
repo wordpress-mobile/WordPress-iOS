@@ -47,7 +47,7 @@ extension PostSettingsViewController {
     func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
         switch state {
         case .processing:
-            featuredImageProgress?.localizedDescription = NSLocalizedString("Preparing...", comment: "Label to show while converting and/or resizing media to send to server")
+            featuredImageProgress?.localizedDescription = AppLocalizedString("Preparing...", comment: "Label to show while converting and/or resizing media to send to server")
         case .thumbnailReady:
             if let url = media.absoluteThumbnailLocalURL, let data = try? Data(contentsOf: url) {
                 featuredImageProgress?.setUserInfoObject(UIImage(data: data), forKey: .WPProgressImageThumbnailKey)
@@ -56,7 +56,7 @@ extension PostSettingsViewController {
             featuredImageProgress = progress
             featuredImageProgress?.kind = .file
             featuredImageProgress?.setUserInfoObject(Progress.FileOperationKind.copying, forKey: ProgressUserInfoKey.fileOperationKindKey)
-            featuredImageProgress?.localizedDescription = NSLocalizedString("Uploading...", comment: "Label to show while uploading media to server")
+            featuredImageProgress?.localizedDescription = AppLocalizedString("Uploading...", comment: "Label to show while uploading media to server")
             progressCell?.setProgress(progress)
             tableView.reloadData()
         case .ended:
@@ -72,7 +72,7 @@ extension PostSettingsViewController {
                 break
             }
 
-            let errorTitle = NSLocalizedString("Couldn't upload the featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded.")
+            let errorTitle = AppLocalizedString("Couldn't upload the featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded.")
             let notice = Notice(title: errorTitle, message: error.localizedDescription)
 
             ActionDispatcher.dispatch(NoticeAction.clearWithTag(MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag))
@@ -118,10 +118,10 @@ extension PostSettingsViewController {
     }
 
     struct FeaturedImageActionSheet {
-        static let title = NSLocalizedString("Featured Image Options", comment: "Title for action sheet with featured media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss featured media options.")
-        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry featured media upload.")
-        static let removeActionTitle = NSLocalizedString("Remove", comment: "User action to remove featured media.")
+        static let title = AppLocalizedString("Featured Image Options", comment: "Title for action sheet with featured media options.")
+        static let dismissActionTitle = AppLocalizedString("Dismiss", comment: "User action to dismiss featured media options.")
+        static let retryUploadActionTitle = AppLocalizedString("Retry", comment: "User action to retry featured media upload.")
+        static let removeActionTitle = AppLocalizedString("Remove", comment: "User action to remove featured media.")
     }
 
 }

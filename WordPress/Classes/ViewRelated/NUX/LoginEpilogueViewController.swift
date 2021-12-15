@@ -157,7 +157,7 @@ private extension LoginEpilogueViewController {
     /// Setup: Buttons
     ///
     func configureCreateANewSiteButton() {
-        createANewSiteButton.setTitle(NSLocalizedString("Create a new site", comment: "A button title"), for: .normal)
+        createANewSiteButton.setTitle(AppLocalizedString("Create a new site", comment: "A button title"), for: .normal)
         createANewSiteButton.accessibilityIdentifier = "Create a new site"
     }
 

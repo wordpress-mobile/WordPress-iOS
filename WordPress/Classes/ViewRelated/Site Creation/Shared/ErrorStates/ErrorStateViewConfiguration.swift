@@ -54,10 +54,10 @@ extension ErrorStateViewType {
     var localizedTitle: String {
         switch self {
         case .general, .siteLoading:
-            return NSLocalizedString("There was a problem",
+            return AppLocalizedString("There was a problem",
                                      comment: "This primary message message is displayed if a user encounters a general error.")
         case .networkUnreachable:
-            return NSLocalizedString("No internet connection",
+            return AppLocalizedString("No internet connection",
                                      comment: "This primary error message is displayed if a user encounters an issue with network reachability.")
         }
     }
@@ -65,7 +65,7 @@ extension ErrorStateViewType {
     var localizedSubtitle: String? {
         switch self {
         case .general, .siteLoading:
-            return NSLocalizedString("Error communicating with the server, please try again",
+            return AppLocalizedString("Error communicating with the server, please try again",
                                      comment: "This secondary message is displayed if a user encounters a general error.")
         case .networkUnreachable:
             return nil

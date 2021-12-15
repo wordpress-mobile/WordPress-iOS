@@ -19,21 +19,21 @@ extension WPActivityType {
     var suggestedInvocationPhrase: String {
         switch self {
         case .siteList:
-            return NSLocalizedString("My Sites in WordPress", comment: "Siri Suggestion to open My Sites")
+            return AppLocalizedString("My Sites in WordPress", comment: "Siri Suggestion to open My Sites")
         case .siteDetails:
-            return NSLocalizedString("WordPress Site Details", comment: "Siri Suggestion to open My Sites")
+            return AppLocalizedString("WordPress Site Details", comment: "Siri Suggestion to open My Sites")
         case .reader:
-            return NSLocalizedString("WordPress Reader", comment: "Siri Suggestion to open My Sites")
+            return AppLocalizedString("WordPress Reader", comment: "Siri Suggestion to open My Sites")
         case .me:
-            return NSLocalizedString("WordPress Profile", comment: "Siri Suggestion to open Me tab")
+            return AppLocalizedString("WordPress Profile", comment: "Siri Suggestion to open Me tab")
         case .appSettings:
-            return NSLocalizedString("WordPress App Settings", comment: "Siri Suggestion to open App Settings")
+            return AppLocalizedString("WordPress App Settings", comment: "Siri Suggestion to open App Settings")
         case .notificationSettings:
-            return NSLocalizedString("WordPress Notification Settings", comment: "Siri Suggestion to open Notification Settings")
+            return AppLocalizedString("WordPress Notification Settings", comment: "Siri Suggestion to open Notification Settings")
         case .support:
-            return NSLocalizedString("WordPress Help", comment: "Siri Suggestion to open Support")
+            return AppLocalizedString("WordPress Help", comment: "Siri Suggestion to open Support")
         case .notifications:
-            return NSLocalizedString("WordPress Notifications", comment: "Siri Suggestion to open Notifications")
+            return AppLocalizedString("WordPress Notifications", comment: "Siri Suggestion to open Notifications")
         }
     }
 }

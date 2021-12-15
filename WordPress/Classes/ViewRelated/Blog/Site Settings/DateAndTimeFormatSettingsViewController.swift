@@ -44,7 +44,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Date and Time Format", comment: "Title for the Date and Time Format Settings Screen")
+        title = AppLocalizedString("Date and Time Format", comment: "Title for the Date and Time Format Settings Screen")
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         reloadViewModel()
@@ -63,17 +63,17 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
 
-        let dateFormatRow = NavigationItemRow(title: NSLocalizedString("Date Format",
+        let dateFormatRow = NavigationItemRow(title: AppLocalizedString("Date Format",
                                                                        comment: "Blog Writing Settings: Date Format"),
                                               detail: settings.dateFormatDescription,
                                               action: self.pressedDateFormat())
 
-        let timeFormatRow = NavigationItemRow(title: NSLocalizedString("Time Format",
+        let timeFormatRow = NavigationItemRow(title: AppLocalizedString("Time Format",
                                                                        comment: "Blog Writing Settings: Time Format"),
                                               detail: settings.timeFormatDescription,
                                               action: self.pressedTimeFormat())
 
-        let startOfWeekRow = NavigationItemRow(title: NSLocalizedString("Week starts on",
+        let startOfWeekRow = NavigationItemRow(title: AppLocalizedString("Week starts on",
                                                                        comment: "Blog Writing Settings: Weeks starts on"),
                                                detail: settings.startOfWeekDescription,
                                                action: self.pressedStartOfWeek())
@@ -97,7 +97,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                                                                y: 0.0,
                                                                width: tableView.frame.width,
                                                                height: DateAndTimeFormatSettingsViewController.footerHeight))
-        footer.textLabel?.text = NSLocalizedString("Learn more about date and time formatting.",
+        footer.textLabel?.text = AppLocalizedString("Learn more about date and time formatting.",
                                                    comment: "Writing, Date and Time Settings: Learn more about date and time settings footer text")
         footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         footer.textLabel?.isUserInteractionEnabled = true
@@ -112,7 +112,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     func pressedDateFormat() -> ImmuTableAction {
         return { [unowned self] row in
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
-            settingsViewController.title = NSLocalizedString("Date Format",
+            settingsViewController.title = AppLocalizedString("Date Format",
                                                              comment: "Writing Date Format Settings Title")
             settingsViewController.currentValue = self.settings.dateFormat as NSObject
 
@@ -120,7 +120,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
             var allValues = DateFormat.allValues
 
             if let _ = DateFormat(rawValue: self.settings.dateFormat) {
-                allTitles.append(NSLocalizedString("Tap to enter a custom value",
+                allTitles.append(AppLocalizedString("Tap to enter a custom value",
                                                    comment: "Message in a row indicating to tap to enter a custom value"))
                 allValues.append("")
             } else {
@@ -146,7 +146,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     func pressedTimeFormat() -> ImmuTableAction {
         return { [unowned self] row in
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
-            settingsViewController.title = NSLocalizedString("Time Format",
+            settingsViewController.title = AppLocalizedString("Time Format",
                                                              comment: "Writing Time Format Settings Title")
             settingsViewController.currentValue = self.settings.timeFormat as NSObject
 
@@ -154,7 +154,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
             var allValues = TimeFormat.allValues
 
             if let _ = TimeFormat(rawValue: self.settings.timeFormat) {
-                allTitles.append(NSLocalizedString("Tap to enter a custom value",
+                allTitles.append(AppLocalizedString("Tap to enter a custom value",
                                                    comment: "Message in a row indicating to tap to enter a custom value"))
                 allValues.append("")
             } else {
@@ -181,7 +181,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     func pressedStartOfWeek() -> ImmuTableAction {
         return { [unowned self] row in
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
-            settingsViewController.title = NSLocalizedString("Week starts on",
+            settingsViewController.title = AppLocalizedString("Week starts on",
                                                              comment: "Blog Writing Settings: Weeks starts on")
             settingsViewController.currentValue = self.settings.startOfWeek as NSObject
             settingsViewController.titles = DaysOfTheWeek.allTitles

@@ -70,6 +70,6 @@ class RestoreStatusFailedView: UIView, NibLoadable {
     }
 
     private enum Strings {
-        static let done = NSLocalizedString("Done", comment: "Title for button that will dismiss this view")
+        static let done = AppLocalizedString("Done", comment: "Title for button that will dismiss this view")
     }
 }

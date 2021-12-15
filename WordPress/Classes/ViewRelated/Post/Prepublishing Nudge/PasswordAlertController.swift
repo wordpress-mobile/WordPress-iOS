@@ -61,10 +61,10 @@ class PasswordAlertController {
     }
 
     private enum Constants {
-        static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
-        static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
-        static let postPassword = NSLocalizedString("Enter password", comment: "Placeholder of a field to type a password to protect the post.")
-        static let passwordMessage = NSLocalizedString("Enter a password to protect this post", comment: "Message explaining why the user might enter a password.")
+        static let alertSubmit = AppLocalizedString("OK", comment: "Submit button on prompt for user information.")
+        static let alertCancel = AppLocalizedString("Cancel", comment: "Cancel prompt for user information.")
+        static let postPassword = AppLocalizedString("Enter password", comment: "Placeholder of a field to type a password to protect the post.")
+        static let passwordMessage = AppLocalizedString("Enter a password to protect this post", comment: "Message explaining why the user might enter a password.")
     }
 
 }

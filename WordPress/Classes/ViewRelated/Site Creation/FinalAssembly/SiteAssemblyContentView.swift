@@ -120,7 +120,7 @@ final class SiteAssemblyContentView: UIView {
             label.textColor = .text
             label.textAlignment = .center
 
-            let createdText = NSLocalizedString("Your site has been created!",
+            let createdText = AppLocalizedString("Your site has been created!",
                                               comment: "User-facing string, presented to reflect that site assembly completed successfully.")
             label.text = createdText
             label.accessibilityLabel = createdText
@@ -138,7 +138,7 @@ final class SiteAssemblyContentView: UIView {
             label.textColor = .text
             label.textAlignment = .center
 
-            let statusText = NSLocalizedString("Hooray!\nAlmost done",
+            let statusText = AppLocalizedString("Hooray!\nAlmost done",
                                                comment: "User-facing string, presented to reflect that site assembly is underway.")
             label.text = statusText
             label.accessibilityLabel = statusText
@@ -156,7 +156,7 @@ final class SiteAssemblyContentView: UIView {
             label.textColor = .textSubtle
             label.textAlignment = .center
 
-            let statusText = NSLocalizedString("Your site will be ready shortly",
+            let statusText = AppLocalizedString("Your site will be ready shortly",
                                                comment: "User-facing string, presented to reflect that site assembly is underway.")
             label.text = statusText
             label.accessibilityLabel = statusText
@@ -176,16 +176,16 @@ final class SiteAssemblyContentView: UIView {
             //on the message
 
             let statusMessages = [
-                NSLocalizedString("Grabbing site URL",
+                AppLocalizedString("Grabbing site URL",
                                   comment: "User-facing string, presented to reflect that site assembly is underway."),
 
-                NSLocalizedString("Adding site features",
+                AppLocalizedString("Adding site features",
                                   comment: "User-facing string, presented to reflect that site assembly is underway."),
 
-                NSLocalizedString("Setting up theme",
+                AppLocalizedString("Setting up theme",
                                   comment: "User-facing string, presented to reflect that site assembly is underway."),
 
-                NSLocalizedString("Creating dashboard",
+                AppLocalizedString("Creating dashboard",
                                   comment: "User-facing string, presented to reflect that site assembly is underway."),
             ]
 

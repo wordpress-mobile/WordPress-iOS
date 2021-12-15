@@ -122,7 +122,7 @@ final class ErrorStateView: UIView {
                 button.translatesAutoresizingMaskIntoConstraints = false
                 button.isPrimary = true
 
-                let titleText = NSLocalizedString("Retry",
+                let titleText = AppLocalizedString("Retry",
                                                   comment: "If a user taps the button with this label, the action that evinced this error view will be retried.")
                 button.setTitle(titleText, for: .normal)
 
@@ -141,7 +141,7 @@ final class ErrorStateView: UIView {
                 label.textColor = .primary
                 label.textAlignment = .center
 
-                label.text = NSLocalizedString("Contact Support",
+                label.text = AppLocalizedString("Contact Support",
                                                comment: "If a user taps this label, the app will navigate to the Support view.")
                 label.sizeToFit()
 

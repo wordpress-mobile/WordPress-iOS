@@ -107,9 +107,9 @@ extension SelectPostViewController {
         cell.textLabel?.text = post.titleForDisplay()
         if showsPostType {
             if post is Page {
-                cell.detailTextLabel?.text = NSLocalizedString("Page", comment: "Noun. Type of content being selected is a blog page")
+                cell.detailTextLabel?.text = AppLocalizedString("Page", comment: "Noun. Type of content being selected is a blog page")
             } else {
-                cell.detailTextLabel?.text = NSLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
+                cell.detailTextLabel?.text = AppLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
             }
         }
         if isSelectedPost?(post) == true {

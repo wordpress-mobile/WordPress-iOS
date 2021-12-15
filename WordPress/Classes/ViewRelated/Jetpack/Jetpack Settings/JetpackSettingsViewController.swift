@@ -40,7 +40,7 @@ open class JetpackSettingsViewController: UITableViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         WPAnalytics.trackEvent(.jetpackSettingsViewed)
-        title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
+        title = AppLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -67,7 +67,7 @@ open class JetpackSettingsViewController: UITableViewController {
     func tableViewModel() -> ImmuTable {
         var monitorRows = [ImmuTableRow]()
         monitorRows.append(
-            SwitchRow(title: NSLocalizedString("Monitor your site's uptime",
+            SwitchRow(title: AppLocalizedString("Monitor your site's uptime",
                                                comment: "Jetpack Monitor Settings: Monitor site's uptime"),
                       value: self.settings.jetpackMonitorEnabled,
                       onChange: self.jetpackMonitorEnabledValueChanged())
@@ -75,13 +75,13 @@ open class JetpackSettingsViewController: UITableViewController {
 
         if self.settings.jetpackMonitorEnabled {
             monitorRows.append(
-                SwitchRow(title: NSLocalizedString("Send notifications by email",
+                SwitchRow(title: AppLocalizedString("Send notifications by email",
                                                    comment: "Jetpack Monitor Settings: Send notifications by email"),
                           value: self.settings.jetpackMonitorEmailNotifications,
                           onChange: self.sendNotificationsByEmailValueChanged())
             )
             monitorRows.append(
-                SwitchRow(title: NSLocalizedString("Send push notifications",
+                SwitchRow(title: AppLocalizedString("Send push notifications",
                                                    comment: "Jetpack Monitor Settings: Send push notifications"),
                           value: self.settings.jetpackMonitorPushNotifications,
                           onChange: self.sendPushNotificationsValueChanged())
@@ -90,7 +90,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
         var bruteForceAttackRows = [ImmuTableRow]()
         bruteForceAttackRows.append(
-            SwitchRow(title: NSLocalizedString("Block malicious login attempts",
+            SwitchRow(title: AppLocalizedString("Block malicious login attempts",
                                                comment: "Jetpack Settings: Block malicious login attempts"),
                       value: self.settings.jetpackBlockMaliciousLoginAttempts,
                       onChange: self.blockMaliciousLoginAttemptsValueChanged())
@@ -98,7 +98,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
         if self.settings.jetpackBlockMaliciousLoginAttempts {
             bruteForceAttackRows.append(
-                NavigationItemRow(title: NSLocalizedString("Allowlisted IP addresses",
+                NavigationItemRow(title: AppLocalizedString("Allowlisted IP addresses",
                                                            comment: "Jetpack Settings: Allowlisted IP addresses"),
                                   action: self.pressedAllowlistedIPAddresses())
             )
@@ -106,7 +106,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
         var wordPressLoginRows = [ImmuTableRow]()
         wordPressLoginRows.append(
-            SwitchRow(title: NSLocalizedString("Allow WordPress.com login",
+            SwitchRow(title: AppLocalizedString("Allow WordPress.com login",
                                                comment: "Jetpack Settings: Allow WordPress.com login"),
                       value: self.settings.jetpackSSOEnabled,
                       onChange: self.ssoEnabledChanged())
@@ -114,13 +114,13 @@ open class JetpackSettingsViewController: UITableViewController {
 
         if self.settings.jetpackSSOEnabled {
             wordPressLoginRows.append(
-                SwitchRow(title: NSLocalizedString("Match accounts using email",
+                SwitchRow(title: AppLocalizedString("Match accounts using email",
                                                    comment: "Jetpack Settings: Match accounts using email"),
                           value: self.settings.jetpackSSOMatchAccountsByEmail,
                           onChange: self.matchAccountsUsingEmailChanged())
             )
             wordPressLoginRows.append(
-                SwitchRow(title: NSLocalizedString("Require two-step authentication",
+                SwitchRow(title: AppLocalizedString("Require two-step authentication",
                                                    comment: "Jetpack Settings: Require two-step authentication"),
                           value: self.settings.jetpackSSORequireTwoStepAuthentication,
                           onChange: self.requireTwoStepAuthenticationChanged())
@@ -129,7 +129,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
         var manageConnectionRows = [ImmuTableRow]()
         manageConnectionRows.append(
-            NavigationItemRow(title: NSLocalizedString("Manage Connection",
+            NavigationItemRow(title: AppLocalizedString("Manage Connection",
                                 comment: "Jetpack Settings: Manage Connection"),
                               action: self.pressedManageConnection())
         )
@@ -140,7 +140,7 @@ open class JetpackSettingsViewController: UITableViewController {
                 rows: monitorRows,
                 footerText: nil),
             ImmuTableSection(
-                headerText: NSLocalizedString("Brute Force Attack Protection",
+                headerText: AppLocalizedString("Brute Force Attack Protection",
                                               comment: "Jetpack Settings: Brute Force Attack Protection Section"),
                 rows: bruteForceAttackRows,
                 footerText: nil),
@@ -149,7 +149,7 @@ open class JetpackSettingsViewController: UITableViewController {
                 rows: manageConnectionRows,
                 footerText: nil),
             ImmuTableSection(
-                headerText: NSLocalizedString("WordPress.com login",
+                headerText: AppLocalizedString("WordPress.com login",
                                               comment: "Jetpack Settings: WordPress.com Login settings"),
                 rows: wordPressLoginRows,
                 footerText: nil)
@@ -171,7 +171,7 @@ open class JetpackSettingsViewController: UITableViewController {
                                                                    y: 0.0,
                                                                    width: tableView.frame.width,
                                                                    height: JetpackSettingsViewController.footerHeight))
-            footer.textLabel?.text = NSLocalizedString("Learn more...",
+            footer.textLabel?.text = AppLocalizedString("Learn more...",
                                                        comment: "Jetpack Settings: WordPress.com Login WordPress login footer text")
             footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
             footer.textLabel?.isUserInteractionEnabled = true
@@ -240,13 +240,13 @@ open class JetpackSettingsViewController: UITableViewController {
             let allowListedIPs = self.settings.jetpackLoginAllowListedIPAddresses
             let settingsViewController = SettingsListEditorViewController(collection: allowListedIPs)
 
-            settingsViewController.title = NSLocalizedString("Allowlisted IP Addresses",
+            settingsViewController.title = AppLocalizedString("Allowlisted IP Addresses",
                                                              comment: "Allowlisted IP Addresses Title")
-            settingsViewController.insertTitle = NSLocalizedString("New IP or IP Range",
+            settingsViewController.insertTitle = AppLocalizedString("New IP or IP Range",
                                                                    comment: "IP Address or Range Insertion Title")
-            settingsViewController.editTitle = NSLocalizedString("Edit IP or IP Range",
+            settingsViewController.editTitle = AppLocalizedString("Edit IP or IP Range",
                                                                  comment: "IP Address or Range Edition Title")
-            settingsViewController.footerText = NSLocalizedString("You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.",
+            settingsViewController.footerText = AppLocalizedString("You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100.",
                                                                   comment: "Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso.")
 
             settingsViewController.onChange = { [weak self] (updated: Set<String>) in
@@ -346,9 +346,9 @@ open class JetpackSettingsViewController: UITableViewController {
     }
 
     fileprivate func refreshSettingsAfterSavingError() {
-        let errorTitle = NSLocalizedString("Error updating Jetpack settings",
+        let errorTitle = AppLocalizedString("Error updating Jetpack settings",
                                            comment: "Title of error dialog when updating jetpack settins fail.")
-        let errorMessage = NSLocalizedString("Please contact support for assistance.",
+        let errorMessage = AppLocalizedString("Please contact support for assistance.",
                                              comment: "Message displayed on an error alert to prompt the user to contact support")
         WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
         refreshSettings()

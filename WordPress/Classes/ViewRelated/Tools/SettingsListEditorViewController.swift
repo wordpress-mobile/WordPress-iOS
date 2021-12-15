@@ -19,7 +19,7 @@ open class SettingsListEditorViewController: UITableViewController {
     @objc public convenience init(collection: Set<String>?) {
         self.init(style: .grouped)
 
-        emptyText = NSLocalizedString("No Items", comment: "List Editor Empty State Message")
+        emptyText = AppLocalizedString("No Items", comment: "List Editor Empty State Message")
 
         if let unwrappedCollection = collection?.sorted() as [String]? {
             rows.addObjects(from: unwrappedCollection)

@@ -49,7 +49,7 @@ final class SiteCreator {
             segmentIdentifier: segment?.identifier,
             siteDesign: siteDesign,
             verticalIdentifier: verticalIdentifier,
-            title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
+            title: information?.title ?? AppLocalizedString("Site Title", comment: "Site info. Title"),
             tagline: information?.tagLine ?? "",
             siteURLString: siteName,
             isPublic: true

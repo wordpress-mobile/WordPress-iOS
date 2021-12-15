@@ -91,17 +91,17 @@ class PostActionSheet {
     }
 
     struct Titles {
-        static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
-        static let cancelAutoUpload = NSLocalizedString("Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
-        static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
-        static let duplicate = NSLocalizedString("Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
-        static let publish = NSLocalizedString("Publish Now", comment: "Label for an option that moves a publishes a post immediately")
-        static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
-        static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
-        static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
-        static let view = NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
-        static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
-        static let edit = NSLocalizedString("Edit", comment: "Edit the post.")
-        static let share = NSLocalizedString("Share", comment: "Share the post.")
+        static let cancel = AppLocalizedString("Cancel", comment: "Dismiss the post action sheet")
+        static let cancelAutoUpload = AppLocalizedString("Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
+        static let stats = AppLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
+        static let duplicate = AppLocalizedString("Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
+        static let publish = AppLocalizedString("Publish Now", comment: "Label for an option that moves a publishes a post immediately")
+        static let draft = AppLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
+        static let delete = AppLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
+        static let trash = AppLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
+        static let view = AppLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
+        static let retry = AppLocalizedString("Retry", comment: "Retry uploading the post.")
+        static let edit = AppLocalizedString("Edit", comment: "Edit the post.")
+        static let share = AppLocalizedString("Share", comment: "Share the post.")
     }
 }

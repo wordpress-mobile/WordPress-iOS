@@ -25,7 +25,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         super.viewDidLoad()
 
         // Setup tableViewController
-        title = NSLocalizedString("Language", comment: "Title for the Language Picker Screen")
+        title = AppLocalizedString("Language", comment: "Title for the Language Picker Screen")
         clearsSelectionOnViewWillAppear = false
 
         // Setup tableView
@@ -82,7 +82,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     // MARK: - Private Methods
     fileprivate func configureTableViewCell(_ cell: UITableViewCell) {
         let languageId = blog.settings!.languageID.intValue
-        cell.textLabel?.text = NSLocalizedString("Language", comment: "Language of the current blog")
+        cell.textLabel?.text = AppLocalizedString("Language", comment: "Language of the current blog")
         cell.detailTextLabel?.text = languageDatabase.nameForLanguageWithId(languageId)
     }
 
@@ -90,7 +90,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         let selectedLanguageId = blog.settings?.languageID.intValue
         let selector = LanguageSelectorViewController(selected: selectedLanguageId)
         selector.delegate = self
-        selector.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
+        selector.title = AppLocalizedString("Site Language", comment: "Title for the Language Picker View")
         navigationController?.pushViewController(selector, animated: true)
     }
 
@@ -103,7 +103,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
 
     // MARK: - Private Constants
     fileprivate let reuseIdentifier = "reuseIdentifier"
-    fileprivate let footerText = NSLocalizedString("The language in which this site is primarily written.",
+    fileprivate let footerText = AppLocalizedString("The language in which this site is primarily written.",
                                                 comment: "Footer Text displayed in Blog Language Settings View")
 
     // MARK: - Private Properties

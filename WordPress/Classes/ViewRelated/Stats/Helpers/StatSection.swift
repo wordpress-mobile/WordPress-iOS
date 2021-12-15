@@ -305,92 +305,92 @@
     // MARK: String Structs
 
     struct InsightsHeaders {
-        static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
-        static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
-        static let mostPopularTime = NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
-        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
-        static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
-        static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
-        static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
-        static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
-        static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
-        static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
-        static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
-        static let addCard = NSLocalizedString("Add stats card", comment: "Label for action to add a new Insight.")
+        static let latestPostSummary = AppLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
+        static let allTimeStats = AppLocalizedString("All-Time", comment: "Insights 'All-Time' header")
+        static let mostPopularTime = AppLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
+        static let followerTotals = AppLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
+        static let publicize = AppLocalizedString("Publicize", comment: "Insights 'Publicize' header")
+        static let todaysStats = AppLocalizedString("Today", comment: "Insights 'Today' header")
+        static let postingActivity = AppLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
+        static let comments = AppLocalizedString("Comments", comment: "Insights 'Comments' header")
+        static let followers = AppLocalizedString("Followers", comment: "Insights 'Followers' header")
+        static let tagsAndCategories = AppLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
+        static let annualSiteStats = AppLocalizedString("This Year", comment: "Insights 'This Year' header")
+        static let addCard = AppLocalizedString("Add stats card", comment: "Label for action to add a new Insight.")
     }
 
     struct DetailsTitles {
-        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'This Year' details view header")
+        static let annualSiteStats = AppLocalizedString("Annual Site Stats", comment: "Insights 'This Year' details view header")
     }
 
     struct InsightManagementTitles {
-        static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights Management 'Today's Stats' title")
+        static let todaysStats = AppLocalizedString("Today's Stats", comment: "Insights Management 'Today's Stats' title")
     }
 
     struct PeriodHeaders {
-        static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
-        static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
-        static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
-        static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
-        static let countries = NSLocalizedString("Countries", comment: "Period Stats 'Countries' header")
-        static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
-        static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
-        static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
-        static let fileDownloads = NSLocalizedString("File Downloads", comment: "Period Stats 'File Downloads' header")
+        static let postsAndPages = AppLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let referrers = AppLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
+        static let clicks = AppLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
+        static let authors = AppLocalizedString("Authors", comment: "Period Stats 'Authors' header")
+        static let countries = AppLocalizedString("Countries", comment: "Period Stats 'Countries' header")
+        static let searchTerms = AppLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
+        static let published = AppLocalizedString("Published", comment: "Period Stats 'Published' header")
+        static let videos = AppLocalizedString("Videos", comment: "Period Stats 'Videos' header")
+        static let fileDownloads = AppLocalizedString("File Downloads", comment: "Period Stats 'File Downloads' header")
     }
 
     struct PostStatsHeaders {
-        static let recentWeeks = NSLocalizedString("Recent Weeks", comment: "Post Stats recent weeks header.")
-        static let monthsAndYears = NSLocalizedString("Months and Years", comment: "Post Stats months and years header.")
-        static let averageViewsPerDay = NSLocalizedString("Avg. Views Per Day", comment: "Post Stats average views per day header.")
+        static let recentWeeks = AppLocalizedString("Recent Weeks", comment: "Post Stats recent weeks header.")
+        static let monthsAndYears = AppLocalizedString("Months and Years", comment: "Post Stats months and years header.")
+        static let averageViewsPerDay = AppLocalizedString("Avg. Views Per Day", comment: "Post Stats average views per day header.")
     }
 
     struct ItemSubtitles {
-        static let author = NSLocalizedString("Author", comment: "Label for list of stats by content author.")
-        static let title = NSLocalizedString("Title", comment: "Label for list of stats by content title.")
-        static let service = NSLocalizedString("Service", comment: "Label for connected service in Publicize stat.")
-        static let follower = NSLocalizedString("Follower", comment: "Label for list of followers.")
-        static let referrer = NSLocalizedString("Referrer", comment: "Label for link title in Referrers stat.")
-        static let link = NSLocalizedString("Link", comment: "Label for link title in Clicks stat.")
-        static let country = NSLocalizedString("Country", comment: "Label for list of countries.")
-        static let searchTerm = NSLocalizedString("Search Term", comment: "Label for list of search term")
-        static let period = NSLocalizedString("Period", comment: "Label for date periods.")
-        static let file = NSLocalizedString("File", comment: "Label for list of file downloads.")
+        static let author = AppLocalizedString("Author", comment: "Label for list of stats by content author.")
+        static let title = AppLocalizedString("Title", comment: "Label for list of stats by content title.")
+        static let service = AppLocalizedString("Service", comment: "Label for connected service in Publicize stat.")
+        static let follower = AppLocalizedString("Follower", comment: "Label for list of followers.")
+        static let referrer = AppLocalizedString("Referrer", comment: "Label for link title in Referrers stat.")
+        static let link = AppLocalizedString("Link", comment: "Label for link title in Clicks stat.")
+        static let country = AppLocalizedString("Country", comment: "Label for list of countries.")
+        static let searchTerm = AppLocalizedString("Search Term", comment: "Label for list of search term")
+        static let period = AppLocalizedString("Period", comment: "Label for date periods.")
+        static let file = AppLocalizedString("File", comment: "Label for list of file downloads.")
     }
 
     struct DataSubtitles {
-        static let comments = NSLocalizedString("Comments", comment: "Label for number of comments.")
-        static let views = NSLocalizedString("Views", comment: "Label for number of views.")
-        static let followers = NSLocalizedString("Followers", comment: "Label for number of followers.")
-        static let since = NSLocalizedString("Since", comment: "Label for time period in list of followers.")
-        static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
-        static let downloads = NSLocalizedString("Downloads", comment: "Label for number of file downloads.")
+        static let comments = AppLocalizedString("Comments", comment: "Label for number of comments.")
+        static let views = AppLocalizedString("Views", comment: "Label for number of views.")
+        static let followers = AppLocalizedString("Followers", comment: "Label for number of followers.")
+        static let since = AppLocalizedString("Since", comment: "Label for time period in list of followers.")
+        static let clicks = AppLocalizedString("Clicks", comment: "Label for number of clicks.")
+        static let downloads = AppLocalizedString("Downloads", comment: "Label for number of file downloads.")
     }
 
     struct TabTitles {
-        static let commentsAuthors = NSLocalizedString("Authors", comment: "Label for comments by author")
-        static let commentsPosts = NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
-        static let followersWordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
-        static let followersEmail = NSLocalizedString("Email", comment: "Label for email followers")
-        static let overviewViews = NSLocalizedString("Views", comment: "Label for Period Overview views")
-        static let overviewVisitors = NSLocalizedString("Visitors", comment: "Label for Period Overview visitors")
-        static let overviewLikes = NSLocalizedString("Likes", comment: "Label for Period Overview likes")
-        static let overviewComments = NSLocalizedString("Comments", comment: "Label for Period Overview comments")
+        static let commentsAuthors = AppLocalizedString("Authors", comment: "Label for comments by author")
+        static let commentsPosts = AppLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
+        static let followersWordPress = AppLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
+        static let followersEmail = AppLocalizedString("Email", comment: "Label for email followers")
+        static let overviewViews = AppLocalizedString("Views", comment: "Label for Period Overview views")
+        static let overviewVisitors = AppLocalizedString("Visitors", comment: "Label for Period Overview visitors")
+        static let overviewLikes = AppLocalizedString("Likes", comment: "Label for Period Overview likes")
+        static let overviewComments = AppLocalizedString("Comments", comment: "Label for Period Overview comments")
     }
 
     struct TabAccessibilityHints {
-        static let overviewViews = NSLocalizedString("Updates the bar chart to show views.", comment: "Accessibility hint for the Views button in Stats Overview.")
-        static let overviewVisitors = NSLocalizedString("Updates the bar chart to show visitors.", comment: "Accessibility hint for the Visitors button in Stats Overview.")
-        static let overviewLikes = NSLocalizedString("Updates the bar chart to show likes.", comment: "Accessibility hint for the Likes button in Stats Overview.")
-        static let overviewComments = NSLocalizedString("Updates the bar chart to show comments.", comment: "Accessibility hint for the Comments button in Stats Overview.")
+        static let overviewViews = AppLocalizedString("Updates the bar chart to show views.", comment: "Accessibility hint for the Views button in Stats Overview.")
+        static let overviewVisitors = AppLocalizedString("Updates the bar chart to show visitors.", comment: "Accessibility hint for the Visitors button in Stats Overview.")
+        static let overviewLikes = AppLocalizedString("Updates the bar chart to show likes.", comment: "Accessibility hint for the Likes button in Stats Overview.")
+        static let overviewComments = AppLocalizedString("Updates the bar chart to show comments.", comment: "Accessibility hint for the Comments button in Stats Overview.")
     }
 
     struct TotalFollowers {
-        static let wordPress = NSLocalizedString("Total WordPress.com Followers: %@", comment: "Label displaying total number of WordPress.com followers. %@ is the total.")
-        static let email = NSLocalizedString("Total Email Followers: %@", comment: "Label displaying total number of Email followers. %@ is the total.")
+        static let wordPress = AppLocalizedString("Total WordPress.com Followers: %@", comment: "Label displaying total number of WordPress.com followers. %@ is the total.")
+        static let email = AppLocalizedString("Total Email Followers: %@", comment: "Label displaying total number of Email followers. %@ is the total.")
     }
 
-    static let noPostTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
+    static let noPostTitle = AppLocalizedString("(No Title)", comment: "Empty Post Title")
 
     // MARK: - Image Sizes
 
@@ -405,12 +405,12 @@
 // MARK: - Strings specific to Annual Site Stats
 
 struct AnnualSiteStats {
-    static let year = NSLocalizedString("Year", comment: "'This Year' label for the the year.")
-    static let totalPosts = NSLocalizedString("Total Posts", comment: "'This Year' label for the total number of posts.")
-    static let totalComments = NSLocalizedString("Total Comments", comment: "'This Year' label for total number of comments.")
-    static let totalLikes = NSLocalizedString("Total Likes", comment: "'This Year' label for total number of likes.")
-    static let totalWords = NSLocalizedString("Total Words", comment: "'This Year' label for total number of words.")
-    static let commentsPerPost = NSLocalizedString("Avg Comments / Post", comment: "'This Year' label for average comments per post.")
-    static let likesPerPost = NSLocalizedString("Avg Likes / Post", comment: "'This Year' label for average likes per post.")
-    static let wordsPerPost = NSLocalizedString("Avg Words / Post", comment: "'This Year' label for average words per post.")
+    static let year = AppLocalizedString("Year", comment: "'This Year' label for the the year.")
+    static let totalPosts = AppLocalizedString("Total Posts", comment: "'This Year' label for the total number of posts.")
+    static let totalComments = AppLocalizedString("Total Comments", comment: "'This Year' label for total number of comments.")
+    static let totalLikes = AppLocalizedString("Total Likes", comment: "'This Year' label for total number of likes.")
+    static let totalWords = AppLocalizedString("Total Words", comment: "'This Year' label for total number of words.")
+    static let commentsPerPost = AppLocalizedString("Avg Comments / Post", comment: "'This Year' label for average comments per post.")
+    static let likesPerPost = AppLocalizedString("Avg Likes / Post", comment: "'This Year' label for average likes per post.")
+    static let wordsPerPost = AppLocalizedString("Avg Words / Post", comment: "'This Year' label for average words per post.")
 }

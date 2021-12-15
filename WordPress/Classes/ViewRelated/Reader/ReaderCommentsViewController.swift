@@ -26,13 +26,13 @@ import WordPressShared
     func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
         switch (action, success) {
         case (.enableNotification, true):
-            return NSLocalizedString("In-app notifications enabled", comment: "The app successfully enabled notifications for the subscription")
+            return AppLocalizedString("In-app notifications enabled", comment: "The app successfully enabled notifications for the subscription")
         case (.enableNotification, false):
-            return NSLocalizedString("Could not enable notifications", comment: "The app failed to enable notifications for the subscription")
+            return AppLocalizedString("Could not enable notifications", comment: "The app failed to enable notifications for the subscription")
         case (.disableNotification, true):
-            return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
+            return AppLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
         case (.disableNotification, false):
-            return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
+            return AppLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
         }
     }
 
@@ -328,18 +328,18 @@ private extension ReaderCommentsViewController {
 // MARK: - Localization
 
 private extension String {
-    static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
+    static let authorBadgeText = AppLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
                                                    + "Shown when the comment is written by the post author.")
-    static let editCommentFailureNoticeText = NSLocalizedString("There has been an unexpected error while editing the comment",
+    static let editCommentFailureNoticeText = AppLocalizedString("There has been an unexpected error while editing the comment",
                                                                 comment: "Error displayed if a comment fails to get updated")
 
     // moderation messages
-    static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
-    static let pendingFailed = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
-    static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
-    static let spamFailed = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
-    static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
-    static let trashFailed = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
+    static let pendingSuccess = AppLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
+    static let pendingFailed = AppLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
+    static let spamSuccess = AppLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
+    static let spamFailed = AppLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
+    static let trashSuccess = AppLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
+    static let trashFailed = AppLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
 }
 
 // MARK: - Reader Comment Menu
@@ -355,15 +355,15 @@ enum ReaderCommentMenu {
     var title: String {
         switch self {
         case .unapprove:
-            return NSLocalizedString("Unapprove", comment: "Unapproves a comment")
+            return AppLocalizedString("Unapprove", comment: "Unapproves a comment")
         case .spam:
-            return NSLocalizedString("Mark as Spam", comment: "Marks comment as spam")
+            return AppLocalizedString("Mark as Spam", comment: "Marks comment as spam")
         case .trash:
-            return NSLocalizedString("Move to Trash", comment: "Trashes the comment")
+            return AppLocalizedString("Move to Trash", comment: "Trashes the comment")
         case .edit:
-            return NSLocalizedString("Edit", comment: "Edits the comment")
+            return AppLocalizedString("Edit", comment: "Edits the comment")
         case .share:
-            return NSLocalizedString("Share", comment: "Shares the comment URL")
+            return AppLocalizedString("Share", comment: "Shares the comment URL")
         }
     }
 
