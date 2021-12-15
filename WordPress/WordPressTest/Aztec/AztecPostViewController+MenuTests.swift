@@ -53,7 +53,7 @@ class AztecPostViewController_MenuTests: XCTestCase {
 
             // Assert
             expect(alertController.actions.contains(where: { action in
-                action.title == "Switch to block editor"
+                action.title == i18n("Switch to block editor")
             })).to(beTrue())
 
             exp.fulfill()
