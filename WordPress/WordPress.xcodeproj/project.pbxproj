@@ -141,6 +141,7 @@
 		092C3800275E718000BBBDD9 /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		092C3801275E718100BBBDD9 /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		092C3802275E718100BBBDD9 /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
+		096AB476276A83BC00285F55 /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8576275E76FE004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8577275E9765004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		098B8578275FF975004D299F /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
@@ -18549,6 +18550,7 @@
 				7335AC6D21220F0F0012EF2D /* FormattableUserContent.swift in Sources */,
 				7335AC6221220E690012EF2D /* FormattableContentFactory.swift in Sources */,
 				433ADC1A223B2A7D00ED9DE1 /* TextBundleWrapper.m in Sources */,
+				096AB476276A83BC00285F55 /* AppLocalizedString.swift in Sources */,
 				7335AC6C21220F050012EF2D /* FormattableNoticonRange.swift in Sources */,
 				73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */,
 				73ACDF9C2118AF7000233AD4 /* SFHFKeychainUtils.m in Sources */,
