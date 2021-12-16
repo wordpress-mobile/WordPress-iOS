@@ -1245,6 +1245,20 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
+    // When backgrounding, the app takes a snapshot, which triggers a layout pass,
+    // which refreshes the cells, and for some reason triggers an assertion failure
+    // in NSMutableAttributedString(data:,options:,documentAttributes:) when
+    // the NSDocumentTypeDocumentAttribute option is NSHTMLTextDocumentType.
+    // *** Assertion failure in void _prepareForCAFlush(UIApplication *__strong)(),
+    // /BuildRoot/Library/Caches/com.apple.xbs/Sources/UIKit_Sim/UIKit-3600.6.21/UIApplication.m:2377
+    // *** Terminating app due to uncaught exception 'NSInternalInconsistencyException',
+    // reason: 'unexpected start state'
+    // This seems like a framework bug, so to avoid it skip configuring cells
+    // while the app is backgrounded.
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+        return;
+    }
+
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     if ([self newCommentThreadEnabled]) {
@@ -1306,19 +1320,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         };
     }
 
-    // When backgrounding, the app takes a snapshot, which triggers a layout pass,
-    // which refreshes the cells, and for some reason triggers an assertion failure
-    // in NSMutableAttributedString(data:,options:,documentAttributes:) when
-    // the NSDocumentTypeDocumentAttribute option is NSHTMLTextDocumentType.
-    // *** Assertion failure in void _prepareForCAFlush(UIApplication *__strong)(),
-    // /BuildRoot/Library/Caches/com.apple.xbs/Sources/UIKit_Sim/UIKit-3600.6.21/UIApplication.m:2377
-    // *** Terminating app due to uncaught exception 'NSInternalInconsistencyException',
-    // reason: 'unexpected start state'
-    // This seems like a framework bug, so to avoid it skip configuring cells
-    // while the app is backgrounded.
-    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
-        return;
-    }
+
 
     NSAttributedString *attrStr = [self cacheContentForComment:comment];
     [cell configureCellWithComment:comment attributedString:attrStr];
