@@ -789,6 +789,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)refreshAndSync
 {
+    [self refreshFollowButton];
     [self refreshPostHeaderView];
     [self refreshSubscriptionStatusIfNeeded];
     [self refreshReplyTextView];
