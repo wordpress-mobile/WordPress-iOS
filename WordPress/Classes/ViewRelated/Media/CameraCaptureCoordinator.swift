@@ -16,13 +16,13 @@ final class CameraCaptureCoordinator {
         capturePresenter!.presentCapture()
     }
 
-    private func processMediaCaptured(_ mediaInfo: NSDictionary, blog: Blog) {
+    private func processMediaCaptured(_ mediaInfo: NSDictionary, blog: Blog, origin: UIViewController? = nil) {
         let completionBlock: WPMediaAddedBlock = { media, error in
             if error != nil || media == nil {
                 print("Adding media failed: ", error?.localizedDescription ?? "no media")
                 return
             }
-            guard let media = media as? PHAsset else {
+            guard let media = media as? PHAsset, !media.exceedsVideoLimits(blog.hasPaidPlan) else {
                     return
             }
 
