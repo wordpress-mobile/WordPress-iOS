@@ -108,8 +108,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
 
     private func loadCustomStyles(named name: String, with argument: String? = nil) -> WKUserScript? {
         do {
-            let source = SourceFile(name: name, type: .css)
-            return try "window.injectCss(`\(source.getContent())`)".toJsScript()
+            return try SourceFile(name: name, type: .css).jsScript(with: argument)
         } catch {
             assertionFailure("Failed to load `\(name)` CSS script for Unsupported Block Editor: \(error)")
             return nil
