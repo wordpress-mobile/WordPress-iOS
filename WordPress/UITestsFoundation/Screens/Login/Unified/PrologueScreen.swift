@@ -28,10 +28,10 @@ public class PrologueScreen: ScreenObject {
         return try GetStartedScreen()
     }
 
-    public func selectSiteAddress() -> LoginSiteAddressScreen {
+    public func selectSiteAddress() throws -> LoginSiteAddressScreen {
         siteAddressButton.tap()
 
-        return LoginSiteAddressScreen()
+        return try LoginSiteAddressScreen()
     }
 
     public static func isLoaded(app: XCUIApplication = XCUIApplication()) -> Bool {

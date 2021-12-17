@@ -79,7 +79,7 @@ public class EditorPostSettings: ScreenObject {
 
     /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
     public func closePostSettings() {
-        navBackButton.tap()
+        navigateBack()
     }
 
     public static func isLoaded() -> Bool {

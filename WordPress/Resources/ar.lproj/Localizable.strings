@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-29 16:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-05 04:15:05+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "%1$@ لإصلاح التهديدات.";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d تعليق";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d تعليقات";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "قم بمشاركة المقالات الجديدة تلقائيًا على شبكات التواصل الاجتماعي الخاصة بك لبدء لجلب ذلك الجمهور مباشرةً إلى موقعك.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "عائلة Automattic";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "تحديثات تلقائية";
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "التحقّق من إحصاءات موقعك";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "التحقُّق من عنوان موقعك";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "جاري التحقق من عمليات الشراء…";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "اختيار أيقونة تطبيق جديدة";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "اختيار موقع لفتحه.";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "اختيار قالب";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "اختيار وقت";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "اختيار أيقونة موقع فريدة";
 
 /* No comment provided by engineer. */
 "Choose audio" = "اختيار الصوت";
@@ -1627,13 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "مُنجَز: التحقّق من إحصاءات موقعك";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "مُنجَز: التحقّق من عنوان موقعك";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "مُنجَز: اختيار قالب";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "مُنجَز: اختيار أيقونة فريدة للموقع";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "مُنجَز: الاستمرار في إعداد الموقع";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "مُنجَز: مراجعة صفحات الموقع";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "مُنجَز: المشاركة عبر شبكات التواصل الاجتماعي";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "مُنجَز: مشاهدة موقعك";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "نسخ الرابط إلى التعليق";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "نسخ الرابط URL من الحافظة، %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "نسخ المكوِّن";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "مسودة";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "اكتب مسودّة مقالة ثم أنشرها.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -3212,7 +3212,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "من جهاز آخر";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "من الحافظة";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "من هذا الجهاز";
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "سيُحسّن Jetpack صورك ويوفِّرها من موقع الخادم الأقرب إلى زائريك. سيؤدي استخدام شبكة توصيل المحتوى العالمية إلى تعزيز سرعة التحميل في موقعك.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "انضم من أي مكان";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "الانضمام إلى محادثة: التعليق على المقالات من المدونات التي تتابعها.";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "اعرف المزيد...";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "تعرَّف على الأساسيات من خلال جولة سريعة.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "يسار";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "الأيقونات القديمة";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "الشؤون القانونية والمزيد";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "دعنا نساعدك";
@@ -5620,7 +5620,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "البدء السريع";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "قيّمنا";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "ضع تصنيفًا لنا على متجر التطبيقات";
@@ -6412,7 +6412,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "رابط المشاركة";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "مشاركة مع الأصدقاء";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "عرض المقالات ذات الصلة";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "خذني في جولة";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "معروض";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "تظهر في علامة تبويب متصفح زائرك وأماكن أخرى عبر الإنترنت.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "يظهر للعامة عندما تعلِّق على المدونات.";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "اجتماعي";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "المشاركة عبر شبكات التواصل الاجتماعي";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "تتضمن بعض المكوِّنات إعدادات إضافية. انقر على أيقونة الإعدادات الموجودة في أسفل يمين المكوِّن لعرض مزيد من الخيارات.";
@@ -6879,10 +6879,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "التبديل إلى مُحرر المكوّنات";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "تم التبديل إلى وضع HTML";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "تم التبديل إلى الوضع المرئي";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "التبديل إلى حجم الخط 1 في العنوان";
@@ -8129,7 +8129,7 @@ translators: Block name. %s: The localized block name */
 "View All" = "عرض الكل";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
+"View All Comments" = "عرض كل التعليقات";
 
 /* Button label for viewing a post */
 "View Post" = "مشاهدة المقالة";
@@ -8238,7 +8238,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "جاري الانتظار...";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "هل تريد بعض المساعدة بشأن إدارة هذا الموقع باستخدام التطبيق؟";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8699,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "صفحة الإضافة على WordPress.org";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "العمل معنا";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "تُظهر خريطة العالم المشاهدات حسب البلد.";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "يمكنك إعادة ترتيب المكوِّنات عن طريق النقر على مكوِّن، ثم النقر على الأسهم المتجهة إلى الأعلى والأسفل التي تظهر أسفل يسار المكوِّن لنقله فوق المكوِّنات الأخرى أو أسفلها.";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "يمكنك تبديل المواقع في أي وقت.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "يمكن تحديث هذا في أي وقت من خلال موقعي > إعدادات الموقع";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-02 13:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-07 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ko_KR */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "위협을 해결할 %1$@입니다.";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d개 댓글";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d개 댓글";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "자동으로 새 글을 소셜 미디어와 공유하여 해당 방문자를 사이트에 유치하기 시작합니다.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Automattic 회원";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "자동 업데이트";
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "사이트 통계 확인";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "사이트 제목 확인";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "구매 확인 중…";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "새 앱 아이콘 선택";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "개설할 사이트 선택";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "테마 선택";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "시간을 선택하세요.";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "고유한 사이트 아이콘 선택";
 
 /* No comment provided by engineer. */
 "Choose audio" = "오디오 선택";
@@ -1627,13 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "완료: 사이트 통계 확인";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "완료됨: 사이트 제목 확인";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "완료: 테마 선택";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "완료됨: 고유한 사이트 아이콘 선택";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "완료: 사이트 설정 진행";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "완료됨: 사이트 페이지 검토";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "완료됨: 소셜 공유";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "완료: 사이트 보기";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "댓글로 링크 복사";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "클립보드에서 URL 복사, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "블록 복사하기";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "임시 글";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "임시글을 작성하여 글을 발행하세요.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -3212,7 +3212,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "다른 기기에서";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "클립보드에서";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "이 기기에서";
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "젯팩은 회원님의 이미지를 최적화하며 방문자에게 가장 가까운 서버 위치에서 이미지를 제공합니다. 글로벌 콘텐츠 제공 네트워크를 사용하면 사이트의 로드 속도가 향상됩니다.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "어디서나 참여";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "대화 참여: 팔로우하는 블로그의 글에 댓글을 달아보세요.";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "더 알아보기...";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "간단한 연습을 통해 기본 사항을 알아보세요.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "좌측";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "기존 아이콘";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "법적 고지 사항 및 기타";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "지원";
@@ -5620,7 +5620,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "퀵 스타트";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "평가하기";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "App Store에서 워드프레스닷컴 평가";
@@ -6412,7 +6412,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "공유 링크";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "친구와 공유";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "관련 글 표시";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "주변 보여주기";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "표시됨";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "방문자의 브라우저 탭과 기타 온라인 위치에 표시됩니다.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "블로그에 댓글을 달 때 공개됩니다.";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "소셜";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "소셜 공유";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "일부 블록에는 추가 설정이 있습니다. 블록의 오른쪽 하단에 있는 설정 아이콘을 눌러 추가 옵션을 봅니다.";
@@ -6879,10 +6879,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "블록 편집기로 전환";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "HTML 모드로 전환됨";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "비주얼 모드로 전환됨";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "제목 1 글꼴 크기로 전환";
@@ -8129,7 +8129,7 @@ translators: Block name. %s: The localized block name */
 "View All" = "모두 보기";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
+"View All Comments" = "모든 댓글 보기";
 
 /* Button label for viewing a post */
 "View Post" = "글 보기";
@@ -8238,7 +8238,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "기다리는 중...";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "앱으로 이 사이트를 관리하는 도움말이 조금 필요하신가요?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8699,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "WordPress.org 플러그인 페이지";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "워드프레스닷컴 사용";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "국가별 조회 수가 표시된 세계 지도";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "블록을 누른 다음에 블록의 왼쪽 하단에 표시되는 위쪽 및 아래쪽 화살표를 눌러 다른 블록 위쪽 또는 아래쪽으로 이동하면서 블록을 다시 정렬할 수 있습니다.";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "언제든지 사이트를 전환할 수 있습니다.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "내 사이트 > 사이트 설정에서 언제든지 업데이트할 수 있습니다.";

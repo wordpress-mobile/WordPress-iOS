@@ -21,6 +21,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case aboutScreen
     case newCommentThread
     case postDetailsComments
+    case commentThreadModerationMenu
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -66,9 +67,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .aboutScreen:
             return true
         case .newCommentThread:
-            return false
+            return true
         case .postDetailsComments:
-            return BuildConfiguration.current == .localDeveloper
+            return true
+        case .commentThreadModerationMenu:
+            return false
         }
     }
 
@@ -133,6 +136,8 @@ extension FeatureFlag {
             return "New Comment Thread"
         case .postDetailsComments:
             return "Post Details Comments"
+        case .commentThreadModerationMenu:
+            return "Comment Thread Moderation Menu"
         }
     }
 

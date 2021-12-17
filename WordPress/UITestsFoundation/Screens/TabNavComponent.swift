@@ -48,12 +48,12 @@ public class TabNavComponent: ScreenObject {
         return try MySiteScreen()
     }
 
-    public func gotoAztecEditorScreen() throws -> AztecEditorScreen {
+    public func goToAztecEditorScreen() throws -> AztecEditorScreen {
         let mySiteScreen = try goToMySiteScreen()
         let actionSheet = try mySiteScreen.gotoCreateSheet()
         actionSheet.goToBlogPost()
 
-        return AztecEditorScreen(mode: .rich)
+        return try AztecEditorScreen(mode: .rich)
     }
 
     public func gotoBlockEditorScreen() throws -> BlockEditorScreen {

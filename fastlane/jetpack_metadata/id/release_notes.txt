@@ -1,0 +1,14 @@
+Kabar baik, kami telah memperbaiki masalah crash aplikasi yang disebabkan pengunggahan gambar saat offline, menghapus media, atau melihat detail pemberitahuan "Suka".
+
+Kami melakukan perubahan besar pada editor blok sehingga Anda bisa tetap tenang dan terus memposkan:
+
+- Ketika Anda membuka pengaturan untuk blok Tombol atau Gambar yang ditautkan ke sebuah URL, editor tidak akan lagi mengisi URL secara otomatis dari papan klip Anda. Sekarang Anda akan melihat saran "Tautkan Ke" sehingga Anda bisa menggunakan URL papan klip atau memasukkan URL yang berbeda.
+- Membuat blok Galeri akan secara otomatis membuka pilihan media perangkat sehingga memudahkan Anda untuk menambahkan gambar.
+- Menambahkan blok baru? Jika bahasa perangkat diatur ke bahasa selain Inggris, sekarang tab pada menu penyisip akan mencocokkan dengan bahasa yang Anda tetapkan.
+- Ketika menggunakan blok Sematan, Anda tidak akan melihat tindakan "Edit" pada bilah peralatan. Sekarang Anda bisa mengubah URL dengan membuka Pengaturan Blok.
+- Pada editor pos, mengalihkan mode HTML ke mode Visual akan memunculkan pemberitahuan singkat tentang peralihan tersebut.
+- Anda mungkin akan melihat ukuran font berubah dengan sendirinya pada blok Media dan Teks. Kami telah menghapus bug penyebabnya.
+
+Baru menggunakan WordPress? Jangan khawatir. Proses login kami mempermudah Anda membuat dan mulai mengelola situs.
+
+Kami juga menambahkan layar Tentang baru sehingga Anda dapat menilai dan membagikan aplikasi (mohon bantuannya), mengunjungi profil dan blog Twitter kami, melihat aplikasi lain dari kami, dan masih banyak lainnya.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 09:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-08 16:01:04+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "%1$@以修正威脅。";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d 則留言";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d 則留言";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -952,7 +952,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "自動分享新文章至社群媒體，將讀者群導向你的網站。";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Automattic 系列";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
@@ -1362,7 +1362,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "檢視網站統計資料";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "確認網站標題";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "正在確認購買項目…";
@@ -1398,7 +1398,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "選擇新的應用程式圖示";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "選擇要開啟的網站。";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "選擇佈景主題";
@@ -1407,7 +1407,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "選擇時間";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "選擇專屬網站圖示";
 
 /* No comment provided by engineer. */
 "Choose audio" = "選擇音樂";
@@ -1627,13 +1627,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "已完成：查看網站統計資料";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "完成：確認網站標題";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "已完成：選擇佈景主題";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "完成：選擇專屬網站圖示";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "已完成：繼續設定網站";
@@ -1657,7 +1657,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "已完成：檢閱網站頁面";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "完成：社交分享";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "已完成：檢視你的網站";
@@ -1810,7 +1810,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "將連結複製到留言";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "從剪貼簿複製 URL，%s";
 
 /* No comment provided by engineer. */
 "Copy block" = "複製區塊";
@@ -2496,7 +2496,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "草稿";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "撰寫草稿並發表文章。";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -3212,7 +3212,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "從其他裝置";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "從剪貼簿";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "從此裝置";
@@ -3799,7 +3799,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack 會最佳化你的圖片，並從與訪客距離最近的伺服器提供圖片。使用我們的全球內容傳遞網路可大幅提升網站的載入速度。";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "隨時隨地都能加入";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "加入討論：在關注的網誌文章上留言。";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "瞭解更多...";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "透過快速逐步解說瞭解基本須知。";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "靠左";
@@ -3877,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "舊版圖示";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "法律與其他";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "我們樂意協助";
@@ -5620,7 +5620,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "快速入門";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "為我們評分";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "在 App Store 中為我們評分";
@@ -6412,7 +6412,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "分享連結";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "與朋友分享";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6456,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "顯示相關文章";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "逐步說明";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6481,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "顯示";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "顯示於訪客瀏覽器分頁和其他線上位置。";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "當你在網誌中留言時會公開顯示。";
@@ -6645,7 +6645,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "社交";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "社群分享";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "有些區塊具有其他設定。 請點選區塊右下角的設定圖示以檢視更多選項。";
@@ -6879,10 +6879,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "切換至區塊編輯器";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "已切換至「HTML」模式";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "已切換至「視覺化」模式";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "切換至Heading 1文字大小";
@@ -8129,7 +8129,7 @@ translators: Block name. %s: The localized block name */
 "View All" = "檢視全部";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
+"View All Comments" = "檢視所有留言";
 
 /* Button label for viewing a post */
 "View Post" = "查看文章";
@@ -8238,7 +8238,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "等待中…";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "需要協助你透過應用程式管理此網站嗎？";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8699,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "WordPress.org 外掛程式頁面";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "與我們合作";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "依國家顯示世界地圖的檢視次數。";
@@ -8791,7 +8791,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "若要重新排列區塊，請依序點選區塊和區塊左下角顯示的上下鍵，將其移動到其他區塊的上方或下方。";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "你可以隨時切換網站。";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "你可以隨時前往「我的網站」>「網站設定」更新此設定。";

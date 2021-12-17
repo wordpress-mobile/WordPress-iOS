@@ -42,18 +42,39 @@ extension Double {
             struct Cache {
                 static let units: [Unit] = {
                     var units: [Unit] = []
+                    // Note: using `AppLocalizedString` here (instead of `NSLocalizedString`) to ensure that strings
+                    // will be looked up from the app's _own_ `Localizable.strings` file, even when this file is used
+                    // as part of an _App Extension_ (especially our various stats Widgets which also use this file)
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."), accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
+                    units.append(Unit(
+                        abbreviationFormat: AppLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."),
+                        accessibilityLabelFormat: AppLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")
+                    ))
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."), accessibilityLabelFormat: NSLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")))
+                    units.append(Unit(
+                        abbreviationFormat: AppLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."),
+                        accessibilityLabelFormat: AppLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")
+                    ))
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@B", comment: "Label displaying value in billions. Ex: 66.6B."), accessibilityLabelFormat: NSLocalizedString("%@ billion", comment: "Accessibility label for value in billions. Ex: 66.6 billion.")))
+                    units.append(Unit(
+                        abbreviationFormat: AppLocalizedString("%@B", comment: "Label displaying value in billions. Ex: 66.6B."),
+                        accessibilityLabelFormat: AppLocalizedString("%@ billion", comment: "Accessibility label for value in billions. Ex: 66.6 billion.")
+                    ))
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@T", comment: "Label displaying value in trillions. Ex: 66.6T."), accessibilityLabelFormat: NSLocalizedString("%@ trillion", comment: "Accessibility label for value in trillions. Ex: 66.6 trillion.")))
+                    units.append(Unit(
+                        abbreviationFormat: AppLocalizedString("%@T", comment: "Label displaying value in trillions. Ex: 66.6T."),
+                        accessibilityLabelFormat: AppLocalizedString("%@ trillion", comment: "Accessibility label for value in trillions. Ex: 66.6 trillion.")
+                    ))
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@P", comment: "Label displaying value in quadrillions. Ex: 66.6P."), accessibilityLabelFormat: NSLocalizedString("%@ quadrillion", comment: "Accessibility label for value in quadrillion. Ex: 66.6 quadrillion.")))
+                    units.append(Unit(
+                        abbreviationFormat: AppLocalizedString("%@P", comment: "Label displaying value in quadrillions. Ex: 66.6P."),
+                        accessibilityLabelFormat: AppLocalizedString("%@ quadrillion", comment: "Accessibility label for value in quadrillion. Ex: 66.6 quadrillion.")
+                    ))
 
-                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@E", comment: "Label displaying value in quintillions. Ex: 66.6E."), accessibilityLabelFormat: NSLocalizedString("%@ quintillion", comment: "Accessibility label for value in quintillions. Ex: 66.6 quintillion.")))
+                    units.append(Unit(
+                        abbreviationFormat: AppLocalizedString("%@E", comment: "Label displaying value in quintillions. Ex: 66.6E."),
+                        accessibilityLabelFormat: AppLocalizedString("%@ quintillion", comment: "Accessibility label for value in quintillions. Ex: 66.6 quintillion.")
+                    ))
 
                     return units
                 }()
