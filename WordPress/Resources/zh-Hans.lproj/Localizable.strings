@@ -62,6 +62,9 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d 篇未读文章";
 
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
+
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s转换为%2$s";
 
@@ -549,9 +552,6 @@ translators: Block name. %s: The localized block name */
 "Add image, or avatar, to represent this new account." = "添加图像或头像以代表此新账户。";
 
 /* No comment provided by engineer. */
-"Add link" = "添加链接";
-
-/* No comment provided by engineer. */
 "Add link text" = "添加链接文字";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -910,7 +910,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "作者";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -1013,6 +1014,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "描述您最近文章的访客数的柱形图";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Be the first to comment";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "率先发表评论。";
@@ -1585,7 +1589,8 @@ translators: Block name. %s: The localized block name */
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "发表评论，开启与博主的联系。";
 
-/* Filters Comments Notifications
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1598,6 +1603,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "评论";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Comments are closed";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "评论于";
@@ -2324,9 +2332,6 @@ translators: Block name. %s: The localized block name */
    User's Display Name */
 "Display Name" = "显示名称";
 
-/* No comment provided by engineer. */
-"Display post date" = "显示文章日期";
-
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "在此处显示您站点在所有时间的统计信息。在 WordPress 应用程序的站点统计信息中进行配置。";
 
@@ -2338,6 +2343,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "再次尝试";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Document, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "文档：%@";
@@ -2464,6 +2472,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "轻点两次以选择图片";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Double tap to select default font size";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Double tap to select font size";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "轻点两下以选择选项";
 
@@ -2513,14 +2527,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "复制区块";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "编辑链接";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "每个区块都有各自的设置。要找到这些设置，请点击一个区块。区块的设置将出现在屏幕底部的工具栏上。";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2651,9 +2663,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Embed caption. */
 "Embed caption. Empty" = "嵌入说明文字。空";
-
-/* No comment provided by engineer. */
-"Embed link" = "嵌入链接";
 
 /* No comment provided by engineer. */
 "Embed media" = "嵌入媒体";
@@ -3181,6 +3190,9 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "关注标签。";
 
+/* No comment provided by engineer. */
+"Font Size" = "Font Size";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "足球";
 
@@ -3256,6 +3268,9 @@ translators: Block name. %s: The localized block name */
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "从种类繁多的预设页面布局中选择心仪的布局，开始打造自己的页面。 或者，您也可以从一个空白页面开始。";
+
+/* No comment provided by engineer. */
+"Get support" = "Get support";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
@@ -3546,9 +3561,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "图片说明。%s";
-
-/* No comment provided by engineer. */
-"Image settings" = "图像设置";
 
 /* Hint for image title on image settings. */
 "Image title" = "图像标题";
@@ -4157,6 +4169,9 @@ translators: Block name. %s: The localized block name */
 /* Marks a notification as unread */
 "Mark Unread" = "标为未读";
 
+/* Marks comment as spam */
+"Mark as Spam" = "Mark as Spam";
+
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "标记为置顶";
 
@@ -4279,9 +4294,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "最低高度";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "其他漏洞";
 
@@ -4320,6 +4332,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "WordPress.com 的更多内容";
+
+/* No comment provided by engineer. */
+"More support options" = "More support options";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "人气最高的时间";
@@ -4370,7 +4385,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "移动到回收站";
 
 /* No comment provided by engineer. */
@@ -4429,7 +4445,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "导航以自定义渐变";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "导航至选择%s";
 
 /* No comment provided by engineer. */
@@ -4575,6 +4592,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "没有评论";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "暂无评论";
 
@@ -5324,9 +5342,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "作者：%1$@，来源：%2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "文章内容设置";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "文章创建日期：%@";
 
@@ -5335,9 +5350,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "文章上传失败";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "文章元数据设置";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "已将文章移动到回收站。";
@@ -6285,8 +6297,12 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "所选媒体不可用。";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "已选择：%s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Selected: Default";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "选择其他菜单位置将放弃您对当前菜单所做的更改。是否确定要继续？";
@@ -6392,6 +6408,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "分享";
@@ -6732,9 +6749,6 @@ translators: Block name. %s: The localized block name */
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "排序方式";
-
-/* No comment provided by engineer. */
-"Sorting and filtering" = "排序和筛选";
 
 /* Opens the Github Repository Web
    Title of button that displays the App's source code information */
@@ -7107,6 +7121,9 @@ translators: Block name. %s: The localized block name */
 "The app can't recognize the server response. Please, check the configuration of your site." = "应用程序无法识别服务器响应，请检查您的站点配置。";
 
 /* No comment provided by engineer. */
+"The basics" = "The basics";
+
+/* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此服务器的证书无效。您所连接的服务器伪装成了“%@”，这可能会给您的凭证信息带来危险。\n\n仍然信任此证书吗？";
 
 /* Message informing the user that posts page cannot be edited */
@@ -7213,6 +7230,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "加载“通知设置”时出现问题";
+
+/* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "编辑您的评论时出现意外错误";
@@ -7820,7 +7840,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "无法将图像写入到文件";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "驳回";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -8128,15 +8149,15 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "查看所有";
 
-/* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "查看所有评论";
-
 /* Button label for viewing a post */
 "View Post" = "查看文章";
 
 /* Action title. Opens the user's site in an in-app browser
    The menu item to select during a guided tour. */
 "View Site" = "查看站点";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "View all comments";
 
 /* Displays More Rows */
 "View all…" = "查看所有…";
