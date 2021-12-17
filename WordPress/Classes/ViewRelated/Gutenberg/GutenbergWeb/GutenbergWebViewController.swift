@@ -82,7 +82,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         ].compactMap { $0 }
     }
 
-    override func onGutenbergReadyStyles() -> [WKUserScript] {
+    override func onGutenbergLoadStyles() -> [WKUserScript] {
         return [
             loadCustomStyles(named: "external-style-overrides")
         ].compactMap { $0 }
