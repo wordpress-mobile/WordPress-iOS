@@ -24953,7 +24953,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/automattic/AutomatticAbout-swift";
 			requirement = {
-				branch = "fix/rtl-layout";
+				branch = feature/haptics;
 				kind = branch;
 			};
 		};

@@ -5,8 +5,8 @@
         "package": "AutomatticAbout",
         "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
         "state": {
-          "branch": "fix/rtl-layout",
-          "revision": "b37c5a69562e2df2776f9248f753f9e482beb9f8",
+          "branch": "feature/haptics",
+          "revision": "70e8b1dde33eb1656cb6f60beee54eb79b76bb85",
           "version": null
         }
       },
