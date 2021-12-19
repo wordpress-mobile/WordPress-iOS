@@ -34,7 +34,7 @@ The core team monitors and reviews all pull requests. Depending on the changes, 
 
 We do our best to respond quickly to all pull requests. If you don't get a response from us after a week, feel free to reach out to us via Slack.
 
-Note: If you are part of the org and have the permissions on the repo, don't forget to assign yourself to the PR, and add the appropriate GitHub label and Milestone for the PR
+Note: If you are part of the org and have the permissions on the repo, don't forget to assign yourself to the PR, and add the appropriate GitHub label and Milestone for the PR. If you are not part of the org, you cannot directly merge changes to the main repo. In that case, you'll need to fork the repo before you can submit a PR.
 
 ### PR merge policy
 
