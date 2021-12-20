@@ -434,6 +434,9 @@ extension MediaLibraryViewController: NoResultsViewControllerDelegate {
     }
 }
 
+// MARK: - User messages for video limits allowances
+extension MediaLibraryViewController: VideoLimitsAlertPresenter {}
+
 // MARK: - WPMediaPickerViewControllerDelegate
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
@@ -460,19 +463,10 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         guard let assets = assets as? [PHAsset],
             assets.count > 0 else { return }
-        var shouldPresentFailedVideoUpload = false
+
         for asset in assets {
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            guard !asset.exceedsVideoLimits(blog.hasPaidPlan) else {
-                shouldPresentFailedVideoUpload = true
-                continue
-            }
-
             MediaCoordinator.shared.addMedia(from: asset, to: blog, analyticsInfo: info)
-        }
-
-        if shouldPresentFailedVideoUpload {
-            presentAlertForExceedingVideoLimits(on: self)
         }
     }
 
@@ -507,6 +501,11 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        if picker != self,
+           asset.exceedsFreeSitesAllowance(),
+           !blog.hasPaidPlan {
+            return true
+        }
         if let media = asset as? Media {
             return media.remoteStatus != .sync
         }
@@ -527,6 +526,13 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if picker != self,
+           asset.exceedsFreeSitesAllowance(),
+           !blog.hasPaidPlan {
+            presentVideoLimitExceededFromPicker(on: picker)
+            return false
+        }
+
         guard picker == self else {
             return true
         }
@@ -687,21 +693,5 @@ extension MediaLibraryViewController: TenorPickerDelegate {
             mediaCoordinator.addMedia(from: tenorMedia, to: blog, analyticsInfo: info)
             WPAnalytics.track(.tenorUploaded)
         }
-    }
-}
-
-
-// MARK: Helper for video upload limits
-private extension MediaLibraryViewController {
-
-    func presentAlertForExceedingVideoLimits(on viewController: UIViewController) {
-        let title = NSLocalizedString("Video limit exceeded", comment: "Title of an alert informing users that the video duration limit exceeds the allowed duration.")
-        let message = NSLocalizedString("Your current plan only allows to upload videos up to 5 minutes.", comment: "Message of an alert informing users that the video duration limit exceeds the allowed duration.")
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let dismiss = UIAlertAction(title: "Ok", style: .default) { _ in
-            alert.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(dismiss)
-        viewController.present(alert, animated: true, completion: nil)
     }
 }
