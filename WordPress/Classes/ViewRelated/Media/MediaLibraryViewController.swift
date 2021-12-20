@@ -501,9 +501,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        if picker != self,
-           asset.exceedsFreeSitesAllowance(),
-           !blog.hasPaidPlan {
+        if picker != self, !blog.canUploadAsset(asset) {
             return true
         }
         if let media = asset as? Media {
@@ -526,9 +524,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        if picker != self,
-           asset.exceedsFreeSitesAllowance(),
-           !blog.hasPaidPlan {
+        if picker != self, !blog.canUploadAsset(asset) {
             presentVideoLimitExceededFromPicker(on: picker)
             return false
         }

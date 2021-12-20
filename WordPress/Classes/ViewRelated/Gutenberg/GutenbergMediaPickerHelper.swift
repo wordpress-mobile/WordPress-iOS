@@ -121,8 +121,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker == cameraPicker,
            let asset = assets.first,
-           asset.exceedsFreeSitesAllowance(),
-           !post.blog.hasPaidPlan {
+           !post.blog.canUploadAsset(asset) {
                 presentVideoLimitExceededAfterCapture(on: self.context)
         } else {
             invokeMediaPickerCallback(asset: assets)
@@ -135,15 +134,12 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        picker !== cameraPicker &&
-        asset.exceedsFreeSitesAllowance() &&
-        !post.blog.hasPaidPlan
+        !post.blog.canUploadAsset(asset)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
         if picker !== cameraPicker,
-            asset.exceedsFreeSitesAllowance(),
-            !post.blog.hasPaidPlan {
+            !post.blog.canUploadAsset(asset) {
 
             presentVideoLimitExceededFromPicker(on: picker)
             return false

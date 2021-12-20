@@ -26,8 +26,7 @@ final class CameraCaptureCoordinator {
                 return
             }
             guard let media = media as? PHAsset,
-                    !media.exceedsFreeSitesAllowance(),
-                    !blog.hasPaidPlan else {
+                  blog.canUploadAsset(media) else {
                         if let origin = origin ?? self.origin {
                             self.presentVideoLimitExceededAfterCapture(on: origin)
                         }
