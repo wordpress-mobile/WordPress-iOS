@@ -119,11 +119,11 @@ extension GutenbergMediaPickerHelper: VideoLimitsAlertPresenter {}
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        if picker == self.cameraPicker,
+        if picker == cameraPicker,
            let asset = assets.first,
            asset.exceedsFreeSitesAllowance(),
-           !self.post.blog.hasPaidPlan {
-                self.presentVideoLimitExceededAfterCapture(on: self.context)
+           !post.blog.hasPaidPlan {
+                presentVideoLimitExceededAfterCapture(on: self.context)
         } else {
             invokeMediaPickerCallback(asset: assets)
             picker.dismiss(animated: true, completion: nil)
