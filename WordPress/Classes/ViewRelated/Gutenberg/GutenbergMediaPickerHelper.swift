@@ -134,7 +134,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        !post.blog.canUploadAsset(asset)
+        picker !== cameraPicker && !post.blog.canUploadAsset(asset)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
