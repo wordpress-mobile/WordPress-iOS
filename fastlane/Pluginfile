@@ -8,7 +8,14 @@ end
 
 # gem 'fastlane-plugin-wpmreleasetoolkit', '~> 2.1'
 # This comment avoids typing to switch to a development version for testing.
-gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'develop'
+# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', branch: 'trunk'
+#
+# We are in a special scenario in which `Gemfile.lock` points to a commit on
+# `develop`, but `develop` has been renamed into `trunk`. `trunk` has new
+# commits on since the lockfile was generated so, instead of updating the line
+# above to point to `trunk` and rebundling, I'm pointing to a specific commit
+# here.
+gem 'fastlane-plugin-wpmreleasetoolkit', git: 'git@github.com:wordpress-mobile/release-toolkit', ref: '31187cfd1e671a6f686466066b9deb67f864358c'
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '~> 1.8'
