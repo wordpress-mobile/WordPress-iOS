@@ -17,7 +17,7 @@ public class TagsComponent: ScreenObject {
     }
 
     func goBackToSettings() throws -> EditorPostSettings {
-        navBackButton.tap()
+        navigateBack()
 
         return try EditorPostSettings()
     }

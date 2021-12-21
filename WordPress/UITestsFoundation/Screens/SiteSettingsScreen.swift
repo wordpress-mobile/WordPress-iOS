@@ -34,7 +34,7 @@ public class SiteSettingsScreen: ScreenObject {
 
     public func goBackToMySite() throws -> MySiteScreen {
         if XCUIDevice.isPhone {
-            navBackButton.tap()
+            navigateBack()
         }
         return try MySiteScreen()
     }

@@ -1,5 +1,6 @@
 import ScreenObject
 import XCTest
+import XCUITestHelpers
 
 public class BlockEditorScreen: ScreenObject {
 
@@ -140,7 +141,7 @@ public class BlockEditorScreen: ScreenObject {
     public func dismissBlocksPickerIfNeeded() {
         // Determine whether the block picker is on screen using the visibility of the add block
         // button as a proxy
-        guard addBlockButton.isFullyVisibleOnScreen == false else { return }
+        guard addBlockButton.isFullyVisibleOnScreen() == false else { return }
 
         // Dismiss the block picker by swiping down
         app.swipeDown()
@@ -200,24 +201,5 @@ public class BlockEditorScreen: ScreenObject {
     public func closeBlockPicker() throws -> BlockEditorScreen {
         editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
         return try BlockEditorScreen()
-    }
-}
-
-// TODO: Move this to XCUITestHelpers or ScreenObject
-extension XCUIElement {
-
-    func waitFor(
-        predicateString: String,
-        timeout: TimeInterval = 10
-    ) -> XCTWaiter.Result {
-        XCTWaiter.wait(
-            for: [
-                XCTNSPredicateExpectation(
-                    predicate: NSPredicate(format: predicateString),
-                    object: self
-                )
-            ],
-            timeout: timeout
-        )
     }
 }
