@@ -530,6 +530,7 @@ private extension CommentDetailViewController {
             self?.updateComment()
         })
 
+        CommentAnalytics.trackCommentEditorOpened(comment: comment)
         let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
         navigationControllerToPresent.modalPresentationStyle = .fullScreen
         present(navigationControllerToPresent, animated: true)
