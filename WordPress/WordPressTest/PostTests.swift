@@ -323,11 +323,11 @@ class PostTests: XCTestCase {
 
         revision.status = .pending
         let pendingStatusDisplay = "\(Post.title(for: .pending))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), pendingStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", pendingStatusDisplay, local))
 
         revision.status = .publishPrivate
         let publishPrivateStatusDisplay = "\(Post.title(for: .publishPrivate))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), publishPrivateStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", publishPrivateStatusDisplay, local))
 
         revision.status = .publish
         XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
@@ -340,7 +340,7 @@ class PostTests: XCTestCase {
 
         revision.status = .deleted
         let deletedStatusDisplay = "\(Post.title(for: .deleted))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), deletedStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", deletedStatusDisplay, local))
     }
 
     func testThatHasLocalChangesWorks() {

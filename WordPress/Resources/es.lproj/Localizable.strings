@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-07 07:34:59+0000 */
+/* Translation-Revision-Date: 2021-12-17 08:35:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: es */
@@ -61,6 +61,9 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d entradas no vistas";
+
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s transformado a %2$s";
@@ -549,9 +552,6 @@ translators: Block name. %s: The localized block name */
 "Add image, or avatar, to represent this new account." = "Añade una imagen o avatar para representar a esta nueva cuenta.";
 
 /* No comment provided by engineer. */
-"Add link" = "Añadir enlace";
-
-/* No comment provided by engineer. */
 "Add link text" = "Añadir texto del enlace";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -910,7 +910,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Autor";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -1013,6 +1014,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Gráfico de barras que representa los visitantes de tu última entrada";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Sé el primero en comentar";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Sé el primero en escribir un comentario.";
@@ -1585,7 +1589,8 @@ translators: Block name. %s: The localized block name */
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Comenta para empezar a hacer conexiones.";
 
-/* Filters Comments Notifications
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1598,6 +1603,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Comentarios";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Los comentarios están cerrados";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Comentarios en";
@@ -2324,9 +2332,6 @@ translators: Block name. %s: The localized block name */
    User's Display Name */
 "Display Name" = "Nombre público";
 
-/* No comment provided by engineer. */
-"Display post date" = "Mostrar fecha de la entrada";
-
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Muestra aquí todas las estadísticas de tu sitio. Configúralo en la aplicación WordPress en las estadísticas de tu sitio.";
 
@@ -2338,6 +2343,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Volver a hacerlo";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Documento, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Documento: %@";
@@ -2464,6 +2472,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Toca dos veces para seleccionar una imagen";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Toca dos veces para seleccionar el tamaño de fuente por defecto";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Toca dos veces para seleccionar el tamaño de fuente";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Toca dos veces para seleccionar la opción";
 
@@ -2513,14 +2527,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Duplicar bloque";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDITAR ENLACE";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Cada bloque tiene sus propios ajustes. Para encontrarlos, toca en un bloque. Sus ajustes aparecerán en la barra de herramientas de la parte inferior de la pantalla.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2651,9 +2663,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Embed caption. */
 "Embed caption. Empty" = "Leyenda incrustada. Vacía";
-
-/* No comment provided by engineer. */
-"Embed link" = "Enlace incrustado";
 
 /* No comment provided by engineer. */
 "Embed media" = "Medio incrustado";
@@ -3181,6 +3190,9 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Sigue la etiqueta.";
 
+/* No comment provided by engineer. */
+"Font Size" = "Tamaño de la fuente";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Fútbol";
 
@@ -3256,6 +3268,9 @@ translators: Block name. %s: The localized block name */
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Empieza eligiendo entre una amplia variedad de diseños de página prefabricados. O simplemente empieza con una página en blanco.";
+
+/* No comment provided by engineer. */
+"Get support" = "Obtener soporte";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Pon la bola a rodar y aumenta las visitas compartiendo tu entrada.";
@@ -3546,9 +3561,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Leyenda de la imagen. %s";
-
-/* No comment provided by engineer. */
-"Image settings" = "Ajustes de imagen";
 
 /* Hint for image title on image settings. */
 "Image title" = "Título de la imagen";
@@ -4157,6 +4169,9 @@ translators: Block name. %s: The localized block name */
 /* Marks a notification as unread */
 "Mark Unread" = "Marcar como no leído";
 
+/* Marks comment as spam */
+"Mark as Spam" = "Marcar como spam";
+
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Marcar como fija";
 
@@ -4279,9 +4294,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Altura mínima";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Vulnerabilidad diversa";
 
@@ -4320,6 +4332,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Más en WordPress.com";
+
+/* No comment provided by engineer. */
+"More support options" = "Más opciones de soporte";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Lo más popular";
@@ -4370,7 +4385,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Mover a la papelera";
 
 /* No comment provided by engineer. */
@@ -4429,7 +4445,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navega para personalizar el degradado";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Navega para seleccionar %s";
 
 /* No comment provided by engineer. */
@@ -4575,6 +4592,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Sin comentarios";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "No hay comentarios";
 
@@ -5324,9 +5342,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Entrada de %1$@, desde %2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Ajustes de contenido de la entrada";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Entrada creada el %@";
 
@@ -5335,9 +5350,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Entrada que falló al subirse";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Ajustes de metadatos de entradas";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Se ha enviado la entrada a la papelera.";
@@ -6285,8 +6297,12 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "El elemento multimedia seleccionado no está disponible.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Selecionado: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Seleccionado: Por defecto";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Seleccionando una ubicación diferente para el menú perderás los cambios que has hecho al menú actual. ¿Estás seguro de que quieres continuar?";
@@ -6392,6 +6408,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Compartir";
@@ -6732,9 +6749,6 @@ translators: Block name. %s: The localized block name */
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Ordenar por";
-
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Orden y filtros";
 
 /* Opens the Github Repository Web
    Title of button that displays the App's source code information */
@@ -7107,6 +7121,9 @@ translators: Block name. %s: The localized block name */
 "The app can't recognize the server response. Please, check the configuration of your site." = "La aplicación no reconoce la respuesta del servidor. Comprueba la configuración de tu sitio.";
 
 /* No comment provided by engineer. */
+"The basics" = "Lo básico";
+
+/* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "El certificado para este servidor no es válido. Puede que estés conectando con un servidor que aparenta ser «%@», lo que podría poner en peligro tu información confidencial.\n\n¿Deseas confiar en el certificado de todos modos?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -7213,6 +7230,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "Ha ocurrido un problema al cargar tus ajustes de avisos";
+
+/* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "Ha habido un error inesperado al editar el comentario";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Se ha producido un error inesperado al editar tu comentario";
@@ -7820,7 +7840,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "No se ha podido poner la imagen en el archivo";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Rechazar";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -8128,15 +8149,15 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Ver todo";
 
-/* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "Ver todos los comentarios";
-
 /* Button label for viewing a post */
 "View Post" = "Ver entrada";
 
 /* Action title. Opens the user's site in an in-app browser
    The menu item to select during a guided tour. */
 "View Site" = "Ver sitio";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Ver todos los comentarios";
 
 /* Displays More Rows */
 "View all…" = "Ver todo…";

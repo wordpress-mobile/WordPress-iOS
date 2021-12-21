@@ -5,9 +5,9 @@
         "package": "AutomatticAbout",
         "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
         "state": {
-          "branch": "fix/rtl-layout",
-          "revision": "b37c5a69562e2df2776f9248f753f9e482beb9f8",
-          "version": null
+          "branch": null,
+          "revision": "d3e8b4d8133984d9ae20936a55e747d27661e2a1",
+          "version": "1.1.1"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
         "state": {
           "branch": null,
-          "revision": "3212ac32f0a58ea10604b5cf31fe5450f908ff65",
-          "version": "0.3.0"
+          "revision": "5179cb69d58b90761cc713bdee7740c4889d3295",
+          "version": "0.4.0"
         }
       }
     ]
