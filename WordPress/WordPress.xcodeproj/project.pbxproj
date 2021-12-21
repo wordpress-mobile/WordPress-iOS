@@ -479,6 +479,12 @@
 		3F1FD30D2548B0A80060C53A /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		3F2656A125AF4DFA0073A832 /* AppLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */; };
 		3F29EB7224042276005313DE /* MeViewController+UIViewControllerRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */; };
+		3F2ABE16277037A9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */; };
+		3F2ABE1827704EE2005D8916 /* WPMediaAsset+VideoLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE1727704EE2005D8916 /* WPMediaAsset+VideoLimits.swift */; };
+		3F2ABE1A2770EF3E005D8916 /* Blog+VideoLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE192770EF3E005D8916 /* Blog+VideoLimits.swift */; };
+		3F2ABE1B277118C4005D8916 /* Blog+VideoLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE192770EF3E005D8916 /* Blog+VideoLimits.swift */; };
+		3F2ABE1C277118C9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */; };
+		3F2ABE1D277118CC005D8916 /* WPMediaAsset+VideoLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2ABE1727704EE2005D8916 /* WPMediaAsset+VideoLimits.swift */; };
 		3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2F0C15256C6B2C003351C7 /* StatsWidgetsService.swift */; };
 		3F2F854026FAE9DC000FCDA5 /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		3F2F854226FAEA50000FCDA5 /* JetpackScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4104732639393700E90EBF /* JetpackScanScreen.swift */; };
@@ -5130,9 +5136,13 @@
 		3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+MeButtonTests.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
 		3F1FD31C2548B30D0060C53A /* WordPressStatsWidgets-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressStatsWidgets-Bridging-Header.h"; sourceTree = "<group>"; };
+		3F20FDF4276BF21000DA3CAD /* WordPressFlux */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = WordPressFlux; path = ../WordPressFlux; sourceTree = "<group>"; };
 		3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocalizedString.swift; sourceTree = "<group>"; };
 		3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 96.xcdatamodel"; sourceTree = "<group>"; };
 		3F29EB7124042276005313DE /* MeViewController+UIViewControllerRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MeViewController+UIViewControllerRestoration.swift"; sourceTree = "<group>"; };
+		3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLimitsAlertPresenter.swift; sourceTree = "<group>"; };
+		3F2ABE1727704EE2005D8916 /* WPMediaAsset+VideoLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPMediaAsset+VideoLimits.swift"; sourceTree = "<group>"; };
+		3F2ABE192770EF3E005D8916 /* Blog+VideoLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+VideoLimits.swift"; sourceTree = "<group>"; };
 		3F2F0C15256C6B2C003351C7 /* StatsWidgetsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsService.swift; sourceTree = "<group>"; };
 		3F3087C324EDB7040087B548 /* AnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementCell.swift; sourceTree = "<group>"; };
 		3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeNavigation.swift"; sourceTree = "<group>"; };
@@ -8043,6 +8053,7 @@
 		08F8CD281EBD22EF0049D0C0 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				3F2ABE192770EF3E005D8916 /* Blog+VideoLimits.swift */,
 				08B6E5191F036CAD00268F57 /* MediaFileManager.swift */,
 				08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */,
 				08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */,
@@ -8054,6 +8065,8 @@
 				7E729C27209A087200F76599 /* ImageLoader.swift */,
 				742B7F39209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift */,
 				B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */,
+				3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */,
+				3F2ABE1727704EE2005D8916 /* WPMediaAsset+VideoLimits.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -8482,6 +8495,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3F20FDF3276BF21000DA3CAD /* Packages */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -8929,6 +8943,14 @@
 				3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */,
 			);
 			name = ReaderPostActions;
+			sourceTree = "<group>";
+		};
+		3F20FDF3276BF21000DA3CAD /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				3F20FDF4276BF21000DA3CAD /* WordPressFlux */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		3F26569F25AF4DBF0073A832 /* Localization */ = {
@@ -17080,6 +17102,7 @@
 				F5AE440625DD0345003675F4 /* CameraHandler.swift in Sources */,
 				2F668B63255DD11400D0038A /* JetpackConnectionViewController.swift in Sources */,
 				B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */,
+				3F2ABE1A2770EF3E005D8916 /* Blog+VideoLimits.swift in Sources */,
 				8C6A22E425783D2000A79950 /* JetpackScanService.swift in Sources */,
 				F5E63129243BC8190088229D /* FilterSheetView.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
@@ -17617,6 +17640,7 @@
 				57D66B9A234BB206005A2D74 /* PostServiceRemoteFactory.swift in Sources */,
 				3FC8D19B244F43B500495820 /* ReaderTabItemsStore.swift in Sources */,
 				98EB126A20D2DC2500D2D5B5 /* NoResultsViewController+Model.swift in Sources */,
+				3F2ABE1827704EE2005D8916 /* WPMediaAsset+VideoLimits.swift in Sources */,
 				570265152298921800F2214C /* PostListTableViewHandler.swift in Sources */,
 				B5969E2220A49E86005E9DF1 /* UIAlertController+Helpers.swift in Sources */,
 				9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */,
@@ -17724,6 +17748,7 @@
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
 				F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */,
 				8B0732E9242BA1F000E7FBD3 /* PrepublishingHeaderView.swift in Sources */,
+				3F2ABE16277037A9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */,
 				173DF291274522A1007C64B5 /* AppAboutScreenConfiguration.swift in Sources */,
 				3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */,
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
@@ -19329,6 +19354,7 @@
 				FABB217A2602FC2C00C8785C /* FilterSheetView.swift in Sources */,
 				FABB217B2602FC2C00C8785C /* WPAddPostCategoryViewController.m in Sources */,
 				FABB217C2602FC2C00C8785C /* ReaderSearchTopic.swift in Sources */,
+				3F2ABE1B277118C4005D8916 /* Blog+VideoLimits.swift in Sources */,
 				FABB217D2602FC2C00C8785C /* WPMediaPicker+MediaPicker.swift in Sources */,
 				FABB217E2602FC2C00C8785C /* JetpackInstallError+Blocking.swift in Sources */,
 				FABB217F2602FC2C00C8785C /* QuickStartTourState.swift in Sources */,
@@ -19734,6 +19760,7 @@
 				FABB22E22602FC2C00C8785C /* MenuItemLinkViewController.m in Sources */,
 				FABB22E32602FC2C00C8785C /* PreviewWebKitViewController.swift in Sources */,
 				FABB22E42602FC2C00C8785C /* PeriodChart.swift in Sources */,
+				3F2ABE1C277118C9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */,
 				C7F7BE0726262B9A00CE547F /* AuthenticationHandler.swift in Sources */,
 				FABB22E52602FC2C00C8785C /* MediaHost.swift in Sources */,
 				FABB22E62602FC2C00C8785C /* MenuItemAbstractPostsViewController.m in Sources */,
@@ -20032,6 +20059,7 @@
 				FABB23F82602FC2C00C8785C /* ImmuTableViewController.swift in Sources */,
 				FABB23F92602FC2C00C8785C /* NullStockPhotosService.swift in Sources */,
 				FABB23FA2602FC2C00C8785C /* RevisionPreviewViewController.swift in Sources */,
+				3F2ABE1D277118CC005D8916 /* WPMediaAsset+VideoLimits.swift in Sources */,
 				FABB23FB2602FC2C00C8785C /* WPTabBarController+MeNavigation.swift in Sources */,
 				FABB23FC2602FC2C00C8785C /* SitePromptView.swift in Sources */,
 				FABB23FD2602FC2C00C8785C /* BaseRestoreCompleteViewController.swift in Sources */,

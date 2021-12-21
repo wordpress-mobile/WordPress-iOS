@@ -76,6 +76,7 @@ class GutenbergMediaPickerHelper: NSObject {
         mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
+        picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
         picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
@@ -109,15 +110,41 @@ class GutenbergMediaPickerHelper: NSObject {
     }
 }
 
+// MARK: - User messages for video limits allowances
+//
+extension GutenbergMediaPickerHelper: VideoLimitsAlertPresenter {}
+
+// MARK: - Picker Delegate
+//
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        invokeMediaPickerCallback(asset: assets)
-        picker.dismiss(animated: true, completion: nil)
+        if picker == cameraPicker,
+           let asset = assets.first,
+           !post.blog.canUploadAsset(asset) {
+                presentVideoLimitExceededAfterCapture(on: self.context)
+        } else {
+            invokeMediaPickerCallback(asset: assets)
+            picker.dismiss(animated: true, completion: nil)
+        }
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        picker !== cameraPicker && !post.blog.canUploadAsset(asset)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if picker !== cameraPicker,
+            !post.blog.canUploadAsset(asset) {
+
+            presentVideoLimitExceededFromPicker(on: picker)
+            return false
+        }
+        return true
     }
 
     fileprivate func invokeMediaPickerCallback(asset: [WPMediaAsset]?) {
