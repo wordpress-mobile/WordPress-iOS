@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-16 20:03:21+0000 */
+/* Translation-Revision-Date: 2021-12-19 17:22:39+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -7235,7 +7235,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "A apărut o problemă în timpul încărcării setărilor pentru notificări";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "A fost o eroare neașteptată în timpul editării comentariului";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "A fost o eroare neașteptată în timpul editării comentariului tău";
