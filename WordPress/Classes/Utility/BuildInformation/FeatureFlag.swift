@@ -62,7 +62,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             // NOTE: only applies to My Site > Comments.
             return true
         case .domains:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .followConversationViaNotifications:
             return true
         case .aboutScreen:
