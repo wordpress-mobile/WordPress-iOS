@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import Gridicons
 import WordPressAuthenticator
-
+import AutomatticAbout
 
 class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!

@@ -46,7 +46,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             controller.reloadReaderDiscoverNudgeFlow(at: indexPath)
         }
 
-        ReaderCommentAction().execute(post: post, origin: origin)
+        ReaderCommentAction().execute(post: post, origin: origin, source: .postCard)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {

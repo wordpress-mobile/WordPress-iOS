@@ -19,10 +19,15 @@ public class GetStartedScreen: ScreenObject {
         $0.buttons["authenticator-help-button"]
     }
 
+    private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Back"]
+    }
+
     var navBar: XCUIElement { navBarGetter(app) }
     public var emailTextField: XCUIElement { emailTextFieldGetter(app) }
     var continueButton: XCUIElement { continueButtonGetter(app) }
     var helpButton: XCUIElement { helpButtonGetter(app) }
+    var backButton: XCUIElement { backButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // Notice we are not checking for the continue button, because that's visible but not
@@ -37,12 +42,16 @@ public class GetStartedScreen: ScreenObject {
         )
     }
 
-    public func proceedWith(email: String) -> PasswordScreen {
+    public func proceedWith(email: String) throws -> PasswordScreen {
         emailTextField.tap()
         emailTextField.typeText(email)
         continueButton.tap()
 
-        return PasswordScreen()
+        return try PasswordScreen()
+    }
+
+    public func goBackToPrologue() {
+        backButton.tap()
     }
 
     public func selectHelp() throws -> SupportScreen {

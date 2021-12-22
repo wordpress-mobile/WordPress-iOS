@@ -24,7 +24,10 @@ final class QuickStartPromptViewController: UIViewController {
 
     /// Closure to be executed upon dismissal.
     ///
-    var onDismiss: ((Blog) -> Void)?
+    /// - Parameters:
+    ///   - Blog: the blog for which the prompt was dismissed
+    ///   - Bool: `true` if Quick Start should start, otherwise `false`
+    var onDismiss: ((Blog, Bool) -> Void)?
 
     // MARK: - Init
 
@@ -56,18 +59,26 @@ final class QuickStartPromptViewController: UIViewController {
     private func applyStyles() {
         siteTitleLabel.numberOfLines = 0
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        siteTitleLabel.adjustsFontForContentSizeCategory = true
+        siteTitleLabel.adjustsFontSizeToFitWidth = true
         siteTitleLabel.textColor = .text
 
         siteDescriptionLabel.numberOfLines = 0
         siteDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        siteDescriptionLabel.adjustsFontForContentSizeCategory = true
+        siteDescriptionLabel.adjustsFontSizeToFitWidth = true
         siteDescriptionLabel.textColor = .textSubtle
 
         promptTitleLabel.numberOfLines = 0
-        promptTitleLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
+        promptTitleLabel.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)
+        promptTitleLabel.adjustsFontForContentSizeCategory = true
+        promptTitleLabel.adjustsFontSizeToFitWidth = true
         promptTitleLabel.textColor = .text
 
         promptDescriptionLabel.numberOfLines = 0
-        promptDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        promptDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        promptDescriptionLabel.adjustsFontForContentSizeCategory = true
+        promptDescriptionLabel.adjustsFontSizeToFitWidth = true
         promptDescriptionLabel.textColor = .textSubtle
 
         showMeAroundButton.isPrimary = true
@@ -108,7 +119,7 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction private func showMeAroundButtonTapped(_ sender: Any) {
-        onDismiss?(blog)
+        onDismiss?(blog, true)
         dismiss(animated: true)
 
         WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
@@ -116,7 +127,7 @@ final class QuickStartPromptViewController: UIViewController {
 
     @IBAction private func noThanksButtonTapped(_ sender: Any) {
         quickStartSettings.setPromptWasDismissed(true, for: blog)
-        onDismiss?(blog)
+        onDismiss?(blog, false)
         dismiss(animated: true)
 
         WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "neutral"])

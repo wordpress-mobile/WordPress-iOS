@@ -12,8 +12,8 @@ enum PostType: String, CaseIterable {
 
     var title: String {
         switch self {
-        case .post: return NSLocalizedString("Post", comment: "Title shown when selecting a post type of Post from the Share Extension.")
-        case .page: return NSLocalizedString("Page", comment: "Title shown when selecting a post type of Page from the Share Extension.")
+        case .post: return AppLocalizedString("Post", comment: "Title shown when selecting a post type of Post from the Share Extension.")
+        case .page: return AppLocalizedString("Page", comment: "Title shown when selecting a post type of Page from the Share Extension.")
         }
     }
 }

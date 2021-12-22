@@ -162,7 +162,3 @@ langs.each do |code,local|
   # Clean up after ourselves
   FileUtils.rm_f backup_destination
 end
-
-extract_framework_translations_script_path = File.join(script_root, 'extract-framework-translations.swift')
-
-system extract_framework_translations_script_path if strings_filter.empty? 

@@ -1,27 +1,20 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let passwordTextField = "Password"
-    static let continueButton = "Continue Button"
-    static let errorLabel = "Password Error"
-}
+public class PasswordScreen: ScreenObject {
 
-public class PasswordScreen: BaseScreen {
-    let passwordTextField: XCUIElement
-    let continueButton: XCUIElement
-
-    public init() {
-        let app = XCUIApplication()
-        passwordTextField = app.secureTextFields[ElementStringIDs.passwordTextField]
-        continueButton = app.buttons[ElementStringIDs.continueButton]
-
-        super.init(element: passwordTextField)
+    public init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            // swiftlint:disable:next opening_brace
+            expectedElementGetters: [ { $0.secureTextFields["Password"] } ],
+            app: app
+        )
     }
 
-    public func proceedWith(password: String) -> LoginEpilogueScreen {
+    public func proceedWith(password: String) throws -> LoginEpilogueScreen {
         _ = tryProceed(password: password)
 
-        return LoginEpilogueScreen()
+        return try LoginEpilogueScreen()
     }
 
     public func tryProceed(password: String) -> PasswordScreen {
@@ -37,18 +30,20 @@ public class PasswordScreen: BaseScreen {
         //
         // Calling passwordTextField.doubleTap() prevents tests from failing by ensuring that the text field's
         // secureTextEntry property remains 'true'.
+        let passwordTextField = expectedElement
         passwordTextField.doubleTap()
 
         passwordTextField.typeText(password)
+        let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
         if continueButton.exists && !continueButton.isHittable {
-            waitFor(element: continueButton, predicate: "isEnabled == true")
+            XCTAssertEqual(continueButton.waitFor(predicateString: "isEnabled == true"), .completed)
         }
         return self
     }
 
     public func verifyLoginError() -> PasswordScreen {
-        let errorLabel = app.cells[ElementStringIDs.errorLabel]
+        let errorLabel = app.cells["Password Error"]
         _ = errorLabel.waitForExistence(timeout: 2)
 
         XCTAssertTrue(errorLabel.exists)
@@ -56,6 +51,6 @@ public class PasswordScreen: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.continueButton].exists
+        (try? PasswordScreen().isLoaded) ?? false
     }
 }
