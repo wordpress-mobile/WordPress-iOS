@@ -2,13 +2,11 @@ import UIKit
 
 class TimeZoneTableViewCell: WPTableViewCell {
 
-    let titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        setupTimeZoneLabel(label)
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
         label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
-        label.adjustsFontForContentSizeCategory = true
         label.textColor = .label
 
         if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -21,13 +19,11 @@ class TimeZoneTableViewCell: WPTableViewCell {
         return label
     }()
 
-    let leftSubtitle: UILabel = {
+    lazy var leftSubtitle: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        setupTimeZoneLabel(label)
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption1)
         label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
-        label.adjustsFontForContentSizeCategory = true
         label.textColor = .secondaryLabel
 
         if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -41,13 +37,11 @@ class TimeZoneTableViewCell: WPTableViewCell {
         return label
     }()
 
-    let rightSubtitle: UILabel = {
+    lazy var rightSubtitle: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        setupTimeZoneLabel(label)
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption1)
         label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
-        label.adjustsFontForContentSizeCategory = true
         label.textColor = .secondaryLabel
 
         if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -71,6 +65,12 @@ class TimeZoneTableViewCell: WPTableViewCell {
     public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
+    }
+
+    func setupTimeZoneLabel(_ label: UILabel) {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        label.adjustsFontForContentSizeCategory = true
     }
 
     private func setupSubviews() {
