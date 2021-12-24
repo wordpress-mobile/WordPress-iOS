@@ -14,7 +14,8 @@ public class LoginCheckMagicLinkScreen: ScreenObject {
                 // swiftlint:disable:next opening_brace
                 { $0.buttons["Open Mail Button"] }
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
