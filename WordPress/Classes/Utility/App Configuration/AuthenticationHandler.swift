@@ -5,6 +5,8 @@ protocol AuthenticationHandler {
 
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, windowManager: WindowManager, onDismiss: @escaping () -> Void) -> Bool
 
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?)
+
     // WPAuthenticator style overrides
     var statusBarStyle: UIStatusBarStyle { get }
     var prologueViewController: UIViewController? { get }

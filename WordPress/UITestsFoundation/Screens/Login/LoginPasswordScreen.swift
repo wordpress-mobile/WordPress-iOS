@@ -1,41 +1,38 @@
+import ScreenObject
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
 
-private struct ElementStringIDs {
-    static let passwordTextField = "Password"
-    static let loginButton = "Password Next Button"
-    static let errorLabel = "pswdErrorLabel"
-}
+class LoginPasswordScreen: ScreenObject {
 
-class LoginPasswordScreen: BaseScreen {
-    let passwordTextField: XCUIElement
-    let loginButton: XCUIElement
-
-    init() {
-        passwordTextField = XCUIApplication().secureTextFields[ElementStringIDs.passwordTextField]
-        loginButton = XCUIApplication().buttons[ElementStringIDs.loginButton]
-        super.init(element: passwordTextField)
+    let passwordTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.secureTextFields["Password"]
     }
 
-    func proceedWith(password: String) -> LoginEpilogueScreen {
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [passwordTextFieldGetter], app: app)
+    }
+
+    func proceedWith(password: String) throws -> LoginEpilogueScreen {
         _ = tryProceed(password: password)
 
-        return LoginEpilogueScreen()
+        return try LoginEpilogueScreen()
     }
 
     func tryProceed(password: String) -> LoginPasswordScreen {
+        let passwordTextField = passwordTextFieldGetter(app)
         passwordTextField.tap()
         passwordTextField.typeText(password)
+        let loginButton = app.buttons["Password next Button"]
         loginButton.tap()
         if loginButton.exists && !loginButton.isHittable {
-            waitFor(element: loginButton, predicate: "isEnabled == true")
+            XCTAssertEqual(loginButton.waitFor(predicateString: "isEnabled == true"), .completed)
         }
         return self
     }
 
     func verifyLoginError() -> LoginPasswordScreen {
-        let errorLabel = app.staticTexts[ElementStringIDs.errorLabel]
+        let errorLabel = app.staticTexts["pswdErrorLabel"]
         _ = errorLabel.waitForExistence(timeout: 2)
 
         XCTAssertTrue(errorLabel.exists)
@@ -43,6 +40,6 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.loginButton].exists
+        (try? LoginPasswordScreen().isLoaded) ?? false
     }
 }

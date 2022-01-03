@@ -65,10 +65,6 @@ public struct EditorScreen {
         return XCUIApplication().navigationBars[aztecEditorElement].exists
     }
 
-    private var aztecEditor: AztecEditorScreen {
-        return AztecEditorScreen(mode: .rich)
-    }
-
     func dismissDialogsIfNeeded() throws {
         guard let blockEditor = try? BlockEditorScreen() else { return }
 
@@ -80,8 +76,8 @@ public struct EditorScreen {
             blockEditor.closeEditor()
         }
 
-        if isAztecEditor {
-            self.aztecEditor.closeEditor()
+        if let aztecEditor = try? AztecEditorScreen(mode: .rich) {
+            aztecEditor.closeEditor()
         }
     }
 }

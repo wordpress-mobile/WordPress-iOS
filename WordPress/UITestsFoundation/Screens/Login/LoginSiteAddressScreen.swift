@@ -1,3 +1,4 @@
+import ScreenObject
 import XCTest
 
 private struct ElementStringIDs {
@@ -13,16 +14,17 @@ private struct ElementStringIDs {
     static let siteAddressTextField = "Site address"
 }
 
-public class LoginSiteAddressScreen: BaseScreen {
-    let siteAddressTextField: XCUIElement
-    let nextButton: XCUIElement
+public class LoginSiteAddressScreen: ScreenObject {
 
-    init() {
-        let app = XCUIApplication()
-        siteAddressTextField = app.textFields[ElementStringIDs.siteAddressTextField]
-        nextButton = app.buttons[ElementStringIDs.nextButton]
+    let siteAddressTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Site address"]
+    }
 
-        super.init(element: siteAddressTextField)
+    var siteAddressTextField: XCUIElement { siteAddressTextFieldGetter(app) }
+    var nextButton: XCUIElement { app.buttons[ElementStringIDs.nextButton] }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(expectedElementGetters: [siteAddressTextFieldGetter], app: app)
     }
 
     public func proceedWith(siteUrl: String) throws -> LoginUsernamePasswordScreen {
@@ -42,6 +44,6 @@ public class LoginSiteAddressScreen: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.nextButton].exists
+        (try? LoginSiteAddressScreen().isLoaded) ?? false
     }
 }

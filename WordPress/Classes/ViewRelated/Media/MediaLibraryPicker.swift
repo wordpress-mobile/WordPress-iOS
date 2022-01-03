@@ -1,5 +1,6 @@
 import WPMediaPicker
 import MobileCoreServices
+import CoreGraphics
 
 /// Encapsulates launching and customization of a media picker to import media from the Photos Library
 final class MediaLibraryPicker: NSObject {
@@ -20,7 +21,23 @@ final class MediaLibraryPicker: NSObject {
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = dataSource
         picker.delegate = delegate
+        picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
 
         origin.present(picker, animated: true)
+    }
+}
+
+/// An overlay for videos that exceed allowed duration
+class DisabledVideoOverlay: UIView {
+
+    static let overlayTransparency: CGFloat = 0.8
+
+    init() {
+        super.init(frame: .zero)
+        backgroundColor = .gray.withAlphaComponent(Self.overlayTransparency)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
