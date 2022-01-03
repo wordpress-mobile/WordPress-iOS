@@ -108,7 +108,7 @@ platform :ios do
   desc 'Creates a new release branch from the current develop'
   lane :code_freeze do |options|
     gutenberg_dep_check
-    old_version = ios_codefreeze_prechecks(options)
+    ios_codefreeze_prechecks(options)
 
     ios_bump_version_release(skip_deliver: true)
     new_version = ios_get_app_version
