@@ -1,7 +1,7 @@
-* [***] Reader Comments: Updated comment threads with a new design and some new capabilities. [#17659]
-* [**] Block editor: Fix issue where editor doesn't auto-scroll so you can see what is being typed. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4299]
-* [*] Block editor: Preformatted block: Fix an issue where the background color is not showing up for standard themes. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4292]
-* [**] Block editor: Update Gallery Block to default to the new format and auto-convert old galleries to the new format. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4315]
-* [***] Block editor: Highlight text: Enables color customization for specific text within a Paragraph block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4175]
-* [**] Reader post details: a Comments snippet is now displayed after the post content. [#17650]
+New year, new look! We updated comment threads with a shiny new design for author labels, accessory and share buttons, and row and reply highlighting. We also made a few updates to the Block Editor.
 
+- When you’re editing Paragraph blocks, you can highlight specific text in any color you’d like.
+- Brand-new Gallery blocks will default to the new design. You can also auto-convert any old galleries to the new format without a hitch.
+- The editor now auto-scrolls, so you can always see what you’re typing. No more disappearing text, no more guesswork.
+- You’ll now see a Comments snippet displayed after your post content in the Reader. This gives you a quick sample of any comments you’ve received and helps you join the conversation faster.
+- We squashed a bug where the background color wasn’t showing up for pre-formatted blocks on sites that use standard themes.
