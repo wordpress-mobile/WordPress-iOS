@@ -6,9 +6,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: UIButton!
 
-    private var commentsEnabled = true {
+    private var followConversationEnabled = true {
         didSet {
-            followButton.isHidden = !FeatureFlag.followConversationPostDetails.enabled || !commentsEnabled
+            followButton.isHidden = !FeatureFlag.followConversationPostDetails.enabled || !followConversationEnabled
         }
     }
 
@@ -17,8 +17,8 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureView()
     }
 
-    func configure(totalComments: Int, commentsEnabled: Bool) {
-        self.commentsEnabled = commentsEnabled
+    func configure(totalComments: Int, followConversationEnabled: Bool) {
+        self.followConversationEnabled = followConversationEnabled
 
         titleLabel.text = {
             switch totalComments {
