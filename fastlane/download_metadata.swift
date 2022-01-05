@@ -66,7 +66,7 @@ func shouldUpdateKeywords(locale: String) -> Bool {
 }
 
 func isIn20211210Experiment(locale: String) -> Bool {
-    // The experiment should run on every English locale.
+    // The experiment should run on every English locale. See details in P2 post ref `pcbrnV-440-p2`.
     //
     // We could have an allow list, but given the mostly static nature of
     // locale codes, the following check seems enough.
