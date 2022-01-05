@@ -1,4 +1,15 @@
 VERSION_SHORT=18.9
 
 // Public long version example: VERSION_LONG=9.9.0.0
+//
+// Note: This is not currently used by the release builds (only consumers of
+// this config file). It would be good to remove it, but I haven't verified yet
+// if the lanes touching this file work as expected without the value.
+// – Gio
 VERSION_LONG=18.9.0.2
+
+// This is the value for `CFBundleVersion`. Our tooling automatically
+// increments it every time we create a new distribution build. Make sure to
+// bump this value if you make a manual build, or App Store Connect might
+// reject it.
+BUILD_NUMBER=21
