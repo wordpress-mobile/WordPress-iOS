@@ -68,9 +68,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
 
-/// Caches the post subscription state. Used to revert subscription state when the update request fails.
-@property (nonatomic, assign) BOOL subscribedToPost;
-
 /// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
 @property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
 
@@ -826,8 +823,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        weakSelf.subscribedToPost = isSubscribed;
-
         // update the ReaderPost button to keep it in-sync.
         weakSelf.post.isSubscribedComments = isSubscribed;
         [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
@@ -1564,12 +1559,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
 
-    // Keep previous subscription status in case of failure
-    BOOL oldIsSubscribed = self.subscribedToPost;
+    BOOL oldIsSubscribed = self.post.isSubscribedComments;
     BOOL newIsSubscribed = !oldIsSubscribed;
-
-    // Optimistically toggle subscription status
-    self.subscribedToPost = newIsSubscribed;
 
     // Define success block
     void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
@@ -1581,9 +1572,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             dispatch_async(dispatch_get_main_queue(), ^{
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
                 [weakSelf displayNoticeWithTitle:title message:nil];
-
-                // The task failed, fall back to the old subscription status
-                self.subscribedToPost = oldIsSubscribed;
             });
         } else {
             NSString *title = newIsSubscribed
@@ -1591,10 +1579,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                 : NSLocalizedString(@"Successfully unfollowed conversation", @"The app successfully unsubscribed from the comments for the post");
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                // update ReaderPost when the subscription process has succeeded.
-                weakSelf.post.isSubscribedComments = newIsSubscribed;
-                [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
-
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
                 [weakSelf refreshFollowButton];
 
@@ -1628,9 +1612,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [generator notificationOccurred:UINotificationFeedbackTypeError];
             [weakSelf displayNoticeWithTitle:title message:nil];
-
-            // If the request fails, fall back to the old subscription status
-            weakSelf.subscribedToPost = oldIsSubscribed;
         });
     };
 
