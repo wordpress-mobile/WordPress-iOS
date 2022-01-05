@@ -396,9 +396,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         commentsTableView.dataSource = commentsTableViewDelegate
 
         commentsTableViewDelegate.updateWith(comments: comments,
-                                              totalComments: totalComments,
-                                              commentsEnabled: toolbar.commentButton.isEnabled,
-                                              buttonDelegate: self)
+                                             totalComments: totalComments,
+                                             commentsEnabled: post?.commentsOpen ?? false,
+                                             buttonDelegate: self)
         commentsTableView.reloadData()
     }
 
