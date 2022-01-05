@@ -317,9 +317,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
-    headerView.onFollowConversationClick = ^{
-        [weakSelf handleFollowConversationButtonTapped];
-    };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
@@ -632,15 +629,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return _cachedHeaderView;
 }
 
-// NOTE: remove this when the `followConversationViaNotifications` flag is removed.
-- (void)setSubscribedToPost:(BOOL)subscribedToPost {
-    if (self.postHeaderView) {
-        self.postHeaderView.isSubscribedToPost = subscribedToPost;
-    }
-
-    _subscribedToPost = subscribedToPost;
-}
-
 - (UIBarButtonItem *)followBarButtonItem
 {
     if (!_followBarButtonItem) {
@@ -821,9 +809,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
-
-    // when the "follow via notifications" flag is enabled, the Follow button is moved into the navigation bar as a UIButtonBarItem.
-    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
 }
 
 - (void)refreshFollowButton
