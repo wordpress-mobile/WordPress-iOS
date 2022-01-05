@@ -94,7 +94,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             }
         }()
 
-        header.addBottomBorder(withColor: .divider)
         return header
     }
 
