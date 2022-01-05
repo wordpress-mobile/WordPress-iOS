@@ -1,4 +1,6 @@
-VERSION_SHORT=18.9
+// Include the default (public) version config to inherit all the default
+// values, such as the version short...
+#include "./Version.public.xcconfig"
 
-// Internal long version example: VERSION_LONG=9.9.0.20180423
+// ...then override only those that should change for internal builds
 VERSION_LONG=18.9.0.20211221
