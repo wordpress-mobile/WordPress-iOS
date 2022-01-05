@@ -3,7 +3,7 @@ import UIKit
 class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
     static let estimatedHeight: CGFloat = 80
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: UIButton!
 
     private var commentsEnabled = true {
