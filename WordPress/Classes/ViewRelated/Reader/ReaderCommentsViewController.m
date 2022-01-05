@@ -817,8 +817,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.navigationItem.rightBarButtonItem = self.post.isSubscribedComments ? self.subscriptionSettingsBarButtonItem : self.followBarButtonItem;
 }
 
-// NOTE: Remove this method once "follow via notifications" feature flag can be removed.
-// Subscription status is now available through ReaderPost's `isSubscribedComments` Boolean property.
 - (void)refreshSubscriptionStatusIfNeeded
 {
     __weak __typeof(self) weakSelf = self;
@@ -826,7 +824,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // update the ReaderPost button to keep it in-sync.
         weakSelf.post.isSubscribedComments = isSubscribed;
         [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
-
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
     }];
