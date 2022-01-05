@@ -394,11 +394,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
-
+        
         commentsTableViewDelegate.updateWith(comments: comments,
-                                              totalComments: totalComments,
+                                             totalComments: totalComments,
                                              commentsEnabled: post?.commentsOpen ?? false,
-                                              buttonDelegate: self)
+                                             buttonDelegate: self)
         commentsTableView.reloadData()
     }
 
