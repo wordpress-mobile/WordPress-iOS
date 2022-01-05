@@ -567,11 +567,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
-- (BOOL)followViaNotificationsEnabled
-{
-    return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
-}
-
 - (BOOL)newCommentThreadEnabled
 {
     return [Feature enabled:FeatureFlagNewCommentThread];
@@ -828,12 +823,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     // when the "follow via notifications" flag is enabled, the Follow button is moved into the navigation bar as a UIButtonBarItem.
-    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation && ![self followViaNotificationsEnabled];
+    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation;
 }
 
 - (void)refreshFollowButton
 {
-    if (!self.canFollowConversation || ![self followViaNotificationsEnabled]) {
+    if (!self.canFollowConversation) {
         return;
     }
 
@@ -848,11 +843,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         weakSelf.subscribedToPost = isSubscribed;
 
-        if ([self followViaNotificationsEnabled]) {
-            // update the ReaderPost button to keep it in-sync.
-            self.post.isSubscribedComments = isSubscribed;
-            [ContextManager.sharedInstance saveContext:self.post.managedObjectContext];
-        }
+        // update the ReaderPost button to keep it in-sync.
+        weakSelf.post.isSubscribedComments = isSubscribed;
+        [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
 
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
@@ -1618,23 +1611,20 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                 [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
 
                 [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+                [weakSelf refreshFollowButton];
 
-                if ([self followViaNotificationsEnabled]) {
-                    [weakSelf refreshFollowButton];
-
-                    // only show the new notice with undo option when the user intends to subscribe.
-                    if (newIsSubscribed) {
-                        [weakSelf displayActionableNoticeWithTitle:NSLocalizedString(@"Following this conversation",
-                                                                                     @"The app successfully subscribed to the comments for the post")
-                                                           message:NSLocalizedString(@"Enable in-app notifications?",
-                                                                                     @"Hint for the action button that enables notification for new comments")
-                                                       actionTitle:NSLocalizedString(@"Enable",
-                                                                                     @"Button title to enable notifications for new comments")
-                                                     actionHandler:^(BOOL accepted) {
-                            [weakSelf handleNotificationsButtonTappedWithUndo:YES completion:nil];
-                        }];
-                        return;
-                    }
+                // only show the new notice with undo option when the user intends to subscribe.
+                if (newIsSubscribed) {
+                    [weakSelf displayActionableNoticeWithTitle:NSLocalizedString(@"Following this conversation",
+                                                                                 @"The app successfully subscribed to the comments for the post")
+                                                       message:NSLocalizedString(@"Enable in-app notifications?",
+                                                                                 @"Hint for the action button that enables notification for new comments")
+                                                   actionTitle:NSLocalizedString(@"Enable",
+                                                                                 @"Button title to enable notifications for new comments")
+                                                 actionHandler:^(BOOL accepted) {
+                        [weakSelf handleNotificationsButtonTappedWithUndo:YES completion:nil];
+                    }];
+                    return;
                 }
 
                 [weakSelf displayNoticeWithTitle:title message:nil];
