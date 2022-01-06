@@ -342,7 +342,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-            presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+
+            guard
+                let jetpackState = blog.jetpack, !jetpackState.isInstalled
+            else {
+                presentQuickStartPrompt(for: blog, in: navigationController, onDismiss: onDismissQuickStartPrompt)
+                return
+            }
+
+
+            presentJetpackInstallPrompt(for: blog, in: navigationController, onDismiss: onDismiss)
             return
         }
 
@@ -560,6 +569,40 @@ private extension WordPressAuthenticationManager {
     }
 }
 
+// MARK: - Jetpack Install Prompt
+//
+private extension WordPressAuthenticationManager {
+    private func presentJetpackInstallPrompt(for blog: Blog,
+                                             in navigationController: UINavigationController,
+                                             onDismiss: (() -> Void)? = nil) {
+        let viewController = JetpackInstallPromptViewController(blog: blog)
+        let windowManager = self.windowManager
+
+        viewController.dismiss = { dismissAction in
+            let completion: (() -> Void)?
+
+            switch dismissAction {
+            case .noThanks:
+                completion = nil
+            case .install:
+                completion = {
+                    NotificationCenter.default.post(name: .installJetpack, object: nil)
+                }
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
+
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
+}
 
 // MARK: - WordPressAuthenticatorManager
 //
