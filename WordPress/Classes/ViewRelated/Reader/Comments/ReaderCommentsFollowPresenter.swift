@@ -5,7 +5,8 @@ import Foundation
 /// - subscribe to in-app notifications
 
 @objc protocol ReaderCommentsFollowPresenterDelegate: AnyObject {
-    func followingComplete(success: Bool, post: ReaderPost)
+    func followConversationComplete(success: Bool, post: ReaderPost)
+    func toggleNotificationComplete(success: Bool, post: ReaderPost)
 }
 
 class ReaderCommentsFollowPresenter: NSObject {
@@ -28,6 +29,8 @@ class ReaderCommentsFollowPresenter: NSObject {
         followCommentsService = FollowCommentsService.createService(with: post)
     }
 
+    // MARK: - Subscriptions
+
     /// Toggles the state of conversation subscription.
     /// When enabled, the user will receive emails for new comments.
     ///
@@ -45,14 +48,14 @@ class ReaderCommentsFollowPresenter: NSObject {
                     generator.notificationOccurred(.error)
                     let noticeTitle = newIsSubscribed ? Messages.followFail : Messages.unfollowFail
                     self?.presentingViewController.displayNotice(title: noticeTitle)
-                    self?.informDelegate(success: false)
+                    self?.informDelegateFollowComplete(success: false)
                 }
                 return
             }
 
             DispatchQueue.main.async {
                 generator.notificationOccurred(.success)
-                self?.informDelegate(success: true)
+                self?.informDelegateFollowComplete(success: true)
 
                 guard newIsSubscribed else {
                     let noticeTitle = newIsSubscribed ? Messages.followSuccess : Messages.unfollowSuccess
@@ -78,7 +81,7 @@ class ReaderCommentsFollowPresenter: NSObject {
                 generator.notificationOccurred(.error)
                 let noticeTitle = newIsSubscribed ? Messages.subscribeFail : Messages.unsubscribeFail
                 self?.presentingViewController.displayNotice(title: noticeTitle)
-                self?.informDelegate(success: false)
+                self?.informDelegateFollowComplete(success: false)
             }
         }
 
@@ -98,6 +101,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 
         followCommentsService?.toggleNotificationSettings(desiredState, success: { [weak self] in
             completion?(true)
+            self?.informDelegateNotificationComplete(success: true)
 
             guard let self = self else {
                 return
@@ -121,15 +125,30 @@ class ReaderCommentsFollowPresenter: NSObject {
             let title = self?.noticeTitle(forAction: action, success: false) ?? ""
             self?.presentingViewController.displayNotice(title: title)
             completion?(false)
+            self?.informDelegateNotificationComplete(success: false)
         })
+    }
+
+    // MARK: - Notification Sheet
+
+    @objc func showNotificationSheet(sourceBarButtonItem: UIBarButtonItem?) {
+        let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
+        let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
+        bottomSheet.show(from: self.presentingViewController, sourceBarButtonItem: sourceBarButtonItem)
     }
 
 }
 
+// MARK: - Private Extension
+
 private extension ReaderCommentsFollowPresenter {
 
-    func informDelegate(success: Bool) {
-        delegate?.followingComplete(success: success, post: post)
+    func informDelegateFollowComplete(success: Bool) {
+        delegate?.followConversationComplete(success: success, post: post)
+    }
+
+    func informDelegateNotificationComplete(success: Bool) {
+        delegate?.toggleNotificationComplete(success: success, post: post)
     }
 
     struct Messages {
@@ -162,6 +181,20 @@ private extension ReaderCommentsFollowPresenter {
         case (.disableNotification, false):
             return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
         }
+    }
+
+}
+
+// MARK: - ReaderCommentsNotificationSheetDelegate Methods
+
+extension ReaderCommentsFollowPresenter: ReaderCommentsNotificationSheetDelegate {
+
+    func didToggleNotificationSwitch(_ isOn: Bool, completion: @escaping (Bool) -> Void) {
+        handleNotificationsButtonTapped(canUndo: false, completion: completion)
+    }
+
+    func didTapUnfollowConversation() {
+        handleFollowConversationButtonTapped()
     }
 
 }

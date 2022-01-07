@@ -16,12 +16,6 @@ import WordPressShared
         return SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 
-    func showNotificationSheet(notificationsEnabled: Bool, delegate: ReaderCommentsNotificationSheetDelegate?, sourceBarButtonItem: UIBarButtonItem?) {
-        let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: notificationsEnabled, delegate: delegate)
-        let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
-        bottomSheet.show(from: self, sourceBarButtonItem: sourceBarButtonItem)
-    }
-
     // MARK: Post Subscriptions
 
     func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
