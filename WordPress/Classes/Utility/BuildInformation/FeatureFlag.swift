@@ -17,6 +17,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case weeklyRoundupStaticNotification
     case newCommentDetail
     case domains
+    case timeZoneSuggester
     case aboutScreen
     case newCommentThread
     case postDetailsComments
@@ -63,6 +64,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .domains:
             return false
+        case .timeZoneSuggester:
+            return true
         case .aboutScreen:
             return true
         case .newCommentThread:
@@ -131,6 +134,8 @@ extension FeatureFlag {
             return "New Comment Detail"
         case .domains:
             return "Domain Purchases"
+        case .timeZoneSuggester:
+            return "TimeZone Suggester"
         case .aboutScreen:
             return "New Unified About Screen"
         case .newCommentThread:
