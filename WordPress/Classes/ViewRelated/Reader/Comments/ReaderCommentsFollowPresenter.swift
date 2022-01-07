@@ -4,23 +4,23 @@ import Foundation
 /// - subscribe to post comments
 /// - subscribe to in-app notifications
 
-@objc protocol ReaderCommentsFollowHelperDelegate: AnyObject {
+@objc protocol ReaderCommentsFollowPresenterDelegate: AnyObject {
     func followingComplete(success: Bool, post: ReaderPost)
 }
 
-class ReaderCommentsFollowHelper: NSObject {
+class ReaderCommentsFollowPresenter: NSObject {
 
     // MARK: - Properties
 
     private let post: ReaderPost
-    private weak var delegate: ReaderCommentsFollowHelperDelegate?
+    private weak var delegate: ReaderCommentsFollowPresenterDelegate?
     private let presentingViewController: UIViewController
     private let followCommentsService: FollowCommentsService?
 
     // MARK: - Initialization
 
     @objc required init(post: ReaderPost,
-                        delegate: ReaderCommentsFollowHelperDelegate? = nil,
+                        delegate: ReaderCommentsFollowPresenterDelegate? = nil,
                         presentingViewController: UIViewController) {
         self.post = post
         self.delegate = delegate
@@ -126,7 +126,7 @@ class ReaderCommentsFollowHelper: NSObject {
 
 }
 
-private extension ReaderCommentsFollowHelper {
+private extension ReaderCommentsFollowPresenter {
 
     func informDelegate(success: Bool) {
         delegate?.followingComplete(success: success, post: post)

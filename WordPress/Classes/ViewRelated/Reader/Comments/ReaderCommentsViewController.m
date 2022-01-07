@@ -35,7 +35,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                             WPTableViewHandlerDelegate,
                                             SuggestionsTableViewDelegate,
                                             ReaderCommentsNotificationSheetDelegate,
-                                            ReaderCommentsFollowHelperDelegate>
+                                            ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -62,7 +62,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
-@property (nonatomic, strong) ReaderCommentsFollowHelper *readerCommentsFollowHelper;
+@property (nonatomic, strong) ReaderCommentsFollowPresenter *readerCommentsFollowPresenter;
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
 
@@ -717,7 +717,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     _followCommentsService = [FollowCommentsService createServiceWith:_post];
-    _readerCommentsFollowHelper = [[ReaderCommentsFollowHelper alloc] initWithPost:_post delegate:self presentingViewController:self];
+    _readerCommentsFollowPresenter = [[ReaderCommentsFollowPresenter alloc] initWithPost:_post delegate:self presentingViewController:self];
 }
 
 - (NSNumber *)siteID
@@ -1549,7 +1549,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self handleFollowConversationButtonTapped];
 }
 
-#pragma mark - ReaderCommentsFollowHelperDelegate Methods
+#pragma mark - ReaderCommentsFollowPresenterDelegate Methods
 
 - (void)followingCompleteWithSuccess:(BOOL)success post:(ReaderPost *)post
 {
@@ -1562,7 +1562,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)handleFollowConversationButtonTapped
 {
     if ([Feature enabled:FeatureFlagFollowConversationPostDetails]) {
-        [self.readerCommentsFollowHelper handleFollowConversationButtonTapped];
+        [self.readerCommentsFollowPresenter handleFollowConversationButtonTapped];
         return;
     }
 
@@ -1640,7 +1640,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo completion:(void (^ _Nullable)(BOOL))completion
 {
     if ([Feature enabled:FeatureFlagFollowConversationPostDetails]) {
-        [self.readerCommentsFollowHelper handleNotificationsButtonTappedWithCanUndo:canUndo completion:completion];
+        [self.readerCommentsFollowPresenter handleNotificationsButtonTappedWithCanUndo:canUndo completion:completion];
         return;
     }
 
