@@ -1,6 +1,7 @@
 19.0
 -----
 * [**] Video uploads: video upload is now limited to 5 minutes per video on free plans.
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
 
 18.9
 -----
