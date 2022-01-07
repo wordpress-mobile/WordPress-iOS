@@ -152,7 +152,6 @@ private extension ReaderCommentsFollowPresenter {
     }
 
     struct Messages {
-
         // Follow Conversation
         static let followSuccess = NSLocalizedString("Successfully followed conversation", comment: "The app successfully subscribed to the comments for the post")
         static let unfollowSuccess = NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
@@ -168,6 +167,13 @@ private extension ReaderCommentsFollowPresenter {
         static let promptMessage = NSLocalizedString("Enable in-app notifications?", comment: "Hint for the action button that enables notification for new comments")
         static let enableActionTitle = NSLocalizedString("Enable", comment: "Button title to enable notifications for new comments")
         static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts the previous notification operation")
+    }
+
+    /// Enumerates the kind of actions available in relation to post subscriptions.
+    /// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
+    enum PostSubscriptionAction: Int {
+        case enableNotification
+        case disableNotification
     }
 
     func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
