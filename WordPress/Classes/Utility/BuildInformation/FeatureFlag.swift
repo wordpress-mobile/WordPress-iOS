@@ -65,7 +65,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .domains:
             return false
         case .timeZoneSuggester:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .followConversationViaNotifications:
             return true
         case .aboutScreen:
