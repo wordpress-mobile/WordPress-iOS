@@ -60,18 +60,25 @@ class JetpackConnectionWebViewController: UIViewController {
     }
 
     func startConnectionFlow() {
-        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
-        let url: URL
-        if let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)&from=mobile")!
-        } else {
-            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?mobile_redirect=\(mobileRedirectURL)&from=mobile")!
+        guard let url = jetpackConnectionURL() else {
+            return
         }
 
         let request = URLRequest(url: url)
         webView.load(request)
 
         WPAnalytics.track(.installJetpackWebviewSelect)
+    }
+
+    private func jetpackConnectionURL() -> URL? {
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
+        var urlString = "https://wordpress.com/jetpack/connect/?mobile_redirect=\(mobileRedirectURL)&from=mobile&lang=\(locale)"
+
+        if let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            urlString = urlString + "&url=\(escapedSiteURL)"
+        }
+
+        return URL(string: urlString)
     }
 
     @objc func cancel() {
