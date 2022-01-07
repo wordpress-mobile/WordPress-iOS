@@ -1,0 +1,4 @@
+– När du redigerar textblock kan du framhäva vissa textasvnitt med valfri färg.
+– Helt nya galleriblock har som standard det nya utförandet. Dessutom kan du enkelt konvertera eventuella äldre gallerier till det nya utförandet automatiskt.
+– Redigeraren rullar nu texten automatiskt, du behöver inte längre gissa vad du skriver när du inte kan se texten.
+– Vi har rättat ett fel där bakgrundsfärgen inte visades hos förformaterade block på webbplatser som använder standardteman.
