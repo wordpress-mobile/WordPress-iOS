@@ -398,6 +398,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         commentsTableViewDelegate.updateWith(comments: comments,
                                              totalComments: totalComments,
                                              commentsEnabled: post?.commentsOpen ?? false,
+                                             followingEnabled: post?.canSubscribeComments ?? false,
                                              buttonDelegate: self)
         commentsTableView.reloadData()
     }
