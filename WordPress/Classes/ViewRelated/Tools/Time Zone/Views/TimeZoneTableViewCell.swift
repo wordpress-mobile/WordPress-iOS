@@ -5,34 +5,17 @@ class TimeZoneTableViewCell: WPTableViewCell {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         setupTimeZoneLabel(label)
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
+        label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .label
 
-        if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
-            // swiftlint:disable:next natural_text_alignment
-            label.textAlignment = .left
-        } else {
-            // swiftlint:disable:next inverse_text_alignment
-            label.textAlignment = .right
-        }
         return label
     }()
 
     lazy var leftSubtitle: UILabel = {
         let label = UILabel()
         setupTimeZoneLabel(label)
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption1)
-        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
+        label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
-
-        if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
-            // swiftlint:disable:next natural_text_alignment
-            label.textAlignment = .left
-        } else {
-            // swiftlint:disable:next inverse_text_alignment
-            label.textAlignment = .right
-        }
 
         return label
     }()
@@ -40,8 +23,7 @@ class TimeZoneTableViewCell: WPTableViewCell {
     lazy var rightSubtitle: UILabel = {
         let label = UILabel()
         setupTimeZoneLabel(label)
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption1)
-        label.font = UIFont(descriptor: fontDescriptor, size: fontDescriptor.pointSize)
+        label.font = .preferredFont(forTextStyle: .caption1)
         label.textColor = .secondaryLabel
 
         if label.effectiveUserInterfaceLayoutDirection == .leftToRight {
