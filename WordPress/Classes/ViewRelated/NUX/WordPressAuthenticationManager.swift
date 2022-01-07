@@ -329,7 +329,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
-            self?.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
+            guard let self = self else {
+                // If self is nil the user will be stuck on the login and not able to progress
+                // Trigger a fatal so we can track this better in Sentry.
+                // This case should be very rare.
+                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
+            }
+
+            self.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
         }
 
         // If adding a self-hosted site, skip the Epilogue

@@ -18,12 +18,12 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newCommentDetail
     case domains
     case timeZoneSuggester
-    case followConversationViaNotifications
     case aboutScreen
     case newCommentThread
     case postDetailsComments
     case commentThreadModerationMenu
     case mySiteDashboard
+    case followConversationPostDetails
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -66,8 +66,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .timeZoneSuggester:
             return true
-        case .followConversationViaNotifications:
-            return true
         case .aboutScreen:
             return true
         case .newCommentThread:
@@ -78,6 +76,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .mySiteDashboard:
             return BuildConfiguration.current == .localDeveloper
+        case .followConversationPostDetails:
+            return false
         }
     }
 
@@ -136,8 +136,6 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
-        case .followConversationViaNotifications:
-            return "Follow Conversation via Notifications"
         case .aboutScreen:
             return "New Unified About Screen"
         case .newCommentThread:
@@ -148,6 +146,8 @@ extension FeatureFlag {
             return "Comment Thread Moderation Menu"
         case .mySiteDashboard:
             return "My Site Dashboard"
+        case .followConversationPostDetails:
+            return "Follow Conversation from Post Details"
         }
     }
 
