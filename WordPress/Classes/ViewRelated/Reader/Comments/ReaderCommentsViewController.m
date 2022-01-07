@@ -34,7 +34,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
                                             SuggestionsTableViewDelegate,
-                                            ReaderCommentsNotificationSheetDelegate>
+                                            ReaderCommentsNotificationSheetDelegate,
+                                            ReaderCommentsFollowHelperDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -61,7 +62,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
-
+@property (nonatomic, strong) ReaderCommentsFollowHelper *readerCommentsFollowHelper;
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
 
@@ -716,6 +717,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     _followCommentsService = [FollowCommentsService createServiceWith:_post];
+    _readerCommentsFollowHelper = [[ReaderCommentsFollowHelper alloc] initWithPost:_post delegate:self presentingViewController:self];
 }
 
 - (NSNumber *)siteID
@@ -1547,10 +1549,24 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self handleFollowConversationButtonTapped];
 }
 
+#pragma mark - ReaderCommentsFollowHelperDelegate Methods
+
+- (void)followingCompleteWithSuccess:(BOOL)success post:(ReaderPost *)post
+{
+    self.post = post;
+    [self refreshFollowButton];
+}
+
 #pragma mark - PostHeaderView helpers
 
 - (void)handleFollowConversationButtonTapped
 {
+    if ([Feature enabled:FeatureFlagFollowConversationPostDetails]) {
+        [self.readerCommentsFollowHelper handleFollowConversationButtonTapped];
+        return;
+    }
+
+
     __typeof(self) __weak weakSelf = self;
 
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
@@ -1623,6 +1639,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// @param canUndo Boolean. When true, this provides a way for the user to revert their actions.
 - (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo completion:(void (^ _Nullable)(BOOL))completion
 {
+    if ([Feature enabled:FeatureFlagFollowConversationPostDetails]) {
+        [self.readerCommentsFollowHelper handleNotificationsButtonTappedWithCanUndo:canUndo completion:completion];
+        return;
+    }
+
+
     BOOL desiredState = !self.post.receivesCommentNotifications;
     PostSubscriptionAction action = desiredState ? PostSubscriptionActionEnableNotification : PostSubscriptionActionDisableNotification;
 
