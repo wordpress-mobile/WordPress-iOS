@@ -44,8 +44,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         super.viewDidLoad()
         if FeatureFlag.timeZoneSuggester.enabled {
             ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
-        }
-        else {
+        } else {
             ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
         }
 
@@ -97,7 +96,6 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
             tableView.tableHeaderView = headerView
         } else {
-            // below will be removed when feature flags no longer needed
             tableView.tableHeaderView = searchController.searchBar
         }
     }

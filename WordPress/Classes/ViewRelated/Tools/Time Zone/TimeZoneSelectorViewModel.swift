@@ -80,7 +80,10 @@ struct TimeZoneSelectorViewModel: Observable {
                             headerText: group.name,
                             rows: group.timezones.map({ (timezone) -> ImmuTableRow in
                                 if FeatureFlag.timeZoneSuggester.enabled {
-                                    return TimeZoneRow(title: timezone.label, leftSubtitle: timeZoneFormatter.getZoneOffset(timezone), rightSubtitle: timeZoneFormatter.getTimeAtZone(timezone), action: { _ in
+                                    return TimeZoneRow(title: timezone.label,
+                                                       leftSubtitle: timeZoneFormatter.getZoneOffset(timezone),
+                                                       rightSubtitle: timeZoneFormatter.getTimeAtZone(timezone),
+                                                       action: { _ in
                                         selectionHandler(timezone)
                                     })
                                 }
@@ -101,16 +104,13 @@ struct TimeZoneSelectorViewModel: Observable {
         case .ready:
             return nil
         case .error:
-            let noResultModelNoConnection = NoResultsViewController.Model(title: LocalizedText.noConnectionTitle,
-                    subtitle: LocalizedText.noConnectionSubtitle)
-
             let appDelegate = WordPressAppDelegate.shared
 
             guard let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true else {
-                return noResultModelNoConnection
+                return NoResultsViewController.Model(title: LocalizedText.noConnectionTitle,
+                                                     subtitle: LocalizedText.noConnectionSubtitle)
             }
 
-            //connection available
             return NoResultsViewController.Model(title: LocalizedText.errorTitle,
                     subtitle: LocalizedText.errorSubtitle,
                     buttonText: LocalizedText.buttonText)

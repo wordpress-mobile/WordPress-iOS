@@ -24,7 +24,9 @@ struct TimeZoneFormatter {
     }
 
     func getZoneOffset(_ zone: WPTimeZone) -> String {
-        guard let namedTimeZone = zone as? NamedTimeZone, let timeZone = TimeZone(identifier: namedTimeZone.value), let timeZoneLocalized = timeZone.localizedName(for: .standard, locale: .current) else {
+        guard let namedTimeZone = zone as? NamedTimeZone,
+                let timeZone = TimeZone(identifier: namedTimeZone.value),
+                let timeZoneLocalized = timeZone.localizedName(for: .standard, locale: .current) else {
             return ""
         }
         timeZoneOffsetFormatter.timeZone = timeZone
@@ -34,7 +36,8 @@ struct TimeZoneFormatter {
     }
 
     func getTimeAtZone(_ zone: WPTimeZone) -> String {
-        guard let namedTimeZone = zone as? NamedTimeZone, let timeZone = TimeZone(identifier: namedTimeZone.value) else {
+        guard let namedTimeZone = zone as? NamedTimeZone,
+              let timeZone = TimeZone(identifier: namedTimeZone.value) else {
             return ""
         }
         timeAtTimeZoneFormatter.timeZone = timeZone

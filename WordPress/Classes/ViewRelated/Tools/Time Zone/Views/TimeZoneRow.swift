@@ -8,16 +8,6 @@ struct TimeZoneRow: ImmuTableRow {
     let rightSubtitle: String
     let action: ImmuTableAction?
 
-    init(title: String,
-         leftSubtitle: String,
-         rightSubtitle: String,
-         action: ImmuTableAction?) {
-        self.title = title
-        self.leftSubtitle = leftSubtitle
-        self.rightSubtitle = rightSubtitle
-        self.action = action
-    }
-
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? TimeZoneTableViewCell else { return }
 
