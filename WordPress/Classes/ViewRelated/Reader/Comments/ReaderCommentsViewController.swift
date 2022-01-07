@@ -2,6 +2,14 @@ import Foundation
 import UIKit
 import WordPressShared
 
+/// Enumerates the kind of actions available in relation to post subscriptions.
+/// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
+@objc public enum PostSubscriptionAction: Int {
+    case enableNotification
+    case disableNotification
+}
+
+
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
         guard let siteID = siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
@@ -15,13 +23,6 @@ import WordPressShared
     }
 
     // MARK: Post Subscriptions
-
-    /// Enumerates the kind of actions available in relation to post subscriptions.
-    /// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
-    @objc enum PostSubscriptionAction: Int {
-        case enableNotification
-        case disableNotification
-    }
 
     func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
         switch (action, success) {
