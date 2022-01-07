@@ -1,0 +1,7 @@
+Ada resolusi tahun baru untuk menulis lebih banyak konten di situs anda? Kami telah memperbarui Editor Blok untuk membantu anda. 
+
+- Saat Anda mengedit blok Paragraf, Anda dapat menyoroti teks tertentu dengan warna yang Anda suka.
+-  Blok Galeri baru secara default akan menggunakan desain baru. Anda juga dapat mengubah galeri yang terdahulu ke format baru tanpa kendala secara otomatis.
+- Sekarang Editor bergulir otomatis, jadi Anda dapat melihat apa yang Anda ketik. Tidak ada lagi teks yang tidak tampak, tidak ada lagi tebak-tebakan.
+- Kami menghilangkan gangguan di mana warna latar belakang tidak tampil pada blok yang sudah diformat sebelumnya pada situs yang menggunakan tema standar.
+
