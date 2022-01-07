@@ -1,0 +1,7 @@
+Neues Jahr, neuer Look! Wir haben die Kommentar-Threads aktualisiert. Sie haben jetzt ein neues Design für Autoren-Label, Zubehör- und Teilen-Buttons und das Markieren von Zeilen und Antworten. Außerdem haben wir den Block-Editor aktualisiert.
+
+- Wenn du Absatzblöcke bearbeitest, kannst du Text in einer beliebigen Farbe markieren. 
+- Brandneue Galerieblöcke haben standardmäßig das neue Design. Und du kannst alte Galerien ganz einfach automatisch in das neue Format konvertieren.
+- Der Editor scrollt automatisch, damit du immer siehst, was du tippst. Kein verschwindender Text und kein Raten mehr.
+- Dir wird jetzt nach dem Inhalt deines Beitrags im Reader ein Kommentarausschnitt angezeigt. So siehst du einen Teil der Kommentare, die du erhältst, und kannst schneller ins Gespräch einsteigen.
+- Wir haben einen Bug behoben, durch den die Hintergrundfarbe für vorformatierte Blöcke auf Websites mit Standard-Themes nicht angezeigt wurde.

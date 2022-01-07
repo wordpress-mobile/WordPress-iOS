@@ -1,0 +1,7 @@
+Nytt år, nytt utseende! Kommentarstrådar har fått ett uppdaterat utseende för författaretiketter, knappar för tillbehör och delning, samt markering av textrader och svar. Dessutom har vi gjort några ändringar i blockredigeraren.
+
+– När du redigerar textblock kan du framhäva vissa textasvnitt med valfri färg.
+– Helt nya galleriblock har som standard det nya utförandet. Dessutom kan du enkelt konvertera eventuella äldre gallerier till det nya utförandet automatiskt.
+– Redigeraren rullar nu texten automatiskt, du behöver inte längre gissa vad du skriver när du inte kan se texten.
+– I läsaren visas nu ett kommentarruta under inläggets innehåll. Den visar ett snabbt smakprov på eventuella kommentarer du fått och hjälper dig att snabbare inleda en konversation.
+– Vi har rättat ett fel där bakgrundsfärgen inte visades hos förformaterade block på webbplatser som använder standardteman.
