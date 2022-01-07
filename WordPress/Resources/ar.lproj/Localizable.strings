@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-20 19:54:08+0000 */
+/* Translation-Revision-Date: 2022-01-07 18:04:59+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -3857,7 +3857,7 @@ translators: Block name. %s: The localized block name */
 "Latest Post Summary" = "ملخص آخر مقالة";
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "تعرف على المزيد";
+"Learn More" = "معرفة المزيد";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "Learn about new comments, likes, and follows in seconds." = "تعرَّف على التعليقات والإعجابات والمتابعات الجديدة في غضون ثوانٍ.";
@@ -3868,7 +3868,7 @@ translators: Block name. %s: The localized block name */
 /* A button title.
    Link to cookie policy
    Read more button title shown in alert announcing new Create Button feature. */
-"Learn more" = "تعرف على المزيد";
+"Learn more" = "معرفة المزيد";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "اعرف المزيد عن تنسيق التاريخ والوقت.";
@@ -6537,7 +6537,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Shows the site's posts." = "يعرض مقالات الموقع.";
 
 /* View title during the sign up process. */
-"Sign Up" = "اشترك";
+"Sign Up" = "تسجيل";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "تسجيل";

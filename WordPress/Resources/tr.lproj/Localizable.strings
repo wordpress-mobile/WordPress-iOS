@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-08 17:54:08+0000 */
+/* Translation-Revision-Date: 2021-12-21 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -1016,7 +1016,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "En son yazınıza bakan kişileri gösteren çubuk grafik";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "İlk yorumu siz yapın";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "İlk yorum bırakan siz olun.";
@@ -1605,7 +1605,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "Yorumlar";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "Yorumlar kapandı";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Yorum yapılan konu";
@@ -2345,7 +2345,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "Tekrar yap";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "Belge, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Belge: %@";
@@ -2473,10 +2473,10 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "Bir görsel seçmek için çift dokunun";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "Varsayılan yazı tipi boyutunu seçmek için iki kez dokunun";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "Yazı tipi boyutunu seçmek için iki kez dokunun";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Seçeneği belirlemek için iki kez dokunun";
@@ -3191,7 +3191,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "Etiketi takip eder.";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "Font Boyutu";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Futbol";
@@ -3270,7 +3270,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Önceden hazırlanmış çeşitli sayfa düzenleri arasından seçim yaparak başlayın. Veya boş bir sayfayla başlayın.";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "Destek alın";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Harekete geçin ve yazınızı paylaşarak yazınızın görüntülenme sayısını artırın.";
@@ -4170,7 +4170,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "Okunmadı olarak işaretle";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "Spam Olarak İşaretle";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Yapışkan olarak işaretle";
@@ -4334,7 +4334,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "WordPress.com üzerinden daha fazlası";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "Daha fazla destek seçeneği";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "En Popüler Zaman";
@@ -6302,7 +6302,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Seçilen: %s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "Seçili: Varsayılan";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Farklı bir menü konumu seçmeniz mevcut menüde yaptığınız değişiklikleri yok edecek. Devam etmek istediğinize emin misiniz?";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Uygulama sunucu cevabını tanıyamadı. Lütfen sitenizin ayarlarını kontrol edin.";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "Temel bilgiler";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Bu sunucunun sertifikası geçersiz. “%@” taklidi yapan bir siteye bağlanıyor olabilirsiniz ki bu kişisel bilgilerinizin ele geçirilebilmesi açısından büyük bir risktir.\n\nSertifikaya güvenip devam etmek istiyor musunuz?";
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Bildirim ayarlarınız yüklenirken bir hata oluştu";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "Yorum düzenlenirken beklenmeyen bir hata oluştu";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Yorumunuz düzenlenirken beklenmeyen bir hata oluştu";
@@ -8157,7 +8157,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "Siteyi görüntüle";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "Tüm yorumları görüntüle";
 
 /* Displays More Rows */
 "View all…" = "Tamamını görüntüle…";
