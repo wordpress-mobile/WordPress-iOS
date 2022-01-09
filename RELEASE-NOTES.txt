@@ -7,6 +7,7 @@
 * [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
 * [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
 
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
 
 18.9
 -----

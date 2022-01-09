@@ -6,6 +6,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     private(set) var totalComments = 0
     private var commentsEnabled = true
+    private var followingEnabled = true
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
 
     private var totalRows = 0
@@ -35,8 +36,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     func updateWith(comments: [Comment] = [],
                     totalComments: Int = 0,
                     commentsEnabled: Bool = true,
+                    followingEnabled: Bool = true,
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
         self.commentsEnabled = commentsEnabled
+        self.followingEnabled = followingEnabled
         hideButton = (comments.count == 0 && !commentsEnabled)
         self.comments = comments
         self.totalComments = totalComments
@@ -83,7 +86,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        header.configure(totalComments: totalComments, commentsEnabled: commentsEnabled)
+        header.configure(totalComments: totalComments, followConversationEnabled: commentsEnabled && followingEnabled)
         return header
     }
 
