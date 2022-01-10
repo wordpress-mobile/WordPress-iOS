@@ -44,10 +44,23 @@ class JetpackInstallPromptViewController: UIViewController {
 
     @IBAction func installTapped(_ sender: Any) {
         dismiss?(.install)
+        dismiss(animated: true)
     }
 
     @IBAction func noThanksTapped(_ sender: Any) {
         dismiss?(.noThanks)
+        dismiss(animated: true)
+    }
+
+    @IBAction func learnMoreButtonTapped(_ sender: Any) {
+        guard let url = URL(string: "https://jetpack.com/features/") else {
+            return
+        }
+
+        let controller = WebViewControllerFactory.controller(url: url, source: "jetpack_prompt")
+        let navController = UINavigationController(rootViewController: controller)
+        self.present(navController, animated: true)
+    }
     }
 }
 
