@@ -12,13 +12,20 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         }
     }
 
+    private var isSubscribedComments: Bool = false {
+        didSet {
+            configureButton()
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
     }
 
-    func configure(totalComments: Int, followConversationEnabled: Bool) {
+    func configure(totalComments: Int, followConversationEnabled: Bool, isSubscribedComments: Bool) {
         self.followConversationEnabled = followConversationEnabled
+        self.isSubscribedComments = isSubscribedComments
 
         titleLabel.text = {
             switch totalComments {
@@ -49,10 +56,17 @@ private extension ReaderDetailCommentsHeader {
     }
 
     func configureButton() {
-        followButton.setTitle(Titles.followButton, for: .normal)
-        followButton.setTitleColor(.primary, for: .normal)
-        followButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
         followButton.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
+
+        if isSubscribedComments {
+            followButton.setImage(UIImage.init(systemName: "bell"), for: .normal)
+            followButton.setTitle(nil, for: .normal)
+        } else {
+            followButton.setTitle(Titles.followButton, for: .normal)
+            followButton.setTitleColor(.primary, for: .normal)
+            followButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
+            followButton.setImage(nil, for: .normal)
+        }
     }
 
     @objc func followButtonTapped() {
