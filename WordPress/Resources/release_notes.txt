@@ -1,7 +1,9 @@
-New year, new look! We updated comment threads with a shiny new design for author labels, accessory and share buttons, and row and reply highlighting. We also made a few updates to the Block Editor.
+* [**] Video uploads: video upload is now limited to 5 minutes per video on free plans.
+* [*] Block editor: Give multi-line block names central alignment in inserter [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4343]
+* [**] Block editor: Fix missing translations by refactoring the editor initialization code [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4332]
+* [**] Block editor: Add Jetpack and Layout Grid translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4359]
+* [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
+* [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
 
-- When you’re editing Paragraph blocks, you can highlight specific text in any color you’d like.
-- Brand-new Gallery blocks will default to the new design. You can also auto-convert any old galleries to the new format without a hitch.
-- The editor now auto-scrolls, so you can always see what you’re typing. No more disappearing text, no more guesswork.
-- You’ll now see a Comments snippet displayed after your post content in the Reader. This gives you a quick sample of any comments you’ve received and helps you join the conversation faster.
-- We squashed a bug where the background color wasn’t showing up for pre-formatted blocks on sites that use standard themes.
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
+
