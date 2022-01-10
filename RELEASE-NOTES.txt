@@ -1,3 +1,7 @@
+19.1
+-----
+
+
 19.0
 -----
 * [**] Video uploads: video upload is now limited to 5 minutes per video on free plans.
