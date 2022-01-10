@@ -2,6 +2,10 @@ import WordPressAuthenticator
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var containerView: UIView!
+
     private let meScenePresenter: ScenePresenter
 
     // MARK: - Initializers
@@ -349,10 +353,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
-        add(blogDetailsViewController)
+        addChild(blogDetailsViewController)
+        containerView.addSubview(blogDetailsViewController.view)
+        blogDetailsViewController.didMove(toParent: self)
 
         blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(blogDetailsViewController.view)
+        containerView.pinSubviewToAllEdges(blogDetailsViewController.view)
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }
