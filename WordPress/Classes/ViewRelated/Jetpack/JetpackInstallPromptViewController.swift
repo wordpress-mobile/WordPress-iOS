@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 class JetpackInstallPromptViewController: UIViewController {
     // MARK: - IBOutlets
@@ -61,10 +62,79 @@ class JetpackInstallPromptViewController: UIViewController {
         let navController = UINavigationController(rootViewController: controller)
         self.present(navController, animated: true)
     }
+
+    private func configure(button: FancyButton, style: NUXButtonStyle) {
+        button.primaryNormalBackgroundColor = style.normal.backgroundColor
+        button.primaryNormalBorderColor = style.normal.borderColor
+        button.primaryTitleColor = style.normal.titleColor
+        button.primaryHighlightBackgroundColor = style.highlighted.backgroundColor
+        button.primaryHighlightBorderColor = style.highlighted.borderColor
+
+        button.secondaryNormalBackgroundColor = style.normal.backgroundColor
+        button.secondaryNormalBorderColor = style.normal.borderColor
+        button.secondaryTitleColor = style.normal.titleColor
+        button.secondaryHighlightBackgroundColor = style.highlighted.backgroundColor
+        button.secondaryHighlightBorderColor = style.highlighted.borderColor
     }
 }
 
 // MARK: - Notifications
 extension NSNotification.Name {
     static let installJetpack = NSNotification.Name(rawValue: "JetpackInstall")
+}
+
+// MARK: - Styles
+struct JetpackPromptStyles {
+    static let backgroundColor = UIColor(red: 0.00, green: 0.11, blue: 0.18, alpha: 1.00)
+
+    struct Title {
+        static let font: UIFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
+        static let textColor: UIColor = .white
+    }
+
+    struct Stars {
+        static let particleImage = UIImage(named: "jetpack-circle-particle")
+
+        static let colors = [
+            UIColor(red: 0.05, green: 0.27, blue: 0.44, alpha: 0.5),
+            UIColor(red: 0.64, green: 0.68, blue: 0.71, alpha: 0.5),
+            UIColor(red: 0.99, green: 0.99, blue: 0.99, alpha: 0.5)
+        ]
+    }
+    static let installButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: .white,
+                                                                 borderColor: .white,
+                                                                 titleColor: Self.backgroundColor),
+
+                                                   highlighted: .init(backgroundColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90),
+                                                                      borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90),
+                                                                      titleColor: Self.backgroundColor),
+
+                                                   disabled: .init(backgroundColor: .white,
+                                                                   borderColor: .white,
+                                                                   titleColor: Self.backgroundColor))
+
+    static let noThanksButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: Self.backgroundColor,
+                                                                   borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.40),
+                                                                   titleColor: .white),
+
+                                                     highlighted: .init(backgroundColor: Self.backgroundColor,
+                                                                        borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20),
+                                                                        titleColor: UIColor.white.withAlphaComponent(0.7)),
+
+                                                     disabled: .init(backgroundColor: .white,
+                                                                     borderColor: .white,
+                                                                     titleColor: Self.backgroundColor))
+
+    static let learnMoreButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: Self.backgroundColor,
+                                                                   borderColor: Self.backgroundColor,
+                                                                   titleColor: .white),
+
+                                                     highlighted: .init(backgroundColor: Self.backgroundColor,
+                                                                        borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20),
+                                                                        titleColor: UIColor.white.withAlphaComponent(0.7)),
+
+                                                     disabled: .init(backgroundColor: .white,
+                                                                     borderColor: .white,
+                                                                     titleColor: Self.backgroundColor))
+
 }
