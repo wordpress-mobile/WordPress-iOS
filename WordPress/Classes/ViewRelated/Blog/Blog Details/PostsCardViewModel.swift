@@ -132,22 +132,22 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch (type) {
+        switch type {
         case .insert:
             if let indexPath = newIndexPath {
                 tableView.insertRows(at: [indexPath], with: .fade)
             }
-            break;
+            break
         case .delete:
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
-            break;
+            break
         case .update:
             if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
                 configureCell(cell, at: indexPath)
             }
-            break;
+            break
         case .move:
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: .fade)
@@ -156,9 +156,9 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: .fade)
             }
-            break;
+            break
         @unknown default:
-            break;
+            break
         }
     }
 }
