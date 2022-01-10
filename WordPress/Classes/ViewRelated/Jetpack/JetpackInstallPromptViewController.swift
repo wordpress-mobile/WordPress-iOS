@@ -57,11 +57,28 @@ class JetpackInstallPromptViewController: UIViewController {
     }
 
     // MARK: - View Methods
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationController?.navigationBar.isHidden = true
+
+        view.backgroundColor = JetpackPromptStyles.backgroundColor
+        backgroundView.backgroundColor = JetpackPromptStyles.backgroundColor
+        backgroundView.addSubview(starFieldView)
+        backgroundView.layer.addSublayer(gradientLayer)
+
+        titleLabel.font = JetpackPromptStyles.Title.font
+        titleLabel.textColor = JetpackPromptStyles.Title.textColor
+
+        installButton.isPrimary = true
+        configure(button: installButton, style: JetpackPromptStyles.installButtonStyle)
+        configure(button: noThanksButton, style: JetpackPromptStyles.noThanksButtonStyle)
+        configure(button: learnMoreButton, style: JetpackPromptStyles.learnMoreButtonStyle)
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return [.portrait, .portraitUpsideDown]
+    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -92,17 +109,20 @@ class JetpackInstallPromptViewController: UIViewController {
     }
 
     private func configure(button: FancyButton, style: NUXButtonStyle) {
+        guard button.isPrimary else {
+            button.secondaryNormalBackgroundColor = style.normal.backgroundColor
+            button.secondaryNormalBorderColor = style.normal.borderColor
+            button.secondaryTitleColor = style.normal.titleColor
+            button.secondaryHighlightBackgroundColor = style.highlighted.backgroundColor
+            button.secondaryHighlightBorderColor = style.highlighted.borderColor
+            return
+        }
+
         button.primaryNormalBackgroundColor = style.normal.backgroundColor
         button.primaryNormalBorderColor = style.normal.borderColor
         button.primaryTitleColor = style.normal.titleColor
         button.primaryHighlightBackgroundColor = style.highlighted.backgroundColor
         button.primaryHighlightBorderColor = style.highlighted.borderColor
-
-        button.secondaryNormalBackgroundColor = style.normal.backgroundColor
-        button.secondaryNormalBorderColor = style.normal.borderColor
-        button.secondaryTitleColor = style.normal.titleColor
-        button.secondaryHighlightBackgroundColor = style.highlighted.backgroundColor
-        button.secondaryHighlightBorderColor = style.highlighted.borderColor
     }
 }
 
