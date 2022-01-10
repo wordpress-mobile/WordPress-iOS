@@ -2,8 +2,12 @@ import UIKit
 
 class JetpackInstallPromptViewController: UIViewController {
     // MARK: - IBOutlets
-    @IBOutlet weak var installButton: UIButton!
-    @IBOutlet weak var noThanksButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var installButton: FancyButton!
+    @IBOutlet weak var noThanksButton: FancyButton!
+    @IBOutlet weak var learnMoreButton: FancyButton!
+    @IBOutlet weak var buttonsStackView: UIStackView!
 
     // MARK: - Properties
 
