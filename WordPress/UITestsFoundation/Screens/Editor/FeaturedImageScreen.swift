@@ -9,7 +9,8 @@ public class FeaturedImageScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ { $0.navigationBars.buttons["Remove Featured Image"] } ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

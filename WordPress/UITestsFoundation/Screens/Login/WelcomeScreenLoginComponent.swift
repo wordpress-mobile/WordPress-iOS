@@ -15,7 +15,8 @@ public class WelcomeScreenLoginComponent: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [emailLoginButtonGetter, siteAddressButtonGetter],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

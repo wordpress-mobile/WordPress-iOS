@@ -38,7 +38,8 @@ public class GetStartedScreen: ScreenObject {
                 emailTextFieldGetter,
                 helpButtonGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

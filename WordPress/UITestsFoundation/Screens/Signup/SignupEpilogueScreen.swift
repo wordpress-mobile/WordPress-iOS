@@ -6,7 +6,8 @@ public class SignupEpilogueScreen: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ { $0.staticTexts["New Account Header"] } ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

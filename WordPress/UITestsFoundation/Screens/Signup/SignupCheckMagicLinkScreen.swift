@@ -7,7 +7,8 @@ public class SignupCheckMagicLinkScreen: ScreenObject {
         try super.init(
             // swiftlint:disable:next opening_brace
             expectedElementGetters: [{ $0.buttons["Open Mail Button"] }],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
