@@ -350,7 +350,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
-
             presentJetpackInstallPrompt(for: blog, in: navigationController, onDismiss: onDismiss)
             return
         }
