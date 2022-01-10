@@ -264,21 +264,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     self.displayedCommentIndexPath = indexPath;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    UIViewController *detailViewController;
-
-    if ([Feature enabled:FeatureFlagNewCommentDetail]) {
-        self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
-                                                                                   isLastInList:[self isLastRow:indexPath]
-                                                                           managedObjectContext:[ContextManager sharedInstance].mainContext];
-        self.commentDetailViewController.delegate = self;
-         detailViewController = self.commentDetailViewController;
-    } else {
-        CommentViewController *vc   = [CommentViewController new];
-        vc.comment                  = comment;
-        detailViewController        = vc;
-    }
-
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
+                                                                               isLastInList:[self isLastRow:indexPath]
+                                                                       managedObjectContext:[ContextManager sharedInstance].mainContext];
+    self.commentDetailViewController.delegate = self;
+    [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
