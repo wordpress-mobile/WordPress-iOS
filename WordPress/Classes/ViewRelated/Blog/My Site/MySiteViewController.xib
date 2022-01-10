@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="containerView" destination="ipg-3I-gW6" id="7vc-ym-Tk6"/>
                 <outlet property="segmentedControl" destination="Kw9-5k-pSU" id="N7S-6X-8Nr"/>
+                <outlet property="segmentedControlContainerView" destination="ogs-P5-vac" id="foF-yM-5ds"/>
                 <outlet property="stackView" destination="Kbh-jP-Igg" id="wGb-EK-OtN"/>
                 <outlet property="view" destination="iN0-l3-epB" id="hJG-ot-fhZ"/>
             </connections>

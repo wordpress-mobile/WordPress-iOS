@@ -3,6 +3,7 @@ import WordPressAuthenticator
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var segmentedControlContainerView: UIView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var containerView: UIView!
 
@@ -55,6 +56,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         setupNavigationItem()
+        setupSegmentedControl()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
     }
@@ -84,6 +86,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func setupSegmentedControl() {
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
     }
 
     // MARK: - Navigation Item
