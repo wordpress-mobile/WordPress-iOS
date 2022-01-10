@@ -2,6 +2,28 @@ import UIKit
 import WordPressAuthenticator
 
 class JetpackInstallPromptViewController: UIViewController {
+    var starFieldView: StarFieldView = {
+        let config = StarFieldViewConfig(particleImage: JetpackPromptStyles.Stars.particleImage,
+                                         starColors: JetpackPromptStyles.Stars.colors)
+        let view = StarFieldView(with: config)
+        view.layer.masksToBounds = true
+        return view
+    }()
+
+    var gradientLayer: CALayer = {
+        let gradientLayer = CAGradientLayer()
+
+        // Start color is the background color with no alpha because if we use clear it will fade to black
+        // instead of just disappearing
+        let startColor = JetpackPromptStyles.backgroundColor.withAlphaComponent(0)
+        let endColor = JetpackPromptStyles.backgroundColor
+
+        gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
+        gradientLayer.locations = [0.0, 0.9]
+
+        return gradientLayer
+    }()
+
     // MARK: - IBOutlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backgroundView: UIView!
@@ -41,6 +63,12 @@ class JetpackInstallPromptViewController: UIViewController {
     }
 
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        starFieldView.frame = view.bounds
+        gradientLayer.frame = view.bounds
+    }
     // MARK: - Actions
 
     @IBAction func installTapped(_ sender: Any) {
