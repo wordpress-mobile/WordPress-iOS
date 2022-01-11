@@ -9,6 +9,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var post: ReaderPost?
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
+    private var headerView: ReaderDetailCommentsHeader?
 
     private var totalRows = 0
     private var hideButton = true
@@ -49,6 +50,11 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         self.totalComments = totalComments
         self.presentingViewController = presentingViewController
         self.buttonDelegate = buttonDelegate
+    }
+
+    func updateFollowButtonState(post: ReaderPost) {
+        self.post = post
+        headerView?.updateFollowButtonState(post: post)
     }
 
     // MARK: - Table Methods
@@ -94,6 +100,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         }
 
         header.configure(post: post, totalComments: totalComments, presentingViewController: presentingViewController)
+        headerView = header
         return header
     }
 

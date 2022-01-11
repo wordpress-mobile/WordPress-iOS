@@ -174,6 +174,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupFeaturedImage()
+        updateFollowButtonState()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -392,6 +393,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                              buttonDelegate: self)
 
         commentsTableView.reloadData()
+    }
+
+    private func updateFollowButtonState() {
+        guard let post = post else {
+            return
+        }
+
+        commentsTableViewDelegate.updateFollowButtonState(post: post)
     }
 
     deinit {
