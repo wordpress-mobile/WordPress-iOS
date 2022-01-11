@@ -92,7 +92,7 @@ extension PostsCardViewModel: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCompactCellIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
 
         configureCell(cell, at: indexPath)
 

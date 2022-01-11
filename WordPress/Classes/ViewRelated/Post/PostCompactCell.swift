@@ -204,3 +204,7 @@ extension PostCompactCell: GhostableView {
         static let opacity: Float = 0.5
     }
 }
+
+extension PostCompactCell: NibReusable {
+    static var defaultReuseID = "PostCompactCellIdentifier"
+}
