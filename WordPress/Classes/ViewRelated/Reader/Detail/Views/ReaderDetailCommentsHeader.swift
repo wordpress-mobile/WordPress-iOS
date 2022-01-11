@@ -2,20 +2,27 @@ import UIKit
 
 class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
+    // MARK: - Properties
+
     static let estimatedHeight: CGFloat = 80
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: UIButton!
+    private var post: ReaderPost?
 
-    private var followConversationEnabled = true {
+    private var totalComments = 0 {
+        didSet {
+            configureTitleLabel()
+        }
+    }
+
+    private var followConversationEnabled = false {
         didSet {
             followButton.isHidden = !FeatureFlag.followConversationPostDetails.enabled || !followConversationEnabled
         }
     }
 
-    private var isSubscribedComments: Bool = false {
-        didSet {
-            configureButton()
-        }
+    private var isSubscribedComments: Bool {
+        return post?.isSubscribedComments ?? false
     }
 
     override func awakeFromNib() {
@@ -23,10 +30,34 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureView()
     }
 
-    func configure(totalComments: Int, followConversationEnabled: Bool, isSubscribedComments: Bool) {
-        self.followConversationEnabled = followConversationEnabled
-        self.isSubscribedComments = isSubscribedComments
+    // MARK: - Configure
 
+    func configure(post: ReaderPost, totalComments: Int, presentingViewController: UIViewController) {
+        self.post = post
+        self.totalComments = totalComments
+        self.followConversationEnabled = post.commentsOpen && post.canSubscribeComments
+
+        configureButton()
+    }
+
+}
+
+// MARK: - Private Extension
+
+private extension ReaderDetailCommentsHeader {
+
+    func configureView() {
+        contentView.backgroundColor = .basicBackground
+        addBottomBorder(withColor: .divider)
+        configureTitle()
+    }
+
+    func configureTitle() {
+        titleLabel.textColor = .text
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
+    }
+
+    func configureTitleLabel() {
         titleLabel.text = {
             switch totalComments {
             case 0:
@@ -37,22 +68,6 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
                 return String(format: Titles.pluralCommentsFormat, totalComments)
             }
         }()
-    }
-
-}
-
-private extension ReaderDetailCommentsHeader {
-
-    func configureView() {
-        contentView.backgroundColor = .basicBackground
-        addBottomBorder(withColor: .divider)
-        configureTitle()
-        configureButton()
-    }
-
-    func configureTitle() {
-        titleLabel.textColor = .text
-        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
     }
 
     func configureButton() {
