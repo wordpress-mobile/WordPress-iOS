@@ -5,16 +5,25 @@ import UIKit
 /// This class handles showing posts from the database, syncing and interacting with them
 ///
 @objc class PostsCardViewController: UIViewController {
-    @objc var blog: Blog?
+    var blog: Blog
 
     private let postsTableView = IntrinsicTableView()
 
     private var viewModel: PostsCardViewModel!
 
+    @objc init(blog: Blog) {
+        self.blog = blog
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        viewModel = PostsCardViewModel(tableView: postsTableView, blog: blog!)
+        viewModel = PostsCardViewModel(tableView: postsTableView, blog: blog)
         viewModel.viewDidLoad()
     }
 
