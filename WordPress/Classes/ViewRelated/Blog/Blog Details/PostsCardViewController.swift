@@ -29,7 +29,7 @@ private extension PostsCardViewController {
     func configureView() {
         view.addSubview(postsTableView)
         postsTableView.translatesAutoresizingMaskIntoConstraints = false
-        postsTableView.pinSubviewToAllEdges(view)
+        view.pinSubviewToAllEdges(postsTableView)
         let postCompactCellNib = PostCompactCell.defaultNib
         postsTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
     }
