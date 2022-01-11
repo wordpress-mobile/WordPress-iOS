@@ -60,8 +60,8 @@ private extension PostsCardViewModel {
         let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
-        fetchRequest.fetchBatchSize = 3
-        fetchRequest.fetchLimit = 3
+        fetchRequest.fetchBatchSize = Constants.numberOfPosts
+        fetchRequest.fetchLimit = Constants.numberOfPosts
         return fetchRequest
     }
 
@@ -81,6 +81,10 @@ private extension PostsCardViewModel {
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         return filterSettings.currentPostListFilter().sortDescriptors
+    }
+
+    enum Constants {
+        static let numberOfPosts = 3
     }
 }
 
