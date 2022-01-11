@@ -93,6 +93,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func setupSegmentedControl() {
         segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
+
+        let segmentTitles = [
+            NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen"),
+            NSLocalizedString("Dashboard", comment: "Title for dashboard view on the My Site screen")
+        ]
+
+        segmentedControl.removeAllSegments()
+        for (index, title) in segmentTitles.enumerated() {
+            segmentedControl.insertSegment(withTitle: title, at: index, animated: false)
+        }
+        segmentedControl.selectedSegmentIndex = 0
     }
 
     // MARK: - Navigation Item
