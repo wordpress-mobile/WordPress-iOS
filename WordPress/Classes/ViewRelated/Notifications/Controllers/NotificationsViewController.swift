@@ -584,7 +584,7 @@ private extension NotificationsViewController {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .filterBarBackground
 
-        filterTabBar.items = Filter.allFilters
+        filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         updateFilterBarConstraints()
     }
@@ -1691,7 +1691,7 @@ private extension NotificationsViewController {
         }
     }
 
-    enum Filter: Int, FilterTabBarItem {
+    enum Filter: Int, FilterTabBarItem, CaseIterable {
         case none = 0
         case unread = 1
         case comment = 2
@@ -1770,7 +1770,6 @@ private extension NotificationsViewController {
         }
 
         static let sortKey = "timestamp"
-        static let allFilters = [Filter.none, .unread, .comment, .follow, .like]
     }
 
     enum Settings {
