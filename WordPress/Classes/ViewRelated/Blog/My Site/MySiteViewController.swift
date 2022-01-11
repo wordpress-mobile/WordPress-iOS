@@ -1,4 +1,5 @@
 import WordPressAuthenticator
+import UIKit
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
@@ -45,6 +46,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// Please keep this in mind when making modifications.
     ///
     private var blogDetailsViewController: BlogDetailsViewController?
+
+    private let blogDashboardViewController = BlogDashboardViewController()
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -180,6 +183,40 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         } failure: { (error) in
             finishSync()
         }
+    }
+
+    // MARK: - IBAction
+
+    @IBAction func segmentedControlValueChanged(_ sender: Any) {
+        guard let blog = blog else {
+            return
+        }
+
+        if segmentedControl.selectedSegmentIndex == 0 {
+
+            remove(blogDashboardViewController)
+
+            showBlogDetails(for: blog)
+        } else {
+            guard let blogDetailVC = blogDetailsViewController else {
+                return
+            }
+
+            remove(blogDetailVC)
+
+            embedChildInContainerView(blogDashboardViewController)
+        }
+    }
+
+    // MARK: - Child VC logic
+
+    private func embedChildInContainerView(_ child: UIViewController) {
+        addChild(child)
+        containerView.addSubview(child.view)
+        child.didMove(toParent: self)
+
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        containerView.pinSubviewToAllEdges(child.view)
     }
 
     // MARK: - No Sites UI logic
@@ -359,12 +396,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
-        addChild(blogDetailsViewController)
-        containerView.addSubview(blogDetailsViewController.view)
-        blogDetailsViewController.didMove(toParent: self)
-
-        blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        containerView.pinSubviewToAllEdges(blogDetailsViewController.view)
+        embedChildInContainerView(blogDetailsViewController)
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }

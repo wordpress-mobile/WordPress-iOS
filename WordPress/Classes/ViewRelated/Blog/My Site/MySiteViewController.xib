@@ -35,6 +35,9 @@
                                         <segment title="First"/>
                                         <segment title="Second"/>
                                     </segments>
+                                    <connections>
+                                        <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="Ln9-0U-TGG"/>
+                                    </connections>
                                 </segmentedControl>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
