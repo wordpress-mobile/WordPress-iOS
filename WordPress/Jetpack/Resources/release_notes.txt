@@ -1,13 +1,9 @@
-Two-step authentication now comes with extra security. You'll need to unlock your device to approve or deny notifications.
-We expanded the “Link To” setting for the image block to include “Media File” and “Attachment Page” options alongside the preexisting “Custom URL” option.
-We fixed an issue that made the interface crash when users copied and pasted lists from Microsoft Word.
+* [**] Video uploads: video upload is now limited to 5 minutes per video on free plans.
+* [*] Block editor: Give multi-line block names central alignment in inserter [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4343]
+* [**] Block editor: Fix missing translations by refactoring the editor initialization code [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4332]
+* [**] Block editor: Add Jetpack and Layout Grid translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4359]
+* [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
+* [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
 
-When you head over to My Site > Comments, you'll see a fresh look and even fresher comment details, including:
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
 
-- A sneak peek of the post title or parent comment, depending on whether the author left a comment on the post or replied to an existing comment.
-- Rich content so you can see each comment just as the author wrote it.
-- A share button for approved comments.
-- Users with Administrator or Editor roles can see the comment authors’ email and IP addresses.
-- Tappable web address to visit the author's URL (instead of their avatar image).
-
-Finally, we updated the UI for the Reply view, both minimized and fullscreen. Looking sharp!

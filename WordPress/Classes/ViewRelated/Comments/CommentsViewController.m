@@ -1,5 +1,4 @@
 #import "CommentsViewController.h"
-#import "CommentViewController.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
@@ -264,21 +263,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     self.displayedCommentIndexPath = indexPath;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    UIViewController *detailViewController;
-
-    if ([Feature enabled:FeatureFlagNewCommentDetail]) {
-        self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
-                                                                                   isLastInList:[self isLastRow:indexPath]
-                                                                           managedObjectContext:[ContextManager sharedInstance].mainContext];
-        self.commentDetailViewController.delegate = self;
-         detailViewController = self.commentDetailViewController;
-    } else {
-        CommentViewController *vc   = [CommentViewController new];
-        vc.comment                  = comment;
-        detailViewController        = vc;
-    }
-
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
+                                                                               isLastInList:[self isLastRow:indexPath]
+                                                                       managedObjectContext:[ContextManager sharedInstance].mainContext];
+    self.commentDetailViewController.delegate = self;
+    [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
@@ -511,6 +500,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    [self refreshNoResultsView];
+    
     __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -692,26 +683,20 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         return;
     }
 
-    if (self.noResultsViewController.view.window) {
-        // The view is already visible.  Nothing more to do.
-        [self adjustNoResultViewPlacement];
-        return;
-    }
-
     [self.noResultsViewController removeFromView];
     [self configureNoResults:self.noResultsViewController forNoConnection:NO];
-    
     [self addChildViewController:self.noResultsViewController];
     [self adjustNoResultViewPlacement];
-    [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    [self.tableView addSubview:self.noResultsViewController.view];
     
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 - (void)adjustNoResultViewPlacement
 {
-    // calling this too early results in wrong tableView frame used for initial state
-    if(self.noResultsViewController.view.window == nil) {
+    // calling this too early results in wrong tableView frame used for initial state.
+    // ensure that either the NRV or the table view is visible. Otherwise, skip the adjustment to prevent misplacements.
+    if (!self.noResultsViewController.view.window && !self.tableView.window) {
         return;
     }
 
@@ -769,19 +754,33 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
        attributedSubtitleConfiguration:nil
                                  image:@"wp-illustration-empty-results"
                          subtitleImage:nil
-                         accessoryView:nil];
+                         accessoryView:[self loadingAccessoryView]];
     
     viewController.delegate = self;
 }
 
 - (NSString *)noResultsTitle
 {
+    if (self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching comments...",
+                                 @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+    }
+
     return NSLocalizedString(@"No comments yet", @"Displayed when there are no comments in the Comments views.");
 }
 
 - (NSString *)retryButtonTitle
 {
     return NSLocalizedString(@"Retry", comment: "A prompt to attempt the failed network request again.");
+}
+
+- (UIView *)loadingAccessoryView
+{
+    if (self.syncHelper.isSyncing) {
+        return [NoResultsViewController loadingAccessoryView];
+    }
+
+    return nil;
 }
 
 #pragma mark - NoResultsViewControllerDelegate

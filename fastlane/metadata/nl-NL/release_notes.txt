@@ -1,0 +1,7 @@
+Nieuw jaar, nieuwe look! We hebben reactiethreads geüpdatet met een prachtig nieuw ontwerp voor auteurlabels, accessoires en deel-knoppen, en rij en antwoord-markering. We hebben enkele aanpassingen aangebracht aan de blokeditor.
+
+- Als je paragraafblokken aan het aanpassen bent, kan je specifieke tekst markeren in alle kleuren die je wilt.
+- Gloednieuwe galerijblokken nemen het nieuwe ontwerp vanzelf aan. Je kunt oude galerijen ook automatisch en probleemloos naar het nieuwe formaat aanpassen.
+- De editor scrolt nu automatisch, dus je ziet altijd wat je aan het typen bent. Geen verdwijnende tekst of giswerk meer.
+- Je ziet nu een deel van de reacties na je berichtinhoud in de Reader. Dit geeft je een voorproefje van de reacties die je hebt ontvangen zodat je sneller mee kunt doen in de conversatie.
+- We hebben een bug geplet die ervoor zorgde dat de achtergrondkleur niet zichtbaar was in gepreformatteerde blokken op sites die standaard thema’s gebruiken.

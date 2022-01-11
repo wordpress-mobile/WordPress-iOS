@@ -17,7 +17,11 @@ public class WelcomeScreen: ScreenObject {
     var logInButton: XCUIElement { logInButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [logInButtonGetter, signupButtonGetter], app: app)
+        try super.init(
+            expectedElementGetters: [logInButtonGetter, signupButtonGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func selectSignup() throws -> WelcomeScreenSignupComponent {
@@ -26,10 +30,10 @@ public class WelcomeScreen: ScreenObject {
         return try WelcomeScreenSignupComponent()
     }
 
-    public func selectLogin() -> WelcomeScreenLoginComponent {
+    public func selectLogin() throws -> WelcomeScreenLoginComponent {
         logInButton.tap()
 
-        return WelcomeScreenLoginComponent()
+        return try WelcomeScreenLoginComponent()
     }
 
     static func isLoaded() -> Bool {

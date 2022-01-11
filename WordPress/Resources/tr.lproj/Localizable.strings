@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 13:54:07+0000 */
+/* Translation-Revision-Date: 2021-12-21 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -40,10 +40,10 @@
 "%1$@ to fix threats." = "Tehditleri düzeltmek için %1$@.";
 
 /* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comment" = "%1$d Comment";
+"%1$d Comment" = "%1$d Yorum";
 
 /* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
-"%1$d Comments" = "%1$d Comments";
+"%1$d Comments" = "%1$d Yorum";
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
@@ -61,6 +61,9 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d görülmemiş yazı";
+
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s, %2$s olarak dönüştürüldü";
@@ -549,9 +552,6 @@ translators: Block name. %s: The localized block name */
 "Add image, or avatar, to represent this new account." = "Bu yeni hesabı temsil edecek görsel veya avatar ekleyin.";
 
 /* No comment provided by engineer. */
-"Add link" = "Bağlantı ekle";
-
-/* No comment provided by engineer. */
 "Add link text" = "Bağlantı metni ekle";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -910,7 +910,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Yazar";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -952,7 +953,7 @@ translators: Block name. %s: The localized block name */
 "Automatically share new posts to your social media to start bringing that audience over to your site." = "Bir kitleyi sitenize çekmeye başlamak için yeni gönderileri otomatik olarak sosyal medyanızda paylaşın.";
 
 /* Title of button that displays information about the other apps available from Automattic */
-"Automattic Family" = "Automattic Family";
+"Automattic Family" = "Automattic Ailesi";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Otomatik güncellemeler";
@@ -1013,6 +1014,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "En son yazınıza bakan kişileri gösteren çubuk grafik";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "İlk yorumu siz yapın";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "İlk yorum bırakan siz olun.";
@@ -1362,7 +1366,7 @@ translators: Block name. %s: The localized block name */
 "Check your site stats" = "Sitenizin istatistiklerine bakın";
 
 /* Title of a Quick Start Tour */
-"Check your site title" = "Check your site title";
+"Check your site title" = "Site başlığınızı kontrol edin";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Satın alımlar kontrol ediliyor…";
@@ -1398,7 +1402,7 @@ translators: Block name. %s: The localized block name */
 "Choose a new app icon" = "Yeni bir uygulama simgesi seçin";
 
 /* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Choose a site to open.";
+"Choose a site to open." = "Lütfen açmak için bir site seçin.";
 
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Bir tema seçin";
@@ -1407,7 +1411,7 @@ translators: Block name. %s: The localized block name */
 "Choose a time" = "Saat seçin";
 
 /* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Choose a unique site icon";
+"Choose a unique site icon" = "Benzersiz bir site simgesi seçin";
 
 /* No comment provided by engineer. */
 "Choose audio" = "Ses seç";
@@ -1585,7 +1589,8 @@ translators: Block name. %s: The localized block name */
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Bağlantı kurmaya başlamak için yorum yapın.";
 
-/* Filters Comments Notifications
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1598,6 +1603,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Yorumlar";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Yorumlar kapandı";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Yorum yapılan konu";
@@ -1627,13 +1635,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "Tamamlandı: Site istatistiklerini kontrol edin";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Completed: Check your site title";
+"Completed: Check your site title" = "Tamamlandı: Sitenizin başlığını kontrol edin";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "Tamamlandı: Bir tema seçin";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
+"Completed: Choose a unique site icon" = "Tamamlandı: Benzersiz bir site simgesi seçin";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Tamamlandı: Site kurulumuna devam edin";
@@ -1657,7 +1665,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "Tamamlandı: Site sayfalarını inceleyin";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Completed: Social sharing";
+"Completed: Social sharing" = "Tamamlandı: Sosyal paylaşım";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Tamamlandı: Sitenizi görüntüleyin";
@@ -1810,7 +1818,7 @@ translators: Block name. %s: The localized block name */
 "Copy Link to Comment" = "Bağlantıyı yoruma kopyalayın";
 
 /* translators: Copy URL from the clipboard, https://sample.url */
-"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
+"Copy URL from the clipboard, %s" = "URL'yi panodan kopyalayın, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "Bloğu kopyala";
@@ -2324,9 +2332,6 @@ translators: Block name. %s: The localized block name */
    User's Display Name */
 "Display Name" = "Görünen isim";
 
-/* No comment provided by engineer. */
-"Display post date" = "Yazı tarihini göster";
-
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Sitenizin bugüne kadarki istatistiklerini burada görebilirsiniz. WordPress uygulamasındaki site istatistiklerinizden yapılandırın.";
 
@@ -2338,6 +2343,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Tekrar yap";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Belge, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Belge: %@";
@@ -2464,6 +2472,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Bir görsel seçmek için çift dokunun";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Varsayılan yazı tipi boyutunu seçmek için iki kez dokunun";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Yazı tipi boyutunu seçmek için iki kez dokunun";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Seçeneği belirlemek için iki kez dokunun";
 
@@ -2496,7 +2510,7 @@ translators: Block name. %s: The localized block name */
 "Draft" = "Taslak";
 
 /* Description of a Quick Start Tour */
-"Draft and publish a post." = "Draft and publish a post.";
+"Draft and publish a post." = "Bir yazıyı taslak olarak yazın ve yayınlayın.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
@@ -2513,14 +2527,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Bloğu çoğalt";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "BAĞLANTIYI DÜZENLE";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Her blokun kendi ayarları vardır. Onları bulmak için bir bloka dokunun. Ayarları, ekranın altındaki araç çubuğunda görünür.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2651,9 +2663,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Embed caption. */
 "Embed caption. Empty" = "Açıklama göm. Boş";
-
-/* No comment provided by engineer. */
-"Embed link" = "Bağlantı göm";
 
 /* No comment provided by engineer. */
 "Embed media" = "Medya gömün";
@@ -3181,6 +3190,9 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Etiketi takip eder.";
 
+/* No comment provided by engineer. */
+"Font Size" = "Font Boyutu";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Futbol";
 
@@ -3212,7 +3224,7 @@ translators: Block name. %s: The localized block name */
 "From another device" = "Başka cihazdan";
 
 /* No comment provided by engineer. */
-"From clipboard" = "From clipboard";
+"From clipboard" = "Panodan";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "Bu cihazdan";
@@ -3256,6 +3268,9 @@ translators: Block name. %s: The localized block name */
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Önceden hazırlanmış çeşitli sayfa düzenleri arasından seçim yaparak başlayın. Veya boş bir sayfayla başlayın.";
+
+/* No comment provided by engineer. */
+"Get support" = "Destek alın";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Harekete geçin ve yazınızı paylaşarak yazınızın görüntülenme sayısını artırın.";
@@ -3547,9 +3562,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Görsel yazısı. %s";
 
-/* No comment provided by engineer. */
-"Image settings" = "Görsel ayarları";
-
 /* Hint for image title on image settings. */
 "Image title" = "Görsel başlığı";
 
@@ -3799,7 +3811,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack resimlerinizi optimize eder ve bunları ziyaretçilerinize en yakın sunucu konumundan sunar. Global içerik sağlama ağımızı kullanmak sitenizin yüklenme hızını artıracak.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "Her Yerden Katılın";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Bir sohbete katılın: takip ettiğiniz bloglardaki yazılara yorum yapın.";
@@ -3868,7 +3880,7 @@ translators: Block name. %s: The localized block name */
 "Learn more..." = "Daha fazlasını öğrenin...";
 
 /* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+"Learn the basics with a quick walk through." = "Hızlı bir şekilde temel bilgileri alın.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Sol";
@@ -3877,7 +3889,7 @@ translators: Block name. %s: The localized block name */
 "Legacy Icons" = "Eski Simgeler";
 
 /* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
-"Legal and More" = "Legal and More";
+"Legal and More" = "Yasal Bilgiler ve Daha Fazlası";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Size Yardımcı Olalım";
@@ -4157,6 +4169,9 @@ translators: Block name. %s: The localized block name */
 /* Marks a notification as unread */
 "Mark Unread" = "Okunmadı olarak işaretle";
 
+/* Marks comment as spam */
+"Mark as Spam" = "Spam Olarak İşaretle";
+
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Yapışkan olarak işaretle";
 
@@ -4279,9 +4294,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Minimum yükseklik";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Muhtelif güvenlik açığı";
 
@@ -4320,6 +4332,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "WordPress.com üzerinden daha fazlası";
+
+/* No comment provided by engineer. */
+"More support options" = "Daha fazla destek seçeneği";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "En Popüler Zaman";
@@ -4370,7 +4385,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Çöpe taşı";
 
 /* No comment provided by engineer. */
@@ -4429,7 +4445,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Gradyanı özelleştirme bölümüne gider";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "%s öğesini seçer";
 
 /* No comment provided by engineer. */
@@ -4575,6 +4592,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Yorum yok";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Henüz yorum yapılmamış";
 
@@ -5324,9 +5342,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "%1$@ tarafından %2$@ üzerinden";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Gönderi içerik ayarları";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Yazı oluşturma tarihi: %@";
 
@@ -5335,9 +5350,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Yazı karşıya yüklenemedi";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Gönderi meta ayarları";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Yazı çöpe taşındı.";
@@ -5620,7 +5632,7 @@ translators: Block name. %s: The localized block name */
 "Quick Start" = "Hızlı başla";
 
 /* Title for button allowing users to rate the app in the App Store */
-"Rate Us" = "Rate Us";
+"Rate Us" = "Bizi Değerlendirin";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "App Store üzerinden uygulamamızı derecelendirin";
@@ -6285,8 +6297,12 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Seçilen ortam uygun değil.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Seçilen: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Seçili: Varsayılan";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Farklı bir menü konumu seçmeniz mevcut menüde yaptığınız değişiklikleri yok edecek. Devam etmek istediğinize emin misiniz?";
@@ -6392,6 +6408,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Paylaş";
@@ -6412,7 +6429,7 @@ translators: Block name. %s: The localized block name */
 "Share link" = "Bağlantıyı paylaş";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
-"Share with Friends" = "Share with Friends";
+"Share with Friends" = "Arkadaşlarla paylaş";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6456,7 +6473,7 @@ translators: Block name. %s: The localized block name */
 "Show Related Posts" = "İlişkili yazıları göster";
 
 /* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Show me around";
+"Show me around" = "Bana etrafı göster";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6481,7 +6498,7 @@ translators: Block name. %s: The localized block name */
 "Shown" = "Gösterildi";
 
 /* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
+"Shown in your visitor's browser tab and other places online." = "Ziyaretçinizin tarayıcı sekmesinde ve diğer çevrimiçi yerlerde gösterilir.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Bloglara yorum yaptığınızda yorumlarınız herkese açık biçimde gösterilir.";
@@ -6645,7 +6662,7 @@ translators: Block name. %s: The localized block name */
 "Social" = "Sosyal";
 
 /* Title of a Quick Start Tour */
-"Social sharing" = "Social sharing";
+"Social sharing" = "Sosyal paylaşım";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Bazı blokların ek ayarları vardır. Daha fazla seçenek görüntülemek için blokun sağ alt kısmındaki ayarlar simgesine dokunun.";
@@ -6732,9 +6749,6 @@ translators: Block name. %s: The localized block name */
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Sırala";
-
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Sıralama ve filtreleme";
 
 /* Opens the Github Repository Web
    Title of button that displays the App's source code information */
@@ -6879,10 +6893,10 @@ translators: Block name. %s: The localized block name */
 "Switch to block editor" = "Blok düzenleyiciye geç";
 
 /* Message of the notice shown when toggling the HTML editor mode */
-"Switched to HTML mode" = "Switched to HTML mode";
+"Switched to HTML mode" = "HTML moduna geçildi";
 
 /* Message of the notice shown when toggling the Visual editor mode */
-"Switched to Visual mode" = "Switched to Visual mode";
+"Switched to Visual mode" = "Görsel moda geçildi";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Başlık 1 yazı tipi boyutuna geçer";
@@ -7107,6 +7121,9 @@ translators: Block name. %s: The localized block name */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Uygulama sunucu cevabını tanıyamadı. Lütfen sitenizin ayarlarını kontrol edin.";
 
 /* No comment provided by engineer. */
+"The basics" = "Temel bilgiler";
+
+/* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Bu sunucunun sertifikası geçersiz. “%@” taklidi yapan bir siteye bağlanıyor olabilirsiniz ki bu kişisel bilgilerinizin ele geçirilebilmesi açısından büyük bir risktir.\n\nSertifikaya güvenip devam etmek istiyor musunuz?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -7213,6 +7230,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "Bildirim ayarlarınız yüklenirken bir hata oluştu";
+
+/* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "Yorum düzenlenirken beklenmeyen bir hata oluştu";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Yorumunuz düzenlenirken beklenmeyen bir hata oluştu";
@@ -7820,7 +7840,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Görsel dosyaya yazılamıyor";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Onayı kaldır";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -8128,15 +8149,15 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Tümünü görüntüle";
 
-/* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "View All Comments";
-
 /* Button label for viewing a post */
 "View Post" = "Yazıyı göster";
 
 /* Action title. Opens the user's site in an in-app browser
    The menu item to select during a guided tour. */
 "View Site" = "Siteyi görüntüle";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Tüm yorumları görüntüle";
 
 /* Displays More Rows */
 "View all…" = "Tamamını görüntüle…";
@@ -8238,7 +8259,7 @@ translators: Block name. %s: The localized block name */
 "Waiting..." = "Bekliyor...";
 
 /* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
+"Want a little help managing this site with the app?" = "Bu siteyi uygulamayla yönetmek için biraz yardım ister misiniz?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8699,7 +8720,7 @@ translators: Block name. %s: The localized block name */
 "WordPress.org Plugin Page" = "WordPress.org eklenti sayfası";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "Bizimle Çalışın";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Ülkelere göre görünümlerini gösteren dünya haritası.";
@@ -8791,7 +8812,7 @@ translators: Block name. %s: The localized block name */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Bir bloka dokunup ardından bloku diğer blokların üstüne veya altına taşımak için blokun sol alt tarafında görünen yukarı ve aşağı oklara dokunarak blokların sırasını yeniden düzenleyebilirsiniz.";
 
 /* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "You can switch sites at any time.";
+"You can switch sites at any time." = "Siteleri istediğiniz zaman değiştirebilirsiniz.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Bunu, Sitem > Site Ayarları'ndan istediğiniz zaman güncelleyebilirsiniz.";

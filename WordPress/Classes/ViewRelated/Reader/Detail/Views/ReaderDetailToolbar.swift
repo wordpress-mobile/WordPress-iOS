@@ -98,7 +98,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        ReaderCommentAction().execute(post: post, origin: viewController)
+        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
     }
 
     @IBAction func didTapLike(_ sender: Any) {

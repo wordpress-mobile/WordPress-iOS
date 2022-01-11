@@ -44,14 +44,15 @@ public class LoginUsernamePasswordScreen: ScreenObject {
                 usernameTextFieldGetter,
                 passwordTextFieldGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
-    public func proceedWith(username: String, password: String) -> LoginEpilogueScreen {
+    public func proceedWith(username: String, password: String) throws -> LoginEpilogueScreen {
         fill(username: username, password: password)
 
-        return LoginEpilogueScreen()
+        return try LoginEpilogueScreen()
     }
 
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {

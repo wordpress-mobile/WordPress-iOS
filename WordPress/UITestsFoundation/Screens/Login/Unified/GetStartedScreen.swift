@@ -38,16 +38,17 @@ public class GetStartedScreen: ScreenObject {
                 emailTextFieldGetter,
                 helpButtonGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
-    public func proceedWith(email: String) -> PasswordScreen {
+    public func proceedWith(email: String) throws -> PasswordScreen {
         emailTextField.tap()
         emailTextField.typeText(email)
         continueButton.tap()
 
-        return PasswordScreen()
+        return try PasswordScreen()
     }
 
     public func goBackToPrologue() {

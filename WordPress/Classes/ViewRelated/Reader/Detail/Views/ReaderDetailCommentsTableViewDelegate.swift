@@ -2,21 +2,52 @@
 ///
 class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
 
-    // MARK: - Public Properties
+    // MARK: - Private Properties
 
-    var comments: [Comment] = [] {
+    private(set) var totalComments = 0
+    private var commentsEnabled = true
+    private var followingEnabled = true
+    private var isSubscribedComments = false
+    private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
+
+    private var totalRows = 0
+    private var hideButton = true
+
+    private var comments: [Comment] = [] {
         didSet {
-            // Add one for the button row.
-            totalRows = comments.count + 1
+            totalRows = {
+                // If there are no comments and commenting is closed, 1 empty cell.
+                if hideButton {
+                    return 1
+                }
+
+                // If there are no comments, 1 empty cell + 1 button.
+                if comments.count == 0 {
+                    return 2
+                }
+
+                // Otherwise add 1 for the button.
+                return comments.count + 1
+            }()
         }
     }
 
-    var totalComments = 0
-    weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
+    // MARK: - Public Methods
 
-    // MARK: - Private Properties
-
-    private var totalRows = 0
+    func updateWith(comments: [Comment] = [],
+                    totalComments: Int = 0,
+                    commentsEnabled: Bool = true,
+                    followingEnabled: Bool = true,
+                    isSubscribedComments: Bool = false,
+                    buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
+        self.commentsEnabled = commentsEnabled
+        self.followingEnabled = followingEnabled
+        hideButton = (comments.count == 0 && !commentsEnabled)
+        self.comments = comments
+        self.totalComments = totalComments
+        self.isSubscribedComments = isSubscribedComments
+        self.buttonDelegate = buttonDelegate
+    }
 
     // MARK: - Table Methods
 
@@ -29,19 +60,27 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == (totalRows - 1) {
+        if indexPath.row == (totalRows - 1) && !hideButton {
             return showCommentsButtonCell()
         }
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell,
-              let comment = comments[safe: indexPath.row] else {
-                  return UITableViewCell()
-              }
+        if let comment = comments[safe: indexPath.row] {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                return UITableViewCell()
+            }
 
-        cell.configureForPostDetails(with: comment) { _ in
-            tableView.performBatchUpdates({})
+            cell.configureForPostDetails(with: comment) { _ in
+                tableView.performBatchUpdates({})
+            }
+
+            return cell
         }
 
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderDetailNoCommentCell.defaultReuseID) as? ReaderDetailNoCommentCell else {
+            return UITableViewCell()
+        }
+
+        cell.titleLabel.text = commentsEnabled ? Constants.noComments : Constants.closedComments
         return cell
     }
 
@@ -50,9 +89,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        let titleFormat = totalComments == 1 ? Constants.singularCommentFormat : Constants.pluralCommentsFormat
-        header.titleLabel.text = String(format: titleFormat, totalComments)
-        header.addBottomBorder(withColor: .divider)
+        header.configure(totalComments: totalComments,
+                         followConversationEnabled: commentsEnabled && followingEnabled,
+                         isSubscribedComments: isSubscribedComments)
+
         return header
     }
 
@@ -70,15 +110,17 @@ private extension ReaderDetailCommentsTableViewDelegate {
 
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: Constants.buttonTitle, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
+        let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
+        cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
         cell.delegate = buttonDelegate
         return cell
     }
 
     struct Constants {
-        static let buttonTitle = NSLocalizedString("View All Comments", comment: "Title for button on the post details page to show all comments when tapped.")
-        static let singularCommentFormat = NSLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let pluralCommentsFormat = NSLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
+        static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
+        static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
+        static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
+        static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
 }

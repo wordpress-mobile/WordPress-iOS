@@ -434,6 +434,9 @@ extension MediaLibraryViewController: NoResultsViewControllerDelegate {
     }
 }
 
+// MARK: - User messages for video limits allowances
+extension MediaLibraryViewController: VideoLimitsAlertPresenter {}
+
 // MARK: - WPMediaPickerViewControllerDelegate
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
@@ -498,6 +501,9 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        if picker != self, !blog.canUploadAsset(asset) {
+            return true
+        }
         if let media = asset as? Media {
             return media.remoteStatus != .sync
         }
@@ -518,6 +524,11 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if picker != self, !blog.canUploadAsset(asset) {
+            presentVideoLimitExceededFromPicker(on: picker)
+            return false
+        }
+
         guard picker == self else {
             return true
         }
@@ -597,6 +608,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
+        guard picker == self else { return false }
+
         let nserror = error as NSError
         if let mediaLibrary = self.blog.media, !mediaLibrary.isEmpty {
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")

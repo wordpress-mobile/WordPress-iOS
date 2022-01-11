@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 16:37:39+0000 */
+/* Translation-Revision-Date: 2021-12-19 17:22:39+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -61,6 +61,9 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d articole nevăzute";
+
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s a fost transformat în %2$s";
@@ -387,7 +390,7 @@ translators: Block name. %s: The localized block name */
 "ADD IMAGE OR VIDEO" = "ADAUGĂ IMAGINE SAU VIDEO";
 
 /* No comment provided by engineer. */
-"ADD LINK" = "ADAUGĂ LEGĂTURĂ";
+"ADD LINK" = "ADAUGĂ O LEGĂTURĂ";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "ADAUGĂ VIDEO";
@@ -547,9 +550,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adaugă o imagine sau un avatar care să reprezinte acest cont nou.";
-
-/* No comment provided by engineer. */
-"Add link" = "Adaugă o legătură";
 
 /* No comment provided by engineer. */
 "Add link text" = "Adaugă text la legătură";
@@ -910,7 +910,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Autor";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -1013,6 +1014,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Diagramă cu bare care descrie vizitatorii ultimului articol";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Fii primul care comentează";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Fii primul care lasă un comentariu.";
@@ -1585,7 +1589,8 @@ translators: Block name. %s: The localized block name */
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Comentează pentru a crea conexiuni.";
 
-/* Filters Comments Notifications
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1598,6 +1603,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Comentarii";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Comentariile sunt închise";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Comentarii deschise";
@@ -2324,9 +2332,6 @@ translators: Block name. %s: The localized block name */
    User's Display Name */
 "Display Name" = "Nume de afișat";
 
-/* No comment provided by engineer. */
-"Display post date" = "Afișează data articolului";
-
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Afișează toate statisticile site-ului aici. Configurează statisticile site-ului în aplicația WordPress.";
 
@@ -2338,6 +2343,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Fă-o din nou";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Document, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Document: %@";
@@ -2464,6 +2472,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Atinge de două ori pentru a selecta o imagine";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Atinge de două ori pentru a selecta dimensiunea implicită pentru font";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Atinge de două ori pentru a selecta dimensiunea fontului";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Atinge de două ori pentru a selecta opțiunea";
 
@@ -2513,14 +2527,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Fă un duplicat al blocului";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDITEAZĂ LEGĂTURA";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Fiecare bloc are setări proprii. Pentru a le găsi, atinge un bloc. Setările lui vor apărea în bara de unelte din partea de jos a ecranului.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2654,9 +2666,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. Empty Embed caption. */
 "Embed caption. Empty" = "Înglobează subtitrarea. Nu există";
-
-/* No comment provided by engineer. */
-"Embed link" = "Înglobează legătura";
 
 /* No comment provided by engineer. */
 "Embed media" = "Înglobează media";
@@ -3184,6 +3193,9 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Urmărește eticheta.";
 
+/* No comment provided by engineer. */
+"Font Size" = "Dimensiune font";
+
 /* An example tag used in the login prologue screens. */
 "Football" = "Fotbal";
 
@@ -3259,6 +3271,9 @@ translators: Block name. %s: The localized block name */
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Începe și alege dintr-o mare varietate de aranjamente gata pregătite. Sau începe cu o pagină goală.";
+
+/* No comment provided by engineer. */
+"Get support" = "Obține suport";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Dă-i drumul la treabă și asigură-te că mărești numărul de vizualizări ale articolului tău prin partajarea lui.";
@@ -3549,9 +3564,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Text asociat imagine. %s";
-
-/* No comment provided by engineer. */
-"Image settings" = "Setări imagine";
 
 /* Hint for image title on image settings. */
 "Image title" = "Titlu imagine";
@@ -4160,6 +4172,9 @@ translators: Block name. %s: The localized block name */
 /* Marks a notification as unread */
 "Mark Unread" = "Marchează ca necitit";
 
+/* Marks comment as spam */
+"Mark as Spam" = "Marchează ca spam";
+
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Marchează ca reprezentativ";
 
@@ -4282,9 +4297,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Înălțime minimă";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Vulnerabilități diverse";
 
@@ -4323,6 +4335,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Mai multe pe WordPress.com";
+
+/* No comment provided by engineer. */
+"More support options" = "Mai multe opțiuni de suport";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Cea mai populară oră";
@@ -4373,7 +4388,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Aruncă la gunoi";
 
 /* No comment provided by engineer. */
@@ -4432,7 +4448,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navighează pentru a personaliza gradientul";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Navighează pentru a selecta %s";
 
 /* No comment provided by engineer. */
@@ -4578,6 +4595,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Niciun comentariu";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Niciun comentariu până acum";
 
@@ -5327,9 +5345,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Publicat de %1$@, din %2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Setări conținut articol";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Articol creat pe %@";
 
@@ -5338,9 +5353,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Articolul a eșuat la încărcare";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Setări metadate articol";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Articol mutat la gunoi.";
@@ -6288,8 +6300,12 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Media selectată este indisponibilă.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Selectat: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Selectat: implicit";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Selectarea unui alte locații pentru meniu va anula modificările pe care le-ai făcut în meniul actual. Sigur vrei să continui?";
@@ -6395,6 +6411,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Partajează";
@@ -6735,9 +6752,6 @@ translators: Block name. %s: The localized block name */
 /* Discussion Settings Title
    Settings: Comments Sort Order */
 "Sort By" = "Sortare după";
-
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Sortare și filtrare";
 
 /* Opens the Github Repository Web
    Title of button that displays the App's source code information */
@@ -7110,6 +7124,9 @@ translators: Block name. %s: The localized block name */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplicația nu poate recunoaște răspunsul dat de server. Te rog verifică configurarea site-ului tău.";
 
 /* No comment provided by engineer. */
+"The basics" = "De bază";
+
+/* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certificatul pentru acest server este invalid. E posibil să te conectezi la un server care pretinde doar că e \"%@\" ceea ce poate pune informațiile tale confidențiale în pericol.vvVrei să considerăm oricum valid certificatul?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -7216,6 +7233,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed after Notification Settings failed to load */
 "There has been a problem while loading your Notification Settings" = "A apărut o problemă în timpul încărcării setărilor pentru notificări";
+
+/* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "A fost o eroare neașteptată în timpul editării comentariului";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "A fost o eroare neașteptată în timpul editării comentariului tău";
@@ -7823,7 +7843,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Nu pot scrie imaginea în fișier";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Neaprobat";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -8131,15 +8152,15 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Vezi toate";
 
-/* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "Vezi toate comentariile";
-
 /* Button label for viewing a post */
 "View Post" = "Vezi articolul";
 
 /* Action title. Opens the user's site in an in-app browser
    The menu item to select during a guided tour. */
 "View Site" = "Vezi site-ul";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Vezi toate comentariile";
 
 /* Displays More Rows */
 "View all…" = "Vezi tot...";

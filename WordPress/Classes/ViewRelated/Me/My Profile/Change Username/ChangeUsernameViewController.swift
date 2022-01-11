@@ -3,6 +3,9 @@ import WordPressAuthenticator
 class ChangeUsernameViewController: SignupUsernameTableViewController {
     typealias CompletionBlock = (String?) -> Void
 
+    override var analyticsSource: String {
+        return "account_settings"
+    }
     private let viewModel: ChangeUsernameViewModel
     private let completionBlock: CompletionBlock
     private lazy var saveBarButtonItem: UIBarButtonItem = {
@@ -41,6 +44,8 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     override func startSearch(for searchTerm: String) {
         saveBarButtonItem.isEnabled = false
         viewModel.suggestUsernames(for: searchTerm, reloadingAllSections: false)
+
+        trackSearchPerformed()
     }
 }
 

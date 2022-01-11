@@ -163,7 +163,7 @@ class WeeklyRoundupDataProvider {
     /// Filters the sites that have the Weekly Roundup notification setting enabled.
     ///
     private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
-        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let noteService = NotificationSettingsService(managedObjectContext: context)
 
         noteService.getAllSettings { settings in
             let weeklyRoundupEnabledSites = sites.filter { site in
@@ -377,7 +377,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             }
         }
 
-        let dataProvider = WeeklyRoundupDataProvider(context: ContextManager.shared.mainContext, onError: onError)
+        let dataProvider = WeeklyRoundupDataProvider(context: ContextManager.shared.newDerivedContext(), onError: onError)
         var siteStats: [Blog: StatsSummaryData]? = nil
 
         let requestData = BlockOperation {
@@ -553,6 +553,7 @@ class WeeklyRoundupNotificationScheduler {
         let userInfo: [AnyHashable: Any] = [
             InteractiveNotificationsManager.blogIDKey: dotComID,
             InteractiveNotificationsManager.dateKey: periodEndDate,
+            PushNotificationsManager.Notification.typeKey: NotificationEventTracker.NotificationType.weeklyRoundup.rawValue
         ]
 
         scheduleNotification(

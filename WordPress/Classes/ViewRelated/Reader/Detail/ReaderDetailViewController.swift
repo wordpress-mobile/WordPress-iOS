@@ -45,7 +45,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
-    private var commentsTableViewDelegate: ReaderDetailCommentsTableViewDelegate?
+    private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
@@ -286,7 +286,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             ReaderCommentAction().execute(post: post,
                                           origin: self,
                                           promptToAddComment: false,
-                                          navigateToCommentID: commentID)
+                                          navigateToCommentID: commentID,
+                                          source: .postDetails)
         }
     }
 
@@ -390,20 +391,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-
-        guard totalComments > 0 else {
+        guard let post = post else {
+            DDLogError("Missing post when updating Reader post detail comments.")
             return
         }
 
-        // Set the table delegate here, after the totalComments check,
-        // to prevent the table from showing if there are no comments.
-        commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+        // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
 
-        commentsTableViewDelegate?.comments = comments
-        commentsTableViewDelegate?.totalComments = totalComments
-        commentsTableViewDelegate?.buttonDelegate = self
+        commentsTableViewDelegate.updateWith(comments: comments,
+                                             totalComments: totalComments,
+                                             commentsEnabled: post.commentsOpen,
+                                             followingEnabled: post.canSubscribeComments,
+                                             isSubscribedComments: post.isSubscribedComments,
+                                             buttonDelegate: self)
+
         commentsTableView.reloadData()
     }
 
@@ -527,6 +530,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
         commentsTableView.register(CommentContentTableViewCell.defaultNib,
                                    forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
+                                   forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
     }
 
     private func configureRelatedPosts() {
@@ -1007,6 +1012,10 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         guard let post = post else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: self)
+
+        ReaderCommentAction().execute(post: post,
+                                      origin: self,
+                                      promptToAddComment: commentsTableViewDelegate.totalComments == 0,
+                                      source: .postDetailsComments)
     }
 }

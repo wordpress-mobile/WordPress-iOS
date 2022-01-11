@@ -1,0 +1,6 @@
+En ce début d'année, vous avez pris la résolution de publier davantage de contenus sur votre site ? Nous avons réalisé quelques mises à jour sur l'éditeur de blocs afin de vous aider à remplir cet objectif.
+
+- Lorsque vous modifiez des blocs Paragraphe, vous pouvez surligner des passages spécifiques de la couleur de votre choix.
+- Vos nouveaux blocs Galerie suivront par défaut notre nouveau design. Vous pouvez aussi convertir automatiquement des galeries existantes au nouveau format, sans anicroche.
+- L'éditeur est désormais doté d'un défilement automatique, ce qui vous permet de toujours voir ce que vous tapez. Terminés, le texte qui disparaît et les devinettes.
+- Nous avons corrigé un bug qui empêchait l'affichage de la couleur d'arrière-plan sur les blocs préformatés pour les sites utilisant un thème standard. 

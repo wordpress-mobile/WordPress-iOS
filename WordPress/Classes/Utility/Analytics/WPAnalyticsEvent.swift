@@ -264,10 +264,15 @@ import Foundation
     // Notifications
     case notificationsPreviousTapped
     case notificationsNextTapped
+
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
     case sharingButtonsEditMoreButtonToggled
     case sharingButtonsLabelChanged
+
+    // Comment Sharing
+    case readerArticleCommentShared
+    case siteCommentsCommentShared
 
     // People
     case peopleFilterChanged
@@ -289,7 +294,13 @@ import Foundation
     // Preview WebKitView
     case previewWebKitViewDeviceChanged
 
+    // Add Site
     case addSiteAlertDisplayed
+
+    // Change Username
+    case changeUsernameSearchPerformed
+    case changeUsernameDisplayed
+    case changeUsernameDismissed
 
     /// A String that represents the event
     var value: String {
@@ -749,6 +760,12 @@ import Foundation
         case .sharingButtonsLabelChanged:
             return "sharing_buttons_label_changed"
 
+        // Comment Sharing
+        case .readerArticleCommentShared:
+            return "reader_article_comment_shared"
+        case .siteCommentsCommentShared:
+            return "site_comments_comment_shared"
+
         // People
         case .peopleFilterChanged:
             return "people_management_filter_changed"
@@ -782,6 +799,14 @@ import Foundation
 
         case .addSiteAlertDisplayed:
             return "add_site_alert_displayed"
+
+        // Change Username
+        case .changeUsernameSearchPerformed:
+            return "change_username_search_performed"
+        case .changeUsernameDisplayed:
+            return "change_username_displayed"
+        case .changeUsernameDismissed:
+            return "change_username_dismissed"
 
         } // END OF SWITCH
     }
