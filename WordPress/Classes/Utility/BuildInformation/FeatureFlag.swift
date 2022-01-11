@@ -73,7 +73,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .mySiteDashboard:
             return BuildConfiguration.current == .localDeveloper
         case .followConversationPostDetails:
-            return false
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
