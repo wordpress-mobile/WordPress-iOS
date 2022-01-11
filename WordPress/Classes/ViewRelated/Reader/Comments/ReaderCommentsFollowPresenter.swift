@@ -132,11 +132,11 @@ class ReaderCommentsFollowPresenter: NSObject {
     // MARK: - Notification Sheet
 
     @objc func showNotificationSheet(sourceBarButtonItem: UIBarButtonItem?) {
-        showNotificationSheet(sourceBarButtonItem: sourceBarButtonItem)
+        showBottomSheet(sourceBarButtonItem: sourceBarButtonItem)
     }
 
     func showNotificationSheet(sourceView: UIView?) {
-        showNotificationSheet(sourceView: sourceView)
+        showBottomSheet(sourceView: sourceView)
     }
 
 }
@@ -145,7 +145,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 
 private extension ReaderCommentsFollowPresenter {
 
-    func showNotificationSheet(sourceView: UIView? = nil, sourceBarButtonItem: UIBarButtonItem? = nil) {
+    func showBottomSheet(sourceView: UIView? = nil, sourceBarButtonItem: UIBarButtonItem? = nil) {
         let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
         let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
         bottomSheet.show(from: presentingViewController, sourceView: sourceView, sourceBarButtonItem: sourceBarButtonItem)
