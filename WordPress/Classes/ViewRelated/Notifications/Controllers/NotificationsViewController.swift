@@ -529,9 +529,10 @@ private extension NotificationsViewController {
     func updateNavigationItems() {
         let stackView = rightBarButtonStackView()
 
-//        if FeatureFlag.markAllNotificationsAsRead.enabled {
+        // TODO: Should we inject this for testability?
+        if FeatureFlag.markAllNotificationsAsRead.enabled {
             stackView.addArrangedSubview(markAllAsReadButton)
-//        }
+        }
 
         if shouldDisplaySettingsButton {
             stackView.addArrangedSubview(notificationSettingsButton)

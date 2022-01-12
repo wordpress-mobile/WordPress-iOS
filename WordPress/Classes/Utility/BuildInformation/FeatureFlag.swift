@@ -24,6 +24,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case commentThreadModerationMenu
     case mySiteDashboard
     case followConversationPostDetails
+    case markAllNotificationsAsRead
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -78,6 +79,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .followConversationPostDetails:
             return false
+        case .markAllNotificationsAsRead:
+            return false
+
         }
     }
 
@@ -148,6 +152,8 @@ extension FeatureFlag {
             return "My Site Dashboard"
         case .followConversationPostDetails:
             return "Follow Conversation from Post Details"
+        case .markAllNotificationsAsRead:
+            return "Mark Notifications As Read"
         }
     }
 
