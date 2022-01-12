@@ -45,6 +45,11 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
                                                                            presentingViewController: presentingViewController)
     }
 
+    func updateFollowButtonState(post: ReaderPost) {
+        self.post = post
+        configureButton()
+    }
+
 }
 
 // MARK: - Private Extension
