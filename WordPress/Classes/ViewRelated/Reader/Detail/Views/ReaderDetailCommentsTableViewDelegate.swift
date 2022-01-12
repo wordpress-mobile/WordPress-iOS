@@ -6,6 +6,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     private(set) var totalComments = 0
     private var commentsEnabled = true
+    private var followingEnabled = true
+    private var isSubscribedComments = false
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
 
     private var totalRows = 0
@@ -35,11 +37,15 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     func updateWith(comments: [Comment] = [],
                     totalComments: Int = 0,
                     commentsEnabled: Bool = true,
+                    followingEnabled: Bool = true,
+                    isSubscribedComments: Bool = false,
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
         self.commentsEnabled = commentsEnabled
+        self.followingEnabled = followingEnabled
         hideButton = (comments.count == 0 && !commentsEnabled)
         self.comments = comments
         self.totalComments = totalComments
+        self.isSubscribedComments = isSubscribedComments
         self.buttonDelegate = buttonDelegate
     }
 
@@ -83,18 +89,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        header.titleLabel.text = {
-            switch totalComments {
-            case 0:
-                return Constants.comments
-            case 1:
-                return String(format: Constants.singularCommentFormat, totalComments)
-            default:
-                return String(format: Constants.pluralCommentsFormat, totalComments)
-            }
-        }()
+        header.configure(totalComments: totalComments,
+                         followConversationEnabled: commentsEnabled && followingEnabled,
+                         isSubscribedComments: isSubscribedComments)
 
-        header.addBottomBorder(withColor: .divider)
         return header
     }
 
@@ -123,9 +121,6 @@ private extension ReaderDetailCommentsTableViewDelegate {
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
-        static let singularCommentFormat = NSLocalizedString("%1$d Comment", comment: "Singular label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let pluralCommentsFormat = NSLocalizedString("%1$d Comments", comment: "Plural label displaying number of comments. %1$d is a placeholder for the number of Comments.")
-        static let comments = NSLocalizedString("Comments", comment: "Comments table header label.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
 }

@@ -34,7 +34,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
                                             SuggestionsTableViewDelegate,
-                                            ReaderCommentsNotificationSheetDelegate>
+                                            ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -61,15 +61,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
-
+@property (nonatomic, strong) ReaderCommentsFollowPresenter *readerCommentsFollowPresenter;
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
 
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
-
-/// Caches the post subscription state. Used to revert subscription state when the update request fails.
-@property (nonatomic, assign) BOOL subscribedToPost;
 
 /// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
 @property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
@@ -316,9 +313,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] init];
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
-    };
-    headerView.onFollowConversationClick = ^{
-        [weakSelf handleFollowConversationButtonTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
@@ -567,11 +561,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
-- (BOOL)followViaNotificationsEnabled
-{
-    return [Feature enabled:FeatureFlagFollowConversationViaNotifications];
-}
-
 - (BOOL)newCommentThreadEnabled
 {
     return [Feature enabled:FeatureFlagNewCommentThread];
@@ -635,15 +624,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     return _cachedHeaderView;
-}
-
-// NOTE: remove this when the `followConversationViaNotifications` flag is removed.
-- (void)setSubscribedToPost:(BOOL)subscribedToPost {
-    if (self.postHeaderView) {
-        self.postHeaderView.isSubscribedToPost = subscribedToPost;
-    }
-
-    _subscribedToPost = subscribedToPost;
 }
 
 - (UIBarButtonItem *)followBarButtonItem
@@ -736,6 +716,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     _followCommentsService = [FollowCommentsService createServiceWith:_post];
+    _readerCommentsFollowPresenter = [[ReaderCommentsFollowPresenter alloc] initWithPost:_post delegate:self presentingViewController:self];
 }
 
 - (NSNumber *)siteID
@@ -826,34 +807,24 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             [self.postHeaderView setAvatarImage:image];
         }];
     }
-
-    // when the "follow via notifications" flag is enabled, the Follow button is moved into the navigation bar as a UIButtonBarItem.
-    self.postHeaderView.showsFollowConversationButton = self.canFollowConversation && ![self followViaNotificationsEnabled];
 }
 
 - (void)refreshFollowButton
 {
-    if (!self.canFollowConversation || ![self followViaNotificationsEnabled]) {
+    if (!self.canFollowConversation) {
         return;
     }
 
     self.navigationItem.rightBarButtonItem = self.post.isSubscribedComments ? self.subscriptionSettingsBarButtonItem : self.followBarButtonItem;
 }
 
-// NOTE: Remove this method once "follow via notifications" feature flag can be removed.
-// Subscription status is now available through ReaderPost's `isSubscribedComments` Boolean property.
 - (void)refreshSubscriptionStatusIfNeeded
 {
     __weak __typeof(self) weakSelf = self;
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
-        weakSelf.subscribedToPost = isSubscribed;
-
-        if ([self followViaNotificationsEnabled]) {
-            // update the ReaderPost button to keep it in-sync.
-            self.post.isSubscribedComments = isSubscribed;
-            [ContextManager.sharedInstance saveContext:self.post.managedObjectContext];
-        }
-
+        // update the ReaderPost button to keep it in-sync.
+        weakSelf.post.isSubscribedComments = isSubscribed;
+        [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
     }];
@@ -1102,13 +1073,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                      failure:failureBlock];
     }
     self.indexPathForCommentRepliedTo = nil;
-}
-
-- (void)subscriptionSettingsButtonTapped
-{
-    [self showNotificationSheetWithNotificationsEnabled:self.post.receivesCommentNotifications
-                                               delegate:self
-                                    sourceBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
 
 - (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
@@ -1564,144 +1528,30 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+#pragma mark - ReaderCommentsFollowPresenterDelegate Methods
 
-#pragma mark - ReaderCommentsNotificationSheet Delegate Methods
-
-- (void)didToggleNotificationSwitch:(BOOL)isOn completion:(void (^)(BOOL))completion
+- (void)followConversationCompleteWithSuccess:(BOOL)success post:(ReaderPost *)post
 {
-    [self handleNotificationsButtonTappedWithUndo:NO completion:completion];
+    self.post = post;
+    [self refreshFollowButton];
 }
 
-- (void)didTapUnfollowConversation
+- (void)toggleNotificationCompleteWithSuccess:(BOOL)success post:(ReaderPost *)post
 {
-    [self handleFollowConversationButtonTapped];
+    self.post = post;
 }
 
-#pragma mark - PostHeaderView helpers
+#pragma mark - Nav bar button helpers
 
 - (void)handleFollowConversationButtonTapped
 {
-    __typeof(self) __weak weakSelf = self;
-
-    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
-    [generator prepare];
-
-    // Keep previous subscription status in case of failure
-    BOOL oldIsSubscribed = self.subscribedToPost;
-    BOOL newIsSubscribed = !oldIsSubscribed;
-
-    // Optimistically toggle subscription status
-    self.subscribedToPost = newIsSubscribed;
-
-    // Define success block
-    void (^successBlock)(BOOL taskSucceeded) = ^void(BOOL taskSucceeded) {
-        if (taskSucceeded == NO) {
-            NSString *title = newIsSubscribed
-                ? NSLocalizedString(@"Unable to follow conversation", @"The app failed to subscribe to the comments for the post")
-                : NSLocalizedString(@"Failed to unfollow conversation", @"The app failed to unsubscribe from the comments for the post");
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
-                [weakSelf displayNoticeWithTitle:title message:nil];
-
-                // The task failed, fall back to the old subscription status
-                self.subscribedToPost = oldIsSubscribed;
-            });
-        } else {
-            NSString *title = newIsSubscribed
-                ? NSLocalizedString(@"Successfully followed conversation", @"The app successfully subscribed to the comments for the post")
-                : NSLocalizedString(@"Successfully unfollowed conversation", @"The app successfully unsubscribed from the comments for the post");
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // update ReaderPost when the subscription process has succeeded.
-                weakSelf.post.isSubscribedComments = newIsSubscribed;
-                [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
-
-                [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
-
-                if ([self followViaNotificationsEnabled]) {
-                    [weakSelf refreshFollowButton];
-
-                    // only show the new notice with undo option when the user intends to subscribe.
-                    if (newIsSubscribed) {
-                        [weakSelf displayActionableNoticeWithTitle:NSLocalizedString(@"Following this conversation",
-                                                                                     @"The app successfully subscribed to the comments for the post")
-                                                           message:NSLocalizedString(@"Enable in-app notifications?",
-                                                                                     @"Hint for the action button that enables notification for new comments")
-                                                       actionTitle:NSLocalizedString(@"Enable",
-                                                                                     @"Button title to enable notifications for new comments")
-                                                     actionHandler:^(BOOL accepted) {
-                            [weakSelf handleNotificationsButtonTappedWithUndo:YES completion:nil];
-                        }];
-                        return;
-                    }
-                }
-
-                [weakSelf displayNoticeWithTitle:title message:nil];
-            });
-        }
-    };
-
-    // Define failure block
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        DDLogError(@"Error toggling subscription status: %@", error);
-
-        NSString *title = newIsSubscribed
-            ? NSLocalizedString(@"Could not subscribe to comments", "The app failed to subscribe to the comments for the post")
-            : NSLocalizedString(@"Could not unsubscribe from comments", "The app failed to unsubscribe from the comments for the post");
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [generator notificationOccurred:UINotificationFeedbackTypeError];
-            [weakSelf displayNoticeWithTitle:title message:nil];
-
-            // If the request fails, fall back to the old subscription status
-            weakSelf.subscribedToPost = oldIsSubscribed;
-        });
-    };
-
-    // Call the service to toggle the subscription status
-    [self.followCommentsService toggleSubscribed:oldIsSubscribed
-                                         success:successBlock
-                                         failure:failureBlock];
+    [self.readerCommentsFollowPresenter handleFollowConversationButtonTapped];
 }
 
-/// Toggles the state of comment subscription notifications. When enabled, the user will receive in-app notifications for new comments.
-///
-/// @param canUndo Boolean. When true, this provides a way for the user to revert their actions.
-- (void)handleNotificationsButtonTappedWithUndo:(BOOL)canUndo completion:(void (^ _Nullable)(BOOL))completion
+- (void)subscriptionSettingsButtonTapped
 {
-    BOOL desiredState = !self.post.receivesCommentNotifications;
-    PostSubscriptionAction action = desiredState ? PostSubscriptionActionEnableNotification : PostSubscriptionActionDisableNotification;
-
-    __weak __typeof(self) weakSelf = self;
-    NSString* (^noticeTitle)(BOOL) = ^NSString* (BOOL success) {
-        return [weakSelf noticeTitleForAction:action success:success];
-    };
-
-    [self.followCommentsService toggleNotificationSettings:desiredState success:^{
-        if (completion) {
-            completion(YES);
-        }
-
-        if (!canUndo) {
-            [weakSelf displayNoticeWithTitle:noticeTitle(YES) message:nil];
-            return;
-        }
-
-        // show the undo notice with action button.
-        NSString *undoActionTitle = NSLocalizedString(@"Undo", @"Button title. Reverts the previous notification operation");
-        [weakSelf displayActionableNoticeWithTitle:noticeTitle(YES) message:nil actionTitle:undoActionTitle actionHandler:^(BOOL accepted) {
-            [weakSelf handleNotificationsButtonTappedWithUndo:NO completion:nil];
-        }];
-
-    } failure:^(NSError * _Nullable error) {
-        [weakSelf displayNoticeWithTitle:noticeTitle(NO) message:nil];
-        if (completion) {
-            completion(NO);
-        }
-    }];
+    [self.readerCommentsFollowPresenter showNotificationSheetWithSourceBarButtonItem:self.navigationItem.rightBarButtonItem];
 }
-
 
 #pragma mark - UITextViewDelegate methods
 
@@ -1717,7 +1567,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     BOOL showsSuggestions = [self.suggestionsTableView showSuggestionsForWord:word];
     self.tapOffKeyboardGesture.enabled = !showsSuggestions;
 }
-
 
 - (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
 {

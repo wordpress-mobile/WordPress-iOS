@@ -391,14 +391,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
+        guard let post = post else {
+            DDLogError("Missing post when updating Reader post detail comments.")
+            return
+        }
+
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
 
         commentsTableViewDelegate.updateWith(comments: comments,
-                                              totalComments: totalComments,
-                                              commentsEnabled: toolbar.commentButton.isEnabled,
-                                              buttonDelegate: self)
+                                             totalComments: totalComments,
+                                             commentsEnabled: post.commentsOpen,
+                                             followingEnabled: post.canSubscribeComments,
+                                             isSubscribedComments: post.isSubscribedComments,
+                                             buttonDelegate: self)
+
         commentsTableView.reloadData()
     }
 

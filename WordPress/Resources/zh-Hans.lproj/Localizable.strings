@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-08 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-12-21 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -1016,7 +1016,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "描述您最近文章的访客数的柱形图";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "成为第一个发表评论的用户";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "率先发表评论。";
@@ -1605,7 +1605,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "评论";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "评论功能已关闭";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "评论于";
@@ -2345,7 +2345,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "再次尝试";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "文档，%@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "文档：%@";
@@ -2473,10 +2473,10 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "轻点两次以选择图片";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "轻按两下选择默认字体大小";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "轻按两下选择字体大小";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "轻点两下以选择选项";
@@ -3191,7 +3191,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "关注标签。";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "字体大小";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "足球";
@@ -3270,7 +3270,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "从种类繁多的预设页面布局中选择心仪的布局，开始打造自己的页面。 或者，您也可以从一个空白页面开始。";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "获取支持";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
@@ -4170,7 +4170,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "标为未读";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "标记为垃圾信息";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "标记为置顶";
@@ -4334,7 +4334,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "WordPress.com 的更多内容";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "更多支持选项";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "人气最高的时间";
@@ -6302,7 +6302,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "已选择：%s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "已选：默认";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "选择其他菜单位置将放弃您对当前菜单所做的更改。是否确定要继续？";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "应用程序无法识别服务器响应，请检查您的站点配置。";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "基础知识";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此服务器的证书无效。您所连接的服务器伪装成了“%@”，这可能会给您的凭证信息带来危险。\n\n仍然信任此证书吗？";
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "加载“通知设置”时出现问题";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "编辑评论时发生意外错误";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "编辑您的评论时出现意外错误";

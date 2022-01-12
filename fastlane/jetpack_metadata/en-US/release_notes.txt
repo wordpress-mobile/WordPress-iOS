@@ -1,6 +1,6 @@
-- We've made it easier to see when there are new blocks available for use on your site
-- You can now highlight text using the "mark" HTML tag, as well as change the text and background color of the Search block button. Shiny!
-- We've hidden HTML tags in post titles when you're checking out your stats.
-- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
-- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
-- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
+Made a New Year's resolution to publish more content on your site? We made a few updates to the Block Editor to help you do just that.
+
+- When you're editing Paragraph blocks, you can highlight specific text in any color you'd like.
+- Brand-new Gallery blocks will default to the new design. You can also auto-convert any old galleries to the new format without a hitch.
+- The editor now auto-scrolls, so you can always see what you're typing. No more disappearing text, no more guesswork.
+- We squashed a bug where the background color wasn't showing up for pre-formatted blocks on sites that use standard themes.

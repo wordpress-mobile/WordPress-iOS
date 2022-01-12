@@ -1,0 +1,6 @@
+Hast Du Dir für das neue Jahr vorgenommen, mehr Inhalte auf Ihrer Website zu veröffentlichen? Wir haben den Block-Editor verbessert, um Dir dabei zu helfen. 
+
+- Text in Absätzen kann nun in beliebigen Farben hervorgehoben werden. 
+- Neue Galerieblöcke verwenden standardmäßig das neue Design. Alte Galerien kannst Du problemlos in das neue Format konvertieren lassen. 
+- Der Editor scrollt jetzt automatisch, so dass Du immer sehen kannst, was Du gerade eingibst. Kein verschwindender Text. Kein Rätselraten mehr. 
+- Wir haben einen Fehler behoben, bei dem die Hintergrundfarbe für vorformatierte Blöcke auf Websites mit Standarddesigns nicht angezeigt wurde.

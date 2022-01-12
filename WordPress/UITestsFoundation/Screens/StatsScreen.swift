@@ -19,7 +19,8 @@ public class StatsScreen: ScreenObject {
         try super.init(
             // swiftlint:disable:next opening_brace
             expectedElementGetters: [{ $0.otherElements.firstMatch }],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
