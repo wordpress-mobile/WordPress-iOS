@@ -3,6 +3,20 @@ import UIKit
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
+    private enum Section: Int, CaseIterable {
+        case siteMenu
+        case dashboard
+
+        var title: String {
+            switch self {
+            case .siteMenu:
+                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
+            case .dashboard:
+                return NSLocalizedString("Dashboard", comment: "Title for dashboard view on the My Site screen")
+            }
+        }
+    }
+
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var segmentedControlContainerView: UIView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -94,14 +108,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func setupSegmentedControl() {
         segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
 
-        let segmentTitles = [
-            NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen"),
-            NSLocalizedString("Dashboard", comment: "Title for dashboard view on the My Site screen")
-        ]
-
         segmentedControl.removeAllSegments()
-        for (index, title) in segmentTitles.enumerated() {
-            segmentedControl.insertSegment(withTitle: title, at: index, animated: false)
+        Section.allCases.forEach { section in
+            segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
         }
         segmentedControl.selectedSegmentIndex = 0
     }
@@ -199,22 +208,20 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - IBAction
 
     @IBAction func segmentedControlValueChanged(_ sender: Any) {
-        guard let blog = blog else {
+        guard let blog = blog,
+              let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
             return
         }
 
-        if segmentedControl.selectedSegmentIndex == 0 {
-
+        switch section {
+        case .siteMenu:
             remove(blogDashboardViewController)
-
             showBlogDetails(for: blog)
-        } else {
+        case .dashboard:
             guard let blogDetailVC = blogDetailsViewController else {
                 return
             }
-
             remove(blogDetailVC)
-
             embedChildInContainerView(blogDashboardViewController)
         }
     }
