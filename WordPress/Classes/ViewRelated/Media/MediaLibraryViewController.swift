@@ -522,19 +522,15 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
     }
 
-    @available(iOS 14.0, *)
-    private static let referenceHeader: DeviceMediaPermissionsHeader = {
-        let header = DeviceMediaPermissionsHeader(frame: .zero)
-        header.translatesAutoresizingMaskIntoConstraints = false
-        return header
-    }()
-
     func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
         guard #available(iOS 14.0, *) else {
             return .zero
         }
 
-        return Self.referenceHeader.referenceSizeInView(picker.view)
+        let header = DeviceMediaPermissionsHeader()
+        header.translatesAutoresizingMaskIntoConstraints = false
+
+        return header.referenceSizeInView(picker.view)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
