@@ -70,10 +70,11 @@ class ReaderTabViewController: UIViewController {
 
     func setupNavigationButtons() {
         // Settings Button
-        let settingsButton = UIBarButtonItem(image: UIImage.gridicon(.cog),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(didTapSettingsButton))
+        let settingsButton: UIButton = UIButton.init(type: .custom)
+        settingsButton.setImage(.gridicon(.cog), for: .normal)
+        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.contentEdgeInsets = .zero
         settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
 
         // Search Button
@@ -81,10 +82,12 @@ class ReaderTabViewController: UIViewController {
         searchButton.setImage(.gridicon(.search), for: .normal)
         searchButton.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
+        searchButton.contentEdgeInsets = .zero
 
-        let searchBarButton = UIBarButtonItem(customView: searchButton)
-
-        navigationItem.rightBarButtonItems = [searchBarButton, settingsButton]
+        let stackView = DoubleBarControlConfigurer.stackView(with: settingsButton, rightControl: searchButton)
+        let rightBarButton = UIBarButtonItem(customView: stackView)
+        navigationItem.setRightBarButton(rightBarButton, animated: false)
     }
 
     override func loadView() {

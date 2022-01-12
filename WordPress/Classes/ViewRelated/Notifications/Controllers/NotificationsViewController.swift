@@ -527,46 +527,15 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        let stackView = rightBarButtonStackView()
-
-        // TODO: Should we inject this for testability?
-        if FeatureFlag.markAllNotificationsAsRead.enabled {
-            stackView.addArrangedSubview(markAllAsReadButton)
-        }
-
-        if shouldDisplaySettingsButton {
-            stackView.addArrangedSubview(notificationSettingsButton)
-        }
+        // TODO: Should we inject `FeatureFlag` for testability?
+        let stackView = DoubleBarControlConfigurer.stackView(
+            with: FeatureFlag.markAllNotificationsAsRead.enabled ? markAllAsReadButton : nil,
+            rightControl: shouldDisplaySettingsButton ? notificationSettingsButton : nil
+        )
 
         let rightBarButton = UIBarButtonItem(customView: stackView)
         navigationItem.setRightBarButton(rightBarButton, animated: false)
-
-        setupBarButtonConstraints()
     }
-
-    func rightBarButtonStackView() -> UIStackView {
-        let stackView = UIStackView()
-        stackView.distribution = .equalSpacing
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.spacing = 0
-        return stackView
-    }
-
-    func setupBarButtonConstraints() {
-        notificationSettingsButton.translatesAutoresizingMaskIntoConstraints = false
-        markAllAsReadButton.translatesAutoresizingMaskIntoConstraints = false
-
-        // TODO: Check if a common/global constant exists
-        let minimumTappableLength: CGFloat = 44
-        NSLayoutConstraint.activate([
-            notificationSettingsButton.widthAnchor.constraint(equalToConstant: minimumTappableLength),
-            notificationSettingsButton.heightAnchor.constraint(equalToConstant: minimumTappableLength),
-            markAllAsReadButton.widthAnchor.constraint(equalToConstant: minimumTappableLength),
-            markAllAsReadButton.heightAnchor.constraint(equalToConstant: minimumTappableLength)
-        ])
-    }
-
 
     @objc func closeNotificationSettings() {
         dismiss(animated: true, completion: nil)
