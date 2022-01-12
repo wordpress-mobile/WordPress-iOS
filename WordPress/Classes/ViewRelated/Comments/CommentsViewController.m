@@ -199,7 +199,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return UITableViewAutomaticDimension;
 }
 
-// configureCell:atIndexPath:
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ListTableViewCell *cell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier
