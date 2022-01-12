@@ -85,11 +85,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 #pragma mark - Configuration
 
-- (BOOL)usesUnifiedList
-{
-    return [Feature enabled:FeatureFlagUnifiedCommentsAndNotificationsList];
-}
-
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
