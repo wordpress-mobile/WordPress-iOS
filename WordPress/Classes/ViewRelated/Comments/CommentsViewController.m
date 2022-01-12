@@ -172,6 +172,23 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return ListTableHeaderView.estimatedRowHeight;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    // fetch the section information
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
+    if (!sectionInfo) {
+        return nil;
+    }
+
+    ListTableHeaderView *headerView = (ListTableHeaderView *)[self.tableView dequeueReusableHeaderFooterViewWithIdentifier:ListTableHeaderView.reuseIdentifier];
+    if (!headerView) {
+        headerView = [[ListTableHeaderView alloc] initWithReuseIdentifier:ListTableHeaderView.reuseIdentifier];
+    }
+
+    headerView.title = [Comment descriptionForSectionIdentifier:sectionInfo.name];
+    return headerView;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ListTableViewCell.estimatedRowHeight;
