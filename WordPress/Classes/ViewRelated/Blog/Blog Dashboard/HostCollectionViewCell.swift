@@ -7,6 +7,10 @@ protocol Hostable {
     var hostedView: Content? { get set }
 }
 
+/// A generic UICollectionViewCell that hosts a SwiftUI view.
+///
+/// Create a HostCollectionViewCell when you want to integrate SwiftUI views into a UIKit view hierarchy.
+/// At creation time, specify the SwiftUI view you want to use as the content view for this cell.
 class HostCollectionViewCell<Content>: UICollectionViewCell, Hostable where Content: View {
 
     var hostController: UIHostingController<Content>?
