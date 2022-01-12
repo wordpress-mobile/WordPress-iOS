@@ -192,6 +192,7 @@ class WeekdaysHeaderView: UIStackView {
             label.textAlignment = .center
             label.font = UIFont.preferredFont(forTextStyle: .caption1)
             label.textColor = .neutral(.shade30)
+            label.isAccessibilityElement = false
             return label
         }))
         self.distribution = .fillEqually

@@ -287,7 +287,7 @@ extension DateCell {
 
         dateLabel.text = state.text
 
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
+        dateFormatter.setLocalizedDateFormatFromTemplate("EEE MMM d, yyyy")
         dateLabel.accessibilityLabel = dateFormatter.string(from: state.date)
         dateLabel.accessibilityTraits = .button
 
