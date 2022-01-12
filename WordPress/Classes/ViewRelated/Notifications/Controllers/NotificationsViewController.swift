@@ -4,6 +4,7 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import Gridicons
+import UIKit
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -27,12 +28,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
-
-    /// The unified list requires an extra 10pt space on top of the list, but returns to the original padding
-    /// while scrolled and stickied. This should be removed once the unified list is fully rolled out.
-    /// See: https://git.io/JBQlU
-    ///
-    @IBOutlet private weak var filterTabBarBottomConstraint: NSLayoutConstraint!
 
     /// Inline Prompt Header View
     ///
@@ -103,19 +98,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return button
     }()
 
-    /// Convenience property that stores feature flag value for unified list.
-    /// This should be removed once the feature is fully rolled out.
-    private var usesUnifiedList: Bool = FeatureFlag.unifiedCommentsAndNotificationsList.enabled {
-        didSet {
-            // Since this view controller is the root view controller for notifications tab, we need to check whether
-            // the value has changed in `viewWillAppear`. If so, reload the table view to use the correct design.
-            if usesUnifiedList != oldValue {
-                reloadTableViewPreservingSelection()
-                updateFilterBarConstraints()
-            }
-        }
-    }
-
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -181,10 +163,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             jetpackLoginViewController?.view.removeFromSuperview()
             jetpackLoginViewController?.removeFromParent()
         }
-
-        // Refresh feature flag value for unified list.
-        // This should be removed when the feature is fully rolled out.
-        usesUnifiedList = FeatureFlag.unifiedCommentsAndNotificationsList.enabled
 
         showNoResultsViewIfNeeded()
         selectFirstNotificationIfAppropriate()
@@ -320,20 +298,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
+        guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
+              let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView else {
             return nil
         }
 
-        if usesUnifiedList,
-           let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView {
-            headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-            return headerView
-        }
-
-        let headerView = NoteTableHeaderView.makeFromNib()
         headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-        headerView.separatorColor = tableView.separatorColor
-
         return headerView
     }
 
@@ -348,17 +318,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseIdentifier = usesUnifiedList ? ListTableViewCell.defaultReuseID : NoteTableViewCell.reuseIdentifier()
-        let expectedType = usesUnifiedList ? ListTableViewCell.self : NoteTableViewCell.self
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-
-        guard type(of: cell) == expectedType else {
-            DDLogError("Error getting Notification table cell.")
-            return .init()
-        }
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
         configureCell(cell, at: indexPath)
-
         return cell
     }
 
@@ -531,16 +492,9 @@ private extension NotificationsViewController {
     }
 
     func setupTableView() {
-        // Since this view controller is a root view controller for the notifications tab, both `NoteTableViewCell` and the new List components
-        // need to be registered to handle feature flag changes. When the feature is fully rolled out, let's remove NoteTableViewCell.
-
-        // Register unified list components.
+        // Register the cells
         tableView.register(ListTableHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ListTableHeaderView.defaultReuseID)
         tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
-
-        // Register the cells
-        let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: Bundle.main)
-        tableView.register(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
@@ -582,22 +536,8 @@ private extension NotificationsViewController {
 
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.superview?.backgroundColor = .filterBarBackground
-
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
-        updateFilterBarConstraints()
-    }
-
-    /// If notifications are displayed with the new unified list, add an extra space below the filter tab bar.
-    /// Once unified list is fully rolled out, this should be applied in Notifications.storyboard instead.
-    /// See: https://git.io/JBQlU
-    func updateFilterBarConstraints() {
-        filterTabBarBottomConstraint.constant = usesUnifiedList ? Constants.filterTabBarBottomSpace : 0
-
-        // With the 10pt bottom padding addition, ensure that the extra padding has the same background color
-        // as the table header cell. NOTE: Move this line to `setupFilterBar` once the feature flag is removed.
-        filterTabBar.superview?.backgroundColor = usesUnifiedList ? .systemBackground : .filterBarBackground
     }
 }
 
@@ -1135,51 +1075,24 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-        // For that reason, we draw our own separators.
-        //
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+              let cell = cell as? ListTableViewCell else {
             return
         }
+
+        cell.configureWithNotification(note)
 
         let deletionRequest = deletionRequestForNoteWithID(note.objectID)
         let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        // configure unified list cell if the feature flag is enabled.
-        if usesUnifiedList, let cell = cell as? ListTableViewCell {
-            cell.configureWithNotification(note)
-
-            // handle undo overlays
-            cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
-                self?.cancelDeletionRequestForNoteWithID(note.objectID)
-            }
-
-            // additional configurations
-            cell.showsBottomSeparator = !isLastRow
-            cell.accessibilityHint = Self.accessibilityHint(for: note)
-
-            return
-        }
-
-        // otherwise, configure using the (soon-to-be) legacy NoteTableViewCell.
-        guard let cell = cell as? NoteTableViewCell else {
-            return
-        }
-
-        cell.attributedSubject      = note.renderSubject()
-        cell.attributedSnippet      = note.renderSnippet()
-
-        cell.read                   = note.read
-        cell.noticon                = note.noticon
-        cell.unapproved             = note.isUnapprovedComment
-        cell.showsBottomSeparator   = !isLastRow
-        cell.undeleteOverlayText    = deletionRequest?.kind.legendText
-        cell.onUndelete             = { [weak self] in
+        // handle undo overlays
+        cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
             self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
 
+        // additional configurations
+        cell.showsBottomSeparator = !isLastRow
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.downloadIconWithURL(note.iconURL)
     }
 
     func sectionNameKeyPath() -> String {
@@ -1213,19 +1126,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             let cell = tableView.cellForRow(at: indexPath)
 
-            // Apply the same handling for ListTableViewCell.
-            // this should be removed when it's confirmed that default table separators no longer trigger issues
-            // resolved in #2845, and the unified list feature is fully rolled out.
-            if usesUnifiedList,
-               let listCell = cell as? ListTableViewCell {
+            if let listCell = cell as? ListTableViewCell {
                 let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
                 listCell.showsBottomSeparator = !isLastRow
-                continue
-            }
-
-            if let noteCell = cell as? NoteTableViewCell {
-                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-                noteCell.showsBottomSeparator = !isLastRow
             }
         }
 
@@ -1873,8 +1776,6 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
         // number of notifications after which the second alert will show up
         static let secondNotificationsAlertThreshold = 10
         static let secondNotificationsAlertDisabled = -1
-        /// the amount of bottom padding added to the filter tab bar. To be used with unified list.
-        static let filterTabBarBottomSpace: CGFloat = 10.0
     }
 }
 
