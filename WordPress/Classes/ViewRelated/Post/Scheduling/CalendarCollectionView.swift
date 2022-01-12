@@ -379,6 +379,7 @@ class CalendarYearHeaderView: JTACMonthReusableView {
         titleLabel.font = .preferredFont(forTextStyle: .headline)
         titleLabel.textAlignment = .center
         titleLabel.textColor = Constants.titleColor
+        titleLabel.accessibilityTraits = .header
 
         let weekdaysView = WeekdaysHeaderView(calendar: Calendar.current)
         stackView.addArrangedSubview(weekdaysView)
