@@ -9209,8 +9209,6 @@
 				02D75D9822793EA2003FF09A /* BlogDetailsSectionFooterView.swift */,
 				4349BFF4221205540084F200 /* BlogDetailsSectionHeaderView.xib */,
 				F53FF3A623EA722F001AD596 /* Detail Header */,
-				8BD66ED0278745EC00CCD95A /* PostsCardViewController.swift */,
-				8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */,
 			);
 			path = "Blog Details";
 			sourceTree = "<group>";
@@ -11281,6 +11279,23 @@
 				8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */,
 			);
 			path = Backup;
+			sourceTree = "<group>";
+		};
+		8B4DDF23278F3AED0022494D /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				8B4DDF24278F3AF60022494D /* Posts */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
+		8B4DDF24278F3AF60022494D /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				8BD66ED0278745EC00CCD95A /* PostsCardViewController.swift */,
+				8BD66ED32787530C00CCD95A /* PostsCardViewModel.swift */,
+			);
+			path = Posts;
 			sourceTree = "<group>";
 		};
 		8B69F0E2255C2BC0006B1CEF /* Activity */ = {
@@ -14496,6 +14511,7 @@
 		FA73D7D7278D9E6300DF24B3 /* Blog Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				8B4DDF23278F3AED0022494D /* Cards */,
 				FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */,
 				FA73D7D8278DDD4B00DF24B3 /* HostCollectionViewCell.swift */,
 				FA73D7DC278DDE0E00DF24B3 /* QuickLinksView.swift */,
