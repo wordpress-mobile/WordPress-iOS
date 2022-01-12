@@ -5,6 +5,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     // MARK: - Properties
 
     static let estimatedHeight: CGFloat = 80
+    @IBOutlet private weak var contentStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: UIButton!
     private var post: ReaderPost?
@@ -81,6 +82,7 @@ private extension ReaderDetailCommentsHeader {
     }
 
     func configureButton() {
+        configureStackView()
         followButton.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
 
         if isSubscribedComments {
@@ -91,6 +93,22 @@ private extension ReaderDetailCommentsHeader {
             followButton.setTitleColor(.primary, for: .normal)
             followButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             followButton.setImage(nil, for: .normal)
+        }
+    }
+
+    func configureStackView() {
+        // If isAccessibilityCategory, display the content vertically.
+        // This makes the Follow button "wrap" and appear under the title label.
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            contentStackView.axis = .vertical
+            contentStackView.alignment = .leading
+            contentStackView.distribution = .fill
+            contentStackView.spacing = 10
+        } else {
+            contentStackView.axis = .horizontal
+            contentStackView.alignment = .center
+            contentStackView.distribution = .fill
+            contentStackView.spacing = 0
         }
     }
 
