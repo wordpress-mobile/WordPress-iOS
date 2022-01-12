@@ -141,7 +141,7 @@ class JetpackInstallPromptViewController: UIViewController {
         configure(button: noThanksButton, style: JetpackPromptStyles.noThanksButtonStyle)
         configure(button: learnMoreButton, style: JetpackPromptStyles.learnMoreButtonStyle)
     }
-    
+
     private func configure(button: FancyButton, style: NUXButtonStyle) {
         guard button.isPrimary else {
             button.secondaryNormalBackgroundColor = style.normal.backgroundColor
