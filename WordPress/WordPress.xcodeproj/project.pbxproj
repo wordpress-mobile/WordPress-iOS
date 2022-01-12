@@ -220,6 +220,8 @@
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
 		172E27D31FD98135003EA321 /* NoticePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172E27D21FD98135003EA321 /* NoticePresenter.swift */; };
 		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
+		173B215527875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */; };
+		173B215627875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */; };
 		173BCE791CEB780800AE8817 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE781CEB780800AE8817 /* Domain.swift */; };
 		173D82E7238EE2A7008432DA /* FeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */; };
 		173DF291274522A1007C64B5 /* AppAboutScreenConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DF290274522A1007C64B5 /* AppAboutScreenConfiguration.swift */; };
@@ -4839,6 +4841,7 @@
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
 		172E27D21FD98135003EA321 /* NoticePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticePresenter.swift; sourceTree = "<group>"; };
 		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
+		173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMediaPermissionsHeader.swift; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
 		173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagTests.swift; sourceTree = "<group>"; };
 		173DF290274522A1007C64B5 /* AppAboutScreenConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAboutScreenConfiguration.swift; sourceTree = "<group>"; };
@@ -8492,7 +8495,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -10176,6 +10179,7 @@
 				FFE3B2C51B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.h */,
 				FFE3B2C61B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m */,
 				17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */,
+				173B215427875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift */,
 				1782BE831E70063100A91E7D /* MediaItemViewController.swift */,
 				177074841FB209F100951A4A /* CircularProgressView.swift */,
 				981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */,
@@ -15214,7 +15218,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -17802,6 +17806,7 @@
 				E1BEEC631C4E35A8000B4FA0 /* Animator.swift in Sources */,
 				981C3494218388CA00FC2683 /* SiteStatsDashboardViewController.swift in Sources */,
 				E1C5457E1C6B962D001CEB0E /* MediaSettings.swift in Sources */,
+				173B215527875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */,
 				02BF30532271D7F000616558 /* DomainCreditRedemptionSuccessViewController.swift in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */,
@@ -20134,6 +20139,7 @@
 				FABB243E2602FC2C00C8785C /* ReaderStreamViewController+Helper.swift in Sources */,
 				FABB243F2602FC2C00C8785C /* ReaderAbstractTopic.swift in Sources */,
 				FABB24402602FC2C00C8785C /* PostService+UnattachedMedia.swift in Sources */,
+				173B215627875E0600D4DD6B /* DeviceMediaPermissionsHeader.swift in Sources */,
 				FABB24412602FC2C00C8785C /* ReaderDefaultTopic.swift in Sources */,
 				FABB24422602FC2C00C8785C /* ReaderCard+CoreDataClass.swift in Sources */,
 				FABB24432602FC2C00C8785C /* ReplyToComment.swift in Sources */,

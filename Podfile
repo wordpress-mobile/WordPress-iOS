@@ -210,10 +210,10 @@ abstract_target 'Apps' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.8.0'
-    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
+    # pod 'WPMediaPicker', '~> 1.8.0'
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
-    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
+    pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => 'feature/custom-header-view'
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 1.1.0'

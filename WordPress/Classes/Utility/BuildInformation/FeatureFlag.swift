@@ -23,6 +23,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case commentThreadModerationMenu
     case mySiteDashboard
     case followConversationPostDetails
+    case mediaPickerPermissionsNotice
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -75,6 +76,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return BuildConfiguration.current == .localDeveloper
         case .followConversationPostDetails:
             return false
+        case .mediaPickerPermissionsNotice:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -143,6 +146,8 @@ extension FeatureFlag {
             return "My Site Dashboard"
         case .followConversationPostDetails:
             return "Follow Conversation from Post Details"
+        case .mediaPickerPermissionsNotice:
+            return "Media Picker Permissions Notice"
         }
     }
 

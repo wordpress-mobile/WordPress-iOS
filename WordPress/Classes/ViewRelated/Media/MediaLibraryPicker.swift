@@ -1,6 +1,7 @@
 import WPMediaPicker
 import MobileCoreServices
 import CoreGraphics
+import Photos
 
 /// Encapsulates launching and customization of a media picker to import media from the Photos Library
 final class MediaLibraryPicker: NSObject {
@@ -23,6 +24,11 @@ final class MediaLibraryPicker: NSObject {
         picker.delegate = delegate
         picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
 
+        if #available(iOS 14.0, *),
+           FeatureFlag.mediaPickerPermissionsNotice.enabled {
+            picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
+        }
+        
         origin.present(picker, animated: true)
     }
 }

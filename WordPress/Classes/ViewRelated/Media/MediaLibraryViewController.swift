@@ -511,6 +511,41 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return false
     }
 
+    func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
+        guard #available(iOS 14.0, *),
+              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+              picker != self else {
+            return false
+        }
+
+        // Show the device media permissions header if photo library access is limited
+        return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
+    }
+
+    @available(iOS 14.0, *)
+    private static let referenceHeader: DeviceMediaPermissionsHeader = {
+        let header = DeviceMediaPermissionsHeader(frame: .zero)
+        header.translatesAutoresizingMaskIntoConstraints = false
+        return header
+    }()
+
+    func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
+        guard #available(iOS 14.0, *) else {
+            return .zero
+        }
+
+        return Self.referenceHeader.referenceSizeInView(picker.view)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
+        guard #available(iOS 14.0, *),
+              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+            return
+        }
+
+        headerView.presenter = picker
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
         guard picker == self else { return WPAssetViewController(asset: asset) }
 
