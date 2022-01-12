@@ -1,6 +1,0 @@
-Hai il buon proposito per il nuovo anno di pubblicare più contenuti sul tuo sito? Abbiamo apportato degli aggiornamenti al blocco Editor  per aiutarti proprio in questo. 
-
-- Quando modifichi i blocchi Paragrafo, puoi evidenziare un particolare testo specifico col il colore che preferisci. 
-- Il blocco Galleria ha il nuovo design come impostazione predefinita. Puoi anche automaticamente convertire tutte le tue vecchie gallerie nel nuovo formato senza intoppi. 
-- L'editor ora scorre automaticamente, così puoi vedere sempre cosa stai digitando. Non ci sarà più nessun testo che scompare, per cui non dovrai più andare a caso. 
-- Abbiamo risolto un bug per cui il colore di sfondo non veniva visualizzato nei blocchi preformattati sui siti che utilizzano temi standard.
