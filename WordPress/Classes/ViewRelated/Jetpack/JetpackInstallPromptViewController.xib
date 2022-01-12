@@ -16,6 +16,9 @@
                 <outlet property="buttonsStackView" destination="dem-Gw-33r" id="Pl4-G2-SGS"/>
                 <outlet property="installButton" destination="OR8-xD-k9A" id="reu-mk-3O1"/>
                 <outlet property="learnMoreButton" destination="HTj-l0-UU7" id="rel-kK-9D9"/>
+                <outlet property="lineItemAndMore" destination="gjn-2q-9W6" id="ThZ-iP-Job"/>
+                <outlet property="lineItemNotifications" destination="o3P-Vj-6QF" id="4gP-Fe-MKj"/>
+                <outlet property="lineItemStats" destination="k6V-58-BCL" id="QK6-Xr-Fd6"/>
                 <outlet property="noThanksButton" destination="gpx-gG-s9d" id="xoH-Lr-VIa"/>
                 <outlet property="titleLabel" destination="z18-fN-ZJi" id="Fgm-tN-OYA"/>
                 <outlet property="view" destination="ae3-3D-D7u" id="a7K-Mo-dvf"/>
@@ -37,33 +40,33 @@
                             <rect key="frame" x="0.0" y="0.0" width="374" height="610"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-FG-hPu">
-                                    <rect key="frame" x="0.0" y="162" width="374" height="286.5"/>
+                                    <rect key="frame" x="0.0" y="157" width="374" height="296"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="57D-Bk-kaD" userLabel="Messaging Stack View">
-                                            <rect key="frame" x="61.5" y="0.0" width="251" height="125.5"/>
+                                            <rect key="frame" x="10.5" y="0.0" width="353" height="135"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jetpack-long-logo" translatesAutoresizingMaskIntoConstraints="NO" id="OYd-i2-UsM">
-                                                    <rect key="frame" x="25.5" y="0.0" width="200" height="105"/>
+                                                    <rect key="frame" x="76.5" y="0.0" width="200" height="105"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="Vds-T2-ncZ"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Would you like to install Jetpack?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z18-fN-ZJi">
-                                                    <rect key="frame" x="0.0" y="105" width="251" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Would you like to install Jetpack?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z18-fN-ZJi">
+                                                    <rect key="frame" x="0.0" y="105" width="353" height="30"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </stackView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Tes-Fb-IIl">
-                                            <rect key="frame" x="2" y="145.5" width="370.5" height="141"/>
+                                            <rect key="frame" x="2" y="155" width="370.5" height="141"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3g6-0v-bnW" userLabel="List Line">
                                                     <rect key="frame" x="0.0" y="0.0" width="370.5" height="38.5"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="jetpack-icon-stats" translatesAutoresizingMaskIntoConstraints="NO" id="opB-p6-YlG">
-                                                            <rect key="frame" x="0.0" y="7" width="24" height="24"/>
+                                                            <rect key="frame" x="0.0" y="7.5" width="24" height="24"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="SGl-ph-K18"/>
@@ -82,7 +85,7 @@
                                                     <rect key="frame" x="0.0" y="58.5" width="370.5" height="38.5"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="jetpack-icon-notifications" translatesAutoresizingMaskIntoConstraints="NO" id="FMe-xj-lzO">
-                                                            <rect key="frame" x="0.0" y="7" width="24" height="24"/>
+                                                            <rect key="frame" x="0.0" y="7.5" width="24" height="24"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="9bY-H4-MUC"/>
@@ -109,7 +112,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="... and more!" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjn-2q-9W6">
-                                                            <rect key="frame" x="34" y="2" width="336.5" height="19.5"/>
+                                                            <rect key="frame" x="34" y="2.5" width="336.5" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" name="Gray0"/>
                                                             <nil key="highlightedColor"/>
@@ -189,7 +192,7 @@
                 <constraint firstItem="dem-Gw-33r" firstAttribute="top" secondItem="2I1-fs-ZEe" secondAttribute="bottom" id="mJb-ww-MMq"/>
                 <constraint firstItem="DDs-Rf-ZMD" firstAttribute="leading" secondItem="ae3-3D-D7u" secondAttribute="leadingMargin" id="n39-um-kq3"/>
             </constraints>
-            <point key="canvasLocation" x="-199" y="73"/>
+            <point key="canvasLocation" x="-128" y="63"/>
         </view>
         <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" id="IpT-tM-hcK">
             <rect key="frame" x="0.0" y="0.0" width="1215" height="156"/>

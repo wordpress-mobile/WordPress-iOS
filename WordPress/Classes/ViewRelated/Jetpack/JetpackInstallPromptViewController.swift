@@ -25,12 +25,17 @@ class JetpackInstallPromptViewController: UIViewController {
     }()
 
     // MARK: - IBOutlets
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+
+    @IBOutlet weak var buttonsStackView: UIStackView!
     @IBOutlet weak var installButton: FancyButton!
     @IBOutlet weak var noThanksButton: FancyButton!
     @IBOutlet weak var learnMoreButton: FancyButton!
-    @IBOutlet weak var buttonsStackView: UIStackView!
+
+    @IBOutlet weak var lineItemStats: UILabel!
+    @IBOutlet weak var lineItemNotifications: UILabel!
+    @IBOutlet weak var lineItemAndMore: UILabel!
 
     // MARK: - Properties
 
@@ -60,20 +65,11 @@ class JetpackInstallPromptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.navigationBar.isHidden = true
+        applyStyles()
+        localizeText()
 
-        view.backgroundColor = JetpackPromptStyles.backgroundColor
-        backgroundView.backgroundColor = JetpackPromptStyles.backgroundColor
         backgroundView.addSubview(starFieldView)
         backgroundView.layer.addSublayer(gradientLayer)
-
-        titleLabel.font = JetpackPromptStyles.Title.font
-        titleLabel.textColor = JetpackPromptStyles.Title.textColor
-
-        installButton.isPrimary = true
-        configure(button: installButton, style: JetpackPromptStyles.installButtonStyle)
-        configure(button: noThanksButton, style: JetpackPromptStyles.noThanksButtonStyle)
-        configure(button: learnMoreButton, style: JetpackPromptStyles.learnMoreButtonStyle)
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -86,6 +82,7 @@ class JetpackInstallPromptViewController: UIViewController {
         starFieldView.frame = view.bounds
         gradientLayer.frame = view.bounds
     }
+
     // MARK: - Actions
 
     @IBAction func installTapped(_ sender: Any) {
@@ -108,6 +105,43 @@ class JetpackInstallPromptViewController: UIViewController {
         self.present(navController, animated: true)
     }
 
+    // MARK: - Private: Helpers
+    private func localizeText() {
+        titleLabel.text = Strings.title
+
+        lineItemStats.text = Strings.stats
+        lineItemNotifications.text = Strings.notifications
+        lineItemAndMore.text = Strings.andMore
+
+        installButton.setTitle(Strings.installButton, for: .normal)
+        learnMoreButton.setTitle(Strings.learnMoreButton, for: .normal)
+        noThanksButton.setTitle(Strings.noThanksButton, for: .normal)
+    }
+
+    private func applyStyles() {
+        navigationController?.navigationBar.isHidden = true
+
+        view.backgroundColor = JetpackPromptStyles.backgroundColor
+        backgroundView.backgroundColor = JetpackPromptStyles.backgroundColor
+
+        // Title
+        titleLabel.font = JetpackPromptStyles.Title.font
+        titleLabel.textColor = JetpackPromptStyles.Title.textColor
+
+        // Line items
+        let lineItems = [lineItemStats, lineItemNotifications, lineItemAndMore]
+        for lineItem in lineItems {
+            lineItem?.font = JetpackPromptStyles.LineItem.font
+            lineItem?.textColor = JetpackPromptStyles.LineItem.textColor
+        }
+
+        // Buttons
+        installButton.isPrimary = true
+        configure(button: installButton, style: JetpackPromptStyles.installButtonStyle)
+        configure(button: noThanksButton, style: JetpackPromptStyles.noThanksButtonStyle)
+        configure(button: learnMoreButton, style: JetpackPromptStyles.learnMoreButtonStyle)
+    }
+    
     private func configure(button: FancyButton, style: NUXButtonStyle) {
         guard button.isPrimary else {
             button.secondaryNormalBackgroundColor = style.normal.backgroundColor
@@ -131,12 +165,30 @@ extension NSNotification.Name {
     static let installJetpack = NSNotification.Name(rawValue: "JetpackInstall")
 }
 
+// MARK: - Localization
+private struct Strings {
+    static let title = NSLocalizedString("Would you like to install Jetpack?", comment: "Title for the prompt view asking the user if they'd like to install jetpack")
+
+    static let stats = NSLocalizedString("Clear, concise, and actionable site stats about visitors and traffic.", comment: "Label informing the user of the benefits of stats")
+    static let notifications = NSLocalizedString("Keep up with your site’s activity, even when you're away from your desk.", comment: "Label informing the user of the benefits of notifications")
+    static let andMore = NSLocalizedString("... and more!", comment: "Label, hint there are more features")
+
+    static let learnMoreButton = NSLocalizedString("Learn More", comment: "Button title, opens a webview with more features")
+    static let installButton = NSLocalizedString("Install", comment: "Button title, accepting the install offer")
+    static let noThanksButton = NSLocalizedString("No Thanks", comment: "Button title, declining the offer")
+}
+
 // MARK: - Styles
-struct JetpackPromptStyles {
+private struct JetpackPromptStyles {
     static let backgroundColor = UIColor(red: 0.00, green: 0.11, blue: 0.18, alpha: 1.00)
 
     struct Title {
         static let font: UIFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
+        static let textColor: UIColor = .white
+    }
+
+    struct LineItem {
+        static let font: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let textColor: UIColor = .white
     }
 
