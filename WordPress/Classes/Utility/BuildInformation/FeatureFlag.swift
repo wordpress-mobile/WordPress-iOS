@@ -71,7 +71,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .commentThreadModerationMenu:
             return false
         case .mySiteDashboard:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .followConversationPostDetails:
             return false
         }
