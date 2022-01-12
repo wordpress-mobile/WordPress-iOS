@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-17 12:54:08+0000 */
+/* Translation-Revision-Date: 2021-12-22 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -1016,7 +1016,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "最近の投稿への訪問者を表す棒グラフ";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "最初のコメントを投稿";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "最初のコメントを投稿してみましょう。";
@@ -1605,7 +1605,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "コメント";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "コメントは受け付けていません";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "次の投稿へのコメント:";
@@ -2345,7 +2345,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "再実行";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "文書、%@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "文書: %@";
@@ -2473,7 +2473,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "ダブルタップして画像を選択";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "ダブルタップしてデフォルトのフォントサイズを選択";
 
 /* No comment provided by engineer. */
 "Double tap to select font size" = "Double tap to select font size";
@@ -3270,7 +3270,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "幅広く用意されたページレイアウトの中から選択して始めてみましょう。または、空白ページから始めることもできます。";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "サポートを受ける";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "投稿をシェアして閲覧数を増やしましょう。";
@@ -4170,7 +4170,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "未読にする";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "スパムとしてマーク";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "先頭固定表示にする";
@@ -4334,7 +4334,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "WordPress.com の詳細";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "その他のサポートオプション";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "最も人気のある時間";
@@ -6302,7 +6302,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "選択済み: %s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "選択済み: デフォルト";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "別のメニューのロケーションを選択すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "アプリがサーバーの返答を認識できません。サイトの設定を確認して下さい。";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "基本操作";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "このサーバーの証明書が無効です。「%@」を偽装しているサーバーに接続中の可能性があるため、機密情報が危険にさらされる恐れがあります。\n\nこの証明書をそのまま信頼しますか ?";
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "通知設定を読み込む際に問題が発生しました";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "コメントの編集中に予期しないエラーが発生しました";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "コメントの編集中に予期しないエラーが発生しました";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-02 19:01:50+0000 */
+/* Translation-Revision-Date: 2022-01-01 20:51:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sq_AL */
@@ -1016,7 +1016,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "Grafik me Shtylla që tregon vizitorët për postimin tuaj më të ri";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "Bëhuni i pari që komenton";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Bëhuni i pari që lë një koment.";
@@ -1605,7 +1605,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "Komente";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "Komentet janë mbyllur";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Komentet hapur";
@@ -2345,7 +2345,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "Ribëje";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "Dokument, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
@@ -2473,10 +2473,10 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "Që të përzgjidhni një figurë, prekeni dyfish";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "Prekeni dyfish që të përzgjidhet madhësi parazgjedhje shkronjash";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "Prekeni dy herë që të përzgjidhet madhësi shkronjash";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Prekeni dy herë që të përzgjidhet mundësia";
@@ -3191,7 +3191,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "Ndjek etiketën.";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "Madhësi Shkronjash";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Futboll";
@@ -3270,7 +3270,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Nisjani duke zgjedhur nga një larmi e madhe skemash të parapërgatitura faqesh. Ose thjesht fillojani me një faqe të zbrazët.";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "Merrni asistencë";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Futjuni punës dhe shtoni parjet e postimit tuaj përmes ndarjes së tij me të tjerët.";
@@ -3811,7 +3811,7 @@ translators: Block name. %s: The localized block name */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack-u do t’i optimizojë figurat tuaja dhe shërbejë ato nga vendndodhje shërbyesi më afër vizitorëve tuaj. Përdorimi i rrjetit tonë global të shpërndarjes së lëndës do të fuqizojë shpejtësinë e ngarkimit të sajtit tuaj.";
 
 /* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
-"Join From Anywhere" = "Join From Anywhere";
+"Join From Anywhere" = "Bëhuni Pjesë Që Ngado";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Hyni në një bisedë: komentoni postime prej blogjesh që ndiqni.";
@@ -4170,7 +4170,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "Vëri Shenjë Si të Palexuar";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "Vëri shenjë si të padëshiruar";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "I vini shenjë si Ngjitës";
@@ -4334,7 +4334,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "Më tepër në WordPress.com";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "Më tepër mundësi asistence";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Koha Më Popullore";
@@ -6302,7 +6302,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "U përzgjodh: %s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "Përzgjedhur: Parazgjedhje";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Përzgjedhja e një vendi tjetër menuje do të shkaktojë hedhjen tej të ndryshimeve që bëtë te menuja e tanishme. Jeni i sigurt se doni të vazhdohet?";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikacioni s’e kupton dot përgjigjen e shërbyesit. Ju lutemi, kontrolloni formësimin e sajtit tuaj.";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "Bazat";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Dëshmia për këtë shërbyes është e pavlefshme. Mund të jeni duke u lidhur te një shërbyes që pretendon të jetë “%@”, gjë që do t’i vinte në rrezik të dhënat tuaja rezervat.\n\nDo të donit të besohej kjo dëshmi, sido që të jetë?";
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Pati një problem teksa ngarkoheshin Rregullimet tuaja për Njoftime";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "Pati një gabim të papritur teksa përpunohej komenti";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Pati një gabim të papritur teksa përpunohej komenti juaj";
@@ -8157,7 +8157,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "Shihni Sajtin";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "Shihini krejt komentet";
 
 /* Displays More Rows */
 "View all…" = "Shihini krejt…";

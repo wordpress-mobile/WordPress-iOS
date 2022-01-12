@@ -1,0 +1,6 @@
+Yeni yılda sitenizde daha fazla içerik yayınlamak için kendinize söz mü verdiniz? Tam da bunu kolaylaştırmak için blok düzenleyicide bir kaç güncelleme yaptık.
+
+- Paragraf bloklarını düzenlerken, belirli metinleri istediğiniz renkle vurgulayabilirsiniz.
+- Yepyeni Galeri blokları varsayılan olarak yeni bir tasarımla gelecektir. Ayrıca eski galerileri sorunsuz bir şekilde yeni biçime otomatik olarak dönüştürebilirsiniz.
+- Düzenleyici artık otomatik olarak kayar, böylece ne yazdığınızı her zaman görebilirsiniz. Artık kaybolan metinlere de, tahmin etmek zorunda kalmaya da son.
+- Standart temaları kullanan sitelerde önceden biçimlendirilmiş blok tipi için arka plan renginin görünmesini engelleyen bir hatayı düzelttik.

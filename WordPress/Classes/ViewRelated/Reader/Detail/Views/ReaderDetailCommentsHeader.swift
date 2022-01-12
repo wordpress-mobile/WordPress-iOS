@@ -6,9 +6,15 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: UIButton!
 
-    private var commentsEnabled = true {
+    private var followConversationEnabled = true {
         didSet {
-            followButton.isHidden = !FeatureFlag.followConversationPostDetails.enabled || !commentsEnabled
+            followButton.isHidden = !FeatureFlag.followConversationPostDetails.enabled || !followConversationEnabled
+        }
+    }
+
+    private var isSubscribedComments: Bool = false {
+        didSet {
+            configureButton()
         }
     }
 
@@ -17,8 +23,9 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureView()
     }
 
-    func configure(totalComments: Int, commentsEnabled: Bool) {
-        self.commentsEnabled = commentsEnabled
+    func configure(totalComments: Int, followConversationEnabled: Bool, isSubscribedComments: Bool) {
+        self.followConversationEnabled = followConversationEnabled
+        self.isSubscribedComments = isSubscribedComments
 
         titleLabel.text = {
             switch totalComments {
@@ -49,10 +56,17 @@ private extension ReaderDetailCommentsHeader {
     }
 
     func configureButton() {
-        followButton.setTitle(Titles.followButton, for: .normal)
-        followButton.setTitleColor(.primary, for: .normal)
-        followButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
         followButton.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
+
+        if isSubscribedComments {
+            followButton.setImage(UIImage.init(systemName: "bell"), for: .normal)
+            followButton.setTitle(nil, for: .normal)
+        } else {
+            followButton.setTitle(Titles.followButton, for: .normal)
+            followButton.setTitleColor(.primary, for: .normal)
+            followButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
+            followButton.setImage(nil, for: .normal)
+        }
     }
 
     @objc func followButtonTapped() {

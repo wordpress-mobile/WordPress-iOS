@@ -15,8 +15,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case recommendAppToOthers
     case weeklyRoundup
     case weeklyRoundupStaticNotification
-    case newCommentDetail
     case domains
+    case timeZoneSuggester
     case aboutScreen
     case newCommentThread
     case postDetailsComments
@@ -58,11 +58,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
-        case .newCommentDetail:
-            // NOTE: only applies to My Site > Comments.
-            return true
         case .domains:
             return false
+        case .timeZoneSuggester:
+            return true
         case .aboutScreen:
             return true
         case .newCommentThread:
@@ -127,10 +126,10 @@ extension FeatureFlag {
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
             return "Weekly Roundup Static Notification"
-        case .newCommentDetail:
-            return "New Comment Detail"
         case .domains:
             return "Domain Purchases"
+        case .timeZoneSuggester:
+            return "TimeZone Suggester"
         case .aboutScreen:
             return "New Unified About Screen"
         case .newCommentThread:

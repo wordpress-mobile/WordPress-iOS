@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-08 09:54:08+0000 */
+/* Translation-Revision-Date: 2021-12-21 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -1016,7 +1016,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "Diagram Batang yang menunjukkan pengunjung pos terbaru Anda";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "Jadilah yang pertama memberi komentar";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Jadilah yang pertama berkomentar.";
@@ -1605,7 +1605,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "Komentar-komentar";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "Komentar ditutup";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Komentar pada";
@@ -2345,7 +2345,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "Lakukan lagi";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "Dokumen, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokumen: %@";
@@ -2473,10 +2473,10 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "Ketuk dua kali untuk memilih gambar";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "Ketuk dua kali untuk memilih ukuran font default";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "Ketuk dua kali untuk memilih ukuran font";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Ketuk dua kali untuk memilih pilihan";
@@ -3191,7 +3191,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "Ikuti tag.";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "Ukuran Font";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Sepakbola";
@@ -3270,7 +3270,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Mulai dengan memilih satu tata letak halaman yang siap digunakan. Atau mulai dengan halaman kosong.";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "Dapatkan dukungan";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Mulai pos dan tingkatkan tampilan pos Anda dengan membagikannya.";
@@ -4170,7 +4170,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "Tandai Belum Dibaca";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "Tandai sebagai Spam";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Tandai sebagai Lekat";
@@ -4334,7 +4334,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "Lainnya di WordPress.com";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "Pilihan dukungan lainnya";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Waktu yang Paling Disukai";
@@ -6302,7 +6302,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Terpilih: %s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "Terpilih: Default";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Memilih lokasi menu lain akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikasi tidak dapat mengenali respon server. Silakan periksa konfigurasi pada situs Anda.";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "Dasar-dasar";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Sertifikat untuk server ini tidak sah. Anda mungkin tersambung dengan server yang menyamar sebagai “%@” yang bisa membuat informasi rahasia Anda beresiko,\n\nApakah Anda ingin mempercayai sertifikat itu?";
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Ada masalah saat memuat pengaturan Pemberitahuan Anda";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "Terjadi kesalahan yang tidak terduga saat menyunting komentar";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Telah terjadi kesalahan yang tidak terduga saat menyunting komentar Anda";
@@ -8157,7 +8157,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "Lihat Situs";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "Lihat semua komentar";
 
 /* Displays More Rows */
 "View all…" = "Tampilkan semua…";

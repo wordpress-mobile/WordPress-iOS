@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-08 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-12-21 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: he_IL */
@@ -1016,7 +1016,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "תרשים עמודות שמשקף את המבקרים בפוסטים האחרונים שלך";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "יש לך אפשרות לרשום את התגובה הראשונה";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "נשמח לקבל תגובה ראשונה ממך.";
@@ -1605,7 +1605,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "תגובות";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "התגובות נסגרו";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "תגובות לרשומה";
@@ -2345,7 +2345,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "לחזור על הפעולה";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "מסמך, ‎%@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "מסמכים: ‎%@";
@@ -2473,10 +2473,10 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "יש להקיש פעמיים כדי לבחור תמונה";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "יש להקיש פעמיים כדי לבחור את גודל הגופן שבברירת מחדל";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "יש להקיש פעמיים כדי לבחור את גודל הגופן";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "יש להקיש פעמיים כדי לבחור את האפשרות";
@@ -3191,7 +3191,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "עוקב אחר התגית.";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "גודל הגופן";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "פוטבול";
@@ -3270,7 +3270,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "ניתן להתחיל באמצעות בחירה ממגוון רחב של פריסות עמוד שהוכנו מראש. או פשוט להתחיל מעמוד ריק.";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "לקבלת תמיכה";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "אפשר חשיפה רבה יותר לפוסט שלך על ידי שיתוף.";
@@ -4170,7 +4170,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "סימון כלא נקרא";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "לסמן כתגובת זבל";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "סימון כ'דביק'";
@@ -4334,7 +4334,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "עוד מ-WordPress.com";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "אפשרויות תמיכה נוספות";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "המועד הפופולרי ביותר";
@@ -6302,7 +6302,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "נבחר %s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "נבחר: ברירת מחדל";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "בחירת מיקום תפריט אחר תבטל את השינויים שביצעת בתפריט הנוכחי. בחרת להמשיך - האם ההחלטה סופית?";
@@ -7121,7 +7121,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "היישום אינו מזהה את תגובת השרת. אנא בדוק את תצורת האתר שלך.";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "השלבים הבסיסיים";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "האישור עבור שרת זה אינו חוקי. ייתכן שאתה מתחבר לשרת שמתחזה ל-&quot;%@&quot;, מה שעלול לסכן את המידע הסודי שלך.\n\nלבטוח באישור בכל מקרה?";
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "אירעה בעיה בעת טעינת ההגדרות של הודעות שלך";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "אירעה שגיאה בלתי צפויה בעת עריכת התגובה";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "חלה שגיאה בלתי צפויה בעת עריכת התגובה";

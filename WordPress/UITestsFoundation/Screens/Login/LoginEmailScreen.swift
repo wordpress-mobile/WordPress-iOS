@@ -19,7 +19,8 @@ public class LoginEmailScreen: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [emailTextFieldGetter, nextButtonGetter],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
