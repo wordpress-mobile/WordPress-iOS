@@ -97,10 +97,25 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }()
 
     /// Notification Settings button
-    lazy var notificationSettingsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
-        button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
-        return button
+    lazy var notificationSettingsButton: UIButton = {
+        let settingsButton: UIButton = UIButton.init(type: .custom)
+        settingsButton.setImage(.gridicon(.cog), for: .normal)
+        settingsButton.addTarget(self, action: #selector(showNotificationSettings), for: .touchUpInside)
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.contentEdgeInsets = .zero
+        settingsButton.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
+        return settingsButton
+    }()
+
+    /// Mark All As Read button
+    lazy var markAllAsReadButton: UIButton = {
+        let markButton: UIButton = UIButton.init(type: .custom)
+        markButton.setImage(.gridicon(.checkmark), for: .normal)
+        markButton.addTarget(self, action: #selector(markAllAsRead), for: .touchUpInside)
+        markButton.translatesAutoresizingMaskIntoConstraints = false
+        markButton.contentMode = .right
+        markButton.accessibilityLabel = NSLocalizedString("Mark All As Read", comment: "-") // TODO: Check the accessibility strings
+        return markButton
     }()
 
     /// Convenience property that stores feature flag value for unified list.
@@ -512,8 +527,45 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        navigationItem.rightBarButtonItem = shouldDisplaySettingsButton ? notificationSettingsButton : nil
+        let stackView = rightBarButtonStackView()
+
+//        if FeatureFlag.markAllNotificationsAsRead.enabled {
+            stackView.addArrangedSubview(markAllAsReadButton)
+//        }
+
+        if shouldDisplaySettingsButton {
+            stackView.addArrangedSubview(notificationSettingsButton)
+        }
+
+        let rightBarButton = UIBarButtonItem(customView: stackView)
+        navigationItem.setRightBarButton(rightBarButton, animated: false)
+
+        setupBarButtonConstraints()
     }
+
+    func rightBarButtonStackView() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.distribution = .equalSpacing
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 0
+        return stackView
+    }
+
+    func setupBarButtonConstraints() {
+        notificationSettingsButton.translatesAutoresizingMaskIntoConstraints = false
+        markAllAsReadButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // TODO: Check if a common/global constant exists
+        let minimumTappableLength: CGFloat = 44
+        NSLayoutConstraint.activate([
+            notificationSettingsButton.widthAnchor.constraint(equalToConstant: minimumTappableLength),
+            notificationSettingsButton.heightAnchor.constraint(equalToConstant: minimumTappableLength),
+            markAllAsReadButton.widthAnchor.constraint(equalToConstant: minimumTappableLength),
+            markAllAsReadButton.heightAnchor.constraint(equalToConstant: minimumTappableLength)
+        ])
+    }
+
 
     @objc func closeNotificationSettings() {
         dismiss(animated: true, completion: nil)
@@ -819,6 +871,12 @@ extension NotificationsViewController {
         navigationController.modalTransitionStyle = .coverVertical
 
         present(navigationController, animated: true, completion: nil)
+    }
+
+    /// Marks all messages as read under the selected filter.
+    ///
+    @objc func markAllAsRead() {
+        // TODO
     }
 }
 
