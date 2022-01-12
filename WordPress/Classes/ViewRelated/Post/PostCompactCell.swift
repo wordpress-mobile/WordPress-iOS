@@ -205,6 +205,4 @@ extension PostCompactCell: GhostableView {
     }
 }
 
-extension PostCompactCell: NibReusable {
-    static var defaultReuseID = "PostCompactCellIdentifier"
-}
+extension PostCompactCell: NibReusable { }
