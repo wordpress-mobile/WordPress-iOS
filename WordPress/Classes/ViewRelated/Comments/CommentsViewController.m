@@ -141,7 +141,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)configureTableViewHeader
 {
-    // Add an extra 10pt space on top of the first header view when displaying comments using the new unified list. Ref: https://git.io/JBQlU
+    // Add an extra 10pt space on top of the first header view. Ref: https://git.io/JBQlU
     UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 10)];
     tableHeaderView.backgroundColor = [UIColor systemBackgroundColor];
     self.tableView.tableHeaderView = tableHeaderView;

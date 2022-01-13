@@ -1082,16 +1082,13 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
         cell.configureWithNotification(note)
 
-        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
-        let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-
         // handle undo overlays
+        let deletionRequest = deletionRequestForNoteWithID(note.objectID)
         cell.configureUndeleteOverlay(with: deletionRequest?.kind.legendText) { [weak self] in
             self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
 
         // additional configurations
-        cell.showsBottomSeparator = !isLastRow
         cell.accessibilityHint = Self.accessibilityHint(for: note)
     }
 
@@ -1120,18 +1117,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
-        // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-        // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-        //
-        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            let cell = tableView.cellForRow(at: indexPath)
-
-            if let listCell = cell as? ListTableViewCell {
-                let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-                listCell.showsBottomSeparator = !isLastRow
-            }
-        }
-
         refreshUnreadNotifications()
 
         // Update NoResults View
