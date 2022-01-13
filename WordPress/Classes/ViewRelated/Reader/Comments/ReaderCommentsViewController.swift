@@ -232,20 +232,19 @@ private extension ReaderCommentsViewController {
 
     func moderateComment(_ comment: Comment, status: CommentStatusType, handler: WPTableViewHandler) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
-            let context = comment.managedObjectContext ?? ContextManager.shared.mainContext
-
-            // decrement the ReaderPost's comment count.
+            // Adjust the ReaderPost's comment count.
             if let post = self?.post, let commentCount = post.commentCount?.intValue {
-                post.commentCount = NSNumber(value: commentCount - 1)
+                let adjustment = (status == .approved) ? 1 : -1
+                post.commentCount = NSNumber(value: commentCount + adjustment)
             }
-
-            // delete the comment from ReaderPost.
-            context.delete(comment)
-            ContextManager.shared.saveContextAndWait(context)
 
             // Refresh the UI. The table view handler is needed because the fetched results delegate is set to nil.
             handler.refreshTableViewPreservingOffset()
-            self?.displayNotice(title: noticeText)
+
+            // If the status is Approved, the user has undone a comment moderation.
+            // So don't show the Undo option in this case.
+            (status == .approved) ? self?.displayNotice(title: noticeText) :
+                                    self?.showActionableNotice(title: noticeText, comment: comment, handler: handler)
         }
 
         switch status {
@@ -269,10 +268,24 @@ private extension ReaderCommentsViewController {
             } failure: { [weak self] _ in
                 self?.displayNotice(title: .trashFailed)
             }
-
+        case .approved:
+            commentService.approve(comment) {
+                successBlock(.approveSuccess)
+            } failure: { [weak self] _ in
+                self?.displayNotice(title: .approveFailed)
+            }
         default:
             break
         }
+    }
+
+    func showActionableNotice(title: String, comment: Comment, handler: WPTableViewHandler) {
+        displayActionableNotice(title: title,
+                                actionTitle: .undoActionTitle,
+                                actionHandler: { [weak self] _ in
+            // Set the Comment's status back to Approved when the user selects Undo on the notice.
+            self?.moderateComment(comment, status: .approved, handler: handler)
+        })
     }
 
     func descriptionForSource(_ source: ReaderCommentsSource) -> String {
@@ -305,6 +318,7 @@ private extension String {
                                                    + "Shown when the comment is written by the post author.")
     static let editCommentFailureNoticeText = NSLocalizedString("There has been an unexpected error while editing the comment",
                                                                 comment: "Error displayed if a comment fails to get updated")
+    static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts a comment moderation action.")
 
     // moderation messages
     static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
@@ -313,6 +327,8 @@ private extension String {
     static let spamFailed = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
     static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
     static let trashFailed = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
+    static let approveSuccess = NSLocalizedString("Comment set to approved.", comment: "Message displayed when approving a comment succeeds.")
+    static let approveFailed = NSLocalizedString("Error setting comment to approved.", comment: "Message displayed when approving a comment fails.")
 }
 
 // MARK: - Reader Comment Menu
