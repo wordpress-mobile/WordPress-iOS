@@ -31,6 +31,7 @@ import UIKit
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.dataSource = viewModel
+        tableView.delegate = self
         viewModel.refresh()
     }
 }
@@ -82,6 +83,15 @@ private extension PostsCardViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
+extension PostsCardViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = viewModel.postAt(indexPath)
+
+        PostListEditorPresenter.handle(post: post, in: self)
+    }
+}
+
 // MARK: - PostsCardView
 
 extension PostsCardViewController: PostsCardView {
@@ -98,6 +108,15 @@ extension PostsCardViewController: PostsCardView {
 
 extension PostsCardViewController: EditorAnalyticsProperties {
     func propertiesForAnalytics() -> [String: AnyObject] {
-        [:]
+        var properties = [String: AnyObject]()
+
+        properties["type"] = PostServiceType.post.rawValue as AnyObject?
+        properties["filter"] = viewModel.currentPostStatus() as AnyObject?
+
+        if let dotComID = blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+
+        return properties
     }
 }
