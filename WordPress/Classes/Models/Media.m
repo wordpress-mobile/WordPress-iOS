@@ -261,4 +261,20 @@
     return self.mediaID.intValue != 0;
 }
 
+- (void)setError:(NSError *)value
+{
+    NSError *error;
+
+    if (value != nil) {
+        // Cherry pick keys that support secure coding. NSErrors thrown from the OS can
+        // contain types that don't adopt NSSecureCoding, leading to a Core Data exception and crash.
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: value.localizedDescription};
+        error = [[NSError alloc] initWithDomain:value.domain code:value.code userInfo:userInfo];
+    }
+
+    [self willChangeValueForKey:@"error"];
+    [self setPrimitiveValue:error forKey:@"error"];
+    [self didChangeValueForKey:@"error"];
+}
+
 @end

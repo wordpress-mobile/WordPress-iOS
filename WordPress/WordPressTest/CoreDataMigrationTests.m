@@ -1322,7 +1322,7 @@
     // Media has an Error transformer
     Media *media1 = (Media *)[NSEntityDescription insertNewObjectForEntityForName:[Media entityName] inManagedObjectContext:context];
     media1.blog = blog1;
-    NSError *error1 = [NSError errorWithDomain:NSURLErrorDomain code:100 userInfo:@{ @"reason": @"test" }];
+    NSError *error1 = [NSError errorWithDomain:NSURLErrorDomain code:100 userInfo:@{ NSLocalizedDescriptionKey: @"test" }];
     media1.error = error1;
 
     [context save:&error];
