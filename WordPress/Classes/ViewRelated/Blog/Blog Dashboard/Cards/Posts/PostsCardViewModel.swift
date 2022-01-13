@@ -96,11 +96,9 @@ private extension PostsCardViewModel {
 
     func sync() {
         let filter = filterSettings.currentPostListFilter()
-        let author = filterSettings.shouldShowOnlyMyPosts() ? blog.userID : nil
 
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
-        options.authorID = author
         options.number = Constants.numberOfPostsToSync
         options.purgesLocalSync = true
 
