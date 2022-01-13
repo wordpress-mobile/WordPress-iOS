@@ -2086,6 +2086,11 @@
 		C79C308126EA975900E88514 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
 		C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
 		C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
+		C7A0C15A278789A80062E668 /* JetpackInstallPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */; };
+		C7A0C15B278789A80062E668 /* JetpackInstallPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */; };
+		C7A0C15C278789A80062E668 /* JetpackInstallPromptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */; };
+		C7A0C15D278789A80062E668 /* JetpackInstallPromptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */; };
+		C7A0C15F2788AB130062E668 /* StarFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7124E912638905B00929318 /* StarFieldView.swift */; };
 		C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */; };
 		C7F79369260D14C100CE547F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
 		C7F7936A260D14C200CE547F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
@@ -6736,6 +6741,8 @@
 		C76F48FF25BA23B000BFEC87 /* JetpackScanHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackScanHistoryViewController.xib; sourceTree = "<group>"; };
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
+		C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackInstallPromptViewController.swift; sourceTree = "<group>"; };
+		C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackInstallPromptViewController.xib; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
 		C7F1EB4425A4B845009D1AA2 /* WordPress 110.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 110.xcdatamodel"; sourceTree = "<group>"; };
 		C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackAuthenticationManager.swift; sourceTree = "<group>"; };
@@ -13859,6 +13866,8 @@
 				9A8ECE002254A3250043C8DA /* Login */,
 				9A8ECE032254A3260043C8DA /* Install */,
 				FA4F65B52594589C00EAA9F5 /* Jetpack Restore */,
+				C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */,
+				C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */,
 			);
 			path = Jetpack;
 			sourceTree = "<group>";
@@ -15358,6 +15367,7 @@
 				17222D80261DDDF90047B163 /* celadon-classic-icon-app-76x76.png in Resources */,
 				1761F17A26209AEE000815EF /* wordpress-dark-icon-app-60x60@3x.png in Resources */,
 				98563DDE21BF30C40006F5E9 /* TabbedTotalsCell.xib in Resources */,
+				C7A0C15C278789A80062E668 /* JetpackInstallPromptViewController.xib in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */,
@@ -15872,6 +15882,7 @@
 				FABB20412602FC2C00C8785C /* ImageCropViewController.xib in Resources */,
 				FABB20422602FC2C00C8785C /* Reader.storyboard in Resources */,
 				FABB20442602FC2C00C8785C /* RestoreWarningView.xib in Resources */,
+				C7A0C15D278789A80062E668 /* JetpackInstallPromptViewController.xib in Resources */,
 				FABB20452602FC2C00C8785C /* JetpackLoginViewController.xib in Resources */,
 				FABB20472602FC2C00C8785C /* StatsNoDataRow.xib in Resources */,
 				FABB20482602FC2C00C8785C /* JetpackScanThreatCell.xib in Resources */,
@@ -17238,6 +17249,7 @@
 				3FAF9CC526D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift in Sources */,
 				D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */,
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
+				C7A0C15F2788AB130062E668 /* StarFieldView.swift in Sources */,
 				FFD12D5E1FE1998D00F20A00 /* Progress+Helpers.swift in Sources */,
 				170CE7402064478600A48191 /* PostNoticeNavigationCoordinator.swift in Sources */,
 				740516892087B73400252FD0 /* SearchableActivityConvertable.swift in Sources */,
@@ -17628,6 +17640,7 @@
 				D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */,
 				B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */,
 				B55F1AA81C10936600FD04D4 /* BlogSettings+Discussion.swift in Sources */,
+				C7A0C15A278789A80062E668 /* JetpackInstallPromptViewController.swift in Sources */,
 				E155EC721E9B7DCE009D7F63 /* PostTagPickerViewController.swift in Sources */,
 				98A25BD1203CB25F006A5807 /* SignupEpilogueCell.swift in Sources */,
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
@@ -19730,6 +19743,7 @@
 				FABB22C92602FC2C00C8785C /* NSAttributedString+Helpers.swift in Sources */,
 				FABB22CA2602FC2C00C8785C /* TenorService.swift in Sources */,
 				FABB22CB2602FC2C00C8785C /* FilterBarView.swift in Sources */,
+				C7A0C15B278789A80062E668 /* JetpackInstallPromptViewController.swift in Sources */,
 				98B88453261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */,
 				FABB22CC2602FC2C00C8785C /* BlogToBlogMigration_61_62.swift in Sources */,
 				FABB22CD2602FC2C00C8785C /* WebKitViewController.swift in Sources */,
