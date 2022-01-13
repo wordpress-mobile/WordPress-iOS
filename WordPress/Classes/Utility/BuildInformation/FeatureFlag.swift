@@ -12,7 +12,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingReminders
     case siteIconCreator
     case unifiedCommentsAndNotificationsList
-    case recommendAppToOthers
     case weeklyRoundup
     case weeklyRoundupStaticNotification
     case domains
@@ -50,8 +49,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .unifiedCommentsAndNotificationsList:
-            return true
-        case .recommendAppToOthers:
             return true
         case .weeklyRoundup:
             return true
@@ -120,8 +117,6 @@ extension FeatureFlag {
             return "Site Icon Creator"
         case .unifiedCommentsAndNotificationsList:
             return "Unified List for Comments and Notifications"
-        case .recommendAppToOthers:
-            return "Recommend App to Others"
         case .weeklyRoundup:
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
