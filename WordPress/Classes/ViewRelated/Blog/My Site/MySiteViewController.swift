@@ -1,4 +1,6 @@
 import WordPressAuthenticator
+import Foundation
+import UIKit
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
 
@@ -53,6 +55,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavigationItem()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
+        subscribeToJetpackInstallNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -80,6 +83,40 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func subscribeToJetpackInstallNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(launchJetpackInstallFromNotification(_:)), name: .installJetpack, object: nil)
+    }
+
+    @objc
+    func launchJetpackInstallFromNotification(_ notification: NSNotification) {
+        guard let blog = blog else {
+            return
+        }
+
+        let controller = JetpackLoginViewController(blog: blog)
+        controller.promptType = .installPrompt
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .fullScreen
+
+        navigationController?.present(navController, animated: true)
+
+        controller.completionBlock = { [weak self] in
+            defer {
+                navController.dismiss(animated: true)
+            }
+
+            guard let self = self else {
+                return
+            }
+
+            // TODO: Add a loading indicator
+            DispatchQueue.main.async {
+                self.syncBlogs()
+            }
+        }
     }
 
     // MARK: - Navigation Item
