@@ -7,7 +7,7 @@ import UIKit
 @objc class PostsCardViewController: UIViewController {
     var blog: Blog
 
-    private let postsTableView = IntrinsicTableView()
+    let tableView: UITableView = IntrinsicTableView()
 
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
@@ -24,13 +24,13 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        viewModel = PostsCardViewModel(blog: blog, viewController: self, tableView: postsTableView)
+        viewModel = PostsCardViewModel(blog: blog, viewController: self)
         viewModel.viewDidLoad()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        postsTableView.dataSource = viewModel
+        tableView.dataSource = viewModel
         viewModel.refresh()
     }
 }
@@ -51,11 +51,11 @@ private extension PostsCardViewController {
     }
 
     func configureTableView() {
-        view.addSubview(postsTableView)
-        postsTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(postsTableView)
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(tableView)
         let postCompactCellNib = PostCompactCell.defaultNib
-        postsTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+        tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
     }
 
     func configureGhostableTableView() {

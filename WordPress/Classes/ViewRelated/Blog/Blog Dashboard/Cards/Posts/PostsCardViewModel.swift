@@ -3,6 +3,8 @@ import CoreData
 import UIKit
 
 protocol PostsCardView: AnyObject {
+    var tableView: UITableView { get }
+
     func showLoading()
     func hideLoading()
 }
@@ -14,8 +16,6 @@ class PostsCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private let tableView: UITableView
-
     private let postService: PostService
 
     lazy var filterSettings: PostListFilterSettings = {
@@ -26,10 +26,9 @@ class PostsCardViewModel: NSObject {
 
     private weak var viewController: PostsCardView?
 
-    init(blog: Blog, viewController: PostsCardView, tableView: UITableView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
         self.viewController = viewController
-        self.tableView = tableView
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
         super.init()
@@ -39,7 +38,7 @@ class PostsCardViewModel: NSObject {
     func refresh() {
         do {
             try fetchedResultsController.performFetch()
-            tableView.reloadData()
+            viewController?.tableView.reloadData()
         } catch {
             print("Fetch failed")
         }
@@ -156,18 +155,18 @@ extension PostsCardViewModel: UITableViewDataSource {
 
 extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        viewController?.tableView.beginUpdates()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        viewController?.tableView.endUpdates()
 
         // When going to the post list all displayed posts there will be displayed
         // here too. This check ensures that we never display more than what
         // is specified on the `fetchLimit` property
         if fetchedResultsController.fetchRequest.fetchLimit > 0 && fetchedResultsController.fetchRequest.fetchLimit < fetchedResultsController.fetchedObjects?.count ?? 0 {
             try? fetchedResultsController.performFetch()
-            tableView.reloadData()
+            viewController?.tableView.reloadData()
         }
     }
 
@@ -175,26 +174,26 @@ extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
         switch type {
         case .insert:
             if let indexPath = newIndexPath {
-                tableView.insertRows(at: [indexPath], with: .fade)
+                viewController?.tableView.insertRows(at: [indexPath], with: .fade)
             }
             break
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                viewController?.tableView.deleteRows(at: [indexPath], with: .fade)
             }
             break
         case .update:
-            if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
+            if let indexPath = indexPath, let cell = viewController?.tableView.cellForRow(at: indexPath) {
                 configureCell(cell, at: indexPath)
             }
             break
         case .move:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                viewController?.tableView.deleteRows(at: [indexPath], with: .fade)
             }
 
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: .fade)
+                viewController?.tableView.insertRows(at: [newIndexPath], with: .fade)
             }
             break
         @unknown default:
