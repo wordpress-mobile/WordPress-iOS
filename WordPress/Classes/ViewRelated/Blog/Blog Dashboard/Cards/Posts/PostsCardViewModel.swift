@@ -2,6 +2,11 @@ import Foundation
 import CoreData
 import UIKit
 
+protocol PostsCardView: AnyObject {
+    func showLoading()
+    func hideLoading()
+}
+
 /// Responsible for populating a table view with posts
 ///
 class PostsCardViewModel: NSObject {
@@ -10,20 +15,25 @@ class PostsCardViewModel: NSObject {
     private let managedObjectContext: NSManagedObjectContext
 
     private let tableView: UITableView
+    
+    private let postService: PostService
 
     lazy var filterSettings: PostListFilterSettings = {
         PostListFilterSettings(blog: blog, postType: .post)
     }()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
+    
+    private weak var viewController: PostsCardView?
 
-    init(tableView: UITableView, blog: Blog, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, viewController: PostsCardView, tableView: UITableView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
-        self.managedObjectContext = managedObjectContext
+        self.viewController = viewController
         self.tableView = tableView
+        self.managedObjectContext = managedObjectContext
+        self.postService = PostService(managedObjectContext: managedObjectContext)
         super.init()
     }
-
 
     /// Refresh the results and reload the data on the table view
     func refresh() {
@@ -37,7 +47,9 @@ class PostsCardViewModel: NSObject {
 
     /// Set up the view model to be ready for use
     func viewDidLoad() {
+        viewController?.showLoading()
         createFetchedResultsController()
+        sync()
     }
 }
 
@@ -82,9 +94,31 @@ private extension PostsCardViewModel {
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         return filterSettings.currentPostListFilter().sortDescriptors
     }
+    
+    func sync() {
+        let filter = filterSettings.currentPostListFilter()
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blog.userID : nil
+
+        let options = PostServiceSyncOptions()
+        options.statuses = filter.statuses.strings
+        options.authorID = author
+        options.number = Constants.numberOfPostsToSync
+        options.purgesLocalSync = true
+
+        postService.syncPosts(
+            ofType: .post,
+            with: options,
+            for: blog,
+            success: { _ in
+
+            }, failure: { (error: Error?) -> () in
+
+        })
+    }
 
     enum Constants {
         static let numberOfPosts = 3
+        static let numberOfPostsToSync: NSNumber = 4
     }
 }
 
@@ -97,6 +131,8 @@ extension PostsCardViewModel: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
+        
+        viewController?.hideLoading()
 
         configureCell(cell, at: indexPath)
 

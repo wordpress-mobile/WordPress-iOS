@@ -10,6 +10,7 @@ import UIKit
     private let postsTableView = IntrinsicTableView()
 
     private var viewModel: PostsCardViewModel!
+    private var ghostableTableView: UITableView?
 
     @objc init(blog: Blog) {
         self.blog = blog
@@ -23,7 +24,7 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        viewModel = PostsCardViewModel(tableView: postsTableView, blog: blog)
+        viewModel = PostsCardViewModel(blog: blog, viewController: self, tableView: postsTableView)
         viewModel.viewDidLoad()
     }
 
@@ -34,12 +35,57 @@ import UIKit
     }
 }
 
+extension PostsCardViewController: PostsCardView {
+    func showLoading() {
+        configureGhostableTableView()
+    }
+    
+    func hideLoading() {
+        removeGhostableTableView()
+    }
+}
+
 private extension PostsCardViewController {
     func configureView() {
+        configureTableView()
+    }
+    
+    func configureTableView() {
         view.addSubview(postsTableView)
         postsTableView.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(postsTableView)
         let postCompactCellNib = PostCompactCell.defaultNib
         postsTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+    }
+    
+    func configureGhostableTableView() {
+        let ghostableTableView = IntrinsicTableView()
+        
+        view.addSubview(ghostableTableView)
+
+        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(ghostableTableView)
+
+        ghostableTableView.isScrollEnabled = false
+
+        let postCompactCellNib = PostCompactCell.defaultNib
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: PostCompactCell.defaultReuseID, rowsPerSection: [Constants.numberOfPosts])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
+        
+        self.ghostableTableView = ghostableTableView
+    }
+    
+    func removeGhostableTableView() {
+        ghostableTableView?.removeFromSuperview()
+    }
+    
+    enum Constants {
+        static let numberOfPosts = 3
     }
 }
