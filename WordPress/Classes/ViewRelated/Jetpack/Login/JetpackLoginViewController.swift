@@ -232,7 +232,7 @@ class JetpackLoginViewController: UIViewController {
                                                             promptType: promptType)
 
         // If we're already in a nav controller then push don't present again
-        guard let navController = navigationController else {
+        guard promptType == .installPrompt, let navController = navigationController else {
             let navController = UINavigationController(rootViewController: controller)
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true)
