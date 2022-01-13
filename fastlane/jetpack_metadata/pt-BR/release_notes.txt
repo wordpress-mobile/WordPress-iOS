@@ -1,6 +1,0 @@
-Decidiu publicar mais conteúdo em seu site para o ano novo? Fizemos algumas atualizações no Editor de blocos para ajudá-lo a fazer exatamente isso.
-
-- Ao editar blocos de parágrafo, você pode destacar um texto específico em qualquer cor que desejar.
-- Os novos blocos da Galeria serão padronizados com o novo design. Você também pode converter automaticamente quaisquer galerias antigas para o novo formato sem problemas.
-- O editor agora rola automaticamente, para que você sempre possa ver o que está digitando. Não há mais texto que desapareça, não há mais suposições.
-- Eliminamos um bug em que a cor de fundo não aparecia para blocos pré-formatados em sites que usam temas padrão.

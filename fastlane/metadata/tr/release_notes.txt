@@ -1,7 +1,0 @@
-Yeni bir yıl, yeni bir görünüm! Yazar etiketleri, aksesuar/paylaşım düğmeleri ve satır ile yanıt vurgulama için yorum dizilerini göz alıcı yeni bir tasarımla güncelledik. Ayrıca Blok Düzenleyicide birkaç güncelleme yaptık.
-
-- Paragraf bloklarını düzenlerken, belirli metinleri istediğiniz renkle vurgulayabilirsiniz.
-- Yepyeni Galeri blokları varsayılan olarak yeni tasarıma geçecektir. Ayrıca eski galerileri sorunsuz bir şekilde yeni biçime otomatik olarak dönüştürebilirsiniz.
-- Düzenleyici artık otomatik olarak kayar, böylece ne yazdığınızı her zaman görebilirsiniz. Artık kaybolan metinlere de, tahmin etmek zorunda kalmaya da son.
-- Artık Okuyucu'da gönderi içeriğinizden sonra görüntülenen bir Yorumlar parçacığı göreceksiniz. Bu, aldığınız yorumlara ilişkin hızlı bir örnek verir ve sohbete daha hızlı katılmanıza yardımcı olur.
-- Standart temalar kullanan sitelerde önceden biçimlendirilmiş bloklar için arka plan renginin görünmesini engelleyen bir hatayı düzelttik.

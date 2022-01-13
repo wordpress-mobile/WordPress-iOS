@@ -1,7 +1,0 @@
-Nouvelle année, nouveau look ! Nous avons apporté des modifications aux fils de commentaires, qui présentent désormais des étiquettes d’auteur au design flambant neuf, des boutons d’accessoires et de partage, ainsi qu’une mise en surbrillance des lignes et réponses. Nous avons également modifié l’éditeur de bloc.
-
-- Lorsque vous modifiez des blocs Paragraphe, vous pouvez mettre en surbrillance du texte en particulier dans la couleur de votre choix.
-- Par défaut, les tout nouveaux blocs Galerie afficheront le nouveau design. Vous pouvez également convertir automatiquement toutes les anciennes galeries vers le nouveau format sans heurt.
-- L’éditeur défile à présent automatiquement, ce qui vous permet de voir en permanence ce que vous tapez. Le texte ne disparaît plus, ce qui élimine toute ambiguïté.
-- Vous verrez désormais s’afficher un extrait Commentaires après le contenu de votre article dans le Lecteur. Cela vous donne un aperçu rapide des commentaires reçus et vous permet de rejoindre la conversation plus rapidement.
-- Nous avons corrigé un bogue qui empêchait la couleur d’arrière-plan de s’afficher pour les blocs préformatés sur les sites utilisant des thèmes standard.
