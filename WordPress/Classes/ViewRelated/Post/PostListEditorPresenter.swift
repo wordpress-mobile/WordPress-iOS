@@ -1,4 +1,12 @@
 import Foundation
+import UIKit
+
+typealias EditorPresenterViewController = UIViewController & EditorAnalyticsProperties
+
+/// Provide properties for when showing the editor (like type of post, filter, etc)
+protocol EditorAnalyticsProperties: AnyObject {
+    func propertiesForAnalytics() -> [String: AnyObject]
+}
 
 /// Handle a user tapping a post in the post list. If an autosave revision is available, give the
 /// user the option through a dialog alert to load the autosave (or just load the regular post) into
