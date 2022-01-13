@@ -28,7 +28,7 @@ final class MediaLibraryPicker: NSObject {
            FeatureFlag.mediaPickerPermissionsNotice.enabled {
             picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
         }
-        
+
         origin.present(picker, animated: true)
     }
 }
