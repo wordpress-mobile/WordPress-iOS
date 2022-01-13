@@ -39,7 +39,7 @@ extension PostsCardViewController: PostsCardView {
     func showLoading() {
         configureGhostableTableView()
     }
-    
+
     func hideLoading() {
         removeGhostableTableView()
     }
@@ -49,7 +49,7 @@ private extension PostsCardViewController {
     func configureView() {
         configureTableView()
     }
-    
+
     func configureTableView() {
         view.addSubview(postsTableView)
         postsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,10 +57,10 @@ private extension PostsCardViewController {
         let postCompactCellNib = PostCompactCell.defaultNib
         postsTableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
     }
-    
+
     func configureGhostableTableView() {
         let ghostableTableView = IntrinsicTableView()
-        
+
         view.addSubview(ghostableTableView)
 
         ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -77,14 +77,14 @@ private extension PostsCardViewController {
                                beatEndColor: .placeholderElementFaded)
         ghostableTableView.removeGhostContent()
         ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
-        
+
         self.ghostableTableView = ghostableTableView
     }
-    
+
     func removeGhostableTableView() {
         ghostableTableView?.removeFromSuperview()
     }
-    
+
     enum Constants {
         static let numberOfPosts = 3
     }

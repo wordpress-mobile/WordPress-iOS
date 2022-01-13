@@ -15,7 +15,7 @@ class PostsCardViewModel: NSObject {
     private let managedObjectContext: NSManagedObjectContext
 
     private let tableView: UITableView
-    
+
     private let postService: PostService
 
     lazy var filterSettings: PostListFilterSettings = {
@@ -23,7 +23,7 @@ class PostsCardViewModel: NSObject {
     }()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
-    
+
     private weak var viewController: PostsCardView?
 
     init(blog: Blog, viewController: PostsCardView, tableView: UITableView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
@@ -94,7 +94,7 @@ private extension PostsCardViewModel {
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         return filterSettings.currentPostListFilter().sortDescriptors
     }
-    
+
     func sync() {
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blog.userID : nil
@@ -131,7 +131,7 @@ extension PostsCardViewModel: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
-        
+
         viewController?.hideLoading()
 
         configureCell(cell, at: indexPath)
