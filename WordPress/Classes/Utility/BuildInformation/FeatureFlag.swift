@@ -66,11 +66,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .postDetailsComments:
             return true
         case .commentThreadModerationMenu:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .mySiteDashboard:
             return false
         case .followConversationPostDetails:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         }
     }
 
