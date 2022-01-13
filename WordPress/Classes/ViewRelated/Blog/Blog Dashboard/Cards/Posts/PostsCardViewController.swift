@@ -35,6 +35,8 @@ import UIKit
     }
 }
 
+// MARK: - PostsCardView
+
 extension PostsCardViewController: PostsCardView {
     func showLoading() {
         configureGhostableTableView()
@@ -44,6 +46,8 @@ extension PostsCardViewController: PostsCardView {
         removeGhostableTableView()
     }
 }
+
+// MARK: - Private methods
 
 private extension PostsCardViewController {
     func configureView() {
@@ -87,5 +91,13 @@ private extension PostsCardViewController {
 
     enum Constants {
         static let numberOfPosts = 3
+    }
+}
+
+// MARK: - EditorAnalyticsProperties
+
+extension PostsCardViewController: EditorAnalyticsProperties {
+    func propertiesForAnalytics() -> [String: AnyObject] {
+        [:]
     }
 }
