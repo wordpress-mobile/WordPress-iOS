@@ -14,7 +14,7 @@ protocol EditorAnalyticsProperties: AnyObject {
 /// Analytics are also tracked.
 struct PostListEditorPresenter {
 
-    static func handle(post: Post, in postListViewController: PostListViewController) {
+    static func handle(post: Post, in postListViewController: EditorPresenterViewController) {
 
         // Autosaves are ignored for posts with local changes.
         if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
@@ -27,7 +27,7 @@ struct PostListEditorPresenter {
         }
     }
 
-    static func handleCopy(post: Post, in postListViewController: PostListViewController) {
+    static func handleCopy(post: Post, in postListViewController: EditorPresenterViewController) {
         // Autosaves are ignored for posts with local changes.
         if !post.hasLocalChanges(), post.hasAutosaveRevision {
             let conflictsResolutionViewController = copyConflictsResolutionViewController(didTapOption: { copyLocal, cancel in
@@ -46,14 +46,14 @@ struct PostListEditorPresenter {
         }
     }
 
-    private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: PostListViewController) {
+    private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: EditorPresenterViewController) {
         let editor = EditPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision)
         editor.modalPresentationStyle = .fullScreen
         postListViewController.present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)
     }
 
-    private static func openEditorWithCopy(with post: Post, in postListViewController: PostListViewController) {
+    private static func openEditorWithCopy(with post: Post, in postListViewController: EditorPresenterViewController) {
         // Copy Post
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
