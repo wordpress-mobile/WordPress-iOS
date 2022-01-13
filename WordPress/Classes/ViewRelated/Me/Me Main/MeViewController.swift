@@ -164,13 +164,13 @@ class MeViewController: UITableViewController {
                                                   accessoryType: .disclosureIndicator,
                                                   action: pushAbout(),
                                                   accessibilityIdentifier: "About"))
+                } else if isRecommendAppRowEnabled {
+                    rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                                                  icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                                  accessoryType: accessoryType,
+                                                  action: displayShareFlow(),
+                                                  loading: sharePresenter.isLoading))
                 }
-
-                rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                              icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
-                                              accessoryType: accessoryType,
-                                              action: displayShareFlow(),
-                                              loading: sharePresenter.isLoading))
 
                 return rows
             }()),
@@ -429,6 +429,11 @@ class MeViewController: UITableViewController {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
     }
 
+    /// Convenience property to determine whether the recomend app row should be displayed or not.
+        private var isRecommendAppRowEnabled: Bool {
+            !AppConfiguration.isJetpack
+        }
+
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
         presenter.delegate = self
@@ -521,6 +526,10 @@ private extension MeViewController {
 
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
+        guard isRecommendAppRowEnabled else {
+             return
+         }
+
         reloadViewModel()
     }
 }
