@@ -279,7 +279,7 @@ open class AboutViewController: UITableViewController {
 
     /// Convenience property to determine whether the recomend app section should be displayed or not.
     private var isRecommendAppSectionEnabled: Bool {
-        return FeatureFlag.recommendAppToOthers.enabled && !AppConfiguration.isJetpack
+        return !AppConfiguration.isJetpack
     }
 
     fileprivate var rows: [[Row]] {
