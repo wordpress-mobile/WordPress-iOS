@@ -23,10 +23,7 @@ class NotificationContentView: UIView {
     }
 
     private struct Styles {
-        // NB: Matches `noticonUnreadColor` in NoteTableViewCell
         static let noticonInnerBackgroundColor = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
-
-        // NB: Matches `noteBackgroundReadColor` in `NoteTableViewCell`
         static let noticonOuterBackgroundColor = UIColor.white
     }
 
@@ -184,8 +181,6 @@ class NotificationContentView: UIView {
         downloadGravatar()
     }
 }
-
-// MARK: - Adapted from NoteTableViewCell for this extension
 
 extension NotificationContentView {
     func downloadGravatar() {
