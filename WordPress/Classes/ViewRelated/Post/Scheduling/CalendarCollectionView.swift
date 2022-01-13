@@ -304,6 +304,10 @@ extension DateCell {
         rightPlaceholder.backgroundColor = .clear
         dateLabel.backgroundColor = .clear
         textColor = .text
+        dateLabel.accessibilityTraits = .button
+        if state.isSelected {
+            dateLabel.accessibilityTraits.insert(.selected)
+        }
 
         switch position(for: state.date, startDate: startDate, endDate: endDate) {
         case .middle:
