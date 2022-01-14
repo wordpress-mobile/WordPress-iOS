@@ -1,6 +1,7 @@
 19.1
 -----
 * [*] Signup: Fixed bug where username selection screen could be pushed twice. [#17624]
+* [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
 * [**] Accessibility: VoiceOver improvements on Activity Log and Schedule Post calendars [#17756, #17761]
 
 19.0
@@ -11,7 +12,6 @@
 * [**] Block editor: Add Jetpack and Layout Grid translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4359]
 * [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
 * [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
-
 * [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
 
 18.9
