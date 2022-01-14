@@ -2,6 +2,7 @@
 -----
 * [*] Signup: Fixed bug where username selection screen could be pushed twice. [#17624]
 * [**] Accessibility: VoiceOver improvements on Activity Log and Schedule Post calendars [#17756, #17761]
+* [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
 
 19.0
 -----
