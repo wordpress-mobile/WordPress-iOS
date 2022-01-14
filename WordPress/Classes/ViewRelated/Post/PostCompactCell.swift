@@ -230,5 +230,6 @@ extension PostCompactCell {
         separator.isHidden = true
         menuButton.isHidden = true
         trailingContentConstraint.constant = Constants.margin
+        headerStackView.spacing = Constants.margin
     }
 }
