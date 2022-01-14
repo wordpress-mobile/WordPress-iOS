@@ -933,13 +933,7 @@ def extracted_release_notes_file_path(app:)
     wordpress: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
     jetpack: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
   }
-
-  # Good coding would have us handle the key not being found here. But, given
-  # this is a service method for an automation lane, we'd rather have the
-  # process break with a nil value and a human notice it immediately, than an
-  # incorrect file being used and the issue possibly going unnoticed for
-  # longer.
-  paths[app]
+  paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
 end
 
 def print_release_notes_reminder
