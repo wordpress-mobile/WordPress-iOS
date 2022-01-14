@@ -192,14 +192,12 @@ class WeeklyRoundupDataProvider {
             NSSortDescriptor(key: "settings.name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
         ]
 
-        let controller = NSFetchedResultsController<Blog>(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         do {
-            try controller.performFetch()
+            let result = try context.fetch(request)
+            return .success(result)
         } catch {
             return .failure(DataRequestError.siteFetchingError(error))
         }
-
-        return .success(controller.fetchedObjects ?? [])
     }
 }
 
