@@ -50,6 +50,16 @@ class PostsCardViewModel: NSObject {
         createFetchedResultsController()
         sync()
     }
+
+    /// Return the post at the given IndexPath
+    func postAt(_ indexPath: IndexPath) -> Post {
+        fetchedResultsController.object(at: indexPath)
+    }
+
+    /// The status of post being presented (Draft, Published)
+    func currentPostStatus() -> String {
+        filterSettings.currentPostListFilter().title
+    }
 }
 
 // MARK: - Private methods

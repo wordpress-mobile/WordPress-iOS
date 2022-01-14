@@ -31,19 +31,12 @@ import UIKit
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.dataSource = viewModel
+        tableView.delegate = self
         viewModel.refresh()
     }
 }
 
-extension PostsCardViewController: PostsCardView {
-    func showLoading() {
-        configureGhostableTableView()
-    }
-
-    func hideLoading() {
-        removeGhostableTableView()
-    }
-}
+// MARK: - Private methods
 
 private extension PostsCardViewController {
     func configureView() {
@@ -87,5 +80,43 @@ private extension PostsCardViewController {
 
     enum Constants {
         static let numberOfPosts = 3
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension PostsCardViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = viewModel.postAt(indexPath)
+
+        PostListEditorPresenter.handle(post: post, in: self)
+    }
+}
+
+// MARK: - PostsCardView
+
+extension PostsCardViewController: PostsCardView {
+    func showLoading() {
+        configureGhostableTableView()
+    }
+
+    func hideLoading() {
+        removeGhostableTableView()
+    }
+}
+
+// MARK: - EditorAnalyticsProperties
+
+extension PostsCardViewController: EditorAnalyticsProperties {
+    func propertiesForAnalytics() -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
+
+        properties["type"] = PostServiceType.post.rawValue as AnyObject?
+        properties["filter"] = viewModel.currentPostStatus() as AnyObject?
+
+        if let dotComID = blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+
+        return properties
     }
 }
