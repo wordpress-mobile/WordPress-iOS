@@ -11,7 +11,11 @@ public class PostsScreen: ScreenObject {
     private var currentlyFilteredPostStatus: PostStatus = .published
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [ { $0.tables["PostsTable"] } ], app: app)
+        try super.init(
+            expectedElementGetters: [ { $0.tables["PostsTable"] } ],
+            app: app,
+            waitTimeout: 7
+        )
         showOnly(.published)
     }
 

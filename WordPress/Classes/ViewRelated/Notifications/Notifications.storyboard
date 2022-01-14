@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,7 +12,7 @@
         <scene sceneID="CAK-Wk-k64">
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="doV-5W-Rtg" customClass="NotificationsViewController" customModule="WordPress" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="XCV-Uv-qac">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="XCV-Uv-qac">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -23,7 +24,6 @@
                     </tableView>
                     <connections>
                         <outlet property="filterTabBar" destination="p6x-Ny-2wu" id="Wui-ck-Vlw"/>
-                        <outlet property="filterTabBarBottomConstraint" destination="wg2-sw-4xq" id="yWl-kb-3Pv"/>
                         <outlet property="inlinePromptView" destination="SZM-LE-bID" id="ovr-0R-gdo"/>
                         <outlet property="tableHeaderView" destination="V09-JZ-6RQ" id="ga5-UG-6nB"/>
                         <segue destination="veA-Pg-QAw" kind="showDetail" identifier="NotificationDetailsViewController" id="qci-jy-59F"/>
@@ -48,12 +48,12 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstItem="p6x-Ny-2wu" firstAttribute="leading" secondItem="CJY-eS-kF1" secondAttribute="leading" priority="999" id="AdC-UY-iyo"/>
                                 <constraint firstItem="p6x-Ny-2wu" firstAttribute="top" secondItem="CJY-eS-kF1" secondAttribute="top" id="Omd-d3-Vhm"/>
                                 <constraint firstAttribute="trailing" secondItem="p6x-Ny-2wu" secondAttribute="trailing" priority="999" id="ZrZ-W6-sPC"/>
-                                <constraint firstAttribute="bottom" secondItem="p6x-Ny-2wu" secondAttribute="bottom" id="wg2-sw-4xq"/>
+                                <constraint firstAttribute="bottom" secondItem="p6x-Ny-2wu" secondAttribute="bottom" constant="10" id="wg2-sw-4xq"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -117,4 +117,9 @@
             <point key="canvasLocation" x="1446" y="-1061"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

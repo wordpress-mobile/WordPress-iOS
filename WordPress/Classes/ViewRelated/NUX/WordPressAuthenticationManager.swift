@@ -57,7 +57,7 @@ extension WordPressAuthenticationManager {
     private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = AppConfiguration.allowSignUp && !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
@@ -329,7 +329,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         let onDismissQuickStartPrompt: (Blog, Bool) -> Void = { [weak self] blog, _ in
-            self?.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
+            guard let self = self else {
+                // If self is nil the user will be stuck on the login and not able to progress
+                // Trigger a fatal so we can track this better in Sentry.
+                // This case should be very rare.
+                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
+            }
+
+            self.onDismissQuickStartPrompt(for: blog, onDismiss: onDismiss)
         }
 
         // If adding a self-hosted site, skip the Epilogue
@@ -387,6 +394,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
+        if let authenticationHandler = authenticationHandler {
+            authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+            return
+        }
+
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
             fatalError()

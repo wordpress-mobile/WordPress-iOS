@@ -1,7 +1,9 @@
-* [***] Reader Comments: Updated comment threads with a new design and some new capabilities. [#17659]
-* [**] Block editor: Fix issue where editor doesn't auto-scroll so you can see what is being typed. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4299]
-* [*] Block editor: Preformatted block: Fix an issue where the background color is not showing up for standard themes. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4292]
-* [**] Block editor: Update Gallery Block to default to the new format and auto-convert old galleries to the new format. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4315]
-* [***] Block editor: Highlight text: Enables color customization for specific text within a Paragraph block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4175]
-* [**] Reader post details: a Comments snippet is now displayed after the post content. [#17650]
+* [**] Video uploads: video upload is now limited to 5 minutes per video on free plans.
+* [*] Block editor: Give multi-line block names central alignment in inserter [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4343]
+* [**] Block editor: Fix missing translations by refactoring the editor initialization code [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4332]
+* [**] Block editor: Add Jetpack and Layout Grid translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4359]
+* [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
+* [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
+
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
 

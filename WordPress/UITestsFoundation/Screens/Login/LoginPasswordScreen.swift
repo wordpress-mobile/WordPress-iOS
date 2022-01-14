@@ -10,7 +10,11 @@ class LoginPasswordScreen: ScreenObject {
     }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [passwordTextFieldGetter], app: app)
+        try super.init(
+            expectedElementGetters: [passwordTextFieldGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     func proceedWith(password: String) throws -> LoginEpilogueScreen {

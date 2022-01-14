@@ -1,4 +1,5 @@
 import XCTest
+import XCUITestHelpers
 
 extension XCUIElement {
 
@@ -11,12 +12,12 @@ extension XCUIElement {
     public func scrollIntoView(within scrollView: XCUIElement, threshold: Int = 1000) {
         var iteration = 0
 
-        while !isFullyVisibleOnScreen && iteration < threshold {
+        while isFullyVisibleOnScreen() == false && iteration < threshold {
             scrollView.scroll(byDeltaX: 0, deltaY: 100)
             iteration += 1
         }
 
-        if !isFullyVisibleOnScreen {
+        if isFullyVisibleOnScreen() == false {
             XCTFail("Unable to scroll element into view")
         }
     }
