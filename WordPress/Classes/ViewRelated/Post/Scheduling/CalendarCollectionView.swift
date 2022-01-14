@@ -67,6 +67,33 @@ class CalendarCollectionView: WPJTACMonthView {
         calendarDataSource = calDataSource
         calendarDelegate = calDataSource
     }
+
+    /// VoiceOver scrollback workaround
+    /// When using VoiceOver, moving focus from the surrounding elements (usually the next month button) to the calendar DateCells, a
+    /// scrollback to 0 was triggered by the system. This appears to be expected (though irritating) behaviour with a paging UICollectionView.
+    /// The impact of this scrollback for the month view calendar (as used to schedule a post) is that the calendar jumps to 1951-01-01, with
+    /// the only way to navigate forwards being to tap the "next month" button repeatedly.
+    /// Ignoring these scrolls back to 0 when VoiceOver is in use prevents this issue, while not impacting other use of the calendar.
+    /// Similar behaviour sometimes occurs with the non-paging year view calendar (as used for activity log filtering) which is harder to reproduce,
+    /// but also remedied by this change.
+    override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+        if shouldPreventAccessibilityFocusScrollback(for: contentOffset) {
+            return
+        }
+        super.setContentOffset(contentOffset, animated: animated)
+    }
+
+    func shouldPreventAccessibilityFocusScrollback(for newContentOffset: CGPoint) -> Bool {
+        if UIAccessibility.isVoiceOverRunning {
+            switch style {
+            case .month:
+                return newContentOffset.x == 0 && contentOffset.x > 0
+            case .year:
+                return newContentOffset.y == 0 && contentOffset.y > 0
+            }
+        }
+        return false
+    }
 }
 
 class CalendarDataSource: JTACMonthViewDataSource {
