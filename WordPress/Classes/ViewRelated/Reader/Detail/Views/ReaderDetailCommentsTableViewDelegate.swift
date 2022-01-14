@@ -1,3 +1,4 @@
+import UIKit
 /// Table View delegate to handle the Comments table displayed in Reader Post details.
 ///
 class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -5,8 +6,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     // MARK: - Private Properties
 
     private(set) var totalComments = 0
-    private var commentsEnabled = true
+    private var post: ReaderPost?
+    private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
+    private var headerView: ReaderDetailCommentsHeader?
 
     private var totalRows = 0
     private var hideButton = true
@@ -30,17 +33,28 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         }
     }
 
+    private var commentsEnabled: Bool {
+        return post?.commentsOpen ?? false
+    }
+
     // MARK: - Public Methods
 
-    func updateWith(comments: [Comment] = [],
+    func updateWith(post: ReaderPost,
+                    comments: [Comment] = [],
                     totalComments: Int = 0,
-                    commentsEnabled: Bool = true,
+                    presentingViewController: UIViewController,
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
-        self.commentsEnabled = commentsEnabled
+        self.post = post
         hideButton = (comments.count == 0 && !commentsEnabled)
         self.comments = comments
         self.totalComments = totalComments
+        self.presentingViewController = presentingViewController
         self.buttonDelegate = buttonDelegate
+    }
+
+    func updateFollowButtonState(post: ReaderPost) {
+        self.post = post
+        headerView?.updateFollowButtonState(post: post)
     }
 
     // MARK: - Table Methods
@@ -79,11 +93,14 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader else {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader,
+              let post = post,
+              let presentingViewController = presentingViewController else {
             return nil
         }
 
-        header.configure(totalComments: totalComments, commentsEnabled: commentsEnabled)
+        header.configure(post: post, totalComments: totalComments, presentingViewController: presentingViewController)
+        headerView = header
         return header
     }
 

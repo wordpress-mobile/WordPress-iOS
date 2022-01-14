@@ -173,22 +173,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        configureFeaturedImage()
-
-        featuredImage.configure(scrollView: scrollView,
-                                navigationBar: navigationController?.navigationBar)
-
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
-
-        guard !featuredImage.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImage.load { [unowned self] in
-            self.hideLoading()
-        }
+        setupFeaturedImage()
+        updateFollowButtonState()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -391,15 +377,30 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
+        guard let post = post else {
+            DDLogError("Missing post when updating Reader post detail comments.")
+            return
+        }
+
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
 
-        commentsTableViewDelegate.updateWith(comments: comments,
+        commentsTableViewDelegate.updateWith(post: post,
+                                             comments: comments,
                                              totalComments: totalComments,
-                                             commentsEnabled: post?.commentsOpen ?? false,
+                                             presentingViewController: self,
                                              buttonDelegate: self)
+
         commentsTableView.reloadData()
+    }
+
+    private func updateFollowButtonState() {
+        guard let post = post else {
+            return
+        }
+
+        commentsTableViewDelegate.updateFollowButtonState(post: post)
     }
 
     deinit {
@@ -448,6 +449,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
                 self?.webViewHeight.constant = min(height, webViewHeight)
             })
+        }
+    }
+
+    private func setupFeaturedImage() {
+        configureFeaturedImage()
+
+        featuredImage.configure(scrollView: scrollView,
+                                navigationBar: navigationController?.navigationBar)
+
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
         }
     }
 

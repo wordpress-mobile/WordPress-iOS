@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-08 13:54:08+0000 */
+/* Translation-Revision-Date: 2021-12-21 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_CN */
@@ -90,7 +90,6 @@
 "%@ comment" = "%@ 个评论";
 
 /* Accessibility label for comments button (plural)
-   Number of Comments
    Number of Comments per Page */
 "%@ comments" = "%@ 条评论";
 
@@ -136,9 +135,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* No comment provided by engineer. */
-"%@, %@" = "%2$@ 年 %1$@";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@，%2$@。";
@@ -268,8 +264,7 @@ translators: Block name. %s: The localized block name */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "（无标题）";
 
-/* (no title)
-   Lets a user know that a local draft does not have a title. */
+/* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(无标题)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -391,6 +386,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD LINK" = "添加链接";
+
+/* No comment provided by engineer. */
+"ADD MEDIA" = "ADD MEDIA";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "添加视频";
@@ -606,6 +604,9 @@ translators: Block name. %s: The localized block name */
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "地址";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Address Settings";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "地址行 %@";
@@ -1016,7 +1017,7 @@ translators: Block name. %s: The localized block name */
 "Bar Chart depicting visitors for your latest post" = "描述您最近文章的访客数的柱形图";
 
 /* Title for button on the post details page when there are no comments. */
-"Be the first to comment" = "Be the first to comment";
+"Be the first to comment" = "成为第一个发表评论的用户";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "率先发表评论。";
@@ -1546,6 +1547,9 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "列 %d";
 
 /* No comment provided by engineer. */
+"Column Settings" = "Column Settings";
+
+/* No comment provided by engineer. */
 "Columns Settings" = "列设置";
 
 /* First story intro item description */
@@ -1605,7 +1609,7 @@ translators: Block name. %s: The localized block name */
 "Comments" = "评论";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
-"Comments are closed" = "Comments are closed";
+"Comments are closed" = "评论功能已关闭";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "评论于";
@@ -2345,7 +2349,7 @@ translators: Block name. %s: The localized block name */
 "Do it again" = "再次尝试";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
-"Document, %@" = "Document, %@";
+"Document, %@" = "文档，%@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "文档：%@";
@@ -2473,10 +2477,10 @@ translators: Block name. %s: The localized block name */
 "Double tap to select an image" = "轻点两次以选择图片";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Double tap to select default font size";
+"Double tap to select default font size" = "轻按两下选择默认字体大小";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "轻按两下选择字体大小";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "轻点两下以选择选项";
@@ -2792,8 +2796,7 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when approving a comment fails. */
 "Error approving comment." = "批准评论时出错。";
 
-/* No comment (test)
-   This secondary message is displayed if a user encounters a general error. */
+/* This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "与服务器通信时出错，请重试";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
@@ -3069,9 +3072,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "文件类型";
 
-/* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
-"Fill with password manager" = "使用密码管理器填写";
-
 /* Title of the filter button in the Reader */
 "Filter" = "筛选";
 
@@ -3114,6 +3114,9 @@ translators: Block name. %s: The localized block name */
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "关注";
+
+/* Button title. Follow the comments on a post. */
+"Follow Conversation" = "Follow Conversation";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "通过电子邮件关注对话内容";
@@ -3166,9 +3169,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "关注 %1$@";
 
-/* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "通过电子邮件关注对话内容";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "以下新话题……";
 
@@ -3184,14 +3184,11 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "关注博客。";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "通过电子邮件关注文章评论。";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "关注标签。";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "字体大小";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "足球";
@@ -3270,7 +3267,7 @@ translators: Block name. %s: The localized block name */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "从种类繁多的预设页面布局中选择心仪的布局，开始打造自己的页面。 或者，您也可以从一个空白页面开始。";
 
 /* No comment provided by engineer. */
-"Get support" = "Get support";
+"Get support" = "获取支持";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "开始吧！通过分享您的文章来增加文章浏览量。";
@@ -3686,6 +3683,9 @@ translators: Block name. %s: The localized block name */
 /* Stories intro header title */
 "Introducing Story Posts" = "故事文章简介";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Invalid Email Address";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "无效站点地址";
 
@@ -4052,7 +4052,6 @@ translators: Block name. %s: The localized block name */
 "Local" = "本地";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Local
    Title of the Local Changes Badge */
 "Local changes" = "本地更改";
 
@@ -4107,8 +4106,7 @@ translators: Block name. %s: The localized block name */
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "注销 WordPress？";
 
-/* Error message shown when a user is trying to login.
-   Login Request Expired */
+/* Login Request Expired */
 "Login Request Expired" = "登录请求已过期";
 
 /* No comment provided by engineer. */
@@ -4170,7 +4168,7 @@ translators: Block name. %s: The localized block name */
 "Mark Unread" = "标为未读";
 
 /* Marks comment as spam */
-"Mark as Spam" = "Mark as Spam";
+"Mark as Spam" = "标记为垃圾信息";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "标记为置顶";
@@ -4316,7 +4314,6 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More
    Spoken accessibility label */
 "More" = "更多";
 
@@ -4334,7 +4331,7 @@ translators: Block name. %s: The localized block name */
 "More on WordPress.com" = "WordPress.com 的更多内容";
 
 /* No comment provided by engineer. */
-"More support options" = "More support options";
+"More support options" = "更多支持选项";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "人气最高的时间";
@@ -4633,8 +4630,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "尚未添加任何数据分析";
 
-/* No comment (test)
-   This primary error message is displayed if a user encounters an issue with network reachability. */
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "未连接互联网";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
@@ -4776,6 +4772,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "注意：主题和屏幕尺寸之间的分栏布局可能会有所不同";
 
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "没有找到。";
 
@@ -4884,9 +4886,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "创建 WordPress.com 站点后，您可以将喜欢的内容转载到您自己的站点。";
 
-/* Accessibility label for 1 password button */
-"One Password button" = "一个密码按钮";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "仅查看相关性较大的统计信息。添加数据分析以符合您的需求。";
 
@@ -4910,6 +4909,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "打开设备设置";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Open Jetpack Security settings";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4944,9 +4946,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "打开“我”部分";
-
-/* Accessibility hint for 1 password button */
-"Opens One Password manager" = "打开一个密码管理器";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "在 Safari 中打开网页";
@@ -5011,6 +5010,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "电话";
+
+/* No comment provided by engineer. */
+"Padding" = "Padding";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5114,7 +5116,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending" = "待审";
 
 /* Name for the status of a post pending review.
-   Pending review
    Title of the Pending Review Badge */
 "Pending review" = "等待复审";
 
@@ -5218,6 +5219,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "请输入有效的地址";
+
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "请输入一个合法的 E-mail 地址。";
@@ -5590,7 +5594,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
 "Published" = "已发布";
@@ -6040,8 +6043,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "在以下网站上保存草稿文章：";
 
-/* Accessibility label for the 'Save Post' button.
-   Save post */
+/* Accessibility label for the 'Save Post' button. */
 "Save post" = "保存文章";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
@@ -6097,7 +6099,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Schedule Now" = "立即预发布";
 
 /* Name for the status of a scheduled post
-   Scheduled
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "已定时";
 
@@ -6302,13 +6303,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "已选择：%s";
 
 /* No comment provided by engineer. */
-"Selected: Default" = "Selected: Default";
+"Selected: Default" = "已选：默认";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "选择其他菜单位置将放弃您对当前菜单所做的更改。是否确定要继续？";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "选择其他菜单将放弃您对当前菜单所做的更改。是否确定要继续？";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Selection not allowed" = "Selection not allowed";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "选择此域以用于您的站点。";
@@ -6859,6 +6863,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "已成功取消关注对话";
 
+/* Label displayed to the user left of the time zone suggestion button */
+"Suggestion:" = "Suggestion:";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "建议";
@@ -7054,6 +7061,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "仅显示文字";
 
 /* No comment provided by engineer. */
+"Text color" = "Text color";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "编辑文本区块时，文本格式控件位于键盘上方的工具栏内";
 
 /* Button title
@@ -7121,7 +7131,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The app can't recognize the server response. Please, check the configuration of your site." = "应用程序无法识别服务器响应，请检查您的站点配置。";
 
 /* No comment provided by engineer. */
-"The basics" = "The basics";
+"The basics" = "基础知识";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此服务器的证书无效。您所连接的服务器伪装成了“%@”，这可能会给您的凭证信息带来危险。\n\n仍然信任此证书吗？";
@@ -7232,7 +7242,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "加载“通知设置”时出现问题";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+"There has been an unexpected error while editing the comment" = "编辑评论时发生意外错误";
 
 /* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "编辑您的评论时出现意外错误";
@@ -7265,7 +7275,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "连接至 %@ 时出问题。重新连接以继续宣传。";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
-   No comment (test)
    The Jetpack view title used when an error occurred
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "出现问题";
@@ -7606,8 +7615,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
-   Title of trashed Comments filter.
-   Trashed */
+   Title of trashed Comments filter. */
 "Trashed" = "已放入回收站";
 
 /* Connect when the SSL certificate is invalid */
@@ -8040,6 +8048,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "正在上传文章...";
 
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+
 /* Label to show while uploading media to server */
 "Uploading..." = "上传中...";
 
@@ -8096,8 +8107,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "已发送验证电子邮件，请查看您的收件箱。";
 
-/* Push Authentication Alert Title
-   Title of a prompt. A user must verify their login attempt. */
+/* Push Authentication Alert Title */
 "Verify Log In" = "验证登录";
 
 /* Notice displayed after domain credit redemption success. */
@@ -8131,6 +8141,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "已取消视频导出。";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Video not uploaded" = "Video not uploaded";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "视频，%@";
@@ -8798,6 +8811,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "您可以在 iOS 今天\/通知中心视图显示单个站点的统计资料。";
+
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "您可以通过关注站点来关注特定站点上的文章。";

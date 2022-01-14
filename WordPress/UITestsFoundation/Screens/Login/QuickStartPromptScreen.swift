@@ -10,7 +10,11 @@ public class QuickStartPromptScreen: ScreenObject {
     var noThanksButton: XCUIElement { noThanksButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [noThanksButtonGetter], app: app)
+        try super.init(
+            expectedElementGetters: [noThanksButtonGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func selectNoThanks() throws -> MySiteScreen {
