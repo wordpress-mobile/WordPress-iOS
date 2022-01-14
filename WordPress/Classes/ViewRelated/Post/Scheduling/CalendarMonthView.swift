@@ -130,6 +130,12 @@ class CalendarHeaderView: UIStackView {
         static let buttonSize = CGSize(width: 24, height: 24)
         static let titeLabelColor: UIColor = .neutral(.shade60)
         static let dateFormat = "MMMM, YYYY"
+        static let previousMonthButtonAccessibilityLabel = NSLocalizedString(
+            "Previous month",
+            comment: "Accessibility label for the button which shows the previous month in the monthly calendar view")
+        static let nextMonthButtonAccessibilityLabel = NSLocalizedString(
+            "Next month",
+            comment: "Accessibility label for the button which shows the previous month in the monthly calendar view")
     }
 
     typealias TargetSelector = (target: Any?, selector: Selector)
@@ -153,9 +159,11 @@ class CalendarHeaderView: UIStackView {
         let previousButton = UIButton(frame: CGRect(origin: .zero, size: Constants.buttonSize))
         previousButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         previousButton.setImage(UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        previousButton.accessibilityLabel = Constants.previousMonthButtonAccessibilityLabel
 
         let forwardButton = UIButton(frame: CGRect(origin: .zero, size: Constants.buttonSize))
         forwardButton.setImage(UIImage.gridicon(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        forwardButton.accessibilityLabel = Constants.nextMonthButtonAccessibilityLabel
 
         forwardButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
@@ -192,6 +200,7 @@ class WeekdaysHeaderView: UIStackView {
             label.textAlignment = .center
             label.font = UIFont.preferredFont(forTextStyle: .caption1)
             label.textColor = .neutral(.shade30)
+            label.isAccessibilityElement = false
             return label
         }))
         self.distribution = .fillEqually
