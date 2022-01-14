@@ -71,7 +71,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
 
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
 
         titleLabel.textColor = .text
