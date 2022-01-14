@@ -151,11 +151,11 @@ extension PostsCardViewModel: UITableViewDataSource {
 
         let post: Post = fetchedResultsController.object(at: indexPath)
 
-        guard let configurablePostView = cell as? ConfigurablePostView else {
-                fatalError("Cell does not implement the required protocols")
+        guard let configurablePostView = cell as? PostCompactCell else {
+                fatalError("Cell is not a PostCompactCell")
         }
 
-        configurablePostView.configure(with: post)
+        configurablePostView.configureForDashboard(with: post)
     }
 }
 
