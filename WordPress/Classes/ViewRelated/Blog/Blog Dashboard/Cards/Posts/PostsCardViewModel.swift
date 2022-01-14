@@ -18,19 +18,27 @@ class PostsCardViewModel: NSObject {
 
     private let postService: PostService
 
-    lazy var filterSettings: PostListFilterSettings = {
-        PostListFilterSettings(blog: blog, postType: .post)
-    }()
+    private let postListFilter: PostListFilter
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 
     private weak var viewController: PostsCardView?
 
-    init(blog: Blog, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.postService = PostService(managedObjectContext: managedObjectContext)
+
+        switch status {
+        case .draft:
+            self.postListFilter = PostListFilter.draftFilter()
+        case .scheduled:
+            self.postListFilter = PostListFilter.scheduledFilter()
+        default:
+            fatalError("Post status not supported")
+        }
+
         super.init()
     }
 
@@ -58,7 +66,7 @@ class PostsCardViewModel: NSObject {
 
     /// The status of post being presented (Draft, Published)
     func currentPostStatus() -> String {
-        filterSettings.currentPostListFilter().title
+        postListFilter.title
     }
 }
 
@@ -66,9 +74,6 @@ class PostsCardViewModel: NSObject {
 
 private extension PostsCardViewModel {
     func createFetchedResultsController() {
-        // 0 = published, 1 = draft, 2 = scheduled
-        filterSettings.setCurrentFilterIndex(1)
-
         fetchedResultsController?.delegate = nil
         fetchedResultsController = nil
 
@@ -93,7 +98,7 @@ private extension PostsCardViewModel {
         let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
         predicates.append(basePredicate)
 
-        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
+        let filterPredicate = postListFilter.predicateForFetchRequest
         predicates.append(filterPredicate)
 
        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -101,11 +106,11 @@ private extension PostsCardViewModel {
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        return filterSettings.currentPostListFilter().sortDescriptors
+        return postListFilter.sortDescriptors
     }
 
     func sync() {
-        let filter = filterSettings.currentPostListFilter()
+        let filter = postListFilter
 
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
