@@ -158,19 +158,23 @@ class MeViewController: UITableViewController {
             // middle section
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
-                if FeatureFlag.aboutScreen.enabled {
-                    rows.append(NavigationItemRow(title: RowTitles.about,
-                                                  icon: UIImage.gridicon(.mySites),
-                                                  accessoryType: .disclosureIndicator,
-                                                  action: pushAbout(),
-                                                  accessibilityIdentifier: "About"))
-                } else if isRecommendAppRowEnabled {
+
+                if isRecommendAppRowEnabled {
                     rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
                                                   icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
                                                   accessoryType: accessoryType,
                                                   action: displayShareFlow(),
                                                   loading: sharePresenter.isLoading))
                 }
+
+                if FeatureFlag.aboutScreen.enabled {
+                    rows.append(NavigationItemRow(title: RowTitles.about,
+                                                  icon: UIImage.gridicon(.mySites),
+                                                  accessoryType: .disclosureIndicator,
+                                                  action: pushAbout(),
+                                                  accessibilityIdentifier: "About"))
+                }
+
                 return rows
             }()),
 
