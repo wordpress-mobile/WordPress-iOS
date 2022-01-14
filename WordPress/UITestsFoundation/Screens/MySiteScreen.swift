@@ -66,7 +66,8 @@ public class MySiteScreen: ScreenObject {
                 mediaButtonGetter,
                 createButtonGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

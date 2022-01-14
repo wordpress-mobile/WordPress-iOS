@@ -31,6 +31,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         super.init(options: options)
         self.delegate = delegate
         self.mediaPicker.mediaPickerDelegate = delegate
+        self.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
     }
 
     required init?(coder: NSCoder) {
@@ -49,7 +50,9 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
 
         let tabBar = PortraitTabBarController()
 
-        let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate, presenter: tabBar)
+        let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate,
+                                                      presenter: tabBar,
+                                                      shouldDisableLongVideos: !blog.hasPaidPlan)
         let options = WPMediaPickerOptions()
         options.allowCaptureOfMedia = false
 
@@ -79,11 +82,16 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     private weak var kanvasDelegate: KanvasMediaPickerViewControllerDelegate?
     private weak var presenter: UIViewController?
 
+    private let shouldDisableLongVideos: Bool
+
     private var cancellables = Set<AnyCancellable>()
 
-    init(kanvasDelegate: KanvasMediaPickerViewControllerDelegate, presenter: UIViewController) {
+    init(kanvasDelegate: KanvasMediaPickerViewControllerDelegate,
+         presenter: UIViewController,
+         shouldDisableLongVideos: Bool = false) {
         self.kanvasDelegate = kanvasDelegate
         self.presenter = presenter
+        self.shouldDisableLongVideos = shouldDisableLongVideos
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
@@ -161,7 +169,23 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
             self?.kanvasDelegate?.didPick(media: media)
         }).store(in: &cancellables)
     }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        picker != self && asset.exceedsFreeSitesAllowance() && shouldDisableLongVideos
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if picker != self, asset.exceedsFreeSitesAllowance(), shouldDisableLongVideos {
+            presentVideoLimitExceededFromPicker(on: picker)
+            return false
+        }
+        return true
+    }
 }
+
+// MARK: - User messages for video limits allowances
+
+extension MediaPickerDelegate: VideoLimitsAlertPresenter {}
 
 // MARK: Media Export extensions
 

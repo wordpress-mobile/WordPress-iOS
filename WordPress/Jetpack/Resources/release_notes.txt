@@ -1,14 +1,9 @@
-Good news, everyone—we fixed app crashes caused by uploading images while offline, deleting media, or seeing details for "Like" notifications.
+* [**] Video uploads: video upload is now limited to 5 minutes per video on free plans.
+* [*] Block editor: Give multi-line block names central alignment in inserter [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4343]
+* [**] Block editor: Fix missing translations by refactoring the editor initialization code [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4332]
+* [**] Block editor: Add Jetpack and Layout Grid translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4359]
+* [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
+* [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
 
-We made some big changes to the block editor so you can keep calm and publish on:
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search.
 
-- When you open the settings for a Button or Image block linked to a URL, the editor won't auto-populate a URL from your clipboard anymore. You'll now see a "Link To" suggestion so you can use the clipboard URL or enter a different one.
-- Create a Gallery block and your device's media options will automatically open, making it easier for you to add your images.
-- Adding a new block? If your device is set to a language other than English, the tabs in the inserter menu will now match your set language.
-- When you're using the Embed block, you won't see the "Edit" action in the toolbar. You can now change the URL by going into Block Settings instead.
-- In the post editor, switching from HTML mode to Visual mode will bring up a compact notice telling you about the switch.
-- You might have noticed your font size changing on its own in Media and Text blocks. We squashed the bug that was causing it.
-
-New to WordPress? Not to worry. Our login process makes it easier than ever to create and start managing your site.
-
-We also added a new About screen so you can rate and share the app (hint, hint), visit our Twitter profile and blog, view our other apps, and more.

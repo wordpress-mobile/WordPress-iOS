@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-30 13:48:39+0000 */
+/* Translation-Revision-Date: 2022-01-11 08:52:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: sv_SE */
@@ -62,6 +62,9 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d ej visade inlägg";
 
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
+
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s omvandat till %2$s";
 
@@ -87,7 +90,6 @@
 "%@ comment" = "Kommentera %@";
 
 /* Accessibility label for comments button (plural)
-   Number of Comments
    Number of Comments per Page */
 "%@ comments" = "%@ kommentarer";
 
@@ -133,9 +135,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@ %%)";
-
-/* No comment provided by engineer. */
-"%@, %@" = "%1$@, %2$@";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
@@ -265,8 +264,7 @@ translators: Block name. %s: The localized block name */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Utan rubrik)";
 
-/* (no title)
-   Lets a user know that a local draft does not have a title. */
+/* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen rubrik)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -388,6 +386,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD LINK" = "LÄGG TILL LÄNK";
+
+/* No comment provided by engineer. */
+"ADD MEDIA" = "LÄGG TILL MEDIA";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "LÄGG TILL VIDEO";
@@ -549,9 +550,6 @@ translators: Block name. %s: The localized block name */
 "Add image, or avatar, to represent this new account." = "Lägg till en bild eller profilbild för att representera detta nya konto.";
 
 /* No comment provided by engineer. */
-"Add link" = "Lägg till länk";
-
-/* No comment provided by engineer. */
 "Add link text" = "Lägg till länktext";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -606,6 +604,9 @@ translators: Block name. %s: The localized block name */
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adress";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Adressinställningar";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Adressrad %@";
@@ -910,7 +911,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Författare";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -1013,6 +1015,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Stapeldiagram som visar antalet besökare till ditt senaste inlägg";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Bli först att kommentera";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Bli först med att skriva en kommentar.";
@@ -1542,6 +1547,9 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Kolumn %d";
 
 /* No comment provided by engineer. */
+"Column Settings" = "Kolumninställningar";
+
+/* No comment provided by engineer. */
 "Columns Settings" = "Kolumninställningar";
 
 /* First story intro item description */
@@ -1585,7 +1593,8 @@ translators: Block name. %s: The localized block name */
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Börja bygga upp förbindelser genom att kommentera.";
 
-/* Filters Comments Notifications
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1598,6 +1607,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Kommentarer";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Kommentarer är stängda";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Kommentarer till";
@@ -2324,9 +2336,6 @@ translators: Block name. %s: The localized block name */
    User's Display Name */
 "Display Name" = "Visningsnamn";
 
-/* No comment provided by engineer. */
-"Display post date" = "Visa inläggsdatum";
-
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Visa din sammanlagda statistik här. Konfigurera i WordPress-appen under din statistik.";
 
@@ -2338,6 +2347,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Gör det igen";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Dokument, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
@@ -2464,6 +2476,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Dubbeltryck för att välja en bild";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Dubbeltryck för att välja standardtextstorlek";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Dubbeltryck för att välja typsnitt";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Dubbeltryck för att välja alternativet";
 
@@ -2513,14 +2531,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Duplicera block";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "REDIGERA  LÄNK";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Varje block har sina egna inställningar. För att se dem trycker du på blocket i fråga. Inställningarna visas i verktygsfältet längst ned på skärmen.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2653,9 +2669,6 @@ translators: Block name. %s: The localized block name */
 "Embed caption. Empty" = "Beskrivning för inbäddning. Tom";
 
 /* No comment provided by engineer. */
-"Embed link" = "Länk för inbäddning";
-
-/* No comment provided by engineer. */
 "Embed media" = "Bädda in media";
 
 /* No comment provided by engineer. */
@@ -2783,8 +2796,7 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when approving a comment fails. */
 "Error approving comment." = "Fel när kommentar godkändes.";
 
-/* No comment (test)
-   This secondary message is displayed if a user encounters a general error. */
+/* This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Fel i kommunikationen med servern. Försök igen";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
@@ -3060,9 +3072,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtyp";
 
-/* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
-"Fill with password manager" = "Fyll i med hjälp av lösenordshanterare";
-
 /* Title of the filter button in the Reader */
 "Filter" = "Filtrera";
 
@@ -3105,6 +3114,9 @@ translators: Block name. %s: The localized block name */
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Följ";
+
+/* Button title. Follow the comments on a post. */
+"Follow Conversation" = "Följer denna konversation";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Följ konversationen via e-post";
@@ -3157,9 +3169,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Följer %1$@";
 
-/* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Följer konversationen via e-post";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Följer nya ämnen …";
 
@@ -3175,11 +3184,11 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Följer bloggen.";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Följer kommentarerna på ett inlägg via e-post.";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Följer denna etikett.";
+
+/* No comment provided by engineer. */
+"Font Size" = "Typsnittsstorlek";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Fotboll";
@@ -3256,6 +3265,9 @@ translators: Block name. %s: The localized block name */
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Kom igång genom att välja någon av alla förberedda sidlayouter. Eller börja helt enkelt med en tom sida.";
+
+/* No comment provided by engineer. */
+"Get support" = "Skaffa support";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Sätt bollen i rullning och få fler läsare av ditt inlägg genom att dela ditt inlägg.";
@@ -3547,9 +3559,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Bildtext. %s";
 
-/* No comment provided by engineer. */
-"Image settings" = "Bildinställningar";
-
 /* Hint for image title on image settings. */
 "Image title" = "Bildrubrik";
 
@@ -3673,6 +3682,9 @@ translators: Block name. %s: The localized block name */
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Lär känna berättelseinlägg";
+
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Ogiltig e-postadress";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Ogiltig adress till webbplatsen";
@@ -4040,7 +4052,6 @@ translators: Block name. %s: The localized block name */
 "Local" = "Lokala utkast";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Local
    Title of the Local Changes Badge */
 "Local changes" = "Lokala ändringar";
 
@@ -4095,8 +4106,7 @@ translators: Block name. %s: The localized block name */
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Logga ut från WordPress?";
 
-/* Error message shown when a user is trying to login.
-   Login Request Expired */
+/* Login Request Expired */
 "Login Request Expired" = "Inloggningsbegäran har löpt ut";
 
 /* No comment provided by engineer. */
@@ -4156,6 +4166,9 @@ translators: Block name. %s: The localized block name */
 
 /* Marks a notification as unread */
 "Mark Unread" = "Markera som oläst";
+
+/* Marks comment as spam */
+"Mark as Spam" = "Markera som skräp";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Klistra inlägg";
@@ -4279,9 +4292,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Minsta höjd";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Övrig typ av sårbarhet";
 
@@ -4304,7 +4314,6 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More
    Spoken accessibility label */
 "More" = "Mer";
 
@@ -4320,6 +4329,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Mer på WordPress.com";
+
+/* No comment provided by engineer. */
+"More support options" = "Fler supportalternativ";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populäraste tidpunkten";
@@ -4370,7 +4382,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Flytta till papperskorgen";
 
 /* No comment provided by engineer. */
@@ -4429,7 +4442,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Går till anpassning av gradient";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Navigerar för att markera %s";
 
 /* No comment provided by engineer. */
@@ -4575,6 +4589,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Inga kommentarer";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Inga kommentarer än";
 
@@ -4615,8 +4630,7 @@ translators: Block name. %s: The localized block name */
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Inga insikter har lagts till än";
 
-/* No comment (test)
-   This primary error message is displayed if a user encounters an issue with network reachability. */
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Ingen internetanslutning";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
@@ -4758,6 +4772,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Obs: Kolumnlayouten kan variera mellan olika teman och skärmstorlekar";
 
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Obs: Layout kan variera mellan olika teman och skärmstorlekar";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Obs: Du måste tillåta inloggning via WordPress.com för att kunna redigera detta block i den mobila redigeraren.";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Inget hittades.";
 
@@ -4866,9 +4886,6 @@ translators: Block name. %s: The localized block name */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
 
-/* Accessibility label for 1 password button */
-"One Password button" = "Knapp för ”One Password”";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Visa bara den statistik som är mest relevat. Lägger till insikter som passar dina behov.";
 
@@ -4892,6 +4909,9 @@ translators: Block name. %s: The localized block name */
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Öppna inställningar för enheten";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Öppna säkerhetsinställningarna för Jetpack";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4926,9 +4946,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Öppna sektionen om mig";
-
-/* Accessibility hint for 1 password button */
-"Opens One Password manager" = "Öppnar hanteraren för ”One Password”";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Öppnar webbplatsen i Safari";
@@ -4993,6 +5010,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
+
+/* No comment provided by engineer. */
+"Padding" = "Padding";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5096,7 +5116,6 @@ translators: Block name. %s: The localized block name */
 "Pending" = "Inväntar granskning";
 
 /* Name for the status of a post pending review.
-   Pending review
    Title of the Pending Review Badge */
 "Pending review" = "Inväntar granskning";
 
@@ -5200,6 +5219,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Ange en giltig adress";
+
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Ange en giltig e-postadress för ett WordPress.com-konto.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Ange en giltig e-postadress.";
@@ -5324,9 +5346,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Inlägg av %1$@, från %2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Inställningar för inläggsinnehåll";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Inlägget skapat %@";
 
@@ -5335,9 +5354,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Det gick inte att ladda upp Inlägget";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Inställningar för metainformation om inlägg";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Inlägg flyttat till papperskorgen.";
@@ -5578,7 +5594,6 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
 "Published" = "Publicerat";
@@ -6028,8 +6043,7 @@ translators: Block name. %s: The localized block name */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Spara inläggsutkast på:";
 
-/* Accessibility label for the 'Save Post' button.
-   Save post */
+/* Accessibility label for the 'Save Post' button. */
 "Save post" = "Spara inlägg";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
@@ -6085,7 +6099,6 @@ translators: Block name. %s: The localized block name */
 "Schedule Now" = "Schemalägg nu";
 
 /* Name for the status of a scheduled post
-   Scheduled
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tidsinställd";
 
@@ -6285,14 +6298,21 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Valt medieobjekt är inte tillgängligt.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Valt: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Valt: standard";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Val av en annan menyplats kommer att kasta bort ändringar som du har gjort i den nuvarande menyn. Är du säker på att du vill fortsätta?";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Val av en annan meny kommer att kasta bort ändringar som du har gjort i den nuvarande menyn. Är du säker på att du vill fortsätta?";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Selection not allowed" = "Val inte tillåtet";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Väljer att använda denna domän för din webbplats.";
@@ -6392,6 +6412,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Dela";
@@ -6733,9 +6754,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Sort Order */
 "Sort By" = "Sortera efter";
 
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Sortering och filtrering";
-
 /* Opens the Github Repository Web
    Title of button that displays the App's source code information */
 "Source Code" = "Källkod";
@@ -6844,6 +6862,9 @@ translators: Block name. %s: The localized block name */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Prenumerationen har tagits bort för denna konversation";
+
+/* Label displayed to the user left of the time zone suggestion button */
+"Suggestion:" = "Förslag:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -7040,6 +7061,9 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Endast text";
 
 /* No comment provided by engineer. */
+"Text color" = "Textfärg";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Medan man redigerar ett textblock finns verktygen för textformatering finns i verktygsfältet ovanför tangentbordet ";
 
 /* Button title
@@ -7105,6 +7129,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Appen förstår inte svaret från servern. Vänligen kontrollera din webbplats inställningar.";
+
+/* No comment provided by engineer. */
+"The basics" = "Grunderna";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikatet för den här servern är inte giltigt. Det kan hända att du ansluter till en server som påstår sig vara \"%@\", vilket kan försätta din sekretessbelagda information i fara.\n\nVill du lita på certifikatet i alla fall?";
@@ -7215,6 +7242,9 @@ translators: Block name. %s: The localized block name */
 "There has been a problem while loading your Notification Settings" = "Ett oväntat fel uppstod vid hämtningen av dina notisinställningar";
 
 /* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "Ett oväntat fel inträffade vid redigering av kommentaren";
+
+/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Ett oväntat fel inträffade vid redigering av kommentaren";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -7245,7 +7275,6 @@ translators: Block name. %s: The localized block name */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Ett problem uppstod vid anslutningen till %@. Anslut igen för att fortsätta publicering.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
-   No comment (test)
    The Jetpack view title used when an error occurred
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "Ett problem har uppstått";
@@ -7586,8 +7615,7 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
-   Title of trashed Comments filter.
-   Trashed */
+   Title of trashed Comments filter. */
 "Trashed" = "Borttagen";
 
 /* Connect when the SSL certificate is invalid */
@@ -7820,7 +7848,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Kan inte skriva bild till fil";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Förkasta";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -8019,6 +8048,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Laddar upp inlägg...";
 
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"Uploading videos longer than 5 minutes requires a paid plan." = "Att ladda upp videoklipp som är längre än 5 minuter kräver ett betalt paket.";
+
 /* Label to show while uploading media to server */
 "Uploading..." = "Laddar upp …";
 
@@ -8075,8 +8107,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "E-postmeddelande för verifiering har skickats. Kolla inkorgen.";
 
-/* Push Authentication Alert Title
-   Title of a prompt. A user must verify their login attempt. */
+/* Push Authentication Alert Title */
 "Verify Log In" = "Verifiera inloggning";
 
 /* Notice displayed after domain credit redemption success. */
@@ -8111,6 +8142,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export av video avbruten.";
 
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Video not uploaded" = "Videon laddades inte upp";
+
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
 
@@ -8128,15 +8162,15 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Visa alla";
 
-/* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "Visa alla kommentarer";
-
 /* Button label for viewing a post */
 "View Post" = "Se inlägget";
 
 /* Action title. Opens the user's site in an in-app browser
    The menu item to select during a guided tour. */
 "View Site" = "Besök sida";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Visa alla kommentarer";
 
 /* Displays More Rows */
 "View all…" = "Visa alla...";
@@ -8777,6 +8811,9 @@ translators: Block name. %s: The localized block name */
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kan visa statistik för en enskild webbplats under Idag i notiscentret i iOS.";
+
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "Du kan redigera detta block i webbversionen av redigeraren.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Du kan följa inlägg på en specifik webbplats genom att följa den.";

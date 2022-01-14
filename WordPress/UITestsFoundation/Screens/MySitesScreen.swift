@@ -20,7 +20,8 @@ public class MySitesScreen: ScreenObject {
                 cancelButtonGetter,
                 plusButtonGetter
             ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 

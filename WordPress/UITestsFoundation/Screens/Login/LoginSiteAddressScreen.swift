@@ -24,7 +24,11 @@ public class LoginSiteAddressScreen: ScreenObject {
     var nextButton: XCUIElement { app.buttons[ElementStringIDs.nextButton] }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [siteAddressTextFieldGetter], app: app)
+        try super.init(
+            expectedElementGetters: [siteAddressTextFieldGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func proceedWith(siteUrl: String) throws -> LoginUsernamePasswordScreen {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-01 19:27:13+0000 */
+/* Translation-Revision-Date: 2022-01-10 17:20:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: nl */
@@ -62,6 +62,9 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d ongeziene berichten";
 
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
+
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s getransformeerd naar %2$s";
 
@@ -87,7 +90,6 @@
 "%@ comment" = "%@ reactie";
 
 /* Accessibility label for comments button (plural)
-   Number of Comments
    Number of Comments per Page */
 "%@ comments" = "%@ reacties";
 
@@ -133,9 +135,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* No comment provided by engineer. */
-"%@, %@" = "%1$@, %2$@";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
@@ -265,8 +264,7 @@ translators: Block name. %s: The localized block name */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Zonder titel)";
 
-/* (no title)
-   Lets a user know that a local draft does not have a title. */
+/* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(Geen titel)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -388,6 +386,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD LINK" = "VOEG EEN LINK TOE";
+
+/* No comment provided by engineer. */
+"ADD MEDIA" = "MEDIA TOEVOEGEN";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "VIDEO TOEVOEGEN";
@@ -549,9 +550,6 @@ translators: Block name. %s: The localized block name */
 "Add image, or avatar, to represent this new account." = "Voeg een afbeelding of avatar toe, die bij dit nieuwe account hoort.";
 
 /* No comment provided by engineer. */
-"Add link" = "Link toevoegen";
-
-/* No comment provided by engineer. */
 "Add link text" = "Linktekst toevoegen";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
@@ -606,6 +604,9 @@ translators: Block name. %s: The localized block name */
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adres";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Adres instellingen";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Adresregel %@";
@@ -910,7 +911,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Auteur";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -1013,6 +1015,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Staafgrafiek waarin bezoekers voor je nieuwste berichten staan weergegeven";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Reageer als eerste";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Laat als eerste een reactie achter.";
@@ -1542,6 +1547,9 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Kolom %d";
 
 /* No comment provided by engineer. */
+"Column Settings" = "Kolom instellingen";
+
+/* No comment provided by engineer. */
 "Columns Settings" = "Kolommen instellingen";
 
 /* First story intro item description */
@@ -1585,7 +1593,8 @@ translators: Block name. %s: The localized block name */
 /* Hint for users to grow their audience by commenting on other blogs. */
 "Comment to start making connections." = "Reageer om verbindingen te maken.";
 
-/* Filters Comments Notifications
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1598,6 +1607,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Reacties";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Reacties zijn gesloten";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Reacties op";
@@ -2324,9 +2336,6 @@ translators: Block name. %s: The localized block name */
    User's Display Name */
 "Display Name" = "Weergavenaam";
 
-/* No comment provided by engineer. */
-"Display post date" = "Toon berichtdatum";
-
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Toon je site-statistieken voor allertijden hier. Configureer in de WordPress-app in je site-statistieken.";
 
@@ -2338,6 +2347,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Opnieuw doen";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Document, %@";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Document: %@";
@@ -2464,6 +2476,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Tik tweemaal om een afbeelding te selecteren";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Twee keer tikken om een standaard lettertype grootte te selecteren";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Twee keer tikken om lettertype grootte te selecteren";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Tik tweemaal om de optie te selecteren";
 
@@ -2513,14 +2531,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Dupliceer blok";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "LINK BEWERKEN";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, tik op een blok. Zijn instellingen zullen verschijnen in de gereedschapsbalk onderaan het scherm.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2653,9 +2669,6 @@ translators: Block name. %s: The localized block name */
 "Embed caption. Empty" = "Bijschrift ingesloten inhoud. Leeg";
 
 /* No comment provided by engineer. */
-"Embed link" = "Sluit link in";
-
-/* No comment provided by engineer. */
 "Embed media" = "Sluit media in";
 
 /* No comment provided by engineer. */
@@ -2783,8 +2796,7 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when approving a comment fails. */
 "Error approving comment." = "Fout bij goedkeuren van reactie.";
 
-/* No comment (test)
-   This secondary message is displayed if a user encounters a general error. */
+/* This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Fout tijdens communiceren met de server, probeer opnieuw";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
@@ -3060,9 +3072,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Bestandstype";
 
-/* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
-"Fill with password manager" = "Invullen met wachtwoordmanager";
-
 /* Title of the filter button in the Reader */
 "Filter" = "Filteren";
 
@@ -3105,6 +3114,9 @@ translators: Block name. %s: The localized block name */
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Volgen";
+
+/* Button title. Follow the comments on a post. */
+"Follow Conversation" = "Volg conversatie";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Volg gesprek per e-mail";
@@ -3157,9 +3169,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Volgt %1$@";
 
-/* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Gesprek wordt gevolgd per e-mail";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Volgen van nieuwe onderwerpen...";
 
@@ -3175,11 +3184,11 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Wordt gebruikt om de blog te volgen.";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Volgt de reacties op een bericht per e-mail.";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Volgt de tag.";
+
+/* No comment provided by engineer. */
+"Font Size" = "Lettertype grootte";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Voetbal";
@@ -3256,6 +3265,9 @@ translators: Block name. %s: The localized block name */
 
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Ga aan de slag door te kiezen uit een breed scala aan vooraf gemaakte pagina lay-outs. Of begin gewoon met een lege pagina.";
+
+/* No comment provided by engineer. */
+"Get support" = "Krijg ondersteuning";
 
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Breng de bal aan het rollen en vergroot je bericht weergaven door dit bericht te delen.";
@@ -3547,9 +3559,6 @@ translators: Block name. %s: The localized block name */
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Bijschrift afbeelding. %s";
 
-/* No comment provided by engineer. */
-"Image settings" = "Afbeelding-instellingen";
-
 /* Hint for image title on image settings. */
 "Image title" = "Titel voor afbeelding";
 
@@ -3673,6 +3682,9 @@ translators: Block name. %s: The localized block name */
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introductie verhalen";
+
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Ongeldig e-mailadres";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Ongeldig site-adres";
@@ -4040,7 +4052,6 @@ translators: Block name. %s: The localized block name */
 "Local" = "Lokaal";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Local
    Title of the Local Changes Badge */
 "Local changes" = "Lokale wijzigingen";
 
@@ -4095,8 +4106,7 @@ translators: Block name. %s: The localized block name */
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Uitloggen van WordPress?";
 
-/* Error message shown when a user is trying to login.
-   Login Request Expired */
+/* Login Request Expired */
 "Login Request Expired" = "Aanmeldingsverzoek is verlopen";
 
 /* No comment provided by engineer. */
@@ -4156,6 +4166,9 @@ translators: Block name. %s: The localized block name */
 
 /* Marks a notification as unread */
 "Mark Unread" = "Markeer ongelezen";
+
+/* Marks comment as spam */
+"Mark as Spam" = "Markeer als spam";
 
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Markeer als sticky";
@@ -4279,9 +4292,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Minimale hoogte";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Verschillende kwetsbaarheden";
 
@@ -4304,7 +4314,6 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More
    Spoken accessibility label */
 "More" = "Meer";
 
@@ -4320,6 +4329,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Meer op WordPress.com";
+
+/* No comment provided by engineer. */
+"More support options" = "Meer ondersteuning opties";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Populairste tijd";
@@ -4370,7 +4382,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Verplaatsen naar prullenbak";
 
 /* No comment provided by engineer. */
@@ -4429,7 +4442,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigeert naar aanpassen van het verloop";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Navigeert om %s te selecteren";
 
 /* No comment provided by engineer. */
@@ -4575,6 +4589,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Geen reacties";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Nog geen reacties";
 
@@ -4615,8 +4630,7 @@ translators: Block name. %s: The localized block name */
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Nog geen inzichten toegevoegd";
 
-/* No comment (test)
-   This primary error message is displayed if a user encounters an issue with network reachability. */
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Geen internet verbinding";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
@@ -4758,6 +4772,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Opmerking: Kolom lay-out kan verschillen tussen thema's en schermafmetingen";
 
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Opmerking: Lay-out kan verschillen tussen thema's en schermgroottes";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Opmerking: Je moet WordPress.com login toestaan om dit blok in de mobiele editor te bewerken.";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Niets gevonden.";
 
@@ -4866,9 +4886,6 @@ translators: Block name. %s: The localized block name */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Zodra je een WordPress.com site maakt, kun je inhoud die je leuk vindt rebloggen op je eigen site.";
 
-/* Accessibility label for 1 password button */
-"One Password button" = "One Password knop";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Bekijk alleen de meest relevante statistieken. Voeg inzichten toe, zodat deze aansluiten bij je behoeften.";
 
@@ -4892,6 +4909,9 @@ translators: Block name. %s: The localized block name */
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Open apparaat instellingen";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Open Jetpack Security instellingen";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4926,9 +4946,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Open de ik-sectie";
-
-/* Accessibility hint for 1 password button */
-"Opens One Password manager" = "Opent One Password manager";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Opent de webpagina in Safari";
@@ -4993,6 +5010,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFOON";
+
+/* No comment provided by engineer. */
+"Padding" = "Padding";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5096,7 +5116,6 @@ translators: Block name. %s: The localized block name */
 "Pending" = "In afwachting";
 
 /* Name for the status of a post pending review.
-   Pending review
    Title of the Pending Review Badge */
 "Pending review" = "Afwachting van de moderatie";
 
@@ -5200,6 +5219,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Voer een geldig adres in";
+
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Vul een geldig e-mailadres in voor een WordPress.com account.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Een geldig e-mailadres invoeren.";
@@ -5324,9 +5346,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Bericht door %1$@ van %2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Bericht inhoud-instellingen";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Bericht gemaakt op %@";
 
@@ -5335,9 +5354,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Uploaden van bericht mislukt";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Bericht meta-instellingen";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Bericht verplaatst naar prullenbak.";
@@ -5578,7 +5594,6 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
 "Published" = "Gepubliceerd";
@@ -6028,8 +6043,7 @@ translators: Block name. %s: The localized block name */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Bewaar conceptbericht op:";
 
-/* Accessibility label for the 'Save Post' button.
-   Save post */
+/* Accessibility label for the 'Save Post' button. */
 "Save post" = "Bericht opslaan";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
@@ -6085,7 +6099,6 @@ translators: Block name. %s: The localized block name */
 "Schedule Now" = "Nu inplannen";
 
 /* Name for the status of a scheduled post
-   Scheduled
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Gepland";
 
@@ -6285,14 +6298,21 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Geselecteerde media is niet beschikbaar.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Geselecteerd: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Geselecteerd: standaard";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Door een andere menu-locatie te selecteren, gaan wijzigingen aan het huidige menu verloren. Weet je zeker dat je wilt doorgaan?";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Door een ander menu te selecteren, gaan wijzigingen aan het huidige menu verloren. Weet je zeker dat je wilt doorgaan?";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Selection not allowed" = "Selectie niet toegestaan";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Selecteert dit domein voor gebruik met je site.";
@@ -6392,6 +6412,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Delen";
@@ -6733,9 +6754,6 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Sort Order */
 "Sort By" = "Sorteren op";
 
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Sortering en filtering";
-
 /* Opens the Github Repository Web
    Title of button that displays the App's source code information */
 "Source Code" = "Broncode";
@@ -6844,6 +6862,9 @@ translators: Block name. %s: The localized block name */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Gesprek wordt niet meer gevolgd";
+
+/* Label displayed to the user left of the time zone suggestion button */
+"Suggestion:" = "Suggestie:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -7040,6 +7061,9 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Enkel tekst";
 
 /* No comment provided by engineer. */
+"Text color" = "Tekstkleur";
+
+/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "De tekstopmaak besturingen bevinden zich in de werkbalk boven het toetsenbord tijdens het bewerken van een tekstblok";
 
 /* Button title
@@ -7105,6 +7129,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "De app herkent het antwoord van de server niet. Controleer de configuratie van je site.";
+
+/* No comment provided by engineer. */
+"The basics" = "De grondbeginselen";
 
 /* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Het certificaat voor deze server is ongeldig. Je maakt mogelijk verbinding met een server die zich voordoet als “%@”, wat je vertrouwelijke informatie in gevaar kan brengen.\n\nWil je het certificaat toch vertrouwen?";
@@ -7215,6 +7242,9 @@ translators: Block name. %s: The localized block name */
 "There has been a problem while loading your Notification Settings" = "Er is een fout opgetreden bij het laden van je meldingsinstellingen";
 
 /* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "Er is een onverwachte fout opgetreden bij het bewerken van de reactie";
+
+/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Er is een onverwachte fout opgetreden bij het bewerken van je reactie";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -7245,7 +7275,6 @@ translators: Block name. %s: The localized block name */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Er is een probleem opgetreden met %@. Maak opnieuw verbinding om door te gaan met publiceren.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
-   No comment (test)
    The Jetpack view title used when an error occurred
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "Er is een probleem";
@@ -7586,8 +7615,7 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
-   Title of trashed Comments filter.
-   Trashed */
+   Title of trashed Comments filter. */
 "Trashed" = "Verwijderd";
 
 /* Connect when the SSL certificate is invalid */
@@ -7820,7 +7848,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Niet mogelijk afbeelding naar bestand te schrijven";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Afkeuren";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -8019,6 +8048,9 @@ translators: Block name. %s: The localized block name */
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Bericht uploaden...";
 
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"Uploading videos longer than 5 minutes requires a paid plan." = "Uploaden van videos langer dan 5 minuten vereisen een betaald abonnement.";
+
 /* Label to show while uploading media to server */
 "Uploading..." = "Bezig met uploaden...";
 
@@ -8075,8 +8107,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "Verificatie-mail verstuurd, controleer je inbox.";
 
-/* Push Authentication Alert Title
-   Title of a prompt. A user must verify their login attempt. */
+/* Push Authentication Alert Title */
 "Verify Log In" = "Controleer login";
 
 /* Notice displayed after domain credit redemption success. */
@@ -8111,6 +8142,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Export video geannuleerd.";
 
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Video not uploaded" = "Video niet geüpload";
+
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
 
@@ -8128,15 +8162,15 @@ translators: Block name. %s: The localized block name */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Alles weergeven";
 
-/* Title for button on the post details page to show all comments when tapped. */
-"View All Comments" = "Bekijk alle reacties";
-
 /* Button label for viewing a post */
 "View Post" = "Bekijk bericht";
 
 /* Action title. Opens the user's site in an in-app browser
    The menu item to select during a guided tour. */
 "View Site" = "Site bekijken";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Bekijk alle reacties";
 
 /* Displays More Rows */
 "View all…" = "Toon alles…";
@@ -8777,6 +8811,9 @@ translators: Block name. %s: The localized block name */
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site tonen in de weergave iOS Vandaag\/Berichtencentrum.";
+
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "Je kunt dit blok bewerken met behulp van de web versie van de editor.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Je kunt berichten op een bepaalde site volgen door deze te volgen.";

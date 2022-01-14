@@ -11,17 +11,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
-    case unifiedCommentsAndNotificationsList
-    case recommendAppToOthers
     case weeklyRoundup
     case weeklyRoundupStaticNotification
-    case newCommentDetail
     case domains
-    case followConversationViaNotifications
+    case timeZoneSuggester
     case aboutScreen
     case newCommentThread
     case postDetailsComments
     case commentThreadModerationMenu
+    case mySiteDashboard
+    case followConversationPostDetails
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -48,21 +47,15 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .unifiedCommentsAndNotificationsList:
-            return true
-        case .recommendAppToOthers:
             return true
         case .weeklyRoundup:
             return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
-        case .newCommentDetail:
-            // NOTE: only applies to My Site > Comments.
-            return true
         case .domains:
-            return BuildConfiguration.current == .localDeveloper
-        case .followConversationViaNotifications:
+            return false
+        case .timeZoneSuggester:
             return true
         case .aboutScreen:
             return true
@@ -72,6 +65,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .commentThreadModerationMenu:
             return false
+        case .mySiteDashboard:
+            return false
+        case .followConversationPostDetails:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -116,20 +113,14 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .unifiedCommentsAndNotificationsList:
-            return "Unified List for Comments and Notifications"
-        case .recommendAppToOthers:
-            return "Recommend App to Others"
         case .weeklyRoundup:
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
             return "Weekly Roundup Static Notification"
-        case .newCommentDetail:
-            return "New Comment Detail"
         case .domains:
             return "Domain Purchases"
-        case .followConversationViaNotifications:
-            return "Follow Conversation via Notifications"
+        case .timeZoneSuggester:
+            return "TimeZone Suggester"
         case .aboutScreen:
             return "New Unified About Screen"
         case .newCommentThread:
@@ -138,6 +129,10 @@ extension FeatureFlag {
             return "Post Details Comments"
         case .commentThreadModerationMenu:
             return "Comment Thread Moderation Menu"
+        case .mySiteDashboard:
+            return "My Site Dashboard"
+        case .followConversationPostDetails:
+            return "Follow Conversation from Post Details"
         }
     }
 
