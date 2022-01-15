@@ -491,7 +491,6 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        // TODO: Should we inject `FeatureFlag` for testability?
         let stackView = DoubleBarControlConfigurer.stackView(
             with: FeatureFlag.markAllNotificationsAsRead.enabled ? markAllAsReadButton : nil,
             rightControl: shouldDisplaySettingsButton ? notificationSettingsButton : nil

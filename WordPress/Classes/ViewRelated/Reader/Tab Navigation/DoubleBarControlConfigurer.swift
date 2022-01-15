@@ -24,7 +24,6 @@ enum DoubleBarControlConfigurer {
             return
         }
 
-        // TODO: Check if a common/global constant exists
         let minimumTappableLength: CGFloat = 44
 
         control.translatesAutoresizingMaskIntoConstraints = false
