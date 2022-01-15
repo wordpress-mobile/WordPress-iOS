@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-10 15:27:14+0000 */
+/* Translation-Revision-Date: 2022-01-12 11:09:18+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -3963,7 +3963,7 @@ translators: Block name. %s: The localized block name */
 "Link To" = "Legătură la";
 
 /* No comment provided by engineer. */
-"Link inserted" = "Legătură inserată";
+"Link inserted" = "Am inserat legătura";
 
 /* No comment provided by engineer. */
 "Link text" = "Text legătură";
