@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <accessibilityOverrides isEnabled="YES" dynamicTypePreference="7"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
@@ -15,20 +16,23 @@
             <rect key="frame" x="0.0" y="0.0" width="394" height="69"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="st6-L0-qny">
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="st6-L0-qny" userLabel="Content Stack View">
                     <rect key="frame" x="0.0" y="16" width="394" height="43"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QfN-CJ-PfS">
-                            <rect key="frame" x="0.0" y="11.5" width="280" height="20.5"/>
+                            <rect key="frame" x="0.0" y="3" width="157" height="37"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZm-SW-a1v" userLabel="Follow Button">
-                            <rect key="frame" x="280" y="8" width="114" height="27"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZm-SW-a1v" userLabel="Follow Button">
+                            <rect key="frame" x="157" y="3.5" width="237" height="36"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                            <state key="normal" title="Follow Conversation">
+                            <state key="normal" title="Follow Conversation" image="bell">
                                 <color key="titleColor" systemColor="systemBlueColor"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default">
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                </preferredSymbolConfiguration>
                             </state>
                         </button>
                     </subviews>
@@ -43,6 +47,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="contentStackView" destination="st6-L0-qny" id="6gl-E7-3tT"/>
                 <outlet property="followButton" destination="dZm-SW-a1v" id="T1e-6U-kD8"/>
                 <outlet property="titleLabel" destination="QfN-CJ-PfS" id="TVn-gJ-PFg"/>
             </connections>
@@ -50,6 +55,7 @@
         </view>
     </objects>
     <resources>
+        <image name="bell" width="24" height="24"/>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
