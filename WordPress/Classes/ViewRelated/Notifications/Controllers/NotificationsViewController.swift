@@ -114,7 +114,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         markButton.addTarget(self, action: #selector(markAllAsRead), for: .touchUpInside)
         markButton.translatesAutoresizingMaskIntoConstraints = false
         markButton.contentMode = .right
-        markButton.accessibilityLabel = NSLocalizedString("Mark All As Read", comment: "-") // TODO: Check the accessibility strings
+        markButton.accessibilityLabel = NSLocalizedString(
+            "Mark All As Read",
+            comment: "Marks all notifications under the filter as read"
+        )
         return markButton
     }()
 
