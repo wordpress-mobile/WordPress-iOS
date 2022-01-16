@@ -10,12 +10,15 @@ final class QuickStartPromptViewController: UIViewController {
     @IBOutlet private weak var siteDescriptionLabel: UILabel!
 
     /// Prompt info
-    @IBOutlet private weak var promptTitleLabel: UILabel!
-    @IBOutlet private weak var promptDescriptionLabel: UILabel!
+    @IBOutlet private(set) weak var promptTitleLabel: UILabel!
+    @IBOutlet private(set) weak var promptDescriptionLabel: UILabel!
 
     /// Buttons
-    @IBOutlet private weak var showMeAroundButton: FancyButton!
-    @IBOutlet private weak var noThanksButton: FancyButton!
+    @IBOutlet private(set) weak var showMeAroundButton: FancyButton!
+    @IBOutlet private(set) weak var noThanksButton: FancyButton!
+
+    /// Constraints
+    @IBOutlet private(set) weak var scrollViewTopVerticalConstraint: NSLayoutConstraint!
 
     // MARK: - Properties
 

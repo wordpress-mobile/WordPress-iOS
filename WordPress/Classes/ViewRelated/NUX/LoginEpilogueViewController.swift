@@ -39,7 +39,7 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Links to the Epilogue TableViewController
     ///
-    private var tableViewController: LoginEpilogueTableViewController?
+    private(set) var tableViewController: LoginEpilogueTableViewController?
 
     /// Analytics Tracker
     ///
@@ -218,4 +218,18 @@ private extension LoginEpilogueViewController {
     @IBAction func createANewSite() {
         createNewSite()
     }
+}
+
+// MARK: - UINavigationControllerDelegate
+
+extension LoginEpilogueViewController: UINavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard operation == .push, fromVC is LoginEpilogueViewController, toVC is QuickStartPromptViewController else {
+            return nil
+        }
+
+        return LoginEpilogueAnimator()
+    }
+
 }

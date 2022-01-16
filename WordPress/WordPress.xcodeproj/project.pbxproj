@@ -1356,6 +1356,8 @@
 		82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FC612B1FA8B7FC00A1757E /* ActivityListRow.swift */; };
 		82FFBF4D1F434BDA00F4573F /* ThemeIdHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF4C1F434BDA00F4573F /* ThemeIdHelper.swift */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
+		830A58D82793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */; };
+		830A58D92793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */; };
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
@@ -5967,6 +5969,7 @@
 		82FFBF4C1F434BDA00F4573F /* ThemeIdHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeIdHelper.swift; sourceTree = "<group>"; };
 		82FFBF4E1F45E03D00F4573F /* WordPress 66.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 66.xcdatamodel"; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueAnimator.swift; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
 		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
 		834CE7331256D0DE0046A4A3 /* CFNetwork.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -8508,7 +8511,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -13991,6 +13994,7 @@
 			isa = PBXGroup;
 			children = (
 				B560914B208A671E00399AE4 /* WPStyleGuide+SiteCreation.swift */,
+				830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */,
 				E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */,
 				B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */,
 				B5326E6E203F554C007392C3 /* WordPressSupportSourceTag+Helpers.swift */,
@@ -15299,7 +15303,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -17234,6 +17238,7 @@
 				D816C1EE20E0892200C4D82F /* Follow.swift in Sources */,
 				3F3DD0B226FD176800F5F121 /* PresentationCard.swift in Sources */,
 				822D60B91F4CCC7A0016C46D /* BlogJetpackSettingsService.swift in Sources */,
+				830A58D82793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */,
 				08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */,
 				B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */,
 				3F6DA04125646F96002AB88F /* HomeWidgetData.swift in Sources */,
@@ -20194,6 +20199,7 @@
 				FABB24232602FC2C00C8785C /* JetpackRestoreService.swift in Sources */,
 				FABB24242602FC2C00C8785C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
 				FABB24252602FC2C00C8785C /* WPContentSyncHelper.swift in Sources */,
+				830A58D92793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */,
 				FABB24262602FC2C00C8785C /* SiteAssemblyStep.swift in Sources */,
 				FABB24272602FC2C00C8785C /* SiteSettingsViewController+Swift.swift in Sources */,
 				FABB24282602FC2C00C8785C /* FilterTableData.swift in Sources */,

@@ -14,6 +14,7 @@
                 <outlet property="noThanksButton" destination="2uc-tK-alt" id="EyT-E0-oLS"/>
                 <outlet property="promptDescriptionLabel" destination="Kqr-FO-d5M" id="lbG-CU-xOm"/>
                 <outlet property="promptTitleLabel" destination="doQ-6M-3Uv" id="i5m-E1-5kU"/>
+                <outlet property="scrollViewTopVerticalConstraint" destination="0uM-8v-xeM" id="9iv-st-GfW"/>
                 <outlet property="showMeAroundButton" destination="0WF-fO-mti" id="MyR-dp-DjP"/>
                 <outlet property="siteDescriptionLabel" destination="T6b-Pg-T2k" id="Jbd-bS-EqF"/>
                 <outlet property="siteIconView" destination="5pl-dB-rPb" id="ovD-LF-JHV"/>
@@ -119,12 +120,12 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="w31-gj-Dsv" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="80" id="0uM-8v-xeM"/>
-                <constraint firstAttribute="trailingMargin" secondItem="w31-gj-Dsv" secondAttribute="trailing" id="51M-BA-Z8b"/>
-                <constraint firstAttribute="leadingMargin" secondItem="88c-8d-UbI" secondAttribute="leading" id="Qbc-f2-ZaH"/>
+                <constraint firstAttribute="trailing" secondItem="w31-gj-Dsv" secondAttribute="trailing" constant="20" id="51M-BA-Z8b"/>
+                <constraint firstItem="88c-8d-UbI" firstAttribute="leadingMargin" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="Qbc-f2-ZaH"/>
                 <constraint firstItem="88c-8d-UbI" firstAttribute="top" secondItem="w31-gj-Dsv" secondAttribute="bottom" constant="24" id="cEg-cI-kct"/>
-                <constraint firstAttribute="trailingMargin" secondItem="88c-8d-UbI" secondAttribute="trailing" id="daa-Gn-9WI"/>
+                <constraint firstAttribute="trailing" secondItem="88c-8d-UbI" secondAttribute="trailing" constant="20" id="daa-Gn-9WI"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="88c-8d-UbI" secondAttribute="bottom" constant="24" id="oQS-J2-RXn"/>
-                <constraint firstItem="w31-gj-Dsv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="pfX-zX-22J"/>
+                <constraint firstItem="w31-gj-Dsv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="pfX-zX-22J"/>
             </constraints>
             <point key="canvasLocation" x="132" y="76"/>
         </view>
