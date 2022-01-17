@@ -23,6 +23,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var containerView: UIView!
 
     private let meScenePresenter: ScenePresenter
+    
+    private(set) lazy var blogDetailHeaderView: NewBlogDetailHeaderView = {
+        let headerView = configureHeaderView()
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        return headerView
+    }()
 
     // MARK: - Initializers
 
@@ -73,6 +79,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         setupNavigationItem()
+        setupBlogDetailHeaderView()
         setupSegmentedControl()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
@@ -103,6 +110,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func setupBlogDetailHeaderView() {
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
+        }
+
+        stackView.insertArrangedSubview(blogDetailHeaderView, at: 0)
     }
 
     private func setupSegmentedControl() {
