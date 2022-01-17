@@ -123,6 +123,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: false)
 
             let trashButton = UIBarButtonItem(image: .gridicon(.trash), style: .plain, target: self, action: #selector(trashTapped))
+            trashButton.accessibilityLabel = NSLocalizedString("Trash", comment: "Accessibility label for trash button in nav bar")
+            trashButton.accessibilityHint = NSLocalizedString("Trash selected media", comment: "Accessibility hint for trash button in nav bar")
             navigationItem.setRightBarButtonItems([trashButton], animated: true)
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
@@ -132,11 +134,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             if blog.userCanUploadMedia && assetCount > 0 {
                 let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+                addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Accessibility label for add button in nav bar")
+                addButton.accessibilityHint = NSLocalizedString("Add new media", comment: "Accessibility hint for add button in nav bar")
+
                 barButtonItems.append(addButton)
             }
 
             if blog.supports(.mediaDeletion) && assetCount > 0 {
                 let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
+                editButton.accessibilityLabel = NSLocalizedString("Edit", comment: "Accessibility label for edit button in nav bar")
+                editButton.accessibilityHint = NSLocalizedString("Enter edit mode to enable multi select to delete", comment: "Accessibility hint for edit button in nav bar")
+
                 barButtonItems.append(editButton)
 
                 navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
