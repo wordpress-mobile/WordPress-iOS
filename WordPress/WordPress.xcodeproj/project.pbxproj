@@ -2733,6 +2733,8 @@
 		FA73D7D6278D9E5D00DF24B3 /* BlogDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */; };
 		FA73D7D9278DDD4B00DF24B3 /* HostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7D8278DDD4B00DF24B3 /* HostCollectionViewCell.swift */; };
 		FA73D7DD278DDE0E00DF24B3 /* QuickLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7DC278DDE0E00DF24B3 /* QuickLinksView.swift */; };
+		FA73D7DF279588E400DF24B3 /* MySiteViewController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */; };
+		FA73D7E0279588E400DF24B3 /* MySiteViewController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */; };
 		FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */; };
@@ -7479,6 +7481,7 @@
 		FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardViewController.swift; sourceTree = "<group>"; };
 		FA73D7D8278DDD4B00DF24B3 /* HostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostCollectionViewCell.swift; sourceTree = "<group>"; };
 		FA73D7DC278DDE0E00DF24B3 /* QuickLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLinksView.swift; sourceTree = "<group>"; };
+		FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+Header.swift"; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatDetailsViewController.swift; sourceTree = "<group>"; };
 		FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatDetailsViewController.xib; sourceTree = "<group>"; };
@@ -8118,6 +8121,7 @@
 				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
 				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 				FA94D9E8278C83A900FC6CE3 /* MySiteViewController.xib */,
+				FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */,
 			);
 			path = "My Site";
 			sourceTree = "<group>";
@@ -8508,7 +8512,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -15299,7 +15303,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -18383,6 +18387,7 @@
 				241E60B325CA0D2900912CEB /* UserSettings.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,
 				B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */,
+				FA73D7DF279588E400DF24B3 /* MySiteViewController+Header.swift in Sources */,
 				98E54FF2265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */,
 				FFABD80821370496003C65B6 /* SelectPostViewController.swift in Sources */,
 				D8212CBD20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift in Sources */,
@@ -19381,6 +19386,7 @@
 				FABB213F2602FC2C00C8785C /* LatestPostSummaryCell.swift in Sources */,
 				FABB21402602FC2C00C8785C /* LoginEpilogueViewController.swift in Sources */,
 				FABB21412602FC2C00C8785C /* QuickStartTours.swift in Sources */,
+				FA73D7E0279588E400DF24B3 /* MySiteViewController+Header.swift in Sources */,
 				FABB21422602FC2C00C8785C /* RevisionsTableViewFooter.swift in Sources */,
 				FABB21432602FC2C00C8785C /* KanvasCameraAnalyticsHandler.swift in Sources */,
 				FABB21442602FC2C00C8785C /* MediaEditorOperation+Description.swift in Sources */,
