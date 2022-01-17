@@ -60,6 +60,10 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         photoPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         photoPicker.tabBarItem = UITabBarItem(title: Constants.photosTabBarTitle, image: Constants.photosTabBarIcon, tag: 0)
 
+        if #available(iOS 14.0, *),
+           FeatureFlag.mediaPickerPermissionsNotice.enabled {
+            photoPicker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
+        }
 
         let mediaPicker = WPMediaPickerForKanvas(options: options, delegate: mediaPickerDelegate)
         mediaPicker.startOnGroupSelector = false
@@ -172,6 +176,36 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
         picker != self && asset.exceedsFreeSitesAllowance() && shouldDisableLongVideos
+    }
+
+    func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
+        guard #available(iOS 14.0, *),
+              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+              picker.dataSource is WPPHAssetDataSource else {
+            return false
+        }
+
+        return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
+    }
+
+    func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
+        guard #available(iOS 14.0, *) else {
+            return .zero
+        }
+
+        let header = DeviceMediaPermissionsHeader()
+        header.translatesAutoresizingMaskIntoConstraints = false
+
+        return header.referenceSizeInView(picker.view)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
+        guard #available(iOS 14.0, *),
+              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+            return
+        }
+
+        headerView.presenter = picker
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {

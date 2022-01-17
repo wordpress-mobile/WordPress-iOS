@@ -1225,7 +1225,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
+    // The user may have moderated a comment, but it is not removed from the post yet.
+    // So check the status to be sure only Approved comments are displayed.
+    if (![comment.status isEqualToString:[Comment descriptionFor:CommentStatusTypeApproved]]) {
+        return;
+    }
+    
     if ([self newCommentThreadEnabled]) {
         CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
         [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];

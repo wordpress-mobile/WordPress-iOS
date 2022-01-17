@@ -1,6 +1,0 @@
-¿Has prometido para este año nuevo publicar más contenido en tu sitio? Hemos hecho algunas actualizaciones al Editor de Bloques para ayudarte a hacer justamente eso.
-
-- Cuando estás editando bloques de párrafo, puedes resaltar un texto específico en el color que desees.
-- Los nuevos bloques de galería serán por defecto con el nuevo diseño. También puedes convertir automáticamente cualquier galería antigua al nuevo formato sin problemas.
-- Ahora, el editor hace scroll automáticamente, por lo que siempre puedes ver lo que estás escribiendo. No más texto que desaparece, no más suposiciones.
-- Hemos eliminado un fallo por el que el color de fondo no aparecía en los bloques con formato previo de los sitios que usan temas estándar.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-19 17:22:39+0000 */
+/* Translation-Revision-Date: 2022-01-12 11:09:18+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -90,7 +90,6 @@
 "%@ comment" = "Comentariu %@";
 
 /* Accessibility label for comments button (plural)
-   Number of Comments
    Number of Comments per Page */
 "%@ comments" = "%@ comentarii";
 
@@ -136,9 +135,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* No comment provided by engineer. */
-"%@, %@" = "%1$@, %2$@";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
@@ -268,8 +264,7 @@ translators: Block name. %s: The localized block name */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Fără titlu)";
 
-/* (no title)
-   Lets a user know that a local draft does not have a title. */
+/* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(fără titlu)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -391,6 +386,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "ADD LINK" = "ADAUGĂ O LEGĂTURĂ";
+
+/* No comment provided by engineer. */
+"ADD MEDIA" = "ADAUGĂ MEDIA";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "ADAUGĂ VIDEO";
@@ -606,6 +604,9 @@ translators: Block name. %s: The localized block name */
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adresă";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Setări adresă";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Linie adresă %@";
@@ -1546,6 +1547,9 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Coloana %d";
 
 /* No comment provided by engineer. */
+"Column Settings" = "Setări coloană";
+
+/* No comment provided by engineer. */
 "Columns Settings" = "Setări coloane";
 
 /* First story intro item description */
@@ -2114,7 +2118,7 @@ translators: Block name. %s: The localized block name */
 "Dark" = "Întunecată";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Panou de control";
+"Dashboard" = "Panou control";
 
 /* Title for a threat that includes the number of database rows affected */
 "Database %1$d threats" = "%1$d amenințări în baza de date";
@@ -2795,8 +2799,7 @@ translators: Block name. %s: The localized block name */
 /* Message displayed when approving a comment fails. */
 "Error approving comment." = "Eroare la aprobarea comentariului.";
 
-/* No comment (test)
-   This secondary message is displayed if a user encounters a general error. */
+/* This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Eroare de comunicare cu serverul, te rog încercă din nou";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
@@ -3072,9 +3075,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Tip de fișier";
 
-/* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
-"Fill with password manager" = "Completează cu managerul de parole";
-
 /* Title of the filter button in the Reader */
 "Filter" = "Filtrează";
 
@@ -3117,6 +3117,9 @@ translators: Block name. %s: The localized block name */
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Urmărire";
+
+/* Button title. Follow the comments on a post. */
+"Follow Conversation" = "Urmărește conversația";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Urmărește conversația prin email";
@@ -3169,9 +3172,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Urmăresc %1$@";
 
-/* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Urmăresc conversația prin email";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Urmăresc subiecte noi...";
 
@@ -3186,9 +3186,6 @@ translators: Block name. %s: The localized block name */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Urmărește blogul.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Urmărește comentariile la un articol prin email.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Urmărește eticheta.";
@@ -3633,7 +3630,7 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for insert link button on formatting toolbar.
    Discoverability title for insert link keyboard shortcut.
    Label action for inserting a link on the editor */
-"Insert Link" = "Inserare legătură";
+"Insert Link" = "Inserează legătura";
 
 /* Discoverability title for insert media keyboard shortcut. */
 "Insert Media" = "Inserare media";
@@ -3688,6 +3685,9 @@ translators: Block name. %s: The localized block name */
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Prezentăm Articole narațiune";
+
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Adresă email invalidă";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Adresa site-ului este invalidă";
@@ -3963,7 +3963,7 @@ translators: Block name. %s: The localized block name */
 "Link To" = "Legătură la";
 
 /* No comment provided by engineer. */
-"Link inserted" = "Legătură inserată";
+"Link inserted" = "Am inserat legătura";
 
 /* No comment provided by engineer. */
 "Link text" = "Text legătură";
@@ -4055,7 +4055,6 @@ translators: Block name. %s: The localized block name */
 "Local" = "Local";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Local
    Title of the Local Changes Badge */
 "Local changes" = "Schimbări locale";
 
@@ -4110,8 +4109,7 @@ translators: Block name. %s: The localized block name */
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Te dezautentifici de pe WordPress?";
 
-/* Error message shown when a user is trying to login.
-   Login Request Expired */
+/* Login Request Expired */
 "Login Request Expired" = "Autentificare cerută expirată";
 
 /* No comment provided by engineer. */
@@ -4319,7 +4317,6 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More
    Spoken accessibility label */
 "More" = "Mai mult";
 
@@ -4636,8 +4633,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Nu ai adăugat perspective până acum";
 
-/* No comment (test)
-   This primary error message is displayed if a user encounters an issue with network reachability. */
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Nu există conexiune la internet";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
@@ -4779,6 +4775,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Notă: aranjamentul pe coloane poate varia în funcție de temă și dimensiunile ecranului";
 
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Notă: aranjamentul poate varia în funcție de temă și dimensiunile ecranului";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Notă: pentru a edita acest bloc în editorul pentru dispozitive mobile, trebuie să permiți autentificarea WordPress.com.";
+
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nu am găsit nimic.";
 
@@ -4887,9 +4889,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "După ce ai creat un site WordPress.com, poți republica un conținut care îți place pe propriul site.";
 
-/* Accessibility label for 1 password button */
-"One Password button" = "Buton One Password";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Vezi numai statisticile cele mai relevante. Adaugă Perspective care se potrivesc cu nevoile tale.";
 
@@ -4913,6 +4912,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Deschide setări dispozitiv";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Deschide setările Securitate Jetpack";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4947,9 +4949,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Deschide secțiunea Eu";
-
-/* Accessibility hint for 1 password button */
-"Opens One Password manager" = "Deschide managerul One Password";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Deschide pagina web în Safari";
@@ -5014,6 +5013,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEFON";
+
+/* No comment provided by engineer. */
+"Padding" = "Distanțare";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5117,7 +5119,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending" = "În așteptare";
 
 /* Name for the status of a post pending review.
-   Pending review
    Title of the Pending Review Badge */
 "Pending review" = "În curs de revizuire";
 
@@ -5221,6 +5222,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Te rog introdu o adresă validă";
+
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Te rog introdu o adresă de email validă pentru un cont WordPress.com.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Te rog introdu o adresă de email validă.";
@@ -5593,7 +5597,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
 "Published" = "Publicat";
@@ -6043,8 +6046,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Salvează articolul ciornă pe:";
 
-/* Accessibility label for the 'Save Post' button.
-   Save post */
+/* Accessibility label for the 'Save Post' button. */
 "Save post" = "Salvează articolul";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
@@ -6100,7 +6102,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Schedule Now" = "Programează acum";
 
 /* Name for the status of a scheduled post
-   Scheduled
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Programat";
 
@@ -6312,6 +6313,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Selectarea unui alt meniu va anula modificările pe care le-ai făcut în meniul actual. Sigur vrei să continui?";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Selection not allowed" = "Selecția nu este permisă";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Selectează acest domeniu pentru a-l folosi pentru site-ul tău.";
@@ -6862,6 +6866,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Succes! Ai anulat urmărirea conversației";
 
+/* Label displayed to the user left of the time zone suggestion button */
+"Suggestion:" = "Sugestie:";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Sugestii";
@@ -7055,6 +7062,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Numai text";
+
+/* No comment provided by engineer. */
+"Text color" = "Culoare text";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
@@ -7268,7 +7278,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "E o problemă de conectare la %@. Reconectează-te pentru a continua publicitatea.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
-   No comment (test)
    The Jetpack view title used when an error occurred
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "A fost o problemă";
@@ -7609,8 +7618,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
-   Title of trashed Comments filter.
-   Trashed */
+   Title of trashed Comments filter. */
 "Trashed" = "Aruncat la gunoi";
 
 /* Connect when the SSL certificate is invalid */
@@ -8043,6 +8051,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Încarc articolul...";
 
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"Uploading videos longer than 5 minutes requires a paid plan." = "Pentru a încărca videouri mai lungi de 5 minute, trebuie să ai un plan plătit.";
+
 /* Label to show while uploading media to server */
 "Uploading..." = "Încarc...";
 
@@ -8099,8 +8110,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "Email de confirmare trimis, verifică-ți emailurile primite.";
 
-/* Push Authentication Alert Title
-   Title of a prompt. A user must verify their login attempt. */
+/* Push Authentication Alert Title */
 "Verify Log In" = "Confirmă autentificarea";
 
 /* Notice displayed after domain credit redemption success. */
@@ -8134,6 +8144,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Exportul videoului anulat.";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Video not uploaded" = "Videoul nu a fost încărcat";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -8801,6 +8814,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Poți afișa statisticile unui singur site în vizualizarea iOS Azi\/Centru de notificări.";
+
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "Poți să editezi acest bloc folosind versiunea web a editorului.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Poți urmări articolele de pe un anumit site urmărindu-l.";

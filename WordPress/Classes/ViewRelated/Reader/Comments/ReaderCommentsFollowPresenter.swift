@@ -35,6 +35,8 @@ class ReaderCommentsFollowPresenter: NSObject {
     /// When enabled, the user will receive emails for new comments.
     ///
     @objc func handleFollowConversationButtonTapped() {
+        trackFollowToggled()
+
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -96,6 +98,8 @@ class ReaderCommentsFollowPresenter: NSObject {
     /// - Parameter completion: Block called as soon the view controller has been removed.
     ///
     @objc func handleNotificationsButtonTapped(canUndo: Bool, completion: ((Bool) -> Void)? = nil) {
+        trackNotificationsToggled()
+
         let desiredState = !self.post.receivesCommentNotifications
         let action: PostSubscriptionAction = desiredState ? .enableNotification : .disableNotification
 
@@ -132,9 +136,11 @@ class ReaderCommentsFollowPresenter: NSObject {
     // MARK: - Notification Sheet
 
     @objc func showNotificationSheet(sourceBarButtonItem: UIBarButtonItem?) {
-        let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
-        let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
-        bottomSheet.show(from: self.presentingViewController, sourceBarButtonItem: sourceBarButtonItem)
+        showBottomSheet(sourceBarButtonItem: sourceBarButtonItem)
+    }
+
+    func showNotificationSheet(sourceView: UIView?) {
+        showBottomSheet(sourceView: sourceView)
     }
 
 }
@@ -142,6 +148,12 @@ class ReaderCommentsFollowPresenter: NSObject {
 // MARK: - Private Extension
 
 private extension ReaderCommentsFollowPresenter {
+
+    func showBottomSheet(sourceView: UIView? = nil, sourceBarButtonItem: UIBarButtonItem? = nil) {
+        let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
+        let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
+        bottomSheet.show(from: presentingViewController, sourceView: sourceView, sourceBarButtonItem: sourceBarButtonItem)
+    }
 
     func informDelegateFollowComplete(success: Bool) {
         delegate?.followConversationComplete(success: success, post: post)
@@ -186,6 +198,63 @@ private extension ReaderCommentsFollowPresenter {
             return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
         case (.disableNotification, false):
             return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
+        }
+    }
+
+    // MARK: - Tracks
+
+    func trackFollowToggled() {
+        var properties = [String: Any]()
+        let followAction: FollowAction = !post.isSubscribedComments ? .followed : .unfollowed
+        properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeySource] = sourceForTracks()
+        WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
+    }
+
+    func trackNotificationsToggled() {
+        var properties = [String: Any]()
+        properties[AnalyticsKeys.notificationsEnabled] = !post.receivesCommentNotifications
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeySource] = sourceForTracks()
+        WPAnalytics.trackReader(.readerToggleCommentNotifications, properties: properties)
+    }
+
+    func sourceForTracks() -> String {
+        if presentingViewController is ReaderCommentsViewController {
+            return AnalyticsSource.comments.description()
+        }
+
+        if presentingViewController is ReaderDetailViewController {
+            return AnalyticsSource.postDetails.description()
+        }
+
+        return AnalyticsSource.unknown.description()
+    }
+
+    enum FollowAction: String {
+        case followed
+        case unfollowed
+    }
+
+    private struct AnalyticsKeys {
+        static let notificationsEnabled = "notifications_enabled"
+    }
+
+    private enum AnalyticsSource: String {
+        case comments
+        case postDetails
+        case unknown
+
+        func description() -> String {
+            switch self {
+            case .comments:
+                return "reader_threaded_comments"
+            case .postDetails:
+                return "reader_post_details_comments"
+            case .unknown:
+                return "unknown"
+            }
         }
     }
 

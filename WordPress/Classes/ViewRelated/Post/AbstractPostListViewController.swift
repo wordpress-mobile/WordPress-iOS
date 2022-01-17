@@ -1183,6 +1183,8 @@ extension AbstractPostListViewController: NetworkStatusDelegate {
     }
 }
 
+extension AbstractPostListViewController: EditorAnalyticsProperties { }
+
 // MARK: - NoResultsViewControllerDelegate
 
 extension AbstractPostListViewController: NoResultsViewControllerDelegate {

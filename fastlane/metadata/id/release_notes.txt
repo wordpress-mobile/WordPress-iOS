@@ -1,7 +1,0 @@
-Tahun baru, tampilan baru! Kami memperbarui utas komentar dengan desain baru yang memukau untuk label penulis, aksesoris dan tombol bagikan, dan baris dan penyorotan balasan. Kami juga memperbarui Editor Blok.
-
-- Saat Anda mengedit blok Paragraf, Anda dapat menyoroti teks tertentu dengan warna yang Anda suka.
-- Blok Galeri baru secara default akan menggunakan desain baru. Anda juga dapat mengubah otomatis galeri yang terdahulu ke format baru tanpa kendala.
-- Sekarang Editor bergulir otomatis, jadi Anda dapat melihat apa yang Anda ketik. Tidak ada lagi teks yang tidak tampak, tidak ada lagi tebak-tebakan.
-- Sekarang Anda akan melihat cuplikan Komentar tampil setelah konten artikel Anda di Reader. Hal itu memberikan kilasan dari komentar yang diterima dan membantu Anda menindaklanjuti percakapan lebih cepat.
-- Kami menghilangkan gangguan di mana warna latar belakang tidak tampil pada blok yang sudah diformat sebelumnya pada situs yang menggunakan tema standar.

@@ -1,7 +1,0 @@
-Nuovo anno, nuovo aspetto. Abbiamo aggiornato i thread di commenti con un design nuovo di zecca per le etichette degli autori, i pulsanti accessori e di condivisione e l'evidenziazione delle righe e delle risposte. Abbiamo anche apportato alcuni aggiornamenti all'Editor a blocchi.
-
-- Quando modifichi i blocchi Paragrafo, puoi evidenziare del testo specifico nel colore che desideri.
-- I nuovi blocchi Galleria utilizzeranno il nuovo design per impostazione predefinita. Puoi anche convertire automaticamente le vecchie gallerie nel nuovo formato senza intoppi.
-- Ora l'editor scorre automaticamente, quindi puoi visualizzare sempre ciò che stai digitando. Niente più testo che scompare, niente più congetture.
-- Ora visualizzerai uno snippet Commenti dopo il contenuto del tuo articolo nel Reader. Ciò ti dà un'idea veloce dei commenti ricevuti e ti consente di prendere parte alla conversazione più velocemente.
-- Abbiamo risolto un bug riguardante la mancata visualizzazione del colore di sfondo nei blocchi preformattati sui siti che utilizzano i temi standard.

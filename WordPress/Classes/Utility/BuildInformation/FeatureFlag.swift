@@ -11,8 +11,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case milestoneNotifications
     case bloggingReminders
     case siteIconCreator
-    case unifiedCommentsAndNotificationsList
-    case recommendAppToOthers
     case weeklyRoundup
     case weeklyRoundupStaticNotification
     case domains
@@ -23,6 +21,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case commentThreadModerationMenu
     case mySiteDashboard
     case followConversationPostDetails
+    case mediaPickerPermissionsNotice
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -49,9 +48,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .unifiedCommentsAndNotificationsList:
-            return true
-        case .recommendAppToOthers:
             return true
         case .weeklyRoundup:
             return true
@@ -69,11 +65,13 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .postDetailsComments:
             return true
         case .commentThreadModerationMenu:
-            return false
+            return true
         case .mySiteDashboard:
-            return BuildConfiguration.current == .localDeveloper
-        case .followConversationPostDetails:
             return false
+        case .followConversationPostDetails:
+            return true
+        case .mediaPickerPermissionsNotice:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 
@@ -118,10 +116,6 @@ extension FeatureFlag {
             return "Blogging Reminders"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .unifiedCommentsAndNotificationsList:
-            return "Unified List for Comments and Notifications"
-        case .recommendAppToOthers:
-            return "Recommend App to Others"
         case .weeklyRoundup:
             return "Weekly Roundup"
         case .weeklyRoundupStaticNotification:
@@ -142,6 +136,8 @@ extension FeatureFlag {
             return "My Site Dashboard"
         case .followConversationPostDetails:
             return "Follow Conversation from Post Details"
+        case .mediaPickerPermissionsNotice:
+            return "Media Picker Permissions Notice"
         }
     }
 

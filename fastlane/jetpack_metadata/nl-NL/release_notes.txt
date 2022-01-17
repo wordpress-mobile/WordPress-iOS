@@ -1,6 +1,0 @@
-Heb je het goede voornemen om meer op je site te plaatsen? We hebben een paar updates voor de blokeditor die je precies daarbij helpen.
-
-- Als je paragraafblokken aan het aanpassen bent, kan je specifieke tekst markeren in alle kleuren die je wilt.
-- Gloednieuwe galerijblokken gebruiken standaard het nieuwe ontwerp. Je kunt oude galerijen ook automatisch en probleemloos naar het nieuwe formaat aanpassen.
-- De editor scrolt nu automatisch, dus je ziet altijd wat je aan het typen bent. Geen verdwijnende tekst of giswerk meer.
-- We hebben een bug geplet die ervoor zorgde dat de achtergrondkleur niet zichtbaar was in gepreformatteerde blokken op sites die standaardthema’s gebruiken.
