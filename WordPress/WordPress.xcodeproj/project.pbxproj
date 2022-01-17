@@ -1362,6 +1362,8 @@
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
 		8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D10911FA499A009D650F /* WPTableViewActivityCell.m */; };
+		839B150B2795DEE0009F5E77 /* UIView+Margins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B150A2795DEE0009F5E77 /* UIView+Margins.swift */; };
+		839B150C2795DEE0009F5E77 /* UIView+Margins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B150A2795DEE0009F5E77 /* UIView+Margins.swift */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */; };
@@ -5982,6 +5984,7 @@
 		835E2402126E66E50085940B /* AssetsLibrary.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8370D10811FA499A009D650F /* WPTableViewActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewActivityCell.h; sourceTree = "<group>"; };
 		8370D10911FA499A009D650F /* WPTableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewActivityCell.m; sourceTree = "<group>"; };
+		839B150A2795DEE0009F5E77 /* UIView+Margins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Margins.swift"; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		83F3E2D211276371004CD686 /* CoreLocation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -13998,6 +14001,7 @@
 				E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */,
 				B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */,
 				B5326E6E203F554C007392C3 /* WordPressSupportSourceTag+Helpers.swift */,
+				839B150A2795DEE0009F5E77 /* UIView+Margins.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -17131,6 +17135,7 @@
 				9A2B28EE2191B50500458F2A /* RevisionsTableViewFooter.swift in Sources */,
 				F5A34BCB25DF244F00C9654B /* KanvasCameraAnalyticsHandler.swift in Sources */,
 				8BD36E022395CAEA00EFFF1C /* MediaEditorOperation+Description.swift in Sources */,
+				839B150B2795DEE0009F5E77 /* UIView+Margins.swift in Sources */,
 				17F52DB72315233300164966 /* WPStyleGuide+FilterTabBar.swift in Sources */,
 				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */,
@@ -20259,6 +20264,7 @@
 				FABB24572602FC2C00C8785C /* CheckmarkTableViewCell.swift in Sources */,
 				FABB24582602FC2C00C8785C /* ReaderManageScenePresenter.swift in Sources */,
 				FABB24592602FC2C00C8785C /* MediaService.swift in Sources */,
+				839B150C2795DEE0009F5E77 /* UIView+Margins.swift in Sources */,
 				FABB245A2602FC2C00C8785C /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB245B2602FC2C00C8785C /* PostMetaButton.m in Sources */,
 				FABB245C2602FC2C00C8785C /* PluginStore+Persistence.swift in Sources */,

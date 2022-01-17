@@ -19,6 +19,8 @@ final class QuickStartPromptViewController: UIViewController {
 
     /// Constraints
     @IBOutlet private(set) weak var scrollViewTopVerticalConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewTrailingConstraint: NSLayoutConstraint!
 
     // MARK: - Properties
 
@@ -57,6 +59,11 @@ final class QuickStartPromptViewController: UIViewController {
         UIAccessibility.post(notification: .layoutChanged, argument: promptTitleLabel)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupScrollViewMargins()
+    }
+
     // MARK: - Styling
 
     private func applyStyles() {
@@ -91,9 +98,16 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - Setup
 
     private func setup() {
+        setupScrollViewMargins()
         setupSiteInfoViews()
         setupPromptInfoViews()
         setupButtons()
+    }
+
+    private func setupScrollViewMargins() {
+        let margin = view.getHorizontalMargin() + 20.0
+        scrollViewLeadingConstraint.constant = margin
+        scrollViewTrailingConstraint.constant = margin
     }
 
     private func setupSiteInfoViews() {
