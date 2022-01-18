@@ -5,6 +5,7 @@
 * [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
 * [**] Accessibility: VoiceOver improvements on Activity Log and Schedule Post calendars [#17756, #17761]
 * [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
+* [*] Share Sheet from Photos: Fix an issue where certain filenames would not upload or render in Post [#16773]
 
 19.0
 -----
