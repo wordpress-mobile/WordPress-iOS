@@ -23,7 +23,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var containerView: UIView!
 
     private let meScenePresenter: ScenePresenter
-    
+
     private(set) lazy var blogDetailHeaderView: NewBlogDetailHeaderView = {
         let headerView = configureHeaderView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -116,7 +116,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard FeatureFlag.mySiteDashboard.enabled else {
             return
         }
-
+        blogDetailHeaderView.delegate = self
         stackView.insertArrangedSubview(blogDetailHeaderView, at: 0)
     }
 
