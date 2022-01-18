@@ -22,8 +22,11 @@ extension MySiteViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteIconShouldAllowDroppedImages() -> Bool {
-        // TODO
-        return false
+        guard let blog = blog, blog.isAdmin, blog.isUploadingFilesAllowed() else {
+            return false
+        }
+
+        return true
     }
 
     func siteTitleTapped() {
