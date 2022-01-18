@@ -22,7 +22,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var containerView: UIView!
 
-    private let meScenePresenter: ScenePresenter
+    let meScenePresenter: ScenePresenter
 
     let blogService: BlogService
 
@@ -68,7 +68,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// The VC for the blog details.  This class is written in a way that this VC will only exist if it's being shown on screen.
     /// Please keep this in mind when making modifications.
     ///
-    private var blogDetailsViewController: BlogDetailsViewController?
+    private(set) var blogDetailsViewController: BlogDetailsViewController?
 
     private let blogDashboardViewController = BlogDashboardViewController()
 
