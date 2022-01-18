@@ -92,23 +92,28 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }()
 
     /// Notification Settings button
-    lazy var notificationSettingsButton: UIButton = {
-        let settingsButton: UIButton = UIButton.init(type: .custom)
-        settingsButton.setImage(.gridicon(.cog), for: .normal)
-        settingsButton.addTarget(self, action: #selector(showNotificationSettings), for: .touchUpInside)
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsButton.contentEdgeInsets = .zero
-        settingsButton.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
+    lazy var settingsBarButtonItem: UIBarButtonItem = {
+        let settingsButton = UIBarButtonItem(
+            image: .gridicon(.cog),
+            style: .plain,
+            target: self,
+            action: #selector(showNotificationSettings)
+        )
+        settingsButton.accessibilityLabel = NSLocalizedString(
+            "Notification Settings",
+            comment: "Link to Notification Settings section"
+        )
         return settingsButton
     }()
 
     /// Mark All As Read button
-    lazy var markAllAsReadButton: UIButton = {
-        let markButton: UIButton = UIButton.init(type: .custom)
-        markButton.setImage(.gridicon(.checkmark), for: .normal)
-        markButton.addTarget(self, action: #selector(markAllAsRead), for: .touchUpInside)
-        markButton.translatesAutoresizingMaskIntoConstraints = false
-        markButton.contentMode = .right
+    lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
+        let markButton = UIBarButtonItem(
+            image: .gridicon(.checkmark),
+            style: .plain,
+            target: self,
+            action: #selector(markAllAsRead)
+        )
         markButton.accessibilityLabel = NSLocalizedString(
             "Mark All As Read",
             comment: "Marks all notifications under the filter as read"
@@ -491,13 +496,16 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        let stackView = DoubleBarControlConfigurer.stackView(
-            with: FeatureFlag.markAllNotificationsAsRead.enabled ? markAllAsReadButton : nil,
-            rightControl: shouldDisplaySettingsButton ? notificationSettingsButton : nil
-        )
+        var barItems: [UIBarButtonItem] = []
+        if FeatureFlag.markAllNotificationsAsRead.enabled {
+            barItems.append(markAllAsReadBarButtonItem)
+        }
 
-        let rightBarButton = UIBarButtonItem(customView: stackView)
-        navigationItem.setRightBarButton(rightBarButton, animated: false)
+        if shouldDisplaySettingsButton {
+            barItems.append(settingsBarButtonItem)
+        }
+
+        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     @objc func closeNotificationSettings() {
