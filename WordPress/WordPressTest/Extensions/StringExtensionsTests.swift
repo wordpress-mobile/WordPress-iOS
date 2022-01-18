@@ -40,4 +40,30 @@ class StringExtensionsTests: XCTestCase {
     func testLinkifyingPlainText() {
         XCTAssertEqual(text.stringWithAnchoredLinks(), text, "Oh noes!")
     }
+
+    func testSanitizeFileName() {
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/16773
+        // Given Percent encoded string
+        let fileNameRaw = "crown-house_%C2%A9-francesco-russo_websize_002-1-1"
+
+        // When sanitizing
+        // Then sanitizeFileName returns strings without %
+        XCTAssertEqual(fileNameRaw.sanitizeFileName(), "crown-house_C2A9-francesco-russo_websize_002-1-1")
+
+
+        // Given a filename with accents
+        let fileNameWithAccents = "Français"
+
+        // When sanitizing
+        // Then sanitizeFileName returns fileName without accents
+        XCTAssertEqual(fileNameWithAccents.sanitizeFileName(), "Francais")
+
+
+        // Given a filename with only special characters
+        let fileNameWithOnlySpecialChars = "?[]/\\=<>:;,'\"&$#*()|~`!{}%+’«»”“"
+
+        // When sanitizing
+        // Then sanitizeFileName returns empty string
+        XCTAssertEqual(fileNameWithOnlySpecialChars.sanitizeFileName(), "")
+    }
 }

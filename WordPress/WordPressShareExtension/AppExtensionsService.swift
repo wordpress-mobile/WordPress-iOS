@@ -335,7 +335,12 @@ extension AppExtensionsService {
                                 mediaUploadOp.height = height
                             }
 
-                            ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
+                            // localURL lastPathComponent is the original unsanitized filename
+                            if let localURL = mediaUploadOp.localURL, let url = URL(string: localURL) {
+                                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: url.lastPathComponent)
+                            } else {
+                                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
+                            }
                         }
                     }
                 })
@@ -366,7 +371,12 @@ fileprivate extension AppExtensionsService {
         var allRemoteMedia = [RemoteMedia]()
         localMediaFileURLs.forEach { tempFilePath in
             let remoteMedia = RemoteMedia()
+
+            // Use a percent encoded + sanitized filename as the remoteMedia file.
             remoteMedia.file = tempFilePath.lastPathComponent
+                                            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)?
+                                            .sanitizeFileName()
+
             remoteMedia.mimeType = Constants.mimeType
             remoteMedia.localURL = tempFilePath
             allRemoteMedia.append(remoteMedia)

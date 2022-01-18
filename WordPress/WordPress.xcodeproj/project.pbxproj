@@ -2268,6 +2268,8 @@
 		DC3B9B2C27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3B9B2B27739760003F7249 /* TimeZoneSelectorViewModel.swift */; };
 		DC3B9B2D27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3B9B2B27739760003F7249 /* TimeZoneSelectorViewModel.swift */; };
 		DC3B9B2F27739887003F7249 /* TimeZoneSelectorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3B9B2E27739887003F7249 /* TimeZoneSelectorViewModelTests.swift */; };
+		DC5FE07F2795C6A4006D5779 /* String+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7360018E20A265C7001E5E31 /* String+Files.swift */; };
+		DC5FE0802795C6A5006D5779 /* String+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7360018E20A265C7001E5E31 /* String+Files.swift */; };
 		DC76668326FD9AC9009254DD /* TimeZoneRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC76668126FD9AC8009254DD /* TimeZoneRow.swift */; };
 		DC76668426FD9AC9009254DD /* TimeZoneRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC76668126FD9AC8009254DD /* TimeZoneRow.swift */; };
 		DC76668526FD9AC9009254DD /* TimeZoneTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC76668226FD9AC9009254DD /* TimeZoneTableViewCell.swift */; };
@@ -8508,7 +8510,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -15299,7 +15301,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -18723,6 +18725,7 @@
 				74021A14202E1393006CC39F /* ShareExtensionEditorViewController.swift in Sources */,
 				CBF6201426E8FB8A0061A1F8 /* RemotePost+ShareData.swift in Sources */,
 				CE39E17320CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
+				DC5FE0802795C6A5006D5779 /* String+Files.swift in Sources */,
 				74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */,
 				74E44AD92031ED2300556205 /* WordPressDraft-Lumberjack.m in Sources */,
 				741AF3A5202F3E2A00C771A5 /* Tracks+DraftAction.swift in Sources */,
@@ -18809,6 +18812,7 @@
 				170BEC872391530D0017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				CBF6201326E8FB520061A1F8 /* RemotePost+ShareData.swift in Sources */,
 				74448F542044BC7600BD4CDA /* CategoryTree.swift in Sources */,
+				DC5FE07F2795C6A4006D5779 /* String+Files.swift in Sources */,
 				74402F2A200528F200A1D4A2 /* ExtensionPresentationController.swift in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
 				CE39E17220CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,

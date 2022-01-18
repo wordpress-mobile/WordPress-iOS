@@ -989,7 +989,12 @@ extension ShareExtensionEditorViewController {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
 
         attachment.size = .full
-        attachment.uploadID = url.lastPathComponent // Use the filename as the uploadID here.
+
+        // Use a percent encoded + sanitized filename as the uploadID here.
+        attachment.uploadID = url.lastPathComponent
+                                    .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)?
+                                    .sanitizeFileName()
+
         richTextView.refresh(attachment)
     }
 }

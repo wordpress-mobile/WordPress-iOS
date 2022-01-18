@@ -13,4 +13,17 @@ extension String {
             fileExtension as CFString,
             nil)?.takeUnretainedValue() as String?
     }
+
+    /// Lightweight swift version of wordpress formatting.php sanitize_file_name function
+    ///
+    /// - Returns: sanitized filename to match api
+    func sanitizeFileName() -> String {
+        var fileName = folding(options: .diacriticInsensitive, locale: .current)
+
+        let specialChars: Set<Character> = ["?", "[", "]", "/", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", "%", "+", "’", "«", "»", "”", "“"]
+        fileName.removeAll(where: { specialChars.contains($0) })
+
+        return fileName
+    }
+
 }
