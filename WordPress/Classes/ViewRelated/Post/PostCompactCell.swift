@@ -15,6 +15,8 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var separator: UIView!
 
+    @IBOutlet weak var trailingContentConstraint: NSLayoutConstraint!
+
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
     lazy var imageLoader: ImageLoader = {
@@ -71,7 +73,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
 
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
 
         titleLabel.textColor = .text
@@ -126,6 +128,15 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         timestampLabel.isHidden = false
     }
 
+    private func configureExcerpt() {
+        guard let post = post else {
+            return
+        }
+
+        timestampLabel.text = post.contentPreviewForDisplay()
+        timestampLabel.isHidden = false
+    }
+
     private func configureStatus() {
         guard let viewModel = viewModel else {
             return
@@ -172,6 +183,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         static let imageRadius: CGFloat = 2
         static let labelsVerticalAlignment: CGFloat = -1
         static let opacity: Float = 1
+        static let margin: CGFloat = 16
     }
 }
 
@@ -206,3 +218,18 @@ extension PostCompactCell: GhostableView {
 }
 
 extension PostCompactCell: NibReusable { }
+
+// MARK: - For display on the Posts Card (Dashboard)
+
+extension PostCompactCell {
+    /// Configure the cell to be displayed in the Posts Card
+    /// No "more" button and show a description, instead of a date
+    func configureForDashboard(with post: Post) {
+        configure(with: post)
+        configureExcerpt()
+        separator.isHidden = true
+        menuButton.isHidden = true
+        trailingContentConstraint.constant = Constants.margin
+        headerStackView.spacing = Constants.margin
+    }
+}

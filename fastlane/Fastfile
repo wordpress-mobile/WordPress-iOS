@@ -84,6 +84,7 @@ platform :ios do
   ENV['DOWNLOAD_METADATA'] = './fastlane/download_metadata.swift'
   ENV['PROJECT_ROOT_FOLDER'] = PROJECT_ROOT_FOLDER + '/'
   ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
+  ENV['FL_RELEASE_TOOLKIT_DEFAULT_BRANCH'] = 'trunk'
 
   ########################################################################
   # Screenshots
@@ -105,7 +106,7 @@ platform :ios do
   # bundle exec fastlane code_freeze
   # bundle exec fastlane code_freeze skip_confirm:true
   #####################################################################################
-  desc 'Creates a new release branch from the current develop'
+  desc 'Creates a new release branch from the current trunk'
   lane :code_freeze do |options|
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
@@ -157,7 +158,7 @@ platform :ios do
   # bundle exec fastlane complete_code_freeze
   # bundle exec fastlane complete_code_freeze skip_confirm:true
   #####################################################################################
-  desc 'Creates a new release branch from the current develop'
+  desc 'Creates a new release branch from the current trunk'
   lane :complete_code_freeze do |options|
     ios_completecodefreeze_prechecks(options)
     generate_strings_file_for_glotpress
