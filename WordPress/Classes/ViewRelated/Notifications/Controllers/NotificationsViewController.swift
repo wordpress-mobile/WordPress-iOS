@@ -497,12 +497,12 @@ private extension NotificationsViewController {
 
     func updateNavigationItems() {
         var barItems: [UIBarButtonItem] = []
-        if FeatureFlag.markAllNotificationsAsRead.enabled {
-            barItems.append(markAllAsReadBarButtonItem)
-        }
-
         if shouldDisplaySettingsButton {
             barItems.append(settingsBarButtonItem)
+        }
+
+        if FeatureFlag.markAllNotificationsAsRead.enabled {
+            barItems.append(markAllAsReadBarButtonItem)
         }
 
         navigationItem.setRightBarButtonItems(barItems, animated: false)
