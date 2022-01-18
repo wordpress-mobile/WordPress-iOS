@@ -91,6 +91,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if blog == nil {
             showBlogDetailsForMainBlogOrNoSites()
         }
+
+        blogDetailHeaderView.blog = blog
     }
 
     override func viewDidAppear(_ animated: Bool) {
