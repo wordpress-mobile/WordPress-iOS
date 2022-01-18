@@ -24,6 +24,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private let meScenePresenter: ScenePresenter
 
+    let blogService: BlogService
+
     private(set) lazy var blogDetailHeaderView: NewBlogDetailHeaderView = {
         let headerView = configureHeaderView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,8 +34,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
         self.meScenePresenter = meScenePresenter
+        self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -185,7 +188,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// - Returns:the main blog for an account (last selected, or first blog in list).
     ///
     private func mainBlog() -> Blog? {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         return blogService.lastUsedOrFirstBlog()
     }
 
@@ -214,7 +216,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self?.noResultsRefreshControl?.endRefreshing()
         }
 
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         blogService.syncBlogs(for: account) {
             finishSync()
         } failure: { (error) in
@@ -522,8 +523,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard verifyThatBlogsWereInserted(in: notification) else {
             return
         }
-
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         guard let blog = blogService.lastUsedOrFirstBlog() else {
             return
