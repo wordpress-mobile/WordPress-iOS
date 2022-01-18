@@ -2735,6 +2735,8 @@
 		FA73D7DD278DDE0E00DF24B3 /* QuickLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7DC278DDE0E00DF24B3 /* QuickLinksView.swift */; };
 		FA73D7DF279588E400DF24B3 /* MySiteViewController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */; };
 		FA73D7E0279588E400DF24B3 /* MySiteViewController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */; };
+		FA73D7E2279747BB00DF24B3 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E1279747BB00DF24B3 /* MySiteViewController+QuickStart.swift */; };
+		FA73D7E3279747BB00DF24B3 /* MySiteViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E1279747BB00DF24B3 /* MySiteViewController+QuickStart.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */; };
 		FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */; };
@@ -7482,6 +7484,7 @@
 		FA73D7D8278DDD4B00DF24B3 /* HostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostCollectionViewCell.swift; sourceTree = "<group>"; };
 		FA73D7DC278DDE0E00DF24B3 /* QuickLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLinksView.swift; sourceTree = "<group>"; };
 		FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+Header.swift"; sourceTree = "<group>"; };
+		FA73D7E1279747BB00DF24B3 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatDetailsViewController.swift; sourceTree = "<group>"; };
 		FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatDetailsViewController.xib; sourceTree = "<group>"; };
@@ -8122,6 +8125,7 @@
 				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
 				FA94D9E8278C83A900FC6CE3 /* MySiteViewController.xib */,
 				FA73D7DE279588E400DF24B3 /* MySiteViewController+Header.swift */,
+				FA73D7E1279747BB00DF24B3 /* MySiteViewController+QuickStart.swift */,
 			);
 			path = "My Site";
 			sourceTree = "<group>";
@@ -17746,6 +17750,7 @@
 				BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */,
 				7E3E7A5D20E44DB00075D159 /* BadgeContentStyles.swift in Sources */,
 				5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Pages.m in Sources */,
+				FA73D7E2279747BB00DF24B3 /* MySiteViewController+QuickStart.swift in Sources */,
 				3236F77224ABB6C90088E8F3 /* ReaderInterestsDataSource.swift in Sources */,
 				7E4123CA20F4184200DF8486 /* ActivityContentGroup.swift in Sources */,
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
@@ -20189,6 +20194,7 @@
 				FABB24182602FC2C00C8785C /* WKWebView+UserAgent.swift in Sources */,
 				FABB24192602FC2C00C8785C /* JetpackCapabilitiesService.swift in Sources */,
 				FABB241A2602FC2C00C8785C /* PostToPost30To31.m in Sources */,
+				FA73D7E3279747BB00DF24B3 /* MySiteViewController+QuickStart.swift in Sources */,
 				FABB241B2602FC2C00C8785C /* GutenGhostView.swift in Sources */,
 				FABB241C2602FC2C00C8785C /* ModelSettableCell.swift in Sources */,
 				FABB241D2602FC2C00C8785C /* FollowCommentsService.swift in Sources */,
