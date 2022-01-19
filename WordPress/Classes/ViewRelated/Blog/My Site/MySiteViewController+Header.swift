@@ -38,7 +38,14 @@ extension MySiteViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteIconReceivedDroppedImage(_ image: UIImage?) {
-        // TODO
+        if !siteIconShouldAllowDroppedImages() {
+            // Gracefully ignore the drop for users that can not upload files or
+            // blogs that do not have capabilities since those will not support the REST API icon update
+            blogDetailHeaderView.updatingIcon = false
+            return
+        }
+
+        presentCropViewControllerForDroppedSiteIcon(image)
     }
 
     func siteIconShouldAllowDroppedImages() -> Bool {
@@ -260,6 +267,33 @@ extension MySiteViewController {
                         completion()
                     })
             })
+    }
+
+    private func presentCropViewControllerForDroppedSiteIcon(_ image: UIImage?) {
+        guard let image = image else {
+            return
+        }
+
+        let imageCropController = ImageCropViewController(image: image)
+        imageCropController.maskShape = .square
+        imageCropController.shouldShowCancelButton = true
+
+        imageCropController.onCancel = { [weak self] in
+            self?.dismiss(animated: true)
+            self?.blogDetailHeaderView.updatingIcon = false
+        }
+
+        imageCropController.onCompletion = { [weak self] image, modified in
+            self?.dismiss(animated: true)
+            self?.uploadDroppedSiteIcon(image, completion: {
+                self?.blogDetailHeaderView.blavatarImageView.image = image
+                self?.blogDetailHeaderView.updatingIcon = false
+            })
+        }
+
+        let navigationController = UINavigationController(rootViewController: imageCropController)
+        navigationController.modalPresentationStyle = .formSheet
+        present(navigationController, animated: true)
     }
 }
 
