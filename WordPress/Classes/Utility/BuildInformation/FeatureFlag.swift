@@ -21,6 +21,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case commentThreadModerationMenu
     case mySiteDashboard
     case followConversationPostDetails
+    case markAllNotificationsAsRead
     case mediaPickerPermissionsNotice
 
     /// Returns a boolean indicating if the feature is enabled
@@ -48,7 +49,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-            return true
         case .weeklyRoundup:
             return true
         case .weeklyRoundupStaticNotification:
@@ -67,6 +67,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .commentThreadModerationMenu:
             return true
         case .mySiteDashboard:
+            return false
+        case .markAllNotificationsAsRead:
             return false
         case .followConversationPostDetails:
             return true
@@ -136,6 +138,8 @@ extension FeatureFlag {
             return "My Site Dashboard"
         case .followConversationPostDetails:
             return "Follow Conversation from Post Details"
+        case .markAllNotificationsAsRead:
+            return "Mark Notifications As Read"
         case .mediaPickerPermissionsNotice:
             return "Media Picker Permissions Notice"
         }
