@@ -222,7 +222,6 @@ class NotificationSyncMediator {
         remote.updateReadStatusForNotifications(noteIDs, read: read) { error in
             if let error = error {
                 DDLogError("Error marking notifications as \(Self.readState(for: read)): \(error)")
-
                 NotificationSyncMediator()?.invalidateCacheForNotifications(with: noteIDs)
             }
 
@@ -314,19 +313,16 @@ class NotificationSyncMediator {
         }
     }
 
-    /// Invalidates the local cache for all the notifications with specified ID's in the array..
+    /// Invalidates the local cache for all the notifications with specified ID's in the array.
     ///
     func invalidateCacheForNotifications(with noteIDs: [String]) {
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
 
         derivedContext.perform {
-            for noteID in noteIDs {
-                // TODO Fix predicate
-                let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
-                guard let notification = derivedContext.firstObject(ofType: Notification.self, matching: predicate) else {
-                    return
-                }
+            let predicate = NSPredicate(format: "(notificationId IN %@)", noteIDs)
+            let notifications = derivedContext.allObjects(ofType: Notification.self, matching: predicate)
 
+            for notification in notifications {
                 notification.notificationHash = nil
             }
 
