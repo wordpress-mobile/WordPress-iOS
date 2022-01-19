@@ -433,9 +433,9 @@ class MeViewController: UITableViewController {
     }
 
     /// Convenience property to determine whether the recomend app row should be displayed or not.
-    private var isRecommendAppRowEnabled: Bool {
-        FeatureFlag.recommendAppToOthers.enabled && !AppConfiguration.isJetpack
-    }
+        private var isRecommendAppRowEnabled: Bool {
+            !AppConfiguration.isJetpack
+        }
 
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
@@ -530,8 +530,8 @@ private extension MeViewController {
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
         guard isRecommendAppRowEnabled else {
-            return
-        }
+             return
+         }
 
         reloadViewModel()
     }
