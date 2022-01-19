@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-12 11:09:18+0000 */
+/* Translation-Revision-Date: 2022-01-17 10:26:23+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -1569,7 +1569,7 @@ translators: Block name. %s: The localized block name */
 "Comment approved." = "Comentariul a fost aprobat.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Comentariul a fost șters.";
+"Comment deleted." = "Am șters comentariul.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Comentariul a fost șters";
@@ -4529,7 +4529,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No %@ yet" = "Niciun %@ până acum";
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Niciun cont găsit";
+"No Accounts Found" = "Nu am găsit niciun cont";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Nicio categorie";
@@ -5066,7 +5066,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Page title. Empty" = "Titlu pagină. Gol";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Pagina a fost actualizată";
+"Page updated" = "Am actualizat pagina";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -5389,7 +5389,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post to WordPress" = "Publică pe WordPress";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Articolul a fost actualizat";
+"Post updated" = "Am actualizat articolul";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Cod poștal";
