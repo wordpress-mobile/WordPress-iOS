@@ -162,6 +162,19 @@ class NotificationSyncMediator {
         mark(notification, asRead: true, completion: completion)
     }
 
+    /// Marks an array of notifications as Read.
+    ///
+    /// - Note: This method should only be used on the main thread.
+    ///
+    /// - Parameters:
+    ///     - notifications: The notification that was just read.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func markAsRead(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
+        mark(notifications, asRead: true, completion: completion)
+    }
+
+
     /// Marks a Notification as Unead.
     ///
     /// - Note: This method should only be used on the main thread.
@@ -180,8 +193,7 @@ class NotificationSyncMediator {
         let noteID = notification.notificationId
         remote.updateReadStatus(noteID, read: read) { error in
             if let error = error {
-                let readState = read ? "read" : "unread"
-                DDLogError("Error marking note as \(readState): \(error)")
+                DDLogError("Error marking note as \(Self.readState(for: read)): \(error)")
                 // Ideally, we'd want to revert to the previous status if this
                 // fails, but if the note is visible, the UI layer will keep
                 // trying to mark this note and fail.
@@ -198,6 +210,37 @@ class NotificationSyncMediator {
         }
 
         updateReadStatus(read, forNoteWithObjectID: notification.objectID)
+    }
+
+    private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
+        assert(Thread.isMainThread)
+
+        let noteIDs = notifications.map {
+            $0.notificationId
+        }
+
+        remote.updateReadStatusForNotifications(noteIDs, read: read) { error in
+            if let error = error {
+                DDLogError("Error marking notifications as \(Self.readState(for: read)): \(error)")
+
+                NotificationSyncMediator()?.invalidateCacheForNotifications(with: noteIDs)
+            }
+
+            completion?(error)
+        }
+
+        let objectIDs = notifications.map {
+            $0.objectID
+        }
+
+        updateReadStatus(
+            read,
+            forNotesWithObjectIDs: objectIDs
+        )
+    }
+
+    private static func readState(for read: Bool) -> String {
+        read ? "read" : "unread"
     }
 
     /// Invalidates the cache for a notification, marks it as read and syncs it.
@@ -266,6 +309,26 @@ class NotificationSyncMediator {
             }
 
             notification.notificationHash = nil
+
+            self.contextManager.save(derivedContext)
+        }
+    }
+
+    /// Invalidates the local cache for all the notifications with specified ID's in the array..
+    ///
+    func invalidateCacheForNotifications(with noteIDs: [String]) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+
+        derivedContext.perform {
+            for noteID in noteIDs {
+                // TODO Fix predicate
+                let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
+                guard let notification = derivedContext.firstObject(ofType: Notification.self, matching: predicate) else {
+                    return
+                }
+
+                notification.notificationHash = nil
+            }
 
             self.contextManager.save(derivedContext)
         }
@@ -373,8 +436,26 @@ private extension NotificationSyncMediator {
     ///     - noteObjectID: CoreData ObjectID
     ///
     func updateReadStatus(_ status: Bool, forNoteWithObjectID noteObjectID: NSManagedObjectID) {
-        let note = mainContext.loadObject(ofType: Notification.self, with: noteObjectID)
-        note?.read = status
+        updateReadStatus(status, forNotesWithObjectIDs: [noteObjectID])
+    }
+
+    /// Updates the Read status, of an array of Notifications, as specified.
+    ///
+    /// Note: This method uses *saveContextAndWait* in order to prevent animation glitches when pushing
+    /// Notification Details.
+    ///
+    /// - Parameters:
+    ///     - status: New *read* value
+    ///     - notesObjectIDs: CoreData ObjectIDs
+    ///
+    func updateReadStatus(_ status: Bool, forNotesWithObjectIDs notesObjectIDs: [NSManagedObjectID]) {
+        let predicate = NSPredicate(format: "SELF IN %@", notesObjectIDs)
+
+        let notes = mainContext.allObjects(ofType: Notification.self, matching: predicate)
+
+        for note in notes {
+            note.read = status
+        }
         contextManager.saveContextAndWait(mainContext)
     }
 
