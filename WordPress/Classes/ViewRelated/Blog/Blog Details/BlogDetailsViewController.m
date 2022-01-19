@@ -383,6 +383,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:self.traitCollection];
     
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        return;
+    }
+    
     UIView *headerView = self.tableView.tableHeaderView;
     
     CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
@@ -1078,6 +1082,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureBlogDetailHeader
 {
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+        return;
+    }
+    
     id<BlogDetailHeader> headerView = [self configureHeaderView];
     headerView.delegate = self;
 
