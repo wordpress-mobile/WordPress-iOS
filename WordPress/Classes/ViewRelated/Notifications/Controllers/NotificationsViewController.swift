@@ -175,6 +175,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
+        updateMarkAllAsReadTintColor()
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -794,12 +795,6 @@ extension NotificationsViewController {
 
         present(navigationController, animated: true, completion: nil)
     }
-
-    /// Marks all messages as read under the selected filter.
-    ///
-    @objc func markAllAsRead() {
-        // TODO
-    }
 }
 
 
@@ -862,12 +857,30 @@ private extension NotificationsViewController {
         NotificationSyncMediator()?.markAsRead(note)
     }
 
+    /// Marks all messages as read under the selected filter.
+    ///
+    @objc func markAllAsRead() {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        let unreadNotifications = notes.filter {
+            !$0.read
+        }
+
+        NotificationSyncMediator()?.markAsRead(unreadNotifications)
+        let notice = Notice(title: "Some title", message: "Mark all as read successful")
+        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+        updateMarkAllAsReadTintColor()
+    }
+
     func markAsUnread(note: Notification) {
         guard note.read else {
             return
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
+        updateMarkAllAsReadTintColor()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -876,6 +889,19 @@ private extension NotificationsViewController {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
         }
+    }
+
+    func updateMarkAllAsReadTintColor() {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        let isEnabled = !notes.filter {
+            !$0.read
+        }.isEmpty
+
+        markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
+        markAllAsReadBarButtonItem.isEnabled = isEnabled
     }
 }
 
@@ -949,6 +975,7 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
+        updateMarkAllAsReadTintColor()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {
