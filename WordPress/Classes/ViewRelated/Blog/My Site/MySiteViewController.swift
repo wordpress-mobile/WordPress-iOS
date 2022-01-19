@@ -23,8 +23,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var containerView: UIView!
 
     let meScenePresenter: ScenePresenter
-
     let blogService: BlogService
+    let mediaService: MediaService
+
+    var siteIconPickerPresenter: SiteIconPickerPresenter?
 
     private(set) lazy var blogDetailHeaderView: NewBlogDetailHeaderView = {
         let headerView = configureHeaderView()
@@ -34,9 +36,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
+    init(meScenePresenter: ScenePresenter,
+         blogService: BlogService? = nil,
+         mediaService: MediaService? = nil) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.mediaService = mediaService ?? MediaService(managedObjectContext: ContextManager.shared.mainContext)
 
         super.init(nibName: nil, bundle: nil)
     }
