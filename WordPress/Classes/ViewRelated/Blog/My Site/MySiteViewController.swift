@@ -22,26 +22,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var containerView: UIView!
 
-    let meScenePresenter: ScenePresenter
-    let blogService: BlogService
-    let mediaService: MediaService
-
-    var siteIconPickerPresenter: SiteIconPickerPresenter?
-
-    private(set) lazy var blogDetailHeaderView: NewBlogDetailHeaderView = {
-        let headerView = configureHeaderView()
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        return headerView
-    }()
+    private let meScenePresenter: ScenePresenter
+    private let blogService: BlogService
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter,
-         blogService: BlogService? = nil,
-         mediaService: MediaService? = nil) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
         self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
-        self.mediaService = mediaService ?? MediaService(managedObjectContext: ContextManager.shared.mainContext)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -87,7 +75,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         setupNavigationItem()
-        setupBlogDetailHeaderView()
         setupSegmentedControl()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
@@ -99,8 +86,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         if blog == nil {
             showBlogDetailsForMainBlogOrNoSites()
         }
-
-        blogDetailHeaderView.blog = blog
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -122,12 +107,22 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
     }
 
-    private func setupBlogDetailHeaderView() {
+    private func showSitePicker(for blog: Blog) {
         guard FeatureFlag.mySiteDashboard.enabled else {
             return
         }
-        blogDetailHeaderView.delegate = self
-        stackView.insertArrangedSubview(blogDetailHeaderView, at: 0)
+
+        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
+
+        sitePickerViewController.onBlogSwitched = { [weak self] in
+            self?.blogDetailsViewController?.showInitialDetailsForBlog()
+            self?.blogDetailsViewController?.tableView.reloadData()
+            self?.blogDetailsViewController?.preloadMetadata()
+        }
+
+        addChild(sitePickerViewController)
+        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+        sitePickerViewController.didMove(toParent: self)
     }
 
     private func setupSegmentedControl() {
@@ -208,6 +203,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
+        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
     }
 
