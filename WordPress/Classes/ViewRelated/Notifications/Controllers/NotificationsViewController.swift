@@ -840,6 +840,17 @@ private extension NotificationsViewController {
 // MARK: - Marking as Read
 //
 private extension NotificationsViewController {
+    private enum Localization {
+        static let markAllAsReadNoticeTitle = NSLocalizedString(
+            "Success",
+            comment: "Title for mark all as read success notice."
+        )
+
+        static let markAllAsReadNoticeMessage = NSLocalizedString(
+            "Notifications marked as read.",
+            comment: "Message for mark all as read success notice."
+        )
+    }
 
     func markSelectedNotificationAsRead() {
         guard let note = selectedNotification else {
@@ -869,7 +880,10 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsRead(unreadNotifications)
-        let notice = Notice(title: "Some title", message: "Mark all as read successful")
+        let notice = Notice(
+            title: Localization.markAllAsReadNoticeTitle,
+            message: Localization.markAllAsReadNoticeMessage
+        )
         ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
         updateMarkAllAsReadTintColor()
     }
