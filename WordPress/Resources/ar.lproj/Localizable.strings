@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-07 18:04:59+0000 */
+/* Translation-Revision-Date: 2022-01-18 19:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -388,7 +388,7 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "إضافة رابط";
 
 /* No comment provided by engineer. */
-"ADD MEDIA" = "ADD MEDIA";
+"ADD MEDIA" = "إضافة وسائط";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "إضافة فيديو";
@@ -606,7 +606,7 @@ translators: Block name. %s: The localized block name */
 "Address" = "العنوان URL";
 
 /* No comment provided by engineer. */
-"Address Settings" = "Address Settings";
+"Address Settings" = "إعدادات العنوان";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "سطر العنوان %@";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "مقدمة لمقالات القصص";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "عنوان بريد إلكتروني غير صالح";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "عنوان موقع غير صالح";
@@ -4773,10 +4773,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note: Column layout may vary between themes and screen sizes" = "ملحوظة: قد يختلف تخطيط العمود بين القوالب وأحجام الشاشة";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+"Note: Layout may vary between themes and screen sizes" = "ملحوظة: قد يختلف التخطيط بين القوالب وأحجام الشاشة";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "ملحوظة: يجب أن تسمح بتسجيل الدخول إلى ووردبريس.كوم لتحرير هذا المكوِّن في محرِّر الجهاز المحمول.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "لم يتم العثور على شيء.";
@@ -4911,7 +4911,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Open Device Settings" = "فتح إعدادات الجهاز";
 
 /* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Open Jetpack Security settings";
+"Open Jetpack Security settings" = "فتح إعدادات أمان Jetpack";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -5012,7 +5012,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "PHONE" = "الهاتف";
 
 /* No comment provided by engineer. */
-"Padding" = "Padding";
+"Padding" = "الهوامش الداخلية";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5221,7 +5221,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid address" = "الرجاء إدخال عنوان بريد إلكتروني صحيح";
 
 /* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
+"Please enter a valid email address for a WordPress.com account." = "يرجى إدخال عنوان بريد إلكتروني صالح لحساب ووردبريس.كوم.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "الرجاء إدخال عنوان بريد إلكتروني صالح.";
@@ -6312,7 +6312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "إن تحديد قائمة مختلفة سيتجاهل التغييرات التي قمت بإجرائها على القائمة الحالية. هل أنت متأكد من رغبتك في المتابعة؟";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Selection not allowed" = "Selection not allowed";
+"Selection not allowed" = "التحديد غير مسموح به";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "يحدِّد هذا النطاق لاستخدامه في موقعك.";
@@ -6864,7 +6864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Successfully unfollowed conversation" = "تم إلغاء متابعة المحادثة بنجاح";
 
 /* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
+"Suggestion:" = "اقتراح:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -8049,7 +8049,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploading post..." = "جاري رفع المقالة...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
-"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+"Uploading videos longer than 5 minutes requires a paid plan." = "يتطلب رفع مقاطع فيديو تزيد عن 5 دقائق خطة مدفوعة.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "جاري الرفع...";
@@ -8143,7 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Video export canceled." = "تم إلغاء تصدير مقطع الفيديو.";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Video not uploaded" = "Video not uploaded";
+"Video not uploaded" = "لم يتم رفع مقطع فيديو!";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "الفيديو %@";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "يمكنك عرض إحصاءات موقع واحد في طريقة عرض اليوم \/ مركز الإشعارات في iOS.";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+"You can edit this block using the web version of the editor." = "يمكنك تحرير هذا المكوِّن باستخدام إصدار ويب المحرِّر.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "يمكنك متابعة المقالات الموجودة على موقع معيَّن عن طريق متابعته.";

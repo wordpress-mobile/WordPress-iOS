@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-17 16:27:02+0000 */
+/* Translation-Revision-Date: 2022-01-15 21:34:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Colonne %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "Réglages de la colonne";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Réglages de colonnes";
@@ -3116,7 +3116,7 @@ translators: Block name. %s: The localized block name */
 "Follow" = "Suivre ";
 
 /* Button title. Follow the comments on a post. */
-"Follow Conversation" = "Follow Conversation";
+"Follow Conversation" = "Suivre la discussion";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Suivre la discussion par e-mail";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "Présentation des publications de story";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "Adresse de messagerie non valide";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Adresse du site invalide";
@@ -7061,7 +7061,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Texte seul";
 
 /* No comment provided by engineer. */
-"Text color" = "Text color";
+"Text color" = "Couleur du texte";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Les contrôles de mise en forme du texte se trouvent dans la barre d’outils placée au-dessus du clavier lors de l’édition d’un bloc paragraphe";
