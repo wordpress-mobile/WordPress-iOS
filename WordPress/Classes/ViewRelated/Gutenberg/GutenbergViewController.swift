@@ -1155,6 +1155,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .contactInfoBlock: post.blog.supports(.contactInfo),
             .layoutGridBlock: post.blog.supports(.layoutGrid),
+            .tiledGalleryBlock: post.blog.supports(.tiledGallery),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
