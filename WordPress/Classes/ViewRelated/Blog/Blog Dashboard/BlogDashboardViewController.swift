@@ -2,12 +2,16 @@ import UIKit
 
 final class BlogDashboardViewController: UIViewController {
 
+    var blog: Blog?
+
     enum Section: CaseIterable {
         case quickLinks
+        case posts
     }
 
     // FIXME: temporary placeholder
     private let quickLinks = ["Quick Links"]
+    private let posts = ["Posts"]
 
     typealias DataSource = UICollectionViewDiffableDataSource<Section, String>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
@@ -21,21 +25,33 @@ final class BlogDashboardViewController: UIViewController {
 
     private lazy var dataSource: DataSource = {
         return DataSource(collectionView: collectionView) { collectionView, indexPath, identifier in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
-            cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
+            if identifier == "Quick Links" {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
+                cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
+                return cell
+            }
+
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardCardCell.defaultReuseID, for: indexPath) as? DashboardCardCell
+            cell?.configure(self, blog: self.blog!)
             return cell
         }
     }()
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         applySnapshotForInitialData()
+        addHeightObservers()
     }
 
     private func setupCollectionView() {
         collectionView.backgroundColor = .listBackground
         collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
+        collectionView.register(DashboardCardCell.self, forCellWithReuseIdentifier: DashboardCardCell.defaultReuseID)
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
@@ -45,7 +61,16 @@ final class BlogDashboardViewController: UIViewController {
         var snapshot = Snapshot()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(quickLinks, toSection: Section.quickLinks)
+        snapshot.appendItems(posts, toSection: Section.posts)
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+
+    private func addHeightObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: .postCardTableViewSizeChanged, object: nil)
+    }
+
+    @objc private func methodOfReceivedNotification(notification: Notification) {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 }
 
@@ -87,5 +112,16 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let sectionInset: CGFloat = 16
         static let interGroupSpacing: CGFloat = 8
+    }
+}
+
+class DashboardCardCell: UICollectionViewCell, Reusable {
+    func configure(_ viewController: UIViewController, blog: Blog) {
+        let postsViewController = PostsCardViewController(blog: blog)
+        viewController.addChild(postsViewController)
+        contentView.addSubview(postsViewController.view)
+        postsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewToAllEdges(postsViewController.view)
+        postsViewController.didMove(toParent: viewController)
     }
 }
