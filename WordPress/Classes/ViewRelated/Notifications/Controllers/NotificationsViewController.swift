@@ -92,7 +92,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }()
 
     /// Notification Settings button
-    lazy var settingsBarButtonItem: UIBarButtonItem = {
+    private lazy var settingsBarButtonItem: UIBarButtonItem = {
         let settingsButton = UIBarButtonItem(
             image: .gridicon(.cog),
             style: .plain,
@@ -107,7 +107,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }()
 
     /// Mark All As Read button
-    lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
+    private lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
         let markButton = UIBarButtonItem(
             image: .gridicon(.checkmark),
             style: .plain,
