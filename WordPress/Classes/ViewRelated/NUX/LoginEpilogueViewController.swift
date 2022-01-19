@@ -22,12 +22,8 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var createANewSiteButton: UIButton!
 
     /// Constraints on the table view container.
-    /// Used to adjust the width on iPad.
-    @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
+    ///
     @IBOutlet weak var tableViewBottomContraint: NSLayoutConstraint!
-
-    private var defaultTableViewMargin: CGFloat = 0
 
     /// Blur effect on button panel
     ///
@@ -77,8 +73,6 @@ class LoginEpilogueViewController: UIViewController {
 
         view.backgroundColor = .basicBackground
         topLine.backgroundColor = .divider
-        defaultTableViewMargin = tableViewLeadingConstraint.constant
-        setTableViewMargins()
         refreshInterface(with: credentials)
         WordPressAuthenticator.track(.loginEpilogueViewed)
 
@@ -113,16 +107,6 @@ class LoginEpilogueViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         configureButtonPanel()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        setTableViewMargins()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        setTableViewMargins()
     }
 
     func hideButtonPanel() {
@@ -170,11 +154,6 @@ private extension LoginEpilogueViewController {
         blurEffectView.effect = UIBlurEffect(style: blurEffect)
         blurEffectView.isHidden = false
         setupDividerLineIfNeeded()
-    }
-
-    func setTableViewMargins() {
-        tableViewLeadingConstraint.constant = view.getHorizontalMargin(compactMargin: defaultTableViewMargin)
-        tableViewTrailingConstraint.constant = view.getHorizontalMargin(compactMargin: defaultTableViewMargin)
     }
 
     func setupDividerLineIfNeeded() {

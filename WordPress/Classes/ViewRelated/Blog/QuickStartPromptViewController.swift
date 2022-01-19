@@ -19,8 +19,6 @@ final class QuickStartPromptViewController: UIViewController {
 
     /// Constraints
     @IBOutlet private(set) weak var scrollViewTopVerticalConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var scrollViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var scrollViewTrailingConstraint: NSLayoutConstraint!
 
     // MARK: - Properties
 
@@ -59,11 +57,6 @@ final class QuickStartPromptViewController: UIViewController {
         UIAccessibility.post(notification: .layoutChanged, argument: promptTitleLabel)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        setupScrollViewMargins()
-    }
-
     // MARK: - Styling
 
     private func applyStyles() {
@@ -98,16 +91,9 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - Setup
 
     private func setup() {
-        setupScrollViewMargins()
         setupSiteInfoViews()
         setupPromptInfoViews()
         setupButtons()
-    }
-
-    private func setupScrollViewMargins() {
-        let margin = view.getHorizontalMargin() + Constants.marginPadding
-        scrollViewLeadingConstraint.constant = margin
-        scrollViewTrailingConstraint.constant = margin
     }
 
     private func setupSiteInfoViews() {
@@ -158,10 +144,6 @@ extension QuickStartPromptViewController {
         static let promptDescription = NSLocalizedString("Learn the basics with a quick walk through.", comment: "Description for a prompt asking if users want to try out the quick start checklist.")
         static let showMeAroundButtonTitle = NSLocalizedString("Show me around", comment: "Button title. When tapped, the quick start checklist will be shown.")
         static let noThanksButtonTitle = NSLocalizedString("No thanks", comment: "Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed.")
-    }
-
-    private enum Constants {
-        static let marginPadding = 20.0
     }
 
 }

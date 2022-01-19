@@ -175,7 +175,6 @@ extension LoginEpilogueTableViewController {
         if indexPath.row == lastRowInSection(indexPath.section) {
             removeSeparatorFor(cell)
         }
-        loginCell.adjustSiteNameConstraint()
         return loginCell
     }
 
