@@ -4,6 +4,9 @@
 * [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17758]
 * [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
 * [**] Accessibility: VoiceOver improvements on Activity Log and Schedule Post calendars [#17756, #17761]
+* [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
+* [*] Self-hosted login: Improved error messages. [#17724]
+* [*] Block editor: Fixed an issue where video thumbnails could show when selecting images, and vice versa. [#17670]
 
 19.0
 -----

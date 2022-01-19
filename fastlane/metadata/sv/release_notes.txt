@@ -1,0 +1,12 @@
+Vad är klockan? Vår helt nya tidszonsväljare har full koll. Appen föreslår en tidszon utifrån klockan i din enhet och förbättrar sökfunktionen på samma gång.
+
+Om du använder ett kostnadsfritt paket är nu uppladdning av video begränsat till fem minuter per fil. Men detta påverkar inte de videofiler som du har laddat upp tidigare till webbplatsen, så du behöver inte oroa dig.
+
+Och vi har gjort några ändringar i blockredigeraren också:
+
+– Vi har kommit tillrätta med några problem som gjorde att vissa element i gränssnittet inte kunde översättas (t.ex. information om textjustering och blockredigerarens modala fönster) och därför visades på engelska.
+– Vi har lagt till möjlighet att översätta för Jetpack och rutnätslayout.
+– Vi har rättat ett fel där textens formatering kunde återställas till standardutseendet om du råkade trycka på bakåtsteg. Nu lever fetstilen inte lika osäkert längre!
+– Flerradiga blockrubriker är nu centrerade i infogningsmenyn.
+
+Slutligen är raden ”Dela WordPress med en vän” tillbaka där den hör hemma på sidan ”Mig”. Det är skönt att ordningen är återställd.
