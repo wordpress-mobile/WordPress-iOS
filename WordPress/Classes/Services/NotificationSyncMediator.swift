@@ -167,7 +167,7 @@ class NotificationSyncMediator {
     /// - Note: This method should only be used on the main thread.
     ///
     /// - Parameters:
-    ///     - notifications: The notification that was just read.
+    ///     - notifications: Notifications that were marked as read.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
