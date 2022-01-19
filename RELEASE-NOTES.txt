@@ -7,6 +7,7 @@
 * [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
 * [*] Self-hosted login: Improved error messages. [#17724]
 * [*] Block editor: Fixed an issue where video thumbnails could show when selecting images, and vice versa. [#17670]
+* [*] Share Sheet from Photos: Fix an issue where certain filenames would not upload or render in Post [#16773]
 
 19.0
 -----
