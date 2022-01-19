@@ -21,6 +21,11 @@ extension MySiteViewController {
         alertWorkItem = newWorkItem
     }
 
+    func toggleSpotlightOnHeaderView() {
+        blogDetailHeaderView.toggleSpotlightOnSiteTitle()
+        blogDetailHeaderView.toggleSpotlightOnSiteIcon()
+    }
+
     private func showNoticeAsNeeded() {
         guard let blog = blog else {
             return
@@ -30,5 +35,4 @@ extension MySiteViewController {
             QuickStartTourGuide.shared.suggest(tourToSuggest, for: blog)
         }
     }
-
 }

@@ -81,7 +81,7 @@ extension MySiteViewController: BlogDetailHeaderViewDelegate {
     }
 
     func visitSiteTapped() {
-        // TODO
+        showViewSite()
     }
 }
 
@@ -377,9 +377,51 @@ extension MySiteViewController {
             DDLogError("Error while trying to update blog settings: \(error.localizedDescription)")
         })
     }
+
+    private func showViewSite() {
+        WPAppAnalytics.track(.openedViewSite, withProperties: [WPAppAnalyticsKeyTapSource: "link"], with: blog)
+
+        guard let blog = blog,
+              let urlString = blog.homeURL as String?,
+              let url = URL(string: urlString) else {
+                  return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(
+            url: url,
+            blog: blog,
+            source: Constants.viewSiteSource,
+            withDeviceModes: true
+        )
+
+        let navigationController = LightNavigationController(rootViewController: webViewController)
+
+        if traitCollection.userInterfaceIdiom == .pad {
+            navigationController.modalPresentationStyle = .fullScreen
+        }
+
+        present(navigationController, animated: true) {
+            self.toggleSpotlightOnHeaderView()
+        }
+
+        let tourGuide = QuickStartTourGuide.shared
+        if tourGuide.isCurrentElement(.viewSite) {
+            tourGuide.visited(.viewSite)
+        } else {
+            // Just mark as completed if we've viewed the site and aren't
+            //  currently working on the View Site tour.
+            tourGuide.completeViewSiteTour(forBlog: blog)
+        }
+
+        additionalSafeAreaInsets = .zero
+    }
 }
 
 extension MySiteViewController {
+
+    private enum Constants {
+        static let viewSiteSource = "my_site_view_site"
+    }
 
     private enum SiteIconAlertStrings {
 
