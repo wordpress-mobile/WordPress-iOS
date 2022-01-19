@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-22 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-01-19 08:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -388,7 +388,7 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "リンクを追加";
 
 /* No comment provided by engineer. */
-"ADD MEDIA" = "ADD MEDIA";
+"ADD MEDIA" = "メディアを追加";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "動画を追加";
@@ -606,7 +606,7 @@ translators: Block name. %s: The localized block name */
 "Address" = "住所";
 
 /* No comment provided by engineer. */
-"Address Settings" = "Address Settings";
+"Address Settings" = "アドレス設定";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "住所 %@";
@@ -3116,7 +3116,7 @@ translators: Block name. %s: The localized block name */
 "Follow" = "フォロー";
 
 /* Button title. Follow the comments on a post. */
-"Follow Conversation" = "Follow Conversation";
+"Follow Conversation" = "会話をフォロー";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "会話をメールでフォローする";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "ストーリー投稿の紹介";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "無効なメールアドレスです";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "無効なサイトアドレスです";
@@ -4773,10 +4773,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note: Column layout may vary between themes and screen sizes" = "注: カラムのレイアウトはテーマ、画面サイズによって異なります";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+"Note: Layout may vary between themes and screen sizes" = "注: レイアウトはテーマ、画面サイズによって異なります";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "注: モバイルエディターでこのブロックを編集するには、WordPress.com へのログインを許可する必要があります。";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "見つかりません。";
@@ -4911,7 +4911,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Open Device Settings" = "端末設定を開く";
 
 /* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Open Jetpack Security settings";
+"Open Jetpack Security settings" = "Jetpack セキュリティの設定を開く";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -5012,7 +5012,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "PHONE" = "電話";
 
 /* No comment provided by engineer. */
-"Padding" = "Padding";
+"Padding" = "パディング";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5221,7 +5221,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid address" = "有効なメールアドレスを入力してください";
 
 /* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
+"Please enter a valid email address for a WordPress.com account." = "WordPress.com アカウントの有効なメールアドレスを入力してください。";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "正しいメールアドレスを入力してください。";
@@ -6312,7 +6312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "別のメニューを選択すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Selection not allowed" = "Selection not allowed";
+"Selection not allowed" = "選択した動画はアップロードできません";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "このドメインをサイト用に選択します。";
@@ -6864,7 +6864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Successfully unfollowed conversation" = "会話のフォロー解除が完了しました";
 
 /* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
+"Suggestion:" = "提案:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -7061,7 +7061,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "テキストのみ";
 
 /* No comment provided by engineer. */
-"Text color" = "Text color";
+"Text color" = "テキスト色";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "書式設定コントロールは、テキストブロックの編集中に表示されるキーボードの上に位置するツールバー内にあります";
@@ -8049,7 +8049,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploading post..." = "投稿をアップロード中…";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
-"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+"Uploading videos longer than 5 minutes requires a paid plan." = "5分以上の動画ファイルのアップロードには、有料プランのご利用が必要です。";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "アップロード中…";
@@ -8143,7 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Video export canceled." = "動画のエクスポートをキャンセルしました。";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Video not uploaded" = "Video not uploaded";
+"Video not uploaded" = "動画がアップロードされていません";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "動画 (%@)";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "1つのサイトに関する統計を iOS の「今日」\/「通知センター」ビューに表示することができます。";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+"You can edit this block using the web version of the editor." = "このブロックは Web バージョンのエディターを使用して編集できます";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "フォローすることで特定のサイトに関する投稿をフォローできます。";
