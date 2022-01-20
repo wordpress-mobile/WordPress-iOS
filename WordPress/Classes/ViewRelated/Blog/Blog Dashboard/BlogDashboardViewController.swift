@@ -31,7 +31,7 @@ final class BlogDashboardViewController: UIViewController {
                 cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
                 return cell
             case self.posts.first:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardCardCell.defaultReuseID, for: indexPath) as? DashboardCardCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardPostsCardCell.defaultReuseID, for: indexPath) as? DashboardPostsCardCell
                 cell?.configure(self, blog: self.blog!)
                 return cell
             default:
@@ -55,7 +55,7 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.backgroundColor = .listBackground
         collectionView.register(QuickLinksHostCell.self, forCellWithReuseIdentifier: QuickLinksHostCell.defaultReuseID)
-        collectionView.register(DashboardCardCell.self, forCellWithReuseIdentifier: DashboardCardCell.defaultReuseID)
+        collectionView.register(DashboardPostsCardCell.self, forCellWithReuseIdentifier: DashboardPostsCardCell.defaultReuseID)
 
         view.addSubview(collectionView)
         view.pinSubviewToAllEdges(collectionView)
@@ -116,16 +116,5 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let sectionInset: CGFloat = 16
         static let interGroupSpacing: CGFloat = 8
-    }
-}
-
-class DashboardCardCell: UICollectionViewCell, Reusable {
-    func configure(_ viewController: UIViewController, blog: Blog) {
-        let postsViewController = PostsCardViewController(blog: blog)
-        viewController.addChild(postsViewController)
-        contentView.addSubview(postsViewController.view)
-        postsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(postsViewController.view)
-        postsViewController.didMove(toParent: viewController)
     }
 }
