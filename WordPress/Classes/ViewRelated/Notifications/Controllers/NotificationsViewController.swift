@@ -175,7 +175,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
-        updateMarkAllAsReadTintColor()
+        updateMarkAllAsReadButton()
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -841,14 +841,14 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     private enum Localization {
-        static let markAllAsReadNoticeTitle = NSLocalizedString(
-            "Success",
-            comment: "Title for mark all as read success notice."
+        static let markAllAsReadNoticeSuccess = NSLocalizedString(
+            "Notifications marked as read",
+            comment: "Title for mark all as read success notice"
         )
 
-        static let markAllAsReadNoticeMessage = NSLocalizedString(
-            "Notifications marked as read.",
-            comment: "Message for mark all as read success notice."
+        static let markAllAsReadNoticeFailure = NSLocalizedString(
+            "Failed marking Notifications as read",
+            comment: "Message for mark all as read success notice"
         )
     }
 
@@ -879,13 +879,14 @@ private extension NotificationsViewController {
             !$0.read
         }
 
-        NotificationSyncMediator()?.markAsRead(unreadNotifications)
-        let notice = Notice(
-            title: Localization.markAllAsReadNoticeTitle,
-            message: Localization.markAllAsReadNoticeMessage
-        )
-        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
-        updateMarkAllAsReadTintColor()
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { error in
+            let notice = Notice(
+                title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess,
+                message: nil
+            )
+            ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+        })
+        updateMarkAllAsReadButton()
     }
 
     func markAsUnread(note: Notification) {
@@ -894,7 +895,7 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
-        updateMarkAllAsReadTintColor()
+        updateMarkAllAsReadButton()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -905,14 +906,12 @@ private extension NotificationsViewController {
         }
     }
 
-    func updateMarkAllAsReadTintColor() {
+    func updateMarkAllAsReadButton() {
         guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
             return
         }
 
-        let isEnabled = !notes.filter {
-            !$0.read
-        }.isEmpty
+        let isEnabled = notes.first { !$0.read } != nil
 
         markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
         markAllAsReadBarButtonItem.isEnabled = isEnabled
@@ -989,7 +988,7 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
-        updateMarkAllAsReadTintColor()
+        updateMarkAllAsReadButton()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {

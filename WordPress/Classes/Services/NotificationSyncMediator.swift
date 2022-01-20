@@ -159,7 +159,7 @@ class NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark(notification, asRead: true, completion: completion)
+        mark([notification], asRead: true, completion: completion)
     }
 
     /// Marks an array of notifications as Read.
@@ -174,7 +174,6 @@ class NotificationSyncMediator {
         mark(notifications, asRead: true, completion: completion)
     }
 
-
     /// Marks a Notification as Unead.
     ///
     /// - Note: This method should only be used on the main thread.
@@ -184,32 +183,7 @@ class NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsUnread(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark(notification, asRead: false, completion: completion)
-    }
-
-    private func mark(_ notification: Notification, asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
-        assert(Thread.isMainThread)
-
-        let noteID = notification.notificationId
-        remote.updateReadStatus(noteID, read: read) { error in
-            if let error = error {
-                DDLogError("Error marking note as \(Self.readState(for: read)): \(error)")
-                // Ideally, we'd want to revert to the previous status if this
-                // fails, but if the note is visible, the UI layer will keep
-                // trying to mark this note and fail.
-                //
-                // While not a perfect UX, the easy way out is to pretend it
-                // worked, but invalidate the cache so it can be reverted in the
-                // next successful sync.
-                //
-                // https://github.com/wordpress-mobile/WordPress-iOS/issues/7216
-                NotificationSyncMediator()?.invalidateCacheForNotification(with: noteID)
-            }
-
-            completion?(error)
-        }
-
-        updateReadStatus(read, forNoteWithObjectID: notification.objectID)
+        mark([notification], asRead: false, completion: completion)
     }
 
     private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
@@ -222,6 +196,15 @@ class NotificationSyncMediator {
         remote.updateReadStatusForNotifications(noteIDs, read: read) { error in
             if let error = error {
                 DDLogError("Error marking notifications as \(Self.readState(for: read)): \(error)")
+                // Ideally, we'd want to revert to the previous status if this
+                // fails, but if the note is visible, the UI layer will keep
+                // trying to mark this note and fail.
+                //
+                // While not a perfect UX, the easy way out is to pretend it
+                // worked, but invalidate the cache so it can be reverted in the
+                // next successful sync.
+                //
+                // https://github.com/wordpress-mobile/WordPress-iOS/issues/7216
                 NotificationSyncMediator()?.invalidateCacheForNotifications(with: noteIDs)
             }
 
@@ -299,18 +282,7 @@ class NotificationSyncMediator {
     /// Invalidates the local cache for the notification with the specified ID.
     ///
     func invalidateCacheForNotification(with noteID: String) {
-        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
-        let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
-
-        derivedContext.perform {
-            guard let notification = derivedContext.firstObject(ofType: Notification.self, matching: predicate) else {
-                return
-            }
-
-            notification.notificationHash = nil
-
-            self.contextManager.save(derivedContext)
-        }
+        invalidateCacheForNotifications(with: [noteID])
     }
 
     /// Invalidates the local cache for all the notifications with specified ID's in the array.
