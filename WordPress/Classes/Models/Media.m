@@ -267,7 +267,7 @@
         // Cherry pick keys that support secure coding. NSErrors thrown from the OS can
         // contain types that don't adopt NSSecureCoding, leading to a Core Data exception and crash.
         NSDictionary *userInfo = @{NSLocalizedDescriptionKey: error.localizedDescription};
-        error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+        error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
     }
 
     [self willChangeValueForKey:@"error"];
