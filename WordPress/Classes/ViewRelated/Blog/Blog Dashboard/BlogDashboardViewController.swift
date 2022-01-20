@@ -24,16 +24,20 @@ final class BlogDashboardViewController: UIViewController {
     }()
 
     private lazy var dataSource: DataSource = {
-        return DataSource(collectionView: collectionView) { collectionView, indexPath, identifier in
-            if identifier == "Quick Links" {
+        return DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier in
+            switch identifier {
+            case self.quickLinks.first:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuickLinksHostCell.defaultReuseID, for: indexPath) as? QuickLinksHostCell
                 cell?.hostedView = QuickLinksView(title: self.quickLinks[indexPath.item])
                 return cell
+            case self.posts.first:
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardCardCell.defaultReuseID, for: indexPath) as? DashboardCardCell
+                cell?.configure(self, blog: self.blog!)
+                return cell
+            default:
+                break
             }
-
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DashboardCardCell.defaultReuseID, for: indexPath) as? DashboardCardCell
-            cell?.configure(self, blog: self.blog!)
-            return cell
+            return UICollectionViewCell()
         }
     }()
 
