@@ -1,7 +1,7 @@
 import Gridicons
 import UIKit
 
-class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
+class NewBlogDetailHeaderView: UIView {
 
     // MARK: - Child Views
 
