@@ -12,6 +12,7 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
     private let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultLow, for: .vertical)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         label.text = TextContent.message
@@ -48,6 +49,14 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         return infoIcon
     }()
 
+    private let buttonStackView: UIStackView = {
+        let buttonStackView = UIStackView()
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = Metrics.spacing
+        return buttonStackView
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -80,11 +89,7 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         labelButtonsStackView.distribution = .fillProportionally
         labelButtonsStackView.spacing = Metrics.spacing
 
-        let buttonStackView = UIStackView()
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.axis = .horizontal
-        buttonStackView.distribution = .fillEqually
-        buttonStackView.spacing = Metrics.spacing
+        configureButtonStackViewForContentSizeCategory()
 
         outerStackView.addArrangedSubviews([infoIcon, labelButtonsStackView])
         labelButtonsStackView.addArrangedSubviews([label, buttonStackView])
@@ -110,9 +115,25 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = .preferredFont(forTextStyle: .subheadline).bold()
         button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.contentHorizontalAlignment = .leading
         button.setTitleColor(.invertedLink, for: .normal)
     }
+
+    private func configureButtonStackViewForContentSizeCategory() {
+        let isAccessibilityCategory = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        buttonStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
+        buttonStackView.spacing = isAccessibilityCategory ? Metrics.spacing / 2.0 : Metrics.spacing
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        configureButtonStackViewForContentSizeCategory()
+        infoIcon.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    }
+
+    // MARK: - Actions
 
     @objc private func selectMoreTapped() {
         if let presenter = presenter {
