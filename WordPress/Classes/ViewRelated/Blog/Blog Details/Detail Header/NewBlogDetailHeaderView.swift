@@ -1,6 +1,15 @@
 import Gridicons
 import UIKit
 
+@objc protocol BlogDetailHeaderViewDelegate {
+    func siteIconTapped()
+    func siteIconReceivedDroppedImage(_ image: UIImage?)
+    func siteIconShouldAllowDroppedImages() -> Bool
+    func siteTitleTapped()
+    func siteSwitcherTapped()
+    func visitSiteTapped()
+}
+
 class NewBlogDetailHeaderView: UIView {
 
     // MARK: - Child Views
