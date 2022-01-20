@@ -7,6 +7,7 @@
 * [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
 * [*] Self-hosted login: Improved error messages. [#17724]
 * [*] Block editor: Fixed an issue where video thumbnails could show when selecting images, and vice versa. [#17670]
+* [**] Media: If a user has only enabled limited device media access, we now show a prompt to allow the user to change their selection. [#17795]
 
 19.0
 -----
