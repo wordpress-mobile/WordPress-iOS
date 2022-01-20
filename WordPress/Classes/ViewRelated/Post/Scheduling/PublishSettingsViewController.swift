@@ -243,7 +243,7 @@ private struct DateAndTimeRow: ImmuTableRow {
 // The calendar sheet is shown towards the bottom half of the screen so a custom transitioning delegate is needed.
 extension PublishSettingsController: UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
         presentationController.delegate = self
         return presentationController
     }

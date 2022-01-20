@@ -118,7 +118,7 @@ class SchedulingCalendarViewController: UIViewController, CalendarSheet, DateCoo
 
 extension SchedulingCalendarViewController {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
         presentationController.delegate = self
         return presentationController
     }

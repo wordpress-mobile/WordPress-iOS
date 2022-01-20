@@ -79,13 +79,13 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        calculatePreferredSize()
+        preferredContentSize = calculatePreferredSize()
     }
 
-    private func calculatePreferredSize() {
+    private func calculatePreferredSize() -> CGSize {
         let targetSize = CGSize(width: view.bounds.width,
           height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(targetSize)
+        return view.systemLayoutSizeFitting(targetSize)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -131,7 +131,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
 @available(iOS 14.0, *)
 extension SchedulingDatePickerViewController {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
         presentationController.delegate = self
         return presentationController
     }
@@ -209,6 +209,7 @@ extension DatePickerSheet where Self: UIViewController {
         let stackView = configureStackView(topView: topView, pickerView: pickerView)
 
         view.addSubview(stackView)
+
         view.pinSubviewToSafeArea(stackView)
     }
 }
