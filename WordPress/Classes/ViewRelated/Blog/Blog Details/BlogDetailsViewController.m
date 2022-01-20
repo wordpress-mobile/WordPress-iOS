@@ -1091,12 +1091,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     self.headerView = headerView;
 
-    self.tableView.tableHeaderView = headerView.asView;
+    self.tableView.tableHeaderView = headerView;
     
-    [self.headerView.asView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [NSLayoutConstraint activateConstraints:@[
-        [self.headerView.asView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.headerView.asView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+        [self.headerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.headerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
     ]];
 }
 

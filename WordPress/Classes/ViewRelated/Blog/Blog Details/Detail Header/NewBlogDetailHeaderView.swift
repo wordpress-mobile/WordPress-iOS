@@ -12,12 +12,6 @@ class NewBlogDetailHeaderView: UIView {
 
     @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
-    // Temporary method for migrating to NewBlogDetailHeaderView
-    @objc
-    var asView: UIView {
-        return self
-    }
-
     @objc var updatingIcon: Bool = false {
         didSet {
             if updatingIcon {
