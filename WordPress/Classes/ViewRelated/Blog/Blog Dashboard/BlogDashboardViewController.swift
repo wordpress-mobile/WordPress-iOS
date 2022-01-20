@@ -70,10 +70,10 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addHeightObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: .postCardTableViewSizeChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateCollectionViewHeight(notification:)), name: .postCardTableViewSizeChanged, object: nil)
     }
 
-    @objc private func methodOfReceivedNotification(notification: Notification) {
+    @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
 }
