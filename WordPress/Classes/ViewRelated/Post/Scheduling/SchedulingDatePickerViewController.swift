@@ -1,9 +1,31 @@
 import Foundation
 import Gridicons
 
+protocol DateCoordinatorHandler: AnyObject {
+    var coordinator: DateCoordinator? { get set }
+}
+
+class DateCoordinator {
+
+    var date: Date?
+    let timeZone: TimeZone
+    let dateFormatter: DateFormatter
+    let dateTimeFormatter: DateFormatter
+    let updated: (Date?) -> Void
+
+    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void) {
+        self.date = date
+        self.timeZone = timeZone
+        self.dateFormatter = dateFormatter
+        self.dateTimeFormatter = dateTimeFormatter
+        self.updated = updated
+    }
+}
+
 // MARK: - Date Picker
 
-class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
+@available(iOS 14.0, *)
+class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
 
     var coordinator: DateCoordinator? = nil
 
@@ -116,7 +138,8 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     }
 }
 
-extension SchedulingCalendarViewController {
+@available(iOS 14.0, *)
+extension SchedulingDatePickerViewController {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
         presentationController.delegate = self
@@ -129,8 +152,8 @@ extension SchedulingCalendarViewController {
 }
 
 // MARK: Accessibility
-
-private extension SchedulingCalendarViewController {
+@available(iOS 14.0, *)
+private extension SchedulingDatePickerViewController {
     func setupForAccessibility() {
         let notificationNames = [
             UIAccessibility.voiceOverStatusDidChangeNotification,
@@ -147,49 +170,60 @@ private extension SchedulingCalendarViewController {
     }
 }
 
-// MARK: - Time Picker
+// MARK: DatePickerSheet Protocol
+protocol DatePickerSheet {
+    func configureStackView(topView: UIView, pickerView: UIView) -> UIView
+}
 
-class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
+extension DatePickerSheet {
+    /// Constructs a view with `topView` on top and `pickerView` on bottom
+    /// - Parameter topView: A view to be shown above `pickerView`
+    /// - Parameter pickerView: A view to be shown on the bottom
+    func configureStackView(topView: UIView, pickerView: UIView) -> UIView {
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
 
-    var coordinator: DateCoordinator? = nil
+        let pickerWrapperView = UIView()
+        pickerWrapperView.addSubview(pickerView)
 
-    let chosenValueRow = ChosenValueRow(frame: .zero)
+        let sideConstraints: [NSLayoutConstraint] = [
+            pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
+            pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
+        ]
 
-    private lazy var datePicker: UIDatePicker = {
-        let datePicker = UIDatePicker()
-
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
+        // Allow these to break on larger screen sizes and just center the content
+        sideConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
         }
 
-        datePicker.datePickerMode = .time
-        datePicker.timeZone = coordinator?.timeZone
-        datePicker.addTarget(self, action: #selector(timePickerChanged(_:)), for: .valueChanged)
-        if let date = coordinator?.date {
-            datePicker.date = date
-        }
-        return datePicker
-    }()
+        NSLayoutConstraint.activate([
+            pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
+            pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
+            pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
+        ])
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+        NSLayoutConstraint.activate(sideConstraints)
 
-        setup(topView: chosenValueRow, pickerView: datePicker)
+        let stackView = UIStackView(arrangedSubviews: [
+            topView,
+            pickerWrapperView
+        ])
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        navigationItem.setRightBarButton(doneButton, animated: false)
+        return stackView
     }
+}
 
-    // MARK: Change Selectors
-    @objc func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
-        coordinator?.date = datePicker.date
-    }
+extension DatePickerSheet where Self: UIViewController {
+    /// Adds `topView` and `pickerView` to view hierarchy + standard styling for the view controller's view
+    /// - Parameter topView: A view to show above `pickerView` (see `ChosenValueRow`)
+    /// - Parameter pickerView: A view to show below the top view
+    func setup(topView: UIView, pickerView: UIView) {
+        WPStyleGuide.configureColors(view: view, tableView: nil)
 
-    @objc func done() {
-        coordinator?.updated(coordinator?.date)
-        navigationController?.dismiss(animated: true, completion: nil)
+        let stackView = configureStackView(topView: topView, pickerView: pickerView)
+
+        view.addSubview(stackView)
+        view.pinSubviewToSafeArea(stackView)
     }
 }

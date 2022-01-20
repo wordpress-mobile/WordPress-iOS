@@ -330,7 +330,7 @@ class PrepublishingViewController: UITableViewController {
 
     func didTapSchedule(_ indexPath: IndexPath) {
         transitionIfVoiceOverDisabled(to: .hidden)
-        SchedulingCalendarViewController.present(
+        SchedulingViewControllerPresenter.present(
             from: self,
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             viewModel: publishSettingsViewModel,
