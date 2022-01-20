@@ -294,9 +294,7 @@ class NotificationSyncMediator {
             let predicate = NSPredicate(format: "(notificationId IN %@)", noteIDs)
             let notifications = derivedContext.allObjects(ofType: Notification.self, matching: predicate)
 
-            for notification in notifications {
-                notification.notificationHash = nil
-            }
+            notifications.forEach { $0.notificationHash = nil }
 
             self.contextManager.save(derivedContext)
         }
@@ -421,9 +419,7 @@ private extension NotificationSyncMediator {
 
         let notes = mainContext.allObjects(ofType: Notification.self, matching: predicate)
 
-        for note in notes {
-            note.read = status
-        }
+        notes.forEach { $0.read = status }
         contextManager.saveContextAndWait(mainContext)
     }
 
