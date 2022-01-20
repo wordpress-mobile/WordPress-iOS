@@ -212,7 +212,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong, readwrite) NewBlogDetailHeaderView *headerView;
+@property (nonatomic, strong, readwrite) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -1086,7 +1086,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
     
-    NewBlogDetailHeaderView *headerView = [self configureHeaderView];
+    BlogDetailHeaderView *headerView = [self configureHeaderView];
     headerView.delegate = self;
 
     self.headerView = headerView;

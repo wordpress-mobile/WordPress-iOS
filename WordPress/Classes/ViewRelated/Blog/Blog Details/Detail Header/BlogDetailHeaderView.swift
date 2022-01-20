@@ -10,7 +10,7 @@ import UIKit
     func visitSiteTapped()
 }
 
-class NewBlogDetailHeaderView: UIView {
+class BlogDetailHeaderView: UIView {
 
     // MARK: - Child Views
 
@@ -228,7 +228,7 @@ class NewBlogDetailHeaderView: UIView {
     }
 }
 
-fileprivate extension NewBlogDetailHeaderView {
+fileprivate extension BlogDetailHeaderView {
     class TitleView: UIView {
 
         private enum LabelMinimumScaleFactor {
