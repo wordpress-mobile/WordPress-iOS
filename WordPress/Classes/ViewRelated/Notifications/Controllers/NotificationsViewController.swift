@@ -879,14 +879,15 @@ private extension NotificationsViewController {
             !$0.read
         }
 
-        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { error in
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { [weak self] error in
+            guard let self = self else { return }
+
             let notice = Notice(
-                title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess,
-                message: nil
+                title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
             )
             ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+            self.updateMarkAllAsReadButton()
         })
-        updateMarkAllAsReadButton()
     }
 
     func markAsUnread(note: Notification) {
