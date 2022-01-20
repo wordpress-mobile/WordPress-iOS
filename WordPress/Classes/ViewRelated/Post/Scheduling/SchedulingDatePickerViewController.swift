@@ -1,5 +1,6 @@
 import Foundation
 import Gridicons
+import UIKit
 
 protocol DateCoordinatorHandler: AnyObject {
     var coordinator: DateCoordinator? { get set }
@@ -24,40 +25,32 @@ class DateCoordinator {
 
 // MARK: - Date Picker
 
-@available(iOS 14.0, *)
+@available(iOS, introduced: 14.0)
 class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
 
     var coordinator: DateCoordinator? = nil
 
     let chosenValueRow = ChosenValueRow(frame: .zero)
 
-    lazy var calendarMonthView: CalendarMonthView = {
-        var calendar = Calendar.current
+    lazy var datePickerView: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.preferredDatePickerStyle = .inline
+        datePicker.calendar = Calendar.current
         if let timeZone = coordinator?.timeZone {
-            calendar.timeZone = timeZone
+            datePicker.timeZone = timeZone
         }
-        let calendarMonthView = CalendarMonthView(calendar: calendar)
-        calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.date = coordinator?.date ?? Date()
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
 
-        let selectedDate = coordinator?.date ?? Date()
-        calendarMonthView.selectedDate = selectedDate
-        calendarMonthView.updated = { [weak self] date in
-            var newDate = date
-
-            // Since the date from the calendar will not include hours and minutes, replace with the original date (either the current, or previously entered date)
-            var calendar = Calendar.current
-            if let timeZone = self?.coordinator?.timeZone {
-                calendar.timeZone = timeZone
-            }
-            let selectedComponents = calendar.dateComponents([.hour, .minute], from: selectedDate)
-            newDate = calendar.date(bySettingHour: selectedComponents.hour ?? 0, minute: selectedComponents.minute ?? 0, second: 0, of: newDate) ?? newDate
-
-            self?.coordinator?.date = newDate
-            self?.chosenValueRow.detailLabel.text = self?.coordinator?.dateFormatter.string(from: date)
-        }
-
-        return calendarMonthView
+        return datePicker
     }()
+
+    @objc private func datePickerValueChanged(sender: UIDatePicker) {
+        let date = sender.date
+        coordinator?.date = date
+        chosenValueRow.detailLabel.text = coordinator?.dateFormatter.string(from: date)
+    }
 
     private lazy var closeButton: UIBarButtonItem = {
         let item = UIBarButtonItem(image: .gridicon(.cross),
@@ -67,6 +60,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         item.accessibilityLabel = NSLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
         return item
     }()
+
     private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
 
     override func viewDidLoad() {
@@ -74,14 +68,11 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
 
         chosenValueRow.titleLabel.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
 
-        let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
-        navigationItem.setRightBarButton(nextButton, animated: false)
+        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
 
-        setup(topView: chosenValueRow, pickerView: calendarMonthView)
+        navigationItem.setRightBarButton(doneButton, animated: false)
 
-        calendarMonthView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        setup(topView: chosenValueRow, pickerView: datePickerView)
 
         setupForAccessibility()
     }
@@ -120,10 +111,9 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
-    @objc func nextButtonPressed() {
-        let vc = TimePickerViewController()
-        vc.coordinator = coordinator
-        navigationController?.pushViewController(vc, animated: true)
+    @objc func done() {
+        coordinator?.updated(coordinator?.date)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
     @objc private func resetNavigationButtons() {
@@ -189,11 +179,6 @@ extension DatePickerSheet {
             pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
             pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
         ]
-
-        // Allow these to break on larger screen sizes and just center the content
-        sideConstraints.forEach() { constraint in
-            constraint.priority = .defaultHigh
-        }
 
         NSLayoutConstraint.activate([
             pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),

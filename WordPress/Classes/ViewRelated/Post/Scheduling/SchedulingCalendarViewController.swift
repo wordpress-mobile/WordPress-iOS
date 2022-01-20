@@ -2,8 +2,8 @@ import Foundation
 import Gridicons
 
 // MARK: - Date Picker
-
-class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
+@available(iOS, deprecated: 14.0, message: "Use SchedulingDatePickerViewController, based on UIDatePicker.inline")
+class SchedulingCalendarViewController: UIViewController, CalendarSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
 
     var coordinator: DateCoordinator? = nil
 
@@ -191,5 +191,63 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
     @objc func done() {
         coordinator?.updated(coordinator?.date)
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: DatePickerSheet Protocol
+protocol CalendarSheet {
+    func configureStackView(topView: UIView, pickerView: UIView) -> UIView
+}
+
+extension CalendarSheet {
+    /// Constructs a view with `topView` on top and `pickerView` on bottom
+    /// - Parameter topView: A view to be shown above `pickerView`
+    /// - Parameter pickerView: A view to be shown on the bottom
+    func configureStackView(topView: UIView, pickerView: UIView) -> UIView {
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+
+        let pickerWrapperView = UIView()
+        pickerWrapperView.addSubview(pickerView)
+
+        let sideConstraints: [NSLayoutConstraint] = [
+            pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
+            pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
+        ]
+
+        // Allow these to break on larger screen sizes and just center the content
+        sideConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
+        }
+
+        NSLayoutConstraint.activate([
+            pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
+            pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
+            pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
+        ])
+
+        NSLayoutConstraint.activate(sideConstraints)
+
+        let stackView = UIStackView(arrangedSubviews: [
+            topView,
+            pickerWrapperView
+        ])
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        return stackView
+    }
+}
+
+extension CalendarSheet where Self: UIViewController {
+    /// Adds `topView` and `pickerView` to view hierarchy + standard styling for the view controller's view
+    /// - Parameter topView: A view to show above `pickerView` (see `ChosenValueRow`)
+    /// - Parameter pickerView: A view to show below the top view
+    func setup(topView: UIView, pickerView: UIView) {
+        WPStyleGuide.configureColors(view: view, tableView: nil)
+
+        let stackView = configureStackView(topView: topView, pickerView: pickerView)
+
+        view.addSubview(stackView)
+        view.pinSubviewToSafeArea(stackView)
     }
 }
