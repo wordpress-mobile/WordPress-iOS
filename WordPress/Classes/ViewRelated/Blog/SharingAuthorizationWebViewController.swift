@@ -26,21 +26,25 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
     private static let loginURL = "https://wordpress.com/wp-login.php"
 
-    private enum AuthorizeURLComponents {
-        static let verifyActionParameter = "action=verify"
-        static let denyActionParameter = "action=deny"
-        static let requestActionParameter = "action=request"
+    private enum AuthorizeURLComponents: String {
+        case verifyActionParameter = "action=verify"
+        case denyActionParameter = "action=deny"
+        case requestActionParameter = "action=request"
 
-        static let declinePath = "/decline"
-        static let authorizationPrefix = "https://public-api.wordpress.com/connect/"
-        static let accessDenied = "error=access_denied"
+        case declinePath = "/decline"
+        case authorizationPrefix = "https://public-api.wordpress.com/connect/"
+        case accessDenied = "error=access_denied"
 
         // Special handling for the inconsistent way that services respond to a user's choice to decline
         // oauth authorization.
         // Right now we have no clear way to know if Tumblr fails.  This is something we should try
         // fixing moving forward.
         // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
-        static let userRefused = "oauth_problem=user_refused"
+        case userRefused = "oauth_problem=user_refused"
+
+        func containedIn(_ url: URL) -> Bool {
+            url.absoluteString.contains(rawValue)
+        }
     }
 
     /// Verification loading -- dismiss on completion
@@ -148,42 +152,43 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     // MARK: - URL Interpretation
 
     private func authorizeAction(from url: URL) -> AuthorizeAction {
-        let requested = url.absoluteString
-
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if requested.range(of: AuthorizeURLComponents.declinePath) != nil {
+        if AuthorizeURLComponents.declinePath.containedIn(url) {
             return .deny
         }
 
-        if !requested.hasPrefix(AuthorizeURLComponents.authorizationPrefix) {
+        if !url.absoluteString.hasPrefix(AuthorizeURLComponents.authorizationPrefix.rawValue) {
             return .none
         }
 
-        if requested.range(of: AuthorizeURLComponents.requestActionParameter) != nil {
+        if AuthorizeURLComponents.requestActionParameter.containedIn(url) {
             return .request
         }
 
         // Check the rest of the various decline ranges
-        if requested.range(of: AuthorizeURLComponents.denyActionParameter) != nil {
+        if AuthorizeURLComponents.denyActionParameter.containedIn(url) {
             return .deny
         }
 
         // LinkedIn
-        if requested.range(of: AuthorizeURLComponents.userRefused) != nil {
+        if AuthorizeURLComponents.userRefused.containedIn(url) {
             return .deny
         }
 
         // Facebook and Google+
-        if requested.range(of: AuthorizeURLComponents.accessDenied) != nil {
+        if AuthorizeURLComponents.accessDenied.containedIn(url) {
             return .deny
         }
 
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
-        if requested.range(of: AuthorizeURLComponents.verifyActionParameter) != nil {
+        if AuthorizeURLComponents.verifyActionParameter.containedIn(url) {
             return .verify
         }
+            return .verify
+        }
+
 
         return .unknown
     }
