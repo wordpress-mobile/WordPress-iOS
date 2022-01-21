@@ -85,6 +85,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureBlockEditorSettings,
     /// Does the blog support the Layout grid block?
     BlogFeatureLayoutGrid,
+    /// Does the blog support the tiled gallery block?
+    BlogFeatureTiledGallery,
     /// Does the blog support Facebook embed block?
     BlogFeatureFacebookEmbed,
     /// Does the blog support Instagram embed block?
