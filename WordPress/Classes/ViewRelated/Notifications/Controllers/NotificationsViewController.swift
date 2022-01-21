@@ -875,6 +875,8 @@ private extension NotificationsViewController {
             return
         }
 
+        WPAnalytics.track(.notificationsMarkAllReadTapped)
+
         let unreadNotifications = notes.filter {
             !$0.read
         }
