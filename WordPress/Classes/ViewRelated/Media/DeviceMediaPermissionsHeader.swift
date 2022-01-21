@@ -89,8 +89,6 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         labelButtonsStackView.distribution = .fillProportionally
         labelButtonsStackView.spacing = Metrics.spacing
 
-        configureButtonStackViewForContentSizeCategory()
-
         outerStackView.addArrangedSubviews([infoIcon, labelButtonsStackView])
         labelButtonsStackView.addArrangedSubviews([label, buttonStackView])
         buttonStackView.addArrangedSubviews([selectButton, settingsButton])
@@ -109,6 +107,8 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
             infoIcon.widthAnchor.constraint(equalTo: infoIcon.heightAnchor),
             infoIcon.widthAnchor.constraint(equalToConstant: Metrics.iconSize)
         ])
+
+        configureViewsForContentSizeCategoryChange()
     }
 
     private func configureButton(_ button: UIButton) {
@@ -120,17 +120,19 @@ class DeviceMediaPermissionsHeader: UICollectionReusableView {
         button.setTitleColor(.invertedLink, for: .normal)
     }
 
-    private func configureButtonStackViewForContentSizeCategory() {
+    private func configureViewsForContentSizeCategoryChange() {
         let isAccessibilityCategory = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
         buttonStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
         buttonStackView.spacing = isAccessibilityCategory ? Metrics.spacing / 2.0 : Metrics.spacing
+
+        infoIcon.isHidden = isAccessibilityCategory
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        configureButtonStackViewForContentSizeCategory()
-        infoIcon.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        configureViewsForContentSizeCategoryChange()
     }
 
     // MARK: - Actions
