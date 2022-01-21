@@ -201,42 +201,26 @@ private struct DateAndTimeRow: ImmuTableRow {
     }
 
     func dateTimeCalendarViewController(with model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
-        return { [weak self] row in
-
-            let schedulingCalendarViewController = SchedulingCalendarViewController()
-            schedulingCalendarViewController.coordinator = DateCoordinator(
-                date: model.date,
-                timeZone: model.timeZone,
-                dateFormatter: model.dateFormatter,
-                dateTimeFormatter: model.dateTimeFormatter,
-                updated: { [weak self] date in
-                    WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
-                    self?.viewModel.setDate(date)
-                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
-                }
-            )
-
-            return self?.calendarNavigationController(rootViewController: schedulingCalendarViewController) ?? UINavigationController()
+        return { [weak self] _ in
+            return PresentableSchedulingViewControllerProvider.viewController(sourceView: self?.viewController?.tableView,
+                                                                              sourceRect: self?.rectForSelectedRow() ?? .zero,
+                                                                              viewModel: model,
+                                                                              transitioningDelegate: self,
+                                                                              updated: { [weak self] date in
+                WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+                self?.viewModel.setDate(date)
+                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+            },
+                                                                              onDismiss: nil)
         }
     }
 
-    private func calendarNavigationController(rootViewController: UIViewController) -> UINavigationController {
-        let navigationController = LightNavigationController(rootViewController: rootViewController)
-
-        if viewController?.traitCollection.userInterfaceIdiom == .pad {
-            navigationController.modalPresentationStyle = .popover
-        } else {
-            navigationController.modalPresentationStyle = .custom
-            navigationController.transitioningDelegate = self
+    private func rectForSelectedRow() -> CGRect? {
+        guard let viewController = viewController,
+              let selectedIndexPath = viewController.tableView.indexPathForSelectedRow else {
+            return nil
         }
-
-        if let popoverController = navigationController.popoverPresentationController,
-            let selectedIndexPath = viewController?.tableView.indexPathForSelectedRow {
-            popoverController.sourceView = viewController?.tableView
-            popoverController.sourceRect = viewController?.tableView.rectForRow(at: selectedIndexPath) ?? .zero
-        }
-
-        return navigationController
+        return viewController.tableView.rectForRow(at: selectedIndexPath)
     }
 }
 
