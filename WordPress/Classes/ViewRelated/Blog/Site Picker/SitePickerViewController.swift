@@ -40,6 +40,11 @@ final class SitePickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderView()
+        startObservingQuickStart()
+    }
+    
+    deinit {
+        stopObservingQuickStart()
     }
 
     private func setupHeaderView() {
