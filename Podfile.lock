@@ -573,7 +573,7 @@ DEPENDENCIES:
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.0)
   - WordPressUI (~> 1.12.3)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `feature/custom-header-traits-change`)
+  - WPMediaPicker (~> 1.8.2-beta.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -623,6 +623,7 @@ SPEC REPOS:
     - WordPressMocks
     - WordPressShared
     - WordPressUI
+    - WPMediaPicker
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -731,9 +732,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.70.0
-  WPMediaPicker:
-    :branch: feature/custom-header-traits-change
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/Yoga.podspec.json
 
@@ -749,9 +747,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.70.0
-  WPMediaPicker:
-    :commit: 91bf94719617c417a4d40292cb2bf4c9cefdfe88
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -854,6 +849,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: d5f2d4c8d908bb148802cda28061bc8efb7e0363
+PODFILE CHECKSUM: 5061295d7316fff43e35b70aa417d40afabb0789
 
 COCOAPODS: 1.11.2
