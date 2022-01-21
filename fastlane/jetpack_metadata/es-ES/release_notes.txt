@@ -1,0 +1,12 @@
+¿Qué hora es? Nuestra nueva pantalla de selección de zona horaria te lo puede mostrar. Obtén una sugerencia de zona horaria en función de tu dispositivo y mejora la búsqueda mientras lo usas.
+
+Ahora, en los planes gratuitos, se ha limitado la subida de videos a cinco minutos por archivo. No te preocupes, esta limitación no afectará a los videos que ya hayas subido a tu sitio.
+
+También hemos realizado algunos cambios en el editor de bloques:
+
+- Hemos resuelto los problemas de traducción que provocaban que algunos elementos de la interfaz de usuario (como la información de alineación del texto y la ventana modal del editor de bloques) solo aparecieran en inglés.
+- Hemos incluido la traducción de idiomas para los bloques de Jetpack y Cuadrícula de diseño.
+- Hemos corregido un error que restablecía el formato del texto por defecto después de pulsar la tecla Retroceso. Atentos, amigos.
+- Ahora, los títulos de los bloques con varias líneas se alinean al centro en el menú del insertador.
+
+Por último, hemos vuelto a incorporar la fila "Compartir WordPress con un amigo" en la pantalla "Yo". Juntos y felices de nuevo.

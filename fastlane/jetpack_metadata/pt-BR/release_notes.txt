@@ -1,12 +1,12 @@
 Que horas são? Nossa mais nova tela de seleção de fuso horário sabe. Obtenha um fuso horário sugerido baseado no seu dispositivo e melhore a pesquisa enquanto estiver navegando por ela.
 
-Se você estiver usando um plano gratuito, os uploads de vídeo agora são limitados a cinco minutos por arquivo. Não se preocupe, isso não afetará os vídeos que já foram enviados para o seu site.
+Se você usa um plano gratuito, os uploads de vídeo agora são limitados a cinco minutos por arquivo. Não se preocupe, isso não afetará os vídeos que já foram enviados para o seu site.
 
 Nós também fizemos algumas alterações no editor de blocos:
 
 - Resolvemos problemas de tradução que faziam com que alguns elementos da interface do usuário aparecessem apenas em inglês (como informações de alinhamento do texto e a janela modal do editor de blocos).
-- Adicionamos tradução de idiomas para os blocos Jetpack e Layout Grid.
-- Corrigimos um erro que redefinia a formatação do texto para o padrão após pressionar a tecla de backspace. Sejam ousados, amigos.
-- Os títulos com várias linhas dos blocos agora são centralizados no menu de adição.
+- Traduzimos os blocos do Jetpack e layout de grade.
+- Corrigimos um erro que redefinia a formatação do texto para o padrão quando a tecla Backspace era pressionada. Soltem a imaginação.
+- Os títulos com várias linhas dos blocos agora são centralizados no menu de inserção.
 
-Por fim, a seção “Compartilhar WordPress com um amigo” está de volta ao seu lugar na tela Eu. Reunidos novamente e a sensação é ótima.
+Por fim, a seção “Compartilhar o WordPress com um amigo” está de volta ao seu lugar na tela Meu perfil. É tão bom vê-los reunidos novamente.
