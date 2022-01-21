@@ -222,6 +222,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
             remove(blogDetailVC)
+            blogDashboardViewController.blog = blog
             embedChildInContainerView(blogDashboardViewController)
         }
     }

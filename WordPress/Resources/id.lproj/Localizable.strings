@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-21 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-01-18 09:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -388,7 +388,7 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "TAMBAHKAN TAUTAN";
 
 /* No comment provided by engineer. */
-"ADD MEDIA" = "ADD MEDIA";
+"ADD MEDIA" = "TAMBAHKAN MEDIA";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "TAMBAHKAN VIDEO";
@@ -606,7 +606,7 @@ translators: Block name. %s: The localized block name */
 "Address" = "Alamat";
 
 /* No comment provided by engineer. */
-"Address Settings" = "Address Settings";
+"Address Settings" = "Pengaturan Alamat";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Baris alamat %@";
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Kolom %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "Pengaturan Kolom";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Pengaturan Kolom";
@@ -3116,7 +3116,7 @@ translators: Block name. %s: The localized block name */
 "Follow" = "Ikuti";
 
 /* Button title. Follow the comments on a post. */
-"Follow Conversation" = "Follow Conversation";
+"Follow Conversation" = "Ikuti Percakapan";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Ikuti percakapan melalui email";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "Memperkenalkan Pos Cerita";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "Alamat Email Tidak Valid";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Alamat Situs Tak Sah";
@@ -4773,10 +4773,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note: Column layout may vary between themes and screen sizes" = "Catatan: Tata letak kolom dapat bervariasi antara tema dan ukuran layar";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+"Note: Layout may vary between themes and screen sizes" = "Catatan: Tata letak dapat bervariasi antara tema dan ukuran layar";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Catatan: Anda harus mengizinkan login WordPress.com untuk mengedit blok ini di editor seluler.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Tidak ditemukan apa-apa.";
@@ -4911,7 +4911,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Open Device Settings" = "Buka Pengaturan Perangkat";
 
 /* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Open Jetpack Security settings";
+"Open Jetpack Security settings" = "Buka pengaturan Jetpack Security";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -5221,7 +5221,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid address" = "Harap masukkan alamat yang valid";
 
 /* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
+"Please enter a valid email address for a WordPress.com account." = "Harap masukkan alamat email yang valid untuk akun WordPress.com.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Silahkan masukkan alamat surel yang sah.";
@@ -6312,7 +6312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Memilih menu lain akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Selection not allowed" = "Selection not allowed";
+"Selection not allowed" = "Pemilihan tidak diizinkan";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Pilih domain ini untuk digunakan untuk situs Anda.";
@@ -6864,7 +6864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Successfully unfollowed conversation" = "Berhasil berhenti mengikuti percakapan";
 
 /* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
+"Suggestion:" = "Saran:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -7061,7 +7061,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Hanya Teks";
 
 /* No comment provided by engineer. */
-"Text color" = "Text color";
+"Text color" = "Warna teks";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrol pemformatan teks terletak di dalam bilah peralatan yang ada di atas keyboard saat menyunting blok teks";
@@ -8049,7 +8049,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploading post..." = "Mengunggah pos...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
-"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+"Uploading videos longer than 5 minutes requires a paid plan." = "Diperlukan paket berbayar untuk mengunggah video berdurasi lebih dari 5 menit.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Mengunggah...";
@@ -8143,7 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Video export canceled." = "Ekspor video dibatalkan.";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Video not uploaded" = "Video not uploaded";
+"Video not uploaded" = "Video tidak terunggah";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Anda dapat menampilkan statistik situs tunggal di tampilan iOS Today\/Pusat Pemberitahuan.";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+"You can edit this block using the web version of the editor." = "Anda dapat mengedit blok ini menggunakan editor versi web.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Anda dapat mengikuti pos pada situs tertentu dengan mengikutinya.";
