@@ -17,6 +17,7 @@
 * [*] Block editor: Highlight text: fix applying formatting for non-selected text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4471]
 * [**] Block editor: Fix Android handling of Hebrew and Indonesian translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4397]
 * [***] Self-hosted sites: Fixed a crash when saving media and no Internet connection was available. [#17759]
+* [*] Publicize: Fixed an issue where a successful login was not automatically detected when connecting a Facebook account to Publicize. [#17803]
 
 19.0
 -----
