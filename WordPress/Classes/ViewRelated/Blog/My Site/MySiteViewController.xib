@@ -59,8 +59,8 @@
             <constraints>
                 <constraint firstItem="Kbh-jP-Igg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="1fv-8a-iKP"/>
                 <constraint firstItem="Kbh-jP-Igg" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="1hM-hu-Xds"/>
-                <constraint firstItem="Kbh-jP-Igg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="I5g-vn-gOa"/>
-                <constraint firstItem="Kbh-jP-Igg" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="J1b-MO-faA"/>
+                <constraint firstItem="Kbh-jP-Igg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="I5g-vn-gOa"/>
+                <constraint firstItem="Kbh-jP-Igg" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="J1b-MO-faA"/>
             </constraints>
             <point key="canvasLocation" x="132" y="70"/>
         </view>
