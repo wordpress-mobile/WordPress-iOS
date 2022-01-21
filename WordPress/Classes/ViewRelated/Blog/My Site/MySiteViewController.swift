@@ -50,6 +50,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
+            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
         }
 
