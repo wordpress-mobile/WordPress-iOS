@@ -1,20 +1,25 @@
 import Foundation
 
-class HalfScreenPresentationController: FancyAlertPresentationController {
+class PartScreenPresentationController: FancyAlertPresentationController {
+
+    var minimumHeight: CGFloat {
+        return presentedViewController.preferredContentSize.height
+    }
 
     private weak var tapGestureRecognizer: UITapGestureRecognizer?
 
     override var frameOfPresentedViewInContainerView: CGRect {
-
         /// If we are in compact mode, don't override the default
         guard traitCollection.verticalSizeClass != .compact else {
             return super.frameOfPresentedViewInContainerView
         }
+        guard let containerView = containerView else {
+            return .zero
+        }
+        let height = max(containerView.bounds.height/2, minimumHeight)
+        let width = containerView.bounds.width
 
-        let height = containerView?.bounds.height ?? 0
-        let width = containerView?.bounds.width ?? 0
-
-        return CGRect(x: 0, y: height/2, width: width, height: height/2)
+        return CGRect(x: 0, y: containerView.bounds.height - height, width: width, height: height)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -22,6 +27,11 @@ class HalfScreenPresentationController: FancyAlertPresentationController {
             self.presentedView?.frame = self.frameOfPresentedViewInContainerView
         }, completion: nil)
         super.viewWillTransition(to: size, with: coordinator)
+    }
+
+    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        super.preferredContentSizeDidChange(forChildContentContainer: container)
+        presentedViewController.view.frame = frameOfPresentedViewInContainerView
     }
 
     override func containerViewDidLayoutSubviews() {
@@ -50,7 +60,7 @@ class HalfScreenPresentationController: FancyAlertPresentationController {
     }
 }
 
-extension HalfScreenPresentationController: UIGestureRecognizerDelegate {
+extension PartScreenPresentationController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
 
         /// Shouldn't happen; should always have container & presented view when tapped
