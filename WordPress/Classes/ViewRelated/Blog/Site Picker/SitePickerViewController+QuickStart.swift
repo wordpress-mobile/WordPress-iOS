@@ -9,13 +9,13 @@ extension SitePickerViewController {
     private var shouldStartAlertTimer: Bool {
         !((self.presentedViewController as? UINavigationController)?.visibleViewController is WebKitViewController)
     }
-    
+
     func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
                 return
             }
-            
+
             self?.blogDetailHeaderView.toggleSpotlightOnSiteTitle()
             self?.blogDetailHeaderView.refreshIconImage()
 
@@ -32,7 +32,7 @@ extension SitePickerViewController {
             }
         }
     }
-    
+
     func stopObservingQuickStart() {
         NotificationCenter.default.removeObserver(observer as Any)
     }

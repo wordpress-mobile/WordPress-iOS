@@ -42,7 +42,7 @@ final class SitePickerViewController: UIViewController {
         setupHeaderView()
         startObservingQuickStart()
     }
-    
+
     deinit {
         stopObservingQuickStart()
     }
