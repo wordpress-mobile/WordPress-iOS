@@ -25,20 +25,23 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     }
 
     private static let loginURL = "https://wordpress.com/wp-login.php"
-    private static let authorizationPrefix = "https://public-api.wordpress.com/connect/"
-    private static let requestActionParameter = "action=request"
-    private static let verifyActionParameter = "action=verify"
-    private static let denyActionParameter = "action=deny"
 
-    // Special handling for the inconsistent way that services respond to a user's choice to decline
-    // oauth authorization.
-    // Right now we have no clear way to know if Tumblr fails.  This is something we should try
-    // fixing moving forward.
-    // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
-    private static let declinePath = "/decline"
-    private static let userRefused = "oauth_problem=user_refused"
-    private static let authorizationDenied = "denied="
-    private static let accessDenied = "error=access_denied"
+    private enum AuthorizeURLComponents {
+        static let verifyActionParameter = "action=verify"
+        static let denyActionParameter = "action=deny"
+        static let requestActionParameter = "action=request"
+
+        static let declinePath = "/decline"
+        static let authorizationPrefix = "https://public-api.wordpress.com/connect/"
+        static let accessDenied = "error=access_denied"
+
+        // Special handling for the inconsistent way that services respond to a user's choice to decline
+        // oauth authorization.
+        // Right now we have no clear way to know if Tumblr fails.  This is something we should try
+        // fixing moving forward.
+        // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
+        static let userRefused = "oauth_problem=user_refused"
+    }
 
     /// Verification loading -- dismiss on completion
     ///
@@ -148,37 +151,37 @@ class SharingAuthorizationWebViewController: WPWebViewController {
         let requested = url.absoluteString
 
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if requested.range(of: SharingAuthorizationWebViewController.declinePath) != nil {
+        if requested.range(of: AuthorizeURLComponents.declinePath) != nil {
             return .deny
         }
 
-        if !requested.hasPrefix(SharingAuthorizationWebViewController.authorizationPrefix) {
+        if !requested.hasPrefix(AuthorizeURLComponents.authorizationPrefix) {
             return .none
         }
 
-        if requested.range(of: SharingAuthorizationWebViewController.requestActionParameter) != nil {
+        if requested.range(of: AuthorizeURLComponents.requestActionParameter) != nil {
             return .request
         }
 
         // Check the rest of the various decline ranges
-        if requested.range(of: SharingAuthorizationWebViewController.denyActionParameter) != nil {
+        if requested.range(of: AuthorizeURLComponents.denyActionParameter) != nil {
             return .deny
         }
 
         // LinkedIn
-        if requested.range(of: SharingAuthorizationWebViewController.userRefused) != nil {
+        if requested.range(of: AuthorizeURLComponents.userRefused) != nil {
             return .deny
         }
 
         // Facebook and Google+
-        if requested.range(of: SharingAuthorizationWebViewController.accessDenied) != nil {
+        if requested.range(of: AuthorizeURLComponents.accessDenied) != nil {
             return .deny
         }
 
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
-        if requested.range(of: SharingAuthorizationWebViewController.verifyActionParameter) != nil {
+        if requested.range(of: AuthorizeURLComponents.verifyActionParameter) != nil {
             return .verify
         }
 
