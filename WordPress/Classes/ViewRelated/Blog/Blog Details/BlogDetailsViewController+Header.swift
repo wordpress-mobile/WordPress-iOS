@@ -2,11 +2,11 @@ import Gridicons
 import WordPressFlux
 
 extension BlogDetailsViewController {
-    @objc func configureHeaderView() -> BlogDetailHeader {
+    @objc func configureHeaderView() -> BlogDetailHeaderView {
 
         let actionItems = createActionItems()
 
-        return NewBlogDetailHeaderView(items: actionItems)
+        return BlogDetailHeaderView(items: actionItems)
     }
 
     @objc

@@ -3,7 +3,7 @@
 * [*] Signup: Fixed bug where username selection screen could be pushed twice. [#17624]
 * [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17758]
 * [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
-* [**] Accessibility: VoiceOver improvements on Activity Log and Schedule Post calendars [#17756, #17761]
+* [**] Accessibility: VoiceOver and Dynamic Type improvements on Activity Log and Schedule Post calendars [#17756, #17761, #17780]
 * [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
 * [*] Self-hosted login: Improved error messages. [#17724]
 * [*] Share Sheet from Photos: Fix an issue where certain filenames would not upload or render in Post [#16773]
@@ -17,6 +17,7 @@
 * [*] Block editor: Fix cut-off setting labels by properly wrapping the text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4475]
 * [*] Block editor: Highlight text: fix applying formatting for non-selected text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4471]
 * [**] Block editor: Fix Android handling of Hebrew and Indonesian translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4397]
+* [***] Self-hosted sites: Fixed a crash when saving media and no Internet connection was available. [#17759]
 
 19.0
 -----
