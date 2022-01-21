@@ -1,4 +1,5 @@
 import Gridicons
+import UIKit
 
 class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
 
@@ -81,6 +82,7 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     private enum LayoutSpacing {
         static let atSides: CGFloat = 16
         static let top: CGFloat = 16
+        static let bottom: CGFloat = 16
         static let belowActionRow: CGFloat = 24
         static func betweenTitleViewAndActionRow(_ showsActionRow: Bool) -> CGFloat {
             return showsActionRow ? 32 : 0
@@ -130,7 +132,10 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
         titleView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(titleView)
-        addSubview(actionRow)
+
+        if !FeatureFlag.mySiteDashboard.enabled {
+            addSubview(actionRow)
+        }
 
         addBottomBorder(withColor: .separator)
 
@@ -143,10 +148,13 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     private var topActionRowConstraint: NSLayoutConstraint?
 
     private func setupConstraintsForChildViews(_ showsActionRow: Bool) {
-        let actionRowConstraints = constraintsForActionRow(showsActionRow)
-        let titleViewContraints = constraintsForTitleView()
+        var constraints = constraintsForTitleView()
 
-        NSLayoutConstraint.activate(actionRowConstraints + titleViewContraints)
+        if !FeatureFlag.mySiteDashboard.enabled {
+            constraints += constraintsForActionRow(showsActionRow)
+        }
+
+        NSLayoutConstraint.activate(constraints)
     }
 
     private func constraintsForActionRow(_ showsActionRow: Bool) -> [NSLayoutConstraint] {
@@ -167,11 +175,19 @@ class NewBlogDetailHeaderView: UIView, BlogDetailHeader {
     }
 
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
-        [
+        var constraints = [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
             titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides)
         ]
+
+        if FeatureFlag.mySiteDashboard.enabled {
+            constraints.append(
+                titleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.bottom)
+            )
+        }
+
+        return constraints
     }
 
     // MARK: - User Action Handlers
