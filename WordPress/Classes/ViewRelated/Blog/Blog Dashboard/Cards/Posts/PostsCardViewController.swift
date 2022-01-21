@@ -7,7 +7,7 @@ import UIKit
 @objc class PostsCardViewController: UIViewController {
     var blog: Blog
 
-    let tableView: UITableView = IntrinsicTableView()
+    let tableView: UITableView = PostCardTableView()
 
     private var viewModel: PostsCardViewModel!
     private var ghostableTableView: UITableView?
@@ -123,5 +123,28 @@ extension PostsCardViewController: EditorAnalyticsProperties {
         }
 
         return properties
+    }
+}
+
+// MARK: - PostCardTableView
+
+extension NSNotification.Name {
+    /// Fired when a PostCardTableView changes its size
+    static let postCardTableViewSizeChanged = NSNotification.Name("IntrinsicContentSizeUpdated")
+}
+
+private class PostCardTableView: UITableView {
+    override var contentSize: CGSize {
+        didSet {
+            self.invalidateIntrinsicContentSize()
+        }
+    }
+
+    /// Emits a notification when the intrinsicContentSize changes
+    /// This allows subscribers to update their layouts (ie.: UICollectionViews)
+    override var intrinsicContentSize: CGSize {
+        layoutIfNeeded()
+        NotificationCenter.default.post(name: .postCardTableViewSizeChanged, object: nil)
+        return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
 }
