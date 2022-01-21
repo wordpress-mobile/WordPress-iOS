@@ -35,6 +35,10 @@ class SharingAuthorizationWebViewController: WPWebViewController {
         case authorizationPrefix = "https://public-api.wordpress.com/connect/"
         case accessDenied = "error=access_denied"
 
+        case state = "state"
+        case code = "code"
+        case error = "error"
+
         // Special handling for the inconsistent way that services respond to a user's choice to decline
         // oauth authorization.
         // Right now we have no clear way to know if Tumblr fails.  This is something we should try
@@ -186,9 +190,16 @@ class SharingAuthorizationWebViewController: WPWebViewController {
         if AuthorizeURLComponents.verifyActionParameter.containedIn(url) {
             return .verify
         }
+
+        // Facebook
+        if AuthorizeURLComponents.state.containedIn(url) && AuthorizeURLComponents.code.containedIn(url) {
             return .verify
         }
 
+        // Facebook failure
+        if AuthorizeURLComponents.state.containedIn(url) && AuthorizeURLComponents.error.containedIn(url) {
+            return .unknown
+        }
 
         return .unknown
     }
