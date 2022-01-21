@@ -16,8 +16,8 @@ final class SitePickerViewController: UIViewController {
     let blogService: BlogService
     let mediaService: MediaService
 
-    private(set) lazy var blogDetailHeaderView: NewBlogDetailHeaderView = {
-        let headerView = NewBlogDetailHeaderView(items: [])
+    private(set) lazy var blogDetailHeaderView: BlogDetailHeaderView = {
+        let headerView = BlogDetailHeaderView(items: [])
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
