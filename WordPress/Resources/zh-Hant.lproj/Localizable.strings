@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-19 08:54:08+0000 */
+/* Translation-Revision-Date: 2022-01-21 12:20:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: zh_TW */
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "欄 %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "欄位設定";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "欄位設定";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "限時動態文章介紹";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "無效的電子郵件地址";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "無效的網站位址";

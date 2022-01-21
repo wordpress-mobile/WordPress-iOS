@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-17 10:26:23+0000 */
+/* Translation-Revision-Date: 2022-01-19 11:45:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ro */
@@ -5371,7 +5371,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post removed." = "Articol înlăturat.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
-"Post saved." = "Articolul a fost salvat.";
+"Post saved." = "Am salvat articolul.";
 
 /* Title of notification displayed when a post has been successfully scheduled. */
 "Post scheduled" = "Articolul este programat";

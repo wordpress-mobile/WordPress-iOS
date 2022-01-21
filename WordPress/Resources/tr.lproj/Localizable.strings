@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-21 14:54:08+0000 */
+/* Translation-Revision-Date: 2022-01-21 12:18:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: tr */
@@ -388,7 +388,7 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "BAĞLANTI EKLE";
 
 /* No comment provided by engineer. */
-"ADD MEDIA" = "ADD MEDIA";
+"ADD MEDIA" = "ORTAM EKLE";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "VİDEO EKLE";
@@ -606,7 +606,7 @@ translators: Block name. %s: The localized block name */
 "Address" = "Adres";
 
 /* No comment provided by engineer. */
-"Address Settings" = "Address Settings";
+"Address Settings" = "Adres Ayarları";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Adres satırı %@";
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Sütun %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "Sütun Ayarları";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Sütun Ayarları";
@@ -3116,7 +3116,7 @@ translators: Block name. %s: The localized block name */
 "Follow" = "Takip et";
 
 /* Button title. Follow the comments on a post. */
-"Follow Conversation" = "Follow Conversation";
+"Follow Conversation" = "Sohbeti Takip Et";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Sohbeti e-posta ile takip et";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "Öykü Yayınlarına Giriş";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "Geçersiz E-posta Adresi";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Geçersiz site adresi";
@@ -4773,10 +4773,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note: Column layout may vary between themes and screen sizes" = "Not: Sütun düzeni, temalar ve ekran boyutları arasında değişiklik gösterebilir";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+"Note: Layout may vary between themes and screen sizes" = "Not: Düzen, temalara ve ekran boyutlarına göre değişebilir";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Not: Mobil düzenleyicide bu bloku düzenlemek için WordPress.com oturumuna izin vermelisiniz.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Hiçbir şey bulunamadı.";
@@ -4911,7 +4911,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Open Device Settings" = "Cihaz ayarlarını aç";
 
 /* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Open Jetpack Security settings";
+"Open Jetpack Security settings" = "Jetpack Güvenlik ayarlarını açın";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -5012,7 +5012,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "PHONE" = "TELEFON";
 
 /* No comment provided by engineer. */
-"Padding" = "Padding";
+"Padding" = "Dolgu";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5221,7 +5221,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid address" = "Lütfen geçerli bir adres girin";
 
 /* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
+"Please enter a valid email address for a WordPress.com account." = "Lütfen bir WordPress.com hesabı için geçerli bir e-posta adresi girin.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Lütfen geçerli bir e-posta adresi girin.";
@@ -6312,7 +6312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Farklı bir menü seçmek mevcut menüde yaptığınız değişiklikleri yok edecek. Devam etmek istediğinize emin misiniz?";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Selection not allowed" = "Selection not allowed";
+"Selection not allowed" = "Seçime izin verilmiyor";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Bu alan adını seçerek siteniz için kullanır.";
@@ -6864,7 +6864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Successfully unfollowed conversation" = "Sohbet başarıyla takipten çıkarıldı";
 
 /* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
+"Suggestion:" = "Öneri:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -7061,7 +7061,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Sadece metin";
 
 /* No comment provided by engineer. */
-"Text color" = "Text color";
+"Text color" = "Metin rengi";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Bir metin bloku düzenlenirken, metin biçimlendirme kontrolleri klavyenin üzerindeki araç çubuğunda bulunur";
@@ -8049,7 +8049,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploading post..." = "Yazı yükleniyor...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
-"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+"Uploading videos longer than 5 minutes requires a paid plan." = "5 dakikadan uzun video yüklemek için ücretli bir paket gerekir.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Yükleniyor...";
@@ -8143,7 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Video export canceled." = "Video dışa aktarımı iptal edildi.";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Video not uploaded" = "Video not uploaded";
+"Video not uploaded" = "Video yüklenmedi";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "iOS Bugün\/Bildirim Merkezi görünümünde tek bir sitenin istatistiklerini görüntüleyebilirsiniz.";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+"You can edit this block using the web version of the editor." = "Düzenleyicinin web sürümünü kullanarak bu bloku düzenleyebilirsiniz.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Belirli bir sitedeki yazıları takip edebilirsiniz.";
