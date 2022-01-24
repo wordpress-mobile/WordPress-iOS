@@ -83,7 +83,7 @@ class BlogDetailHeaderView: UIView {
     }
 
     private enum LayoutSpacing {
-        static let atSides: CGFloat = 16
+        static let atSides: CGFloat = 20
         static let top: CGFloat = 16
         static let bottom: CGFloat = 16
         static let belowActionRow: CGFloat = 24
