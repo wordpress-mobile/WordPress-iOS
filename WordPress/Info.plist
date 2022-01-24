@@ -503,6 +503,8 @@
 		<string>org.wordpress.notifications</string>
 		<string>org.wordpress.reader</string>
 	</array>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>

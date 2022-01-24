@@ -23,11 +23,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var containerView: UIView!
 
     private let meScenePresenter: ScenePresenter
+    private let blogService: BlogService
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter) {
+    init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil) {
         self.meScenePresenter = meScenePresenter
+        self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -48,6 +50,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
+            showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
         }
 
@@ -59,7 +62,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// The VC for the blog details.  This class is written in a way that this VC will only exist if it's being shown on screen.
     /// Please keep this in mind when making modifications.
     ///
-    private var blogDetailsViewController: BlogDetailsViewController?
+    private(set) var blogDetailsViewController: BlogDetailsViewController?
 
     private let blogDashboardViewController = BlogDashboardViewController()
 
@@ -103,6 +106,24 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func showSitePicker(for blog: Blog) {
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
+        }
+
+        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
+
+        sitePickerViewController.onBlogSwitched = { [weak self] in
+            self?.blogDetailsViewController?.showInitialDetailsForBlog()
+            self?.blogDetailsViewController?.tableView.reloadData()
+            self?.blogDetailsViewController?.preloadMetadata()
+        }
+
+        addChild(sitePickerViewController)
+        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+        sitePickerViewController.didMove(toParent: self)
     }
 
     private func setupSegmentedControl() {
@@ -168,7 +189,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// - Returns:the main blog for an account (last selected, or first blog in list).
     ///
     private func mainBlog() -> Blog? {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         return blogService.lastUsedOrFirstBlog()
     }
 
@@ -184,6 +204,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
+        showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
     }
 
@@ -197,7 +218,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self?.noResultsRefreshControl?.endRefreshing()
         }
 
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         blogService.syncBlogs(for: account) {
             finishSync()
         } failure: { (error) in
@@ -222,6 +242,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
             remove(blogDetailVC)
+            blogDashboardViewController.blog = blog
             embedChildInContainerView(blogDashboardViewController)
         }
     }
@@ -505,8 +526,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard verifyThatBlogsWereInserted(in: notification) else {
             return
         }
-
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
         guard let blog = blogService.lastUsedOrFirstBlog() else {
             return
