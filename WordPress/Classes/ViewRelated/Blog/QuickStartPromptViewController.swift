@@ -10,12 +10,17 @@ final class QuickStartPromptViewController: UIViewController {
     @IBOutlet private weak var siteDescriptionLabel: UILabel!
 
     /// Prompt info
-    @IBOutlet private weak var promptTitleLabel: UILabel!
-    @IBOutlet private weak var promptDescriptionLabel: UILabel!
+    @IBOutlet private(set) weak var promptTitleLabel: UILabel!
+    @IBOutlet private(set) weak var promptDescriptionLabel: UILabel!
 
     /// Buttons
-    @IBOutlet private weak var showMeAroundButton: FancyButton!
-    @IBOutlet private weak var noThanksButton: FancyButton!
+    @IBOutlet private(set) weak var showMeAroundButton: FancyButton!
+    @IBOutlet private(set) weak var noThanksButton: FancyButton!
+
+    /// Constraints
+    @IBOutlet private(set) weak var scrollViewTopVerticalConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewTrailingConstraint: NSLayoutConstraint!
 
     // MARK: - Properties
 
@@ -54,6 +59,11 @@ final class QuickStartPromptViewController: UIViewController {
         UIAccessibility.post(notification: .layoutChanged, argument: promptTitleLabel)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupScrollViewMargins()
+    }
+
     // MARK: - Styling
 
     private func applyStyles() {
@@ -88,9 +98,16 @@ final class QuickStartPromptViewController: UIViewController {
     // MARK: - Setup
 
     private func setup() {
+        setupScrollViewMargins()
         setupSiteInfoViews()
         setupPromptInfoViews()
         setupButtons()
+    }
+
+    private func setupScrollViewMargins() {
+        let margin = view.getHorizontalMargin() + 20.0
+        scrollViewLeadingConstraint.constant = margin
+        scrollViewTrailingConstraint.constant = margin
     }
 
     private func setupSiteInfoViews() {
