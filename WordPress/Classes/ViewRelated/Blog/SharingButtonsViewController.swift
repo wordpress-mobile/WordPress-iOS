@@ -70,6 +70,12 @@ import WordPressShared
 
         navigationItem.title = NSLocalizedString("Manage", comment: "Verb. Title of the screen for managing sharing buttons and settings related to sharing.")
 
+        if isModal() {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                                target: self,
+                                                                action: #selector(doneButtonTapped))
+        }
+
         let service = SharingService(managedObjectContext: viewContext)
         buttons = service.allSharingButtonsForBlog(self.blog)
         configureTableView()
@@ -397,6 +403,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Edit sharing buttons", comment: "Title for the edit sharing buttons section")
                 switchCell.on = self.buttonsSection.editing
                 switchCell.onChange = { newValue in
+                    WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: blog)
                     self.buttonsSection.editing = !self.buttonsSection.editing
                     self.updateButtonOrderAfterEditing()
                     self.reloadButtons()
@@ -439,6 +446,7 @@ import WordPressShared
                 switchCell.textLabel?.text = NSLocalizedString("Edit \"More\" button", comment: "Title for the edit more button section")
                 switchCell.on = self.moreSection.editing
                 switchCell.onChange = { newValue in
+                    WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: blog)
                     self.updateButtonOrderAfterEditing()
                     self.moreSection.editing = !self.moreSection.editing
                    self.reloadButtons()
@@ -673,6 +681,10 @@ import WordPressShared
 
     // MARK: - Actions
 
+    @objc private func doneButtonTapped() {
+        dismiss(animated: true)
+    }
+
     /// Called when the user taps the label row. Shows a controller to change the
     /// edit label text.
     ///
@@ -687,6 +699,7 @@ import WordPressShared
             guard value != self.blog.settings!.sharingLabel else {
                 return
             }
+            WPAnalytics.track(.sharingButtonsLabelChanged, properties: [:], blog: blog)
             self.blog.settings!.sharingLabel = value
             self.saveBlogSettingsChanges(true)
         }

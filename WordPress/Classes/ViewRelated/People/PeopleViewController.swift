@@ -169,7 +169,12 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
         refreshNoResultsView()
-        WPAnalytics.track(.openedPeople)
+
+        guard let blog = blog else {
+            return
+        }
+
+        WPAppAnalytics.track(.openedPeople, with: blog)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -563,5 +568,10 @@ extension PeopleViewController {
     func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let selectedFilter = Filter.allCases[filterBar.selectedIndex]
         filter = selectedFilter
+
+        guard let blog = blog else {
+            return
+        }
+        WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
     }
 }

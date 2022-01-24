@@ -115,11 +115,39 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         success([state1, state2])
     }
 
-    func createShoppingCart(siteID: Int,
-                            domainSuggestion: DomainSuggestion,
-                            privacyProtectionEnabled: Bool,
-                            success: @escaping (CartResponseProtocol) -> Void,
-                            failure: @escaping (Error) -> Void) {
+    func purchaseDomainUsingCredits(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        domainContactInformation: [String: String],
+        privacyProtectionEnabled: Bool,
+        success: @escaping (String) -> Void,
+        failure: @escaping (Error) -> Void) {
+
+        createTemporaryDomainShoppingCart(siteID: siteID, domainSuggestion: domainSuggestion, privacyProtectionEnabled: privacyProtectionEnabled, success: { cart in
+            self.redeemCartUsingCredits(cart: cart, domainContactInformation: domainContactInformation, success: {
+                success(domainSuggestion.domainName)
+            }, failure: failure)
+        }, failure: failure)
+    }
+
+    func createTemporaryDomainShoppingCart(siteID: Int,
+                                           domainSuggestion: DomainSuggestion,
+                                           privacyProtectionEnabled: Bool,
+                                           success: @escaping (CartResponseProtocol) -> Void,
+                                           failure: @escaping (Error) -> Void) {
+        guard createShoppingCartSuccess else {
+            failure(NSError())
+            return
+        }
+        let response = CartResponseMock()
+        success(response)
+    }
+
+    func createPersistentDomainShoppingCart(siteID: Int,
+                                            domainSuggestion: DomainSuggestion,
+                                            privacyProtectionEnabled: Bool,
+                                            success: @escaping (CartResponseProtocol) -> Void,
+                                            failure: @escaping (Error) -> Void) {
         guard createShoppingCartSuccess else {
             failure(NSError())
             return
@@ -139,10 +167,10 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         success()
     }
 
-    func changePrimaryDomain(siteID: Int,
-                             newDomain: String,
-                             success: @escaping () -> Void,
-                             failure: @escaping (Error) -> Void) {
+    func setPrimaryDomain(siteID: Int,
+                          domain: String,
+                          success: @escaping () -> Void,
+                          failure: @escaping (Error) -> Void) {
         guard changePrimaryDomainSuccess else {
             failure(NSError())
             return

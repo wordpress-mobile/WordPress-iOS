@@ -17,7 +17,6 @@
 #import "BlogSiteVisibilityHelper.h"
 
 #import "CommentService.h"
-#import "CommentViewController.h"
 #import "CommentsViewController+Network.h"
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
@@ -36,7 +35,6 @@
 #import "MeHeaderView.h"
 
 #import "NavBarTitleDropdownButton.h"
-#import "NSAttributedString+Util.h"
 #import "NSObject+Helpers.h"
 
 #import "PageListTableViewCell.h"

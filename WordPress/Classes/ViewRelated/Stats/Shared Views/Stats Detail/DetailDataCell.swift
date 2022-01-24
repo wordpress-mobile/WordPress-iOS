@@ -18,6 +18,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomExpandedSeparatorLine: UIView!
 
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private var rowData: StatsTotalRowData?
     private typealias Style = WPStyleGuide.Stats
     private var row: StatsTotalRow?
@@ -26,6 +27,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
     func configure(rowData: StatsTotalRowData,
                    detailsDelegate: SiteStatsDetailsDelegate?,
+                   referrerDelegate: SiteStatsReferrerDelegate? = nil,
                    hideIndentedSeparator: Bool = false,
                    hideFullSeparator: Bool = true,
                    expanded: Bool = false,
@@ -36,9 +38,10 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
         self.rowData = rowData
         self.detailsDelegate = detailsDelegate
+        self.referrerDelegate = referrerDelegate
 
         let row = StatsTotalRow.loadFromNib()
-        row.configure(rowData: rowData, delegate: self, forDetails: true)
+        row.configure(rowData: rowData, delegate: self, referrerDelegate: self, forDetails: true)
 
         bottomExpandedSeparatorLine.isHidden = hideFullSeparator
 
@@ -95,5 +98,12 @@ extension DetailDataCell: StatsTotalRowDelegate {
     func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool) {
         detailsDelegate?.toggleChildRowsForRow?(row)
     }
+}
 
+// MARK: - StatsTotalRowReferrerDelegate
+
+extension DetailDataCell: StatsTotalRowReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        referrerDelegate?.showReferrerDetails(data)
+    }
 }

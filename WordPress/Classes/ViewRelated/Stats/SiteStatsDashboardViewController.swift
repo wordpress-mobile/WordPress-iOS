@@ -52,7 +52,13 @@ fileprivate extension StatsPeriodType {
 
 class SiteStatsDashboardViewController: UIViewController {
 
-    static let lastSelectedStatsPeriodTypeKey = "LastSelectedStatsPeriodType"
+    static var lastSelectedStatsPeriodTypeKey: String? {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return nil
+        }
+        return "LastSelectedStatsPeriodType-\(siteID)"
+    }
+
     static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
 
     // MARK: - Properties
@@ -90,7 +96,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
-            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, withDate: periodTableViewController.selectedDate)
+            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
         }
     }
 }
@@ -148,11 +154,23 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
-        UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Self.lastSelectedStatsPeriodTypeKey)
+
+        guard let key = Self.lastSelectedStatsPeriodTypeKey,
+              !insightsTableViewController.isGrowAudienceShowing else {
+            return
+        }
+
+        UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: key)
     }
 
     func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
-        return StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Self.lastSelectedStatsPeriodTypeKey)) ?? .insights
+
+        guard let key = Self.lastSelectedStatsPeriodTypeKey,
+              let periodType = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: key)) else {
+            return .insights
+        }
+
+        return periodType
     }
 
     func getLastSelectedDateFromUserDefaults() -> Date? {
@@ -172,7 +190,7 @@ private extension SiteStatsDashboardViewController {
         currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
     }
 
-    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, withDate periodDate: Date? = nil) {
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType) {
         let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
@@ -192,11 +210,9 @@ private extension SiteStatsDashboardViewController {
                                                        animated: false)
             }
 
-            if let newDate = periodDate {
-                periodTableViewController.selectedDate = newDate
-            }
+            if periodTableViewController.selectedDate == nil
+                || selectedPeriodChanged {
 
-            if periodTableViewController.selectedDate == nil {
                 periodTableViewController.selectedDate = StatsDataHelper.currentDateForSite()
             }
 

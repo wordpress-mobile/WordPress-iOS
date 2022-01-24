@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-08-31 13:54:48+0000 */
+/* Translation-Revision-Date: 2022-01-21 12:20:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: id */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nUntuk mengonfirmasi, silakan masukkan lagi nama pengguna Anda sebelum menutup.\n\n";
 
+/* No comment provided by engineer. */
+" \/ year" = " \/ tahu";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Gambar \"Lazy-load\"";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Tombol \"Lagi\"";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@ adalah titik yang dipilih untuk pemulihan Anda.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -36,6 +39,12 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ untuk memperbaiki ancaman.";
 
+/* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
+"%1$d Comment" = "%1$d Komentar";
+
+/* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
+"%1$d Comments" = "%1$d Komentar";
+
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d Suka";
@@ -52,6 +61,9 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d pos yang belum dilihat";
+
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s diubah menjadi %2$s";
@@ -78,7 +90,6 @@
 "%@ comment" = "%@ komentar";
 
 /* Accessibility label for comments button (plural)
-   Number of Comments
    Number of Comments per Page */
 "%@ comments" = "%@ komentar";
 
@@ -124,9 +135,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* No comment provided by engineer. */
-"%@, %@" = "%1$@, %2$@";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
@@ -229,11 +237,20 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s diubah ke blok reguler";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "Pratinjau blok sematan %s akan segera hadir";
+
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "URL %s telah ditetapkan ";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "URL %s belum ditetapkan ";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s tautan";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "Pratinjau %s belum tersedia";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Ikon media sosial %s";
@@ -247,8 +264,7 @@ translators: Block name. %s: The localized block name */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Tidak Berjudul)";
 
-/* (no title)
-   Lets a user know that a local draft does not have a title. */
+/* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(tanpa judul)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -303,7 +319,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "<strong>%d<\/strong> kali seminggu";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "<strong>%1$d<\/strong> kali seminggu di %2$@";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "<strong>Satu kali<\/strong> seminggu";
@@ -329,9 +345,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Sebuah file mengandung pola kode berbahaya";
 
-/* Accessibility hint for My Sites list. */
-"A list of sites on this account." = "Daftar situs di akun ini.";
-
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Cara baru untuk membuat dan memposkan konten menarik di situs Anda.";
 
@@ -343,6 +356,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Tag dengan nama '%@' sudah ada.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "Tips memperbanyak audiens Anda";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Judul untuk situs";
@@ -372,6 +388,9 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "TAMBAHKAN TAUTAN";
 
 /* No comment provided by engineer. */
+"ADD MEDIA" = "TAMBAHKAN MEDIA";
+
+/* No comment provided by engineer. */
 "ADD VIDEO" = "TAMBAHKAN VIDEO";
 
 /* Register Domain - Address information field section header title */
@@ -385,6 +404,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "Tentang Saya";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "Tentang WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Tentang WordPress untuk iOS";
@@ -408,7 +430,8 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Akun ditutup";
 
-/* Displays the list of third-party libraries we use */
+/* Displays the list of third-party libraries we use
+   Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Pernyataan";
 
 /* Theme Activate action title */
@@ -451,9 +474,6 @@ translators: Block name. %s: The localized block name */
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Tambahkan %@";
 
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "Tambahkan Domain Baru";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Tambahkan Blok Setelah";
 
@@ -490,6 +510,9 @@ translators: Block name. %s: The localized block name */
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Tambahkan URL CSS kustom di sini untuk dimuat di Pembaca. Jika Anda menjalankan Calypso secara lokal, URL bisa seperti: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Tambah domain";
+
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Tambahkan blok baru kapan saja dengan mengetuk ikon + di toolbar di kiri bawah.";
 
@@ -525,9 +548,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Tambahkan gambar, atau avatar, untuk mewakili akun baru ini.";
-
-/* No comment provided by engineer. */
-"Add link" = "Tambahkan tautan";
 
 /* No comment provided by engineer. */
 "Add link text" = "Tambahkan teks tautan";
@@ -585,6 +605,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Alamat";
 
+/* No comment provided by engineer. */
+"Address Settings" = "Pengaturan Alamat";
+
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Baris alamat %@";
 
@@ -611,7 +634,8 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter. */
 "All" = "Semua";
 
-/* Information about redeeming domain credit on site dashboard. */
+/* Footer of the free domain registration section for a paid plan.
+   Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Semua paket WordPress.com menyertakan nama domain kustom. Daftarkan domain premium gratis Anda sekarang.";
 
 /* An option in a list. Automatically approve all comments */
@@ -768,7 +792,8 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Setujui";
 
-/* Title of approved Comments filter. */
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
 "Approved" = "Disetujui";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -886,7 +911,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Penulis";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -901,6 +927,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Dikelola secara otomatis di situs ini";
+
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Perpanjangan otomatis diaktifkan";
 
 /* Discussion Settings Title
    Settings: Comments Approval settings */
@@ -920,6 +949,12 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Bagikan pos baru secara otomatis ke akun media sosial Anda.";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Secara otomatis bagikan pos baru ke media sosial Anda untuk menarik perhatian audiens di media sosial ke situs Anda.";
+
+/* Title of button that displays information about the other apps available from Automattic */
+"Automattic Family" = "Keluarga Automattic";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Pembaruan otomatis";
@@ -980,6 +1015,9 @@ translators: Block name. %s: The localized block name */
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Diagram Batang yang menunjukkan pengunjung pos terbaru Anda";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Jadilah yang pertama memberi komentar";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Jadilah yang pertama berkomentar.";
@@ -1044,12 +1082,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
 
-/* Opens the WordPress Mobile Blog */
+/* Opens the WordPress Mobile Blog
+   Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
-
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Pos-pos Blog";
 
 /* Create new Blog Post button title */
 "Blog post" = "Pos blog";
@@ -1161,6 +1196,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1330,6 +1366,9 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Check your site stats" = "Periksa statistik situs Anda";
 
+/* Title of a Quick Start Tour */
+"Check your site title" = "Periksa judul situs Anda.";
+
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Memeriksa pembelian...";
 
@@ -1363,20 +1402,23 @@ translators: Block name. %s: The localized block name */
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Pilih ikon aplikasi baru";
 
+/* A text for title label on Login epilogue screen */
+"Choose a site to open." = "Pilih situs yang ingin dibuka";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Pilih tema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Pilih waktu";
 
+/* Title of a Quick Start Tour */
+"Choose a unique site icon" = "Pilih ikon unik untuk situs Anda";
+
 /* No comment provided by engineer. */
 "Choose audio" = "Pilih audio";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Pilih rentang tanggal";
-
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "Pilih domain";
 
 /* No comment provided by engineer. */
 "Choose file" = "Pilih berkas";
@@ -1419,6 +1461,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Address information field City */
 "City" = "Kota";
+
+/* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Claim your free domain" = "Klaim domain gratis Anda";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog Klasik";
@@ -1498,6 +1543,12 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Latar belakang berwarna";
 
+/* translators: %d: column index. */
+"Column %d" = "Kolom %d";
+
+/* No comment provided by engineer. */
+"Column Settings" = "Pengaturan Kolom";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Pengaturan Kolom";
 
@@ -1508,12 +1559,17 @@ translators: Block name. %s: The localized block name */
 "Comics" = "Komik";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Komentar";
 
 /* Title for the `comment likes` setting */
 "Comment Likes" = "Suka Komentar";
+
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "Komentar disetujui.";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "Komentar dihapus.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Komentar telah dihapus";
@@ -1521,7 +1577,24 @@ translators: Block name. %s: The localized block name */
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Komentar telah ditandai sebagai Spam";
 
-/* Filters Comments Notifications
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "Komentar ditandai sebagai spam.";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "Komentar dipindahkan ke sampah.";
+
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+ My First Post */
+"Comment on" = "Komentar di";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "Komentar diatur menjadi tertunda.";
+
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Buat komentar untuk mulai membuat koneksi.";
+
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1534,6 +1607,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Komentar-komentar";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Komentar ditutup";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Komentar pada";
@@ -1563,7 +1639,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "Selesai: Periksa statistik situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site title" = "Selesai: Periksa judul situs Anda";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "Selesai: Pilih tema";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a unique site icon" = "Selesai: Memilih ikon unik untuk situs Anda";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Selesai: Lanjutkan penyiapan situs";
@@ -1573,9 +1655,6 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Edit your homepage" = "Selesai: Sunting halaman beranda";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Enable post sharing" = "Selesai: Aktifkan berbagi pos";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Selesai: Jelajahi paket";
@@ -1590,10 +1669,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "Selesai: Tinjau laman situs";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Set your site title" = "Selesai: Buat judul situs Anda";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload a site icon" = "Selesai: Unggah ikon situs";
+"Completed: Social sharing" = "Selesai: Membagi ke media sosial";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Selesai: Lihat situs Anda";
@@ -1623,11 +1699,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Selamat, Anda telah menyelesaikan Mulai Cepat 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Selamat";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Selamat, Anda telah melengkapi daftar. Kerja bagus.";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Selamat atas pembelian Anda!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1636,14 +1712,14 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "Sambungkan Akun Lainnya";
 
-/* Link to connect a site, shown after logging in. */
-"Connect a site" = "Hubungkan situs";
-
-/* Link to connect another site, shown after logging in. */
-"Connect another site" = "Hubungkan situs lainnya";
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "Hubungkan lebih banyak jaringan";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Hubungkan untuk otomatis bagikan pos blog Anda ke %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Jalin relasi dengan blogger lain dengan mengikuti, memberikan suka, dan berkomentar di pos mereka. ";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Sambungkan layanan media sosial favorit Anda untuk berbagi pos Anda secara otomatis dengan teman Anda.";
@@ -1692,7 +1768,8 @@ translators: Block name. %s: The localized block name */
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team. */
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Hubungi Dukungan";
 
 /* Button label for contacting support
@@ -1705,8 +1782,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struktur Konten\nBlok: %1$li, Kata: %2$li, Karakter: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1733,6 +1809,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Melanjutkan dengan Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Konversikan ke tautan";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Memasak";
 
@@ -1741,6 +1820,9 @@ translators: Block name. %s: The localized block name */
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Salin Tautan ke Komentar";
+
+/* translators: Copy URL from the clipboard, https://sample.url */
+"Copy URL from the clipboard, %s" = "Salin URL dari papan klip, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "Salin blok";
@@ -1765,6 +1847,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Tidak dapat memeriksa pembelian situs.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Tidak dapat menonaktifkan notifikasi";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Tidak dapat mengaktifkan notifikasi";
 
 /* Title of a prompt. */
 "Could not follow site" = "Tidak dapat mengikuti situs";
@@ -1826,8 +1914,17 @@ translators: Block name. %s: The localized block name */
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Tidak bisa memuat tag. Ketuk untuk mencoba lagi.";
 
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Tidak dapat menandai sebagai spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Tidak dapat menghilangkan tanda  spam";
+
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Tidak dapat mengunggah gambar andalan";
+
+/* Error title displayed when unable to close user account. */
+"Couldn’t close account automatically" = "Tidak dapat menutup akun secara otomatis";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Menghitung item media...";
@@ -1891,7 +1988,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Buat Tag";
 
-/* Title for a button that when tapped starts the site creation process */
+/* A button title
+   Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Buat situs baru";
 
 /* Text shown when the account has no sites. */
@@ -1911,6 +2009,12 @@ translators: Block name. %s: The localized block name */
 
 /* Button title for download backup action */
 "Create downloadable file" = "Buat file yang dapat diunduh";
+
+/* No comment provided by engineer. */
+"Create embed" = "Buat sematan";
+
+/* No comment provided by engineer. */
+"Create link" = "Buat tautan";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling Anda pedulikan.";
@@ -1971,6 +2075,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Sedang memulihkan: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "URL Tersuai";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Pesan kustom...";
@@ -2082,7 +2189,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Hapus Permanen";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2149,7 +2257,8 @@ translators: Block name. %s: The localized block name */
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Non-aktif";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Buang";
 
@@ -2185,6 +2294,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Temukan dan ikuti blog yang Anda suka";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Temukan blog yang ingin diikuti";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Jelajahi topik-topik lainnya";
 
@@ -2203,11 +2315,11 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. User action to dismiss error alert when failing to load media item.
-   Verb. User action to dismiss error alert when failing to share media. */
+   Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Hentikan";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2216,13 +2328,13 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Tutup pengumuman";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Tutup layar";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nama Tampilan";
-
-/* No comment provided by engineer. */
-"Display post date" = "Tampilkan tanggal pos";
 
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Menampilkan statistik situs semua waktu di sini. Konfigurasikan di aplikasi WordPress di bagian statistik situs Anda.";
@@ -2233,6 +2345,12 @@ translators: Block name. %s: The localized block name */
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Tampilkan statistik situs Anda untuk hari ini di sini. Konfigurasikan di aplikasi WordPress di bagian statistik situs Anda.";
 
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Lakukan lagi";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Dokumen, %@";
+
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokumen: %@";
 
@@ -2242,14 +2360,19 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Pemilik domain harus berbagi informasi kontak di database publik semua domain. Dengan Perlindungan Privasi, kami memublikasikan informasi kami sendiri, bukan informasi Anda, dan meneruskan segala komunikasi kepada Anda secara pribadi.";
 
-/* Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domain";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "Domain yang dibeli di situs ini akan mengalihkan ke %@";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect users to " = "Domain yang dibeli di situs ini akan mengalihkan pengguna ke ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Belum memiliki akun? _Daftar_";
 
-/* A button title
-   Accessibility label for the Done button in the Me screen.
+/* Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2353,6 +2476,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Ketuk dua kali untuk memilih gambar";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Ketuk dua kali untuk memilih ukuran font default";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Ketuk dua kali untuk memilih ukuran font";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Ketuk dua kali untuk memilih pilihan";
 
@@ -2361,6 +2490,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Ketuk dua kali untuk mengurungkan perubahan terakhir";
+
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Ketuk dua kali untuk melihat pilihan sematan.";
 
 /* Download button title */
 "Download" = "Unduh";
@@ -2381,6 +2513,9 @@ translators: Block name. %s: The localized block name */
 /* Name for the status of a draft post. */
 "Draft" = "Naskah";
 
+/* Description of a Quick Start Tour */
+"Draft and publish a post." = "Buat draf dan publikasikan artikel.";
+
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Konsep";
@@ -2396,14 +2531,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Duplikasi blok";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDIT TAUTAN";
-
-/* No comment provided by engineer. */
 "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Setiap blok memiliki pengaturannya sendiri. Untuk menemukannya, ketuk pada blok. Pengaturannya akan muncul di toolbar di bagian bawah layar.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2450,6 +2583,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Sunting pos dan halaman baru dengan penyunting blok.";
+
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "Sunting pengingat";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Sunting tombol berbagi";
@@ -2499,6 +2635,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "Alamat Surel";
 
 /* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
 "Email address" = "Alamat email";
@@ -2532,13 +2669,10 @@ translators: Block name. %s: The localized block name */
 "Embed caption. Empty" = "Sematkan keterangan. Kosong";
 
 /* No comment provided by engineer. */
-"Embed link" = "Sematkan tautan";
-
-/* No comment provided by engineer. */
 "Embed media" = "Sematkan media";
 
 /* No comment provided by engineer. */
-"Embed previews not yet available" = "Pratinjau sematan belum tersedia";
+"Embed options" = "Pilihan sematan";
 
 /* Title for the Emoji section */
 "Emoji" = "Emotikon";
@@ -2550,8 +2684,13 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL Kosong";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
+   Title of button to enable publicize. */
 "Enable" = "Aktifkan";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "Aktifkan Publikasikan";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Aktifkan Mulai Cepat untuk Situs";
@@ -2559,10 +2698,16 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Aktifkan Statistik Situs";
 
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "Aktifkan pemberitahuan dalam aplikasi";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "Aktifkan pemberitahuan dalam aplikasi?";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Izinkan akses mikrofon untuk merekam suara di video Anda.";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Aktifkan berbagi pos";
 
 /* Message prompting user to enable site notifications. */
@@ -2628,8 +2773,7 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Masukkan kredensial server Anda";
 
-/* General error title
-   Generic error alert title
+/* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Galat";
@@ -2649,8 +2793,10 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "Error menyetujui komentar";
 
-/* No comment (test)
-   This secondary message is displayed if a user encounters a general error. */
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "Error menyetujui komentar.";
+
+/* This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Terjadi error saat berkomunikasi dengan server, harap coba lagi";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
@@ -2658,6 +2804,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "Error menghapus komentar";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "Error menghapus komentar.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Terjadi error saat menonaktifkan pembaruan otomatis untuk %@.";
@@ -2685,6 +2834,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "Error menandai komentar sebagai spam";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "Error menandai komentar sebagai spam.";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "Error memindahkan komentar ke tong sampah.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Terjadi eror\nsaat memuat";
@@ -2718,6 +2873,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "Terjadi error saat mengirim email verifikasi. Periksa sambungan Anda dan coba lagi.";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "Error mengatur komentar tertunda.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Error menolak komentar";
@@ -2786,8 +2944,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Perluas untuk memilih area menu yang berbeda";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Kedaluwarsa";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Kedaluwarsa pada";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Kedaluwarsa pada %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Jelaskan tentang apa situs ini.";
@@ -2908,9 +3072,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Jenis file";
 
-/* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
-"Fill with password manager" = "Isi dengan pengelola kata sandi";
-
 /* Title of the filter button in the Reader */
 "Filter" = "Penyaring";
 
@@ -2949,9 +3110,13 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Memperbaiki Ancaman";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Ikuti";
+
+/* Button title. Follow the comments on a post. */
+"Follow Conversation" = "Ikuti Percakapan";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Ikuti percakapan melalui email";
@@ -2964,6 +3129,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Ikuti topik";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Ikuti topik sesuai minat Anda dan kami akan menawarkan sejumlah blog yang mungkin Anda suka.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3001,11 +3169,11 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Mengikuti %1$@";
 
-/* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Mengikuti percakapan melalui email";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Mengikuti topik baru...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Mengikuti percakapan ini";
 
 /* Filters Follows Notifications */
 "Follows" = "Mengikuti";
@@ -3016,11 +3184,11 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Mengikuti blog.";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Ikuti komentar pada pos melalui email.";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Ikuti tag.";
+
+/* No comment provided by engineer. */
+"Font Size" = "Ukuran Font";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Sepakbola";
@@ -3040,6 +3208,9 @@ translators: Block name. %s: The localized block name */
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Pustaka Foto Gratis";
 
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "Gratis untuk tahun pertama ";
+
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Kosongkan sebagian ruang penyimpanan di perangkat ini dengan menghapus file media sementara. Tindakan ini tidak akan memengaruhi media di situs Anda.";
 
@@ -3048,6 +3219,9 @@ translators: Block name. %s: The localized block name */
 
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "Dari perangkat lain";
+
+/* No comment provided by engineer. */
+"From clipboard" = "Dari papan klip";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "Dari perangkat ini";
@@ -3092,8 +3266,14 @@ translators: Block name. %s: The localized block name */
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Mulai dengan memilih satu tata letak halaman yang siap digunakan. Atau mulai dengan halaman kosong.";
 
+/* No comment provided by engineer. */
+"Get support" = "Dapatkan dukungan";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Mulai pos dan tingkatkan tampilan pos Anda dengan membagikannya.";
+
+/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Dapatkan domain Anda";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Dapatkan pemberitahuan lebih cepat";
@@ -3230,11 +3410,11 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "Penajukan 6";
 
-/* Help button
-   Open editor help options */
+/* Help button */
 "Help" = "Bantuan";
 
 /* Link to Help section
+   Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Bantuan & Dukungan";
 
@@ -3319,6 +3499,9 @@ translators: Block name. %s: The localized block name */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Saya sangat terinspirasi oleh karya fotografer Cameron Karsten. Saya akan mencoba teknik ini selanjutnya";
 
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "Alamat IP";
+
 /* Title of a button style */
 "Icon & Text" = "Ikon & Teks";
 
@@ -3370,17 +3553,11 @@ translators: Block name. %s: The localized block name */
 /* Hint for image link on image settings. */
 "Image Link" = "Tautan Gambar";
 
-/* No comment provided by engineer. */
-"Image Link URL" = "URL Tautan Gambar";
-
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Ukuran Gambar";
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Keterangan gambar. %s";
-
-/* No comment provided by engineer. */
-"Image settings" = "Pengaturan gambar";
 
 /* Hint for image title on image settings. */
 "Image title" = "Judul gambar";
@@ -3396,6 +3573,15 @@ translators: Block name. %s: The localized block name */
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Dalam beberapa kata, jelaskan tentang apa situs ini.";
+
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "Untuk membagikan pos yang telah diposkan ke media sosial, Anda perlu mengaktifkan modul Publikasikan.";
+
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "Pemberitahuan dalam aplikasi dinonaktifkan";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "Pemberitahuan dalam aplikasi diaktifkan";
 
 /* Describes a status of a plugin */
 "Inactive" = "Nonaktif";
@@ -3497,6 +3683,9 @@ translators: Block name. %s: The localized block name */
 /* Stories intro header title */
 "Introducing Story Posts" = "Memperkenalkan Pos Cerita";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Alamat Email Tidak Valid";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Alamat Situs Tak Sah";
 
@@ -3547,9 +3736,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a notification displayed prompting the user to create a new blog post */
 "It's time to blog!" = "Waktunya menulis pos!";
-
-/* Description of a Quick Start Tour */
-"It's time! Draft and publish your very first post." = "Sekarang waktunya! Buat konsep dan publikasikan pos pertama Anda.";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -3624,13 +3810,23 @@ translators: Block name. %s: The localized block name */
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack akan mengoptimalkan gambar Anda dan menyajikannya dari lokasi server yang terdekat dengan pengunjung situs. Dengan menggunakan jaringan pengiriman konten global kami, kecepatan pemuatan situs Anda akan menjadi lebih cepat.";
 
+/* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
+"Join From Anywhere" = "Ikuti Dari Manapun";
+
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Bergabung dengan percakapan: komentari pos dari blog yang Anda ikuti.";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Lanjutkan Menyunting";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "Teruskan blogging dan lihat jumlah pengunjung situs Anda.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Terus lanjutkan! Memberikan suka dan berkomentar adalah cara yang baik untuk membangun jaringan. Buka Pembaca untuk menemukan lebih banyak pos.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Ketahui info terbaru mengenai performa situs Anda.";
@@ -3683,11 +3879,17 @@ translators: Block name. %s: The localized block name */
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Pelajari selengkapnya...";
 
+/* Description for a prompt asking if users want to try out the quick start checklist. */
+"Learn the basics with a quick walk through." = "Pelajari dasar-dasarnya dengan panduan cepat.";
+
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Rata Kiri";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "Ikon Lawas";
+
+/* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
+"Legal and More" = "Legal dan Lainnya";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Mari Kami Bantu";
@@ -3731,6 +3933,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Melampaui Batas. Anda dapat coba lagi semenit kemudian. Mencoba sebelum semenit akan menambah waktu Anda harus menunggu sebelum ban dicabut. Jika Anda merasa ini sebuah kesalahan, silahkan kontak support.";
+
+/* No comment provided by engineer. */
+"Line Height" = "Ketinggian Baris";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -3847,7 +4052,6 @@ translators: Block name. %s: The localized block name */
 "Local" = "Lokal";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Local
    Title of the Local Changes Badge */
 "Local changes" = "Perubahan lokal";
 
@@ -3902,8 +4106,7 @@ translators: Block name. %s: The localized block name */
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Logout dari WordPress?";
 
-/* Error message shown when a user is trying to login.
-   Login Request Expired */
+/* Login Request Expired */
 "Login Request Expired" = "Permintaan Masuk Kedaluwarsa";
 
 /* No comment provided by engineer. */
@@ -3964,11 +4167,20 @@ translators: Block name. %s: The localized block name */
 /* Marks a notification as unread */
 "Mark Unread" = "Tandai Belum Dibaca";
 
+/* Marks comment as spam */
+"Mark as Spam" = "Tandai sebagai Spam";
+
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Tandai sebagai Lekat";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Tandai bukan spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Tandai sebagai telah dilihat";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Tandai sebagai spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Tandai sebagai spam.";
@@ -4080,14 +4292,11 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Tinggi minimum";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Kerentanan lain-lain";
 
 /* Title for the mobile web preview */
-"Mobile" = "Seluler";
+"Mobile" = "Ponsel";
 
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Pantau masa aktif situs Anda";
@@ -4105,7 +4314,6 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More
    Spoken accessibility label */
 "More" = "Lainnya";
 
@@ -4121,6 +4329,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Lainnya di WordPress.com";
+
+/* No comment provided by engineer. */
+"More support options" = "Pilihan dukungan lainnya";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Waktu yang Paling Disukai";
@@ -4171,7 +4382,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Pindahkan ke Sampah";
 
 /* No comment provided by engineer. */
@@ -4197,13 +4409,11 @@ translators: Block name. %s: The localized block name */
 "My Profile" = "Profil Saya";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
-   Header for a single site, shown after logging in
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Situs Saya";
 
-/* Header for list of multiple sites, shown after logging in
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Situs Saya";
 
 /* Siri Suggestion to open My Sites */
@@ -4232,7 +4442,8 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Navigasikan untuk menyesuaikan gradasi";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to select %s" = "Navigasikan untuk memilih %s";
 
 /* No comment provided by engineer. */
@@ -4252,6 +4463,9 @@ translators: Block name. %s: The localized block name */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Perlu Pembaruan";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Tidak pernah kedaluwarsa";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Baru";
@@ -4289,7 +4503,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Paling baru dulu";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4374,6 +4589,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Tak ada komentar";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Belum ada komentar";
 
@@ -4414,8 +4630,7 @@ translators: Block name. %s: The localized block name */
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Belum ada informasi yang ditambahkan";
 
-/* No comment (test)
-   This primary error message is displayed if a user encounters an issue with network reachability. */
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Tidak ada koneksi internet";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
@@ -4488,6 +4703,12 @@ translators: Block name. %s: The localized block name */
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Tidak ada pos.";
 
+/* No comment provided by engineer. */
+"No preview available" = "Pratinjau tidak tersedia";
+
+/* String to display in place of the site address, in case it was not retrieved from the backend. */
+"No primary site address found" = "Tidak ada alamat situs utama";
+
 /* A message title */
 "No recent posts" = "Tidak ada pos terbaru";
 
@@ -4503,7 +4724,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Tidak ada tag yang cocok dengan pencarian Anda";
 
-/* Button label for denying our request to re-allow push notifications */
+/* Button label for denying our request to re-allow push notifications
+   Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
 "No thanks" = "Tidak, terima kasih";
 
 /* Text displayed when theme name search has no matches */
@@ -4530,9 +4752,6 @@ translators: Block name. %s: The localized block name */
 /* Display value for Support email field if there is no user email address. */
 "Not Set" = "Belum Ditetapkan";
 
-/* Not this time button title shown in alert asking if users want to try out the quick start checklist. */
-"Not This Time" = "Tidak Sekarang";
-
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Tidak cukup ruang untuk unggah.";
 
@@ -4552,6 +4771,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Catatan: Tata letak kolom dapat bervariasi antara tema dan ukuran layar";
+
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Catatan: Tata letak dapat bervariasi antara tema dan ukuran layar";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Catatan: Anda harus mengizinkan login WordPress.com untuk mengedit blok ini di editor seluler.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Tidak ditemukan apa-apa.";
@@ -4614,7 +4839,6 @@ translators: Block name. %s: The localized block name */
    Button title. An acknowledgement of the message displayed in a prompt.
    Confirmation of action
    Default action
-   Dismiss button of alert letting users know we've upgraded the quick start checklist
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
@@ -4662,9 +4886,6 @@ translators: Block name. %s: The localized block name */
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
 
-/* Accessibility label for 1 password button */
-"One Password button" = "Tombol One Password";
-
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Hanya lihat statistik yang paling relevan. Tambahkan wawasan untuk menyesuaikan dengan kebutuhan Anda.";
 
@@ -4688,6 +4909,9 @@ translators: Block name. %s: The localized block name */
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Buka Pengaturan Perangkat";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Buka pengaturan Jetpack Security";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4717,11 +4941,11 @@ translators: Block name. %s: The localized block name */
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Buka tautan di jendela\/tab baru";
 
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Buka pengaturan langganan untuk pos";
+
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Buka Bagian Me";
-
-/* Accessibility hint for 1 password button */
-"Opens One Password manager" = "Buka pengelola One Password";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Buka halaman web di Safari";
@@ -4787,8 +5011,12 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Phone number section header title */
 "PHONE" = "TELEPON";
 
+/* No comment provided by engineer. */
+"Padding" = "Padding";
+
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Halaman";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4838,7 +5066,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Halaman diperbarui";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Halaman-halaman";
 
 /* Comments Paging
@@ -4880,12 +5110,12 @@ translators: Block name. %s: The localized block name */
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Tempel tanpa Format";
 
-/* Status for Media object that is being processed locally.
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Tertunda";
 
 /* Name for the status of a post pending review.
-   Pending review
    Title of the Pending Review Badge */
 "Pending review" = "Menunggu ulasan";
 
@@ -4913,9 +5143,6 @@ translators: Block name. %s: The localized block name */
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Foto disediakan oleh Pexels";
-
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "Pilih alamat yang tersedia";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pilih nama pengguna";
@@ -4979,6 +5206,9 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Masukkan Nama Belakang yang valid";
 
 /* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "Harap masukkan Organisasi yang valid";
+
+/* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Masukkan Kode Pos yang valid";
 
 /* Register Domain - Domain contact information validation error message for an input field */
@@ -4989,6 +5219,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Harap masukkan alamat yang valid";
+
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Harap masukkan alamat email yang valid untuk akun WordPress.com.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Silahkan masukkan alamat surel yang sah.";
@@ -5083,7 +5316,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Bahasa populer";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Postingan";
 
 /* Title for selecting categories for a post */
@@ -5112,9 +5346,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Diposting oleh %1$@, dari %2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Pengaturan konten pos";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Pos dibuat pada %@";
 
@@ -5123,9 +5354,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Pos gagal diunggah";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Pengaturan meta pos";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Pos dipindahkan ke sampah.";
@@ -5173,13 +5401,17 @@ translators: Block name. %s: The localized block name */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivitas Posting";
 
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Memposkan secara reguler dapat membantu memperbanyak audiens. Pengingat membantu Anda melangkah sesuai rencana.";
+
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Dengan rutin membuat pos, Anda bisa terus berinteraksi dengan para pembaca dan menarik pengunjung baru ke situs Anda.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Tulisan-tulisan";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5256,12 +5488,16 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "Situs Utama";
 
+/* Primary site address label, used in the site address section of the Domains Dashboard. */
+"Primary site address" = "Alamat situs utama";
+
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Privasi";
 
-/* Opens the Privacy Policy Web */
+/* Opens the Privacy Policy Web
+   Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Kebijakan Privasi";
 
 /* Register Domain - Privacy Protection section header title */
@@ -5350,12 +5586,14 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Terbitkan segera";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Menerbitkan halaman pada:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Terbitkan pos di:";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
 "Published" = "Dipublikasikan";
@@ -5368,6 +5606,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Memublikasikan ke";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Menerbitkan halaman...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Menerbitkan pos...";
@@ -5392,6 +5633,9 @@ translators: Block name. %s: The localized block name */
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Mulai Cepat";
+
+/* Title for button allowing users to rate the app in the App Store */
+"Rate Us" = "Beri Rating";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Beri nilai kami di App Store";
@@ -5467,7 +5711,6 @@ translators: Block name. %s: The localized block name */
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "Daftarkan domain";
 
@@ -5534,6 +5777,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Hapus dari Gambar Andalan ";
 
+/* No comment provided by engineer. */
+"Remove block" = "Hapus blok";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hapus dari wawasan";
 
@@ -5563,6 +5809,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Menghapus Langkah Berikutnya akan menyembunyikan semua tur di situs ini. Tindakan ini tidak dapat diurungkan.";
+
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Diperbarui pada %@";
 
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Gantikan";
@@ -5601,11 +5850,13 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Teks Jawab";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Balas komentar…";
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+"Reply to %1$@" = "Balas ke %1$@";
 
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Balas pos…";
+"Reply to post" = "Balas pos";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Melaporkan pos ini";
@@ -5764,8 +6015,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Simpan";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Simpan %ld foto sebagai halaman konsep pada:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Simpan %ld foto sebagai pos konsep pada:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Simpan 1 foto sebagai halaman konsep pada:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Simpan 1 foto sebagai konsep pos pada:";
@@ -5780,11 +6037,13 @@ translators: Block name. %s: The localized block name */
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Simpan sebagai Konsep";
 
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Simpan halaman konsep pada:";
+
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Simpan konsep pos pada:";
 
-/* Accessibility label for the 'Save Post' button.
-   Save post */
+/* Accessibility label for the 'Save Post' button. */
 "Save post" = "Simpan pos";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
@@ -5802,6 +6061,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Menyimpan pos ini untuk nanti.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Menyimpan halaman...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Menyimpan pos…";
@@ -5837,7 +6099,6 @@ translators: Block name. %s: The localized block name */
 "Schedule Now" = "Jadwalkan Sekarang";
 
 /* Name for the status of a scheduled post
-   Scheduled
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Terjadwal";
 
@@ -5882,6 +6143,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Tombol cari. Teks tombol saat ini adalah";
 
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Cari domain";
+
+/* title of the button that searches the first domain. */
+"Search for a domain" = "Cari domain";
+
 /* No comment provided by engineer. */
 "Search input field." = "Kolom input pencarian.";
 
@@ -5925,7 +6192,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Lihat komentar dan pemberitahuan secara real-time.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Pilih";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -5985,6 +6253,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Select a layout" = "Pilih Tata Letak";
 
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "Pilih domain";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Pilih media.";
 
@@ -6027,14 +6298,21 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Media yang dipilih tidak tersedia.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Terpilih: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Terpilih: Default";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Memilih lokasi menu lain akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Memilih menu lain akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Selection not allowed" = "Pemilihan tidak diizinkan";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Pilih domain ini untuk digunakan untuk situs Anda.";
@@ -6100,14 +6378,14 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Siapkan Jetpack";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "Siapkan pengingat blogging";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Siapkan pengingat blogging pada hari Anda ingin menerbitkan pos.";
 
 /* Title of the Blogging Reminders Settings screen. */
 "Set your blogging reminders" = "Setel pengingat blogging Anda";
-
-/* Title of a Quick Start Tour */
-"Set your site title" = "Buat judul situs Anda";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Menyiapkan tema";
@@ -6134,6 +6412,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Sebarkan";
@@ -6152,6 +6431,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Bagikan tautan";
+
+/* Title for button allowing users to share information about the app with friends, such as via Messages */
+"Share with Friends" = "Bagikan dengan Teman";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6173,6 +6455,9 @@ translators: Block name. %s: The localized block name */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Error saat berbagi";
 
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "Pengaturan bagikan telah siap!";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Tampilkan Header";
 
@@ -6190,6 +6475,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Tampilkan Pos Terkait";
+
+/* Button title. When tapped, the quick start checklist will be shown. */
+"Show me around" = "Ajak saya berkeliling";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6212,6 +6500,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Ditampilkan";
+
+/* Description of a Quick Start Tour */
+"Shown in your visitor's browser tab and other places online." = "Ditampilkan di tab peramban pengunjung Anda dan di tempat lain secara online.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Ditampilkan secara publik saat Anda mengomentari blog.";
@@ -6276,16 +6567,14 @@ translators: Block name. %s: The localized block name */
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Situs";
 
+/* Title of the Domains Dashboard. */
+"Site Domains" = "Domain Situs";
+
 /* Accessibility label for site icon button */
 "Site Icon" = "Ikon Situs";
 
 /* Title for the Language Picker View */
 "Site Language" = "Bahasa Situs";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Laman Situs";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Pengalihan Situs";
@@ -6376,6 +6665,9 @@ translators: Block name. %s: The localized block name */
 /* Follower Totals label for social media followers */
 "Social" = "Sosial";
 
+/* Title of a Quick Start Tour */
+"Social sharing" = "Berbagi melalui media sosial";
+
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Beberapa blok memiliki pengaturan tambahan. Ketuk ikon pengaturan di kanan bawah blok untuk melihat pilihan lainnya.";
 
@@ -6385,9 +6677,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Terjadi kesalahan";
-
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Terjadi masalah, silakan coba lagi.";
 
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Terjadi masalah. Periksa konektivitas Anda dan coba lagi.";
@@ -6465,16 +6754,15 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Sort Order */
 "Sort By" = "Urutkan Berdasarkan";
 
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Pengurutan dan penyaringan";
-
-/* Opens the Github Repository Web */
+/* Opens the Github Repository Web
+   Title of button that displays the App's source code information */
 "Source Code" = "Kode Sumber";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Ruang terpakai";
 
-/* Marks comment as spam.
+/* Button title for Spam comment state.
+   Marks comment as spam.
    Spam
    Title of spam Comments filter. */
 "Spam" = "Spam";
@@ -6575,6 +6863,9 @@ translators: Block name. %s: The localized block name */
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Berhasil berhenti mengikuti percakapan";
 
+/* Label displayed to the user left of the time zone suggestion button */
+"Suggestion:" = "Saran:";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Saran";
@@ -6607,6 +6898,12 @@ translators: Block name. %s: The localized block name */
 
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "Beralih ke penyunting blok";
+
+/* Message of the notice shown when toggling the HTML editor mode */
+"Switched to HTML mode" = "Beralih ke mode HTML";
+
+/* Message of the notice shown when toggling the Visual editor mode */
+"Switched to Visual mode" = "Beralih ke mode Visual";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Beralih ke Judul ukuran font 1";
@@ -6690,9 +6987,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Ketuk di sini untuk menampilkan bantuan";
 
-/* No comment provided by engineer. */
-"Tap to add content" = "Ketuk untuk menambahkan konten";
-
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Ketuk untuk membatalkan unggahan.";
 
@@ -6708,11 +7002,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Ketuk untuk membuang kartu ini";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Ketuk untuk menampilkan halaman web pengarah.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Ketuk untuk memasukkan nilai kustom";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Ketuk untuk menyembunyikan keyboard";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Ketuk untuk menandai pengarah sebagai bukan spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Ketuk untuk menandai pengarah sebagai spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Ketuk untuk melihat semua tag untuk pos ini";
@@ -6747,7 +7050,8 @@ translators: Block name. %s: The localized block name */
 /* The underlined title sentence */
 "Terms and Conditions" = "Syarat dan Ketentuan";
 
-/* Opens the Terms of Service Web */
+/* Opens the Terms of Service Web
+   Title of button that displays the App's terms of service */
 "Terms of Service" = "Pernyataan Layanan";
 
 /* Menu item label for linking a testimonial post. */
@@ -6755,6 +7059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a button style */
 "Text Only" = "Hanya Teks";
+
+/* No comment provided by engineer. */
+"Text color" = "Warna teks";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrol pemformatan teks terletak di dalam bilah peralatan yang ada di atas keyboard saat menyunting blok teks";
@@ -6824,6 +7131,9 @@ translators: Block name. %s: The localized block name */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikasi tidak dapat mengenali respon server. Silakan periksa konfigurasi pada situs Anda.";
 
 /* No comment provided by engineer. */
+"The basics" = "Dasar-dasar";
+
+/* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Sertifikat untuk server ini tidak sah. Anda mungkin tersambung dengan server yang menyamar sebagai “%@” yang bisa membuat informasi rahasia Anda beresiko,\n\nApakah Anda ingin mempercayai sertifikat itu?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -6859,6 +7169,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Media tidak bisa ditambahkan ke Pustaka Media.";
+
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "Modul tidak dapat diaktifkan.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Jumlah pos yang akan ditampilkan per halaman.";
@@ -6929,6 +7242,9 @@ translators: Block name. %s: The localized block name */
 "There has been a problem while loading your Notification Settings" = "Ada masalah saat memuat pengaturan Pemberitahuan Anda";
 
 /* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "Terjadi kesalahan yang tidak terduga saat menyunting komentar";
+
+/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Telah terjadi kesalahan yang tidak terduga saat menyunting komentar Anda";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6959,7 +7275,6 @@ translators: Block name. %s: The localized block name */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Ada masalah menghubungkan dengan %@. Hubungkan kembali untuk terus menerbitkan.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
-   No comment (test)
    The Jetpack view title used when an error occurred
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "Ada masalah";
@@ -7103,9 +7418,6 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Akun pengguna berikut tidak dapat ditutup jika memiliki langganan aktif.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Akun pengguna ini tidak dapat ditutup. Silakan hubungi kami dengan membuka layar Saya > Bantuan & Dukungan.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Ini akan disertakan dalam tweet saat orang-orang berbagi dengan tombol Twitter.";
@@ -7176,6 +7488,9 @@ translators: Block name. %s: The localized block name */
 /* NSPhotoLibraryAddUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Untuk menambahkan foto atau video ke pos Anda.";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"To close this account now, contact our support team." = "Untuk menutup akun ini sekarang juga, hubungi tim dukungan kami.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Untuk melanjutkan, masukkan alamat email dan nama Anda.";
@@ -7286,6 +7601,7 @@ translators: Block name. %s: The localized block name */
 "Transform block…" = "Mengubah blok...";
 
 /* Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
    Trash button title
    Trashes a comment
    Trashes the comment */
@@ -7299,8 +7615,7 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
-   Title of trashed Comments filter.
-   Trashed */
+   Title of trashed Comments filter. */
 "Trashed" = "Dibuang";
 
 /* Connect when the SSL certificate is invalid */
@@ -7365,11 +7680,15 @@ translators: Block name. %s: The localized block name */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Mengaktifkan pemberitahuan situs";
 
-/* Launches the Twitter App */
+/* Launches the Twitter App
+   Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nama Pengguna Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Jenis";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Ketik URL";
@@ -7434,9 +7753,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Tidak dapat mengikuti situs";
 
-/* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
-"Unable to get URL for media item." = "Tidak bisa mendapatkan URL item media.";
-
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Tidak dapat memuat halaman sekarang.";
 
@@ -7468,9 +7784,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Tidak dapat membaca situs WordPress dalam URL tersebut. Ketuk 'Butuh Bantuan?' untuk melihat FAQ.";
-
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Tidak dapat mendaftarkan domain";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Tidak dapat memulihkan situs Anda";
@@ -7535,7 +7848,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Tidak dapat menulis gambar ke file";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Tolak";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -7552,6 +7866,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Garis Bawah";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7564,6 +7879,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Batal Mengikuti %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Berhenti ikuti percakapan";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Berhenti ikuti percakapan melalui email";
@@ -7688,9 +8006,6 @@ translators: Block name. %s: The localized block name */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Unggah Media";
 
-/* Title of a Quick Start Tour */
-"Upload a site icon" = "Unggah ikon situs";
-
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Unggah gagal";
@@ -7732,6 +8047,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Mengunggah pos...";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"Uploading videos longer than 5 minutes requires a paid plan." = "Diperlukan paket berbayar untuk mengunggah video berdurasi lebih dari 5 menit.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Mengunggah...";
@@ -7789,8 +8107,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "Email verifikasi telah dikirim, periksa kotak masuk Anda.";
 
-/* Push Authentication Alert Title
-   Title of a prompt. A user must verify their login attempt. */
+/* Push Authentication Alert Title */
 "Verify Log In" = "Verifikasi Log In";
 
 /* Notice displayed after domain credit redemption success. */
@@ -7825,6 +8142,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "Ekspor video dibatalkan.";
 
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Video not uploaded" = "Video tidak terunggah";
+
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
 
@@ -7849,6 +8169,9 @@ translators: Block name. %s: The localized block name */
    The menu item to select during a guided tour. */
 "View Site" = "Lihat Situs";
 
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Lihat semua komentar";
+
 /* Displays More Rows */
 "View all…" = "Tampilkan semua…";
 
@@ -7862,6 +8185,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Lihat selengkapnya";
+
+/* Description for view count. Singular. */
+"View to your site so far" = "Kunjungan ke situs Anda hingga saat ini";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Lihat situs Anda";
@@ -7880,6 +8206,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "Kunjungan";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "Kunjungan ke situs Anda hingga saat ini";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -7942,8 +8271,8 @@ translators: Block name. %s: The localized block name */
 /* View title during the Google auth process. */
 "Waiting..." = "Menunggu...";
 
-/* Title of alert asking if users want to try out the quick start checklist. */
-"Want a little help getting started?" = "Perlu sedikit bantuan untuk memulai?";
+/* Title for a prompt asking if users want to try out the quick start checklist. */
+"Want a little help managing this site with the app?" = "Butuh sedikit bantuan dalam mengelola situs ini dengan aplikasi?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8189,8 +8518,14 @@ translators: Block name. %s: The localized block name */
 /* Example Reader feed title */
 "Web News" = "Berita Web";
 
+/* Describes the web address section in the comment detail screen. */
+"Web address" = "Alamat situs web";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Minggu dimulai";
+
+/* Setting: indicates if the site reports its Weekly Roundup */
+"Weekly Roundup" = "Ringkasan Mingguan";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Minggu";
@@ -8229,20 +8564,11 @@ translators: Block name. %s: The localized block name */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll still attempt to restore your site." = "Kami masih mencoba memulihkan situs Anda.";
 
-/* Body text of alert asking if users want to try out the quick start checklist. */
-"We’ll walk you through the basics of building and growing your site" = "Kami akan memandu Anda dalam memahami dasar-dasar membuat dan mengembangkan situs";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Kami bekerja keras dalam menambahkan fitur pratinjau %s. Saat ini, Anda dapat melakukan pratinjau konten sematan di halaman.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Kami bekerja keras dalam menambahkan fitur pratinjau sematan. Saat ini, Anda dapat melakukan pratinjau konten sematan dalam halaman.";
-
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Kami bekerja keras dalam menambahkan fitur pratinjau sematan. Saat ini, Anda dapat melakukan pratinjau konten sematan dalam artikel.";
-
-/* Body text of alert letting users know we've upgraded the quick start checklist. */
-"We’ve added more tasks to help you grow your audience." = "Kami telah menambahkan lebih banyak tugas untuk membantu Anda menumbuhkan audiens.";
-
-/* Title of alert letting users know we've upgraded the quick start checklist. */
-"We’ve made some changes to your checklist" = "Kami telah melakukan beberapa perubahan pada daftar periksa Anda";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Kami bekerja keras dalam menambahkan fitur pratinjau %s. Saat ini, Anda dapat melakukan pratinjau konten sematan di artikel.";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Kami telah memperbarui ikon aplikasi kustom dengan tampilan baru yang lebih segar.  Ada 10 gaya baru yang dapat dipilih, tapi Anda tetap bisa menggunakan ikon yang ada jika lebih menyukainya.";
@@ -8289,6 +8615,9 @@ translators: Block name. %s: The localized block name */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Saat membuat perubahan pada situs, Anda akan dapat melihat riwayat aktivitas di sini.";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "Ketika Anda memposkan pos berikutnya, pos tersebut akan dibagikan secara otomatis ke jaringan Anda yang terhubung.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Versi apa yang ingin Anda edit?";
@@ -8403,6 +8732,9 @@ translators: Block name. %s: The localized block name */
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "Halaman Plugin WordPress.org";
 
+/* Title of button that displays the Automattic Work With Us web page */
+"Work With Us" = "Berkarya Bersama Kami";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Peta dunia menampilkan kunjungan berdasarkan negara.";
 
@@ -8418,6 +8750,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Tulis Pos";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "Tulis balasan";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Tulis balasan...";
@@ -8445,9 +8780,6 @@ translators: Block name. %s: The localized block name */
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ya";
-
-/* Allow button title shown in alert asking if users want to try out the quick start checklist. */
-"Yes, Help Me" = "Ya, Bantu Saya";
 
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Ya, tunjukkan";
@@ -8480,6 +8812,9 @@ translators: Block name. %s: The localized block name */
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Anda dapat menampilkan statistik situs tunggal di tampilan iOS Today\/Pusat Pemberitahuan.";
 
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "Anda dapat mengedit blok ini menggunakan editor versi web.";
+
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Anda dapat mengikuti pos pada situs tertentu dengan mengikutinya.";
 
@@ -8491,6 +8826,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Anda dapat mengatur ulang blok dengan mengetuk satu blok lalu mengetuk panah atas dan bawah yang muncul di sisi kiri bawah blok untuk memindahkannya ke atas atau ke bawah blok lain.";
+
+/* A text for subtitle label on Login epilogue screen */
+"You can switch sites at any time." = "Anda dapat berganti situs kapan saja.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Anda dapat melakukan pembaruan ini kapan saja melalui Situs Saya > Pengaturan Situs";
@@ -8531,6 +8869,9 @@ translators: Block name. %s: The localized block name */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Anda memiliki 1 situs WordPress tersembunyi.";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan" = "Anda memiliki registrasi domain gratis selama satu tahun dengan paket Anda";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Anda memiliki peningkatan premium aktif dalam situs Anda. Batalkan peningkatan sebelum menghapus situs Anda.";
 
@@ -8544,6 +8885,7 @@ translators: Block name. %s: The localized block name */
 "You have no reminders set." = "Pengingat tidak disetel.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Anda belum menyimpan perubahan.";
 
@@ -8578,11 +8920,15 @@ translators: Block name. %s: The localized block name */
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Anda baru-baru ini melakukan perubahan pada postingan ini tetapi tidak menyimpannya. Pilih versi untuk dimuat:\n\nDari perangkat ini\nDisimpan pada %1$@\n\nDari perangkat lain\nDisimpan pada %2$@\n";
 
-/* Notification text - below a comment notification detail */
+/* Informs that the user has replied to this comment.
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Anda membalas komentar ini.";
 
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Tampaknya Anda telah menginstal plugin seluler dari DudaMobile yang membuat aplikasi tidak dapat tersambung ke blog Anda";
+
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "Anda menyiapkan pengingat blogging";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Sebaiknya jangan abaikan masalah keamanan, kecuali Anda benar-benar yakin ini tidak berbahaya. Jika Anda memilih untuk mengabaikannya, ancaman ini akan tetap ada di situs Anda \"%1$@\".";
@@ -8602,11 +8948,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Anda tidak berwenang untuk menutup akun.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "Anda telah terhubung dengan blog lain";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Anda telah membuat perubahan yang tidak tersimpan di pos ini";
 
-/* Header title for your domains section of Domains. */
-"Your Domains" = "Domain Anda";
+/* Header of the domains list section in the Domains Dashboard. */
+"Your Site Domains" = "Domain Situs Anda";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikon Situs Anda";
@@ -8638,8 +8987,14 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Pencadangan pertama Anda akan segera tersedia";
 
+/* Title of the site address section in the Domains Dashboard. */
+"Your free WordPress.com address is" = "Alamat WordPress.com gratis Anda adalah";
+
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Media Anda tidak dapat diekspor. If the problem persists you can contact us via the Me > layar Bantuan & Dukungan.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Domain baru Anda %@ sedang disiapkan. Perlu waktu hingga 30 menit agar domain anda mulai berfungsi.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Bawa pemberitahuan ke mana pun Anda pergi — lihat komentar dan suka seketika.";
@@ -8655,6 +9010,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Pos, laman, dan pengaturan Anda akan dikirim melalui alamat email %@.";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "Alamat situs utama adalah yang akan muncul pada kotak alamat browser saat pengunjung mengunjungi situs web Anda.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Pemulihan Anda memerlukan waktu lebih lama dari biasanya, periksa lagi dalam beberapa menit.";
@@ -8698,11 +9056,14 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Situs Anda akan berhenti mengirim data ke WordPress.com dan fitur Jetpack akan berhenti berfungsi. Anda akan kehilangan akses ke situs di aplikasi dan harus menambahkannya lagi dengan kredensial situs.";
 
-/* Description of a Quick Start Tour */
-"Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look." = "Pengunjung akan melihat ikon Anda di perambah mereka. Tambahkan ikon kustom untuk tampilan yang lebih pro dan elegan.";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Kredensial situs web Anda tidak akan disimpan dan hanya akan digunakan untuk tujuan penginstalan Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Anda mengikuti percakapan ini. Anda akan menerima email dan notifikasi setiap kali ada komentar baru.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "Anda mengikuti percakapan ini. Anda akan menerima email setiap kali ada komentar baru.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Saat ini Anda menggunakan penyunting blok untuk halaman baru — hebat! Jika Anda ingin mengubah ke penyunting klasik, buka ‘Situs Saya’ > ‘Pengaturan Situs’.";
@@ -8790,6 +9151,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "belakangan hari ini";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "ditandai sebagai spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "dari";
 
@@ -8811,6 +9175,9 @@ translators: Block name. %s: The localized block name */
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "url tidak diketahui";
 
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "tanda sebagai spam dihilangkan";
+
 /* Noun. Describes a site's user. */
 "user" = "pengguna";
 
@@ -8822,6 +9189,57 @@ translators: Block name. %s: The localized block name */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "kunjungi halaman dokumentasi kami";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Terbanyak dilihat";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Tulisan-tulisan";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Dapatkan kabar terbaru tentang seluruh aktivitas hingga hari ini di situs WordPress Anda.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "Semua Waktu";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik hingga hari ini.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Dapatkan kabar terbaru tentang aktivitas minggu ini di situs WordPress Anda.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Minggu Ini";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik minggu ini.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Komentar-komentar";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Suka";
+
+/* Title of the nodata view in today widget */
+"widget.today.nodata.view.title" = "Tidak dapat memuat statistik situs.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Dapatkan kabar terbaru tentang aktivitas hari ini di situs WordPress Anda.";
+
+/* Title of today widget */
+"widget.today.title" = "Hari ini";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik hari ini.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "Pratinjau tidak tersedia";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Kunjungan";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Pengunjung";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "akan tidak tersedia di waktu mendatang.";
@@ -8846,9 +9264,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, situs, situs, blog, blog";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "domain baru Anda %@ sedang disiapkan. Situs Anda melakukan perubahan dalam keseruan!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "situs Anda";

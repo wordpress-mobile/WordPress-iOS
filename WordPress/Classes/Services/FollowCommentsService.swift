@@ -61,17 +61,9 @@ class FollowCommentsService: NSObject {
         let objID = post.objectID
         let context = self.context
         let successBlock = { (taskSuccessful: Bool) -> Void in
-            let newIsSubscribed = !isSubscribed
-            let followAction: FollowCommentsService.FollowAction = newIsSubscribed ? .followed : .unfollowed
-
-            var properties = [String: Any]()
-            properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
-            properties[WPAppAnalyticsKeyBlogID] = self.siteID
-            WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
-
             context.perform {
                 if let post = try? context.existingObject(with: objID) as? ReaderPost {
-                    post.isSubscribedComments = newIsSubscribed
+                    post.isSubscribedComments = !isSubscribed
                 }
                 ContextManager.sharedInstance().save(context) {
                     DispatchQueue.main.async {
@@ -94,8 +86,30 @@ class FollowCommentsService: NSObject {
         }
     }
 
-    private enum FollowAction: String {
-        case followed
-        case unfollowed
+    /// Toggles the notification setting for a specified post.
+    ///
+    /// - Parameters:
+    ///   - isNotificationsEnabled: Determines whether the user should receive notifications for new comments on the specified post.
+    ///   - success: Block called after the operation completes successfully.
+    ///   - failure: Block called when the operation fails.
+    @objc func toggleNotificationSettings(_ isNotificationsEnabled: Bool,
+                                          success: @escaping () -> Void,
+                                          failure: @escaping (Error?) -> Void) {
+
+        remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
+            guard let self = self else {
+                failure(nil)
+                return
+            }
+
+            self.post.receivesCommentNotifications = isNotificationsEnabled
+            ContextManager.sharedInstance().saveContextAndWait(self.context)
+            success()
+
+        } failure: { error in
+            DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
+            failure(error)
+        }
     }
+
 }

@@ -45,6 +45,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;
+@dynamic organizationID;
 @dynamic hasOlderPosts;
 @dynamic hasOlderPages;
 @dynamic hasDomainCredit;
@@ -120,6 +121,16 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (NSNumber *)organizationID {
+    NSNumber *organizationID = [self primitiveValueForKey:@"organizationID"];
+    
+    if (organizationID == nil) {
+        return @0;
+    } else {
+        return organizationID;
+    }
+}
 
 - (BOOL)isAtomic
 {
@@ -210,6 +221,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)urlWithPath:(NSString *)path
 {
+    if (!path || !self.xmlrpc) {
+        DDLogError(@"Blog: Error creating urlWithPath.");
+        return nil;
+    }
+
     NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
@@ -569,6 +585,16 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsBlockEditorSettings];
         case BlogFeatureLayoutGrid:
             return [self supportsLayoutGrid];
+        case BlogFeatureTiledGallery:
+            return [self supportsTiledGallery];
+        case BlogFeatureFacebookEmbed:
+            return [self supportsEmbedVariation: @"9.0"];
+        case BlogFeatureInstagramEmbed:
+            return [self supportsEmbedVariation: @"9.0"];
+        case BlogFeatureLoomEmbed:
+            return [self supportsEmbedVariation: @"9.0"];
+        case BlogFeatureSmartframeEmbed:
+            return [self supportsEmbedVariation: @"10.2"];
     }
 }
 
@@ -667,6 +693,16 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsLayoutGrid
 {
     return self.isHostedAtWPcom || self.isAtomic;
+}
+
+- (BOOL)supportsTiledGallery
+{
+    return self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
+{
+    return [self hasRequiredJetpackVersion:requiredJetpackVersion] || self.isHostedAtWPcom;
 }
 
 - (BOOL)accountIsDefaultAccount

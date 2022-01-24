@@ -840,7 +840,7 @@ public protocol ThemePresenter: AnyObject {
         _ = themeService.installTheme(theme,
             for: blog,
             success: { [weak self] in
-                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: false)
+                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: !theme.isCurrentTheme())
             }, failure: nil)
     }
 
@@ -857,7 +857,7 @@ public protocol ThemePresenter: AnyObject {
         if let theme = theme, self.blog.supports(.customThemes) && !theme.custom {
             installThemeAndPresentCustomizer(theme)
         } else {
-            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
+            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: !(theme?.isCurrentTheme() ?? true))
         }
     }
 
@@ -894,7 +894,7 @@ public protocol ThemePresenter: AnyObject {
         activateButton = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
         activateButton?.isEnabled = !theme.isCurrentTheme()
 
-        let webViewController = WebViewControllerFactory.controller(configuration: configuration)
+        let webViewController = WebViewControllerFactory.controller(configuration: configuration, source: "theme_browser")
         webViewController.navigationItem.rightBarButtonItem = activateButton
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle

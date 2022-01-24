@@ -34,23 +34,20 @@ msgid ""
 "View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
 msgstr ""
 
-#. translators: Keywords used in the App Store search engine to find the app.
-#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
-msgctxt "app_store_keywords"
-msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
-msgstr ""
-
-msgctxt "v18.1-whats-new"
+msgctxt "v19.0-whats-new"
 msgid ""
-"Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.\n"
+"What time is it? Our brand-new time zone selection screen knows. Get a suggested time zone based on your device and improve search while you’re at it.\n"
 "\n"
-"Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.\n"
+"If you’re using a free plan, video uploads are now limited to five minutes per file. Don’t worry, that won’t affect any videos you’ve already uploaded to your site.\n"
 "\n"
-"Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.\n"
+"We’ve also made some changes to the block editor:\n"
 "\n"
-"Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.\n"
+"- We solved translation issues that caused some user interface elements (like text alignment information and the block editor modal window) to only appear in English.\n"
+"- We added language translation for Jetpack and Layout Grid blocks.\n"
+"- We fixed a bug that would reset text formatting to default after hitting backspace. Bold on, friends.\n"
+"- Multi-line block titles are now center-aligned in the inserter menu.\n"
 "\n"
-"We also made other improvements, including a fix to a cropping issue in the Reader, as well as the ability to recommend the app to your friends on your Me and About screens.\n"
+"Finally, the “Share WordPress with a friend” row is back where it belongs on the Me screen. Reunited and it feels so good.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

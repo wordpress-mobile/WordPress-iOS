@@ -1,7 +1,12 @@
-Använder du inbäddningsblocket? För mediafiler som du bäddar in på din webbplats kommer du nu att se alternativet "Ändra storlek för mindre enheter". Sätt reglaget till På för att aktivera alternativet och storleksanpassa ditt innehåll efter din skärm. Sätt reglaget till Av för att inaktivera alternativet. 
+Vad är klockan? Vår helt nya skärm för val av tidszon vet. Få en föreslagen tidszon baserad på din enhet och förbättra sökningen medan du håller på.
 
-Gillar du verktyget Bloggningspåminnelser? Vi har lagt till en ny funktion som gör det möjligt att välja en specifik tid för att ta emot aviseringar.
+Om du använder ett gratispaket är videouppladdningar nu begränsade till fem minuter per fil. Oroa dig inte, det kommer inte att påverka videor som du redan har laddat upp till din webbplats.
 
-Behöver du stänga ditt konto? (Vi hoppas att du aldrig lämnar oss!) Om det är nödvändigt har du nu dock möjlighet att göra det i dina kontoinställningar.
+Vi har också gjort några ändringar i blockredigeraren:
 
-Geotaggning av inlägg stöds inte längre på webben, så vi har tagit bort alternativet Plats under Inläggsinställningar.
+- Vi har löst översättningsproblem som gjorde att vissa element i användargränssnittet (t.ex. textjusteringsinformation och blockredigerarens modala fönster) bara visades på engelska.
+- Vi har lagt till språköversättning för Jetpack- och layoutrutnätsblock.
+- Vi har åtgärdat ett fel som återställde textformateringen till standard när användaren tryckte på backsteg. Fetstil, vänner.
+- Blockrubriker med flera rader är nu centrerade i infogarmenyn.
+
+Slutligen är raden "Dela WordPress med en vän" tillbaka på skärmen Mig där den hör hemma. En glad återförening.

@@ -209,7 +209,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
         var queryItems: [URLQueryItem] = components.queryItems ??  []
 
         if let screenshotWidth = presenter?.screenshotWidth {
-            queryItems.append(URLQueryItem(name: "w", value: "\(presenter!.screenshotWidth)"))
+            queryItems.append(URLQueryItem(name: "w", value: "\(screenshotWidth)"))
         }
 
         queryItems.append(URLQueryItem(name: "zoom", value: "\(UIScreen.main.scale)"))

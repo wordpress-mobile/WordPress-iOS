@@ -37,7 +37,16 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: origin)
+
+        if let controller = origin as? ReaderStreamViewController,
+           let indexPath = controller.tableView.indexPath(for: cell),
+           let topic = controller.readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           controller.shouldShowCommentSpotlight {
+            controller.reloadReaderDiscoverNudgeFlow(at: indexPath)
+        }
+
+        ReaderCommentAction().execute(post: post, origin: origin, source: .postCard)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {

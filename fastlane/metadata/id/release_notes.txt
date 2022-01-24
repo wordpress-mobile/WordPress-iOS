@@ -1,9 +1,12 @@
-Apakah Anda menggunakan blok Tersemat? Untuk media yang Anda sematkan ke situs, Anda kini bisa melihat pilihan "Ubah ukuran untuk perangkat yang lebih kecil". Aktifkan pilihan tersebut untuk mengubah ukuran konten agar sesuai dengan layar; matikan toggle untuk menonaktifkan.
+Sekarang pukul berapa ya? Layar pemilihan zona waktu baru kami bisa memberi tahu Anda. Dapatkan saran zona waktu berdasarkan perangkat Anda sekaligus tingkatkan pencarian.
 
-Menyukai alat Pengingat Blogging? Kami telah menambahkan fitur baru yang mengizinkan Anda memilih waktu khusus untuk menerima pemberitahuan.
+Jika Anda menggunakan paket gratis, unggahan video kini dibatasi hanya lima menit per file.  Jangan khawatir, kebijakan ini tidak akan memengaruhi video yang telah diunggah ke situs Anda.
 
-Perlu menutup akun? (Kami berharap Anda tidak meninggalkan kami!) Namun, jika diperlukan, Anda kini bisa menutup akun melalui Pengaturan Akun.
+Kami juga melakukan sejumlah perubahan pada editor blok:
 
-Pos dengan penandaan geografis tidak lagi didukung di web, jadi kami menghapus pilihan Lokasi pada Pengaturan Pos.
+- Kami memperbaiki masalah terjemahan yang menyebabkan sejumlah elemen antarmuka pengguna (seperti informasi perataan teks dan jendela modal editor blok) hanya muncul dalam bahasa Inggris.
+- Kami menambahkan terjemahan bahasa untuk blok Jetpack dan Petak Tata Letak.
+- Kami memperbaiki bug yang akan menyetel ulang pemformatan teks ke asal setelah menekan backspace. Aman, teman.
+- Sekarang, judul blok lebih dari satu baris pada menu penyisip rata tengah.
 
-Kami juga melakukan peningkatan lainnya, termasuk memperbaiki masalah pemangkasan di Pembaca, serta kemampuan merekomendasikan aplikasi ini ke teman-teman Anda pada layar Saya dan Tentang.
+Terakhir, baris "Bagikan WordPress pada teman" kembali ke posisi awal di layar Saya. Senang rasanya kembali bersama.

@@ -15,7 +15,7 @@ msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Make your WordPress site faster and safer."
+msgid "Faster, safer WordPress"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -38,15 +38,20 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v18.1-whats-new"
+msgctxt "v19.0-whats-new"
 msgid ""
-"Do you use the Embed block? For media that you embed on your site, you’ll now see an option to “Resize for smaller devices.” Toggle on to resize your content to fit your screen; toggle off to disable.\n"
+"What time is it? Our brand-new time zone selection screen knows. Get a suggested time zone based on your device and improve search while you’re at it.\n"
 "\n"
-"Enjoying the Blogging Reminders tool? We’ve added a new feature that lets you choose a specific time to receive a notification.\n"
+"If you’re using a free plan, video uploads are now limited to five minutes per file. Don’t worry, that won’t affect any videos you’ve already uploaded to your site.\n"
 "\n"
-"Need to close your account? (We hope you never leave us!) But if needed, you now have the ability to do so in your Account Settings.\n"
+"We’ve also made some changes to the block editor:\n"
 "\n"
-"Geotagging posts is no longer supported on the web, so we’ve removed the Location option under Post Settings.\n"
+"- We solved translation issues that caused some user interface elements (like text alignment information and the block editor modal window) to only appear in English.\n"
+"- We added language translation for Jetpack and Layout Grid blocks.\n"
+"- We fixed a bug that would reset text formatting to default after hitting backspace. Bold on, friends.\n"
+"- Multi-line block titles are now center-aligned in the inserter menu.\n"
+"\n"
+"Finally, the “Share WordPress with a friend” row is back where it belongs on the Me screen. Reunited and it feels so good.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

@@ -153,7 +153,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
+        title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
         configureFilterBarTopConstraint()
         updateGhostableTableViewOptions()
@@ -731,6 +731,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
+
+        WPAnalytics.track(.postListShareAction, properties: propertiesForAnalytics())
 
         let shareController = PostSharingController()
         shareController.sharePost(post, fromView: view, inViewController: self)

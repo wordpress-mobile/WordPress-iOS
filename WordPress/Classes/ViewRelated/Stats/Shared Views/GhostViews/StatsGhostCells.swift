@@ -29,6 +29,7 @@ class StatsGhostBaseCell: UITableViewCell {
     }
 }
 
+class StatsGhostGrowAudienceCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopHeaderCell: StatsGhostBaseCell, NibLoadable {

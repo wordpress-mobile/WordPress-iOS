@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-09-03 00:38:16+0000 */
+/* Translation-Revision-Date: 2022-01-19 15:27:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -12,13 +12,16 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nPara confirmar, digite novamente seu nome de usuário antes de encerrar.\n\n";
 
+/* No comment provided by engineer. */
+" \/ year" = " \/ ano";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "Carregamento assíncrono de imagens";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Botão \"Mais\"";
 
-/* No comment provided by engineer. */
+/* Description for the restore action. $1$@ is a placeholder for the selected date. */
 "%1$@ is the selected point for your restore." = "%1$@. Você escolheu voltar o site para este ponto.";
 
 /* Description for the download backup action. $1$@ is a placeholder for the selected date. */
@@ -36,6 +39,12 @@
 /* Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'. */
 "%1$@ to fix threats." = "%1$@ para corrigir ameaças.";
 
+/* Singular label displaying number of comments. %1$d is a placeholder for the number of Comments. */
+"%1$d Comment" = "%1$d Comment";
+
+/* Plural label displaying number of comments. %1$d is a placeholder for the number of Comments. */
+"%1$d Comments" = "%1$d Comments";
+
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
    Singular format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Like" = "%1$d curtida";
@@ -52,6 +61,9 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d posts não visualizados";
+
+/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
+"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s transformado em %2$s";
@@ -78,7 +90,6 @@
 "%@ comment" = "Comentário %@";
 
 /* Accessibility label for comments button (plural)
-   Number of Comments
    Number of Comments per Page */
 "%@ comments" = "%@ comentários";
 
@@ -124,9 +135,6 @@
 
 /* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
-/* No comment provided by engineer. */
-"%@, %@" = "%1$@, %2$@";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
 "%@, %@." = "%1$@, %2$@.";
@@ -229,11 +237,20 @@ translators: Block name. %s: The localized block name */
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s convertido para blocos normais";
 
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s embed block previews are coming soon" = "%s embed block previews are coming soon";
+
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has URL set" = "URL já definido para %s";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s has no URL set" = "URL não definido para %s";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s link" = "%s link";
+
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"%s previews not yet available" = "Visualização de %s ainda indisponível";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Ícone do %s";
@@ -247,8 +264,7 @@ translators: Block name. %s: The localized block name */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Sem título)";
 
-/* (no title)
-   Lets a user know that a local draft does not have a title. */
+/* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(sem título)";
 
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
@@ -329,9 +345,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Um arquivo contém um padrão de código malicioso";
 
-/* Accessibility hint for My Sites list. */
-"A list of sites on this account." = "Uma lista de sites dessa conta.";
-
 /* Story Intro welcome title */
 "A new way to create and publish engaging content on your site." = "Uma nova maneira de criar e publicar conteúdos atraentes em seu site.";
 
@@ -343,6 +356,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Uma tag com nome '%@' já existe.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"A tip to grow your audience" = "A tip to grow your audience";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Um título para o site";
@@ -372,6 +388,9 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "ADICIONAR LINK";
 
 /* No comment provided by engineer. */
+"ADD MEDIA" = "ADD MEDIA";
+
+/* No comment provided by engineer. */
 "ADD VIDEO" = "Adicionar vídeo";
 
 /* Register Domain - Address information field section header title */
@@ -385,6 +404,9 @@ translators: Block name. %s: The localized block name */
 
 /* My Profile 'About me' label */
 "About Me" = "Sobre mim";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "Sobre o WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Sobre o WordPress para iOS";
@@ -408,7 +430,8 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Conta encerrada";
 
-/* Displays the list of third-party libraries we use */
+/* Displays the list of third-party libraries we use
+   Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Agradecimentos";
 
 /* Theme Activate action title */
@@ -451,9 +474,6 @@ translators: Block name. %s: The localized block name */
 /* Action for Media Picker to indicate selection of media. The argument in the string represents the number of elements (as numeric digits) selected */
 "Add %@" = "Adicionar %@";
 
-/* Header title for new domain section of Domains. */
-"Add A New Domain" = "Adicionar um novo domínio";
-
 /* No comment provided by engineer. */
 "Add Block After" = "Adicionar bloco depois";
 
@@ -490,6 +510,9 @@ translators: Block name. %s: The localized block name */
 /* Hint for the reader CSS URL field */
 "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css" = "Adicione uma URL de CSS personalizada aqui para ser carregada no Leitor. Se você estiver rodando o Calypso localmente, pode ser algo como: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Adicionar um domínio";
+
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left. " = "Adicione um novo bloco a qualquer momento tocando no ícone + na barra de ferramentas no canto inferior esquerdo.";
 
@@ -525,9 +548,6 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint text for adding an image to a new user account. */
 "Add image, or avatar, to represent this new account." = "Adicionar uma imagem ou avatar para representar essa nova conta.";
-
-/* No comment provided by engineer. */
-"Add link" = "Adicionar link";
 
 /* No comment provided by engineer. */
 "Add link text" = "Adicionar texto do link";
@@ -585,6 +605,9 @@ translators: Block name. %s: The localized block name */
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Endereço";
 
+/* No comment provided by engineer. */
+"Address Settings" = "Address Settings";
+
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Linha de endereço %@";
 
@@ -611,7 +634,8 @@ translators: Block name. %s: The localized block name */
    Title of all Comments filter. */
 "All" = "Tudo";
 
-/* Information about redeeming domain credit on site dashboard. */
+/* Footer of the free domain registration section for a paid plan.
+   Information about redeeming domain credit on site dashboard. */
 "All WordPress.com plans include a custom domain name. Register your free premium domain now." = "Todos os planos do WordPress.com incluem um domínio personalizado. Registre seu domínio gratuito agora.";
 
 /* An option in a list. Automatically approve all comments */
@@ -757,7 +781,7 @@ translators: Block name. %s: The localized block name */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "A autenticação com a Apple falhou.\nCertifique-se de que está conectado ao iCloud com um Apple ID que usa autenticação de dois fatores.";
 
 /* No comment provided by engineer. */
-"Applies the setting" = "Applies the setting";
+"Applies the setting" = "Aplicar configurações";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
 "Apply" = "Aplicar";
@@ -768,7 +792,8 @@ translators: Block name. %s: The localized block name */
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Aprovar";
 
-/* Title of approved Comments filter. */
+/* Button title for Approved comment state.
+   Title of approved Comments filter. */
 "Approved" = "Aprovado";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
@@ -851,7 +876,7 @@ translators: Block name. %s: The localized block name */
 "Are you sure you want to update?" = "Tem certeza de que deseja atualizar?";
 
 /* No comment provided by engineer. */
-"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Arrange your content into columns, add Call to Action buttons, and overlay images with text.";
+"Arrange your content into columns, add Call to Action buttons, and overlay images with text." = "Organize seu conteúdo em colunas, adicione botões de ação e imagens sobrepostas por texto.";
 
 /* An example tag used in the login prologue screens. */
 "Art" = "Arte";
@@ -886,7 +911,8 @@ translators: Block name. %s: The localized block name */
 
 /* Author label.
    Label for list of stats by content author.
-   The author of the post or page. */
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Autor";
 
 /* Voiceover description of a button that allows the user to filter posts by author. */
@@ -901,6 +927,9 @@ translators: Block name. %s: The localized block name */
 
 /* The plugin can not be manually updated or deactivated */
 "Auto-managed on this site" = "Gerenciado automaticamente neste site";
+
+/* Label indicating that a domain name registration will automatically renew */
+"Auto-renew enabled" = "Auto-renovação ativada";
 
 /* Discussion Settings Title
    Settings: Comments Approval settings */
@@ -920,6 +949,12 @@ translators: Block name. %s: The localized block name */
 
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Compartilhe automaticamente novos posts em suas redes sociais.";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automatically share new posts to your social media to start bringing that audience over to your site.";
+
+/* Title of button that displays information about the other apps available from Automattic */
+"Automattic Family" = "Automattic Family";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Atualizações automáticas";
@@ -981,6 +1016,9 @@ translators: Block name. %s: The localized block name */
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Gráfico em barras exibindo os visitantes dos posts mais recentes";
 
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Be the first to comment";
+
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Seja o primeiro a fazer um comentário.";
 
@@ -1039,17 +1077,14 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Lista de bloqueios";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocos te permitem focar em escrever seu conteúdo sabendo que todas as ferramentas de formatação que precisa estão lá para te ajudar a passar sua mensagem.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocos são conteúdos que você pode inserir, reorganizar e personalizar sem precisar saber programar. Blocos são um jeito fácil e moderno para você criar layouts estilosos.";
 
-/* Opens the WordPress Mobile Blog */
+/* Opens the WordPress Mobile Blog
+   Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
-
-/* Noun. Title. Links to the blog's Posts screen.
-   Title of the screen showing the list of posts for a blog. */
-"Blog Posts" = "Posts de blog";
 
 /* Create new Blog Post button title */
 "Blog post" = "Post de blog";
@@ -1089,7 +1124,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "Proteção contra ataques por força bruta";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "Criar layouts";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Lista";
@@ -1161,6 +1196,7 @@ translators: Block name. %s: The localized block name */
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
    Cancel action on the app extension modules screen.
+   Cancel action on the app extension post type picker screen.
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
@@ -1290,7 +1326,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "Altere, adicione ou remova as páginas do seu site.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Alterações na imagem destacada não serão afetadas pelos botões desfazer\/refazer.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Alterando nome de exibição";
@@ -1330,6 +1366,9 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Check your site stats" = "Veja as estatísticas de seu site";
 
+/* Title of a Quick Start Tour */
+"Check your site title" = "Check your site title";
+
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Verificando compras...";
 
@@ -1363,20 +1402,23 @@ translators: Block name. %s: The localized block name */
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Escolher um novo ícone para o aplicativo";
 
+/* A text for title label on Login epilogue screen */
+"Choose a site to open." = "Choose a site to open.";
+
 /* Title of a Quick Start Tour */
 "Choose a theme" = "Escolha um tema";
 
 /* Label for Publish time picker */
 "Choose a time" = "Escolha um horário";
 
+/* Title of a Quick Start Tour */
+"Choose a unique site icon" = "Choose a unique site icon";
+
 /* No comment provided by engineer. */
 "Choose audio" = "Escolher áudio";
 
 /* Title to choose date range in a calendar */
 "Choose date range" = "Escolher um intervalo de datas";
-
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Choose domain" = "Escolha o domínio";
 
 /* No comment provided by engineer. */
 "Choose file" = "Escolher arquivo";
@@ -1419,6 +1461,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Address information field City */
 "City" = "Cidade";
+
+/* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
+"Claim your free domain" = "Resgatar seu domínio gratuito";
 
 /* Name of setting configured when a site uses a list of blog posts as its homepage */
 "Classic Blog" = "Blog clássico";
@@ -1498,6 +1543,12 @@ translators: Block name. %s: The localized block name */
 /* Title displayed for selection of custom app icons that have colorful backgrounds. */
 "Colorful backgrounds" = "Fundos coloridos";
 
+/* translators: %d: column index. */
+"Column %d" = "Coluna %d";
+
+/* No comment provided by engineer. */
+"Column Settings" = "Column Settings";
+
 /* No comment provided by engineer. */
 "Columns Settings" = "Configurações de colunas";
 
@@ -1508,12 +1559,17 @@ translators: Block name. %s: The localized block name */
 "Comics" = "HQs";
 
 /* Header for a comment's content, shown when editing a comment.
-   Text for the 'comment' when there is 1 or 0 comments
-   User facing, navigation bar title */
+   Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Comentário";
 
 /* Title for the `comment likes` setting */
 "Comment Likes" = "Curtir comentários";
+
+/* Message displayed when approving a comment succeeds. */
+"Comment approved." = "Comentário aprovado.";
+
+/* Message displayed when deleting a comment succeeds. */
+"Comment deleted." = "Comentário excluído.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Comentário excluído";
@@ -1521,7 +1577,24 @@ translators: Block name. %s: The localized block name */
 /* Displayed when a Comment is spammed */
 "Comment has been marked as Spam" = "Comentário marcado como spam";
 
-/* Filters Comments Notifications
+/* Message displayed when spamming a comment succeeds. */
+"Comment marked as spam." = "Comentário marcado como spam.";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "Comentário movido para a lixeira.";
+
+/* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
+ My First Post */
+"Comment on" = "Comentar";
+
+/* Message displayed when pending a comment succeeds. */
+"Comment set to pending." = "Comentário configurado como pendente.";
+
+/* Hint for users to grow their audience by commenting on other blogs. */
+"Comment to start making connections." = "Comment to start making connections.";
+
+/* Comments table header label.
+   Filters Comments Notifications
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
@@ -1534,6 +1607,9 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Comentários";
+
+/* Displayed on the post details page when there are no post comments and commenting is closed. */
+"Comments are closed" = "Comments are closed";
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Comentários sobre";
@@ -1563,7 +1639,13 @@ translators: Block name. %s: The localized block name */
 "Completed: Check your site stats" = "Concluído: Verificar as estatísticas do site";
 
 /* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site title" = "Completed: Check your site title";
+
+/* The Quick Start Tour title after the user finished the step. */
 "Completed: Choose a theme" = "Concluído: Escolher um tema";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Choose a unique site icon" = "Completed: Choose a unique site icon";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Continue with site setup" = "Concluído: Continuar com as configurações do site";
@@ -1573,9 +1655,6 @@ translators: Block name. %s: The localized block name */
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Edit your homepage" = "Concluído: Edite sua página inicial";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Enable post sharing" = "Concluído: Ative compartilhamento de posts";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Concluído: Explorar planos";
@@ -1590,10 +1669,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Review site pages" = "Concluído: Revise as páginas do site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Set your site title" = "Concluído: Definir o título do site";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload a site icon" = "Concluído: Envie um ícone do site";
+"Completed: Social sharing" = "Completed: Social sharing";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: View your site" = "Concluído: Ver seu site";
@@ -1623,11 +1699,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a Quick Start Tour */
 "Congrats on finishing Quick Start  🎉" = "Parabéns por finalizar o início rápido 🎉";
 
-/* Title on domain credit redemption success screen */
-"Congratulations" = "Parabéns!";
-
 /* Subtitle of the congratulation screen that appears when all the tasks are completed */
 "Congratulations on completing your list. A job well done." = "Parabéns por concluir sua lista. Ótimo trabalho!";
+
+/* Title of domain name purchase success screen */
+"Congratulations on your purchase!" = "Parabéns por sua compra!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1636,14 +1712,14 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "Conectar usando outra conta";
 
-/* Link to connect a site, shown after logging in. */
-"Connect a site" = "Conectar um site";
-
-/* Link to connect another site, shown after logging in. */
-"Connect another site" = "Conectar outro site";
+/* Title for button that will open up the social media Sharing screen. */
+"Connect more networks" = "Conectar mais redes";
 
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Conecte-se para compartilhar posts automaticamente no %@";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"Connect with other bloggers by following, liking and commenting on their posts." = "Connect with other bloggers by following, liking and commenting on their posts.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Conecte suas redes sociais favoritas para compartilhar automaticamente novos posts com amigos.";
@@ -1692,7 +1768,8 @@ translators: Block name. %s: The localized block name */
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team. */
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Entre em contato com o suporte";
 
 /* Button label for contacting support
@@ -1705,8 +1782,7 @@ translators: Block name. %s: The localized block name */
 /* Displays the number of blocks, words and characters in text */
 "Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Estrutura do conteúdo\nBlocos: %1$li, Palavras: %2$li, Caracteres: %3$li";
 
-/* Action title to dismiss domain credit redemption success screen
-   Apply changes localy to single block edition in the web block editor
+/* Apply changes localy to single block edition in the web block editor
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page. */
@@ -1733,6 +1809,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Prosseguindo with Apple";
 
+/* No comment provided by engineer. */
+"Convert to link" = "Converter em link";
+
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Culinária";
 
@@ -1741,6 +1820,9 @@ translators: Block name. %s: The localized block name */
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copiar link para o comentário";
+
+/* translators: Copy URL from the clipboard, https://sample.url */
+"Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
 
 /* No comment provided by engineer. */
 "Copy block" = "Copiar bloco";
@@ -1765,6 +1847,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Não foi possível verificar as compras do site.";
+
+/* The app failed to disable notifications for the subscription */
+"Could not disable notifications" = "Não foi possível desativar as notificações";
+
+/* The app failed to enable notifications for the subscription */
+"Could not enable notifications" = "Não foi possível ativar as notificações";
 
 /* Title of a prompt. */
 "Could not follow site" = "Não foi possível seguir o site";
@@ -1826,8 +1914,17 @@ translators: Block name. %s: The localized block name */
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Não foi possível carregar as tags. Toque para tentar novamente.";
 
+/* Indicating that referrer couldn't be marked as spam */
+"Couldn't mark as spam" = "Não foi possível marcar como spam";
+
+/* Indicating that referrer couldn't be unmarked as spam */
+"Couldn't unmark as spam" = "Não foi possível desmarcar como spam";
+
 /* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
 "Couldn't upload the featured image" = "Não foi possível enviar a imagem destacada";
+
+/* Error title displayed when unable to close user account. */
+"Couldn’t close account automatically" = "Couldn’t close account automatically";
 
 /* Message to show while media data source is finding the number of items available. */
 "Counting media items..." = "Contando itens de mídia...";
@@ -1891,7 +1988,8 @@ translators: Block name. %s: The localized block name */
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Criar uma tag";
 
-/* Title for a button that when tapped starts the site creation process */
+/* A button title
+   Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Criar um novo site";
 
 /* Text shown when the account has no sites. */
@@ -1911,6 +2009,12 @@ translators: Block name. %s: The localized block name */
 
 /* Button title for download backup action */
 "Create downloadable file" = "Criar arquivo para baixar";
+
+/* No comment provided by engineer. */
+"Create embed" = "Criar mídia incorporada";
+
+/* No comment provided by engineer. */
+"Create link" = "Criar link";
 
 /* Customize Insights description */
 "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Crie seu painel personalizado e escolha quais relatórios visualizar. Foque nas informações que você mais se importa.";
@@ -1971,6 +2075,9 @@ translators: Block name. %s: The localized block name */
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Restaurando no momento: %1$@";
+
+/* No comment provided by engineer. */
+"Custom URL" = "Custom URL";
 
 /* Placeholder for Invite People message field. */
 "Custom message…" = "Mensagem personalizada…";
@@ -2082,7 +2189,8 @@ translators: Block name. %s: The localized block name */
 /* Delete option in the confirmation alert when deleting a page from the trash.
    Delete option in the confirmation alert when deleting a post from the trash.
    Label for a button permanently deletes a page.
-   Label for the delete post option. Tapping permanently deletes a post. */
+   Label for the delete post option. Tapping permanently deletes a post.
+   Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Excluir permanentemente";
 
 /* Title of the confirmation alert when deleting a page from the trash.
@@ -2149,7 +2257,8 @@ translators: Block name. %s: The localized block name */
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Desativado";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Descartar";
 
@@ -2185,6 +2294,9 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descubra e siga blogs que você ama";
 
+/* Title for button that will open up the follow topics screen. */
+"Discover blogs to follow" = "Descubra blogs para seguir";
+
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Descobrir mais tópicos";
 
@@ -2203,11 +2315,11 @@ translators: Block name. %s: The localized block name */
    Share extension error dialog cancel button label.
    Spoken accessibility label
    The title of a button to close the classic editor deprecation notice alert dialog.
+   Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
-   Verb. User action to dismiss error alert when failing to load media item.
-   Verb. User action to dismiss error alert when failing to share media. */
+   Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Dispensar";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2216,13 +2328,13 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Dispensar anúncios";
 
+/* Accessibility hint for a done button that dismisses the current modal screen */
+"Dismiss screen" = "Dismiss screen";
+
 /* Display Name label text.
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nome de exibição";
-
-/* No comment provided by engineer. */
-"Display post date" = "Exibir a data do post";
 
 /* Unconfigured stats all-time widget helper text */
 "Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Mostrar as estatísticas do seu site aqui. Configure no aplicativo do WordPress nas estatísticas do site.";
@@ -2233,6 +2345,12 @@ translators: Block name. %s: The localized block name */
 /* Unconfigured stats today widget helper text */
 "Display your site stats for today here. Configure in the WordPress app in your site stats." = "Mostrar as estatísticas de hoje de seu site aqui. Configure no aplicativo do WordPress nas estatísticas do site.";
 
+/* Title for button that will open up the follow topics screen. */
+"Do it again" = "Do it again";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Document, %@";
+
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Documento: %@";
 
@@ -2242,14 +2360,19 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Donos de domínios precisam compartilhar as informações de contato em um banco de dados público para todos os domínios. Com a proteção de privacidade, nós publicaremos nossos próprios dados ao invés dos seus e encaminharemos qualquer comunicação para você de forma privada.";
 
-/* Title for the Domains list */
+/* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domínios";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect to %@" = "Domains purchased on this site will redirect to %@";
+
+/* Description for the first domain purchased with a free plan. */
+"Domains purchased on this site will redirect users to " = "Domínios comprados neste site redirecionarão visitantes para ";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Não tem uma conta? _Cadastre-se_";
 
-/* A button title
-   Accessibility label for the Done button in the Me screen.
+/* Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2353,6 +2476,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Toque duas vezes para selecionar uma imagem";
 
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Double tap to select default font size";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Double tap to select font size";
+
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Toque duas vezes para selecionar a opção";
 
@@ -2361,6 +2490,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap to undo last change" = "Toque duas vezes para desfazer a última alteração";
+
+/* No comment provided by engineer. */
+"Double tap to view embed options." = "Toque duas vezes para ver as opções de mídia incorporada.";
 
 /* Download button title */
 "Download" = "Baixar";
@@ -2381,6 +2513,9 @@ translators: Block name. %s: The localized block name */
 /* Name for the status of a draft post. */
 "Draft" = "Rascunho";
 
+/* Description of a Quick Start Tour */
+"Draft and publish a post." = "Draft and publish a post.";
+
 /* Title of the drafts filter.  This filter shows a list of draft posts.
    Title of the drafts header in search list. */
 "Drafts" = "Rascunhos";
@@ -2396,14 +2531,12 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Duplicar bloco";
 
 /* No comment provided by engineer. */
-"EDIT LINK" = "EDITAR LINK";
-
-/* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Cada bloco possui suas próprias configurações. Para encontrá-las, toque em um bloco. As configurações dele aparecerão na barra de ferramentas na parte inferior da tela.";
 
 /* Edit the post.
    Editing GIF alert default action button.
    Edits a Comment
+   Edits the comment
    Label for a button that opens the Edit Page view controller
    Label for the edit post button. Tapping displays the editor.
    User action to edit media details.
@@ -2450,6 +2583,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editar novos posts e páginas com o editor de blocos.";
+
+/* Title for button that will open up the blogging reminders screen. */
+"Edit reminders" = "Editar lembretes";
 
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editar botões de compartilhamento";
@@ -2499,6 +2635,7 @@ translators: Block name. %s: The localized block name */
 "Email Address" = "Endereço de e-mail";
 
 /* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
 "Email address" = "Endereço de e-mail";
@@ -2532,13 +2669,10 @@ translators: Block name. %s: The localized block name */
 "Embed caption. Empty" = "Incorporar legenda. Vazia";
 
 /* No comment provided by engineer. */
-"Embed link" = "Incorporar link";
-
-/* No comment provided by engineer. */
 "Embed media" = "Incorporar mídia";
 
 /* No comment provided by engineer. */
-"Embed previews not yet available" = "Visualização de conteúdo incorporado ainda não disponível";
+"Embed options" = "Opções de mídia incorporada";
 
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
@@ -2550,8 +2684,13 @@ translators: Block name. %s: The localized block name */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL vazia";
 
-/* Button title for the enable site notifications action. */
+/* Button title for the enable site notifications action.
+   Button title to enable notifications for new comments
+   Title of button to enable publicize. */
 "Enable" = "Ativar";
+
+/* Text shown when the site doesn't have the Publicize module enabled. */
+"Enable Publicize" = "Ativar Publicize";
 
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for Site" = "Habilitar o início rápido para este site";
@@ -2559,10 +2698,16 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Ativar estatísticas do site";
 
+/* Describes a switch component that toggles in-app notifications for a followed post. */
+"Enable in-app notifications" = "Ativar notificações no aplicativo";
+
+/* Hint for the action button that enables notification for new comments */
+"Enable in-app notifications?" = "Ativar notificações no aplicativo?";
+
 /* NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone. */
 "Enable microphone access to record sound in your videos." = "Ative o acesso ao microfone para gravar áudio em seus vídeos.";
 
-/* Title of a Quick Start Tour */
+/* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Ative compartilhamento de post";
 
 /* Message prompting user to enable site notifications. */
@@ -2628,8 +2773,7 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Insira as credenciais do servidor";
 
-/* General error title
-   Generic error alert title
+/* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Erro";
@@ -2649,8 +2793,10 @@ translators: Block name. %s: The localized block name */
 /* Message shown when approving a Comment fails. */
 "Error approving comment" = "Erro ao aprovar comentário";
 
-/* No comment (test)
-   This secondary message is displayed if a user encounters a general error. */
+/* Message displayed when approving a comment fails. */
+"Error approving comment." = "Erro ao aprovar comentário.";
+
+/* This secondary message is displayed if a user encounters a general error. */
 "Error communicating with the server, please try again" = "Erro de comunicação com o servidor. Tente novamente.";
 
 /* There was an error deactivating a plugin, placeholder is the plugin name */
@@ -2658,6 +2804,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when deleting a Comment fails. */
 "Error deleting comment" = "Erro ao excluir comentário";
+
+/* Message displayed when deleting a comment fails. */
+"Error deleting comment." = "Erro ao excluir comentário.";
 
 /* There was an error disabling autoupdates for a plugin, placeholder is the plugin name */
 "Error disabling autoupdates for %@." = "Erro ao desabilitar atualizações automáticas para %@.";
@@ -2685,6 +2834,12 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when marking a Comment as spam fails. */
 "Error marking comment as spam" = "Erro ao marcar comentário como spam";
+
+/* Message displayed when spamming a comment fails. */
+"Error marking comment as spam." = "Erro ao marcar comentário como spam.";
+
+/* Message displayed when trashing a comment fails. */
+"Error moving comment to trash." = "Erro ao mover o comentário para a lixeira.";
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Um erro ocorreu\ndurante o carregamento";
@@ -2718,6 +2873,9 @@ translators: Block name. %s: The localized block name */
 
 /* Generic message shown when there was an error trying to re-send email verification. */
 "Error sending verification email. Check your connection and try again." = "Erro ao enviar o e-mail de verificação. Verifique sua conexão e tente novamente.";
+
+/* Message displayed when pending a comment fails. */
+"Error setting comment to pending." = "Erro ao configurar o comentário como pendente.";
 
 /* Message shown when unapproving a Comment fails. */
 "Error unapproving comment" = "Erro ao desaprovar comentário";
@@ -2786,8 +2944,14 @@ translators: Block name. %s: The localized block name */
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Expande para selecionar uma área de menu diferente";
 
+/* Label indicating that a domain name registration has expired. */
+"Expired" = "Expirado";
+
 /* Title. Indicates an expiration date. */
 "Expires on" = "Expira em";
+
+/* Label indicating the date on which a domain name registration will expire. The %@ placeholder will be replaced with a date at runtime. */
+"Expires on %@" = "Expira em %@";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Explique sobre o que é este site;";
@@ -2908,9 +3072,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Tipo de arquivo";
 
-/* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass). */
-"Fill with password manager" = "Preencher com gerenciador de senhas";
-
 /* Title of the filter button in the Reader */
 "Filter" = "Filtrar";
 
@@ -2949,9 +3110,13 @@ translators: Block name. %s: The localized block name */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Corrigindo ameaças";
 
-/* Prompt to follow a blog.
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Seguir";
+
+/* Button title. Follow the comments on a post. */
+"Follow Conversation" = "Follow Conversation";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Seguir conversa por e-mail";
@@ -2964,6 +3129,9 @@ translators: Block name. %s: The localized block name */
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Seguir tópicos";
+
+/* Guide for users to follow topics. */
+"Follow topics you're interested in and we'll find some blogs you might like." = "Follow topics you're interested in and we'll find some blogs you might like.";
 
 /* Caption displayed in promotional screens shown during the login flow.
    Shown in the prologue carousel (promotional screens) during first launch. */
@@ -3001,11 +3169,11 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
 "Following %1$@" = "Seguindo %1$@";
 
-/* Verb. Button title. The user is following the comments on a post. */
-"Following conversation by email" = "Seguindo conversa por e-mail";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Seguindo novos tópicos...";
+
+/* The app successfully subscribed to the comments for the post */
+"Following this conversation" = "Seguindo esta conversa";
 
 /* Filters Follows Notifications */
 "Follows" = "Seguidos";
@@ -3016,11 +3184,11 @@ translators: Block name. %s: The localized block name */
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Segue o blog.";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post. */
-"Follows the comments on a post by email." = "Segue os comentários em um post por e-mail.";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "Follows the tag." = "Segue a tag.";
+
+/* No comment provided by engineer. */
+"Font Size" = "Tamanho da fonte";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Futebol";
@@ -3040,6 +3208,9 @@ translators: Block name. %s: The localized block name */
 /* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Biblioteca gratuita de fotos";
 
+/* Label shown for domains that will be free for the first year due to the user having a premium plan with available domain credit. */
+"Free for the first year " = "Gratuito no primeiro ano ";
+
 /* Explanatory text for clearing device media cache. */
 "Free up storage space on this device by deleting temporary media files. This will not affect the media on your site." = "Libere espaço de armazenamento nesse dispositivo apagando arquivos temporários. Isso não afetará os arquivos em seu site.";
 
@@ -3048,6 +3219,9 @@ translators: Block name. %s: The localized block name */
 
 /* Button title displayed in popup indicating date of change on another device */
 "From another device" = "De outro dispositivo";
+
+/* No comment provided by engineer. */
+"From clipboard" = "From clipboard";
 
 /* Button title displayed in popup indicating date of change on device */
 "From this device" = "Deste dispositivo";
@@ -3092,8 +3266,14 @@ translators: Block name. %s: The localized block name */
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Comece escolhendo entre uma grande variedade de modelos prontos ou crie uma página vazia.";
 
+/* No comment provided by engineer. */
+"Get support" = "Get support";
+
 /* Appended to latest post summary text when the post does not have data. */
 "Get the ball rolling and increase your post views by sharing your post." = "Aumente as visualizações de seu post compartilhando-o.";
+
+/* Title of the card that starts the purchase of the first redirected domain in the Domains Dashboard. */
+"Get your domain" = "Obtenha seu domínio";
 
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Receba notificações rapidamente";
@@ -3230,11 +3410,11 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "Cabeçalho 6";
 
-/* Help button
-   Open editor help options */
+/* Help button */
 "Help" = "Ajuda";
 
 /* Link to Help section
+   Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ajuda e suporte";
 
@@ -3319,6 +3499,9 @@ translators: Block name. %s: The localized block name */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Me inspiro muito no trabalho do fotógrafo Cameron Karsten. Vou tentar uma dessas técnicas em meu próximo";
 
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "Endereço IP";
+
 /* Title of a button style */
 "Icon & Text" = "Ícone e texto";
 
@@ -3370,17 +3553,11 @@ translators: Block name. %s: The localized block name */
 /* Hint for image link on image settings. */
 "Image Link" = "Link da imagem";
 
-/* No comment provided by engineer. */
-"Image Link URL" = "Link da imagem";
-
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Tamanho da imagem";
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Legenda da imagem. %s";
-
-/* No comment provided by engineer. */
-"Image settings" = "Configurações da imagem";
 
 /* Hint for image title on image settings. */
 "Image title" = "Título da imagem";
@@ -3396,6 +3573,15 @@ translators: Block name. %s: The localized block name */
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Em poucas palavras, explique sobre o que é este site.";
+
+/* Title of button to enable publicize. */
+"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
+
+/* The app successfully disabled notifications for the subscription */
+"In-app notifications disabled" = "Notificações no aplicativo desativadas";
+
+/* The app successfully enabled notifications for the subscription */
+"In-app notifications enabled" = "Notificações no aplicativo ativadas";
 
 /* Describes a status of a plugin */
 "Inactive" = "Inativo";
@@ -3497,6 +3683,9 @@ translators: Block name. %s: The localized block name */
 /* Stories intro header title */
 "Introducing Story Posts" = "Apresentando os posts de Story";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Invalid Email Address";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Endereço do site inválido";
 
@@ -3547,9 +3736,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a notification displayed prompting the user to create a new blog post */
 "It's time to blog!" = "Está na hora de publicar!";
-
-/* Description of a Quick Start Tour */
-"It's time! Draft and publish your very first post." = "Está na hora! Escreva e publique seu primeiro post.";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -3624,13 +3810,23 @@ translators: Block name. %s: The localized block name */
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "O Jetpack otimizará as suas imagens e as entregará a partir de um servidor localizado mais perto dos seus visitantes. Usando redes globais de entrega de conteúdo (CDNs) você aumentará a velocidade de carregamento do seu site.";
 
+/* Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world */
+"Join From Anywhere" = "Join From Anywhere";
+
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Participe de uma conversa: comente em posts de blogs que você segue.";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post.
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Continuar editando";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"Keep blogging and check back to see visitors arriving at your site." = "Keep blogging and check back to see visitors arriving at your site.";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Fique atualizado sobre o desempenho de seu site.";
@@ -3683,11 +3879,17 @@ translators: Block name. %s: The localized block name */
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Saiba mais...";
 
+/* Description for a prompt asking if users want to try out the quick start checklist. */
+"Learn the basics with a quick walk through." = "Learn the basics with a quick walk through.";
+
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "À esquerda";
 
 /* Title displayed for selection of custom app icons that may be removed in a future release of the app. */
 "Legacy Icons" = "Ícones antigos";
+
+/* Title of button which shows a list of legal documentation such as privacy policy and acknowledgements */
+"Legal and More" = "Legal and More";
 
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Podemos ajudar você";
@@ -3731,6 +3933,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite atingido Tente novamente em 1 minuto. Tentar novamente antes disso aumentará o tempo que precisa esperar antes de a restrição ser eliminada. Se acha que isso é um erro, contate o suporte.";
+
+/* No comment provided by engineer. */
+"Line Height" = "Altura da linha";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -3847,7 +4052,6 @@ translators: Block name. %s: The localized block name */
 "Local" = "Local";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.
-   Local
    Title of the Local Changes Badge */
 "Local changes" = "Alterações locais";
 
@@ -3902,8 +4106,7 @@ translators: Block name. %s: The localized block name */
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Fazer logout do WordPress?";
 
-/* Error message shown when a user is trying to login.
-   Login Request Expired */
+/* Login Request Expired */
 "Login Request Expired" = "Solicitação de login expirada";
 
 /* No comment provided by engineer. */
@@ -3964,11 +4167,20 @@ translators: Block name. %s: The localized block name */
 /* Marks a notification as unread */
 "Mark Unread" = "Marcar como não lido";
 
+/* Marks comment as spam */
+"Mark as Spam" = "Mark as Spam";
+
 /* Label for the Mark as Sticky option in post settings. */
 "Mark as Sticky" = "Marcar como fixo";
 
+/* Action title for unmarking referrer as spam */
+"Mark as not spam" = "Marcar como não é spam";
+
 /* An option to mark a post as seen. */
 "Mark as seen" = "Marcar como lido";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Marcar como spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Marcar como spam.";
@@ -4080,9 +4292,6 @@ translators: Block name. %s: The localized block name */
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
-/* No comment provided by engineer. */
-"Minimum height" = "Altura mínima";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Diversas vulnerabilidades";
 
@@ -4105,7 +4314,6 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
    Label for the more post button. Tapping displays an action sheet with post options.
-   More
    Spoken accessibility label */
 "More" = "Mais";
 
@@ -4121,6 +4329,9 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for global related posts. */
 "More on WordPress.com" = "Mais no WordPress.com";
+
+/* No comment provided by engineer. */
+"More support options" = "More support options";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Horário mais popular";
@@ -4171,7 +4382,8 @@ translators: Block name. %s: The localized block name */
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
    Trash option in the trash confirmation alert.
-   Trash option in the trash page confirmation alert. */
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
 "Move to Trash" = "Mover para a lixeira";
 
 /* No comment provided by engineer. */
@@ -4197,13 +4409,11 @@ translators: Block name. %s: The localized block name */
 "My Profile" = "Meu perfil";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
-   Header for a single site, shown after logging in
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Meu site";
 
-/* Header for list of multiple sites, shown after logging in
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
 "My Sites" = "Meus sites";
 
 /* Siri Suggestion to open My Sites */
@@ -4232,8 +4442,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Navigates to customize the gradient" = "Ir para a personalização de gradiente";
 
-/* translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+/* translators: %s: Select control button label e.g. Small
+translators: %s: Select control button label e.g. \"Button width\" */
+"Navigates to select %s" = "Navegar para selecionar %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Ir para a folha de conteúdo anterior";
@@ -4252,6 +4463,9 @@ translators: Block name. %s: The localized block name */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Precisa de atualização";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"Never expires" = "Nunca expira";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Novos";
@@ -4289,7 +4503,8 @@ translators: Block name. %s: The localized block name */
 /* Sort Order */
 "Newest first" = "Mais novos primeiro";
 
-/* Next action on share extension editor screen.
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4374,6 +4589,7 @@ translators: Block name. %s: The localized block name */
 "No comments" = "Sem comentários";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Nenhum comentário";
 
@@ -4414,8 +4630,7 @@ translators: Block name. %s: The localized block name */
 /* Title displayed when the user has removed all Insights from display. */
 "No insights added yet" = "Ainda não foram adicionadas informações";
 
-/* No comment (test)
-   This primary error message is displayed if a user encounters an issue with network reachability. */
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
 "No internet connection" = "Sem conexão com a internet";
 
 /* Error message shown when the user is browsing Notifications without an internet connection.
@@ -4488,6 +4703,12 @@ translators: Block name. %s: The localized block name */
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Nenhum post.";
 
+/* No comment provided by engineer. */
+"No preview available" = "Nenhuma visualização disponível";
+
+/* String to display in place of the site address, in case it was not retrieved from the backend. */
+"No primary site address found" = "Nenhum endereço principal encontrado";
+
 /* A message title */
 "No recent posts" = "Nenhuma publicação recente";
 
@@ -4503,7 +4724,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Nenhuma tag corresponde à sua pesquisa";
 
-/* Button label for denying our request to re-allow push notifications */
+/* Button label for denying our request to re-allow push notifications
+   Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
 "No thanks" = "Não obrigado";
 
 /* Text displayed when theme name search has no matches */
@@ -4530,9 +4752,6 @@ translators: Block name. %s: The localized block name */
 /* Display value for Support email field if there is no user email address. */
 "Not Set" = "Não informado";
 
-/* Not this time button title shown in alert asking if users want to try out the quick start checklist. */
-"Not This Time" = "Agora não";
-
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Não há espaço suficiente para enviar";
 
@@ -4552,6 +4771,12 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Note: Column layout may vary between themes and screen sizes" = "Nota: O modelo da coluna pode variar entre os temas e tamanhos de tela";
+
+/* No comment provided by engineer. */
+"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+
+/* No comment provided by engineer. */
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nada encontrado.";
@@ -4614,7 +4839,6 @@ translators: Block name. %s: The localized block name */
    Button title. An acknowledgement of the message displayed in a prompt.
    Confirmation of action
    Default action
-   Dismiss button of alert letting users know we've upgraded the quick start checklist
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    OK
@@ -4657,13 +4881,10 @@ translators: Block name. %s: The localized block name */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Assim que esse link de convite for desativado, ninguém poderá usá-lo para ingressar em sua equipe. Você tem certeza?";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Assim que você se acostumar com os nomes dos blocos, você poderá adicionar um bloco digitando uma barra seguida pelo nome do bloco. Por exemplo, \/imagem ou \/titulo.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Assim que você criar um site no WordPress.com, você poderá republicar o conteúdo que você curtir em seu próprio site.";
-
-/* Accessibility label for 1 password button */
-"One Password button" = "Botão do One Password";
 
 /* Subtitle displayed when the user has removed all Insights from display. */
 "Only see the most relevant stats. Add insights to fit your needs." = "Ver apenas as estatísticas mais relevantes. Adicione informações para atender às suas necessidades.";
@@ -4688,6 +4909,9 @@ translators: Block name. %s: The localized block name */
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Abrir configurações do dispositivo";
+
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Open Jetpack Security settings";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -4717,11 +4941,11 @@ translators: Block name. %s: The localized block name */
 /* Menus label for checkbox when editig item as a link. */
 "Open link in new window\/tab" = "Abrir o link em uma nova janela";
 
+/* VoiceOver hint. Informs the user that the button allows the user to access post subscription settings. */
+"Open subscription settings for the post" = "Abrir configurações de inscrição do post";
+
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Abrir a tela Eu";
-
-/* Accessibility hint for 1 password button */
-"Opens One Password manager" = "Abre o gerente do One Password";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Abrir a página no Safari";
@@ -4787,8 +5011,12 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Phone number section header title */
 "PHONE" = "Telefone";
 
+/* No comment provided by engineer. */
+"Padding" = "Padding";
+
 /* Menu item label for linking a page.
-   Noun. Type of content being selected is a blog page */
+   Noun. Type of content being selected is a blog page
+   Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
 /* Prompts the user that a restored page was moved to the drafts list. */
@@ -4838,7 +5066,9 @@ translators: Block name. %s: The localized block name */
 "Page updated" = "Página atualizada";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   This is the section title */
+   The item to select during a guided tour.
+   This is the section title
+   Title of the screen showing the list of pages for a blog. */
 "Pages" = "Páginas";
 
 /* Comments Paging
@@ -4880,12 +5110,12 @@ translators: Block name. %s: The localized block name */
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Colar sem formatação";
 
-/* Status for Media object that is being processed locally.
+/* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Pendente";
 
 /* Name for the status of a post pending review.
-   Pending review
    Title of the Pending Review Badge */
 "Pending review" = "Revisão pendente";
 
@@ -4913,9 +5143,6 @@ translators: Block name. %s: The localized block name */
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
 "Photos provided by Pexels" = "Fotos fornecidas por Pexels";
-
-/* Register domain - Suggested Domain description for the screen */
-"Pick an available address" = "Escolha um endereço disponível";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Escolha seu nome de usuário";
@@ -4979,6 +5206,9 @@ translators: Block name. %s: The localized block name */
 "Please enter a valid Last Name" = "Digite um sobrenome válido";
 
 /* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Organization" = "Digite uma organização válida.";
+
+/* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid Postal Code" = "Digite um CEP válido";
 
 /* Register Domain - Domain contact information validation error message for an input field */
@@ -4989,6 +5219,9 @@ translators: Block name. %s: The localized block name */
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Digite um endereço válido";
+
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Digite um endereço de e-mail válido.";
@@ -5083,7 +5316,8 @@ translators: Block name. %s: The localized block name */
 "Popular languages" = "Idiomas populares ";
 
 /* Menu item label for linking a post.
-   Noun. Type of content being selected is a blog post */
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Post";
 
 /* Title for selecting categories for a post */
@@ -5112,9 +5346,6 @@ translators: Block name. %s: The localized block name */
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Post por %1$@, de %2$@";
 
-/* No comment provided by engineer. */
-"Post content settings" = "Configurações do conteúdo do post";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Post criado em %@";
 
@@ -5123,9 +5354,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Falha ao enviar post";
-
-/* No comment provided by engineer. */
-"Post meta settings" = "Configurações de metadados do post";
 
 /* A short message explaining that a post was moved to the trash bin. */
 "Post moved to trash." = "Post movido para a lixeira.";
@@ -5173,13 +5401,17 @@ translators: Block name. %s: The localized block name */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Atividade de publicação";
 
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
+
 /* Informative tip shown to user in the Blogging Reminders Settings screen. */
 "Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Publicar regularmente pode ajudar a manter seus leitores engajados e a atrair novos visitantes ao seu site.";
 
 /* All Time Stats 'Posts' label
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
-   Title of a Reader tab showing Posts matching a user's search query */
+   Title of a Reader tab showing Posts matching a user's search query
+   Title of the screen showing the list of posts for a blog. */
 "Posts" = "Posts";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
@@ -5256,12 +5488,16 @@ translators: Block name. %s: The localized block name */
    Primary Web Site */
 "Primary Site" = "Site principal";
 
+/* Primary site address label, used in the site address section of the Domains Dashboard. */
+"Primary site address" = "Endereço do site primário";
+
 /* Label for the privacy setting
    Privacy settings section header
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Privacidade";
 
-/* Opens the Privacy Policy Web */
+/* Opens the Privacy Policy Web
+   Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Política de Privacidade";
 
 /* Register Domain - Privacy Protection section header title */
@@ -5350,12 +5586,14 @@ translators: Block name. %s: The localized block name */
 /* Immediately publish button title */
 "Publish immediately" = "Publicar imediatamente";
 
+/* Text displayed in the share extension's summary view. It describes the publish page action. */
+"Publish page on:" = "Publicar página em:";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publicar post em:";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
-   Published
    Title of the published filter. This filter shows a list of posts that the user has published.
    Title of the published header in search list. */
 "Published" = "Publicado";
@@ -5368,6 +5606,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label that describes in which blog the user is publishing to */
 "Publishing To" = "Publicando para";
+
+/* A short message that informs the user a page is being published to the server from the share extension. */
+"Publishing page..." = "Publicando página...";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publicando post...";
@@ -5392,6 +5633,9 @@ translators: Block name. %s: The localized block name */
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Início rápido";
+
+/* Title for button allowing users to rate the app in the App Store */
+"Rate Us" = "Rate Us";
 
 /* Prompts the user to rate us on the store */
 "Rate us on the App Store" = "Avalie-nos na App Store";
@@ -5453,7 +5697,7 @@ translators: Block name. %s: The localized block name */
 "Referrer" = "Referência";
 
 /* Period Stats 'Referrers' header */
-"Referrers" = "Referers";
+"Referrers" = "Referências";
 
 /* Button label to refres a web page
    The loading view button title displayed when an error occurred */
@@ -5467,7 +5711,6 @@ translators: Block name. %s: The localized block name */
 
 /* Install Plugin dialog register domain button text
    Register domain - Title for the Register domain button
-   Register domain - Title for the Suggested domains screen
    Title for the Register domain screen */
 "Register domain" = "Registrar domínio";
 
@@ -5534,6 +5777,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Remove as Featured Image " = "Remover imagem destacada";
 
+/* No comment provided by engineer. */
+"Remove block" = "Remover bloco";
+
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remover do resumo";
 
@@ -5563,6 +5809,9 @@ translators: Block name. %s: The localized block name */
 
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Remover os próximos passos esconderá todas as dicas nesse site. Essa ação não pode ser desfeita.";
+
+/* Label indicating the date on which a domain name registration will be renewed. The %@ placeholder will be replaced with a date at runtime. */
+"Renews on %@" = "Renovação em %@";
 
 /* Button to confirm the replacement of a featured image. */
 "Replace" = "Substituir";
@@ -5601,11 +5850,13 @@ translators: Block name. %s: The localized block name */
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Texto de resposta";
 
-/* Placeholder text for replying to a comment */
-"Reply to comment…" = "Responder ao comentário...";
+/* Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.
+   Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
+   Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
+"Reply to %1$@" = "Responder para %1$@";
 
 /* Placeholder text for replying to a post */
-"Reply to post…" = "Responder ao post…";
+"Reply to post" = "Reply to post";
 
 /* The title of a button that triggers reporting of a post from the user's reader. */
 "Report this post" = "Reportar este post";
@@ -5735,7 +5986,7 @@ translators: Block name. %s: The localized block name */
 "Rich Content" = "Rich Content";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "Editor Rich-Text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "À direita";
@@ -5764,8 +6015,14 @@ translators: Block name. %s: The localized block name */
    Title of action button to save a Reader post to read later. */
 "Save" = "Salvar";
 
+/* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page. */
+"Save %ld photos as a draft page on:" = "Salvar %ld fotos como um rascunho de página em:";
+
 /* Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post. */
 "Save %ld photos as a draft post on:" = "Salvar %ld fotos como um rascunho de post em:";
+
+/* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page. */
+"Save 1 photo as a draft page on:" = "Salvar uma foto como um rascunho de página em:";
 
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Salvar 1 foto como um rascunho de post em:";
@@ -5780,11 +6037,13 @@ translators: Block name. %s: The localized block name */
    WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets. */
 "Save as Draft" = "Salvar como rascunho";
 
+/* Text displayed in the share extension's summary view that describes the save draft page action. */
+"Save draft page on:" = "Salvar rascunho de página em:";
+
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Salvar post como rascunho em:";
 
-/* Accessibility label for the 'Save Post' button.
-   Save post */
+/* Accessibility label for the 'Save Post' button. */
 "Save post" = "Salvar post";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
@@ -5802,6 +6061,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility hint for the 'Save Post' button. */
 "Saves this post for later." = "Salvar esse post para depois.";
+
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Salvando página...";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Salvando o post...";
@@ -5837,7 +6099,6 @@ translators: Block name. %s: The localized block name */
 "Schedule Now" = "Agendar agora";
 
 /* Name for the status of a scheduled post
-   Scheduled
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
@@ -5882,6 +6143,12 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Botão de pesquisa. O texto atual do botão é";
 
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Pesquisar domínios";
+
+/* title of the button that searches the first domain. */
+"Search for a domain" = "Pesquisar por um domínio";
+
 /* No comment provided by engineer. */
 "Search input field." = "Campo de pesquisa.";
 
@@ -5925,7 +6192,8 @@ translators: Block name. %s: The localized block name */
    Shown in the prologue carousel (promotional screens) during first launch. */
 "See comments and notifications in real time." = "Veja comentários e notificações em tempo real.";
 
-/* Select action on the app extension category picker screen. Saves the selected categories for the post. */
+/* Select action on the app extension category picker screen. Saves the selected categories for the post.
+   Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Selecionar";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -5985,6 +6253,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Select a layout" = "Selecionar um modelo";
 
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "Selecionar domínio";
+
 /* Accessibility hint for actions when displaying media items. */
 "Select media." = "Selecione a mídia.";
 
@@ -6027,14 +6298,21 @@ translators: Block name. %s: The localized block name */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "A mídia selecionada não esta disponível.";
 
-/* translators: %s: Select control option value e.g: \"Auto, 25%\". */
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Selecionado: %s";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Selected: Default";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Ao selecionar um local de menu diferente as alterações do menu atual serão perdidas. Tem certeza de que deseja continuar?";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Ao selecionar um menu diferente as alterações do menu atual serão perdidas. Tem certeza de que deseja continuar?";
+
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Selection not allowed" = "Selection not allowed";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Seleciona este domínio para ser usado em seu site.";
@@ -6100,14 +6378,14 @@ translators: Block name. %s: The localized block name */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Configurar Jetpack";
 
+/* Title for button that will open up the blogging reminders screen. */
+"Set up blogging reminders" = "Configurar lembretes para publicação";
+
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Defina lembretes de publicação para dias nos quais deseja publicar.";
 
 /* Title of the Blogging Reminders Settings screen. */
 "Set your blogging reminders" = "Configurar lembretes para publicação";
-
-/* Title of a Quick Start Tour */
-"Set your site title" = "Defina o título do seu site";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Configurando o tema";
@@ -6134,6 +6412,7 @@ translators: Block name. %s: The localized block name */
    Button label to share a post
    Button label to share a web page
    Share the post.
+   Shares the comment URL
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Compartilhar";
@@ -6152,6 +6431,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Compartilhar link";
+
+/* Title for button allowing users to share information about the app with friends, such as via Messages */
+"Share with Friends" = "Share with Friends";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -6173,6 +6455,9 @@ translators: Block name. %s: The localized block name */
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Erro no compartilhamento";
 
+/* A hint to users that they've set up post sharing. */
+"Sharing is set up!" = "Compartilhamento está configurado!";
+
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Exibir cabeçalho";
 
@@ -6190,6 +6475,9 @@ translators: Block name. %s: The localized block name */
 
 /* Label for configuration switch to enable/disable related posts */
 "Show Related Posts" = "Exibir posts relacionados";
+
+/* Button title. When tapped, the quick start checklist will be shown. */
+"Show me around" = "Show me around";
 
 /* Accessibility label for the 'Show password' button in the login page's password field.
    Accessibility label for the “Show password“ button in the login page's password field. */
@@ -6212,6 +6500,9 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Mostrando senha";
+
+/* Description of a Quick Start Tour */
+"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Exibido publicamente quando você comenta em blogs.";
@@ -6276,16 +6567,14 @@ translators: Block name. %s: The localized block name */
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Site";
 
+/* Title of the Domains Dashboard. */
+"Site Domains" = "Domínios do site";
+
 /* Accessibility label for site icon button */
 "Site Icon" = "Ícone do site";
 
 /* Title for the Language Picker View */
 "Site Language" = "Idioma do site";
-
-/* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
-   Title of the screen showing the list of pages for a blog. */
-"Site Pages" = "Páginas do site";
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Redirecionamento de site";
@@ -6376,6 +6665,9 @@ translators: Block name. %s: The localized block name */
 /* Follower Totals label for social media followers */
 "Social" = "Social";
 
+/* Title of a Quick Start Tour */
+"Social sharing" = "Social sharing";
+
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Alguns blocos tem configurações extras. Toque o ícone de configurações no canto inferior direito do bloco para ver mais opções.";
 
@@ -6385,9 +6677,6 @@ translators: Block name. %s: The localized block name */
 /* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Algo deu errado";
-
-/* Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Something went wrong, please try again." = "Algo deu errado. Tente novamente.";
 
 /* This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server. */
 "Something went wrong. Please check your connectivity and try again." = "Algo deu errado. Verifique sua conexão com a Internet e tente novamente.";
@@ -6465,16 +6754,15 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Sort Order */
 "Sort By" = "Ordenar por";
 
-/* No comment provided by engineer. */
-"Sorting and filtering" = "Ordenação e filtros";
-
-/* Opens the Github Repository Web */
+/* Opens the Github Repository Web
+   Title of button that displays the App's source code information */
 "Source Code" = "Código-fonte";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Espaço usado";
 
-/* Marks comment as spam.
+/* Button title for Spam comment state.
+   Marks comment as spam.
    Spam
    Title of spam Comments filter. */
 "Spam" = "Spam";
@@ -6575,6 +6863,9 @@ translators: Block name. %s: The localized block name */
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Deixou de seguir a conversa com sucesso";
 
+/* Label displayed to the user left of the time zone suggestion button */
+"Suggestion:" = "Suggestion:";
+
 /* Setting: WordPress.com Suggestions
    Suggested domains */
 "Suggestions" = "Sugestões";
@@ -6607,6 +6898,12 @@ translators: Block name. %s: The localized block name */
 
 /* Switches from the classic editor to block editor. */
 "Switch to block editor" = "Mudar para o editor de blocos";
+
+/* Message of the notice shown when toggling the HTML editor mode */
+"Switched to HTML mode" = "Switched to HTML mode";
+
+/* Message of the notice shown when toggling the Visual editor mode */
+"Switched to Visual mode" = "Switched to Visual mode";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Alterna para o tamanho de cabeçalho 1";
@@ -6690,9 +6987,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toque aqui para mostrar ajuda";
 
-/* No comment provided by engineer. */
-"Tap to add content" = "Toque para adicionar conteúdo";
-
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Toque para cancelar o upload.";
 
@@ -6708,11 +7002,20 @@ translators: Block name. %s: The localized block name */
 /* Accessibility hint */
 "Tap to dismiss this card" = "Toque para dispensar este cartão";
 
+/* Accessibility hint for referrer details row. */
+"Tap to display referrer web page." = "Toque para exibir a página do referenciador.";
+
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Toque para digitar um valor personalizado";
 
 /* No comment provided by engineer. */
 "Tap to hide the keyboard" = "Toque para ocultar o teclado";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as not spam." = "Toque para marcar um referenciador como não é spam.";
+
+/* Accessibility hint for referrer action row. */
+"Tap to mark referrer as spam." = "Toque para marcar um referenciador como spam.";
 
 /* VoiceOver Hint to inform the user what action the expand button performs */
 "Tap to see all the tags for this post" = "Toque para ver todas as tags deste post";
@@ -6747,7 +7050,8 @@ translators: Block name. %s: The localized block name */
 /* The underlined title sentence */
 "Terms and Conditions" = "Termos e condições";
 
-/* Opens the Terms of Service Web */
+/* Opens the Terms of Service Web
+   Title of button that displays the App's terms of service */
 "Terms of Service" = "Termos de serviço";
 
 /* Menu item label for linking a testimonial post. */
@@ -6757,7 +7061,10 @@ translators: Block name. %s: The localized block name */
 "Text Only" = "Apenas texto";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text color" = "Text color";
+
+/* No comment provided by engineer. */
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Os controles de formatação de texto estão posicionados na barra de ferramentas acima do teclado ao editar um bloco de texto";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -6824,6 +7131,9 @@ translators: Block name. %s: The localized block name */
 "The app can't recognize the server response. Please, check the configuration of your site." = "O aplicativo não consegue reconhecer a resposta do servidor. Verifique a configuração do seu site.";
 
 /* No comment provided by engineer. */
+"The basics" = "The basics";
+
+/* No comment provided by engineer. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "O certificado para este servidor é inválido. Você talvez esteja conectando a um servidor que está fingindo ser \"%@\", o que poderia colocar suas informações confidenciais em risco.";
 
 /* Message informing the user that posts page cannot be edited */
@@ -6859,6 +7169,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Não foi possível adicionar a mídia à biblioteca de mídia.";
+
+/* Error shown when a module can not be enabled */
+"The module couldn't be activated." = "O módulo não pôde ser ativado.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "O número de posts a serem mostrados por página.";
@@ -6929,6 +7242,9 @@ translators: Block name. %s: The localized block name */
 "There has been a problem while loading your Notification Settings" = "Ocorreu um problema durante a tentativa de carregar suas Configurações de notificação";
 
 /* Error displayed if a comment fails to get updated */
+"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
+
+/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Ocorreu um erro inesperado ao editar o comentário";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6959,7 +7275,6 @@ translators: Block name. %s: The localized block name */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Ocorreu um problema ao se conectar com %@. Conecte-se novamente para continuar divulgando";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
-   No comment (test)
    The Jetpack view title used when an error occurred
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "Ocorreu um problema";
@@ -7103,9 +7418,6 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "A conta não pode ser encerrada pois possui assinaturas ativas.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"This user account could not be closed. Please contact us by going to Me > Help & Support screen." = "Esta conta não pode ser encerrada. Entre em contato através da tela Eu > Ajuda e suporte.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Isso será incluido nos tuítes quando os usuários utilizarem o botão de compartilhamento do Twitter.";
@@ -7177,6 +7489,9 @@ translators: Block name. %s: The localized block name */
    NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library. */
 "To add photos or videos to your posts." = "Adicionar fotos ou vídeos aos seus posts.";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"To close this account now, contact our support team." = "To close this account now, contact our support team.";
+
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Digite seu endereço de e-mail e nome para continuar.";
 
@@ -7205,7 +7520,7 @@ translators: Block name. %s: The localized block name */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Para continuar usando esta conta do Google, primeiro faça login com a sua senha do WordPress.com. Isto só será solicitado uma vez.";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Para remover um bloco, selecione o bloco e clique nos três pontos no canto inferior direito do bloco para ver as configurações. A partir daí, escolha a opção de remover o bloco.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Para tirar fotos ou gravar vídeos para usar nos seus posts.";
@@ -7286,6 +7601,7 @@ translators: Block name. %s: The localized block name */
 "Transform block…" = "Transformar bloco...";
 
 /* Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
    Trash button title
    Trashes a comment
    Trashes the comment */
@@ -7299,8 +7615,7 @@ translators: Block name. %s: The localized block name */
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
-   Title of trashed Comments filter.
-   Trashed */
+   Title of trashed Comments filter. */
 "Trashed" = "Na lixeira";
 
 /* Connect when the SSL certificate is invalid */
@@ -7365,11 +7680,15 @@ translators: Block name. %s: The localized block name */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Notificações do site ativadas";
 
-/* Launches the Twitter App */
+/* Launches the Twitter App
+   Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nome de usuário do Twitter";
+
+/* Type menu item in share extension. */
+"Type" = "Type";
 
 /* No comment provided by engineer. */
 "Type a URL" = "Informe um URL";
@@ -7434,9 +7753,6 @@ translators: Block name. %s: The localized block name */
 /* Notice title when following a site fails. */
 "Unable to follow site" = "Não foi possível seguir o site";
 
-/* Error message displayed when we were unable to copy the URL for an item in the user's media library. */
-"Unable to get URL for media item." = "Não foi possível obter o URL do item de mídia.";
-
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Não foi possível carregar as páginas no momento.";
 
@@ -7468,9 +7784,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ." = "Não foi possível encontrar um site WordPress na URL. Toque em 'Precisa de ajuda?' para exibir as perguntas frequentes.";
-
-/* Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption. */
-"Unable to register domain" = "Não foi possível registrar o domínio";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Não foi possível restaurar o site";
@@ -7535,7 +7848,8 @@ translators: Block name. %s: The localized block name */
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Não foi possível adicionar imagem ao arquivo";
 
-/* Unapproves a Comment */
+/* Unapproves a Comment
+   Unapproves a comment */
 "Unapprove" = "Desaprovar";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
@@ -7552,6 +7866,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Sublinhado";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button title. Reverts the previous notification operation
    Revert an operation
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
@@ -7564,6 +7879,9 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for unfollowing a site
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Deixar de seguir %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow conversation" = "Deixar de seguir conversa";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation by email" = "Deixar de seguir conversa por e-mail";
@@ -7688,9 +8006,6 @@ translators: Block name. %s: The localized block name */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Fazer upload de mídia";
 
-/* Title of a Quick Start Tour */
-"Upload a site icon" = "Envie um ícone do site";
-
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Falha ao carregar";
@@ -7732,6 +8047,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message displayed on a post's card when the post has failed to upload */
 "Uploading post..." = "Enviando post...";
+
+/* Message of an alert informing users that the video they are trying to select is not allowed. */
+"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Fazendo upload...";
@@ -7789,8 +8107,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "E-mail de verificação enviado, confira sua caixa de entrada.";
 
-/* Push Authentication Alert Title
-   Title of a prompt. A user must verify their login attempt. */
+/* Push Authentication Alert Title */
 "Verify Log In" = "Verificar login";
 
 /* Notice displayed after domain credit redemption success. */
@@ -7825,6 +8142,9 @@ translators: Block name. %s: The localized block name */
 /* Message shown if a video export is canceled by the user. */
 "Video export canceled." = "A exportação do vídeo foi cancelada.";
 
+/* Title of an alert informing users that the video they are trying to select is not allowed. */
+"Video not uploaded" = "Video not uploaded";
+
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Vídeo, %@";
 
@@ -7849,6 +8169,9 @@ translators: Block name. %s: The localized block name */
    The menu item to select during a guided tour. */
 "View Site" = "Ver site";
 
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "View all comments";
+
 /* Displays More Rows */
 "View all…" = "Visualizar todos…";
 
@@ -7862,6 +8185,9 @@ translators: Block name. %s: The localized block name */
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Ver mais";
+
+/* Description for view count. Singular. */
+"View to your site so far" = "Visualização em seu site até o momento";
 
 /* Title of a Quick Start Tour */
 "View your site" = "Veja seu site";
@@ -7880,6 +8206,9 @@ translators: Block name. %s: The localized block name */
    Stats Views Label
    Today's Stats 'Views' label */
 "Views" = "Visualizações";
+
+/* Description for view count. Singular. */
+"Views to your site so far" = "Visualizações em seu site até o momento";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -7942,8 +8271,8 @@ translators: Block name. %s: The localized block name */
 /* View title during the Google auth process. */
 "Waiting..." = "Aguardando...";
 
-/* Title of alert asking if users want to try out the quick start checklist. */
-"Want a little help getting started?" = "Quer uma ajudinha para começar?";
+/* Title for a prompt asking if users want to try out the quick start checklist. */
+"Want a little help managing this site with the app?" = "Want a little help managing this site with the app?";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -8189,8 +8518,14 @@ translators: Block name. %s: The localized block name */
 /* Example Reader feed title */
 "Web News" = "Novidades da internet";
 
+/* Describes the web address section in the comment detail screen. */
+"Web address" = "Endereço (URL)";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Semana começa em";
+
+/* Setting: indicates if the site reports its Weekly Roundup */
+"Weekly Roundup" = "Resumo semanal";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Semanas";
@@ -8229,20 +8564,11 @@ translators: Block name. %s: The localized block name */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We’ll still attempt to restore your site." = "Ainda tentaremos restaurar seu site.";
 
-/* Body text of alert asking if users want to try out the quick start checklist. */
-"We’ll walk you through the basics of building and growing your site" = "Nós te guiaremos pelos passos básicos para construir e melhorar seu site";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Estamos trabalhando duro para adicionar compatibilidade de visualização a %s. Enquanto isso, você pode visualizar o mídia incorporada diretamente no página.";
 
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the page." = "Estamos trabalhando para adicionar suporte à pré-visualização de conteúdo incorporado. Enquanto isso, você pode visualizar o conteúdo incorporado diretamente na página.";
-
-/* No comment provided by engineer. */
-"We’re working hard on adding support for embed previews. In the meantime, you can preview the embedded content on the post." = "Estamos trabalhando para adicionar suporte à pré-visualização de conteúdo incorporado. Enquanto isso, você pode visualizar o conteúdo incorporado diretamente no post.";
-
-/* Body text of alert letting users know we've upgraded the quick start checklist. */
-"We’ve added more tasks to help you grow your audience." = "Adicionamos mais dicas para ajudar a aumentar sua audiência.";
-
-/* Title of alert letting users know we've upgraded the quick start checklist. */
-"We’ve made some changes to your checklist" = "Fizemos algumas alterações na lista";
+/* translators: %s: embed block variant's label e.g: \"Twitter\". */
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Estamos trabalhando para adicionar suporte à pré-visualização de %s. Enquanto isso, você pode visualizar a mídia incorporada diretamente no post.";
 
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "Atualizamos os ícones personalizados de nosso aplicativo para um visual mais moderno. Agora há 10 novos estilos para escolher ou você pode continuar usando o atual.";
@@ -8289,6 +8615,9 @@ translators: Block name. %s: The localized block name */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Assim que você fizer alterações no site, você poderá ver o histórico de atividades aqui.";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"When you publish your next post it will be automatically shared to your connected networks." = "When you publish your next post it will be automatically shared to your connected networks.";
 
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Qual versão você gostaria de editar?";
@@ -8403,6 +8732,9 @@ translators: Block name. %s: The localized block name */
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "Página do plugin no WordPress.org";
 
+/* Title of button that displays the Automattic Work With Us web page */
+"Work With Us" = "Trabalhe conosco";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mapa do mundo mostrando visualizações por país.";
 
@@ -8418,6 +8750,9 @@ translators: Block name. %s: The localized block name */
 /* Button title. Opens the editor to write a new post.
    Opens the editor to write a new post. */
 "Write Post" = "Escrever post";
+
+/* Placeholder text for inline compose view */
+"Write a reply" = "Write a reply";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Escreva uma resposta…";
@@ -8446,9 +8781,6 @@ translators: Block name. %s: The localized block name */
    Yes */
 "Yes" = "Sim";
 
-/* Allow button title shown in alert asking if users want to try out the quick start checklist. */
-"Yes, Help Me" = "Sim, me ajude";
-
 /* Phrase displayed to begin a quick start tour that's been suggested. */
 "Yes, show me" = "Sim, me mostre";
 
@@ -8457,7 +8789,7 @@ translators: Block name. %s: The localized block name */
 "Yesterday" = "Ontem";
 
 /* Main message on dialog that prompts user to confirm or cancel the replacement of a featured image. */
-"You already have a featured image set. Do you want to replace it?" = "You already have a featured image set. Do you want to replace it?";
+"You already have a featured image set. Do you want to replace it?" = "Já há uma imagem destacada configurada. Você gostaria de substituí-la?";
 
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Você está prestes a alterar seu nome de usuário que, no momento, é %1$@. %2$@";
@@ -8480,6 +8812,9 @@ translators: Block name. %s: The localized block name */
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Você pode exibir as estatísticas de um único site na Central de Notificações\/Hoje do iOS.";
 
+/* No comment provided by engineer. */
+"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Você pode receber notificações de posts publicados em um site específico seguindo o site.";
 
@@ -8490,7 +8825,10 @@ translators: Block name. %s: The localized block name */
 "You can override these settings for individual posts." = "É possível substituir essas configurações para posts individuais.";
 
 /* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
+"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "Você pode reorganizar os blocos tocando em um bloco e, em seguida, nas setas para cima e para baixo que aparecem no canto inferior esquerdo do bloco para movê-lo acima ou abaixo de outros blocos.";
+
+/* A text for subtitle label on Login epilogue screen */
+"You can switch sites at any time." = "You can switch sites at any time.";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Você pode atualizar isso a qualquer momento em Meu site > Configurações do site";
@@ -8531,6 +8869,9 @@ translators: Block name. %s: The localized block name */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Você tem 1 site WordPress oculto.";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan" = "You have a free one-year domain registration with your plan";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Você tem atualizações premium ativas em seu site. Cancele estas atualizações antes de apagar seu site.";
 
@@ -8544,6 +8885,7 @@ translators: Block name. %s: The localized block name */
 "You have no reminders set." = "Não há nenhum lembrete configurado.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Você tem alterações não salvas.";
 
@@ -8578,11 +8920,15 @@ translators: Block name. %s: The localized block name */
  is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
 "You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Alterações foram feitas recentemente no post mas não foram salvas. Escolha a versão para carregar:\n\nDeste dispositivo\nSalva em %1$@\n\nDe outro dispositivo\nSalva em %2$@\n";
 
-/* Notification text - below a comment notification detail */
+/* Informs that the user has replied to this comment.
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Você respondeu esse comentário.";
 
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Parece que você instalou um plugin mobile proveniente de DudaMobile que está evitando o app de se conectar ao seu blog";
+
+/* A hint to users that they've set up blogging reminders. */
+"You set up blogging reminders" = "Você configurou lembretes para publicação";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Você não deve ignorar uma ameaça de segurança a menos que tenha certeza absoluta de que é inofensiva. Se você decidir ignorar essa ameaça, ela permanecerá em seu site \"%1$@\".";
@@ -8602,11 +8948,14 @@ translators: Block name. %s: The localized block name */
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Sem autorização para encerrar a conta.";
 
+/* A hint to users that they've set up reader discover. */
+"You've connected with other blogs" = "Você se conectou a outros blogs";
+
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Há alterações não salvas neste post";
 
-/* Header title for your domains section of Domains. */
-"Your Domains" = "Seus domínios";
+/* Header of the domains list section in the Domains Dashboard. */
+"Your Site Domains" = "Domínios do seu site";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ícone do seu site";
@@ -8638,8 +8987,14 @@ translators: Block name. %s: The localized block name */
 /* Title for the view when there aren't any Backups to display */
 "Your first backup will be ready soon" = "Seu primeiro backup estará pronto em breve";
 
+/* Title of the site address section in the Domains Dashboard. */
+"Your free WordPress.com address is" = "Your free WordPress.com address is";
+
 /* Error message when picked media cannot be imported into stories. */
 "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen." = "Não foi possível exportar seu arquivo de mídia. Caso o problema persista, entre em contato conosco por meio da tela Eu > Ajuda e suporte.";
+
+/* Details about recently acquired domain on domain credit redemption success screen */
+"Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Seu novo domínio %@ está sendo configurado. O domínio pode levar até 30 minutos para começar a funcionar.";
 
 /* shown in promotional screens during first launch */
 "Your notifications travel with you — see comments and likes as they happen." = "Suas notificações sempre com você - veja comentários e curtidas assim que ocorrerem.";
@@ -8655,6 +9010,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Seus posts, páginas e configurações serão enviadas a você para %@.";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"Your primary site address is what visitors will see in their address bar when visiting your website." = "O endereço principal do site é o que visitantes verão na barra de endereço do navegador ao acessar seu site.";
 
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "O retrocesso à versão anterior está demorando mais que o normal, verifique novamente em alguns minutos.";
@@ -8698,11 +9056,14 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Seu site deixará de enviar dados para o WordPress.com e os recursos do Jetpack pararão de funcionar. Você perderá o acesso ao seu site pelo aplicativo e você terá que adicioná-lo novamente com as credenciais do site.";
 
-/* Description of a Quick Start Tour */
-"Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look." = "Seus visitantes verão seu ícone em seus navegadores. Adicione um ícone personalizado para uma melhor aparência.";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Os dados de acesso ao seu site não serão armazenados e serão usados unicamente para instalar o Jetpack.";
+
+/* Describes the expected behavior when the user disables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email and a notification whenever a new comment is made." = "Você está seguindo esta conversa. Você receberá um e-mail e uma notificação sempre que um novo comentário for adicionado.";
+
+/* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
+"You’re following this conversation. You will receive an email whenever a new comment is made." = "Você está seguindo esta conversa. Você receberá um e-mail sempre que um novo comentário for adicionado.";
 
 /* Popup content about why this post is being opened in block editor */
 "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’." = "Agora você está usando o editor de blocos para novas páginas — ótimo! Se você quiser mudar para o editar clássico, acesse ‘Meu site’ > ‘Configurações do site’.";
@@ -8790,6 +9151,9 @@ translators: Block name. %s: The localized block name */
 /* Later today */
 "later today" = "mais tarde hoje";
 
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "marcado como spam";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "de";
 
@@ -8811,6 +9175,9 @@ translators: Block name. %s: The localized block name */
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL desconhecida";
 
+/* Indicating that referrer was unmarked as spam */
+"unmarked as spam" = "unmarked as spam";
+
 /* Noun. Describes a site's user. */
 "user" = "usuário";
 
@@ -8822,6 +9189,57 @@ translators: Block name. %s: The localized block name */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "visite a nossa página de documentação";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Melhores visualizações";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Posts";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "widget.alltime.preview.description";
+
+/* Title of all time widget */
+"widget.alltime.title" = "widget.alltime.title";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "widget.alltime.unconfigured.view.title";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "widget.thisweek.preview.description";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Esta semana";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "widget.thisweek.unconfigured.view.title";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Comentários";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Curtidas";
+
+/* Title of the nodata view in today widget */
+"widget.today.nodata.view.title" = "widget.today.nodata.view.title";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "widget.today.preview.description";
+
+/* Title of today widget */
+"widget.today.title" = "Hoje";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "widget.today.unconfigured.view.title";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "widget.today.view.unavailable.title";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Visualizações";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Visitantes";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "ficará indisponível no futuro.";
@@ -8846,9 +9264,6 @@ translators: Block name. %s: The localized block name */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
-
-/* Details about recently acquired domain on domain credit redemption success screen */
-"your new domain %@ is being set up. Your site is doing somersaults in excitement!" = "seu novo domínio %@ está sendo configurado. Seu site está dando saltos de alegria!";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "seu site";

@@ -140,6 +140,7 @@ class MediaVideoExporter: MediaExporter {
         let observer = VideoSessionProgressObserver(videoSession: session, progressHandler: { value in
             progress.completedUnitCount = Int64(Float(MediaExportProgressUnits.done) * value)
         })
+
         session.exportAsynchronously {
             observer.stop()
             guard session.status == .completed else {

@@ -237,30 +237,16 @@ extension AppExtensionsService {
     /// WILL schedule a local notification to fire upon success or failure.
     ///
     /// - Parameters:
-    ///   - title: Post title
-    ///   - body: Post content body
-    ///   - tags: Post tags
-    ///   - categories: Post categories
-    ///   - status: Post status
+    ///   - shareData: The shareData with which to create the post
     ///   - siteID: Site ID the post will be uploaded to
     ///   - onComplete: Completion handler executed after a post is uploaded to the server
     ///   - onFailure: The (optional) failure handler.
     ///
-    func saveAndUploadPost(title: String, body: String, tags: String?, categories: String?, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
-        guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
-            DDLogError("Unable to create the post object required for uploading.")
-            onFailure?()
-            return
-        }
-
-        if let tags = tags {
-            remotePost.tags = tags.arrayOfTags()
-        }
-
-        if let remoteCategories = RemotePostCategory.remotePostCategoriesFromString(categories) {
-            remotePost.categories = remoteCategories
-        }
-
+    func saveAndUploadPost(shareData: ShareData,
+                           siteID: Int,
+                           onComplete: CompletionBlock?,
+                           onFailure: FailureBlock?) {
+        let remotePost = RemotePost(shareData: shareData, siteID: siteID)
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
             // Schedule a local success notification
@@ -288,44 +274,23 @@ extension AppExtensionsService {
     /// Saves a new post + media items to the shared container db and then uploads it in the background. 
     ///
     /// - Parameters:
-    ///   - title: Post title
-    ///   - body: Post content body
-    ///   - tags: Post tags
-    ///   - categories: Post categories
-    ///   - status: Post status
+    ///   - shareData: The shareData with which to create the post
     ///   - siteID: Site ID the post will be uploaded to
     ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
     ///   - requestEnqueued: Completion handler executed when the media has been processed and background upload is scheduled.
     ///   - onFailure: The failure handler.
     ///
-    func uploadPostWithMedia(title: String,
-                             body: String,
-                             tags: String?,
-                             categories: String?,
-                             status: String,
-                             siteID: Int,
-                             localMediaFileURLs: [URL],
-                             requestEnqueued: @escaping CompletionBlock,
-                             onFailure: @escaping FailureBlock) {
+    func saveAndUploadPostWithMedia(shareData: ShareData,
+                                    siteID: Int,
+                                    localMediaFileURLs: [URL],
+                                    requestEnqueued: @escaping CompletionBlock,
+                                    onFailure: @escaping FailureBlock) {
         guard !localMediaFileURLs.isEmpty else {
             DDLogError("No media is attached to this upload request")
             onFailure()
             return
         }
-        guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
-            DDLogError("Unable to create the post object required for uploading.")
-            onFailure()
-            return
-        }
-
-        if let tags = tags {
-            remotePost.tags = tags.arrayOfTags()
-        }
-
-        if let remoteCategories = RemotePostCategory.remotePostCategoriesFromString(categories) {
-            remotePost.categories = remoteCategories
-        }
-
+        let remotePost = RemotePost(shareData: shareData, siteID: siteID)
         // Create the post & media upload ops
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
         let (uploadMediaOpIDs, allRemoteMedia) = createAndSaveRemoteMediaWithLocalURLs(localMediaFileURLs, siteID: NSNumber(value: siteID))

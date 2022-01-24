@@ -1,9 +1,12 @@
-Você usa o bloco de código incorporado? Em mídias incorporadas, você verá agora a opção "Redimensionar para dispositivos menores". Ative para adaptar seu conteúdo quando o navegador for redimensionado.
+Que horas são? Nossa mais nova tela de seleção de fuso horário sabe. Obtenha um fuso horário sugerido baseado no seu dispositivo e melhore a pesquisa enquanto estiver navegando por ela.
 
-Está gostando dos lembretes para publicação? Adicionamos uma opção que permite escolher um horário específico para ser notificado.
+Se você usa um plano gratuito, os uploads de vídeo agora são limitados a cinco minutos por arquivo. Não se preocupe, isso não afetará os vídeos que já foram enviados para o seu site.
 
-Precisa encerrar sua conta? (Esperamos que você não nos deixe nunca!) Mas se for necessário, agora é possível através do menu Configurações da conta.
+Nós também fizemos algumas alterações no editor de blocos:
 
-A geolocalização de posts não está mais disponível na web, então removemos a opção correspondente das Configurações do post.
+- Resolvemos problemas de tradução que faziam com que alguns elementos da interface do usuário aparecessem apenas em inglês (como informações de alinhamento do texto e a janela modal do editor de blocos).
+- Traduzimos os blocos do Jetpack e layout de grade.
+- Corrigimos um erro que redefinia a formatação do texto para o padrão quando a tecla Backspace era pressionada. Soltem a imaginação.
+- Os títulos com várias linhas dos blocos agora são centralizados no menu de inserção.
 
-Também fizemos outras melhoras, incluindo uma correção para um problema de recorte no Leitor e a opção de recomendar o app através dos menus Eu e Sobre.
+Por fim, a seção “Compartilhar o WordPress com um amigo” está de volta ao seu lugar na tela Meu perfil. É tão bom vê-los reunidos novamente.

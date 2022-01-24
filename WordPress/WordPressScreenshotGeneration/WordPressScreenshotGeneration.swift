@@ -1,3 +1,4 @@
+import ScreenObject
 import UIKit
 import UITestsFoundation
 import XCTest
@@ -31,22 +32,22 @@ class WordPressScreenshotGeneration: XCTestCase {
         super.tearDown()
     }
 
-    func testGenerateScreenshots() {
+    func testGenerateScreenshots() throws {
 
         // Get post editor screenshot
-        let postList = MySiteScreen()
+        let postList = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "fourpawsdoggrooming.wordpress.com")
             .gotoPostsScreen()
             .showOnly(.drafts)
 
-        let postEditorScreenshot = postList.selectPost(withSlug: "our-services")
+        let postEditorScreenshot = try postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
         if XCUIDevice.isPad {
-            BlockEditorScreen()
+            try BlockEditorScreen()
                 .thenTakeScreenshot(1, named: "Editor")
         } else {
-            BlockEditorScreen()
+            try BlockEditorScreen()
                 .openBlockPicker()
                 .thenTakeScreenshot(1, named: "Editor-With-BlockPicker")
                 .closeBlockPicker()
@@ -55,28 +56,28 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get a screenshot of the editor with keyboard (iPad only)
         if XCUIDevice.isPad {
-            let ipadScreenshot = MySiteScreen()
+            let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
                 .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
                 .gotoPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
-            BlockEditorScreen().selectBlock(containingText: "Ingredients")
+            try BlockEditorScreen().selectBlock(containingText: "Ingredients")
             sleep(imagesWaitTime) // wait for post images to load
-            BlockEditorScreen().thenTakeScreenshot(7, named: "Editor-With-Keyboard")
+            try BlockEditorScreen().thenTakeScreenshot(7, named: "Editor-With-Keyboard")
             ipadScreenshot.close()
         } else {
             postList.pop()
         }
 
         // Get My Site screenshot
-        let mySite = MySiteScreen()
+        let mySite = try MySiteScreen()
             .showSiteSwitcher()
             .switchToSite(withTitle: "tricountyrealestate.wordpress.com")
             .thenTakeScreenshot(4, named: "MySite")
 
         // Get Media screenshot
-        _ = mySite.gotoMediaScreen()
+        _ = try mySite.goToMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
         mySite.thenTakeScreenshot(6, named: "Media")
 
@@ -85,7 +86,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Get Stats screenshot
-        let statsScreen = mySite.gotoStatsScreen()
+        let statsScreen = try mySite.goToStatsScreen()
         statsScreen
             .dismissCustomizeInsightsNotice()
             .switchTo(mode: .months)
@@ -93,14 +94,14 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Discover screenshot
         // Currently, the view includes the "You Might Like" section
-        TabNavComponent()
-            .gotoReaderScreen()
+        try TabNavComponent()
+            .goToReaderScreen()
             .openDiscover()
             .thenTakeScreenshot(2, named: "Discover")
 
         // Get Notifications screenshot
-        let notificationList = TabNavComponent()
-            .gotoNotificationsScreen()
+        let notificationList = try TabNavComponent()
+            .goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
         if XCUIDevice.isPad {
             notificationList
@@ -111,7 +112,8 @@ class WordPressScreenshotGeneration: XCTestCase {
     }
 }
 
-extension BaseScreen {
+extension ScreenObject {
+
     @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = XCUIDevice.inDarkMode ? "dark" : "light"

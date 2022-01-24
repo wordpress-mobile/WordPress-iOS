@@ -45,7 +45,7 @@ private extension DomainSuggestion {
 
 // MARK: - DomainsServiceAdapter
 
-final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
+@objc final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: Properties
 
@@ -64,7 +64,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: LocalCoreDataService
 
-    override convenience init(managedObjectContext context: NSManagedObjectContext) {
+    @objc override convenience init(managedObjectContext context: NSManagedObjectContext) {
         let accountService = AccountService(managedObjectContext: context)
 
         let api: WordPressComRestApi
@@ -84,11 +84,22 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
         super.init(managedObjectContext: context)
     }
 
+    @objc func refreshDomains(siteID: Int, completion: @escaping (Bool) -> Void) {
+        domainsService.refreshDomains(siteID: siteID) { result in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
+    }
+
     // MARK: SiteAddressService
 
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
 
-        domainsService.getDomainSuggestions(base: query,
+        domainsService.getDomainSuggestions(query: query,
                                             segmentID: segmentID,
                                             quantity: domainRequestQuantity,
                                             success: { domainSuggestions in
@@ -105,7 +116,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
     }
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
-        domainsService.getDomainSuggestions(base: query,
+        domainsService.getDomainSuggestions(query: query,
                                             quantity: domainRequestQuantity,
                                             domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
                                             success: { domainSuggestions in

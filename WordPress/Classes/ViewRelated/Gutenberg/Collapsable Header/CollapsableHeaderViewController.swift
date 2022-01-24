@@ -331,12 +331,14 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         [defaultActionButton, secondaryActionButton].forEach { (button) in
             button?.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
+            button?.titleLabel?.adjustsFontSizeToFitWidth = true
             button?.layer.borderColor = seperator.cgColor
             button?.layer.borderWidth = 1
             button?.layer.cornerRadius = 8
         }
 
         primaryActionButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
+        primaryActionButton.titleLabel?.adjustsFontSizeToFitWidth = true
         primaryActionButton.backgroundColor = accentColor
         primaryActionButton.layer.cornerRadius = 8
     }

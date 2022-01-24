@@ -85,6 +85,17 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureBlockEditorSettings,
     /// Does the blog support the Layout grid block?
     BlogFeatureLayoutGrid,
+    /// Does the blog support the tiled gallery block?
+    BlogFeatureTiledGallery,
+    /// Does the blog support Facebook embed block?
+    BlogFeatureFacebookEmbed,
+    /// Does the blog support Instagram embed block?
+    BlogFeatureInstagramEmbed,
+    /// Does the blog support Loom embed block?
+    BlogFeatureLoomEmbed,
+    /// Does the blog support Smartframe embed block?
+    BlogFeatureSmartframeEmbed,
+
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -100,6 +111,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *dotComID;
 @property (nonatomic, strong, readwrite, nullable) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
+@property (nonatomic, strong, readwrite, nonnull) NSNumber *organizationID;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
 @property (nonatomic, strong, readwrite, nullable) NSSet<AbstractPost *> *posts;

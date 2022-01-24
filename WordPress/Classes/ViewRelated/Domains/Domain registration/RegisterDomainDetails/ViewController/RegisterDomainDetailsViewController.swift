@@ -50,6 +50,12 @@ class RegisterDomainDetailsViewController: UITableViewController {
         configureView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // This form is only used to redeem an existing domain credit
+        WPAnalytics.track(.domainsRegistrationFormViewed, properties: WPAnalytics.domainsProperties(usingCredit: true))
+    }
 
     private func configureView() {
         title = NSLocalizedString("Register domain",
@@ -181,6 +187,8 @@ class RegisterDomainDetailsViewController: UITableViewController {
 extension RegisterDomainDetailsViewController {
 
     @objc private func registerDomainButtonTapped(sender: UIButton) {
+        WPAnalytics.track(.domainsRegistrationFormSubmitted, properties: WPAnalytics.domainsProperties(usingCredit: true))
+
         viewModel.register()
     }
 

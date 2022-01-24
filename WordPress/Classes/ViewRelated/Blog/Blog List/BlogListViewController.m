@@ -154,6 +154,8 @@ static NSInteger HideSearchMinSites = 3;
 
     [self registerForAccountChangeNotification];
     [self registerForPostSignUpNotifications];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDisplayed];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -186,6 +188,8 @@ static NSInteger HideSearchMinSites = 3;
         [self.searchBar resignFirstResponder];
     }
     self.visible = NO;
+
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherDismissed];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -796,12 +800,19 @@ static NSInteger HideSearchMinSites = 3;
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.dataSource.searchQuery = searchText;
+
+    [self debounce:@selector(trackSearchPerformed) afterDelay:0.5f];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     self.dataSource.searching = YES;
     [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)trackSearchPerformed
+{
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherSearchPerformed];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
@@ -852,6 +863,8 @@ static NSInteger HideSearchMinSites = 3;
         [self updateViewsForCurrentSiteCount];
         [self updateSearchVisibility];
     }
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherToggleEditTapped properties: @{ @"state": editing ? @"edit" : @"done"}];
+
 }
 
 - (BOOL)shouldShowAddSiteButton
@@ -950,6 +963,9 @@ static NSInteger HideSearchMinSites = 3;
     }
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [accountService setVisibility:visible forBlogs:@[blog]];
+
+    [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherToggleBlogVisible properties:@{ @"visible": @(visible)} blog:blog];
+
 }
 
 #pragma mark - Data Listener
@@ -979,13 +995,15 @@ static NSInteger HideSearchMinSites = 3;
         [self setEditing:YES animated:YES];
     } else {
         AddSiteAlertFactory *factory = [AddSiteAlertFactory new];
-        UIAlertController *alertController = [factory makeAddSiteAlertWithCanCreateWPComSite:[self defaultWordPressComAccount]
-                                                                             createWPComSite:^{
+        BOOL canCreateWPComSite = [self defaultWordPressComAccount] ? YES : NO;
+        UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site"
+                                                              canCreateWPComSite:canCreateWPComSite
+                                                                 createWPComSite:^{
             [self launchSiteCreation];
         } addSelfHostedSite:^{
             [self showLoginControllerForAddingSelfHostedSite];
         }];
-        
+
         if ([source isKindOfClass:[UIView class]]) {
             UIView *sourceView = (UIView *)source;
             alertController.popoverPresentationController.sourceView = sourceView;
@@ -997,6 +1015,9 @@ static NSInteger HideSearchMinSites = 3;
 
         [self presentViewController:alertController animated:YES completion:nil];
         self.addSiteAlertController = alertController;
+
+        [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherAddSiteTapped];
+
     }
 }
 

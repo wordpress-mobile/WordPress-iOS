@@ -13,11 +13,11 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
         self.post = post
     }
 
-    func canLoadImageURL(_ requestURL: URL!) -> Bool {
+    func canLoadImageURL(_ requestURL: URL) -> Bool {
         return !requestURL.isFileURL
     }
 
-    func loadImage(for imageURL: URL!, size: CGSize, scale: CGFloat, resizeMode: RCTResizeMode, progressHandler: RCTImageLoaderProgressBlock!, partialLoadHandler: RCTImageLoaderPartialLoadBlock!, completionHandler: RCTImageLoaderCompletionBlock!) -> RCTImageLoaderCancellationBlock! {
+    func loadImage(for imageURL: URL, size: CGSize, scale: CGFloat, resizeMode: RCTResizeMode, progressHandler: RCTImageLoaderProgressBlock, partialLoadHandler: RCTImageLoaderPartialLoadBlock, completionHandler: @escaping RCTImageLoaderCompletionBlock) -> RCTImageLoaderCancellationBlock? {
         let cacheKey = getCacheKey(for: imageURL, size: size)
 
         if let image = AnimatedImageCache.shared.cachedStaticImage(url: cacheKey) {

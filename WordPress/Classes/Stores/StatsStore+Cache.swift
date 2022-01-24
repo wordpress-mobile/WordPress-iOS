@@ -16,7 +16,7 @@ extension StatsInsightsStore: StatsStoreCacheable {
         switch type {
         case .latestPostSummary:
             return state.lastPostInsight != nil
-        case .allTimeStats:
+        case .allTimeStats, .growAudience:
             return state.allTimeStats != nil
         case .followersTotals, .followers:
             return state.dotComFollowers != nil &&

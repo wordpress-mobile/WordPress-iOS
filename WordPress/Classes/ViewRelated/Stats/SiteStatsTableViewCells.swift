@@ -89,6 +89,33 @@ struct InsightCellHeaderRow: ImmuTableRow {
     }
 }
 
+struct GrowAudienceRow: ImmuTableRow {
+
+    typealias CellType = GrowAudienceCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let hintType: GrowAudienceCell.HintType
+    let allTimeViewsCount: Int
+    let isNudgeCompleted: Bool
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(hintType: hintType,
+                       allTimeViewsCount: allTimeViewsCount,
+                       isNudgeCompleted: isNudgeCompleted,
+                       insightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
 struct CustomizeInsightsRow: ImmuTableRow {
 
     typealias CellType = CustomizeInsightsCell
@@ -318,6 +345,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -329,7 +357,8 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate,
+                       siteStatsReferrerDelegate: siteStatsReferrerDelegate)
     }
 }
 
@@ -513,6 +542,7 @@ struct DetailExpandableRow: ImmuTableRow {
 
     let rowData: StatsTotalRowData
     weak var detailsDelegate: SiteStatsDetailsDelegate?
+    weak var referrerDelegate: SiteStatsReferrerDelegate?
     let hideIndentedSeparator: Bool
     let hideFullSeparator: Bool
     let expanded: Bool
@@ -526,6 +556,7 @@ struct DetailExpandableRow: ImmuTableRow {
 
         cell.configure(rowData: rowData,
                        detailsDelegate: detailsDelegate,
+                       referrerDelegate: referrerDelegate,
                        hideIndentedSeparator: hideIndentedSeparator,
                        hideFullSeparator: hideFullSeparator,
                        expanded: expanded)

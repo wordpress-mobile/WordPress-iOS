@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import Gridicons
 import WordPressAuthenticator
-
+import AutomatticAbout
 
 class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
@@ -158,6 +158,7 @@ class MeViewController: UITableViewController {
             // middle section
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
+
                 if isRecommendAppRowEnabled {
                     rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
                                                   icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
@@ -165,6 +166,15 @@ class MeViewController: UITableViewController {
                                                   action: displayShareFlow(),
                                                   loading: sharePresenter.isLoading))
                 }
+
+                if FeatureFlag.aboutScreen.enabled {
+                    rows.append(NavigationItemRow(title: RowTitles.about,
+                                                  icon: UIImage.gridicon(.mySites),
+                                                  accessoryType: .disclosureIndicator,
+                                                  action: pushAbout(),
+                                                  accessibilityIdentifier: "About"))
+                }
+
                 return rows
             }()),
 
@@ -242,6 +252,18 @@ class MeViewController: UITableViewController {
             self.navigationController?.pushViewController(controller,
                                                           animated: true,
                                                           rightBarButton: self.navigationItem.rightBarButtonItem)
+        }
+    }
+
+    private func pushAbout() -> ImmuTableAction {
+        return { [unowned self] _ in
+            let configuration = AppAboutScreenConfiguration(sharePresenter: self.sharePresenter)
+            let controller = AutomatticAboutScreen.controller(appInfo: AppAboutScreenConfiguration.appInfo,
+                                                              configuration: configuration,
+                                                              fonts: AppAboutScreenConfiguration.fonts)
+            self.present(controller, animated: true) {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
         }
     }
 
@@ -411,9 +433,9 @@ class MeViewController: UITableViewController {
     }
 
     /// Convenience property to determine whether the recomend app row should be displayed or not.
-    private var isRecommendAppRowEnabled: Bool {
-        FeatureFlag.recommendAppToOthers.enabled && !AppConfiguration.isJetpack
-    }
+        private var isRecommendAppRowEnabled: Bool {
+            !AppConfiguration.isJetpack
+        }
 
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
@@ -476,6 +498,7 @@ private extension MeViewController {
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
+        static let about = AppConstants.Settings.aboutTitle
     }
 
     enum HeaderTitles {
@@ -507,8 +530,8 @@ private extension MeViewController {
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
         guard isRecommendAppRowEnabled else {
-            return
-        }
+             return
+         }
 
         reloadViewModel()
     }

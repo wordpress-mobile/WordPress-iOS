@@ -91,12 +91,56 @@ class FollowCommentsServiceTests: XCTestCase {
         XCTAssertFalse(remoteMock.unsubscribeFromPostCalled, "unsubscribeFromPost should not be called")
     }
 
+    func testToggleNotificationSettingsToEnabled() {
+        let remoteMock = ReaderPostServiceRemoteMock()
+        let testTopic = seedReaderTeamTopic()
+        let testPost = seedReaderPostForTopic(testTopic)
+        let service = FollowCommentsService(post: testPost, remote: remoteMock)!
+        let expectedState = true
+
+        service.toggleNotificationSettings(expectedState) {
+            XCTAssertNotNil(remoteMock.receiveNotifications)
+            XCTAssertEqual(expectedState, remoteMock.receiveNotifications!)
+        } failure: { _ in
+            XCTFail("Failure block should not be called")
+        }
+    }
+
+    func testToggleNotificationSettingsToDisabled() {
+        let remoteMock = ReaderPostServiceRemoteMock()
+        let testTopic = seedReaderTeamTopic()
+        let testPost = seedReaderPostForTopic(testTopic)
+        let service = FollowCommentsService(post: testPost, remote: remoteMock)!
+        let expectedState = false
+
+        service.toggleNotificationSettings(expectedState) {
+            XCTAssertNotNil(remoteMock.receiveNotifications)
+            XCTAssertEqual(expectedState, remoteMock.receiveNotifications!)
+        } failure: { _ in
+            XCTFail("Failure block should not be called")
+        }
+    }
+
+    func testToggleNotificationSettingsFailureBlock() {
+        let remoteMock = ReaderPostServiceRemoteMock()
+        remoteMock.updateNotificationSettingsShouldSucceed = false
+        let testTopic = seedReaderTeamTopic()
+        let testPost = seedReaderPostForTopic(testTopic)
+        let service = FollowCommentsService(post: testPost, remote: remoteMock)!
+
+        service.toggleNotificationSettings(true) {
+            XCTFail("Success block should not be called")
+        } failure: { _ in }
+    }
+
     // MARK: - Mocks / Tester
 
     class ReaderPostServiceRemoteMock: ReaderPostServiceRemote {
 
         var subscribeToPostCalled = false
         var unsubscribeFromPostCalled = false
+        var receiveNotifications: Bool? = nil
+        var updateNotificationSettingsShouldSucceed = true
 
         override func subscribeToPost(with postID: Int,
                                       for siteID: Int,
@@ -110,6 +154,15 @@ class FollowCommentsServiceTests: XCTestCase {
                                           success: @escaping (Bool) -> Void,
                                           failure: @escaping (Error) -> Void) {
             unsubscribeFromPostCalled = true
+        }
+
+        override func updateNotificationSettingsForPost(with postID: Int,
+                                                        siteID: Int,
+                                                        receiveNotifications: Bool,
+                                                        success: @escaping () -> Void,
+                                                        failure: @escaping (Error?) -> Void) {
+            self.receiveNotifications = receiveNotifications
+            updateNotificationSettingsShouldSucceed ? success() : failure(nil)
         }
     }
 

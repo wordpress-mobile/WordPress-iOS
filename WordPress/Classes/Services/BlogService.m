@@ -299,7 +299,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         dispatch_group_leave(syncGroup);
     }];
 
-
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
@@ -725,6 +724,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     blog.url = remoteBlog.url;
     blog.dotComID = remoteBlog.blogID;
+    blog.organizationID = remoteBlog.organizationID;
     blog.isHostedAtWPcom = !remoteBlog.jetpack;
     blog.icon = remoteBlog.icon;
     blog.capabilities = remoteBlog.capabilities;

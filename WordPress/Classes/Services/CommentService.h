@@ -34,6 +34,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 - (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
 
+- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog;
+
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
                     success:(void (^)(BOOL hasMore))success
@@ -73,7 +75,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                success:(void (^)(void))success
                failure:(void (^)(NSError *error))failure;
 
-// Unapprove comment
+// Unapprove (Pending) comment
 - (void)unapproveComment:(Comment *)comment
                  success:(void (^)(void))success
                  failure:(void (^)(NSError *error))failure;
@@ -84,15 +86,33 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
             failure:(void (^)(NSError *error))failure;
 
 // Trash comment
+- (void)trashComment:(Comment *)comment
+             success:(void (^)(void))success
+             failure:(void (^)(NSError *error))failure;
+
+// Delete comment
 - (void)deleteComment:(Comment *)comment
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure;
 
-// Sync a list of comments sorted by hierarchy
+// Sync a list of comments sorted by hierarchy, fetched by page number.
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSInteger count, BOOL hasMore))success
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure;
+
+// Sync a list of comments sorted by hierarchy, restricted by the specified number of _top level_ comments.
+// This method is intended to get a small number of comments.
+// Therefore it is restricted to page 1 only.
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                       topLevelComments:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure;
+
+// Get the specified number of top level comments for the specified post.
+// This method is intended to get a small number of comments.
+// Therefore it is restricted to page 1 only.
+- (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post;
 
 // Counts and returns the number of full pages of hierarchcial comments synced for a post.
 // A partial set does not count toward the total number of pages. 

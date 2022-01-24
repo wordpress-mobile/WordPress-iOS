@@ -149,7 +149,7 @@ private extension LatestPostSummaryCell {
 
         let postAge = lastPostInsight?.publishedDate.relativeStringInPast() ?? ""
 
-        if let title = lastPostInsight?.title, !title.isEmpty {
+        if let title = lastPostInsight?.title.strippingHTML(), !title.isEmpty {
             postTitle = title
         }
 

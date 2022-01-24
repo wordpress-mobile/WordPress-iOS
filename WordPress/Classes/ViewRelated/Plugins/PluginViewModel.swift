@@ -534,7 +534,12 @@ class PluginViewModel: Observable {
     }
 
     private func presentDomainRegistration(for directoryEntry: PluginDirectoryEntry) {
-        let controller = RegisterDomainSuggestionsViewController.instance(site: site, domainPurchasedCallback: { [weak self] domain in
+        guard let blog = BlogService.blog(with: site) else {
+            DDLogError("Error obtaining the blog from the jetpack site ref.")
+            return
+        }
+
+        let controller = RegisterDomainSuggestionsViewController.instance(site: blog, domainPurchasedCallback: { [weak self] domain in
 
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
@@ -550,7 +555,7 @@ class PluginViewModel: Observable {
     }
 
     private func presentBrowser(`for` url: URL) {
-        let controller = WebViewControllerFactory.controller(url: url)
+        let controller = WebViewControllerFactory.controller(url: url, source: "plugins")
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

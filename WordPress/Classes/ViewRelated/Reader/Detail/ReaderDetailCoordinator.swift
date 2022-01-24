@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class ReaderDetailCoordinator {
 
@@ -60,6 +61,10 @@ class ReaderDetailCoordinator {
     /// Post Service
     private let postService: PostService
 
+    /// Comment Service
+    private let commentService: CommentService
+    private let commentsDisplayed: UInt = 1
+
     /// Used for `RequestAuthenticator` creation and likes filtering logic.
     private let accountService: AccountService
 
@@ -106,6 +111,7 @@ class ReaderDetailCoordinator {
          readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         commentService: CommentService = CommentService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
@@ -114,6 +120,7 @@ class ReaderDetailCoordinator {
         self.readerPostService = readerPostService
         self.topicService = topicService
         self.postService = postService
+        self.commentService = commentService
         self.accountService = accountService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
@@ -185,6 +192,27 @@ class ReaderDetailCoordinator {
                                 })
     }
 
+    /// Fetch Comments for the current post.
+    ///
+    func fetchComments(for post: ReaderPost) {
+        commentService.syncHierarchicalComments(for: post,
+                                   topLevelComments: commentsDisplayed,
+                                            success: { [weak self] _, totalComments in
+                                                self?.updateCommentsFor(post: post, totalComments: totalComments?.intValue ?? 0)
+                                            }, failure: { error in
+                                                DDLogError("Failed fetching post detail comments: \(String(describing: error))")
+                                            })
+    }
+
+    func updateCommentsFor(post: ReaderPost, totalComments: Int) {
+        guard let comments = commentService.topLevelComments(commentsDisplayed, for: post) as? [Comment] else {
+            view?.updateComments([], totalComments: 0)
+            return
+        }
+
+        view?.updateComments(comments, totalComments: totalComments)
+    }
+
     /// Share the current post
     ///
     func share(fromView anchorView: UIView) {
@@ -237,6 +265,8 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter url: URL of the image or gif
     func presentImage(_ url: URL) {
+        WPAnalytics.trackReader(.readerArticleImageTapped)
+
         let imageViewController = WPImageViewController(url: url)
         imageViewController.readerPost = post
         imageViewController.modalTransitionStyle = .crossDissolve
@@ -424,13 +454,14 @@ class ReaderDetailCoordinator {
     func handle(_ url: URL) {
         // If the URL has an anchor (#)
         // and the URL is equal to the current post URL
-        if
-            let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
-            let postURL = permaLinkURL,
-            postURL.isHostAndPathEqual(to: url)
-        {
+        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
+           let postURL = permaLinkURL,
+           postURL.isHostAndPathEqual(to: url) {
             view?.scroll(to: hash)
-        } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg") || url.pathExtension.contains("jpeg") || url.pathExtension.contains("png") {
+        } else if url.pathExtension.contains("gif") ||
+                    url.pathExtension.contains("jpg") ||
+                    url.pathExtension.contains("jpeg") ||
+                    url.pathExtension.contains("png") {
             presentImage(url)
         } else if url.query?.contains("wp-story") ?? false {
             presentWebViewController(url)
@@ -441,6 +472,8 @@ class ReaderDetailCoordinator {
         } else if url.isLinkProtocol {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
         } else {
+            WPAnalytics.trackReader(.readerArticleLinkTapped)
+
             presentWebViewController(url)
         }
     }
@@ -494,8 +527,40 @@ class ReaderDetailCoordinator {
     /// Given a URL presents it in a new Reader detail screen
     ///
     private func presentReaderDetail(_ url: URL) {
-        let readerDetail = ReaderDetailViewController.controllerWithPostURL(url)
+
+        // In cross post Notifications, if the user tapped the link to the original post in the Notification body,
+        // use the original post's info to display reader detail.
+        // The API endpoint used by controllerWithPostID returns subscription flags for the post.
+        // The API endpoint used by controllerWithPostURL does not return this information.
+        // These flags are needed to display the `Follow conversation by email` option.
+        // So if we can call controllerWithPostID, do so. Otherwise, fallback to controllerWithPostURL.
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17158
+
+        let readerDetail: ReaderDetailViewController = {
+            if let post = post,
+               selectedUrlIsCrossPost(url) {
+                return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+            }
+
+            return ReaderDetailViewController.controllerWithPostURL(url)
+        }()
+
         viewController?.navigationController?.pushViewController(readerDetail, animated: true)
+    }
+
+    private func selectedUrlIsCrossPost(_ url: URL) -> Bool {
+        // Trim trailing slashes to facilitate URL comparison.
+        let characterSet = CharacterSet(charactersIn: "/")
+
+        guard let post = post,
+              post.isCross(),
+              let crossPostMeta = post.crossPostMeta,
+              let crossPostURL = URL(string: crossPostMeta.postURL.trimmingCharacters(in: characterSet)),
+              let selectedURL = URL(string: url.absoluteString.trimmingCharacters(in: characterSet)) else {
+            return false
+        }
+
+        return crossPostURL.isHostAndPathEqual(to: selectedURL)
     }
 
     /// Given a URL presents it in a web view controller screen
@@ -511,7 +576,7 @@ class ReaderDetailCoordinator {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_detail")
         let navController = LightNavigationController(rootViewController: controller)
         viewController?.present(navController, animated: true)
     }

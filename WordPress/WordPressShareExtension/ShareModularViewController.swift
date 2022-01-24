@@ -28,7 +28,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Back Bar Button
     ///
     fileprivate lazy var backButton: UIBarButtonItem = {
-        let backTitle = NSLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
+        let backTitle = AppLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
         let button = UIBarButtonItem(title: backTitle, style: .plain, target: self, action: #selector(backWasPressed))
         button.accessibilityIdentifier = "Back Button"
         return button
@@ -37,7 +37,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
         let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
         button.accessibilityIdentifier = "Cancel Button"
         return button
@@ -48,9 +48,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate lazy var publishButton: UIBarButtonItem = {
         let publishTitle: String
         if self.originatingExtension == .share {
-            publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+            publishTitle = AppLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
         } else {
-            publishTitle = NSLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
+            publishTitle = AppLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
         }
 
         let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(publishWasPressed))
@@ -206,7 +206,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
         // Update the height constraint to match the number of modules * row height
         let modulesTableHeight = modulesTableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        modulesHeightConstraint.constant = (CGFloat(ModulesSection.count) * modulesTableHeight)
+
+        let visibleModuleSections = ModulesSection.allCases.filter { !isModulesSectionEmpty($0.rawValue) }.count
+        modulesHeightConstraint.constant = (CGFloat(visibleModuleSections) * modulesTableHeight)
     }
 }
 
@@ -229,7 +231,7 @@ extension ShareModularViewController {
             editor.shareData = shareData
             editor.originatingExtension = originatingExtension
         }
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @objc func publishWasPressed() {
@@ -244,6 +246,23 @@ extension ShareModularViewController {
         reloadSitesIfNeeded()
     }
 
+    func showPostTypePicker() {
+        guard isPublishingPost == false else {
+            return
+        }
+
+        let typePicker = SharePostTypePickerViewController(postType: shareData.postType)
+        typePicker.onValueChanged = { [weak self] postType in
+            guard let self = self else { return }
+            self.tracks.trackExtensionPostTypeSelected(postType.rawValue)
+            self.shareData.postType = postType
+            self.refreshModulesTable()
+        }
+
+        tracks.trackExtensionPostTypeOpened()
+        navigationController?.pushViewController(typePicker, animated: true)
+    }
+
     func showTagsPicker() {
         guard let siteID = shareData.selectedSiteID, isPublishingPost == false else {
             return
@@ -251,10 +270,11 @@ extension ShareModularViewController {
 
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
         tagsPicker.onValueChanged = { [weak self] tagString in
-            if self?.shareData.tags != tagString {
-                self?.tracks.trackExtensionTagsSelected(tagString)
-                self?.shareData.tags = tagString
-                self?.refreshModulesTable()
+            guard let self = self else { return }
+            if self.shareData.tags != tagString {
+                self.tracks.trackExtensionTagsSelected(tagString)
+                self.shareData.tags = tagString
+                self.refreshModulesTable()
             }
         }
 
@@ -273,10 +293,11 @@ extension ShareModularViewController {
         let categoryInfo = SiteCategories(siteID: siteID, allCategories: allSiteCategories, selectedCategories: shareData.userSelectedCategories, defaultCategoryID: shareData.defaultCategoryID)
         let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
         categoriesPicker.onValueChanged = { [weak self] categoryInfo in
-            self?.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
-            self?.shareData.userSelectedCategories = categoryInfo.selectedCategories
-            self?.tracks.trackExtensionCategoriesSelected(self?.shareData.selectedCategoriesNameString ?? "")
-            self?.refreshModulesTable()
+            guard let self = self else { return }
+            self.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
+            self.shareData.userSelectedCategories = categoryInfo.selectedCategories
+            self.tracks.trackExtensionCategoriesSelected(self.shareData.selectedCategoriesNameString)
+            self.refreshModulesTable()
         }
         tracks.trackExtensionCategoriesOpened()
         navigationController?.pushViewController(categoriesPicker, animated: true)
@@ -288,7 +309,7 @@ extension ShareModularViewController {
 extension ShareModularViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == modulesTableView {
-            return ModulesSection.count
+            return ModulesSection.allCases.count
         } else {
             // Only 1 section in the sites table
             return 1
@@ -297,14 +318,7 @@ extension ShareModularViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == modulesTableView {
-            switch ModulesSection(rawValue: section)! {
-            case .categories:
-                return 1
-            case .tags:
-                return 1
-            case .summary:
-                return 1
-            }
+            return isModulesSectionEmpty(section) ? 0 : 1
         } else {
             return rowCountForSites
         }
@@ -389,10 +403,18 @@ extension ShareModularViewController: UITableViewDelegate {
 
 fileprivate extension ShareModularViewController {
     func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        switch indexPath.section {
-        case ModulesSection.categories.rawValue:
+        let moduleSection = ModulesSection(rawValue: indexPath.section) ?? .summary
+        switch moduleSection {
+        case .type:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
+            cell.textLabel?.text = AppLocalizedString("Type", comment: "Type menu item in share extension.")
+            cell.accessoryType = .disclosureIndicator
+            cell.accessibilityLabel = "Type"
+            cell.isUserInteractionEnabled = true
+            cell.detailTextLabel?.text = shareData.postType.title
+        case .categories:
+            WPStyleGuide.Share.configureModuleCell(cell)
+            cell.textLabel?.text = AppLocalizedString("Category", comment: "Category menu item in share extension.")
             cell.accessibilityLabel = "Category"
             if isFetchingCategories {
                 cell.isUserInteractionEnabled = false
@@ -421,19 +443,20 @@ fileprivate extension ShareModularViewController {
             } else {
                 cell.detailTextLabel?.textColor = .neutral(.shade70)
             }
-        case ModulesSection.tags.rawValue:
+        case .tags:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
+            cell.textLabel?.text = AppLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Tags"
+            cell.isUserInteractionEnabled = true
             if let tags = shareData.tags, !tags.isEmpty {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = .neutral(.shade70)
             } else {
-                cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.text =  AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
                 cell.detailTextLabel?.textColor = .neutral(.shade30)
             }
-        default:
+        case .summary:
             // Summary section
             cell.textLabel?.text            = summaryRowText()
             cell.textLabel?.textAlignment   = .natural
@@ -445,10 +468,12 @@ fileprivate extension ShareModularViewController {
 
     func isModulesSectionEmpty(_ sectionIndex: Int) -> Bool {
         switch ModulesSection(rawValue: sectionIndex)! {
+        case .type:
+            return false
         case .categories:
-            return false
+            return shareData.postType == .page
         case .tags:
-            return false
+            return shareData.postType == .page
         case .summary:
             return false
         }
@@ -456,6 +481,13 @@ fileprivate extension ShareModularViewController {
 
     func selectedModulesTableRowAt(_ indexPath: IndexPath) {
         switch ModulesSection(rawValue: indexPath.section)! {
+        case .type:
+            modulesTableView.flashRowAtIndexPath(indexPath,
+                                                 scrollPosition: .none,
+                                                 flashLength: Constants.flashAnimationLength,
+                                                 completion: nil)
+            showPostTypePicker()
+            return
         case .categories:
             if shareData.categoryCountForSelectedSite > 1 {
                 modulesTableView.flashRowAtIndexPath(indexPath,
@@ -478,16 +510,31 @@ fileprivate extension ShareModularViewController {
     }
 
     func summaryRowText() -> String {
-        if originatingExtension == .share {
-            return SummaryText.summaryPublishing
-        } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
-            return SummaryText.summaryDraftDefault
-        } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
-            return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
-                                             singular: SummaryText.summaryDraftSingular,
-                                             plural: SummaryText.summaryDraftPlural)
-        } else {
-            return String()
+        switch shareData.postType {
+        case .post:
+            if originatingExtension == .share {
+                return SummaryText.summaryPostPublishing
+            } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
+                return SummaryText.summaryDraftPostDefault
+            } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
+                return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
+                                                 singular: SummaryText.summaryDraftPostSingular,
+                                                 plural: SummaryText.summaryDraftPostPlural)
+            } else {
+                return String()
+            }
+        case .page:
+            if originatingExtension == .share {
+                return SummaryText.summaryPagePublishing
+            } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
+                return SummaryText.summaryDraftPageDefault
+            } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
+                return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
+                                                 singular: SummaryText.summaryDraftPageSingular,
+                                                 plural: SummaryText.summaryDraftPagePlural)
+            } else {
+                return String()
+            }
         }
     }
 
@@ -497,6 +544,7 @@ fileprivate extension ShareModularViewController {
             self.updatePublishButtonStatus()
         }
         modulesTableView.reloadData()
+        view.setNeedsUpdateConstraints()
     }
 
     func clearCategoriesAndRefreshModulesTable() {
@@ -599,10 +647,16 @@ fileprivate extension ShareModularViewController {
 
     func showPublishingView() {
         let title: String = {
-            if self.originatingExtension == .share {
-                return StatusText.publishingTitle
+            switch (shareData.postType, originatingExtension) {
+            case (.post, .share):
+                return StatusText.publishingPostTitle
+            case (.page, .share):
+                return StatusText.publishingPageTitle
+            case (.post, .saveToDraft):
+                return StatusText.savingPostTitle
+            case (.page, .saveToDraft):
+                return StatusText.savingPageTitle
             }
-            return StatusText.savingTitle
         }()
 
         updatePublishButtonStatus()
@@ -789,19 +843,15 @@ fileprivate extension ShareModularViewController {
         let service = AppExtensionsService()
 
         prepareForPublishing()
-        service.saveAndUploadPost(title: shareData.title,
-                                         body: shareData.contentBody,
-                                         tags: shareData.tags,
-                                         categories: shareData.selectedCategoriesIDString,
-                                         status: shareData.postStatus.rawValue,
-                                         siteID: siteID,
-                                         onComplete: {
-                                            self.dismiss()
-        }, onFailure: {
-            let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
-            self.tracks.trackExtensionError(error)
-            self.showRetryAlert()
-        })
+        service.saveAndUploadPost(shareData: shareData,
+                                  siteID: siteID,
+                                  onComplete: {
+                                    self.dismiss()
+                                  }, onFailure: {
+                                    let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
+                                    self.tracks.trackExtensionError(error)
+                                    self.showRetryAlert()
+                                  })
     }
 
     func uploadPostAndMedia(siteID: Int, localImageURLs: [URL]) {
@@ -820,29 +870,25 @@ fileprivate extension ShareModularViewController {
         }
 
         prepareForPublishing()
-        service.uploadPostWithMedia(title: shareData.title,
-                                    body: shareData.contentBody,
-                                    tags: shareData.tags,
-                                    categories: shareData.selectedCategoriesIDString,
-                                    status: shareData.postStatus.rawValue,
-                                    siteID: siteID,
-                                    localMediaFileURLs: localImageURLs,
-                                    requestEnqueued: {
-                                        self.dismiss()
-        }, onFailure: {
-            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
-            self.tracks.trackExtensionError(error)
-            self.showRetryAlert()
-        })
+        service.saveAndUploadPostWithMedia(shareData: shareData,
+                                           siteID: siteID,
+                                           localMediaFileURLs: localImageURLs,
+                                           requestEnqueued: {
+                                            self.dismiss()
+                                           }, onFailure: {
+                                            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+                                            self.tracks.trackExtensionError(error)
+                                            self.showRetryAlert()
+                                           })
     }
 
     func showRetryAlert() {
-        let title: String = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message: String = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
-        let dismiss: String = NSLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
+        let title: String = AppLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message: String = AppLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
+        let dismiss: String = AppLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let acceptButtonText = NSLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
+        let acceptButtonText = AppLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
         let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
             self.savePostToRemoteSite()
         }
@@ -860,9 +906,9 @@ fileprivate extension ShareModularViewController {
     }
 
     func showPermissionsAlert() {
-        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message = NSLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
-        let dismiss = NSLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
+        let title = AppLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message = AppLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
+        let dismiss = AppLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -878,13 +924,16 @@ fileprivate extension ShareModularViewController {
 // MARK: - Table Sections
 
 fileprivate extension ShareModularViewController {
-    enum ModulesSection: Int {
+    enum ModulesSection: Int, CaseIterable {
+        case type
         case categories
         case tags
         case summary
 
         func headerText() -> String {
             switch self {
+            case .type:
+                return String()
             case .categories:
                 return String()
             case .tags:
@@ -896,6 +945,8 @@ fileprivate extension ShareModularViewController {
 
         func footerText() -> String {
             switch self {
+            case .type:
+                return String()
             case .categories:
                 return String()
             case .tags:
@@ -904,12 +955,6 @@ fileprivate extension ShareModularViewController {
                 return String()
             }
         }
-
-        static let count: Int = {
-            var max: Int = 0
-            while let _ = ModulesSection(rawValue: max) { max += 1 }
-            return max
-        }()
     }
 }
 
@@ -924,22 +969,28 @@ fileprivate extension ShareModularViewController {
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
         static let unknownDefaultCategoryID     = NSNumber(value: -1)
-        static let unknownDefaultCategoryName   = NSLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
+        static let unknownDefaultCategoryName   = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
     }
 
     struct SummaryText {
-        static let summaryPublishing    = NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
-        static let summaryDraftDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
-        static let summaryDraftSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
-        static let summaryDraftPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPostPublishing    = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftPostDefault  = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryDraftPostSingular = AppLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
+        static let summaryDraftPostPlural   = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPagePublishing    = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
+        static let summaryDraftPageDefault  = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
+        static let summaryDraftPageSingular = AppLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
+        static let summaryDraftPagePlural   = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
     }
 
     struct StatusText {
-        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
-        static let publishingTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
-        static let savingTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
-        static let cancellingTitle = NSLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
-        static let noSitesTitle = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
+        static let loadingTitle = AppLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
+        static let publishingPostTitle = AppLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        static let savingPostTitle = AppLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+        static let publishingPageTitle = AppLocalizedString("Publishing page...", comment: "A short message that informs the user a page is being published to the server from the share extension.")
+        static let savingPageTitle = AppLocalizedString("Saving page…", comment: "A short message that informs the user a draft page is being saved to the server from the share extension.")
+        static let cancellingTitle = AppLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
+        static let noSitesTitle = AppLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
     }
 }
 

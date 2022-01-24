@@ -50,7 +50,7 @@ class ReblogTestCase: XCTestCase {
 
     override func setUp() {
         contextManager = TestContextManager()
-        context = contextManager.getMockContext()
+        context = contextManager.mainContext
         readerPost = ReaderPost(context: self.context!)
         blogService = MockBlogService(managedObjectContext: self.context!)
         postService = MockPostService(managedObjectContext: self.context!)

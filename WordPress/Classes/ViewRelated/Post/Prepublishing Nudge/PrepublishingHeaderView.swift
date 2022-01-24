@@ -39,6 +39,7 @@ class PrepublishingHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        configureBackgroundView()
         configureBackButton()
         configurePublishingToLabel()
         configureBlogTitleLabel()
@@ -50,6 +51,11 @@ class PrepublishingHeaderView: UITableViewHeaderFooterView, NibLoadable {
         super.prepareForReuse()
 
         self.delegate = nil
+    }
+
+    private func configureBackgroundView() {
+        backgroundView = UIView()
+        backgroundView?.backgroundColor = .basicBackground
     }
 
     private func configureBackButton() {

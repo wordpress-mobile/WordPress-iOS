@@ -1,7 +1,12 @@
-Utilizzi il blocco Incorporamenti? Per i file multimediali che incorpori nel tuo sito, visualizzerai ora un'opzione "Ridimensiona per dispositivi più piccoli". Attivala per ridimensionare i contenuti in modo che si adattino alla schermata; disattivala per disabilitarla.
+Che ore sono? La nostra nuovissima schermata di selezione del fuso orario lo sa. Ottieni un fuso orario suggerito in base al tuo dispositivo e migliora la ricerca mentre ti trovi presso uno di essi.
 
-Ti stai godendo lo strumento di Promemoria relativi al blog? Abbiamo aggiunto una nuova funzionalità che ti consente di scegliere un orario specifico per ricevere una notifica.
+Se stai usando un piano gratuito, i caricamenti di video ora sono limitati a cinque minuti per file. Non preoccuparti, ciò non influirà sui video che hai già caricato sul tuo sito.
 
-Hai bisogno di chiudere il tuo account? (Speriamo non ci lascerai!) Se lo necessiti, ora hai la possibilità di farlo in Impostazioni account.
+Abbiamo anche apportato alcune modifiche all'editor a blocchi:
 
-Gli articoli di geotagging non sono più supportati sul web, quindi abbiamo rimosso l'opzione Posizione in Impostazioni articolo.
+- Abbiamo risolto i problemi relativi alle traduzioni che causavano la visualizzazione di alcuni elementi dell'interfaccia utente (come le informazioni sull'allineamento del testo e la finestra modale dell'editor a blocchi) solo in inglese.
+- Abbiamo aggiunto la traduzione per i blocchi Jetpack e Griglia di layout.
+- Abbiamo corretto un bug che ripristinava la formattazione del testo all'impostazione predefinita dopo che veniva premuto il tasto backspace. In grassetto, amico.
+- I titoli dei blocchi multilinea ora sono allineati al centro nel menu dello strumento per l'inserimento.
+
+Infine, la riga "Condividi WordPress con un amico" è tornata nella posizione che si trova nella schermata Io. Riuniti e felici.

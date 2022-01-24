@@ -1,9 +1,12 @@
-Utilisez-vous le bloc de contenu embarqué ? Pour les médias que vous embarquez sur votre site, vous verrez désormais une option pour « Redimensionner pour les petits appareils ». Activez-la pour redimensionner votre contenu afin de l’adapter à l’écran ; désactivez-la pour annuler le redimensionnement.
+Quelle heure est-il ? Notre tout nouvel écran de sélection du fuseau horaire a la réponse. Obtenez une suggestion de fuseau horaire en fonction de votre appareil et améliorez la recherche dans la foulée.
 
-Vous appréciez les outils de rappel de blog ? Nous avons ajouté une nouvelle fonctionnalité qui vous permet de choisir une heure précise pour recevoir une notification.
+Si vous utilisez un plan gratuit, les chargements vidéo sont désormais limités à cinq minutes par fichier. Pas de panique : cela n’affectera pas les vidéos que vous avez déjà mises en ligne sur votre site.
 
-Besoin de clôturer votre compte ? (Nous espérons que vous ne nous quitterez jamais !) Mais si vous en avez besoin, vous avez désormais la possibilité de le faire dans les réglages de votre compte.
+Nous avons également apporté certains changements à l’éditeur de blocs.
 
-La géolocalisation des articles n’est plus prise en charge sur le Web, nous avons donc supprimé l’option Emplacement dans Réglages d’article.
+- Nous avons résolu les problèmes de traduction qui faisaient que certains éléments de l’interface utilisateur (comme les informations sur l’alignement du texte et la fenêtre modale de l’éditeur de blocs) n’apparaissaient qu’en anglais.
+- Nous avons ajouté la traduction pour Jetpack et les blocs de grille de mise en page.
+- Nous avons corrigé un bug qui réinitialisait le formatage du texte par défaut après avoir appuyé sur la touche Retour arrière. Foncez, les amis.
+- Les titres de blocs à plusieurs lignes sont désormais alignés au centre dans le menu d’insertion.
 
-Nous avons également apporté d’autres améliorations, notamment une correction d’un problème de rognage dans le Lecteur, ainsi que la possibilité de recommander l’application à vos amis sur les écrans Moi et À propos.
+Enfin, la ligne « Partager WordPress avec un ami » est de retour à sa place sur l’écran de profil. C’est si bon d’être réunis !

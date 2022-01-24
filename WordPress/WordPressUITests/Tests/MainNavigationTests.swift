@@ -1,3 +1,4 @@
+import UITestsFoundation
 import XCTest
 
 class MainNavigationTests: XCTestCase {
@@ -7,8 +8,8 @@ class MainNavigationTests: XCTestCase {
         setUpTestSuite()
 
         try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        mySiteScreen = TabNavComponent()
-         .gotoMySiteScreen()
+        mySiteScreen = try TabNavComponent()
+            .goToMySiteScreen()
     }
 
     override func tearDownWithError() throws {
@@ -17,16 +18,21 @@ class MainNavigationTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testTabBarNavigation() {
+    func testTabBarNavigation() throws {
         XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
-        _ = mySiteScreen
-            .tabBar.gotoReaderScreen()
+        _ = try mySiteScreen
+            .tabBar.goToReaderScreen()
 
         XCTAssert(ReaderScreen.isLoaded(), "Reader screen isn't loaded.")
 
-        _ = mySiteScreen
-            .tabBar.gotoNotificationsScreen()
+        // We may get a notifications fancy alert when loading the reader for the first time
+        if let alert = try? FancyAlertComponent() {
+            alert.cancelAlert()
+        }
+
+        _ = try mySiteScreen
+            .tabBar.goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
 
         XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in

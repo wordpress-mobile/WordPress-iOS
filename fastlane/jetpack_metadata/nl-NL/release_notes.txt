@@ -1,7 +1,12 @@
-Gebruik je het Insluitblok? Voor media die je insluit op je site bestaat nu de optie om de grootte ervan 'Aan te passen voor kleinere apparaten.' Schakel deze optie in om je content aan te passen aan je scherm; schakel uit om deze optie niet te gebruiken.
+Hoe laat is het? Ons nieuwe scherm voor selectie van de tijdzone weet het. Krijg een voorgestelde tijdzone op basis van je apparaat en verbeter de zoekfunctie.
 
-Bevalt de tool voor Blog-herinneringen? We hebben een nieuwe functie toegevoegd waarmee je op een specifieke tijd een melding ontvangen.
+Als je een gratis abonnement gebruikt, zijn video-uploads beperkt tot 5 minuten per bestand. Geen zorgen, dit heeft geen invloed op de video's die je al op je site hebt geüpload.
 
-Wil je je account verwijderen? (We hopen dat het nooit zover komt!) Indien het toch nodig is, kan dit via je Accountinstellingen.
+We hebben ook enkele wijzigingen aangebracht aan de blokeditor:
 
-Het geotaggen van berichten wordt niet langer ondersteund op het web, dus hebben we Locatie-optie onder Berichtinstellingen verwijderd.
+- We hebben vertaalproblemen opgelost die ervoor zorgden dat bepaalde elementen van de gebruikersinterface (zoals tekstuitlijning en het modale venster van de blokeditor) alleen zichtbaar waren in het Engels.
+- We hebben vertalingen toegevoegd voor Jetpack en indelingsrasterblokken.
+- We hebben een bug opgelost die de tekstopmaak terugzette naar standaard als backspace werd gebruikt. Bold on, vrienden.
+- Bloktitels met meerdere regels zijn nu in het midden uitgelijnd in het invoegermenu.
+
+Ten slotte is de regel 'WordPress delen met een vriend' terug waar hij hoort te zijn op het Ik-scherm. Eindelijk weer samen.

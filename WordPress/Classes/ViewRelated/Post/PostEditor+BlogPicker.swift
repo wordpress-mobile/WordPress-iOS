@@ -1,6 +1,6 @@
 import UIKit
 
-extension PostEditor where Self: UIViewController {
+extension PostEditor {
 
     func blogPickerWasPressed() {
         assert(isSingleSiteMode == false)

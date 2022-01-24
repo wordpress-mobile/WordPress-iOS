@@ -1,9 +1,12 @@
-¿Usas el bloque de incrustación? Para los medios que incrustas en tu sitio, ahora verás una opción para «Redimensionar para dispositivos más pequeños». Actívala para cambiar el tamaño de tu contenido para que se ajuste a tu pantalla; desactívala para que no se ajuste.
+¿Qué hora es? Nuestra nueva pantalla de selección de zona horaria lo sabe. Obtén una sugerencia de zona horaria basada en tu dispositivo y mejora la búsqueda mientras lo haces.
 
-¿Disfrutas de la herramienta de recordatorio de blogueo? Hemos añadido una nueva característica que te permite elegir una hora específica para recibir un aviso.
+Si estás usando un plan gratuito, las subidas de vídeos ahora está limitada a cinco minutos por archivo. No te preocupes, eso no afectará a ningún vídeo que ya hayas subido a tu sitio.
 
-¿Necesitas cerrar tu cuenta? (¡Esperamos que nunca nos dejes!) Pero si lo necesitas, ahora tienes la posibilidad de hacerlo en los ajustes de tu cuenta.
+También hemos realizado algunos cambios en el editor de bloques:
 
-El etiquetado geográfico de las entradas ya no es compatible en la web, así que hemos eliminado la opción de ubicación en los ajustes de las entradas.
+- Hemos resuelto problemas de traducción que causaban que algunos elementos de la interfaz de usuario (como la alineación del texto de la información y la ventana emergente del editor de bloques) solo aparecieran en inglés.
+- Hemos añadido la traducción de idiomas para los bloques de Jetpack y de diseño en cuadrícula.
+- Hemos corregido un fallo que restablecía el formato del texto a los valores por defecto después de pulsar la tecla de retroceso. Audaces, amigos.
+- Los títulos de los bloques de varias líneas ahora están alineados al centro en el menú del insertador.
 
-También hemos hecho otras mejoras, incluyendo una corrección de un problema de recorte en el lector, así como la posibilidad de recomendar la aplicación a tus amigos en las pantallas «Yo» y «Acerca de».
+Finalmente, la fila «Compartir WordPress con un amigo» ha vuelto a donde debía en la pantalla «Yo». Vueltos a reunir y se ven muy bien.

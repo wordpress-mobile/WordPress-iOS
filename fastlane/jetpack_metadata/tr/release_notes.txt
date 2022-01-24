@@ -1,7 +1,12 @@
-Gömülü blokunu kullanıyor musunuz? Sitenize gömdüğünüz medya için artık "Daha küçük cihazlar için yeniden boyutlandır" seçeneğini göreceksiniz. İçeriğinizi ekranınıza sığacak şekilde yeniden boyutlandırmak için açın; devre dışı bırakmak için kapatın.
+Saat kaç? Yepyeni saat dilimi seçim ekranımız bilir. Cihazınıza göre bir saat dilimi önerisi alın ve bu sırada aramayı iyileştirin.
 
-Blog Hatırlatıcıları aracını beğeniyor musunuz? Bildirim almak için belirli bir zaman seçmenize olanak tanıyan yeni bir özellik ekledik.
+Ücretsiz bir paket kullanıyorsanız video yüklemeleri artık dosya başına beş dakika ile sınırlıdır. Endişelenmeyin; bu, sitenize daha önce yüklemiş olduğunuz videoları etkilemeyecektir.
 
-Hesabınızı kapatmanız mı gerekiyor? (Umarız bizi asla bırakmazsınız!) Ancak gerekirse Hesap Ayarlarınızdan bunu yapabilirsiniz.
+Blok düzenleyicide de bazı değişiklikler yaptık:
 
-Gönderilere coğrafi etiket ekleme işlevi artık web'de desteklenmediğinden Gönderi Ayarları altındaki Konum seçeneği kaldırılmıştır.
+- Bazı kullanıcı arayüzü öğelerinin (metin hizalama bilgileri ve blok düzenleyici mod penceresi gibi) yalnızca İngilizce görünmesine neden olan çeviri sorunlarını çözdük.
+- Jetpack ve Düzen Izgarası blokları için dil çevirisi ekledik.
+- Geri al tuşuna bastıktan sonra metin biçimlendirmesinin varsayılan ayara sıfırlanmasına neden olan bir hatayı düzelttik. Cesur olun arkadaşlar.
+- Çok satırlı blok başlıkları artık ekleyici menüsünde ortaya hizalanmıştır.
+
+Son olarak, “WordPress'i bir arkadaşınızla paylaşın” satırı, Ben ekranında ait olduğu yere geri döndü. Yeniden bir araya geldiler ve bu da çok iyi duruyor.

@@ -20,7 +20,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.16.0'
+    pod 'WordPressShared', '~> 1.17.0'
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
     #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -35,11 +35,11 @@ def aztec
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
     #pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.4'
+    pod 'WordPress-Editor-iOS', '~> 1.19.7'
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.12.1'
+    pod 'WordPressUI', '~> 1.12.3'
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.41.0'
+    pod 'WordPressKit', '~> 4.46.0-beta'
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -121,8 +121,10 @@ def gutenberg_dependencies(options)
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
+        'React-logger',
         'React-perflogger',
         'React-runtimeexecutor',
+        'boost',
         'Yoga',
         'RCT-Folly',
         'glog',
@@ -139,7 +141,8 @@ def gutenberg_dependencies(options)
         'RNScreens',
         'RNReanimated',
         'RNGestureHandler',
-        'RNCMaskedView'
+        'RNCMaskedView',
+        'RNCClipboard'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -166,7 +169,7 @@ abstract_target 'Apps' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'cdd60f365de5e8889d70bafd9ae79d07e058ed20'
+    gutenberg :commit => '2e966856c81bb3ea390895e54d5bd8b64a3c0ee3'
 
     ## Third party libraries
     ## =====================
@@ -207,15 +210,15 @@ abstract_target 'Apps' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.7.2'
-    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
+    pod 'WPMediaPicker', '~> 1.8.2-beta.2'
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 1.1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.42.0'
+    pod 'WordPressAuthenticator', '~> 1.43.0-beta.2'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
@@ -365,9 +368,9 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.14'
+  pod 'WordPressMocks', '~> 0.0.15'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => 'task/jetpack-screenshots-dynamic-dates'
+  # pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'add-organization-id-to-me-sites'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
@@ -472,9 +475,12 @@ post_install do |installer|
     # =====================================
     #
     installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |configuration|
-        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+      # Exclude RCT-Folly as it requires explicit deployment target https://git.io/JPb73
+      if (target.name != 'RCT-Folly')
+        target.build_configurations.each do |configuration|
+          pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+          configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
+        end
       end
     end
 

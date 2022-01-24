@@ -8,6 +8,7 @@ class BloggingRemindersFlow {
                         for blog: Blog,
                         source: BloggingRemindersTracker.FlowStartSource,
                         alwaysShow: Bool = true,
+                        delegate: BloggingRemindersFlowDelegate? = nil,
                         onDismiss: DismissClosure? = nil) {
 
         guard alwaysShow || !hasShownWeeklyRemindersFlow(for: blog) else {
@@ -19,7 +20,10 @@ class BloggingRemindersFlow {
         let tracker = BloggingRemindersTracker(blogType: blogType)
         tracker.flowStarted(source: source)
 
-        let flowStartViewController = makeStartViewController(for: blog, tracker: tracker, source: source)
+        let flowStartViewController = makeStartViewController(for: blog,
+                                                              tracker: tracker,
+                                                              source: source,
+                                                              delegate: delegate)
         let navigationController = BloggingRemindersNavigationController(
             rootViewController: flowStartViewController,
             onDismiss: {
@@ -38,14 +42,18 @@ class BloggingRemindersFlow {
     /// if the flow has never been seen, it starts with the intro. Otherwise it starts with the calendar settings
     private static func makeStartViewController(for blog: Blog,
                                                 tracker: BloggingRemindersTracker,
-                                                source: BloggingRemindersTracker.FlowStartSource) -> UIViewController {
+                                                source: BloggingRemindersTracker.FlowStartSource,
+                                                delegate: BloggingRemindersFlowDelegate? = nil) -> UIViewController {
 
         guard hasShownWeeklyRemindersFlow(for: blog) else {
-            return BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker, source: source)
+            return BloggingRemindersFlowIntroViewController(for: blog,
+                                                            tracker: tracker,
+                                                            source: source,
+                                                            delegate: delegate)
         }
 
-        return (try? BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker)) ??
-            BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker, source: source)
+        return (try? BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker, delegate: delegate)) ??
+            BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker, source: source, delegate: delegate)
     }
 
     // MARK: - Weekly reminders flow presentation status

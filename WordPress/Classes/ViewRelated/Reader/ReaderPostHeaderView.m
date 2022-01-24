@@ -5,7 +5,6 @@ const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
 const CGFloat PostHeaderDisclosureButtonWidth = 8.0;
 const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
-const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 
 @interface ReaderPostHeaderView()
 
@@ -14,7 +13,6 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
-@property (nonatomic, strong) UIButton *followConversationButton;
 @property (nonatomic, strong) UIButton *disclosureButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
@@ -36,7 +34,6 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
         [self setupLabelsStackView];
         [self setupSubtitleLabel];
         [self setupTitleLabel];
-        [self setupFollowConversationButton];
         [self setupDisclosureButton];
         [self setupTapGesture];
     }
@@ -48,7 +45,7 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     UIStackView *stackView = [[UIStackView alloc] init];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisHorizontal;
-    stackView.distribution = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentTop;
     stackView.spacing = 8.0;
 
@@ -89,7 +86,7 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.preservesSuperviewLayoutMargins = YES;
     stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.distribution = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentLeading;
 
     [self.stackView addArrangedSubview:stackView];
@@ -130,37 +127,6 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     self.titleLabel = label;
 }
 
-- (void)setupFollowConversationButton
-{
-    NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
-
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.translatesAutoresizingMaskIntoConstraints = NO;
-
-    [button addTarget:self
-               action:@selector(followConversationButtonTapped)
-     forControlEvents:UIControlEventTouchUpInside];
-
-    [WPStyleGuide applyReaderFollowConversationButtonStyle:button];
-
-    NSString *normalText = NSLocalizedString(@"Follow conversation by email", @"Verb. Button title. Follow the comments on a post.");
-    NSString *selectedText = NSLocalizedString(@"Following conversation by email", @"Verb. Button title. The user is following the comments on a post.");
-
-    [button setTitle:normalText forState:UIControlStateNormal];
-    [button setTitle:selectedText forState:UIControlStateSelected];
-    [button setTitle:selectedText forState:UIControlStateHighlighted];
-
-    // Default accessibility label and hint.
-    button.accessibilityLabel = button.isSelected ? selectedText : normalText;
-    button.accessibilityHint = NSLocalizedString(@"Follows the comments on a post by email.", @"VoiceOver accessibility hint, informing the user the button can be used to follow the comments a post.");
-    
-    NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:PostHeaderViewFollowConversationButtonHeight];
-    [NSLayoutConstraint activateConstraints:@[height]];
-    
-    [self.labelsStackView addArrangedSubview:button];
-    self.followConversationButton = button;
-}
-
 - (void)setupDisclosureButton
 {
     NSAssert(self.stackView != nil, @"stackView was nil");
@@ -199,12 +165,6 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
     self.disclosureButton.hidden = !showsDisclosure;
 }
 
-- (void)setShowsFollowConversationButton:(BOOL)showsFollowConversationButton
-{
-    _showsFollowConversationButton = showsFollowConversationButton;
-    self.followConversationButton.hidden = !showsFollowConversationButton;
-}
-
 - (UIImage *)avatarImage
 {
     return self.avatarImageView.image;
@@ -233,21 +193,6 @@ const CGFloat PostHeaderViewFollowConversationButtonHeight = 32.0;
 - (void)setSubtitle:(NSString *)title
 {
     self.subtitleLabel.text = title;
-}
-
-- (void)setSubscribedToPost:(BOOL)isSubscribedToPost
-{
-    _isSubscribedToPost = isSubscribedToPost;
-    [self.followConversationButton setSelected:isSubscribedToPost];
-}
-
-#pragma mark - Button Action Helpers
-
-- (void)followConversationButtonTapped
-{
-    if (self.onFollowConversationClick) {
-        self.onFollowConversationClick();
-    }
 }
 
 #pragma mark - Recognizer Helpers

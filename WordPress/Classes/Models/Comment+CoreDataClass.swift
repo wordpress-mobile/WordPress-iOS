@@ -50,6 +50,10 @@ public class Comment: NSManagedObject {
         return URL(string: link)
     }
 
+    @objc func deleteWillBePermanent() -> Bool {
+        return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
+    }
+
     func numberOfLikes() -> Int {
         return Int(likeCount)
     }
@@ -58,6 +62,60 @@ public class Comment: NSManagedObject {
         return !author_url.isEmpty
     }
 
+    func hasParentComment() -> Bool {
+        return parentID > 0
+    }
+
+
+    /// Convenience method to check if the current user can actually moderate.
+    /// `canModerate` is only applicable when the site is dotcom-related (hosted or atomic). For self-hosted sites, default to true.
+    @objc func allowsModeration() -> Bool {
+        if let _ = post as? ReaderPost {
+            return canModerate
+        }
+
+        guard let blog = blog,
+              (blog.isHostedAtWPcom || blog.isAtomic()) else {
+                  return true
+              }
+        return canModerate
+    }
+
+    func canReply() -> Bool {
+        if let readerPost = post as? ReaderPost {
+            return readerPost.commentsOpen && ReaderHelpers.isLoggedIn()
+        }
+
+        return !isReadOnly()
+    }
+
+    // NOTE: Comment Likes could be disabled, but the API doesn't have that info yet. Let's update this once it's available.
+    func canLike() -> Bool {
+        if let _ = post as? ReaderPost {
+            return ReaderHelpers.isLoggedIn()
+        }
+
+        guard let blog = blog else {
+            // Disable likes feature for self-hosted sites.
+            return false
+        }
+
+        return !isReadOnly() && blog.supports(.commentLikes)
+    }
+
+    @objc func isTopLevelComment() -> Bool {
+        return depth == 0
+    }
+
+    func isFromPostAuthor() -> Bool {
+        guard let postAuthorID = post?.authorID?.int32Value,
+              postAuthorID > 0,
+              authorID > 0 else {
+                  return false
+              }
+
+        return authorID == postAuthorID
+    }
 }
 
 private extension Comment {
@@ -96,7 +154,7 @@ extension Comment: PostContentProvider {
         return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
-    public func authorForDisplay() -> String {
+    @objc public func authorForDisplay() -> String {
         let displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
         return !displayAuthor.isEmpty ? displayAuthor : gravatarEmailForDisplay()
     }
@@ -152,6 +210,23 @@ extension Comment: PostContentProvider {
             return "spam"
         case .draft:
             return "draft"
+        }
+    }
+
+    static func typeForStatus(_ status: String?) -> CommentStatusType? {
+        switch status {
+        case "hold":
+            return .pending
+        case "approve":
+            return .approved
+        case "trash":
+            return .unapproved
+        case "spam":
+            return .spam
+        case "draft":
+            return .draft
+        default:
+            return nil
         }
     }
 }

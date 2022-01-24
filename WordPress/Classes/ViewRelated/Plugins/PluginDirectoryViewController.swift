@@ -23,15 +23,6 @@ class PluginDirectoryViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc convenience init?(blog: Blog) {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: site)
-    }
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -231,5 +222,16 @@ extension PluginDirectoryViewController: PluginListPresenter {
 
         let listVC = PluginListViewController(site: site, query: query)
         navigationController?.pushViewController(listVC, animated: true)
+    }
+}
+
+extension BlogDetailsViewController {
+
+    @objc func makePluginDirectoryViewController(blog: Blog) -> PluginDirectoryViewController? {
+        guard let site = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+
+        return PluginDirectoryViewController(site: site)
     }
 }

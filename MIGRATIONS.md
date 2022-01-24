@@ -3,6 +3,18 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 137
+
+@dvdchr 2021-11-26
+
+- `Comment`: added `authorID` attribute. (optional, default `0`, `Int 32`)
+
+## WordPress 134
+
+@dvdchr 2021-10-14
+
+- `ReaderPost`: added `receivesCommentNotifications` attribute. (required, default `false`, `Boolean`)
+
 ## WordPress 132
 
 @momo-ozawa 2021-08-19

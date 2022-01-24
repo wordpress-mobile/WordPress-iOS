@@ -1,0 +1,44 @@
+[
+  {
+    "id": 19,
+    "post": 49,
+    "parent": 1,
+    "author": 135,
+    "author_name": "John Doe",
+    "author_url": "https://example.com/john-doe",
+    "date": "2021-07-01T17:50:11",
+    "date_gmt": "2021-07-01T10:50:11",
+    "content": {
+      "rendered": "<p>Some example comment.<\/p>\n"
+    },
+    "link": "https:\/\/example.com\/2021\/05\/25\/example-post\/comment-page-1\/#comment-2",
+    "status": "approved",
+    "type": "comment",
+    "author_avatar_urls": {
+      "24": "https:\/\/example.com\/avatar\/sample?s=24&d=identicon&r=g",
+      "48": "https:\/\/example.com\/avatar\/sample?s=48&d=identicon&r=g",
+      "96": "https:\/\/example.com\/avatar\/sample?s=96&d=identicon&r=g"
+    }
+  },
+  {
+    "id": 54,
+    "post": 49,
+    "parent": 1,
+    "author": 202,
+    "author_name": "Mary Sue",
+    "author_url": "https://example.com/mary-sue",
+    "date": "2021-07-02T17:50:20",
+    "date_gmt": "2021-07-02T10:50:20",
+    "content": {
+      "rendered": "<p>Some reply comment.<\/p>\n"
+    },
+    "link": "https:\/\/example.com\/2021\/05\/25\/example-post\/comment-page-1\/#comment-3",
+    "status": "approved",
+    "type": "comment",
+    "author_avatar_urls": {
+      "24": "https:\/\/example.com\/avatar\/sample2?s=24&d=identicon&r=g",
+      "48": "https:\/\/example.com\/avatar\/sample2?s=48&d=identicon&r=g",
+      "96": "https:\/\/example.com\/avatar\/sample2?s=96&d=identicon&r=g"
+    }
+  }
+]

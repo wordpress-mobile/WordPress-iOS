@@ -1,27 +1,6 @@
 import UITestsFoundation
 import XCTest
 
-extension BaseScreen {
-
-    class func waitForLoadingIndicatorToDisappear(within timeout: TimeInterval) {
-        let networkLoadingIndicator = XCUIApplication().otherElements.deviceStatusBars.networkLoadingIndicators.element
-        let networkLoadingIndicatorDisappeared = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: networkLoadingIndicator)
-        _ = XCTWaiter.wait(for: [networkLoadingIndicatorDisappeared], timeout: timeout)
-    }
-
-    func tapStatusBarToScrollToTop() {
-        // A hack to work around there being no status bar – just tap the appropriate spot on the navigation bar
-        XCUIApplication().navigationBars.allElementsBoundByIndex.forEach {
-           $0.coordinate(withNormalizedOffset: CGVector(dx: 20, dy: -20)).tap()
-        }
-    }
-
-    // Pops the navigation stack, returning to the item above the current one
-    func pop() {
-        navBackButton.tap()
-    }
-}
-
 private extension XCUIElementAttributes {
     var isNetworkLoadingIndicator: Bool {
         if hasAllowListedIdentifier { return false }

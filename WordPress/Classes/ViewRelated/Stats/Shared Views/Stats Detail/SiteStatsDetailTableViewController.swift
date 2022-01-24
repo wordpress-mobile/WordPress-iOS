@@ -146,7 +146,8 @@ extension SiteStatsDetailTableViewController: StatsForegroundObservable {
 private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self)
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self,
+                                              referrerDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -277,7 +278,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     }
 
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_detail")
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true)
     }
@@ -308,7 +309,14 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
             DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
         })
     }
+}
 
+// MARK: - SiteStatsReferrerDelegate
+
+extension SiteStatsDetailTableViewController: SiteStatsReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        show(ReferrerDetailsTableViewController(data: data), sender: nil)
+    }
 }
 
 // MARK: - NoResultsViewHost

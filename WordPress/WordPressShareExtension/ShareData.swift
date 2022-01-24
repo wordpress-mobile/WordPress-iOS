@@ -6,6 +6,18 @@ enum PostStatus: String {
     case publish  = "publish"
 }
 
+enum PostType: String, CaseIterable {
+    case post = "post"
+    case page = "page"
+
+    var title: String {
+        switch self {
+        case .post: return AppLocalizedString("Post", comment: "Title shown when selecting a post type of Post from the Share Extension.")
+        case .page: return AppLocalizedString("Page", comment: "Title shown when selecting a post type of Page from the Share Extension.")
+        }
+    }
+}
+
 /// ShareData is a state container for the share extension screens.
 ///
 @objc
@@ -30,6 +42,10 @@ class ShareData: NSObject {
     /// Post's status, set to publish by default
     ///
     var postStatus: PostStatus = .publish
+
+    /// Post's type, set to post by default
+    ///
+    var postType: PostType = .post
 
     /// Dictionary of URLs mapped to attachment ID's
     ///
