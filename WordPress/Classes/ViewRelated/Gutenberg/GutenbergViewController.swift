@@ -709,12 +709,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                 message: NSLocalizedString("You already have a featured image set. Do you want to replace it with the new image?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
-        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace with new image", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
         alertController.addAction(replaceAction)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Keep current featured image", comment: "Button to cancel the replacement of a featured image."))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Keep current", comment: "Button to cancel the replacement of a featured image."))
 
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = view.bounds
