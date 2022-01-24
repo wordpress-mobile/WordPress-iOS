@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-12-31 15:51:05+0000 */
+/* Translation-Revision-Date: 2022-01-20 10:57:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: it */
@@ -388,7 +388,7 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "AGGIUNGI LINK";
 
 /* No comment provided by engineer. */
-"ADD MEDIA" = "ADD MEDIA";
+"ADD MEDIA" = "AGGIUNGI ELEMENTO MULTIMEDIALE";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "AGGIUNGI VIDEO";
@@ -606,7 +606,7 @@ translators: Block name. %s: The localized block name */
 "Address" = "Indirizzo";
 
 /* No comment provided by engineer. */
-"Address Settings" = "Address Settings";
+"Address Settings" = "Impostazioni dell'indirizzo";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Riga indirizzo %@";
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "Colonna %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "Impostazioni della colonna";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Impostazioni delle colonne";
@@ -3116,7 +3116,7 @@ translators: Block name. %s: The localized block name */
 "Follow" = "Segui";
 
 /* Button title. Follow the comments on a post. */
-"Follow Conversation" = "Follow Conversation";
+"Follow Conversation" = "Segui la conversazione";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "Segui la conversazione tramite e-mail";
@@ -3684,7 +3684,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "Introduzione agli articoli della storia";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Invalid Email Address";
+"Invalid Email Address" = "Indirizzo e-mail non valido";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Indirizzo del sito non valido";
@@ -3814,7 +3814,7 @@ translators: Block name. %s: The localized block name */
 "Join From Anywhere" = "Entra a far parte da qualsiasi momento";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
-"Join a conversation: comment on posts from blogs you follow." = "Unisciti a una conversazione: commenta gli articoli dei blog che segui.";
+"Join a conversation: comment on posts from blogs you follow." = "Unisciti a una conversazione: commenta gli articoli dei blog che segui.";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
@@ -4773,10 +4773,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note: Column layout may vary between themes and screen sizes" = "Nota: il layout delle colonne potrebbe cambiare in base in base al tema e alle dimensioni dello schermo";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+"Note: Layout may vary between themes and screen sizes" = "Nota: il layout potrebbe cambiare in base in base al tema e alle dimensioni dello schermo";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Nota: devi consentire l'accesso a WordPress.com per modificare questo blocco nell'editor per dispositivi mobili.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nessun risultato.";
@@ -4911,7 +4911,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Open Device Settings" = "Apri le impostazioni del dispositivo";
 
 /* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Open Jetpack Security settings";
+"Open Jetpack Security settings" = "Apri le impostazioni di Jetpack Security";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -5012,7 +5012,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "PHONE" = "TELEFONO";
 
 /* No comment provided by engineer. */
-"Padding" = "Padding";
+"Padding" = "Spaziatura interna";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -5221,7 +5221,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid address" = "Inserisci un indirizzo e-mail valido";
 
 /* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
+"Please enter a valid email address for a WordPress.com account." = "Inserisci un indirizzo e-mail valido per un account WordPress.com.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Inserisci un indirizzo email valido.";
@@ -6312,7 +6312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Se selezioni un altro menù le modifiche effettuate all'interno del menù corrente verranno perse. Sei sicuro di voler continuare?";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Selection not allowed" = "Selection not allowed";
+"Selection not allowed" = "Selezione non consentita";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Seleziona questo dominio per utilizzarlo per il tuo sito.";
@@ -6864,7 +6864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Successfully unfollowed conversation" = "Conversazione non più seguita";
 
 /* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
+"Suggestion:" = "Suggerimento:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -7061,7 +7061,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Solo testo";
 
 /* No comment provided by engineer. */
-"Text color" = "Text color";
+"Text color" = "Colore del testo";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "I controlli relativi alla formattazione del testo sono localizzati all'interno della barra degli strumenti posizionata sulla tastiera mentre modifichi un blocco di testo";
@@ -8049,7 +8049,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploading post..." = "Caricamento del post...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
-"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+"Uploading videos longer than 5 minutes requires a paid plan." = "Per caricare i video più lunghi di 5 minuti è richiesto un piano a pagamento.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Caricamento in corso...";
@@ -8143,7 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Video export canceled." = "Esportazione del video annullata.";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Video not uploaded" = "Video not uploaded";
+"Video not uploaded" = "Video non caricato";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Video, %@";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Puoi visualizzare le statistiche di un singolo sito nella vista iOS Oggi\/Notifiche";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+"You can edit this block using the web version of the editor." = "Puoi modificare questo blocco usando la versione web dell'editor.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Puoi seguire gli articoli su un sito specifico seguendolo.";

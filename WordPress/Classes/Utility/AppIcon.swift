@@ -93,6 +93,6 @@ struct AppIcon {
         static let imageBaseName              = "icon-app-60x60"
     }
 
-    static let defaultIconName = "Blue"
+    static let defaultIconName = "Cool Blue"
     static let defaultLegacyIconName = "WordPress"
 }

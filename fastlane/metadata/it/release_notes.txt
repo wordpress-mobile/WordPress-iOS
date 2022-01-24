@@ -1,0 +1,12 @@
+Che ore sono? La nostra nuovissima schermata di selezione del fuso orario lo sa. Ottieni un fuso orario suggerito in base al tuo dispositivo e migliora la ricerca mentre ti trovi presso uno di essi.
+
+Se stai usando un piano gratuito, i caricamenti di video ora sono limitati a cinque minuti per file. Non preoccuparti, ciò non influirà sui video che hai già caricato sul tuo sito.
+
+Abbiamo anche apportato alcune modifiche all'editor a blocchi:
+
+- Abbiamo risolto i problemi relativi alle traduzioni che causavano la visualizzazione di alcuni elementi dell'interfaccia utente (come le informazioni sull'allineamento del testo e la finestra modale dell'editor a blocchi) solo in inglese.
+- Abbiamo aggiunto la traduzione per i blocchi Jetpack e Griglia di layout.
+- Abbiamo corretto un bug che ripristinava la formattazione del testo all'impostazione predefinita dopo che veniva premuto il tasto backspace. In grassetto, amico.
+- I titoli dei blocchi multilinea ora sono allineati al centro nel menu dello strumento per l'inserimento.
+
+Infine, la riga "Condividi WordPress con un amico" è tornata nella posizione che si trova nella schermata Io. Riuniti e felici.

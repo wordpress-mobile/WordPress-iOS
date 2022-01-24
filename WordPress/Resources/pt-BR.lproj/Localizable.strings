@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-11-26 17:26:19+0000 */
+/* Translation-Revision-Date: 2022-01-19 15:27:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: pt_BR */
@@ -250,7 +250,7 @@ translators: Block name. %s: The localized block name */
 "%s link" = "%s link";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"%s previews not yet available" = "%s previews not yet available";
+"%s previews not yet available" = "Visualização de %s ainda indisponível";
 
 /* translators: %s: social link name e.g: \"Instagram\". */
 "%s social icon" = "Ícone do %s";
@@ -406,7 +406,7 @@ translators: Block name. %s: The localized block name */
 "About Me" = "Sobre mim";
 
 /* Link to About screen for WordPress for iOS */
-"About WordPress" = "About WordPress";
+"About WordPress" = "Sobre o WordPress";
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress for iOS" = "Sobre o WordPress para iOS";
@@ -1077,10 +1077,10 @@ translators: Block name. %s: The localized block name */
 "Blocklist" = "Lista de bloqueios";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocos te permitem focar em escrever seu conteúdo sabendo que todas as ferramentas de formatação que precisa estão lá para te ajudar a passar sua mensagem.";
 
 /* No comment provided by engineer. */
-"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+"Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocos são conteúdos que você pode inserir, reorganizar e personalizar sem precisar saber programar. Blocos são um jeito fácil e moderno para você criar layouts estilosos.";
 
 /* Opens the WordPress Mobile Blog
    Title of a button that displays the WordPress product blog */
@@ -1124,7 +1124,7 @@ translators: Block name. %s: The localized block name */
 "Brute Force Attack Protection" = "Proteção contra ataques por força bruta";
 
 /* No comment provided by engineer. */
-"Build layouts" = "Build layouts";
+"Build layouts" = "Criar layouts";
 
 /* Discoverability title for bullet list keyboard shortcut. */
 "Bullet List" = "Lista";
@@ -1326,7 +1326,7 @@ translators: Block name. %s: The localized block name */
 "Change, add, or remove your site's pages." = "Altere, adicione ou remova as páginas do seu site.";
 
 /* No comment provided by engineer. */
-"Changes to featured image will not be affected by the undo\/redo buttons." = "Changes to featured image will not be affected by the undo\/redo buttons.";
+"Changes to featured image will not be affected by the undo\/redo buttons." = "Alterações na imagem destacada não serão afetadas pelos botões desfazer\/refazer.";
 
 /* Shown while the app waits for the display name changing web service to return. */
 "Changing display name" = "Alterando nome de exibição";
@@ -1585,7 +1585,7 @@ translators: Block name. %s: The localized block name */
 
 /* Provides hint that the current screen displays a comment on a post. The title of the post will displayed below this string. Example: Comment on 
  My First Post */
-"Comment on" = "Comment on";
+"Comment on" = "Comentar";
 
 /* Message displayed when pending a comment succeeds. */
 "Comment set to pending." = "Comentário configurado como pendente.";
@@ -2531,7 +2531,7 @@ translators: Block name. %s: The localized block name */
 "Duplicate block" = "Duplicar bloco";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Cada bloco possui suas próprias configurações. Para encontrá-las, toque em um bloco. As configurações dele aparecerão na barra de ferramentas na parte inferior da tela.";
 
 /* Edit the post.
    Editing GIF alert default action button.
@@ -2660,7 +2660,7 @@ translators: Block name. %s: The localized block name */
 "Email sent!" = "E-mail enviado!";
 
 /* No comment provided by engineer. */
-"Embed block previews are coming soon" = "Embed block previews are coming soon";
+"Embed block previews are coming soon" = "A visualização de blocos de conteúdo incorporado estará disponível em breve";
 
 /* translators: accessibility text. %s: Embed caption. */
 "Embed caption. %s" = "Incorporar legenda. %s";
@@ -3188,7 +3188,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "Segue a tag.";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "Tamanho da fonte";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Futebol";
@@ -4444,7 +4444,7 @@ translators: Block name. %s: The localized block name */
 
 /* translators: %s: Select control button label e.g. Small
 translators: %s: Select control button label e.g. \"Button width\" */
-"Navigates to select %s" = "Navigates to select %s";
+"Navigates to select %s" = "Navegar para selecionar %s";
 
 /* No comment provided by engineer. */
 "Navigates to the previous content sheet" = "Ir para a folha de conteúdo anterior";
@@ -4881,7 +4881,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Once this invite link is disabled, nobody will be able to use it to join your team. Are you sure?" = "Assim que esse link de convite for desativado, ninguém poderá usá-lo para ingressar em sua equipe. Você tem certeza?";
 
 /* No comment provided by engineer. */
-"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading.";
+"Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Assim que você se acostumar com os nomes dos blocos, você poderá adicionar um bloco digitando uma barra seguida pelo nome do bloco. Por exemplo, \/imagem ou \/titulo.";
 
 /* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
 "Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Assim que você criar um site no WordPress.com, você poderá republicar o conteúdo que você curtir em seu próprio site.";
@@ -5489,7 +5489,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary Site" = "Site principal";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "Endereço do site primário";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -5986,7 +5986,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Rich Content" = "Rich Content";
 
 /* No comment provided by engineer. */
-"Rich text editing" = "Rich text editing";
+"Rich text editing" = "Editor Rich-Text";
 
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "À direita";
@@ -7064,7 +7064,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text color" = "Text color";
 
 /* No comment provided by engineer. */
-"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
+"Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Os controles de formatação de texto estão posicionados na barra de ferramentas acima do teclado ao editar um bloco de texto";
 
 /* Button title
    The button's title text to send a 2FA code via SMS text message. */
@@ -7520,7 +7520,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Para continuar usando esta conta do Google, primeiro faça login com a sua senha do WordPress.com. Isto só será solicitado uma vez.";
 
 /* No comment provided by engineer. */
-"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block.";
+"To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Para remover um bloco, selecione o bloco e clique nos três pontos no canto inferior direito do bloco para ver as configurações. A partir daí, escolha a opção de remover o bloco.";
 
 /* NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera. */
 "To take photos or videos to use in your posts." = "Para tirar fotos ou gravar vídeos para usar nos seus posts.";
@@ -8525,7 +8525,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Week starts on" = "Semana começa em";
 
 /* Setting: indicates if the site reports its Weekly Roundup */
-"Weekly Roundup" = "Weekly Roundup";
+"Weekly Roundup" = "Resumo semanal";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Semanas";
@@ -8565,7 +8565,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We’ll still attempt to restore your site." = "Ainda tentaremos restaurar seu site.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
-"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page.";
+"We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the page." = "Estamos trabalhando duro para adicionar compatibilidade de visualização a %s. Enquanto isso, você pode visualizar o mídia incorporada diretamente no página.";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "Estamos trabalhando para adicionar suporte à pré-visualização de %s. Enquanto isso, você pode visualizar a mídia incorporada diretamente no post.";
@@ -8733,7 +8733,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "WordPress.org Plugin Page" = "Página do plugin no WordPress.org";
 
 /* Title of button that displays the Automattic Work With Us web page */
-"Work With Us" = "Work With Us";
+"Work With Us" = "Trabalhe conosco";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mapa do mundo mostrando visualizações por país.";
@@ -9194,7 +9194,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "widget.alltime.bestviews.label" = "Melhores visualizações";
 
 /* Title of posts label in all time widget */
-"widget.alltime.posts.label" = "widget.alltime.posts.label";
+"widget.alltime.posts.label" = "Posts";
 
 /* Description of all time widget in the preview */
 "widget.alltime.preview.description" = "widget.alltime.preview.description";
@@ -9209,7 +9209,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "widget.thisweek.preview.description" = "widget.thisweek.preview.description";
 
 /* Title of this week widget */
-"widget.thisweek.title" = "widget.thisweek.title";
+"widget.thisweek.title" = "Esta semana";
 
 /* Title of the unconfigured view in this week widget */
 "widget.thisweek.unconfigured.view.title" = "widget.thisweek.unconfigured.view.title";
