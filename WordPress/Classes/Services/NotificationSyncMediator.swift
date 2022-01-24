@@ -205,7 +205,7 @@ class NotificationSyncMediator {
                 // next successful sync.
                 //
                 // https://github.com/wordpress-mobile/WordPress-iOS/issues/7216
-                NotificationSyncMediator()?.invalidateCacheForNotifications(with: noteIDs)
+                NotificationSyncMediator()?.invalidateCacheForNotifications(noteIDs)
             }
 
             completion?(error)
@@ -232,7 +232,7 @@ class NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsReadAndSync(_ noteID: String, completion: ((Error?) -> Void)? = nil) {
-        invalidateCacheForNotification(with: noteID)
+        invalidateCacheForNotification(noteID)
         remote.updateReadStatus(noteID, read: true) { error in
             if let error = error {
                 DDLogError("Error marking note as read: \(error)")
@@ -281,13 +281,13 @@ class NotificationSyncMediator {
 
     /// Invalidates the local cache for the notification with the specified ID.
     ///
-    func invalidateCacheForNotification(with noteID: String) {
-        invalidateCacheForNotifications(with: [noteID])
+    func invalidateCacheForNotification(_ noteID: String) {
+        invalidateCacheForNotifications([noteID])
     }
 
     /// Invalidates the local cache for all the notifications with specified ID's in the array.
     ///
-    func invalidateCacheForNotifications(with noteIDs: [String]) {
+    func invalidateCacheForNotifications(_ noteIDs: [String]) {
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
 
         derivedContext.perform {
