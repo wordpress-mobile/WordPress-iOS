@@ -93,6 +93,8 @@ struct EditableTextRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
+        cell.accessibilityLabel = title
+        cell.accessibilityHint = value
         cell.accessoryType = .disclosureIndicator
         if accessoryImage != nil {
             cell.accessoryView = UIImageView(image: accessoryImage)
@@ -129,6 +131,9 @@ struct TextRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
+        cell.accessibilityLabel = title
+        cell.accessibilityHint = value
+
         cell.selectionStyle = .none
 
         WPStyleGuide.configureTableViewCell(cell)
