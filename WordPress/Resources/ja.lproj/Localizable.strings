@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-19 08:54:07+0000 */
+/* Translation-Revision-Date: 2022-01-21 12:00:25+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ja_JP */
@@ -319,7 +319,7 @@ translators: Block name. %s: The localized block name */
 "<strong>%d<\/strong> times a week" = "週に<strong>%d<\/strong>回";
 
 /* A short description of how many times a week the user will receive a blogging reminder. The '%d' placeholder will be populated with a count of the number of times a week they'll be reminded, and should be surrounded by <strong> HTML tags. */
-"<strong>%d<\/strong> times a week at %@" = "<strong>%d<\/strong> times a week at %@";
+"<strong>%d<\/strong> times a week at %@" = "週に<strong>%1$d<\/strong>回%2$@時";
 
 /* Short title telling the user they will receive a blogging reminder once per week. The word for 'once' should be surrounded by <strong> HTML tags. */
 "<strong>Once<\/strong> a week" = "週に<strong>1回<\/strong>";
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "カラム %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "カラム設定";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "カラム設定";
@@ -2480,7 +2480,7 @@ translators: Block name. %s: The localized block name */
 "Double tap to select default font size" = "ダブルタップしてデフォルトのフォントサイズを選択";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Double tap to select font size";
+"Double tap to select font size" = "ダブルタップして文字サイズを選択";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "ダブルタップしてオプションを選択";
@@ -3188,7 +3188,7 @@ translators: Block name. %s: The localized block name */
 "Follows the tag." = "タグをフォローします。";
 
 /* No comment provided by engineer. */
-"Font Size" = "Font Size";
+"Font Size" = "文字サイズ";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "フットボール";
@@ -4180,7 +4180,7 @@ translators: Block name. %s: The localized block name */
 "Mark as seen" = "既読にする";
 
 /* Action title for marking referrer as spam */
-"Mark as spam" = "Mark as spam";
+"Mark as spam" = "スパムとしてマーク";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "スパムとしてマーク。";
@@ -5489,7 +5489,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Primary Site" = "主要サイト";
 
 /* Primary site address label, used in the site address section of the Domains Dashboard. */
-"Primary site address" = "Primary site address";
+"Primary site address" = "主要サイトのアドレス";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -6144,7 +6144,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Search button. Current button text is" = "検索ボタンです。現在のボタンテキストは";
 
 /* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
+"Search domains" = "ドメインを検索";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "ドメインを検索";
@@ -8170,7 +8170,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "View Site" = "サイトを表示";
 
 /* Title for button on the post details page to show all comments when tapped. */
-"View all comments" = "View all comments";
+"View all comments" = "すべてのコメントを表示";
 
 /* Displays More Rows */
 "View all…" = "すべて表示…";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "1つのサイトに関する統計を iOS の「今日」\/「通知センター」ビューに表示することができます。";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "このブロックは Web バージョンのエディターを使用して編集できます";
+"You can edit this block using the web version of the editor." = "このブロックは Web バージョンのエディターを使用して編集できます。";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "フォローすることで特定のサイトに関する投稿をフォローできます。";

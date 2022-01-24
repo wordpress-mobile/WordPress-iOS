@@ -1,0 +1,12 @@
+Vad är klockan? Vår helt nya skärm för val av tidszon vet. Få en föreslagen tidszon baserad på din enhet och förbättra sökningen medan du håller på.
+
+Om du använder ett gratispaket är videouppladdningar nu begränsade till fem minuter per fil. Oroa dig inte, det kommer inte att påverka videor som du redan har laddat upp till din webbplats.
+
+Vi har också gjort några ändringar i blockredigeraren:
+
+- Vi har löst översättningsproblem som gjorde att vissa element i användargränssnittet (t.ex. textjusteringsinformation och blockredigerarens modala fönster) bara visades på engelska.
+- Vi har lagt till språköversättning för Jetpack- och layoutrutnätsblock.
+- Vi har åtgärdat ett fel som återställde textformateringen till standard när användaren tryckte på backsteg. Fetstil, vänner.
+- Blockrubriker med flera rader är nu centrerade i infogarmenyn.
+
+Slutligen är raden "Dela WordPress med en vän" tillbaka på skärmen Mig där den hör hemma. En glad återförening.

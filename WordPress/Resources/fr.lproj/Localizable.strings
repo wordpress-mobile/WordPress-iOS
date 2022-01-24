@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-15 21:34:35+0000 */
+/* Translation-Revision-Date: 2022-01-20 22:19:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: fr */
@@ -388,7 +388,7 @@ translators: Block name. %s: The localized block name */
 "ADD LINK" = "AJOUTER UN LIEN";
 
 /* No comment provided by engineer. */
-"ADD MEDIA" = "ADD MEDIA";
+"ADD MEDIA" = "AJOUTER UN MÉDIA";
 
 /* No comment provided by engineer. */
 "ADD VIDEO" = "AJOUTER UNE VIDÉO";
@@ -606,7 +606,7 @@ translators: Block name. %s: The localized block name */
 "Address" = "Adresse";
 
 /* No comment provided by engineer. */
-"Address Settings" = "Address Settings";
+"Address Settings" = "Réglages de l’adresse";
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Ligne d'adresse %@";
@@ -4773,10 +4773,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Note: Column layout may vary between themes and screen sizes" = "Note : la mise en page des colones peut varier entre les thèmes et les tailles d’écran.";
 
 /* No comment provided by engineer. */
-"Note: Layout may vary between themes and screen sizes" = "Note: Layout may vary between themes and screen sizes";
+"Note: Layout may vary between themes and screen sizes" = "Remarque : La mise en page peut varier selon les thèmes et tailles d’écran.";
 
 /* No comment provided by engineer. */
-"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Note: You must allow WordPress.com login to edit this block in the mobile editor.";
+"Note: You must allow WordPress.com login to edit this block in the mobile editor." = "Remarque : Vous devez autoriser la connexion via WordPress.com pour modifier ce bloc dans l’éditeur mobile.";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Aucun résultat.";
@@ -4911,7 +4911,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Open Device Settings" = "Ouvrir les réglages de l’appareil";
 
 /* No comment provided by engineer. */
-"Open Jetpack Security settings" = "Open Jetpack Security settings";
+"Open Jetpack Security settings" = "Ouvrir les réglages Jetpack Security";
 
 /* The button title text for opening the user's preferred email app.
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
@@ -5221,7 +5221,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid address" = "Veuillez saisir une adresse valide";
 
 /* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Please enter a valid email address for a WordPress.com account.";
+"Please enter a valid email address for a WordPress.com account." = "Veuillez saisir une adresse e-mail valide pour un compte WordPress.com.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Saisissez une adresse e-mail valide.";
@@ -6312,7 +6312,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "La sélection d'un autre menu annulera les modifications apportées dans le menu actuel. Voulez-vous vraiment continuer ?";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Selection not allowed" = "Selection not allowed";
+"Selection not allowed" = "Cette sélection n’est pas autorisée";
 
 /* Accessibility hint for a domain in the Site Creation domains list. */
 "Selects this domain to use for your site." = "Sélectionne ce domaine à utiliser pour votre site.";
@@ -6864,7 +6864,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Successfully unfollowed conversation" = "Abonnement à la conversation supprimé";
 
 /* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
+"Suggestion:" = "Suggestion :";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -8049,7 +8049,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Uploading post..." = "Chargement de l’article…";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
-"Uploading videos longer than 5 minutes requires a paid plan." = "Uploading videos longer than 5 minutes requires a paid plan.";
+"Uploading videos longer than 5 minutes requires a paid plan." = "La mise en ligne de vidéos de plus de 5 minutes requiert un plan payant.";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Téléversement…";
@@ -8143,7 +8143,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Video export canceled." = "Export de la vidéo annulé.";
 
 /* Title of an alert informing users that the video they are trying to select is not allowed. */
-"Video not uploaded" = "Video not uploaded";
+"Video not uploaded" = "La vidéo n’a pas été mise en ligne";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Vidéo, %@";
@@ -8813,7 +8813,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Vous pouvez afficher les statistiques d’un seul site dans la vue Aujourd’hui\/Centre de notification de l’iOS.";
 
 /* No comment provided by engineer. */
-"You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
+"You can edit this block using the web version of the editor." = "Vous pouvez modifier ce bloc en utilisant la version Web de l’éditeur.";
 
 /* No Sites View Label */
 "You can follow posts on a specific site by following it." = "Vous pouvez suivre des articles sur un site spécifique en vous abonnant à celui-ci.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-01-18 19:54:08+0000 */
+/* Translation-Revision-Date: 2022-01-20 22:21:22+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/3.0.0-alpha.2 */
 /* Language: ar */
@@ -1547,7 +1547,7 @@ translators: Block name. %s: The localized block name */
 "Column %d" = "عمود %d";
 
 /* No comment provided by engineer. */
-"Column Settings" = "Column Settings";
+"Column Settings" = "إعدادات العمود";
 
 /* No comment provided by engineer. */
 "Columns Settings" = "إعدادات الأعمدة";
@@ -3116,7 +3116,7 @@ translators: Block name. %s: The localized block name */
 "Follow" = "تابع";
 
 /* Button title. Follow the comments on a post. */
-"Follow Conversation" = "Follow Conversation";
+"Follow Conversation" = "متابعة المحادثة";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation by email" = "تابع المحادثة عبر البريد الإلكتروني";
@@ -7061,7 +7061,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "نص فقط";
 
 /* No comment provided by engineer. */
-"Text color" = "Text color";
+"Text color" = "لون النص";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "توجد عناصر التحكم في تنسيق النص ضمن شريط الأدوات الذي يوجد فوق لوحة المفاتيح في أثناء تحرير مكوِّن نص";

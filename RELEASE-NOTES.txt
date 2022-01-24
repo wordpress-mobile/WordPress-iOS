@@ -30,6 +30,7 @@
 * [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
 * [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search. [#17699]
 * [*] Added the "Share WordPress with a friend" row back to the Me screen. [#17748]
+* [***] Updated default app icon. [#17793]
 
 18.9
 -----
