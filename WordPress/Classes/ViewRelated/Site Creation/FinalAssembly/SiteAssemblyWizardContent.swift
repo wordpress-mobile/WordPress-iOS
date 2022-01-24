@@ -242,7 +242,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             }
             return
         }
-        
+
         dismissTapped(viaDone: true) { [weak self, blog] in
             if let strongSelf = self {
                 SiteAssemblyCompletionHelper.completeSiteCreation(for: blog, quickStartSettings: strongSelf.quickStartSettings)

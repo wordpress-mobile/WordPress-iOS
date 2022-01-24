@@ -9,7 +9,7 @@ class SiteAssemblyCompletionHelper {
             landInTheEditor(for: blog, quickStartSettings: quickStartSettings)
         }
     }
-    
+
     static func completeSiteCreationFromAuthenticationScreen(for blog: Blog, quickStartSettings: QuickStartSettings, completion: @escaping () -> Void) {
         // branch here for explat variation
         if ABTest.landInTheEditorPhase1.variation == .control {
@@ -17,7 +17,7 @@ class SiteAssemblyCompletionHelper {
         } else {
             landInTheEditor(for: blog, quickStartSettings: quickStartSettings, completion: completion)
         }
-        
+
     }
 
     private static func landInTheEditor(for blog: Blog, quickStartSettings: QuickStartSettings, completion: (() -> Void)? = nil) {
