@@ -2,7 +2,7 @@ import AutomatticTracks
 
 enum ABTest: String, CaseIterable {
     case unknown = "unknown"
-    case landInTheEditorPhase1 = "landInTheEditorPhase1"
+    case landInTheEditorPhase1 = "wpios_land_in_the_editor_phase1"
 
     /// Returns a variation for the given experiment
     var variation: Variation {
