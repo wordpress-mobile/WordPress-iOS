@@ -112,7 +112,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             image: .gridicon(.checkmark),
             style: .plain,
             target: self,
-            action: #selector(markAllAsRead)
+            action: #selector(showMarkAllAsReadConfirmation)
         )
         markButton.accessibilityLabel = NSLocalizedString(
             "Mark All As Read",
@@ -888,6 +888,33 @@ private extension NotificationsViewController {
             ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
             self?.updateMarkAllAsReadButton()
         })
+    }
+
+    /// Presents a confirmation action sheet for mark all as read action.
+    @objc func showMarkAllAsReadConfirmation() {
+        let title = NSLocalizedString(
+            "You are about to mark all notifications as read. Are you sure?",
+            comment: "Confirmation title for marking all notifications as read."
+        )
+        let cancelTitle = NSLocalizedString(
+            "Cancel",
+            comment: "Cancels the mark all as read action."
+        )
+        let markAllTitle = NSLocalizedString(
+            "Mark All As Read",
+            comment: "Marks all notifications as read."
+        )
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.view.accessibilityIdentifier = "mark-all-as-read-alert"
+
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        alertController.addActionWithTitle(markAllTitle, style: .default) { [weak self] _ in
+            self?.markAllAsRead()
+        }
+
+        present(alertController, animated: true, completion: nil)
     }
 
     func markAsUnread(note: Notification) {
