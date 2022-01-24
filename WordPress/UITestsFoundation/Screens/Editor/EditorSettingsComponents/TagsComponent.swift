@@ -7,7 +7,11 @@ public class TagsComponent: ScreenObject {
     var tagsField: XCUIElement { expectedElement }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [ { $0.textViews["add-tags"] } ], app: app)
+        try super.init(
+            expectedElementGetters: [ { $0.textViews["add-tags"] } ],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     func addTag(name: String) -> TagsComponent {
@@ -17,7 +21,7 @@ public class TagsComponent: ScreenObject {
     }
 
     func goBackToSettings() throws -> EditorPostSettings {
-        navBackButton.tap()
+        navigateBack()
 
         return try EditorPostSettings()
     }

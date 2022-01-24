@@ -69,23 +69,6 @@ struct QuickStartCreateTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of creating your site.", comment: "This value is used to set the accessibility hint text for creating the user's site.")
 }
 
-/// This is used to track when users from v1 are shown the v2 upgrade notice
-/// This should also be created when a site is setup for v2
-struct QuickStartUpgradeToV2Tour: QuickStartTour {
-    let key = "quick-start-upgrade-to-v2"
-    let analyticsKey = "upgrade_to_v2"
-    let title = ""
-    let titleMarkedCompleted = ""
-    let description = ""
-    let icon = UIImage.gridicon(.plus)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
-
-    let waypoints: [QuickStartTour.WayPoint] = []
-
-    let accessibilityHintText = ""  // not applicable for this tour type
-}
-
 struct QuickStartViewTour: QuickStartTour {
     let key = "quick-start-view-tour"
     let analyticsKey = "view_site"
@@ -127,8 +110,8 @@ struct QuickStartThemeTour: QuickStartTour {
 struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
-    let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Enable post sharing", comment: "The Quick Start Tour title after the user finished the step.")
+    let title = NSLocalizedString("Social sharing", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Social sharing", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.share)
     let suggestionNoText = Strings.notNow
@@ -154,7 +137,7 @@ struct QuickStartPublishTour: QuickStartTour {
     let analyticsKey = "publish_post"
     let title = NSLocalizedString("Publish a post", comment: "Title of a Quick Start Tour")
     let titleMarkedCompleted = NSLocalizedString("Completed: Publish a post", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("It's time! Draft and publish your very first post.", comment: "Description of a Quick Start Tour")
+    let description = NSLocalizedString("Draft and publish a post.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.create)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
@@ -204,8 +187,8 @@ struct QuickStartFollowTour: QuickStartTour {
 struct QuickStartSiteTitleTour: QuickStartTour {
     let key = "quick-start-site-title-tour"
     let analyticsKey = "site_title"
-    let title = NSLocalizedString("Set your site title", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Set your site title", comment: "The Quick Start Tour title after the user finished the step.")
+    let title = NSLocalizedString("Check your site title", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Check your site title", comment: "The Quick Start Tour title after the user finished the step.")
     let description = NSLocalizedString("Give your site a name that reflects its personality and topic. First impressions count!",
                                         comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.pencil)
@@ -225,9 +208,9 @@ struct QuickStartSiteTitleTour: QuickStartTour {
 struct QuickStartSiteIconTour: QuickStartTour {
     let key = "quick-start-site-icon-tour"
     let analyticsKey = "site_icon"
-    let title = NSLocalizedString("Upload a site icon", comment: "Title of a Quick Start Tour")
-    let titleMarkedCompleted = NSLocalizedString("Completed: Upload a site icon", comment: "The Quick Start Tour title after the user finished the step.")
-    let description = NSLocalizedString("Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look.", comment: "Description of a Quick Start Tour")
+    let title = NSLocalizedString("Choose a unique site icon", comment: "Title of a Quick Start Tour")
+    let titleMarkedCompleted = NSLocalizedString("Completed: Choose a unique site icon", comment: "The Quick Start Tour title after the user finished the step.")
+    let description = NSLocalizedString("Shown in your visitor's browser tab and other places online.", comment: "Description of a Quick Start Tour")
     let icon = UIImage.gridicon(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe

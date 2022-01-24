@@ -12,7 +12,11 @@ public class WelcomeScreenSignupComponent: ScreenObject {
     var emailSignupButton: XCUIElement { emailSignupButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [emailSignupButtonGetter], app: app)
+        try super.init(
+            expectedElementGetters: [emailSignupButtonGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func selectEmailSignup() throws -> SignupEmailScreen {

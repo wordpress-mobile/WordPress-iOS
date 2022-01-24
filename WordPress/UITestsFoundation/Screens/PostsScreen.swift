@@ -1,13 +1,7 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let draftsButton = "drafts"
-    static let publishedButton = "published"
-
-    static let autosaveVersionsAlert = "autosave-options-alert"
-}
-
-public class PostsScreen: BaseScreen {
+public class PostsScreen: ScreenObject {
 
     public enum PostStatus {
         case published
@@ -16,19 +10,22 @@ public class PostsScreen: BaseScreen {
 
     private var currentlyFilteredPostStatus: PostStatus = .published
 
-    init() {
-        super.init(element: XCUIApplication().tables["PostsTable"])
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [ { $0.tables["PostsTable"] } ],
+            app: app,
+            waitTimeout: 7
+        )
         showOnly(.published)
     }
 
     @discardableResult
     public func showOnly(_ status: PostStatus) -> PostsScreen {
-
         switch status {
-            case .published:
-                XCUIApplication().buttons[ElementStringIDs.publishedButton].tap()
-            case .drafts:
-                XCUIApplication().buttons[ElementStringIDs.draftsButton].tap()
+        case .published:
+            app.buttons["published"].tap()
+        case .drafts:
+            app.buttons["drafts"].tap()
         }
 
         currentlyFilteredPostStatus = status
@@ -44,7 +41,7 @@ public class PostsScreen: BaseScreen {
         let cell = expectedElement.cells[slug]
         XCTAssert(cell.waitForExistence(timeout: 5))
 
-        scrollElementIntoView(element: cell, within: expectedElement)
+        cell.scrollIntoView(within: expectedElement)
         cell.tap()
 
         dismissAutosaveDialogIfNeeded()
@@ -58,7 +55,7 @@ public class PostsScreen: BaseScreen {
     /// If there are two versions of a local post, the app will ask which version we want to use when editing.
     /// We always want to use the local version (which is currently the first option)
     private func dismissAutosaveDialogIfNeeded() {
-        let autosaveDialog = XCUIApplication().alerts[ElementStringIDs.autosaveVersionsAlert]
+        let autosaveDialog = app.alerts["autosave-options-alert"]
         if autosaveDialog.exists {
             autosaveDialog.buttons.firstMatch.tap()
         }
@@ -67,37 +64,24 @@ public class PostsScreen: BaseScreen {
 
 public struct EditorScreen {
 
-    var isGutenbergEditor: Bool {
-        let blockEditorElement = "add-block-button"
-        return XCUIApplication().buttons[blockEditorElement].waitForExistence(timeout: 3)
-    }
-
     var isAztecEditor: Bool {
         let aztecEditorElement = "Azctec Editor Navigation Bar"
         return XCUIApplication().navigationBars[aztecEditorElement].exists
     }
 
-    private var blockEditor: BlockEditorScreen {
-        return BlockEditorScreen()
-    }
-
-    private var aztecEditor: AztecEditorScreen {
-        return AztecEditorScreen(mode: .rich)
-    }
-
     func dismissDialogsIfNeeded() throws {
-        if self.isGutenbergEditor {
-            try blockEditor.dismissNotificationAlertIfNeeded(.accept)
-        }
+        guard let blockEditor = try? BlockEditorScreen() else { return }
+
+        try blockEditor.dismissNotificationAlertIfNeeded(.accept)
     }
 
     public func close() {
-        if isGutenbergEditor {
-            self.blockEditor.closeEditor()
+        if let blockEditor = try? BlockEditorScreen() {
+            blockEditor.closeEditor()
         }
 
-        if isAztecEditor {
-            self.aztecEditor.closeEditor()
+        if let aztecEditor = try? AztecEditorScreen(mode: .rich) {
+            aztecEditor.closeEditor()
         }
     }
 }

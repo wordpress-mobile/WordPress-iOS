@@ -1,6 +1,26 @@
 import WordPressAuthenticator
+import UIKit
 
 class MySiteViewController: UIViewController, NoResultsViewHost {
+
+    private enum Section: Int, CaseIterable {
+        case siteMenu
+        case dashboard
+
+        var title: String {
+            switch self {
+            case .siteMenu:
+                return NSLocalizedString("Site Menu", comment: "Title for the site menu view on the My Site screen")
+            case .dashboard:
+                return NSLocalizedString("Dashboard", comment: "Title for dashboard view on the My Site screen")
+            }
+        }
+    }
+
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var segmentedControlContainerView: UIView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var containerView: UIView!
 
     private let meScenePresenter: ScenePresenter
 
@@ -41,6 +61,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///
     private var blogDetailsViewController: BlogDetailsViewController?
 
+    private let blogDashboardViewController = BlogDashboardViewController()
+
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
     ///
@@ -51,6 +73,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         setupNavigationItem()
+        setupSegmentedControl()
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
     }
@@ -73,11 +96,23 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
+
+        trackNoSitesVisibleIfNeeded()
     }
 
     private func subscribeToPostSignupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreation), name: .createSite, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func setupSegmentedControl() {
+        segmentedControlContainerView.isHidden = !FeatureFlag.mySiteDashboard.enabled
+
+        segmentedControl.removeAllSegments()
+        Section.allCases.forEach { section in
+            segmentedControl.insertSegment(withTitle: section.title, at: section.rawValue, animated: false)
+        }
+        segmentedControl.selectedSegmentIndex = 0
     }
 
     // MARK: - Navigation Item
@@ -170,9 +205,46 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    // MARK: - IBAction
+
+    @IBAction func segmentedControlValueChanged(_ sender: Any) {
+        guard let blog = blog,
+              let section = Section(rawValue: segmentedControl.selectedSegmentIndex) else {
+            return
+        }
+
+        switch section {
+        case .siteMenu:
+            remove(blogDashboardViewController)
+            showBlogDetails(for: blog)
+        case .dashboard:
+            guard let blogDetailVC = blogDetailsViewController else {
+                return
+            }
+            remove(blogDetailVC)
+            embedChildInContainerView(blogDashboardViewController)
+        }
+    }
+
+    // MARK: - Child VC logic
+
+    private func embedChildInContainerView(_ child: UIViewController) {
+        addChild(child)
+        containerView.addSubview(child.view)
+        child.didMove(toParent: self)
+
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        containerView.pinSubviewToAllEdges(child.view)
+    }
+
     // MARK: - No Sites UI logic
 
     private func hideNoSites() {
+        // Only track if the no sites view is currently visible
+        if noResultsViewController.view.superview != nil {
+            WPAnalytics.track(.mySiteNoSitesViewHidden)
+        }
+
         hideNoResults()
 
         cleanupNoResultsView()
@@ -195,6 +267,14 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         makeNoResultsScrollView()
         configureNoResultsView()
         addNoResultsViewAndConfigureConstraints()
+    }
+
+    private func trackNoSitesVisibleIfNeeded() {
+        guard noResultsViewController.view.superview != nil else {
+            return
+        }
+
+        WPAnalytics.track(.mySiteNoSitesViewDisplayed)
     }
 
     private func makeNoResultsScrollView() {
@@ -223,6 +303,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                           image: "mysites-nosites")
         noResultsViewController.actionButtonHandler = { [weak self] in
             self?.presentInterfaceForAddingNewSite()
+            WPAnalytics.track(.mySiteNoSitesViewActionTapped)
         }
     }
 
@@ -264,8 +345,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     @objc
     func presentInterfaceForAddingNewSite() {
-        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(canCreateWPComSite: defaultAccount() != nil) { [weak self] in
-            self?.launchSiteCreation()
+        let addSiteAlert = AddSiteAlertFactory().makeAddSiteAlert(source: "my_site_no_sites", canCreateWPComSite: defaultAccount() != nil) { [weak self] in
+            self?.launchSiteCreation(source: "my_site_no_sites")
         } addSelfHostedSite: {
             WordPressAuthenticator.showLoginForSelfHostedSite(self)
         }
@@ -282,13 +363,17 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     @objc
-    func launchSiteCreation() {
+    func launchSiteCreationFromNotification() {
+        self.launchSiteCreation(source: "signup_epilogue")
+    }
+
+    func launchSiteCreation(source: String) {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
             return
         }
         present(wizard, animated: true)
-        WPAnalytics.track(.enhancedSiteCreationAccessed)
+        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
     }
 
     @objc
@@ -329,10 +414,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
-        add(blogDetailsViewController)
-
-        blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(blogDetailsViewController.view)
+        embedChildInContainerView(blogDetailsViewController)
 
         blogDetailsViewController.showInitialDetailsForBlog()
     }

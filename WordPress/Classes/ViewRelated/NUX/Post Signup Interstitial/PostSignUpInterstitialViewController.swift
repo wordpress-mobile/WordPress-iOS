@@ -68,9 +68,6 @@ class PostSignUpInterstitialViewController: UIViewController {
 
         configureI18N()
 
-        let coordinator = PostSignUpInterstitialCoordinator()
-        coordinator.markAsSeen()
-
         WPAnalytics.track(.welcomeNoSitesInterstitialShown)
     }
 
@@ -85,19 +82,20 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
-        dismiss?(.createSite)
-
         tracker.track(click: .createNewSite, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
         })
+
+        dismiss?(.createSite)
+
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
-        dismiss?(.addSelfHosted)
-
         tracker.track(click: .addSelfHostedSite, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
         })
+
+        dismiss?(.addSelfHosted)
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -125,10 +123,7 @@ class PostSignUpInterstitialViewController: UIViewController {
             return false
         }
 
-        let numberOfBlogs = self.numberOfBlogs()
-
-        let coordinator = PostSignUpInterstitialCoordinator()
-        return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
+        return self.numberOfBlogs() == 0
     }
 
     private class func numberOfBlogs() -> Int {

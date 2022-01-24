@@ -10,6 +10,10 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
+    var analyticsSource: String {
+        return "signup_epilogue"
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -19,6 +23,8 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        trackViewLoaded()
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
@@ -44,6 +50,8 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         SVProgressHUD.dismiss()
+
+        trackViewDismissed()
     }
 
     func registerNibs() {
@@ -85,12 +93,30 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
         return description
     }
 
+    // MARK: - Tracking
+    func trackViewLoaded() {
+        WPAnalytics.track(.changeUsernameDisplayed, properties: ["source": analyticsSource])
+    }
+
+    func trackViewDismissed() {
+        WPAnalytics.track(.changeUsernameDismissed, properties: ["source": analyticsSource])
+    }
+
+    private var searchCount: Int = 0
+    func trackSearchPerformed() {
+        searchCount += 1
+
+        WPAnalytics.track(.changeUsernameSearchPerformed, properties: ["search_count": searchCount, "source": analyticsSource])
+    }
+
     // MARK: - SearchTableViewCellDelegate
 
     func startSearch(for searchTerm: String) {
         guard searchTerm.count > 0 else {
             return
         }
+
+        trackSearchPerformed()
 
         suggestUsernames(for: searchTerm) { [weak self] suggestions in
             self?.suggestions = suggestions

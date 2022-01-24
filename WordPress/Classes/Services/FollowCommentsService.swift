@@ -61,17 +61,9 @@ class FollowCommentsService: NSObject {
         let objID = post.objectID
         let context = self.context
         let successBlock = { (taskSuccessful: Bool) -> Void in
-            let newIsSubscribed = !isSubscribed
-            let followAction: FollowCommentsService.FollowAction = newIsSubscribed ? .followed : .unfollowed
-
-            var properties = [String: Any]()
-            properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
-            properties[WPAppAnalyticsKeyBlogID] = self.siteID
-            WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
-
             context.perform {
                 if let post = try? context.existingObject(with: objID) as? ReaderPost {
-                    post.isSubscribedComments = newIsSubscribed
+                    post.isSubscribedComments = !isSubscribed
                 }
                 ContextManager.sharedInstance().save(context) {
                     DispatchQueue.main.async {
@@ -103,8 +95,6 @@ class FollowCommentsService: NSObject {
     @objc func toggleNotificationSettings(_ isNotificationsEnabled: Bool,
                                           success: @escaping () -> Void,
                                           failure: @escaping (Error?) -> Void) {
-        WPAnalytics.trackReader(.readerToggleCommentNotifications,
-                                properties: [WPAppAnalyticsKeyBlogID: self.siteID, AnalyticsKeys.enabled: isNotificationsEnabled])
 
         remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
             guard let self = self else {
@@ -122,12 +112,4 @@ class FollowCommentsService: NSObject {
         }
     }
 
-    private enum FollowAction: String {
-        case followed
-        case unfollowed
-    }
-
-    private struct AnalyticsKeys {
-        static let enabled = "notifications_enabled"
-    }
 }

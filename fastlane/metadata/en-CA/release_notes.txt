@@ -1,7 +1,0 @@
-This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.
-
-Speaking of blocks, you can now customize the text and background color in the Pullquote and Preformatted blocks.
-
-Need help reaching more readers? The new Publicize and Blogging Reminder nudges will help you stick to a consistent publishing schedule.
-
-Finally, we improved support for larger text sizes when choosing a homepage or page layout, fixed the site comments list not refreshing on certain occasions, and polished the pre-publishing bottom sheet header.

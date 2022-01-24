@@ -6,7 +6,7 @@ class JetpackWebViewControllerFactory {
         guard let url = URL(string: "https://wordpress.com/settings/jetpack/\(siteID)") else {
             return nil
         }
-        return WebViewControllerFactory.controller(url: url)
+        return WebViewControllerFactory.controller(url: url, source: "jetpack_web_settings")
     }
 
 }

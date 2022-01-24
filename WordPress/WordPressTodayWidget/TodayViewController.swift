@@ -484,10 +484,10 @@ private extension TodayViewController {
     // MARK: - Constants
 
     enum LocalizedText {
-        static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
-        static let views = NSLocalizedString("Views", comment: "Stats Views Label")
-        static let likes = NSLocalizedString("Likes", comment: "Stats Likes Label")
-        static let comments = NSLocalizedString("Comments", comment: "Stats Comments Label")
+        static let visitors = AppLocalizedString("Visitors", comment: "Stats Visitors Label")
+        static let views = AppLocalizedString("Views", comment: "Stats Views Label")
+        static let likes = AppLocalizedString("Likes", comment: "Stats Likes Label")
+        static let comments = AppLocalizedString("Comments", comment: "Stats Comments Label")
     }
 
     enum Constants {

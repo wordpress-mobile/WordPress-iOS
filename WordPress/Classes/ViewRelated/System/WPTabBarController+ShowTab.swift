@@ -1,6 +1,10 @@
 import WordPressKit
 extension WPTabBarController {
 
+    func showBlogDetails(for blog: Blog) {
+        mySitesCoordinator.showBlogDetails(for: blog)
+    }
+
     @objc func showPageEditor(forBlog: Blog? = nil) {
         showPageEditor(blog: forBlog)
     }
@@ -71,7 +75,7 @@ extension WPTabBarController {
                 UserDefaults.standard.storiesIntroWasAcknowledged = true
                 self?.showStoryEditor()
             }, openURL: { [weak self] url in
-                let webViewController = WebViewControllerFactory.controller(url: url)
+                let webViewController = WebViewControllerFactory.controller(url: url, source: "show_story_example")
                 let navController = UINavigationController(rootViewController: webViewController)
                 self?.presentedViewController?.present(navController, animated: true)
             })

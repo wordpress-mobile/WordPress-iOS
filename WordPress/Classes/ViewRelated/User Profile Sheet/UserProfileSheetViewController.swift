@@ -45,7 +45,6 @@ class UserProfileSheetViewController: UITableViewController {
         size.height += bottomPadding
 
         preferredContentSize = size
-        presentedVC?.presentedView?.layoutIfNeeded()
     }
 }
 
@@ -169,7 +168,7 @@ private extension UserProfileSheetViewController {
         }
 
         WPAnalytics.track(.blogUrlPreviewed, properties: ["source": blogUrlPreviewedSource as Any])
-        contentCoordinator.displayWebViewWithURL(siteURL)
+        contentCoordinator.displayWebViewWithURL(siteURL, source: blogUrlPreviewedSource ?? "user_profile_sheet")
     }
 
     func configureTable() {

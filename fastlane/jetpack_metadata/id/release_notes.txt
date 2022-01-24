@@ -1,7 +1,12 @@
-Pembaruan ini mempermudah penyematan konten eksternal pada situs Anda! Memperkenalkan blok sematan khusus baru untuk Facebook, Instagram, Loom, dan Smartframe. Selain itu, editor secara otomatis mendeteksi URL yang dapat disematkan dan Anda tempelkan pada paragraf kosong. Bersama fitur-fitur baru ini, kami memperbaiki masalah terkait sejumlah sematan URL yang tidak dapat disunting dan disesuaikan batas pratinjaunya sehingga Anda akan selalu melihat konten yang disematkan secara penuh.
+Sekarang pukul berapa ya? Layar pemilihan zona waktu baru kami bisa memberi tahu Anda. Dapatkan saran zona waktu berdasarkan perangkat Anda sekaligus tingkatkan pencarian.
 
-Mengenai blok, sekarang Anda dapat menyesuaikan teks dan warna latar belakang di blok Kutipan Besar dan blok Praformat.
+Jika Anda menggunakan paket gratis, unggahan video kini dibatasi hanya lima menit per file.  Jangan khawatir, kebijakan ini tidak akan memengaruhi video yang telah diunggah ke situs Anda.
 
-Butuh bantuan untuk menjangkau lebih banyak pembaca? Peningkatan Pengingat Publikasikan dan Blogging akan membantu Anda menjalankan jadwal pos yang konsisten.
+Kami juga melakukan sejumlah perubahan pada editor blok:
 
-Terakhir, kami meningkatkan dukungan untuk ukuran teks yang lebih besar saat menentukan beranda atau tata letak halaman, memperbaiki daftar komentar situs yang tidak disegarkan pada kesempatan tertentu, dan mempercantik header lembar bawah prapublikasi.
+- Kami memperbaiki masalah terjemahan yang menyebabkan sejumlah elemen antarmuka pengguna (seperti informasi perataan teks dan jendela modal editor blok) hanya muncul dalam bahasa Inggris.
+- Kami menambahkan terjemahan bahasa untuk blok Jetpack dan Petak Tata Letak.
+- Kami memperbaiki bug yang akan menyetel ulang pemformatan teks ke asal setelah menekan backspace. Aman, teman.
+- Sekarang, judul blok lebih dari satu baris pada menu penyisip rata tengah.
+
+Terakhir, baris "Bagikan WordPress pada teman" kembali ke posisi awal di layar Saya. Senang rasanya kembali bersama.

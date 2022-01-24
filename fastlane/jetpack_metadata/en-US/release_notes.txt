@@ -1,3 +1,6 @@
-- Embed block updates: We’ve enabled WordPress embed previews, as well as embeds for Instagram and Vimeo content. For some media, you may successfully embed a URL but cannot preview the content; in these instances, you will see a “No preview available” message. In cases when you are unable to embed media, you will now see a “Retry” option to embed the content again, and an alternate option to convert it to a link instead.
+Made a New Year's resolution to publish more content on your site? We made a few updates to the Block Editor to help you do just that.
 
-- Various improvements and fixes: We’ve streamlined your My Site menu, changing “Blog Posts” to “Posts” and “Site Pages” to “Pages.” (This has not affected your post and page content — we promise!) We also fixed a bug that prevented you from following a conversation by email through a post’s comments.  We also fixed an editor issue when displaying images.
+- When you're editing Paragraph blocks, you can highlight specific text in any color you'd like.
+- Brand-new Gallery blocks will default to the new design. You can also auto-convert any old galleries to the new format without a hitch.
+- The editor now auto-scrolls, so you can always see what you're typing. No more disappearing text, no more guesswork.
+- We squashed a bug where the background color wasn't showing up for pre-formatted blocks on sites that use standard themes.

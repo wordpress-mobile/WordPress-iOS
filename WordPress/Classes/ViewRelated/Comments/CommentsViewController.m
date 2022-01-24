@@ -1,5 +1,4 @@
 #import "CommentsViewController.h"
-#import "CommentViewController.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
@@ -86,11 +85,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 #pragma mark - Configuration
 
-- (BOOL)usesUnifiedList
-{
-    return [Feature enabled:FeatureFlagUnifiedCommentsAndNotificationsList];
-}
-
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
@@ -137,30 +131,20 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    if ([self usesUnifiedList]) {
-        // Register unified list components
-        UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
+    // Register the cells
+    UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
 
-        UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
-    } else {
-        // Register the cells
-        NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
-        UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
-    }
+    UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
 }
 
 - (void)configureTableViewHeader
 {
-    // Add an extra 10pt space on top of the first header view when displaying comments using the new unified list.
-    // The conditional should be removed when the feature is fully rolled out. See: https://git.io/JBQlU
-    if ([self usesUnifiedList]) {
-        UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 10)];
-        tableHeaderView.backgroundColor = [UIColor systemBackgroundColor];
-        self.tableView.tableHeaderView = tableHeaderView;
-    }
+    // Add an extra 10pt space on top of the first header view. Ref: https://git.io/JBQlU
+    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 10)];
+    tableHeaderView.backgroundColor = [UIColor systemBackgroundColor];
+    self.tableView.tableHeaderView = tableHeaderView;
 }
 
 - (void)configureTableViewFooter
@@ -185,18 +169,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // if the unified list feature is enabled, return the estimated height of the new table header view.
-    // otherwise, returning -1 will revert to the default estimated height value.
-    return [self usesUnifiedList] ? ListTableHeaderView.estimatedRowHeight : -1;
+    return ListTableHeaderView.estimatedRowHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (![self usesUnifiedList]) {
-        // returning nil will revert to default table header view.
-        return nil;
-    }
-
     // fetch the section information
     id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     if (!sectionInfo) {
@@ -214,7 +191,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self usesUnifiedList] ? ListTableViewCell.estimatedRowHeight : CommentsTableViewCell.estimatedRowHeight;
+    return ListTableViewCell.estimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -224,20 +201,9 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self usesUnifiedList]) {
-        ListTableViewCell *listCell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier
-                                                                                           forIndexPath:indexPath];
-        [self configureListCell:listCell atIndexPath:indexPath];
-        return listCell;
-    }
-
-    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsTableViewCell.reuseIdentifier];
-
-    if (!cell) {
-        cell = [[CommentsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentsTableViewCell.reuseIdentifier];
-    }
-
-    [self configureCell:cell atIndexPath:indexPath];    
+    ListTableViewCell *cell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier
+                                                                                   forIndexPath:indexPath];
+    [self configureListCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -264,21 +230,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     self.displayedCommentIndexPath = indexPath;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    UIViewController *detailViewController;
-
-    if ([Feature enabled:FeatureFlagNewCommentDetail]) {
-        self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
-                                                                                   isLastInList:[self isLastRow:indexPath]
-                                                                           managedObjectContext:[ContextManager sharedInstance].mainContext];
-        self.commentDetailViewController.delegate = self;
-         detailViewController = self.commentDetailViewController;
-    } else {
-        CommentViewController *vc   = [CommentViewController new];
-        vc.comment                  = comment;
-        detailViewController        = vc;
-    }
-
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
+                                                                               isLastInList:[self isLastRow:indexPath]
+                                                                       managedObjectContext:[ContextManager sharedInstance].mainContext];
+    self.commentDetailViewController.delegate = self;
+    [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
@@ -450,13 +406,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return fetchRequest;
 }
 
-- (void)configureCell:(nonnull CommentsTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath {
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    [cell configureWithComment:comment];
-}
-
 /// Configures a `ListTableViewCell` instance with a `Comment` object.
-/// This should replace the original `configureCell:atIndexPath` once the feature is fully rolled out.
 - (void)configureListCell:(nonnull ListTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath
 {
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
@@ -480,7 +430,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (NSString *)sectionNameKeyPath
 {
-    return [self usesUnifiedList] ? @"relativeDateSectionIdentifier" : @"sectionIdentifier";
+    return @"relativeDateSectionIdentifier";
 }
 
 #pragma mark - Predicate Wrangling
@@ -511,6 +461,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    [self refreshNoResultsView];
+    
     __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -692,32 +644,26 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         return;
     }
 
-    if (self.noResultsViewController.view.window) {
-        // The view is already visible.  Nothing more to do.
-        [self adjustNoResultViewPlacement];
-        return;
-    }
-
     [self.noResultsViewController removeFromView];
     [self configureNoResults:self.noResultsViewController forNoConnection:NO];
-    
     [self addChildViewController:self.noResultsViewController];
     [self adjustNoResultViewPlacement];
-    [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    [self.tableView addSubview:self.noResultsViewController.view];
     
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 - (void)adjustNoResultViewPlacement
 {
-    // calling this too early results in wrong tableView frame used for initial state
-    if(self.noResultsViewController.view.window == nil) {
+    // calling this too early results in wrong tableView frame used for initial state.
+    // ensure that either the NRV or the table view is visible. Otherwise, skip the adjustment to prevent misplacements.
+    if (!self.noResultsViewController.view.window && !self.tableView.window) {
         return;
     }
 
     // Adjust the NRV placement to accommodate for the filterTabBar.
     CGRect noResultsFrame = self.tableView.frame;
-    noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
+    noResultsFrame.origin.y = 0;
     self.noResultsViewController.view.frame = noResultsFrame;
 }
 
@@ -769,19 +715,33 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
        attributedSubtitleConfiguration:nil
                                  image:@"wp-illustration-empty-results"
                          subtitleImage:nil
-                         accessoryView:nil];
+                         accessoryView:[self loadingAccessoryView]];
     
     viewController.delegate = self;
 }
 
 - (NSString *)noResultsTitle
 {
+    if (self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching comments...",
+                                 @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+    }
+
     return NSLocalizedString(@"No comments yet", @"Displayed when there are no comments in the Comments views.");
 }
 
 - (NSString *)retryButtonTitle
 {
     return NSLocalizedString(@"Retry", comment: "A prompt to attempt the failed network request again.");
+}
+
+- (UIView *)loadingAccessoryView
+{
+    if (self.syncHelper.isSyncing) {
+        return [NoResultsViewController loadingAccessoryView];
+    }
+
+    return nil;
 }
 
 #pragma mark - NoResultsViewControllerDelegate

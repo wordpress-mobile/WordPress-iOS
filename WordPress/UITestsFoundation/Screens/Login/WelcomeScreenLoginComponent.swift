@@ -1,32 +1,34 @@
+import ScreenObject
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
 
-private struct ElementStringIDs {
-    static let emailLoginButton = "Log in with Email Button"
-    static let siteAddressButton = "Self Hosted Login Button"
-}
+public class WelcomeScreenLoginComponent: ScreenObject {
 
-public class WelcomeScreenLoginComponent: BaseScreen {
-    let emailLoginButton: XCUIElement
-    let siteAddressButton: XCUIElement
-
-    init() {
-        emailLoginButton = XCUIApplication().buttons[ElementStringIDs.emailLoginButton]
-        siteAddressButton = XCUIApplication().buttons[ElementStringIDs.siteAddressButton]
-
-        super.init(element: emailLoginButton)
+    let emailLoginButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Log in with Email Button"]
+    }
+    let siteAddressButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Self Hosted Login Button"]
     }
 
-    public func selectEmailLogin() -> LoginEmailScreen {
-        emailLoginButton.tap()
-
-        return LoginEmailScreen()
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [emailLoginButtonGetter, siteAddressButtonGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
-    func goToSiteAddressLogin() -> LoginSiteAddressScreen {
-        siteAddressButton.tap()
+    public func selectEmailLogin() throws -> LoginEmailScreen {
+        emailLoginButtonGetter(app).tap()
 
-        return LoginSiteAddressScreen()
+        return try LoginEmailScreen()
+    }
+
+    func goToSiteAddressLogin() throws -> LoginSiteAddressScreen {
+        siteAddressButtonGetter(app).tap()
+
+        return try LoginSiteAddressScreen()
     }
 }

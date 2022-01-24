@@ -1,7 +1,12 @@
-Com esta atualização, ficou ainda mais fácil incorporar conteúdo externo aos seus sites! Apresentamos os novos blocos de mídia incorporada dedicados para Facebook, Instagram, Loom e SmartFrame. Além disso, o editor detecta automaticamente as URLs incorporáveis que você cola em um parágrafo vazio. Junto com essas funcionalidades, outra novidade é a correção de um erro que impedia as URLs incorporadas de serem editadas e o ajuste da visualização cortada para que você veja sempre o todo o conteúdo.
+Que horas são? Nossa mais nova tela de seleção de fuso horário sabe. Obtenha um fuso horário sugerido baseado no seu dispositivo e melhore a pesquisa enquanto estiver navegando por ela.
 
-Falando em blocos, agora você pode personalizar o texto e a cor de fundo nos blocos de citação destacada e pré-formatado.
+Se você estiver usando um plano gratuito, os uploads de vídeo agora são limitados a cinco minutos por arquivo. Não se preocupe, isso não afetará os vídeos que já foram enviados para o seu site.
 
-Precisa de ajuda para atrair mais leitores? As novas funções Lembrete de publicação e Publicize ajudam você a manter um cronograma consistente de publicação.
+Nós também fizemos algumas alterações no editor de blocos:
 
-Por fim, aprimoramos a compatibilidade com tamanhos de texto maiores na escolha de um layout de página, corrigimos a lista de comentários no site, que não estava atualizando em certas situações, e aperfeiçoamos o cabeçalho de pré-publicação no fim da página.
+- Resolvemos problemas de tradução que faziam com que alguns elementos da interface do usuário aparecessem apenas em inglês (como informações de alinhamento do texto e a janela modal do editor de blocos).
+- Adicionamos tradução de idiomas para os blocos Jetpack e Layout Grid.
+- Corrigimos um erro que redefinia a formatação do texto para o padrão após pressionar a tecla de backspace. Sejam ousados, amigos.
+- Os títulos com várias linhas dos blocos agora são centralizados no menu de adição.
+
+Por fim, a seção “Compartilhar WordPress com um amigo” está de volta ao seu lugar na tela Eu. Reunidos novamente e a sensação é ótima.

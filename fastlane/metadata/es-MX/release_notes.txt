@@ -1,7 +1,12 @@
-¡Esta actualización hace que sea todavía más fácil incrustar contenido externo en tus sitios! Presentamos los nuevos bloques de incrustación dedicados a Facebook, Instagram, Loom y Smartframe. Además, el editor detecta automáticamente las URL incrustables que pegas en un párrafo vacío. Junto con estas nuevas características, hemos corregido un problema por el que algunas URL incrustadas no podían ser editadas y ajustado el corte de la vista previa para que siempre veas el contenido incrustado completo.
+¿Qué hora es? Nuestra nueva pantalla de selección de zona horaria lo sabe. Obtén una sugerencia de zona horaria basada en tu dispositivo y mejora la búsqueda mientras lo haces.
 
-Hablando de bloques, ahora puedes personalizar el texto y el color de fondo de los bloques del párrafo de cita y preformateado.
+Si estás usando un plan gratuito, las subidas de videos ahora está limitada a cinco minutos por archivo. No te preocupes, eso no afectará a ningún video que ya hayas subido a tu sitio.
 
-¿Necesitas ayuda para llegar a más lectores? Los nuevos recoradorios de divulgar y de bloguear te ayudarán a mantener un calendario de publicación coherente.
+También hemos realizado algunos cambios en el editor de bloques:
 
-Por último, hemos mejorado la compatibilidad para tamaños de texto más grandes al elegir una página de inicio o un diseño de página, corregido el problema por el que la lista de comentarios del sitio no se actualiza en ciertas ocasiones y pulido la cabecera de la hoja inferior de prepublicación.
+- Hemos resuelto problemas de traducción que causaban que algunos elementos de la interfaz de usuario (como la alineación del texto de la información y la ventana emergente del editor de bloques) solo aparecieran en inglés.
+- Hemos añadido la traducción de idiomas para los bloques de Jetpack y de layout en cuadrícula.
+- Hemos corregido un fallo que restablecía el formato del texto a los valores predeterminados después de pulsar la tecla de retroceso. Audaces, amigos.
+- Los títulos de los bloques de varias líneas ahora están alineados al centro en el menú del insertador.
+
+Finalmente, la fila "Compartir WordPress con un amigo" ha vuelto a donde debía en la pantalla "Yo". Vueltos a reunir y se ven muy bien.

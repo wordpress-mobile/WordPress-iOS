@@ -5,6 +5,7 @@ import AutomatticTracks
 import WordPressAuthenticator
 import WordPressShared
 import AlamofireNetworkActivityIndicator
+import AutomatticAbout
 
 #if APPCENTER_ENABLED
 import AppCenter
@@ -252,6 +253,17 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
+    }
+
+    // Note that this method only appears to be called for iPhone devices, not iPad.
+    // This allows individual view controllers to cancel rotation if they need to.
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let vc = window?.topmostPresentedViewController,
+           vc is OrientationLimited {
+            return vc.supportedInterfaceOrientations
+        }
+
+        return application.supportedInterfaceOrientations(for: window)
     }
 
     // MARK: - Setup
@@ -821,8 +833,10 @@ extension WordPressAppDelegate {
 
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
+        WPStyleGuide.configureTableViewAppearance()
         WPStyleGuide.configureDefaultTint()
         WPStyleGuide.configureLightNavigationBarAppearance()
+        WPStyleGuide.configureToolbarAppearance()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UISwitch.appearance().onTintColor = .primary

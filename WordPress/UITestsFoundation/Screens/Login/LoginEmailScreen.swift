@@ -1,48 +1,48 @@
+import ScreenObject
 import XCTest
 
 // TODO: remove when unifiedAuth is permanent.
 
-private struct ElementStringIDs {
-    static let emailTextField = "Login Email Address"
-    static let nextButton = "Login Email Next Button"
-    static let siteAddressButton = "Self Hosted Login Button"
-}
+public class LoginEmailScreen: ScreenObject {
 
-public class LoginEmailScreen: BaseScreen {
-    let emailTextField: XCUIElement
-    let nextButton: XCUIElement
-    let siteAddressButton: XCUIElement
-
-    init() {
-        let app = XCUIApplication()
-        emailTextField = app.textFields[ElementStringIDs.emailTextField]
-        nextButton = app.buttons[ElementStringIDs.nextButton]
-        siteAddressButton = app.buttons[ElementStringIDs.siteAddressButton]
-
-        super.init(element: emailTextField)
+    let emailTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Login Email Address"]
     }
 
-    public func proceedWith(email: String) -> LinkOrPasswordScreen {
+    let nextButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Login Email Next Button"]
+    }
+
+    var emailTextField: XCUIElement { emailTextFieldGetter(app) }
+    var nextButton: XCUIElement { nextButtonGetter(app) }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [emailTextFieldGetter, nextButtonGetter],
+            app: app,
+            waitTimeout: 7
+        )
+    }
+
+    public func proceedWith(email: String) throws -> LinkOrPasswordScreen {
         emailTextField.tap()
         emailTextField.typeText(email)
         nextButton.tap()
 
-        return LinkOrPasswordScreen()
+        return try LinkOrPasswordScreen()
     }
 
-    func goToSiteAddressLogin() -> LoginSiteAddressScreen {
-        siteAddressButton.tap()
+    func goToSiteAddressLogin() throws -> LoginSiteAddressScreen {
+        app.buttons["Self Hosted Login Button"].tap()
 
-        return LoginSiteAddressScreen()
+        return try LoginSiteAddressScreen()
     }
 
     static func isLoaded() -> Bool {
-        let expectedElement = XCUIApplication().textFields[ElementStringIDs.emailTextField]
-        return expectedElement.exists && expectedElement.isHittable
+        (try? LoginEmailScreen().isLoaded) ?? false
     }
 
     static func isEmailEntered() -> Bool {
-        let emailTextField = XCUIApplication().textFields[ElementStringIDs.emailTextField]
-        return emailTextField.value != nil
+        (try? LoginEmailScreen().emailTextField.value != nil) ?? false
     }
 }

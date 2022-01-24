@@ -363,7 +363,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
-    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id<CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
 
     NSManagedObjectID *commentObjectID = comment.objectID;
@@ -512,18 +512,47 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSInteger count, BOOL hasMore))success
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [self syncHierarchicalCommentsForPost:post
+                                     page:page
+                         topLevelComments:WPTopLevelHierarchicalCommentsPerPage
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                       topLevelComments:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [self syncHierarchicalCommentsForPost:post
+                                     page:1
+                         topLevelComments:number
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                   page:(NSUInteger)page
+                       topLevelComments:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
     NSNumber *siteID = post.siteID;
     NSNumber *postID = post.postID;
+    
+    NSUInteger commentsPerPage = number ?: WPTopLevelHierarchicalCommentsPerPage;
+    NSUInteger pageNumber = page ?: 1;
+    
     [self.managedObjectContext performBlock:^{
         CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
         [service syncHierarchicalCommentsForPost:postID
-                                            page:page
-                                          number:WPTopLevelHierarchicalCommentsPerPage
-                                         success:^(NSArray *comments) {
+                                            page:pageNumber
+                                          number:commentsPerPage
+                                         success:^(NSArray *comments, NSNumber *totalComments) {
                                              [self.managedObjectContext performBlock:^{
                                                  NSError *error;
                                                  ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
@@ -554,7 +583,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                          }
 
                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                             success([comments count], hasMore);
+                                                             success(hasMore, totalComments);
                                                          });
                                                      }];
                                                  }];
@@ -863,6 +892,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 
+
+
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
@@ -882,7 +913,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     comment.status = currentStatus;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id <CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
@@ -1016,7 +1047,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
 
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    comment.author = [[service defaultWordPressComAccount] username];
+    WPAccount *account = [service defaultWordPressComAccount];
+    comment.author = account.username;
+    comment.authorID = [account.userID intValue];
     comment.content = content;
     comment.dateCreated = [NSDate date];
     comment.parentID = [parentID intValue];
@@ -1166,6 +1199,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return fetchedObjects;
 }
 
+- (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post
+{
+    NSArray *comments = [self topLevelCommentsForPage:1 forPost:post];
+    NSInteger count = MIN(comments.count, number);
+    return [comments subarrayWithRange:NSMakeRange(0, count)];
+}
+
 - (Comment *)firstCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
     NSArray *comments = [self topLevelCommentsForPage:page forPost:post];
@@ -1204,6 +1244,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     comment.commentID = [remoteComment.commentID intValue];
+    comment.authorID = [remoteComment.authorID intValue];
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
@@ -1233,6 +1274,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     RemoteComment *remoteComment = [RemoteComment new];
     remoteComment.commentID = [NSNumber numberWithInt:comment.commentID];
+    remoteComment.authorID = [NSNumber numberWithInt:comment.authorID];
     remoteComment.author = comment.author;
     remoteComment.authorEmail = comment.author_email;
     remoteComment.authorUrl = comment.author_url;
@@ -1254,6 +1296,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 
 #pragma mark - Remotes
+
+- (id<CommentServiceRemote>)remoteForComment:(Comment *)comment
+{
+    // If the comment is fetched through the Reader API, the blog will always be nil.
+    // Try to find the Blog locally first, as it should exist if the user has a role on the site.
+    if (comment.post && [comment.post isKindOfClass:[ReaderPost class]]) {
+        ReaderPost *readerPost = (ReaderPost *)comment.post;
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        return [self remoteForBlog:[blogService blogByHostname:readerPost.blogURL]];
+    }
+
+    return [self remoteForBlog:comment.blog];
+}
 
 - (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog
 {

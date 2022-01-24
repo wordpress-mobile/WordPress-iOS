@@ -94,6 +94,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                              inManagedObjectContext:managedObjectContext];
     }
 
+    post.authorID = remotePost.authorID;
     post.author = remotePost.author;
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.authorDisplayName = remotePost.authorDisplayName;

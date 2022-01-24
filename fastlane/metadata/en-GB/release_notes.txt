@@ -1,7 +1,12 @@
-This update makes it even easier to embed external content on your sites! Introducing the new dedicated embed blocks for Facebook, Instagram, Loom, and Smartframe. Plus, the editor automatically detects embeddable URLs you paste into an empty paragraph. Alongside these new features, we fixed an issue where some embedded URLs could not be edited and adjusted the preview cut-off so that you’ll always see the full embedded content.
+What time is it? Our brand-new time zone selection screen knows. Get a suggested time zone based on your device and improve search while you’re at it.
 
-Speaking of blocks, you can now customise the text and background colour in the Pullquote and Preformatted blocks.
+If you’re using a free plan, video uploads are now limited to five minutes per file. Don’t worry, that won’t affect any videos you’ve already uploaded to your site.
 
-Need help reaching more readers? The new Publicise and Blogging Reminder nudges will help you stick to a consistent publishing schedule.
+We’ve also made some changes to the block editor:
 
-Finally, we improved support for larger text sizes when choosing a homepage or page layout, fixed the site comments list not refreshing on certain occasions, and polished the pre-publishing bottom sheet header.
+– We solved translation issues that caused some user interface elements (like text alignment information and the block editor modal window) to only appear in English.
+– We added language translation for Jetpack and Layout Grid blocks.
+– We fixed a bug that would reset text formatting to default after hitting backspace. Bold on, friends.
+– Multi-line block titles are now centre-aligned in the inserter menu.
+
+Finally, the “Share WordPress with a friend” row is back where it belongs on the Me screen. Reunited and it feels so good.

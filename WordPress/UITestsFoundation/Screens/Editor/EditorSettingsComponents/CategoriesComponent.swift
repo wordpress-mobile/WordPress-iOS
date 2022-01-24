@@ -4,7 +4,11 @@ import XCTest
 public class CategoriesComponent: ScreenObject {
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(expectedElementGetters: [ { $0.tables["CategoriesList"] } ], app: app)
+        try super.init(
+            expectedElementGetters: [ { $0.tables["CategoriesList"] } ],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func selectCategory(name: String) -> CategoriesComponent {
@@ -15,7 +19,7 @@ public class CategoriesComponent: ScreenObject {
     }
 
     func goBackToSettings() throws -> EditorPostSettings {
-        navBackButton.tap()
+        navigateBack()
 
         return try EditorPostSettings()
     }

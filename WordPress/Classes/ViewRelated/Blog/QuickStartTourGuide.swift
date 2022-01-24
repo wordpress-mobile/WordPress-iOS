@@ -17,14 +17,18 @@ open class QuickStartTourGuide: NSObject {
     private override init() {}
 
     func setup(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
-        didShowUpgradeToV2Notice(for: blog)
-
 
         let createTour = QuickStartCreateTour()
         completed(tour: createTour, for: blog)
 
         steps.forEach { (tour) in
             completed(tour: tour, for: blog)
+        }
+    }
+
+    func setupWithDelay(for blog: Blog, withCompletedSteps steps: [QuickStartTour] = []) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.quickStartDelay) {
+            self.setup(for: blog, withCompletedSteps: steps)
         }
     }
 
@@ -36,21 +40,6 @@ open class QuickStartTourGuide: NSObject {
         let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         return checklistCompletedCount > 0
-    }
-
-    func shouldShowUpgradeToV2Notice(for blog: Blog) -> Bool {
-        guard isQuickStartEnabled(for: blog),
-            !allOriginalToursCompleted(for: blog) else {
-            return false
-        }
-
-        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
-        return !completedIDs.contains(QuickStartUpgradeToV2Tour().key)
-    }
-
-    func didShowUpgradeToV2Notice(for blog: Blog) {
-        let v2tour = QuickStartUpgradeToV2Tour()
-        blog.completeTour(v2tour.key)
     }
 
     /// Provides a tour to suggest to the user
@@ -433,6 +422,7 @@ private extension QuickStartTourGuide {
     private struct Constants {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
+        static let quickStartDelay: DispatchTimeInterval = .milliseconds(500)
     }
 }
 

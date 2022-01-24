@@ -1,6 +1,12 @@
-- We've made it easier to see when there are new blocks available for use on your site
-- You can now highlight text using the <mark> HTML tag, as well as change the text and background color of the Search block button. Shiny!
-- We've hidden HTML tags in post titles when you're checking out your stats.
-- If you're part of a comment thread, you can keep track of it through in-app notifications, not just your email inbox.
-- The Help screen used to break out of its box when rotated from portrait to landscape and back to portrait, but now it's staying put.
-- We fixed more cases where embed blocks would show "unable to display content", allowing you to see all of your content.
+What time is it? Our brand-new time zone selection screen knows. Get a suggested time zone based on your device and improve search while you’re at it.
+
+If you’re using a free plan, video uploads are now limited to five minutes per file. Don’t worry, that won’t affect any videos you’ve already uploaded to your site.
+
+We’ve also made some changes to the block editor:
+
+- We solved translation issues that caused some user interface elements (like text alignment information and the block editor modal window) to only appear in English.
+- We added language translation for Jetpack and Layout Grid blocks.
+- We fixed a bug that would reset text formatting to default after hitting backspace. Bold on, friends.
+- Multi-line block titles are now center-aligned in the inserter menu.
+
+Finally, the “Share WordPress with a friend” row is back where it belongs on the Me screen. Reunited and it feels so good.

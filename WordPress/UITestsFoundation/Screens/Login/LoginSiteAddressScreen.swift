@@ -1,3 +1,4 @@
+import ScreenObject
 import XCTest
 
 private struct ElementStringIDs {
@@ -13,24 +14,29 @@ private struct ElementStringIDs {
     static let siteAddressTextField = "Site address"
 }
 
-public class LoginSiteAddressScreen: BaseScreen {
-    let siteAddressTextField: XCUIElement
-    let nextButton: XCUIElement
+public class LoginSiteAddressScreen: ScreenObject {
 
-    init() {
-        let app = XCUIApplication()
-        siteAddressTextField = app.textFields[ElementStringIDs.siteAddressTextField]
-        nextButton = app.buttons[ElementStringIDs.nextButton]
-
-        super.init(element: siteAddressTextField)
+    let siteAddressTextFieldGetter: (XCUIApplication) -> XCUIElement = {
+        $0.textFields["Site address"]
     }
 
-    public func proceedWith(siteUrl: String) -> LoginUsernamePasswordScreen {
+    var siteAddressTextField: XCUIElement { siteAddressTextFieldGetter(app) }
+    var nextButton: XCUIElement { app.buttons[ElementStringIDs.nextButton] }
+
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [siteAddressTextFieldGetter],
+            app: app,
+            waitTimeout: 7
+        )
+    }
+
+    public func proceedWith(siteUrl: String) throws -> LoginUsernamePasswordScreen {
         siteAddressTextField.tap()
         siteAddressTextField.typeText(siteUrl)
         nextButton.tap()
 
-        return LoginUsernamePasswordScreen()
+        return try LoginUsernamePasswordScreen()
     }
 
     public func proceedWithWP(siteUrl: String) throws -> GetStartedScreen {
@@ -42,6 +48,6 @@ public class LoginSiteAddressScreen: BaseScreen {
     }
 
     public static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.nextButton].exists
+        (try? LoginSiteAddressScreen().isLoaded) ?? false
     }
 }

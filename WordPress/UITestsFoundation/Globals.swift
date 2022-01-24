@@ -2,9 +2,27 @@ import UIKit
 import XCTest
 import ScreenObject
 
-// TODO: This should maybe go in an `XCUIApplication` extension? Also, should it be computed rather
-// than stored as a reference? 🤔
-public let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
+// TODO: This should maybe go in an `XCUIApplication` extension?
+public var navBackButton: XCUIElement { XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0) }
+
+// This list has all the navBarButton labels currently covered by UI tests and must be updated when adding new ones.
+public let navBackButtonLabels = ["Post Settings", "Back", "Get Started"]
+
+// Sometimes the Back Button in Navigation Bar is not recognized by XCUITest as an element.
+// This method identifies when it happens and uses a swipe back gesture instead of tapping the button.
+public func navigateBack() {
+    let app = XCUIApplication()
+    let isBackButonAvailableInNavigationBar = navBackButtonLabels.contains(navBackButton.label)
+
+    if isBackButonAvailableInNavigationBar {
+        navBackButton.tap()
+    } else {
+        let leftEdge = app.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0.5))
+        let center = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+
+        leftEdge.press(forDuration: 0.01, thenDragTo: center)
+    }
+}
 
 extension ScreenObject {
 
@@ -35,5 +53,21 @@ extension ScreenObject {
             // Accept the prompt to open the deep link
             safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
         }
+    }
+
+    @discardableResult
+    public func dismissNotificationAlertIfNeeded(
+        _ action: FancyAlertComponent.Action = .cancel
+    ) throws -> Self {
+        guard FancyAlertComponent.isLoaded() else { return self }
+
+        switch action {
+        case .accept:
+            try FancyAlertComponent().acceptAlert()
+        case .cancel:
+            try FancyAlertComponent().cancelAlert()
+        }
+
+        return self
     }
 }

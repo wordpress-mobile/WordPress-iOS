@@ -14,7 +14,8 @@ public class EditorPostSettings: ScreenObject {
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ { $0.tables["SettingsTable"] } ],
-            app: app
+            app: app,
+            waitTimeout: 7
         )
     }
 
@@ -53,7 +54,7 @@ public class EditorPostSettings: ScreenObject {
 
     public func setFeaturedImage() throws -> EditorPostSettings {
         featuredImageButton.tap()
-        MediaPickerAlbumListScreen()
+        try MediaPickerAlbumListScreen()
             .selectAlbum(atIndex: 0) // Select media library
             .selectImage(atIndex: 0) // Select latest uploaded image
 
@@ -79,7 +80,7 @@ public class EditorPostSettings: ScreenObject {
 
     /// - Note: Returns `Void` because the return screen depends on which editor the user is in.
     public func closePostSettings() {
-        navBackButton.tap()
+        navigateBack()
     }
 
     public static func isLoaded() -> Bool {

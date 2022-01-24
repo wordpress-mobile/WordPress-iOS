@@ -84,6 +84,7 @@ platform :ios do
   ENV['DOWNLOAD_METADATA'] = './fastlane/download_metadata.swift'
   ENV['PROJECT_ROOT_FOLDER'] = PROJECT_ROOT_FOLDER + '/'
   ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
+  ENV['FL_RELEASE_TOOLKIT_DEFAULT_BRANCH'] = 'trunk'
 
   ########################################################################
   # Screenshots
@@ -105,24 +106,44 @@ platform :ios do
   # bundle exec fastlane code_freeze
   # bundle exec fastlane code_freeze skip_confirm:true
   #####################################################################################
-  desc 'Creates a new release branch from the current develop'
+  desc 'Creates a new release branch from the current trunk'
   lane :code_freeze do |options|
     gutenberg_dep_check
-    old_version = ios_codefreeze_prechecks(options)
+    ios_codefreeze_prechecks(options)
 
     ios_bump_version_release(skip_deliver: true)
     new_version = ios_get_app_version
+
+    release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
     extract_release_notes_for_version(
       version: new_version,
-      release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt'),
-      extracted_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
+      release_notes_file_path: release_notes_source_path,
+      extracted_notes_file_path: extracted_release_notes_file_path(app: :wordpress)
+    )
+    # It would be good to update the action so that it can:
+    #
+    # - Use a custom commit message, so that we can differentiate between
+    #   WordPress and Jetpack
+    # - Have some sort of interactive mode, where the file is extracted and
+    #   shown to the user and they can either confirm and let the lane commit,
+    #   or modify it manually first and then run through the
+    #   show-confirm-commit cycle again
+    #
+    # In the meantime, we can make due with a duplicated commit message and the
+    # `print_release_notes_reminder` at the end of the lane to remember to make
+    # updates to the files.
+    extract_release_notes_for_version(
+      version: new_version,
+      release_notes_file_path: release_notes_source_path,
+      extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
     )
     ios_update_release_notes(new_version: new_version)
-    get_prs_list(repository: GHHELPER_REPO, milestone: new_version.to_s,
-                 report_path: "#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
+
     setbranchprotection(repository: GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository: GHHELPER_REPO, milestone: new_version)
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
+
+    print_release_notes_reminder
   end
 
   #####################################################################################
@@ -137,12 +158,14 @@ platform :ios do
   # bundle exec fastlane complete_code_freeze
   # bundle exec fastlane complete_code_freeze skip_confirm:true
   #####################################################################################
-  desc 'Creates a new release branch from the current develop'
+  desc 'Creates a new release branch from the current trunk'
   lane :complete_code_freeze do |options|
     ios_completecodefreeze_prechecks(options)
-    ios_localize_project
-    version = ios_get_app_version
-    trigger_beta_build(branch_to_build: "release/#{version}")
+    generate_strings_file_for_glotpress
+
+    UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
+    push_to_git_remote(tags: false)
+    trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
   end
 
   #####################################################################################
@@ -399,6 +422,31 @@ platform :ios do
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
+  end
+
+  #####################################################################################
+  # generate_strings_file_for_glotpress
+  # -----------------------------------------------------------------------------------
+  # Generate the `.strings` file to be imported by GlotPress,
+  # by parsing source code for `NSLocalizedString` (using `genstrings` under the hood).
+  #
+  # Typically called by complete_code_freeze.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane generate_strings_file_for_glotpress
+  #####################################################################################
+  lane :generate_strings_file_for_glotpress do
+    cocoapods
+
+    en_lproj = 'WordPress/Resources/en.lproj'
+    ios_generate_strings_file_from_code(
+      paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', 'Pods/Gutenberg/'],
+      exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
+      routines: ['AppLocalizedString'],
+      output_dir: en_lproj
+    )
+
+    git_commit(path: [en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
   end
 
   #####################################################################################
@@ -826,10 +874,10 @@ platform :ios do
   # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>] [try_count:<Number of times to try tests>]
+  # bundle exec fastlane test_without_building [name:<Partial name of the .xctestrun file>]
   #
   # Example:
-  # bundle exec fastlane test_without_building name:UITests try_count:3
+  # bundle exec fastlane test_without_building name:UITests
   #####################################################################################
   desc 'Run tests without building'
   lane :test_without_building do |options|
@@ -844,7 +892,7 @@ platform :ios do
       UI.user_error!("Unable to find .xctestrun file at #{build_products_path}")
     end
 
-    multi_scan(
+    run_tests(
       workspace: WORKSPACE_PATH,
       scheme: 'WordPress',
       device: options[:device],
@@ -852,7 +900,6 @@ platform :ios do
       ensure_devices_found: true,
       test_without_building: true,
       xctestrun: test_plan_path,
-      try_count: options[:try_count],
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       result_bundle: true
     )
@@ -861,11 +908,6 @@ platform :ios do
 ########################################################################
 # Helper Lanes
 ########################################################################
-  desc "Get a list of pull request for a given `milestone`"
-  lane :get_pullrequests_list do | options |
-    get_prs_list(repository: GHHELPER_REPO, milestone:"#{options[:milestone]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
-  end
-
   desc 'Verifies that Gutenberg is referenced by release version and not by commit'
   lane :gutenberg_dep_check do |_options|
     res = ''
@@ -885,6 +927,28 @@ platform :ios do
 
     UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
   end
+end
+
+def extracted_release_notes_file_path(app:)
+  paths = {
+    wordpress: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
+    jetpack: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+  }
+  paths[app.to_sym] || UI.user_error!("Invalid app name passed to lane: #{app}")
+end
+
+def print_release_notes_reminder
+  message = <<~MSG
+    The extracted release notes for WordPress and Jetpack were based on the same source.
+    Don't forget to remove any item that doesn't apply to the respective app before editorialization.
+
+    You can find the extracted notes at:
+
+    - #{extracted_release_notes_file_path(app: :wordpress)}
+    - #{extracted_release_notes_file_path(app: :jetpack)}
+  MSG
+
+  message.lines.each { |l| UI.important(l.chomp) }
 end
 
 # FIXME: This ought to be extracted into the release toolkit, ideally in an

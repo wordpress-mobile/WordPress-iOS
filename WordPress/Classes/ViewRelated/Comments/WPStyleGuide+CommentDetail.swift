@@ -1,3 +1,4 @@
+import WordPressShared
 /// This class groups all of the styles used by the comment detail screen.
 ///
 extension WPStyleGuide {
@@ -28,23 +29,41 @@ extension WPStyleGuide {
             static let nameFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
             static let nameTextColor = CommentDetail.textColor
 
+            static let badgeFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .semibold)
+            static let badgeTextColor = UIColor.white
+            static let badgeColor = UIColor.muriel(name: .blue, .shade50)
+
             static let dateFont = CommentDetail.tertiaryTextFont
             static let dateTextColor = CommentDetail.secondaryTextColor
 
             static let reactionButtonFont = CommentDetail.secondaryTextFont
             static let reactionButtonTextColor = CommentDetail.secondaryTextColor
 
+            // highlighted state
+            static let highlightedBackgroundColor = UIColor(light: .muriel(name: .blue, .shade0), dark: .muriel(name: .blue, .shade100)).withAlphaComponent(0.5)
+            static let highlightedBarBackgroundColor = UIColor.muriel(name: .blue, .shade40)
+            static let highlightedReplyButtonTintColor = UIColor.primary
+
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
             private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .medium)
-            static let replyIconImage = UIImage(systemName: "arrowshape.turn.up.backward", withConfiguration: reactionIconConfiguration)?
-                .imageFlippedForRightToLeftLayoutDirection()
             static let unlikedIconImage = UIImage(systemName: "star", withConfiguration: reactionIconConfiguration)
             static let likedIconImage = UIImage(systemName: "star.fill", withConfiguration: reactionIconConfiguration)
 
             static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .large)
             static let shareIconImageName = "square.and.arrow.up"
             static let ellipsisIconImageName = "ellipsis.circle"
+
+            static var replyIconImage: UIImage? {
+                // this symbol is only available in iOS 14 and above. For iOS 13, we need to use the backported image in our assets.
+                let name = "arrowshape.turn.up.backward"
+                let image = UIImage(systemName: name) ?? UIImage(named: name)
+                return image?.withConfiguration(reactionIconConfiguration).imageFlippedForRightToLeftLayoutDirection()
+            }
+
+            static let highlightedReplyIconImage = UIImage(systemName: "arrowshape.turn.up.left.fill", withConfiguration: reactionIconConfiguration)?
+                .withTintColor(highlightedReplyButtonTintColor, renderingMode: .alwaysTemplate)
+                .imageFlippedForRightToLeftLayoutDirection()
         }
 
         public struct ReplyIndicator {

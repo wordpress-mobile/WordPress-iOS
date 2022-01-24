@@ -1,53 +1,49 @@
+import ScreenObject
 import XCTest
 
-private struct ElementStringIDs {
-    static let usernameField = "login-epilogue-username-label"
-    static let siteUrlField = "siteUrl"
-    static let connectSiteButton = "connectSite"
-    static let continueButton = "Done"
-}
+public class LoginEpilogueScreen: ScreenObject {
 
-public class LoginEpilogueScreen: BaseScreen {
-    let continueButton: XCUIElement
-    let connectSiteButton: XCUIElement
-    let usernameField: XCUIElement
-    let siteUrlField: XCUIElement
+    private let loginEpilogueTableGetter: (XCUIApplication) -> XCUIElement = {
+        $0.tables["login-epilogue-table"]
+    }
 
-    init() {
-        let app = XCUIApplication()
-        usernameField = app.staticTexts[ElementStringIDs.usernameField]
-        siteUrlField = app.staticTexts[ElementStringIDs.siteUrlField]
-        connectSiteButton = app.cells[ElementStringIDs.connectSiteButton]
-        continueButton = app.buttons[ElementStringIDs.continueButton]
+    var loginEpilogueTable: XCUIElement { loginEpilogueTableGetter(app) }
 
-        super.init(element: continueButton)
+    init(app: XCUIApplication = XCUIApplication()) throws {
+        try super.init(
+            expectedElementGetters: [loginEpilogueTableGetter],
+            app: app,
+            waitTimeout: 7
+        )
     }
 
     public func continueWithSelectedSite() throws -> MySiteScreen {
-        continueButton.tap()
+        let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
+        firstSite.tap()
+
+        try dismissQuickStartPromptIfNeeded()
         return try MySiteScreen()
     }
 
     // Used by "Self-Hosted after WordPress.com login" test. When a site is added from the Sites List, the Sites List modal (MySitesScreen)
     // remains active after the epilogue "done" button is tapped.
-    public func continueWithSelfHostedSiteAddedFromSitesList() -> MySitesScreen {
-        continueButton.tap()
-        return MySitesScreen()
-    }
+    public func continueWithSelfHostedSiteAddedFromSitesList() throws -> MySitesScreen {
+        let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
+        firstSite.tap()
 
-    func connectSite() {
-        connectSiteButton.tap()
+        try dismissQuickStartPromptIfNeeded()
+        return try MySitesScreen()
     }
 
     public func verifyEpilogueDisplays(username: String? = nil, siteUrl: String) -> LoginEpilogueScreen {
         if var expectedUsername = username {
             expectedUsername = "@\(expectedUsername)"
-            let actualUsername = usernameField.label
+            let actualUsername = app.staticTexts["login-epilogue-username-label"].label
             XCTAssertEqual(expectedUsername, actualUsername, "Username displayed is \(actualUsername) but should be \(expectedUsername)")
         }
 
         let expectedSiteUrl = getDisplayUrl(for: siteUrl)
-        let actualSiteUrl = siteUrlField.firstMatch.label
+        let actualSiteUrl = app.staticTexts["siteUrl"].firstMatch.label
         XCTAssertEqual(expectedSiteUrl, actualSiteUrl, "Site URL displayed is \(actualSiteUrl) but should be \(expectedSiteUrl)")
 
         return self
@@ -60,5 +56,14 @@ public class LoginEpilogueScreen: BaseScreen {
         }
 
         return displayUrl
+    }
+
+    private func dismissQuickStartPromptIfNeeded() throws {
+        try XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { _ in
+            guard QuickStartPromptScreen.isLoaded() else { return }
+
+            Logger.log(message: "Dismising quick start prompt...", event: .i)
+            _ = try QuickStartPromptScreen().selectNoThanks()
+        }
     }
 }
