@@ -244,6 +244,8 @@
 		1752D4FA238D702E002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		1752D4FB238D702F002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
 		1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */; };
+		175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
+		175507B427A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */; };
 		175721162754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		175721172754D31F00DE38BC /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175721152754D31F00DE38BC /* AppIcon.swift */; };
 		1759F1701FE017BF0003EC81 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F16F1FE017BF0003EC81 /* Queue.swift */; };
@@ -4879,6 +4881,7 @@
 		1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueDatabase.swift; sourceTree = "<group>"; };
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		17523380246C4F9200870B4A /* HomepageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageSettingsViewController.swift; sourceTree = "<group>"; };
+		175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicizeConnectionURLMatcher.swift; sourceTree = "<group>"; };
 		175721152754D31F00DE38BC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
@@ -14056,6 +14059,7 @@
 				E63BBC941C5168BE00598BE8 /* SharingAuthorizationHelper.h */,
 				E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */,
 				F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */,
+				175507B227A062980038ED28 /* PublicizeConnectionURLMatcher.swift */,
 				E663D18F1C65383E0017F109 /* SharingAccountViewController.swift */,
 				E6431DE11C4E892900FD8D90 /* SharingDetailViewController.h */,
 				E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */,
@@ -17447,6 +17451,7 @@
 				E64384831C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift in Sources */,
 				F504D2B025D60C5900A2764C /* StoryPoster.swift in Sources */,
 				981C82B62193A7B900A06E84 /* Double+Stats.swift in Sources */,
+				175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */,
 				177074851FB209F100951A4A /* CircularProgressView.swift in Sources */,
 				98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */,
 				3234BB172530DFCA0068DA40 /* ReaderTableCardCell.swift in Sources */,
@@ -20161,6 +20166,7 @@
 				FABB23C22602FC2C00C8785C /* PrepublishingHeaderView.swift in Sources */,
 				3FB1929126C6C56E000F5AA3 /* TimeSelectionButton.swift in Sources */,
 				FABB23C32602FC2C00C8785C /* StatsWidgetsStore.swift in Sources */,
+				175507B427A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */,
 				FABB23C42602FC2C00C8785C /* MenuItemsVisualOrderingView.m in Sources */,
 				FABB23C52602FC2C00C8785C /* JetpackScanViewController.swift in Sources */,
 				FABB23C62602FC2C00C8785C /* ReaderSubscribingNotificationAction.swift in Sources */,

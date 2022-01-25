@@ -1,107 +1,6 @@
 import WebKit
 import CoreMedia
 
-/// Used to detect whether a URL matches a particular Publicize authorization success or failure route.
-enum PublicizeAuthorizationURLComponents {
-    case verifyActionItem
-    case denyActionItem
-    case requestActionItem
-    case stateItem
-    case codeItem
-    case errorItem
-
-    case authorizationPrefix
-    case declinePath
-    case accessDenied
-
-    // Special handling for the inconsistent way that services respond to a user's choice to decline
-    // oauth authorization.
-    // Right now we have no clear way to know if Tumblr fails.  This is something we should try
-    // fixing moving forward.
-    // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
-    case userRefused
-
-    // In most cases, we attempt to find a matching URL by checking for a specific URL component
-    private var queryItem: URLQueryItem? {
-        switch self {
-        case .verifyActionItem:
-            return URLQueryItem(name: "action", value: "verify")
-        case .denyActionItem:
-            return URLQueryItem(name: "action", value: "deny")
-        case .requestActionItem:
-            return URLQueryItem(name: "action", value: "request")
-        case .accessDenied:
-            return URLQueryItem(name: "error", value: "access_denied")
-        case .stateItem:
-            return URLQueryItem(name: "state", value: nil)
-        case .codeItem:
-            return URLQueryItem(name: "code", value: nil)
-        case .errorItem:
-            return URLQueryItem(name: "error", value: nil)
-        case .userRefused:
-            return URLQueryItem(name: "oauth_problem", value: "user_refused")
-        default:
-            return nil
-        }
-    }
-
-    // In a handful of cases, we're just looking for a substring or prefix in the URL
-    private var matchString: String? {
-        switch self {
-        case .declinePath:
-            return "/decline"
-        case .authorizationPrefix:
-            return "https://public-api.wordpress.com/connect/"
-        default:
-            return nil
-        }
-    }
-
-    /// @return True if the url matches the current authorization component
-    ///
-    func containedIn(_ url: URL) -> Bool {
-        if let _ = queryItem {
-            return queryItemContainedIn(url)
-        }
-
-        return stringContainedIn(url)
-    }
-
-    // Checks to see if the current QueryItem is present in the specified URL
-    private func queryItemContainedIn(_ url: URL) -> Bool {
-        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems,
-              let queryItem = queryItem else {
-                  return false
-              }
-
-        return queryItems.contains(where: { urlItem in
-            var result = urlItem.name == queryItem.name
-
-            if let value = queryItem.value {
-                result = result && (urlItem.value == value)
-            }
-
-            return result
-        })
-    }
-
-    // Checks to see if the current matchString is present in the specified URL
-    private func stringContainedIn(_ url: URL) -> Bool {
-        guard let matchString = matchString else {
-            return false
-        }
-
-        switch self {
-        case .declinePath:
-            return url.path.contains(matchString)
-        case .authorizationPrefix:
-            return url.absoluteString.hasPrefix(matchString)
-        default:
-            return url.absoluteString.contains(matchString)
-        }
-    }
-}
-
 @objc
 protocol SharingAuthorizationDelegate: NSObjectProtocol {
     @objc
@@ -234,7 +133,7 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
     func authorizeAction(from url: URL) -> AuthorizeAction {
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if PublicizeAuthorizationURLComponents.declinePath.containedIn(url) {
+        if PublicizeConnectionURLMatcher.declinePath.containedIn(url) {
             return .deny
         }
 
@@ -245,39 +144,39 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 //            return .none
 //        }
 
-        if PublicizeAuthorizationURLComponents.requestActionItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.requestActionItem.containedIn(url) {
             return .request
         }
 
         // Check the rest of the various decline ranges
-        if PublicizeAuthorizationURLComponents.denyActionItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.denyActionItem.containedIn(url) {
             return .deny
         }
 
         // LinkedIn
-        if PublicizeAuthorizationURLComponents.userRefused.containedIn(url) {
+        if PublicizeConnectionURLMatcher.userRefused.containedIn(url) {
             return .deny
         }
 
         // Facebook and Google+
-        if PublicizeAuthorizationURLComponents.accessDenied.containedIn(url) {
+        if PublicizeConnectionURLMatcher.accessDenied.containedIn(url) {
             return .deny
         }
 
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
-        if PublicizeAuthorizationURLComponents.verifyActionItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.verifyActionItem.containedIn(url) {
             return .verify
         }
 
         // Facebook
-        if PublicizeAuthorizationURLComponents.stateItem.containedIn(url) && PublicizeAuthorizationURLComponents.codeItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.stateItem.containedIn(url) && PublicizeConnectionURLMatcher.codeItem.containedIn(url) {
             return .verify
         }
 
         // Facebook failure
-        if PublicizeAuthorizationURLComponents.stateItem.containedIn(url) && PublicizeAuthorizationURLComponents.errorItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.stateItem.containedIn(url) && PublicizeConnectionURLMatcher.errorItem.containedIn(url) {
             return .unknown
         }
 
