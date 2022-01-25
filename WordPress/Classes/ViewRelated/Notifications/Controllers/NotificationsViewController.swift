@@ -893,7 +893,7 @@ private extension NotificationsViewController {
     /// Presents a confirmation action sheet for mark all as read action.
     @objc func showMarkAllAsReadConfirmation() {
         let title = NSLocalizedString(
-            "You are about to mark all notifications as read. Are you sure?",
+            "Mark all %1$@ notifications as read?",
             comment: "Confirmation title for marking all notifications as read."
         )
         let cancelTitle = NSLocalizedString(
@@ -901,11 +901,15 @@ private extension NotificationsViewController {
             comment: "Cancels the mark all as read action."
         )
         let markAllTitle = NSLocalizedString(
-            "Mark All As Read",
+            "Ok",
             comment: "Marks all notifications as read."
         )
 
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(
+            title: String.localizedStringWithFormat(title, filter.confirmationMessageTitle),
+            message: nil,
+            preferredStyle: .alert
+        )
         alertController.view.accessibilityIdentifier = "mark-all-as-read-alert"
 
         alertController.addCancelActionWithTitle(cancelTitle)
@@ -1721,6 +1725,16 @@ private extension NotificationsViewController {
             case .comment:  return "Comments"
             case .follow:   return "Follows"
             case .like:     return "Likes"
+            }
+        }
+
+        var confirmationMessageTitle: String {
+            switch self {
+            case .none:     return NSLocalizedString("all", comment: "Filter all confirmation tab name")
+            case .unread:   return NSLocalizedString("unread", comment: "Filter unread confirmation tab name")
+            case .comment:  return NSLocalizedString("comment", comment: "Filter comments confirmation tab name")
+            case .follow:   return NSLocalizedString("follow", comment: "Filter follows confirmation tab name")
+            case .like:     return NSLocalizedString("like", comment: "Filter likes confirmation tab name")
             }
         }
 
