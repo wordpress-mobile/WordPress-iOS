@@ -109,8 +109,6 @@ class BlogDetailHeaderView: UIView {
 
         super.init(frame: .zero)
 
-        backgroundColor = .appBarBackground
-
         setupChildViews(items: items)
     }
 
@@ -139,8 +137,6 @@ class BlogDetailHeaderView: UIView {
         if !FeatureFlag.mySiteDashboard.enabled {
             addSubview(actionRow)
         }
-
-        addBottomBorder(withColor: .separator)
 
         let showsActionRow = items.count > 0
         setupConstraintsForChildViews(showsActionRow)

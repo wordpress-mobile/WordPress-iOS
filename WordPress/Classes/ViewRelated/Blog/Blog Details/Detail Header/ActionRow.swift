@@ -93,6 +93,13 @@ class ActionRow: UIStackView {
         spacing = Constants.minimumSpacing
         translatesAutoresizingMaskIntoConstraints = false
         refreshStackViewVisibility()
+
+        backgroundColor = .appBarBackground
+
+        layer.cornerRadius = 10
+
+        layoutMargins = UIEdgeInsets.init(top: 16, left: 16, bottom: 16, right: 16)
+        isLayoutMarginsRelativeArrangement = true
     }
 
     // MARK: - Accessibility
