@@ -8,24 +8,24 @@ class PublicizeAuthorizationURLComponentsTests: XCTestCase {
     override func tearDown() {
     }
 
-    func testURLContainingAuthorizationPrefix() {
+    func testURLContainingAuthorizationItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=verify")!
         XCTAssertTrue(PublicizeAuthorizationURLComponents.authorizationPrefix.containedIn(url))
     }
 
-    func testURLContainingVerifyActionParameter() {
+    func testURLContainingVerifyActionItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=verify")!
-        XCTAssertTrue(PublicizeAuthorizationURLComponents.verifyActionParameter.containedIn(url))
+        XCTAssertTrue(PublicizeAuthorizationURLComponents.verifyActionItem.containedIn(url))
     }
 
     func testURLContainingDenyActionParameter() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=deny")!
-        XCTAssertTrue(PublicizeAuthorizationURLComponents.denyActionParameter.containedIn(url))
+        XCTAssertTrue(PublicizeAuthorizationURLComponents.denyActionItem.containedIn(url))
     }
 
-    func testURLContainingRequestActionParameter() {
+    func testURLContainingRequestActionItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=request")!
-        XCTAssertTrue(PublicizeAuthorizationURLComponents.requestActionParameter.containedIn(url))
+        XCTAssertTrue(PublicizeAuthorizationURLComponents.requestActionItem.containedIn(url))
     }
 
     func testURLContainingDeclinePath() {
@@ -33,24 +33,24 @@ class PublicizeAuthorizationURLComponentsTests: XCTestCase {
         XCTAssertTrue(PublicizeAuthorizationURLComponents.declinePath.containedIn(url))
     }
 
-    func testURLContainingAccessDeniedErrorParameter() {
+    func testURLContainingAccessDeniedErrorItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?error=access_denied")!
         XCTAssertTrue(PublicizeAuthorizationURLComponents.accessDenied.containedIn(url))
     }
 
-    func testURLContainingStateParameter() {
+    func testURLContainingStateItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&code=1234567")!
-        XCTAssertTrue(PublicizeAuthorizationURLComponents.state.containedIn(url))
+        XCTAssertTrue(PublicizeAuthorizationURLComponents.stateItem.containedIn(url))
     }
 
-    func testURLContainingCodeParameter() {
+    func testURLContainingCodeItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&code=1234567")!
-        XCTAssertTrue(PublicizeAuthorizationURLComponents.code.containedIn(url))
+        XCTAssertTrue(PublicizeAuthorizationURLComponents.codeItem.containedIn(url))
     }
 
-    func testURLContainingErrorParameter() {
+    func testURLContainingErrorItemItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&error=1234567")!
-        XCTAssertTrue(PublicizeAuthorizationURLComponents.error.containedIn(url))
+        XCTAssertTrue(PublicizeAuthorizationURLComponents.errorItem.containedIn(url))
     }
 
     func testURLContainingUserRefusedParameter() {
