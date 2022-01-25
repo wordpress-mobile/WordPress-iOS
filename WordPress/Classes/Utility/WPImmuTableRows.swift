@@ -94,7 +94,10 @@ struct EditableTextRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
         cell.accessibilityLabel = title
-        cell.accessibilityHint = value
+        cell.accessibilityValue = value
+        if cell.isUserInteractionEnabled {
+            cell.accessibilityHint = NSLocalizedString("Tap to edit", comment: "Accessibility hint prompting the user to tap a table row to edit its value.")
+        }
         cell.accessoryType = .disclosureIndicator
         if accessoryImage != nil {
             cell.accessoryView = UIImageView(image: accessoryImage)
@@ -132,7 +135,7 @@ struct TextRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
         cell.accessibilityLabel = title
-        cell.accessibilityHint = value
+        cell.accessibilityValue = value
 
         cell.selectionStyle = .none
 
