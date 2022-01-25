@@ -177,7 +177,7 @@ struct MediaImageRow: ImmuTableRow {
             cell.isVideo = media.mediaType == .video
             cell.accessibilityTraits = .button
             cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
-            cell.accessibilityHint = NSLocalizedString("Click to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
+            cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
         }
     }
 
@@ -244,7 +244,7 @@ struct MediaDocumentRow: ImmuTableRow {
             cell.showIconForMedia(media)
             cell.accessibilityTraits = .button
             cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
-            cell.accessibilityHint = NSLocalizedString("Click to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
+            cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
         }
     }
 }
