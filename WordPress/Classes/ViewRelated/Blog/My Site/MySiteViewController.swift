@@ -17,6 +17,12 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,12 +44,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         let segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
-    }()
-
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
     }()
 
     private let meScenePresenter: ScenePresenter
@@ -105,6 +105,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
+        view.backgroundColor = .listBackground
         setupConstraints()
         setupNavigationItem()
         setupSegmentedControl()
@@ -154,28 +155,32 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// If the My Site Dashboard feature flag is enabled, then this method builds a layout with the following
     /// view hierarchy:
     ///
-    /// - Stack view
-    ///   - Segmented control container view
-    ///      - Segmented control
-    ///   - Container view (for a child vc)
+    /// - Scroll view
+    ///   - Stack view
+    ///     - Segmented control container view
+    ///       - Segmented control
+    ///     - Child view controller
     ///
     /// Otherwise, if the My Site Dashboard feature flag is disabled, this method does nothing and the
-    /// child vc get added directly to the root view of the view controller in showBlogDetails.
+    /// child vc is added directly to the root view of the view controller in showBlogDetails.
     /// 
     private func setupConstraints() {
         guard FeatureFlag.mySiteDashboard.enabled else {
             return
         }
 
-        view.addSubview(stackView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        scrollView.pinSubviewToAllEdges(stackView)
         segmentedControlContainerView.addSubview(segmentedControl)
-        stackView.addArrangedSubviews([segmentedControlContainerView, containerView])
+        stackView.addArrangedSubviews([segmentedControlContainerView])
 
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             segmentedControl.centerXAnchor.constraint(equalTo: segmentedControlContainerView.centerXAnchor),
             segmentedControl.centerYAnchor.constraint(equalTo: segmentedControlContainerView.centerYAnchor),
             segmentedControl.topAnchor.constraint(equalTo: segmentedControlContainerView.topAnchor, constant: 24)
@@ -289,19 +294,16 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
             remove(blogDetailVC)
             blogDashboardViewController.blog = blog
-            embedChildInContainerView(blogDashboardViewController)
+            embedChildInStackView(blogDashboardViewController)
         }
     }
 
     // MARK: - Child VC logic
 
-    private func embedChildInContainerView(_ child: UIViewController) {
+    private func embedChildInStackView(_ child: UIViewController) {
         addChild(child)
-        containerView.addSubview(child.view)
+        stackView.addArrangedSubview(child.view)
         child.didMove(toParent: self)
-
-        child.view.translatesAutoresizingMaskIntoConstraints = false
-        containerView.pinSubviewToAllEdges(child.view)
     }
 
     // MARK: - No Sites UI logic
@@ -482,7 +484,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         addMeButtonToNavigationBar(email: blog.account?.email, meScenePresenter: meScenePresenter)
 
         if FeatureFlag.mySiteDashboard.enabled {
-            embedChildInContainerView(blogDetailsViewController)
+            embedChildInStackView(blogDetailsViewController)
         } else {
             add(blogDetailsViewController)
             blogDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
