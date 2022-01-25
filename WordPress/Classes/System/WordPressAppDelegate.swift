@@ -700,7 +700,6 @@ extension WordPressAppDelegate {
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
         WPSharedSetLoggingLevel(level)
-        TracksSetLoggingLevel(level)
         WPAuthenticatorSetLoggingLevel(level)
     }
 }

@@ -20,12 +20,10 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.3.0):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.9.1):
-    - CocoaLumberjack (~> 3)
-    - Reachability (~> 3)
+  - Automattic-Tracks-iOS (0.10.1):
     - Sentry (~> 6)
     - Sodium (>= 0.9.1)
-    - UIDeviceIdentifier (~> 1)
+    - UIDeviceIdentifier (~> 2.0)
   - boost (1.76.0)
   - BVLinearGradient (2.5.6-wp-2):
     - React-Core
@@ -450,7 +448,7 @@ PODS:
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
-  - UIDeviceIdentifier (1.7.1)
+  - UIDeviceIdentifier (2.0.0)
   - WordPress-Aztec-iOS (1.19.7)
   - WordPress-Editor-iOS (1.19.7):
     - WordPress-Aztec-iOS (= 1.19.7)
@@ -465,11 +463,11 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.46.0):
+  - WordPressKit (4.47.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
-    - UIDeviceIdentifier (~> 1.4)
+    - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 1.15-beta)
     - wpxmlrpc (~> 0.9)
   - WordPressMocks (0.0.15)
@@ -502,7 +500,7 @@ DEPENDENCIES:
   - AMScrollingNavbar (= 5.6.0)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
-  - Automattic-Tracks-iOS (~> 0.9.1)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `uideviceidentifier-upgrade`)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/BVLinearGradient.podspec.json`)
   - Charts (~> 3.2.2)
@@ -569,7 +567,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.7)
   - WordPressAuthenticator (~> 1.43.0)
-  - WordPressKit (~> 4.46.0)
+  - WordPressKit (~> 4.47.0-beta.1)
   - WordPressMocks (~> 0.0.15)
   - WordPressShared (~> 1.17.0)
   - WordPressUI (~> 1.12.3)
@@ -588,7 +586,6 @@ SPEC REPOS:
     - AMScrollingNavbar
     - AppAuth
     - AppCenter
-    - Automattic-Tracks-iOS
     - Charts
     - CocoaLumberjack
     - CropViewController
@@ -635,6 +632,9 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :branch: uideviceidentifier-upgrade
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   boost:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/boost.podspec.json
   BVLinearGradient:
@@ -736,6 +736,9 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.70.0/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :commit: 101f150e58589e50e665606c69aad8378b74b292
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -755,7 +758,7 @@ SPEC CHECKSUMS:
   AMScrollingNavbar: cf0ec5a5ee659d76ba2509f630bf14fba7e16dc3
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
-  Automattic-Tracks-iOS: f5a6188ad8d00680748111466beabb0aea11f856
+  Automattic-Tracks-iOS: e8910ea6d42aee000d3241a1c0e055dec6352929
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
@@ -829,11 +832,11 @@ SPEC CHECKSUMS:
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  UIDeviceIdentifier: d0fee204f467dacf8808b7ac14ce43affeb271a5
+  UIDeviceIdentifier: af4e11e25a2ea670078e2bd677bb0e8144f9f063
   WordPress-Aztec-iOS: 144f124148079084860368dfd27cb96e0952853e
   WordPress-Editor-iOS: 20551d5a5e51f29832064f08faaaae8e1da7e1e2
   WordPressAuthenticator: e4a43745a647e4dc4b35d21b1353bc4f07f9f3c9
-  WordPressKit: 67cc1b0bda0d114c806a631ad726027d535d28a8
+  WordPressKit: 375f54b3b27bf37f8fc5ed444afd0507fe48a2c7
   WordPressMocks: 6b52b0764d9939408151367dd9c6e8a910877f4d
   WordPressShared: a4b0308a6345d4dda20c8f7ad9317df4246b4a00
   WordPressUI: 45591178e843ecb82e65e868ec766148befe9f9f
@@ -849,6 +852,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: beb884dd6980a8f4ff8ba7753cddc4a9206c9da5
+PODFILE CHECKSUM: 78b6e4992381fb7c19309a00c221a3e2632d519e
 
 COCOAPODS: 1.11.2
