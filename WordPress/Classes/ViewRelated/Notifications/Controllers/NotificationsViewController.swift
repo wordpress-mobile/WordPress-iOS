@@ -892,16 +892,28 @@ private extension NotificationsViewController {
 
     /// Presents a confirmation action sheet for mark all as read action.
     @objc func showMarkAllAsReadConfirmation() {
-        let title = NSLocalizedString(
-            "Mark all %1$@ notifications as read?",
-            comment: "Confirmation title for marking all notifications as read."
-        )
+        let title: String
+
+        switch filter {
+        case .none:
+            title = NSLocalizedString(
+                "Mark all notifications as read?",
+                comment: "Confirmation title for marking all notifications as read."
+            )
+
+        default:
+            title = NSLocalizedString(
+                "Mark all %1$@ notifications as read?",
+                comment: "Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name."
+            )
+        }
+
         let cancelTitle = NSLocalizedString(
             "Cancel",
             comment: "Cancels the mark all as read action."
         )
         let markAllTitle = NSLocalizedString(
-            "Ok",
+            "OK",
             comment: "Marks all notifications as read."
         )
 
@@ -1730,11 +1742,11 @@ private extension NotificationsViewController {
 
         var confirmationMessageTitle: String {
             switch self {
-            case .none:     return NSLocalizedString("all", comment: "Filter all confirmation tab name")
-            case .unread:   return NSLocalizedString("unread", comment: "Filter unread confirmation tab name")
-            case .comment:  return NSLocalizedString("comment", comment: "Filter comments confirmation tab name")
-            case .follow:   return NSLocalizedString("follow", comment: "Filter follows confirmation tab name")
-            case .like:     return NSLocalizedString("like", comment: "Filter likes confirmation tab name")
+            case .none:     return ""
+            case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
+            case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
+            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
 
