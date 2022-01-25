@@ -521,6 +521,8 @@
 		3F2F856326FAF612000FCDA5 /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
 		3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3087C324EDB7040087B548 /* AnnouncementCell.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
+		3F39C93527A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
+		3F39C93627A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
 		3F3CA65025D3003C00642A89 /* StatsWidgetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */; };
 		3F3D854B251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */; };
 		3F3DD0AF26FCDA3100F5F121 /* PresentationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */; };
@@ -5171,6 +5173,7 @@
 		3F2F0C15256C6B2C003351C7 /* StatsWidgetsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsService.swift; sourceTree = "<group>"; };
 		3F3087C324EDB7040087B548 /* AnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementCell.swift; sourceTree = "<group>"; };
 		3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeNavigation.swift"; sourceTree = "<group>"; };
+		3F39C93427A09927001EC300 /* TracksLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksLogger.swift; sourceTree = "<group>"; };
 		3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStore.swift; sourceTree = "<group>"; };
 		3F3D854A251E6418001CA4D2 /* AnnouncementsDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDataStoreTests.swift; sourceTree = "<group>"; };
 		3F3DD0AE26FCDA3100F5F121 /* PresentationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationButton.swift; sourceTree = "<group>"; };
@@ -10015,6 +10018,7 @@
 				F93735F022D534FE00A3C312 /* LoggingURLRedactor.swift */,
 				986CC4D120E1B2F6004F300E /* CustomLogFormatter.swift */,
 				8B3DECAA2388506400A459C2 /* SentryStartupEvent.swift */,
+				3F39C93427A09927001EC300 /* TracksLogger.swift */,
 			);
 			path = Logging;
 			sourceTree = "<group>";
@@ -17303,6 +17307,7 @@
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				464688D8255C71D200ECA61C /* SiteDesignPreviewViewController.swift in Sources */,
+				3F39C93527A09927001EC300 /* TracksLogger.swift in Sources */,
 				3F5B3EB123A851480060FF1F /* ReaderReblogFormatter.swift in Sources */,
 				E1AB5A071E0BF17500574B4E /* Array.swift in Sources */,
 				D858F2FD20E1F09F007E8A1C /* NotificationActionParser.swift in Sources */,
@@ -20058,6 +20063,7 @@
 				C79C307F26EA970800E88514 /* ReferrerDetailsSpamActionRow.swift in Sources */,
 				FABB23662602FC2C00C8785C /* NotificationCommentRange.swift in Sources */,
 				FABB23672602FC2C00C8785C /* NotificationAction.swift in Sources */,
+				3F39C93627A09927001EC300 /* TracksLogger.swift in Sources */,
 				FABB23682602FC2C00C8785C /* NSManagedObject.swift in Sources */,
 				FABB23692602FC2C00C8785C /* ExportableAsset.swift in Sources */,
 				FABB236A2602FC2C00C8785C /* PlanListViewModel.swift in Sources */,

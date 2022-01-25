@@ -70,6 +70,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private let loggingStack = WPLoggingStack()
 
+    private lazy var tracksLogger = TracksLogger()
+
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
         shared?.loggingStack.crashLogging
@@ -274,6 +276,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppCenterSDK()
         configureAppRatingUtility()
+
+        TracksLogging.delegate = tracksLogger
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
