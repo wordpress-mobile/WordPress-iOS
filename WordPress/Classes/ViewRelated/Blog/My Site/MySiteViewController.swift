@@ -74,7 +74,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            showSitePicker(for: newBlog)
+            addSitePickerIfNeeded(for: newBlog)
             showBlogDetails(for: newBlog)
         }
 
@@ -89,6 +89,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private(set) var blogDetailsViewController: BlogDetailsViewController?
 
     private let blogDashboardViewController = BlogDashboardViewController()
+
+    private(set) var sitePickerViewController: SitePickerViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
     /// we can allow pull to refresh to sync the user's list of sites.
@@ -131,24 +133,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
-    }
-
-    private func showSitePicker(for blog: Blog) {
-        guard FeatureFlag.mySiteDashboard.enabled else {
-            return
-        }
-
-        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
-
-        sitePickerViewController.onBlogSwitched = { [weak self] in
-            self?.blogDetailsViewController?.showInitialDetailsForBlog()
-            self?.blogDetailsViewController?.tableView.reloadData()
-            self?.blogDetailsViewController?.preloadMetadata()
-        }
-
-        addChild(sitePickerViewController)
-        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
-        sitePickerViewController.didMove(toParent: self)
     }
 
     private func setupSegmentedControl() {
@@ -260,7 +244,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        showSitePicker(for: mainBlog)
+        addSitePickerIfNeeded(for: mainBlog)
         showBlogDetails(for: mainBlog)
     }
 
@@ -518,6 +502,35 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         blogDetailsViewController.blog = blog
 
         return blogDetailsViewController
+    }
+
+    private func addSitePickerIfNeeded(for blog: Blog) {
+        guard FeatureFlag.mySiteDashboard.enabled else {
+            return
+        }
+
+        guard sitePickerViewController == nil else {
+            return
+        }
+
+        let sitePickerViewController = makeSitePickerViewController(for: blog)
+        self.sitePickerViewController = sitePickerViewController
+
+        addChild(sitePickerViewController)
+        stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
+        sitePickerViewController.didMove(toParent: self)
+    }
+
+    private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
+        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
+
+        sitePickerViewController.onBlogSwitched = { [weak self] in
+            self?.blogDetailsViewController?.showInitialDetailsForBlog()
+            self?.blogDetailsViewController?.tableView.reloadData()
+            self?.blogDetailsViewController?.preloadMetadata()
+        }
+
+        return sitePickerViewController
     }
 
     func presentCreateSheet() {
