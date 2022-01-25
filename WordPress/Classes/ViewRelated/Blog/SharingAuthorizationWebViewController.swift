@@ -1,4 +1,30 @@
 import WebKit
+import CoreMedia
+
+enum PublicizeAuthorizationURLComponents: String {
+    case verifyActionParameter = "action=verify"
+    case denyActionParameter = "action=deny"
+    case requestActionParameter = "action=request"
+
+    case declinePath = "/decline"
+    case authorizationPrefix = "https://public-api.wordpress.com/connect/"
+    case accessDenied = "error=access_denied"
+
+    case state = "state"
+    case code = "code"
+    case error = "error"
+
+    // Special handling for the inconsistent way that services respond to a user's choice to decline
+    // oauth authorization.
+    // Right now we have no clear way to know if Tumblr fails.  This is something we should try
+    // fixing moving forward.
+    // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
+    case userRefused = "oauth_problem=user_refused"
+
+    func containedIn(_ url: URL) -> Bool {
+        return url.absoluteString.contains(rawValue)
+    }
+}
 
 @objc
 protocol SharingAuthorizationDelegate: NSObjectProtocol {
@@ -25,31 +51,6 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     }
 
     private static let loginURL = "https://wordpress.com/wp-login.php"
-
-    private enum AuthorizeURLComponents: String {
-        case verifyActionParameter = "action=verify"
-        case denyActionParameter = "action=deny"
-        case requestActionParameter = "action=request"
-
-        case declinePath = "/decline"
-        case authorizationPrefix = "https://public-api.wordpress.com/connect/"
-        case accessDenied = "error=access_denied"
-
-        case state = "state"
-        case code = "code"
-        case error = "error"
-
-        // Special handling for the inconsistent way that services respond to a user's choice to decline
-        // oauth authorization.
-        // Right now we have no clear way to know if Tumblr fails.  This is something we should try
-        // fixing moving forward.
-        // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
-        case userRefused = "oauth_problem=user_refused"
-
-        func containedIn(_ url: URL) -> Bool {
-            url.absoluteString.contains(rawValue)
-        }
-    }
 
     /// Verification loading -- dismiss on completion
     ///
@@ -157,47 +158,47 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
     private func authorizeAction(from url: URL) -> AuthorizeAction {
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if AuthorizeURLComponents.declinePath.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.declinePath.containedIn(url) {
             return .deny
         }
 
-        if !url.absoluteString.hasPrefix(AuthorizeURLComponents.authorizationPrefix.rawValue) {
+        if !url.absoluteString.hasPrefix(PublicizeAuthorizationURLComponents.authorizationPrefix.rawValue) {
             return .none
         }
 
-        if AuthorizeURLComponents.requestActionParameter.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.requestActionParameter.containedIn(url) {
             return .request
         }
 
         // Check the rest of the various decline ranges
-        if AuthorizeURLComponents.denyActionParameter.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.denyActionParameter.containedIn(url) {
             return .deny
         }
 
         // LinkedIn
-        if AuthorizeURLComponents.userRefused.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.userRefused.containedIn(url) {
             return .deny
         }
 
         // Facebook and Google+
-        if AuthorizeURLComponents.accessDenied.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.accessDenied.containedIn(url) {
             return .deny
         }
 
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
-        if AuthorizeURLComponents.verifyActionParameter.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.verifyActionParameter.containedIn(url) {
             return .verify
         }
 
         // Facebook
-        if AuthorizeURLComponents.state.containedIn(url) && AuthorizeURLComponents.code.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.state.containedIn(url) && PublicizeAuthorizationURLComponents.code.containedIn(url) {
             return .verify
         }
 
         // Facebook failure
-        if AuthorizeURLComponents.state.containedIn(url) && AuthorizeURLComponents.error.containedIn(url) {
+        if PublicizeAuthorizationURLComponents.state.containedIn(url) && PublicizeAuthorizationURLComponents.error.containedIn(url) {
             return .unknown
         }
 
