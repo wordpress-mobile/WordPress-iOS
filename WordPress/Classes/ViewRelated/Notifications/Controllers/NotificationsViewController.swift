@@ -112,7 +112,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             image: .gridicon(.checkmark),
             style: .plain,
             target: self,
-            action: #selector(markAllAsRead)
+            action: #selector(showMarkAllAsReadConfirmation)
         )
         markButton.accessibilityLabel = NSLocalizedString(
             "Mark All As Read",
@@ -888,6 +888,49 @@ private extension NotificationsViewController {
             ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
             self?.updateMarkAllAsReadButton()
         })
+    }
+
+    /// Presents a confirmation action sheet for mark all as read action.
+    @objc func showMarkAllAsReadConfirmation() {
+        let title: String
+
+        switch filter {
+        case .none:
+            title = NSLocalizedString(
+                "Mark all notifications as read?",
+                comment: "Confirmation title for marking all notifications as read."
+            )
+
+        default:
+            title = NSLocalizedString(
+                "Mark all %1$@ notifications as read?",
+                comment: "Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name."
+            )
+        }
+
+        let cancelTitle = NSLocalizedString(
+            "Cancel",
+            comment: "Cancels the mark all as read action."
+        )
+        let markAllTitle = NSLocalizedString(
+            "OK",
+            comment: "Marks all notifications as read."
+        )
+
+        let alertController = UIAlertController(
+            title: String.localizedStringWithFormat(title, filter.confirmationMessageTitle),
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.view.accessibilityIdentifier = "mark-all-as-read-alert"
+
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        alertController.addActionWithTitle(markAllTitle, style: .default) { [weak self] _ in
+            self?.markAllAsRead()
+        }
+
+        present(alertController, animated: true, completion: nil)
     }
 
     func markAsUnread(note: Notification) {
@@ -1694,6 +1737,16 @@ private extension NotificationsViewController {
             case .comment:  return "Comments"
             case .follow:   return "Follows"
             case .like:     return "Likes"
+            }
+        }
+
+        var confirmationMessageTitle: String {
+            switch self {
+            case .none:     return ""
+            case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
+            case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
+            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
 
