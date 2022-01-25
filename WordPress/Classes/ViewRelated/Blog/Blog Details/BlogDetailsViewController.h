@@ -3,6 +3,7 @@
 @class Blog;
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
+@class IntrinsicTableView;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
@@ -136,7 +137,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
-@property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
+@property (nonatomic, strong, readwrite) IntrinsicTableView * _Nonnull tableView;
 @property (nonatomic, strong, readonly) BlogDetailHeaderView * _Nonnull headerView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
 
