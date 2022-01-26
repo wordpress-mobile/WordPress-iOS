@@ -2,8 +2,10 @@ import UIKit
 
 extension BlogDetailsViewController {
     @objc func quickActionsSectionViewModel() -> BlogDetailsSection {
+        let row = BlogDetailsRow()
+        row.callback = {}
         return BlogDetailsSection(title: nil,
-                                  rows: [BlogDetailsRow()],
+                                  rows: [row],
                                   footerTitle: nil,
                                   category: .quickAction)
     }
