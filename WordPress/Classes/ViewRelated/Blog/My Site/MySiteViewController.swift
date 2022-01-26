@@ -198,7 +198,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             segmentedControl.leadingAnchor.constraint(equalTo: segmentedControlContainerView.leadingAnchor,
