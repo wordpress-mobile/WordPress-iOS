@@ -202,9 +202,9 @@ abstract_target 'Apps' do
 
     # Production
 
-    # pod 'Automattic-Tracks-iOS', '~> 0.9.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.11.0'
     # While in PR
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'uideviceidentifier-upgrade'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
     # Local Development
     #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
