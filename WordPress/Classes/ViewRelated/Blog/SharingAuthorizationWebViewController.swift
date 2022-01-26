@@ -133,50 +133,47 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
     func authorizeAction(from url: URL) -> AuthorizeAction {
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
-        if PublicizeConnectionURLMatcher.declinePath.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .declinePath) {
             return .deny
         }
 
-        if !url.absoluteString.hasPrefix("https://public-api.wordpress.com/connect/") {
+        if !PublicizeConnectionURLMatcher.url(url, contains: .authorizationPrefix) {
             return .none
         }
-//        if !url.absoluteString.hasPrefix(PublicizeAuthorizationURLComponents.authorizationPrefix.rawValue) {
-//            return .none
-//        }
 
-        if PublicizeConnectionURLMatcher.requestActionItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .requestActionItem) {
             return .request
         }
 
         // Check the rest of the various decline ranges
-        if PublicizeConnectionURLMatcher.denyActionItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .denyActionItem) {
             return .deny
         }
 
         // LinkedIn
-        if PublicizeConnectionURLMatcher.userRefused.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .userRefused) {
             return .deny
         }
 
         // Facebook and Google+
-        if PublicizeConnectionURLMatcher.accessDenied.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .accessDenied) {
             return .deny
         }
 
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
-        if PublicizeConnectionURLMatcher.verifyActionItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .verifyActionItem) {
             return .verify
         }
 
         // Facebook
-        if PublicizeConnectionURLMatcher.stateItem.containedIn(url) && PublicizeConnectionURLMatcher.codeItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .stateItem) && PublicizeConnectionURLMatcher.url(url, contains: .codeItem) {
             return .verify
         }
 
         // Facebook failure
-        if PublicizeConnectionURLMatcher.stateItem.containedIn(url) && PublicizeConnectionURLMatcher.errorItem.containedIn(url) {
+        if PublicizeConnectionURLMatcher.url(url, contains: .stateItem) && PublicizeConnectionURLMatcher.url(url, contains: .errorItem) {
             return .unknown
         }
 

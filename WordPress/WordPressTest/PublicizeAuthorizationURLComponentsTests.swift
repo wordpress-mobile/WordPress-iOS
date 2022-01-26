@@ -10,51 +10,51 @@ class PublicizeConnectionURLMatcherTests: XCTestCase {
 
     func testURLContainingAuthorizationItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=verify")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.authorizationPrefix.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .authorizationPrefix))
     }
 
     func testURLContainingVerifyActionItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=verify")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.verifyActionItem.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .verifyActionItem))
     }
 
     func testURLContainingDenyActionParameter() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=deny")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.denyActionItem.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .denyActionItem))
     }
 
     func testURLContainingRequestActionItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?action=request")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.requestActionItem.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .requestActionItem))
     }
 
     func testURLContainingDeclinePath() {
         let url = URL(string: "https://public-api.wordpress.com/connect/decline")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.declinePath.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .declinePath))
     }
 
     func testURLContainingAccessDeniedErrorItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?error=access_denied")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.accessDenied.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .accessDenied))
     }
 
     func testURLContainingStateItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&code=1234567")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.stateItem.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .stateItem))
     }
 
     func testURLContainingCodeItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&code=1234567")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.codeItem.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .codeItem))
     }
 
     func testURLContainingErrorItemItem() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?state=abcdef&error=1234567")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.errorItem.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .errorItem))
     }
 
     func testURLContainingUserRefusedParameter() {
         let url = URL(string: "https://public-api.wordpress.com/connect/?oauth_problem=user_refused")!
-        XCTAssertTrue(PublicizeConnectionURLMatcher.userRefused.containedIn(url))
+        XCTAssertTrue(PublicizeConnectionURLMatcher.url(url, contains: .userRefused))
     }
 }
